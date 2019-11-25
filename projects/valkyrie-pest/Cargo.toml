@@ -1,6 +1,6 @@
 [package]
 name = "valkyrie-pest"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["192608617@qq.com"]
 edition = "2018"
 description = "..."
@@ -8,9 +8,11 @@ repository = "https://github.com/nyar-lang/NyarNative"
 license = "MPL-2.0"
 
 [dependencies]
-pest = "2.1.0"
-# pest_derive = "2.1.0"
-lazy_static = "1.4.0"
+pest = "2.1"
+pest_derive = "2.1"
+# lazy_static = "1.4.0"
+quote = "*"
+pest_generator = "*"
 
 [dev-dependencies]
 

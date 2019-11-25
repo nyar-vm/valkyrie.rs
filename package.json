@@ -2,7 +2,7 @@
     "name": "native-nyar",
     "private": true,
     "scripts": {
-        "build:pre": "cargo run --release --color=always --package nyar-prebuild --bin nyar-prebuild && cargo fmt --all",
+        "pest": "cargo test --color=always --test main gen_valkyrie_lexer --no-fail-fast -- --format=json --ignored --exact -Z unstable-options --show-output",
         "build": "cargo build --release",
         "test": "cargo build",
         "fmt": "cargo fmt --all",
