@@ -6,3 +6,8 @@
 # Rust
 target/
 Cargo.lock
+
+# Temp
+*.nb
+*.m
+*.ps1
