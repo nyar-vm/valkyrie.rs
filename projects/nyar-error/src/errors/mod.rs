@@ -8,7 +8,6 @@ use crate::Span;
 use std::{
     error::Error,
     fmt::{self, Display, Formatter},
-    ops::Range,
 };
 
 pub type Result<T> = std::result::Result<T, NyarError>;
