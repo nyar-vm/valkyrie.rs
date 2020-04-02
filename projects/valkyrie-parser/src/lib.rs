@@ -1,14 +1,9 @@
-#![feature(once_cell)]
+use valkyrie_errors::{FileID, ValkyrieError};
 
-pub mod grammar;
-pub mod utils;
+mod parser;
 
-pub mod ast {
-    pub use nyar_hir::ast::*;
+#[derive(Debug, Default)]
+pub struct ValkyrieParser {
+    file: FileID,
+    errors: Vec<ValkyrieError>,
 }
-
-mod traits;
-
-pub use grammar::LexerContext;
-pub use nyar_hir::{NyarError, NyarErrorKind, Result};
-pub use traits::ASTDump;

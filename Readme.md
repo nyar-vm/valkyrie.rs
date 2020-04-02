@@ -1,9 +1,13 @@
-Nyar Native
-===========
+Notedown Render with Rust
+=========================
 
-## Features
+*AWSL Window Structure Language*
 
-- Gradual Typing
-- GC
-- Rust based FFI, no need to downgrade to C-FFI.
-  - Of course, you can't enjoy the compatibility of c when you enjoy the benefits from rust.
+*Another Webpage Service Language*
+
+*Awesome Webview Simplified Language*
+
+
+### Sub projects
+
+- notedown-ast

@@ -2,12 +2,8 @@
 .vscode
 .idea
 *.iml
+time-travel.*
 
 # Rust
 target/
 Cargo.lock
-
-# Temp
-*.nb
-*.m
-*.ps1
