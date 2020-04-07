@@ -7,7 +7,7 @@ namespace* tests.literal.table;
 [a: 1, z: 26];
 [啊: 1, 吧: 2, "啊": 3, "吧": 4];
 
-// matrix
+~ matrix
 [
     1, 2;
     3, 4;
