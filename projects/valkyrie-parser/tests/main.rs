@@ -1,4 +1,4 @@
-use std::io::stderr;
+use std::io::{stderr, stdout};
 
 use valkyrie_errors::{TextManager, ValkyrieResult};
 use valkyrie_parser::ValkyrieParser;
@@ -28,7 +28,7 @@ pub fn debug_lexer(files: &[&str]) -> ValkyrieResult {
         problems.push(e.as_report())
     }
     for problem in problems {
-        problem.write(&mut text, stderr().lock())?;
+        problem.write(&mut text, stdout().lock())?;
     }
     Ok(())
 }

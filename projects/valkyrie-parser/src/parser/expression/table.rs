@@ -33,6 +33,10 @@ impl KeyNode {
                 v.visit(parser)?;
                 unimplemented!()
             }
+            KeyNode::IntegerNode(v) => {
+                v.visit(parser)?;
+                unimplemented!()
+            }
         }
         todo!()
     }

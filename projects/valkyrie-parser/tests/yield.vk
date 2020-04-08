@@ -41,7 +41,7 @@ try Option[u64] {
 		print("Caught null")
 }
 .match {
-	case a > 0:
+	case Some(a) && a > 0:
 		print("a > 0")
 	case a < 0:
 		print("a < 0")
@@ -50,12 +50,12 @@ try Option[u64] {
 }
 
 which {
-	a > 0: print(1)
+	Some(a) := b && a > 0: print(1)
 	a < 0: print(-1)
 	_: print(0)
 }
 
-if a > 0 {
+if Some(a) := b {
 	print(1)
 }
 else if a < 0 {
@@ -76,3 +76,16 @@ def main()  {
     }
 }
 
+~~
+#mut #async
+def function() {
+	return 1;
+}
+//
+def function_cps(async) {
+	return async(1);
+}
+
+#async {
+
+}

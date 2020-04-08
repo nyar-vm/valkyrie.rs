@@ -1,6 +1,8 @@
 use valkyrie_ast::{ForLoop, ValkyriePattern, WhileLoop};
-
+use crate::parser::valkyrie::IfStatement;
 use super::*;
+
+mod if_statement;
 
 impl ForStatement {
     pub fn visit(&self, parser: &mut ValkyrieParser) -> ValkyrieResult<ValkyrieASTNode> {

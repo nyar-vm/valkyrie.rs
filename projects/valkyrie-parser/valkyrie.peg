@@ -89,7 +89,7 @@ InfixOperators =
 	'is' ['not'] | ['not'] 'in' |
 	'++=' | '++' | '+=' | '+' |
 	'--=' | '--' | '-=' | '-' |
-	MULS | DIVS |
+	MULS ['='] | DIVS ['='] |
 	'^=' | '^' |
 	'<<=' | '<<<' | '<<' | '<=' | '<' |
 	'>>=' | '>>>' | '>>' | '>=' | '>' |
@@ -102,9 +102,9 @@ InfixOperators =
 Suffix = '?' | '!' | '%'| '‰'| '‱'| '℃'| '℉' | '°' | '′'| '″' | '‴' | '⁗'
 	;
 @no_skip_ws
-MULS = ('⋆' | '∗' | '*' | '×' | '⨯' | '⨉' | '⊗' | '⨂' | '⋅') ['='];
+MULS = '⋆' | '∗' | '*' | '×' | '⨯' | '⨉' | '⊗' | '⨂' | '⋅';
 @no_skip_ws
-DIVS = ('/' ) ['='];
+DIVS = '/';
 @no_skip_ws
 CONTAINS = [NOT] ('∋' | '∍' | '∊' | '∈' | '∉' | '∌');
 NOT = '!' | '¬';
@@ -136,6 +136,7 @@ ValueNode =
 
 @position
 KeyNode =
+	@:IntegerNode |
 	@:IdentifierNode |
 	@:StringNode
 ;
@@ -215,8 +216,10 @@ XID_CONTINUE = char;
 @char
 Dot = '.' | '。';
 
-
 Semicolon = ';';
 
 @char
 Split = ';' | ',' | '，';
+
+@extern(crate::utils::is_comment)
+Comment;

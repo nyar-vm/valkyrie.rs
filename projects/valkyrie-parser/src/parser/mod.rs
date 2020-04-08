@@ -66,8 +66,8 @@ impl VkStatements {
             VkStatements::LoopStatement(v) => out.push(v.visit(parser)?),
             VkStatements::WhileStatement(v) => out.push(v.visit(parser)?),
             VkStatements::ForStatement(v) => out.push(v.visit(parser)?),
-            VkStatements::IfStatement(_) => {
-                todo!()
+            VkStatements::IfStatement(v) => {
+                out.push(v.visit(parser)?)
             }
             VkStatements::ControlFlowNode(_) => {
                 todo!()
