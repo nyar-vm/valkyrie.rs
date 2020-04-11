@@ -10,6 +10,7 @@ license = "MPL-2.0"
 [dependencies]
 peginator = "0.6.0"
 unicode-ident = "1.0.6"
+regex = "1.7.1"
 
 [dependencies.valkyrie-errors]
 #version = "0.0.1"

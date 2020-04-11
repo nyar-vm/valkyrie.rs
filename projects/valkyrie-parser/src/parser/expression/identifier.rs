@@ -35,6 +35,8 @@ impl SpecialNode {
             "true" => ValkyrieASTNode::boolean(true, parser.file, &self.position),
             "false" => ValkyrieASTNode::boolean(false, parser.file, &self.position),
             "null" => ValkyrieASTNode::null(parser.file, &self.position),
+            "∞" => ValkyrieASTNode::identifier("Infinity", parser.file, &self.position),
+            "∅" => ValkyrieASTNode::identifier("Nil", parser.file, &self.position),
             _ => panic!("Unknown special node: {}", self.string),
         };
         out

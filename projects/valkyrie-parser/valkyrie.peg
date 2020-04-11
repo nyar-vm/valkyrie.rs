@@ -63,7 +63,7 @@ ControlFlowNode =
 ExpressionNode = expr:*ExprNode {infix:ExprInfix};
 
 
-ExprInfix = infix:InfixOperators expr:ExprNode;
+ExprInfix = infix:Infix expr:ExprNode;
 
 
 ExprNode = {prefix:Prefix} term:TermNode {suffix:Suffix};
@@ -79,35 +79,15 @@ TermNode = '(' @:ExpressionNode ')'
 	| @:NumberNode;
 
 @string @position
-SpecialNode = 'null' | 'default' | 'true' | 'false';
+SpecialNode = 'null' | 'default' | 'true' | 'false' | '∞' | '∅';
 
-@string @position
-Prefix = '!' | '+' | '-' | '⅟' | '¬'
-	;
-@string @position
-InfixOperators =
-	'is' ['not'] | ['not'] 'in' |
-	'++=' | '++' | '+=' | '+' |
-	'--=' | '--' | '-=' | '-' |
-	MULS ['='] | DIVS ['='] |
-	'^=' | '^' |
-	'<<=' | '<<<' | '<<' | '<=' | '<' |
-	'>>=' | '>>>' | '>>' | '>=' | '>' |
-	'==' | '=' |
-	'&&' | '∧' | '⊼' | '⩟' | '&' |
-	'||' | '∨' | '⊽' | '⊻' | '|' |
-	CONTAINS |'⋃' | '⋂'
-	;
-@string @position
-Suffix = '?' | '!' | '%'| '‰'| '‱'| '℃'| '℉' | '°' | '′'| '″' | '‴' | '⁗'
-	;
-@no_skip_ws
-MULS = '⋆' | '∗' | '*' | '×' | '⨯' | '⨉' | '⊗' | '⨂' | '⋅';
-@no_skip_ws
-DIVS = '/';
-@no_skip_ws
-CONTAINS = [NOT] ('∋' | '∍' | '∊' | '∈' | '∉' | '∌');
-NOT = '!' | '¬';
+@string @position Prefix = PrefixEx;
+@string @position Infix = BinaryEx;
+@string @position Suffix = SuffixEx;
+
+@extern(crate::utils::is_prefix) PrefixEx;
+@extern(crate::utils::is_binary) BinaryEx;
+@extern(crate::utils::is_suffix) SuffixEx;
 #=======================================================================================================================
 @position
 TupleStatement = '('  ')'
