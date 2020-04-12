@@ -1,4 +1,6 @@
 use regex::Regex;
+#[cfg(test)]
+mod test;
 
 /// Check if the string is a comment
 ///
@@ -26,7 +28,7 @@ pub fn is_comment(rest: &str) -> Result<(&str, usize), &'static str> {
             for char in rest.chars().skip(1) {
                 match char {
                     '\n' => break,
-                    _ => offset += 1,
+                    _ => offset += char.len_utf8(),
                 }
             }
             Ok((&rest[offset..], offset))
@@ -49,7 +51,7 @@ pub fn is_comment(rest: &str) -> Result<(&str, usize), &'static str> {
                     }
                     _ => {
                         consecutive = 0;
-                        offset += 1;
+                        offset += char.len_utf8();
                     }
                 }
             }
@@ -58,15 +60,18 @@ pub fn is_comment(rest: &str) -> Result<(&str, usize), &'static str> {
     }
 }
 
+
+
 pub fn is_binary(rest: &str) -> Result<(&str, usize), &'static str> {
-    let pattern = Regex::new(r"(?x) (not)?\s+in
-    | is\s+(not)?
-    | as[*!?]?
+    let pattern = Regex::new(r"(?x) (\bas\b)[*!?]?
+    | (\bnot\b)?\s+\bin\b | [!¬]?(\bin\b)
+    | (\bis)\b\s+(\bnot\b)? | [!¬]?(\bis\b)
     | [+-]{1,2}=?
     | [⋅⋆∗×⨯⨉⊗⨂/÷]=?
+    | [!¬]?([∋∍∊∈∉∌]|<:|:>)
     | \^=?
     | ([|&]{1,2}|[∧⊼⩟∨⊽⊻])=?
-    | [!¬]?[∋∍∊∈∉∌]
+    | [<>]{1,3}=?
     | [⋃⋂]
     | ={1,3}
 ").unwrap();
@@ -77,7 +82,8 @@ pub fn is_binary(rest: &str) -> Result<(&str, usize), &'static str> {
 }
 
 pub fn is_prefix(rest: &str) -> Result<(&str, usize), &'static str> {
-    let pattern = Regex::new(r"(?x) [!¬]
+    let pattern = Regex::new(r"(?x) [+-]
+    | [!¬]
     | [∂]
     | [√∛∜]
 ").unwrap();

@@ -1,4 +1,4 @@
-use std::io::{stderr, stdout};
+use std::io::{stdout};
 
 use valkyrie_errors::{TextManager, ValkyrieResult};
 use valkyrie_parser::ValkyrieParser;

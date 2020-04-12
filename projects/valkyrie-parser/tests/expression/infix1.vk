@@ -1,4 +1,12 @@
+
+
+~ contains
 a in A;
 a not in A;
-a is A;
+
+~ type check
+a <: A;
 a is not A;
+
+~ type cast
+a as A;
