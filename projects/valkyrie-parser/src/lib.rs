@@ -1,3 +1,5 @@
+#![feature(once_cell)]
+
 use valkyrie_errors::{FileID, ValkyrieError};
 
 mod parser;

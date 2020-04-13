@@ -1,3 +1,5 @@
+use std::sync::LazyLock;
+
 use regex::Regex;
 
 #[cfg(test)]
@@ -59,54 +61,66 @@ pub fn is_comment(rest: &str) -> Result<(&str, usize), &'static str> {
     Ok((&rest[length..], length))
 }
 
-pub fn is_binary(rest: &str) -> Result<(&str, usize), &'static str> {
-    let pattern = Regex::new(
-        r"^((?x) (\bas\b)[*!?]?
+static BINARY: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(
+        r"^((?x) 
+    (\bas\b)[*!?]?
 #    | (\bnot\b)?\s+\bin\b | [!¬]?(\bin\b)
 #    | (\bis)\b\s+(\bnot\b)? | [!¬]?(\bis\b)
     | [+-]{1,2}=?
-    | [⋅⋆∗*×⨯⨉⊗⨂/÷]=?
-    | [!¬]?([∋∍∊∈∉∌]|<:|:>)
+    | [⋅⋆∙∗*×⨯⨉⊗⨂/÷]=?
+    | [!¬]?([∋∍∊∈∉∌]|<:|:>|[⋢⋣⊑⊒])
     | \^=?
     | ([|&]{1,2}|[∧⊼⩟∨⊽⊻])=?
     | [<>]{1,3}=?
     | [⋃⋂]
-    | ={1,3}
+    | ={1,3} | ≠ | ≢
 )",
     )
-    .unwrap();
-    match pattern.find(rest).map(|s| s.as_str()) {
+    .unwrap()
+});
+
+pub fn is_binary(rest: &str) -> Result<(&str, usize), &'static str> {
+    match BINARY.find(rest).map(|s| s.as_str()) {
         Some(s) => Ok((s, s.len())),
         None => Err("Not a binary"),
     }
 }
 
-pub fn is_prefix(rest: &str) -> Result<(&str, usize), &'static str> {
-    let pattern = Regex::new(
-        r"^((?x) [+-]
+static PREFIX: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(
+        r"^((?x) 
+    [+-]
     | [!¬]
     | [∂]
     | [√∛∜]
+    | [⅟½↉⅓⅔¼¾⅕⅖⅗⅘⅙⅚⅐⅛⅜⅝⅞]
 )",
     )
-    .unwrap();
-    match pattern.find(rest).map(|s| s.as_str()) {
+    .unwrap()
+});
+
+pub fn is_prefix(rest: &str) -> Result<(&str, usize), &'static str> {
+    match PREFIX.find(rest).map(|s| s.as_str()) {
         Some(s) => Ok((s, s.len())),
         None => Err("Not a prefix"),
     }
 }
 
-pub fn is_suffix(rest: &str) -> Result<(&str, usize), &'static str> {
-    let pattern = Regex::new(
-        r"^((?x) [?!]
+static SUFFIX: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(
+        r"^((?x) 
+     [?!]
     | [%‰‱]
     | [℃℉]
     | [°′″‴⁗]
-
 )",
     )
-    .unwrap();
-    match pattern.find(rest).map(|s| s.as_str()) {
+    .unwrap()
+});
+
+pub fn is_suffix(rest: &str) -> Result<(&str, usize), &'static str> {
+    match SUFFIX.find(rest).map(|s| s.as_str()) {
         Some(s) => Ok((s, s.len())),
         None => Err("Not a suffix"),
     }

@@ -182,8 +182,11 @@ Modifier = id:IdentifierNode !('('|':'|'.'|'=');
 
 @string
 @position
-@no_skip_ws
-IdentifierNode = (XID_START | '_') {XID_CONTINUE};
+
+IdentifierNode = ID_SIMPLE|ID_ESCAPED;
+
+@no_skip_ws ID_SIMPLE = (XID_START | '_') {XID_CONTINUE};
+@no_skip_ws ID_ESCAPED = '`' {char} '`';
 
 @char
 @check(unicode_ident::is_xid_start)
