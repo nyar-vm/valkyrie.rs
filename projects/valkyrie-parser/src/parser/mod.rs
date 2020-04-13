@@ -35,7 +35,7 @@ impl ValkyrieParser {
     pub fn take_errors(&mut self) -> Vec<ValkyrieError> {
         std::mem::take(&mut self.errors)
     }
-    pub fn push_error(&mut self, message: impl Into<String>, span: &Range<usize>) {
+    fn push_error(&mut self, message: impl Into<String>, span: &Range<usize>) {
         let error = ValkyrieError::syntax_error(message.into(), FileSpan { file: self.file, head: span.start, tail: span.end });
         self.errors.push(error);
     }
@@ -66,9 +66,7 @@ impl VkStatements {
             VkStatements::LoopStatement(v) => out.push(v.visit(parser)?),
             VkStatements::WhileStatement(v) => out.push(v.visit(parser)?),
             VkStatements::ForStatement(v) => out.push(v.visit(parser)?),
-            VkStatements::IfStatement(v) => {
-                out.push(v.visit(parser)?)
-            }
+            VkStatements::IfStatement(v) => out.push(v.visit(parser)?),
             VkStatements::ControlFlowNode(_) => {
                 todo!()
             }

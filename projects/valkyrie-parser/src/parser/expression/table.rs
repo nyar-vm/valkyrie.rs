@@ -7,8 +7,8 @@ use super::*;
 impl TableStatement {
     pub fn visit(&self, parser: &mut ValkyrieParser) -> ValkyrieResult<ValkyrieASTNode> {
         let mut pairs = vec![];
-        for _row in &self.args {
-            // pairs.push(row.visit(parser)?)
+        for row in &self.args {
+            pairs.push(row.visit(parser)?)
         }
         Ok(ValkyrieASTNode::dict(pairs, parser.file, &self.position))
     }
@@ -38,7 +38,6 @@ impl KeyNode {
                 unimplemented!()
             }
         }
-        todo!()
     }
 }
 
@@ -54,6 +53,6 @@ impl ValueNode {
                 unimplemented!()
             }
         }
-        todo!()
+
     }
 }

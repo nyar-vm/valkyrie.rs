@@ -8,6 +8,6 @@ impl IfStatement {
         //     statement.visit(parser, this.mut_body())?
         // }
         // Ok(this.to_node(parser.file, &self.position))
-        todo!()
+        Ok(condition)
     }
 }
