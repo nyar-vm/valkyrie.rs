@@ -1,6 +1,7 @@
 mod parser;
 mod display;
 
+use pex::helpers::{make_from_str, whitespace};
 use pex::{ParseResult, ParseState, StopBecause};
 use std::fmt::{Display, Formatter};
 use std::ops::Range;
