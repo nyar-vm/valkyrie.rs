@@ -4,8 +4,30 @@ mod parser;
 use std::ops::Range;
 use crate::symbol::ValkyrieIdentifier;
 
+/// A number literal.
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct ValkyrieNumber {
-    pub raw: String,
+    /// The raw string of the number.
+    pub value: String,
+    /// The unit of the number, if any.
     pub unit: Option<ValkyrieIdentifier>,
+    /// The range of the number.
     pub range: Range<usize>,
 }
+
+/// A number literal.
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub struct ValkyrieBytes {
+    /// The raw string of the number.
+    pub value: Vec<u8>,
+    /// The unit of the number, if any.
+    pub unit: Option<ValkyrieIdentifier>,
+    /// The range of the number.
+    pub range: Range<usize>,
+}
+// ⸿123
+// ꡴123
+// ꡵123
+//   ⸙12
+//     †FF11
+//     ‡0100100011001

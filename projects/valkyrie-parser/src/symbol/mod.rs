@@ -14,7 +14,7 @@ use std::str::FromStr;
 /// These names cannot be used as function names
 pub const KEYWORDS: [&str; 3] = ["true", "false", "null"];
 
-#[derive(Clone, Debug)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct ValkyrieIdentifier {
     /// The name of the identifier.
     pub name: String,

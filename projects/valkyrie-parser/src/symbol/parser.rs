@@ -1,4 +1,3 @@
-
 use super::*;
 
 
@@ -22,19 +21,12 @@ impl ValkyrieIdentifier {
     /// - regular: `\p{XID_Start}|_)\p{XID_Continue}*`
     /// - escaped: ``` `(\.|[^`])*` ```
     pub fn parse(input: ParseState) -> ParseResult<Self> {
-        let result = match IDENTIFIER.find_at(input.residual, 0) {
-            Some(s) => {
-                s
-            }
-            None => {
-                StopBecause::missing_string("IDENTIFIER", input.start_offset)?
-            }
-        };
+        let (state, m) = input.match_regex(&IDENTIFIER, "IDENTIFIER")?;
         let id = ValkyrieIdentifier {
-            name: result.as_str().to_string(),
-            range: Range { start: input.start_offset, end: input.start_offset + result.end() }
+            name: m.as_str().to_string(),
+            range: state.away_from(input),
         };
-        input.advance(result.end()).finish(id)
+        state.finish(id)
     }
 }
 
