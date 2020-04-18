@@ -1,6 +1,4 @@
-use std::cell::LazyCell;
-use std::sync::LazyLock;
-use regex_automata::dfa::regex::Regex;
+
 use super::*;
 
 
@@ -15,8 +13,8 @@ impl FromStr for ValkyrieIdentifier {
 
 pub static IDENTIFIER: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(r"(?ux)
-    ^((?:\p{XID_Start}|_)\p{XID_Continue}*)
-|   ^`(\\.|[^`])*`
+    ^(?P<regular>(?:\p{XID_Start}|_)\p{XID_Continue}*)
+|   ^`(?P<escaped>(?:\\.|[^`])*)`
     ").unwrap()
 });
 
@@ -24,14 +22,25 @@ impl ValkyrieIdentifier {
     /// - regular: `\p{XID_Start}|_)\p{XID_Continue}*`
     /// - escaped: ``` `(\.|[^`])*` ```
     pub fn parse(input: ParseState) -> ParseResult<Self> {
-        todo!()
+        let result = match IDENTIFIER.find_at(input.residual, 0) {
+            Some(s) => {
+                s
+            }
+            None => {
+                StopBecause::missing_string("IDENTIFIER", input.start_offset)?
+            }
+        };
+        let id = ValkyrieIdentifier {
+            name: result.as_str().to_string(),
+            range: Range { start: input.start_offset, end: input.start_offset + result.end() }
+        };
+        input.advance(result.end()).finish(id)
     }
 }
 
 #[test]
 pub fn test() {
-    let input = "`_hello` world";
-    for term in IDENTIFIER.find_leftmost_iter(input.as_bytes()) {
-        println!("{:?}", term);
-    }
+    let input = "`_he\\u2222llo`";
+    let id = ValkyrieIdentifier::from_str(input).unwrap();
+    println!("{}", id)
 }

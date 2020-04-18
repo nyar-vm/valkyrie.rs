@@ -1,6 +1,10 @@
 mod parser;
 mod display;
 
+use std::cell::LazyCell;
+use std::sync::LazyLock;
+use regex::{Captures, Regex};
+
 use pex::helpers::{make_from_str, whitespace};
 use pex::{ParseResult, ParseState, StopBecause};
 use std::fmt::{Display, Formatter};
@@ -30,11 +34,5 @@ pub struct ValkyrieNamepath {
 impl ValkyrieIdentifier {
     pub fn is_normal(&self) -> bool {
         self.name.starts_with(|c: char| c.is_ascii_lowercase())
-    }
-}
-
-impl Display for ValkyrieIdentifier {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", self.name)
     }
 }

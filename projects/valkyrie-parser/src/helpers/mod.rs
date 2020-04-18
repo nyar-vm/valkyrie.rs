@@ -1,3 +1,5 @@
+mod escaper;
+pub use self::escaper::StringRewrite;
 use pex::{ParseResult, ParseState};
 use pex::helpers::{comment_line, whitespace};
 
