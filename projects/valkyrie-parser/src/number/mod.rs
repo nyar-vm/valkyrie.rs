@@ -25,9 +25,3 @@ pub struct ValkyrieBytes {
     /// The range of the number.
     pub range: Range<usize>,
 }
-// ⸿123
-// ꡴123
-// ꡵123
-//   ⸙12
-//     †FF11
-//     ‡0100100011001
