@@ -1,6 +1,5 @@
 use std::borrow::Cow;
-use std::fmt::Write;
-use std::str::Chars;
+
 use crate::helpers::StringRewrite;
 use super::*;
 

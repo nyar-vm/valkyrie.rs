@@ -1,7 +1,7 @@
-use std::str::FromStr;
+use std::str::{Chars, FromStr};
 use std::sync::LazyLock;
 use bit_set::BitSet;
-use pex::{ParseResult, ParseState, StopBecause, ZeroBytePattern};
+use pex::{ParseResult, ParseState, StopBecause};
 use pex::helpers::{make_from_str, whitespace};
 use regex::Regex;
 use super::*;
@@ -54,12 +54,12 @@ impl ValkyrieNumber {
     }
 }
 
-// 16^^AEF
+
 pub static BYTES: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(r"^(?ux)
-    ⍚[0-9a-fA-F](_*[0-9a-fA-F])* # hex
-|   ⍙[0-7](_*[0-7])*             # octal
-|   ⍜[01](_*[01])*               # binary
+    Regex::new(r"(?ux)
+    ⍚(_*[0-9a-fA-F])* # hex
+|   ⍙(_*[0-7])*       # octal
+|   ⍜(_*[01])*        # binary
     ").unwrap()
 });
 
@@ -72,17 +72,17 @@ impl ValkyrieBytes {
     /// ⍚F_F_F_F => [255, 255]
     /// ```
     pub fn parse(input: ParseState) -> ParseResult<Self> {
-        let (state, m) = input.match_regex(&NUMBER, "BYTES")?;
+        let (state, s) = input.match_regex(&BYTES, "BYTES").map_inner(|m| m.as_str())?;
         let (state, unit) = state.match_optional(parse_unit)?;
-        let mut chars = m.as_str().chars();
+        let mut chars = s.chars();
         let value = match chars.next() {
             Some('⍜') => {
-                let mut s = BitSet::with_capacity(m.as_str().len());
-
-                s
-            },
-            Some('⍙') => {todo!()},
-            Some('⍚') => {todo!()},
+                let out = parse_bin(s);
+                println!("out: {:?}", out);
+                out
+            }
+            Some('⍙') => { todo!() }
+            Some('⍚') => { todo!() }
             _ => StopBecause::missing_character('⍚', state.start_offset)?,
         };
         state.finish(ValkyrieBytes {
@@ -93,10 +93,48 @@ impl ValkyrieBytes {
     }
 }
 
+fn parse_bin(raw: &str) -> Vec<u8> {
+    let mut bytes: Vec<u8> = Vec::with_capacity(raw.len() / 8);
+    let mut byte = 0;
+    let mut index: u8 = 0;
+    for char in raw.chars().rev() {
+        match char {
+            '0' => {
+                index += 1;
+            }
+            '1' => {
+                byte |= 1 << index;
+                index += 1;
+            }
+            '_' => {}
+            _ => {
+                break;
+            }
+        }
+        if index == 8 {
+            bytes.push(byte);
+            byte = 0;
+            index = 0;
+        }
+    }
+    bytes
+}
+
 fn parse_unit(input: ParseState) -> ParseResult<ValkyrieIdentifier> {
     let (state, _) = input.match_optional(|s| s.match_char('_'))?;
     let (state, id) = state.match_fn(ValkyrieIdentifier::parse)?;
     state.finish(id)
+}
+
+fn count_base(input: &str, base: u32) -> usize {
+    let mut count = 0;
+    for c in input.chars() {
+        match c {
+            c if c.is_digit(base) => count += 1,
+            _ => continue,
+        }
+    }
+    count
 }
 
 fn parse_base(input: &str, base: u32) -> usize {
@@ -113,8 +151,8 @@ fn parse_base(input: &str, base: u32) -> usize {
 
 #[test]
 pub fn test_hex() {
-    let n = ValkyrieBytes::from_str("⍚F_F_F").unwrap();
-    println!("{:#?}", n)
+    let n = ValkyrieBytes::from_str("⍜0_0000_0101").unwrap();
+    println!("{:#?}", n.bits)
 }
 
 

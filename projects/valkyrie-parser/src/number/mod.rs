@@ -20,7 +20,7 @@ pub struct ValkyrieNumber {
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct ValkyrieBytes {
     /// The raw string of the number.
-    pub bits: BitSet,
+    pub bits: Vec<u8>,
     /// The unit of the number, if any.
     pub unit: Option<ValkyrieIdentifier>,
     /// The range of the number.

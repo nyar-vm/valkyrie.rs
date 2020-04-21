@@ -1,9 +1,8 @@
 mod parser;
 mod display;
 
-use std::cell::LazyCell;
 use std::sync::LazyLock;
-use regex::{Captures, Regex};
+use regex::{ Regex};
 
 use pex::helpers::{make_from_str, whitespace};
 use pex::{ParseResult, ParseState, StopBecause};
