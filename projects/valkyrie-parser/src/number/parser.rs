@@ -1,5 +1,6 @@
 use std::str::FromStr;
 use std::sync::LazyLock;
+use bit_set::BitSet;
 use pex::{ParseResult, ParseState, StopBecause, ZeroBytePattern};
 use pex::helpers::{make_from_str, whitespace};
 use regex::Regex;
@@ -15,6 +16,14 @@ impl FromStr for ValkyrieNumber {
     }
 }
 
+impl FromStr for ValkyrieBytes {
+    type Err = StopBecause;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        let state = ParseState::new(s.trim_end()).skip(whitespace);
+        make_from_str(state, Self::parse)
+    }
+}
 
 // 16^^AEF
 pub static NUMBER: LazyLock<Regex> = LazyLock::new(|| {
@@ -60,10 +69,27 @@ impl ValkyrieBytes {
     /// ⍚F => [15]
     /// ⍚FF => [255]
     /// ⍚FFF => [15, 255]
+    /// ⍚F_F_F_F => [255, 255]
     /// ```
-    fn parse_hex(input: ParseState) -> ParseResult<Self> {
-        let (state, m) = input.match_regex(&NUMBER, "NUMBER")?;
+    pub fn parse(input: ParseState) -> ParseResult<Self> {
+        let (state, m) = input.match_regex(&NUMBER, "BYTES")?;
+        let (state, unit) = state.match_optional(parse_unit)?;
+        let mut chars = m.as_str().chars();
+        let value = match chars.next() {
+            Some('⍜') => {
+                let mut s = BitSet::with_capacity(m.as_str().len());
 
+                s
+            },
+            Some('⍙') => {todo!()},
+            Some('⍚') => {todo!()},
+            _ => StopBecause::missing_character('⍚', state.start_offset)?,
+        };
+        state.finish(ValkyrieBytes {
+            bits: value,
+            unit,
+            range: Default::default(),
+        })
     }
 }
 
@@ -84,6 +110,13 @@ fn parse_base(input: &str, base: u32) -> usize {
     }
     offset
 }
+
+#[test]
+pub fn test_hex() {
+    let n = ValkyrieBytes::from_str("⍚F_F_F").unwrap();
+    println!("{:#?}", n)
+}
+
 
 #[test]
 pub fn test() {
