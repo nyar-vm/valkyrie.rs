@@ -1,6 +1,5 @@
-use std::str::{Chars, FromStr};
+use std::str::{FromStr};
 use std::sync::LazyLock;
-use bit_set::BitSet;
 use pex::{ParseResult, ParseState, StopBecause};
 use pex::helpers::{make_from_str, whitespace};
 use regex::Regex;
@@ -57,7 +56,7 @@ impl ValkyrieNumber {
 
 pub static BYTES: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(r"(?ux)
-    ⍚(_*[0-9a-fA-F])* # hex
+    ⍚(_*[0-9A-F])* # hex
 |   ⍙(_*[0-7])*       # octal
 |   ⍜(_*[01])*        # binary
     ").unwrap()
@@ -75,18 +74,23 @@ impl ValkyrieBytes {
         let (state, s) = input.match_regex(&BYTES, "BYTES").map_inner(|m| m.as_str())?;
         let (state, unit) = state.match_optional(parse_unit)?;
         let mut chars = s.chars();
-        let value = match chars.next() {
+        let mut value = match chars.next() {
             Some('⍜') => {
-                let out = parse_bin(s);
-                println!("out: {:?}", out);
-                out
+                parse_bin(s)
             }
-            Some('⍙') => { todo!() }
-            Some('⍚') => { todo!() }
+            Some('⍙') => { parse_hex(s) }
+            Some('⍚') => { parse_hex(s) }
             _ => StopBecause::missing_character('⍚', state.start_offset)?,
         };
+        match chars.next() {
+            Some(_) => {
+                value.reverse();
+                value.shrink_to_fit();
+            }
+            None => { value = vec![] }
+        }
         state.finish(ValkyrieBytes {
-            bits: value,
+            bytes: value,
             unit,
             range: Default::default(),
         })
@@ -99,24 +103,45 @@ fn parse_bin(raw: &str) -> Vec<u8> {
     let mut index: u8 = 0;
     for char in raw.chars().rev() {
         match char {
-            '0' => {
-                index += 1;
-            }
+            '0' => {}
             '1' => {
-                byte |= 1 << index;
-                index += 1;
+                byte |= 1 << index
             }
-            '_' => {}
-            _ => {
-                break;
-            }
+            _ => { continue; }
         }
+        index += 1;
         if index == 8 {
             bytes.push(byte);
             byte = 0;
             index = 0;
         }
     }
+    bytes.push(byte);
+    bytes
+}
+
+fn parse_hex(raw: &str) -> Vec<u8> {
+    let mut bytes: Vec<u8> = Vec::with_capacity(raw.len() / 2);
+    let mut byte = 0;
+    let mut index: u8 = 0;
+    for char in raw.chars().rev() {
+        match char {
+            '0'..='9' => {
+                byte |= (char as u8 - b'0') << index
+            }
+            'A'..='F' => {
+                byte |= (char as u8 - b'A' + 10) << index
+            }
+            _ => { continue; }
+        }
+        index += 4;
+        if index == 8 {
+            bytes.push(byte);
+            byte = 0;
+            index = 0;
+        }
+    }
+    bytes.push(byte);
     bytes
 }
 
@@ -147,19 +172,4 @@ fn parse_base(input: &str, base: u32) -> usize {
         }
     }
     offset
-}
-
-#[test]
-pub fn test_hex() {
-    let n = ValkyrieBytes::from_str("⍜0_0000_0101").unwrap();
-    println!("{:#?}", n.bits)
-}
-
-
-#[test]
-pub fn test() {
-    let n = ValkyrieNumber::from_str("1234cm").unwrap();
-    let n = ValkyrieNumber::from_str("1_2_3_4_cm").unwrap();
-    let n = ValkyrieNumber::from_str("1__2__3__4__cm").unwrap();
-    println!("{:#?}", n)
 }

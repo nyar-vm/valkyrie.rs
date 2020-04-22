@@ -13,12 +13,18 @@ use std::str::FromStr;
 /// These names cannot be used as function names
 pub const KEYWORDS: [&str; 3] = ["true", "false", "null"];
 
-#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Clone, Eq, Hash)]
 pub struct ValkyrieIdentifier {
     /// The name of the identifier.
     pub name: String,
     /// The range of the identifier.
     pub range: Range<usize>,
+}
+
+impl PartialEq for ValkyrieIdentifier {
+    fn eq(&self, other: &Self) -> bool {
+        self.name.eq(&other.name)
+    }
 }
 
 /// A namepath is a series of identifiers separated by dots.
