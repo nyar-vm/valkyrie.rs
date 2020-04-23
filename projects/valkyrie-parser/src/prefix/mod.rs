@@ -8,20 +8,20 @@ use std::{
 mod display;
 mod parser;
 
-pub struct ValkyrieInfix {
+pub struct ValkyriePrefix {
     normalized: String,
     range: Range<usize>,
 }
 
-impl Debug for ValkyrieInfix {
+impl Debug for ValkyriePrefix {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "Infix({}, {:?})", self.normalized, self.range)
     }
 }
 
-impl ValkyrieInfix {
-    pub fn new<S: ToString>(s: S, range: Range<usize>) -> ValkyrieInfix {
-        ValkyrieInfix { normalized: s.to_string(), range }
+impl ValkyriePrefix {
+    pub fn new<S: ToString>(s: S, range: Range<usize>) -> ValkyriePrefix {
+        ValkyriePrefix { normalized: s.to_string(), range }
     }
 
     pub fn precedence(&self) -> Precedence {

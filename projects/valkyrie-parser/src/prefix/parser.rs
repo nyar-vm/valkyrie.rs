@@ -6,7 +6,7 @@ use pex::{
 use regex::Regex;
 use std::{str::FromStr, sync::LazyLock};
 
-static INFIX: LazyLock<Regex> = LazyLock::new(|| {
+static PREFIX: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(
         r#"^(?x)
       \#
@@ -53,18 +53,18 @@ static INFIX: LazyLock<Regex> = LazyLock::new(|| {
     .unwrap()
 });
 
-impl FromStr for ValkyrieInfix {
+impl FromStr for ValkyriePrefix {
     type Err = StopBecause;
 
     fn from_str(s: &str) -> Result<Self, StopBecause> {
         let state = ParseState::new(s.trim_end()).skip(whitespace);
-        make_from_str(state, ValkyrieInfix::parse)
+        make_from_str(state, ValkyriePrefix::parse)
     }
 }
 
-impl ValkyrieInfix {
+impl ValkyriePrefix {
     pub fn parse(input: ParseState) -> ParseResult<Self> {
-        let (state, m) = input.match_regex(&INFIX, "INFIX")?;
+        let (state, m) = input.match_regex(&Prefix, "INFIX")?;
         let mut normalized = String::with_capacity(m.len());
         for c in m.as_str().chars() {
             match c {
@@ -74,7 +74,7 @@ impl ValkyrieInfix {
                 _ => normalized.push(c),
             }
         }
-        let id = ValkyrieInfix { normalized: m.as_str().to_string(), range: state.away_from(input) };
+        let id = ValkyriePrefix { normalized: m.as_str().to_string(), range: state.away_from(input) };
         state.finish(id)
     }
 }

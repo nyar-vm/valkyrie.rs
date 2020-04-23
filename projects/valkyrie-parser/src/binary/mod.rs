@@ -1,9 +1,11 @@
+use crate::infix::ValkyrieInfix;
 use pex::StopBecause;
 use pratt::{Affix, Associativity, PrattParser, Precedence};
 use regex::Regex;
 use std::{
     fmt::{Debug, Formatter},
     ops::Range,
+    str::FromStr,
     sync::LazyLock,
 };
 
@@ -189,7 +191,7 @@ where
 
 #[test]
 fn main() {
-    let tt = vec![TokenTree::Primary(1), TokenTree::Infix(ValkyrieInfix::new("+")), TokenTree::Primary(1)];
+    let tt = vec![TokenTree::Primary(1), TokenTree::Infix(ValkyrieInfix::from_str("+").unwrap()), TokenTree::Primary(1)];
     let expr = ExpressionResolver.parse(&mut tt.into_iter()).unwrap();
     println!("Expression: {:#?}", expr);
 }
