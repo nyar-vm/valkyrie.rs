@@ -9,53 +9,6 @@ use std::{
 
 pub struct ExpressionResolver;
 
-static BINARY: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(
-        r#"^(?x)
-      \#
-    | [.]{2}[=<]
-    | [.]{1,3}
-    | [{}\[\]()]
-    | [,;$§¶^]
-    | @[*!?@]?
-    | [!]?
-    # start with <, >
-    | >{1,3} | >= | /> | ≥ | ⩾ | ≫
-    | <{1,3} | <= | </ | ≤ | ⩽ | <: | <! 
-    # start with :
-    | ∷ | :: | :> | := | ≔ | :
-    # start with -
-    | -= | -> | ⟶ | -{1,2}
-    # start with ~
-    | ~> | ~
-    # start with +
-    | [+]= | [+]> | [+]{1,2}
-    # start with *
-    | [*]=?
-    # start with / or % or ÷
-    | /=?
-    | ÷=?
-    | %=?
-    # start with &
-    | &> | &{1,2} | ≻
-    | [|]> | [|]{1,2} | ⊁
-    | ⊻=? | ⊼=? | ⊽=? | [⩕⩖]
-    # start with !
-    | != | ≠ | !
-    # start with ?
-    | [?]{3} | [?]
-    # start with =
-    | => | ⇒
-    | === | == | =
-    # unicode
-    | [∈∊∉⊑⋢⨳∀∁∂∃∄¬±√∛∜⊹⋗]
-    | [⟦⟧⁅⁆⟬⟭]
-    | [↻↺⇆↹⇄⇋⇌⇅]
-"#,
-    )
-    .unwrap()
-});
-
 // a..b
 // a..<b
 // a..=b
@@ -103,16 +56,20 @@ pub enum TokenTree {
     Group(Vec<TokenTree>),
 }
 
-pub struct ValkyrieInfix {
-    normalized: &'static str,
-    range: Range<usize>,
-}
-
 #[derive(Debug)]
 pub enum ValkyrieExpression {
     Binary(Box<ValkyrieBinary>),
     Unary(Box<ValkyrieUnary>),
     Primary(i32),
+}
+
+impl ValkyrieExpression {
+    pub fn binary(o: ValkyrieOperator, lhs: ValkyrieExpression, rhs: ValkyrieExpression) -> ValkyrieExpression {
+        ValkyrieExpression::Binary(Box::new(ValkyrieBinary { operator: o, lhs, rhs, range: Default::default() }))
+    }
+    pub fn unary(o: ValkyrieOperator, rhs: ValkyrieExpression) -> ValkyrieExpression {
+        ValkyrieExpression::Unary(Box::new(ValkyrieUnary { operator: o, rhs, range: Default::default() }))
+    }
 }
 
 #[derive(Debug)]
@@ -128,44 +85,6 @@ pub struct ValkyrieBinary {
     lhs: ValkyrieExpression,
     rhs: ValkyrieExpression,
     range: Range<usize>,
-}
-
-impl Debug for ValkyrieInfix {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "Infix({})", self.normalized)
-    }
-}
-
-impl ValkyrieInfix {
-    pub const fn new(normalized: &'static str) -> Self {
-        Self { normalized, range: Default::default() }
-    }
-    pub fn precedence(&self) -> Precedence {
-        match self.normalized {
-            "+" | "-" => Precedence(2),
-            "*" | "/" => Precedence(3),
-            "^" => Precedence(4),
-            _ => unreachable!("Unknown operator: {}", self.normalized),
-        }
-    }
-    pub fn associativity(&self) -> Associativity {
-        match self.normalized {
-            "+" | "-" => Associativity::Left,
-            "*" | "/" => Associativity::Left,
-            "^" => Associativity::Right,
-            _ => unreachable!("Unknown operator: {}", self.normalized),
-        }
-    }
-    pub fn as_operator(&self) -> ValkyrieOperator {
-        match self.normalized {
-            "+" => ValkyrieOperator::Add,
-            "-" => ValkyrieOperator::Sub,
-            "*" => ValkyrieOperator::Mul,
-            "/" => ValkyrieOperator::Div,
-            "^" => ValkyrieOperator::Pow,
-            _ => unreachable!("Unknown operator: {}", self.normalized),
-        }
-    }
 }
 
 #[derive(Debug)]
@@ -227,7 +146,7 @@ where
     // Construct a primary expression, e.g. a number
     fn primary(&mut self, tree: TokenTree) -> Result<ValkyrieExpression, StopBecause> {
         let expr = match tree {
-            TokenTree::Primary(num) => ValkyrieExpression::Int(num),
+            TokenTree::Primary(num) => ValkyrieExpression::Primary(num),
             TokenTree::Group(group) => self.parse(&mut group.into_iter()).unwrap(),
             _ => unreachable!(),
         };
@@ -242,10 +161,10 @@ where
         rhs: ValkyrieExpression,
     ) -> Result<ValkyrieExpression, StopBecause> {
         let op = match tree {
-            TokenTree::Infix(o) => ValkyrieOperator::Add,
+            TokenTree::Infix(o) => o.as_operator(),
             _ => unreachable!(),
         };
-        Ok(Expr::BinOp(ValkyrieBinary {}, ValkyrieInfix {}, Box::new(())))
+        Ok(ValkyrieExpression::binary(op, lhs, rhs))
     }
 
     // Construct a unary prefix expression, e.g. !1
@@ -255,7 +174,7 @@ where
             TokenTree::Prefix('-') => UnOpKind::Neg,
             _ => unreachable!(),
         };
-        Ok(ValkyrieExpression::UnOp(op, Box::new(rhs)))
+        todo!()
     }
 
     // Construct a unary postfix expression, e.g. 1?
@@ -264,13 +183,13 @@ where
             TokenTree::Postfix('?') => UnOpKind::Try,
             _ => unreachable!(),
         };
-        Ok(ValkyrieExpression::UnOp(op, Box::new(lhs)))
+        todo!()
     }
 }
 
 #[test]
 fn main() {
-    let tt = vec![TokenTree::Primary(1), TokenTree::Infix('+'), TokenTree::Primary(1), TokenTree::Postfix('?')];
+    let tt = vec![TokenTree::Primary(1), TokenTree::Infix(ValkyrieInfix::new("+")), TokenTree::Primary(1)];
     let expr = ExpressionResolver.parse(&mut tt.into_iter()).unwrap();
     println!("Expression: {:#?}", expr);
 }
