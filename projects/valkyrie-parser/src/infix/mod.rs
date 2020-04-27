@@ -13,12 +13,6 @@ pub struct ValkyrieInfix {
     range: Range<usize>,
 }
 
-impl Debug for ValkyrieInfix {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "Infix({}, {:?})", self.normalized, self.range)
-    }
-}
-
 impl ValkyrieInfix {
     pub fn new<S: ToString>(s: S, range: Range<usize>) -> ValkyrieInfix {
         ValkyrieInfix { normalized: s.to_string(), range }
@@ -42,8 +36,8 @@ impl ValkyrieInfix {
     }
     pub fn as_operator(&self) -> ValkyrieOperator {
         match self.normalized.as_str() {
-            "+" => ValkyrieOperator::Add,
-            "-" => ValkyrieOperator::Sub,
+            "+" => ValkyrieOperator::Plus,
+            "-" => ValkyrieOperator::Minus,
             "*" => ValkyrieOperator::Mul,
             "/" => ValkyrieOperator::Div,
             "^" => ValkyrieOperator::Pow,

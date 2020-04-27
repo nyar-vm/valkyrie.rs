@@ -8,14 +8,13 @@ use std::{str::FromStr, sync::LazyLock};
 
 static INFIX: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(
-        r#"^(?x)
+        r#"^(?x)(
       \#
     | [.]{2}[=<]
     | [.]{1,3}
     | [{}\[\]()]
     | [,;$§¶^]
     | @[*!?@]?
-    | [!]?
     # start with <, >
     | >{1,3} | >= | /> | ≥ | ⩾ | ≫
     | <{1,3} | <= | </ | ≤ | ⩽ | <: | <! 
@@ -48,7 +47,7 @@ static INFIX: LazyLock<Regex> = LazyLock::new(|| {
     | [∈∊∉⊑⋢⨳∀∁∂∃∄¬±√∛∜⊹⋗]
     | [⟦⟧⁅⁆⟬⟭]
     | [↻↺⇆↹⇄⇋⇌⇅]
-"#,
+)"#,
     )
     .unwrap()
 });

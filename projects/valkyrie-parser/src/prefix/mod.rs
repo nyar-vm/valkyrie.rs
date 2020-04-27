@@ -42,8 +42,8 @@ impl ValkyriePrefix {
     }
     pub fn as_operator(&self) -> ValkyrieOperator {
         match self.normalized.as_str() {
-            "+" => ValkyrieOperator::Add,
-            "-" => ValkyrieOperator::Sub,
+            "+" => ValkyrieOperator::Plus,
+            "-" => ValkyrieOperator::Minus,
             "*" => ValkyrieOperator::Mul,
             "/" => ValkyrieOperator::Div,
             "^" => ValkyrieOperator::Pow,

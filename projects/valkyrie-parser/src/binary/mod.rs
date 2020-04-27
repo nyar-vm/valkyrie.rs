@@ -1,4 +1,4 @@
-use crate::infix::ValkyrieInfix;
+use crate::{infix::ValkyrieInfix, prefix::ValkyriePrefix, suffix::ValkyrieSuffix};
 use pex::StopBecause;
 use pratt::{Affix, Associativity, PrattParser, Precedence};
 use regex::Regex;
@@ -8,6 +8,10 @@ use std::{
     str::FromStr,
     sync::LazyLock,
 };
+mod display;
+mod parser;
+use crate::number::ValkyrieNumber;
+use std::fmt::Display;
 
 pub struct ExpressionResolver;
 
@@ -18,51 +22,22 @@ pub struct ExpressionResolver;
 // ..<a
 // ..a
 // ...
-static Prefix: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(
-        r#"^(?x)(
-      [.]{2,3}
-    # Temperature
-    | [℃℉]
-    # Percents
-    | [%‰‱]
-    # Transpose,adjoint, conjugate
-    | [ᵀᴴ]
-)"#,
-    )
-    .unwrap()
-});
-
-static SUFFIX: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(
-        r#"^(?x)(
-      [!?]
-    # Temperature
-    | [℃℉]
-    # Percents
-    | [%‰‱]
-    # Transpose,adjoint, conjugate
-    | [ᵀᴴ]
-)"#,
-    )
-    .unwrap()
-});
-
 // From this
 #[derive(Debug)]
-pub enum TokenTree {
-    Prefix(char),
-    Postfix(char),
+pub enum ExpressionStream {
+    Prefix(ValkyriePrefix),
+    Postfix(ValkyrieSuffix),
     Infix(ValkyrieInfix),
-    Primary(i32),
-    Group(Vec<TokenTree>),
+    Primary(ValkyrieExpression),
+    Group(Vec<ExpressionStream>),
 }
 
 #[derive(Debug)]
 pub enum ValkyrieExpression {
+    Prefix(Box<ValkyrieUnary>),
     Binary(Box<ValkyrieBinary>),
-    Unary(Box<ValkyrieUnary>),
-    Primary(i32),
+    Suffix(Box<ValkyrieUnary>),
+    Number(Box<ValkyrieNumber>),
 }
 
 impl ValkyrieExpression {
@@ -70,7 +45,21 @@ impl ValkyrieExpression {
         ValkyrieExpression::Binary(Box::new(ValkyrieBinary { operator: o, lhs, rhs, range: Default::default() }))
     }
     pub fn unary(o: ValkyrieOperator, rhs: ValkyrieExpression) -> ValkyrieExpression {
-        ValkyrieExpression::Unary(Box::new(ValkyrieUnary { operator: o, rhs, range: Default::default() }))
+        ValkyrieExpression::Prefix(Box::new(ValkyrieUnary { operator: o, rhs, range: Default::default() }))
+    }
+    pub fn update_range(&mut self) {
+        match self {
+            ValkyrieExpression::Prefix(u) => {
+                todo!()
+            }
+            ValkyrieExpression::Binary(b) => {
+                todo!()
+            }
+            ValkyrieExpression::Suffix(u) => {
+                todo!()
+            }
+            ValkyrieExpression::Number(_) => {}
+        }
     }
 }
 
@@ -91,17 +80,26 @@ pub struct ValkyrieBinary {
 
 #[derive(Debug)]
 pub enum ValkyrieOperator {
-    Add,
-    // +
-    Sub,
-    // -
+    /// `!`
+    Not,
+    /// `+`
+    Positive,
+    /// `-`
+    Negative,
+    /// `+`
+    Plus,
+    /// `-`
+    Minus,
+    /// `*`
     Mul,
-    // *
+    /// `/`
     Div,
-    // /
+    /// `^`
     Pow,
-    // ^
+    /// `==`
     Eq,
+    /// `?`
+    Raise,
     /// `℃`
     Celsius,
     /// `℉`
@@ -110,46 +108,35 @@ pub enum ValkyrieOperator {
     Transpose,
     /// `ᴴ`, `\^H`, `\conjugate_transpose
     Transjugate,
-
     Hermitian,
-}
-
-#[derive(Debug)]
-pub enum UnOpKind {
-    Not,
-    // !
-    Neg,
-    // -
-    Try, // ?
 }
 
 impl<I> PrattParser<I> for ExpressionResolver
 where
-    I: Iterator<Item = TokenTree>,
+    I: Iterator<Item = ExpressionStream>,
 {
     type Error = StopBecause;
-    type Input = TokenTree;
+    type Input = ExpressionStream;
     type Output = ValkyrieExpression;
 
     // Query information about an operator (Affix, Precedence, Associativity)
-    fn query(&mut self, tree: &TokenTree) -> Result<Affix, StopBecause> {
+    fn query(&mut self, tree: &ExpressionStream) -> Result<Affix, StopBecause> {
         let affix = match tree {
-            TokenTree::Infix(o) => Affix::Infix(o.precedence(), o.associativity()),
-            TokenTree::Postfix('?') => Affix::Postfix(Precedence(5)),
-            TokenTree::Prefix('-') => Affix::Prefix(Precedence(6)),
-            TokenTree::Prefix('!') => Affix::Prefix(Precedence(6)),
-            TokenTree::Group(_) => Affix::Nilfix,
-            TokenTree::Primary(_) => Affix::Nilfix,
+            ExpressionStream::Infix(o) => Affix::Infix(o.precedence(), o.associativity()),
+            ExpressionStream::Postfix(o) => Affix::Postfix(o.precedence()),
+            ExpressionStream::Prefix(o) => Affix::Prefix(o.precedence()),
+            ExpressionStream::Group(_) => Affix::Nilfix,
+            ExpressionStream::Primary(_) => Affix::Nilfix,
             _ => unreachable!(),
         };
         Ok(affix)
     }
 
     // Construct a primary expression, e.g. a number
-    fn primary(&mut self, tree: TokenTree) -> Result<ValkyrieExpression, StopBecause> {
+    fn primary(&mut self, tree: ExpressionStream) -> Result<ValkyrieExpression, StopBecause> {
         let expr = match tree {
-            TokenTree::Primary(num) => ValkyrieExpression::Primary(num),
-            TokenTree::Group(group) => self.parse(&mut group.into_iter()).unwrap(),
+            ExpressionStream::Primary(num) => num,
+            ExpressionStream::Group(group) => self.parse(&mut group.into_iter()).unwrap(),
             _ => unreachable!(),
         };
         Ok(expr)
@@ -159,39 +146,40 @@ where
     fn infix(
         &mut self,
         lhs: ValkyrieExpression,
-        tree: TokenTree,
+        tree: ExpressionStream,
         rhs: ValkyrieExpression,
     ) -> Result<ValkyrieExpression, StopBecause> {
-        let op = match tree {
-            TokenTree::Infix(o) => o.as_operator(),
+        match tree {
+            ExpressionStream::Infix(o) => Ok(ValkyrieExpression::binary(o.as_operator(), lhs, rhs)),
             _ => unreachable!(),
-        };
-        Ok(ValkyrieExpression::binary(op, lhs, rhs))
+        }
     }
 
     // Construct a unary prefix expression, e.g. !1
-    fn prefix(&mut self, tree: TokenTree, rhs: ValkyrieExpression) -> Result<ValkyrieExpression, StopBecause> {
-        let op = match tree {
-            TokenTree::Prefix('!') => UnOpKind::Not,
-            TokenTree::Prefix('-') => UnOpKind::Neg,
+    fn prefix(&mut self, tree: ExpressionStream, rhs: ValkyrieExpression) -> Result<ValkyrieExpression, StopBecause> {
+        match tree {
+            ExpressionStream::Prefix(o) => Ok(ValkyrieExpression::unary(o.as_operator(), rhs)),
             _ => unreachable!(),
-        };
-        todo!()
+        }
     }
 
     // Construct a unary postfix expression, e.g. 1?
-    fn postfix(&mut self, lhs: ValkyrieExpression, tree: TokenTree) -> Result<ValkyrieExpression, StopBecause> {
-        let op = match tree {
-            TokenTree::Postfix('?') => UnOpKind::Try,
+    fn postfix(&mut self, lhs: ValkyrieExpression, tree: ExpressionStream) -> Result<ValkyrieExpression, StopBecause> {
+        match tree {
+            ExpressionStream::Postfix(o) => Ok(ValkyrieExpression::unary(o.as_operator(), lhs)),
             _ => unreachable!(),
-        };
-        todo!()
+        }
     }
 }
 
 #[test]
 fn main() {
-    let tt = vec![TokenTree::Primary(1), TokenTree::Infix(ValkyrieInfix::from_str("+").unwrap()), TokenTree::Primary(1)];
+    let tt = vec![
+        ExpressionStream::Primary(ValkyrieExpression::Number(Box::new(ValkyrieNumber::from_str("1").unwrap()))),
+        ExpressionStream::Infix(ValkyrieInfix::from_str("+").unwrap()),
+        ExpressionStream::Primary(ValkyrieExpression::Number(Box::new(ValkyrieNumber::from_str("2").unwrap()))),
+        ExpressionStream::Postfix(ValkyrieSuffix::from_str("?").unwrap()),
+    ];
     let expr = ExpressionResolver.parse(&mut tt.into_iter()).unwrap();
-    println!("Expression: {:#?}", expr);
+    println!("{:#?}", expr);
 }

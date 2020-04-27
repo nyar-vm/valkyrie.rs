@@ -8,45 +8,30 @@ use std::{
 mod display;
 mod parser;
 
-pub struct ValkyriePostfix {
+pub struct ValkyrieSuffix {
     normalized: String,
     range: Range<usize>,
 }
 
-impl Debug for ValkyriePostfix {
+impl Debug for ValkyrieSuffix {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "Infix({}, {:?})", self.normalized, self.range)
     }
 }
 
-impl ValkyriePostfix {
-    pub fn new<S: ToString>(s: S, range: Range<usize>) -> ValkyriePostfix {
-        ValkyriePostfix { normalized: s.to_string(), range }
+impl ValkyrieSuffix {
+    pub fn new<S: ToString>(s: S, range: Range<usize>) -> ValkyrieSuffix {
+        ValkyrieSuffix { normalized: s.to_string(), range }
     }
-
     pub fn precedence(&self) -> Precedence {
         match self.normalized.as_str() {
-            "+" | "-" => Precedence(2),
-            "*" | "/" => Precedence(3),
-            "^" => Precedence(4),
-            _ => unreachable!("Unknown operator: {}", self.normalized),
-        }
-    }
-    pub fn associativity(&self) -> Associativity {
-        match self.normalized.as_str() {
-            "+" | "-" => Associativity::Left,
-            "*" | "/" => Associativity::Left,
-            "^" => Associativity::Right,
+            "?" => Precedence(1000),
             _ => unreachable!("Unknown operator: {}", self.normalized),
         }
     }
     pub fn as_operator(&self) -> ValkyrieOperator {
         match self.normalized.as_str() {
-            "+" => ValkyrieOperator::Add,
-            "-" => ValkyrieOperator::Sub,
-            "*" => ValkyrieOperator::Mul,
-            "/" => ValkyrieOperator::Div,
-            "^" => ValkyrieOperator::Pow,
+            "?" => ValkyrieOperator::Raise,
             _ => unreachable!("Unknown operator: {}", self.normalized),
         }
     }
