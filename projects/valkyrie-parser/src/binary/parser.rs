@@ -1,13 +1,23 @@
 use super::*;
-use crate::helpers::ignore;
-use pex::{ParseResult, ParseState};
 
 impl ExpressionStream {
     /// term (~ infix ~ term)*
     /// 1 + (1 + +3? + 4)
     pub fn parse(state: ParseState) -> ParseResult<Vec<ExpressionStream>> {
         let mut stream = Vec::new();
+        let (state, _) = state.match_fn(|s| parse_term(s, &mut stream))?;
+        let (state, _) = state.match_repeats(|s| parse_infix_term(s, &mut stream))?;
+        state.finish(stream)
     }
+}
+
+/// `~ infix ~ term`
+#[inline(always)]
+fn parse_infix_term<'i>(input: ParseState<'i>, stream: &mut Vec<ExpressionStream>) -> ParseResult<'i, ()> {
+    let (state, infix) = input.skip(ignore).match_fn(ValkyrieInfix::parse).map_inner(ExpressionStream::Infix)?;
+    stream.push(infix);
+    let (state, _) = state.skip(ignore).match_fn(|s| parse_term(s, stream))?;
+    state.finish(())
 }
 
 /// `(~ prefix)* ~ value (~ suffix)*`
@@ -18,16 +28,6 @@ fn parse_term<'i>(state: ParseState<'i>, stream: &mut Vec<ExpressionStream>) -> 
     stream.push(value);
     let (state, suffix) = state.match_repeats(parse_suffix)?;
     stream.extend(suffix);
-    state.finish(())
-}
-
-/// `~ infix ~ term`
-#[inline(always)]
-fn parse_infix_term<'i>(input: ParseState<'i>, stream: &mut Vec<ExpressionStream>) -> ParseResult<'i, ()> {
-    let (state, infix) = input.skip(ignore).match_fn(ValkyrieInfix::parse).map_inner(ExpressionStream::Infix)?;
-    stream.push(infix);
-    let (state, term) = state.skip(ignore).match_fn(parse_value).map_inner(ExpressionStream::Term)?;
-    stream.push(term);
     state.finish(())
 }
 
@@ -46,12 +46,4 @@ fn parse_suffix(input: ParseState) -> ParseResult<ExpressionStream> {
 #[inline(always)]
 fn parse_expr_value(input: ParseState) -> ParseResult<ExpressionStream> {
     input.skip(ignore).match_fn(parse_value).map_inner(ExpressionStream::Term)
-}
-
-#[inline]
-pub fn parse_value(input: ParseState) -> ParseResult<ValkyrieExpression> {
-    input
-        .begin_choice()
-        .or_else(|s| ValkyrieNumber::parse(s).map_inner(|s| ValkyrieExpression::Number(Box::new(s))))
-        .end_choice()
 }

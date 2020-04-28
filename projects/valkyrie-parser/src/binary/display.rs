@@ -13,6 +13,7 @@ impl Display for ValkyrieOperator {
             ValkyrieOperator::Div => f.write_char('/'),
             ValkyrieOperator::Pow => f.write_char('^'),
             ValkyrieOperator::Eq => f.write_char('='),
+            ValkyrieOperator::Unwrap => f.write_char('!'),
             ValkyrieOperator::Raise => f.write_char('?'),
             ValkyrieOperator::Celsius => f.write_char('℃'),
             ValkyrieOperator::Fahrenheit => f.write_char('℉'),

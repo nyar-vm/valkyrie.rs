@@ -1,5 +1,5 @@
 use crate::binary::ValkyrieOperator;
-use pratt::{Associativity, Precedence};
+use pratt::Precedence;
 use std::{
     fmt::{Debug, Formatter},
     ops::Range,
@@ -25,12 +25,14 @@ impl ValkyrieSuffix {
     }
     pub fn precedence(&self) -> Precedence {
         match self.normalized.as_str() {
+            "!" => Precedence(1000),
             "?" => Precedence(1000),
             _ => unreachable!("Unknown operator: {}", self.normalized),
         }
     }
     pub fn as_operator(&self) -> ValkyrieOperator {
         match self.normalized.as_str() {
+            "!" => ValkyrieOperator::Raise,
             "?" => ValkyrieOperator::Raise,
             _ => unreachable!("Unknown operator: {}", self.normalized),
         }

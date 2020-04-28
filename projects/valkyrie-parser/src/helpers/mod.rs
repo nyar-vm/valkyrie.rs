@@ -1,5 +1,6 @@
 mod escaper;
 pub use self::escaper::StringRewrite;
+use crate::{binary::ValkyrieExpression, number::ValkyrieNumber, symbol::ValkyrieNamepath};
 use pex::{
     helpers::{comment_line, whitespace},
     ParseResult, ParseState,
@@ -21,3 +22,12 @@ pub struct LispFormatter {
 }
 
 pub trait Lispify {}
+
+#[inline]
+pub fn parse_value(input: ParseState) -> ParseResult<ValkyrieExpression> {
+    input
+        .begin_choice()
+        .or_else(|s| ValkyrieNumber::parse(s).map_inner(Into::into))
+        .or_else(|s| ValkyrieNamepath::parse(s).map_inner(|s| ValkyrieExpression::Symbol(Box::new(s))))
+        .end_choice()
+}

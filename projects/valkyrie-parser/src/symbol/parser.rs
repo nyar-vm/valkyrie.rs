@@ -1,6 +1,5 @@
 use super::*;
 
-
 impl FromStr for ValkyrieIdentifier {
     type Err = StopBecause;
 
@@ -11,10 +10,13 @@ impl FromStr for ValkyrieIdentifier {
 }
 
 pub static IDENTIFIER: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(r"(?ux)
+    Regex::new(
+        r"(?ux)
     ^(?P<regular>(?:\p{XID_Start}|_)\p{XID_Continue}*)
 |   ^`(?P<escaped>(?:\\.|[^`])*)`
-    ").unwrap()
+    ",
+    )
+    .unwrap()
 });
 
 impl ValkyrieIdentifier {
@@ -22,12 +24,31 @@ impl ValkyrieIdentifier {
     /// - escaped: ``` `(\.|[^`])*` ```
     pub fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, m) = input.match_regex(&IDENTIFIER, "IDENTIFIER")?;
-        let id = ValkyrieIdentifier {
-            name: m.as_str().to_string(),
-            range: state.away_from(input),
-        };
+        let id = ValkyrieIdentifier { name: m.as_str().to_string(), range: state.away_from(input) };
         state.finish(id)
     }
+}
+
+impl ValkyrieNamepath {
+    /// `id (~ :: ~ b)*`
+    pub fn parse(input: ParseState) -> ParseResult<Self> {
+        let mut names = Vec::new();
+        let (state, id) = input.match_fn(ValkyrieIdentifier::parse)?;
+        names.push(id);
+        let (state, _) = state.match_repeats(|s| pare_colon_id(s, &mut names))?;
+        state.finish(ValkyrieNamepath { names, range: state.away_from(input) })
+    }
+}
+
+fn pare_colon_id<'i>(input: ParseState<'i>, names: &mut Vec<ValkyrieIdentifier>) -> ParseResult<'i, ()> {
+    let (state, _) = input
+        .begin_choice()
+        .or_else(|s| s.match_str("::").map_inner(|_| ()))
+        .or_else(|s| s.match_char('∷').map_inner(|_| ()))
+        .end_choice()?;
+    let (state, id) = state.match_fn(|s| ValkyrieIdentifier::parse(s))?;
+    names.push(id);
+    state.finish(())
 }
 
 #[test]

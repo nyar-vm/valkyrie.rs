@@ -1,16 +1,13 @@
-use crate::{infix::ValkyrieInfix, prefix::ValkyriePrefix, suffix::ValkyrieSuffix};
-use pex::StopBecause;
-use pratt::{Affix, Associativity, PrattParser, Precedence};
-use regex::Regex;
+use crate::{helpers::ignore, infix::ValkyrieInfix, prefix::ValkyriePrefix, suffix::ValkyrieSuffix};
+use pex::{ParseResult, ParseState, StopBecause};
+use pratt::{Affix, PrattParser};
 use std::{
     fmt::{Debug, Formatter},
     ops::Range,
-    str::FromStr,
-    sync::LazyLock,
 };
 mod display;
 mod parser;
-use crate::number::ValkyrieNumber;
+use crate::{helpers::parse_value, number::ValkyrieNumber, symbol::ValkyrieNamepath};
 use std::fmt::Display;
 
 pub struct ExpressionResolver;
@@ -38,6 +35,7 @@ pub enum ValkyrieExpression {
     Binary(Box<ValkyrieBinary>),
     Suffix(Box<ValkyrieUnary>),
     Number(Box<ValkyrieNumber>),
+    Symbol(Box<ValkyrieNamepath>),
 }
 
 impl ValkyrieExpression {
@@ -58,7 +56,7 @@ impl ValkyrieExpression {
             ValkyrieExpression::Suffix(u) => {
                 todo!()
             }
-            ValkyrieExpression::Number(_) => {}
+            _ => {}
         }
     }
 }
@@ -98,6 +96,8 @@ pub enum ValkyrieOperator {
     Pow,
     /// `==`
     Eq,
+    /// `!`
+    Unwrap,
     /// `?`
     Raise,
     /// `℃`
@@ -174,12 +174,7 @@ where
 
 #[test]
 fn main() {
-    let tt = vec![
-        ExpressionStream::Term(ValkyrieExpression::Number(Box::new(ValkyrieNumber::from_str("1").unwrap()))),
-        ExpressionStream::Infix(ValkyrieInfix::from_str("+").unwrap()),
-        ExpressionStream::Term(ValkyrieExpression::Number(Box::new(ValkyrieNumber::from_str("2").unwrap()))),
-        ExpressionStream::Postfix(ValkyrieSuffix::from_str("?").unwrap()),
-    ];
+    let tt = ExpressionStream::parse(ParseState::new("1 + 2? ^ 3 ^ 4 + 5 * 6! * 7")).unwrap();
     let expr = ExpressionResolver.parse(&mut tt.into_iter()).unwrap();
     println!("{:#?}", expr);
 }
