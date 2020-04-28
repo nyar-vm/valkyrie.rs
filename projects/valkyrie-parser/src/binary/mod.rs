@@ -28,7 +28,7 @@ pub enum ExpressionStream {
     Prefix(ValkyriePrefix),
     Postfix(ValkyrieSuffix),
     Infix(ValkyrieInfix),
-    Primary(ValkyrieExpression),
+    Term(ValkyrieExpression),
     Group(Vec<ExpressionStream>),
 }
 
@@ -126,7 +126,7 @@ where
             ExpressionStream::Postfix(o) => Affix::Postfix(o.precedence()),
             ExpressionStream::Prefix(o) => Affix::Prefix(o.precedence()),
             ExpressionStream::Group(_) => Affix::Nilfix,
-            ExpressionStream::Primary(_) => Affix::Nilfix,
+            ExpressionStream::Term(_) => Affix::Nilfix,
             _ => unreachable!(),
         };
         Ok(affix)
@@ -135,7 +135,7 @@ where
     // Construct a primary expression, e.g. a number
     fn primary(&mut self, tree: ExpressionStream) -> Result<ValkyrieExpression, StopBecause> {
         let expr = match tree {
-            ExpressionStream::Primary(num) => num,
+            ExpressionStream::Term(num) => num,
             ExpressionStream::Group(group) => self.parse(&mut group.into_iter()).unwrap(),
             _ => unreachable!(),
         };
@@ -175,9 +175,9 @@ where
 #[test]
 fn main() {
     let tt = vec![
-        ExpressionStream::Primary(ValkyrieExpression::Number(Box::new(ValkyrieNumber::from_str("1").unwrap()))),
+        ExpressionStream::Term(ValkyrieExpression::Number(Box::new(ValkyrieNumber::from_str("1").unwrap()))),
         ExpressionStream::Infix(ValkyrieInfix::from_str("+").unwrap()),
-        ExpressionStream::Primary(ValkyrieExpression::Number(Box::new(ValkyrieNumber::from_str("2").unwrap()))),
+        ExpressionStream::Term(ValkyrieExpression::Number(Box::new(ValkyrieNumber::from_str("2").unwrap()))),
         ExpressionStream::Postfix(ValkyrieSuffix::from_str("?").unwrap()),
     ];
     let expr = ExpressionResolver.parse(&mut tt.into_iter()).unwrap();
