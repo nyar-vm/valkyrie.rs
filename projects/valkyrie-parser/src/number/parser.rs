@@ -1,5 +1,5 @@
 use super::*;
-use crate::binary::ValkyrieExpression;
+use crate::expression::ValkyrieExpression;
 use pex::{
     helpers::{make_from_str, whitespace},
     ParseResult, ParseState, StopBecause,

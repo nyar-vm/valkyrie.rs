@@ -1,4 +1,4 @@
-use crate::binary::ValkyrieOperator;
+use crate::expression::{ValkyrieOperator, ValkyrieOperatorKind};
 use pratt::Precedence;
 use std::{
     fmt::{Debug, Formatter},
@@ -31,10 +31,11 @@ impl ValkyrieSuffix {
         }
     }
     pub fn as_operator(&self) -> ValkyrieOperator {
-        match self.normalized.as_str() {
-            "!" => ValkyrieOperator::Raise,
-            "?" => ValkyrieOperator::Raise,
+        let kind = match self.normalized.as_str() {
+            "!" => ValkyrieOperatorKind::Raise,
+            "?" => ValkyrieOperatorKind::Raise,
             _ => unreachable!("Unknown operator: {}", self.normalized),
-        }
+        };
+        ValkyrieOperator::new(kind, self.range.clone())
     }
 }

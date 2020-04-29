@@ -1,6 +1,6 @@
 mod escaper;
 pub use self::escaper::StringRewrite;
-use crate::{binary::ValkyrieExpression, number::ValkyrieNumber, symbol::ValkyrieNamepath};
+use crate::{expression::ValkyrieExpression, number::ValkyrieNumber, symbol::ValkyrieNamepath};
 use pex::{
     helpers::{comment_line, whitespace},
     ParseResult, ParseState,

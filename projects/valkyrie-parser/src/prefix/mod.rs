@@ -1,4 +1,4 @@
-use crate::binary::ValkyrieOperator;
+use crate::expression::{ValkyrieOperator, ValkyrieOperatorKind};
 use pratt::{Associativity, Precedence};
 use std::{
     fmt::{Debug, Formatter},
@@ -41,13 +41,14 @@ impl ValkyriePrefix {
         }
     }
     pub fn as_operator(&self) -> ValkyrieOperator {
-        match self.normalized.as_str() {
-            "+" => ValkyrieOperator::Plus,
-            "-" => ValkyrieOperator::Minus,
-            "*" => ValkyrieOperator::Mul,
-            "/" => ValkyrieOperator::Div,
-            "^" => ValkyrieOperator::Pow,
+        let kind = match self.normalized.as_str() {
+            "+" => ValkyrieOperatorKind::Plus,
+            "-" => ValkyrieOperatorKind::Minus,
+            "*" => ValkyrieOperatorKind::Mul,
+            "/" => ValkyrieOperatorKind::Div,
+            "^" => ValkyrieOperatorKind::Pow,
             _ => unreachable!("Unknown operator: {}", self.normalized),
-        }
+        };
+        ValkyrieOperator::new(kind, self.range.clone())
     }
 }

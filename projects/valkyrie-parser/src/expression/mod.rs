@@ -1,6 +1,6 @@
 use crate::{helpers::ignore, infix::ValkyrieInfix, prefix::ValkyriePrefix, suffix::ValkyrieSuffix};
 use pex::{ParseResult, ParseState, StopBecause};
-use pratt::{Affix, PrattParser};
+use pratt::{Affix, PrattError, PrattParser};
 use std::{
     fmt::{Debug, Formatter},
     ops::Range,
@@ -10,6 +10,7 @@ mod parser;
 use crate::{helpers::parse_value, number::ValkyrieNumber, symbol::ValkyrieNamepath};
 use std::fmt::Display;
 
+/// A resolver
 pub struct ExpressionResolver;
 
 // a..b
@@ -38,46 +39,82 @@ pub enum ValkyrieExpression {
     Symbol(Box<ValkyrieNamepath>),
 }
 
+#[derive(Debug)]
+pub struct ValkyrieUnary {
+    pub operator: ValkyrieOperator,
+    pub body: ValkyrieExpression,
+    pub range: Range<usize>,
+}
+
+#[derive(Debug)]
+pub struct ValkyrieBinary {
+    pub operator: ValkyrieOperator,
+    pub lhs: ValkyrieExpression,
+    pub rhs: ValkyrieExpression,
+    pub range: Range<usize>,
+}
+
+#[derive(Debug)]
+pub struct ValkyrieOperator {
+    pub kind: ValkyrieOperatorKind,
+    pub range: Range<usize>,
+}
+
 impl ValkyrieExpression {
     pub fn binary(o: ValkyrieOperator, lhs: ValkyrieExpression, rhs: ValkyrieExpression) -> ValkyrieExpression {
-        ValkyrieExpression::Binary(Box::new(ValkyrieBinary { operator: o, lhs, rhs, range: Default::default() }))
+        let mut out = ValkyrieExpression::Binary(Box::new(ValkyrieBinary { operator: o, lhs, rhs, range: Default::default() }));
+        out.update_range();
+        out
     }
-    pub fn unary(o: ValkyrieOperator, rhs: ValkyrieExpression) -> ValkyrieExpression {
-        ValkyrieExpression::Prefix(Box::new(ValkyrieUnary { operator: o, rhs, range: Default::default() }))
+    pub fn prefix(o: ValkyrieOperator, rhs: ValkyrieExpression) -> ValkyrieExpression {
+        let mut out = ValkyrieExpression::Prefix(Box::new(ValkyrieUnary { operator: o, body: rhs, range: Default::default() }));
+        out.update_range();
+        out
+    }
+    pub fn suffix(o: ValkyrieOperator, rhs: ValkyrieExpression) -> ValkyrieExpression {
+        let mut out = ValkyrieExpression::Suffix(Box::new(ValkyrieUnary { operator: o, body: rhs, range: Default::default() }));
+        out.update_range();
+        out
+    }
+    pub fn get_range(&self) -> Range<usize> {
+        match self {
+            ValkyrieExpression::Prefix(u) => u.range.clone(),
+            ValkyrieExpression::Binary(b) => b.range.clone(),
+            ValkyrieExpression::Suffix(u) => u.range.clone(),
+            ValkyrieExpression::Number(u) => u.range.clone(),
+            ValkyrieExpression::Symbol(u) => u.range.clone(),
+        }
     }
     pub fn update_range(&mut self) {
         match self {
             ValkyrieExpression::Prefix(u) => {
-                todo!()
+                let start = u.operator.range.start;
+                let end = u.body.get_range().end;
+                u.range = start..end;
             }
             ValkyrieExpression::Binary(b) => {
-                todo!()
+                let start = b.lhs.get_range().start;
+                let end = b.rhs.get_range().end;
+                b.range = start..end;
             }
             ValkyrieExpression::Suffix(u) => {
-                todo!()
+                let start = u.body.get_range().start;
+                let end = u.operator.range.end;
+                u.range = start..end;
             }
             _ => {}
         }
     }
 }
 
-#[derive(Debug)]
-pub struct ValkyrieUnary {
-    operator: ValkyrieOperator,
-    rhs: ValkyrieExpression,
-    range: Range<usize>,
+impl ValkyrieOperator {
+    pub fn new(kind: ValkyrieOperatorKind, range: Range<usize>) -> Self {
+        Self { kind, range }
+    }
 }
 
 #[derive(Debug)]
-pub struct ValkyrieBinary {
-    operator: ValkyrieOperator,
-    lhs: ValkyrieExpression,
-    rhs: ValkyrieExpression,
-    range: Range<usize>,
-}
-
-#[derive(Debug)]
-pub enum ValkyrieOperator {
+pub enum ValkyrieOperatorKind {
     /// `!`
     Not,
     /// `+`
@@ -127,19 +164,25 @@ where
             ExpressionStream::Prefix(o) => Affix::Prefix(o.precedence()),
             ExpressionStream::Group(_) => Affix::Nilfix,
             ExpressionStream::Term(_) => Affix::Nilfix,
-            _ => unreachable!(),
         };
         Ok(affix)
     }
 
     // Construct a primary expression, e.g. a number
     fn primary(&mut self, tree: ExpressionStream) -> Result<ValkyrieExpression, StopBecause> {
-        let expr = match tree {
-            ExpressionStream::Term(num) => num,
-            ExpressionStream::Group(group) => self.parse(&mut group.into_iter()).unwrap(),
+        match tree {
+            ExpressionStream::Term(term) => Ok(term),
+            ExpressionStream::Group(group) => match self.parse(&mut group.into_iter()) {
+                Ok(o) => Ok(o),
+                Err(PrattError::UserError(e)) => Err(e)?,
+                Err(PrattError::EmptyInput) => unreachable!(),
+                Err(PrattError::UnexpectedNilfix(_)) => unreachable!(),
+                Err(PrattError::UnexpectedPrefix(_)) => unreachable!(),
+                Err(PrattError::UnexpectedInfix(_)) => unreachable!(),
+                Err(PrattError::UnexpectedPostfix(_)) => unreachable!(),
+            },
             _ => unreachable!(),
-        };
-        Ok(expr)
+        }
     }
 
     // Construct a binary infix expression, e.g. 1+1
@@ -158,7 +201,7 @@ where
     // Construct a unary prefix expression, e.g. !1
     fn prefix(&mut self, tree: ExpressionStream, rhs: ValkyrieExpression) -> Result<ValkyrieExpression, StopBecause> {
         match tree {
-            ExpressionStream::Prefix(o) => Ok(ValkyrieExpression::unary(o.as_operator(), rhs)),
+            ExpressionStream::Prefix(o) => Ok(ValkyrieExpression::prefix(o.as_operator(), rhs)),
             _ => unreachable!(),
         }
     }
@@ -166,7 +209,7 @@ where
     // Construct a unary postfix expression, e.g. 1?
     fn postfix(&mut self, lhs: ValkyrieExpression, tree: ExpressionStream) -> Result<ValkyrieExpression, StopBecause> {
         match tree {
-            ExpressionStream::Postfix(o) => Ok(ValkyrieExpression::unary(o.as_operator(), lhs)),
+            ExpressionStream::Postfix(o) => Ok(ValkyrieExpression::suffix(o.as_operator(), lhs)),
             _ => unreachable!(),
         }
     }
