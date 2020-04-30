@@ -1,127 +1,34 @@
-use std::sync::LazyLock;
+mod settings;
 
-use regex::Regex;
+use nyar_hir::{Position, Range};
+use valkyrie_pest::{Pair, Rule};
 
-#[cfg(test)]
-mod test;
-
-/// Check if the string is a comment
-///
-/// ```vk
-/// ~ line comment
-///
-/// ~~~~
-/// block comment
-/// ~~~~
-/// ```
-pub fn is_comment(rest: &str) -> Result<(&str, usize), &'static str> {
-    let mut count = 0;
-    for char in rest.chars() {
-        match char {
-            '~' => count += 1,
-            _ => break,
-        }
-    }
-    let mut length = 0;
-    match count {
-        // not comment
-        0 => Err("Not a comment")?,
-        // line comment
-        1 => {
-            length += count;
-            for char in rest.chars().skip(count) {
-                match char {
-                    '\n' => break,
-                    _ => length += char.len_utf8(),
-                }
-            }
-        }
-        2 => Err("Document comment is not caught")?,
-        // block comment
-        _ => {
-            length += count;
-            let mut consecutive = 0;
-            for char in rest.chars().skip(count) {
-                match char {
-                    '~' => {
-                        consecutive += 1;
-                        if consecutive == count {
-                            length += count;
-                            break;
-                        }
-                    }
-                    _ => {
-                        consecutive = 0;
-                        length += char.len_utf8();
-                    }
-                }
-            }
-        }
-    }
-    Ok((&rest[length..], length))
-}
-
-static BINARY: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(
-        r"^((?x) 
-    (\bas\b)[*!?]?
-#    | (\bnot\b)?\s+\bin\b | [!¬]?(\bin\b)
-#    | (\bis)\b\s+(\bnot\b)? | [!¬]?(\bis\b)
-    | [+-]{1,2}=?
-    | [⋅⋆∙∗*×⨯⨉⊗⨂/÷]=?
-    | [!¬]?([∋∍∊∈∉∌]|<:|:>|[⋢⋣⊑⊒])
-    | \^=?
-    | ([|&]{1,2}|[∧⊼⩟∨⊽⊻])=?
-    | [<>]{1,3}=?
-    | [⋃⋂]
-    | ={1,3} | ≠ | ≢
-)",
-    )
-    .unwrap()
-});
-
-pub fn is_binary(rest: &str) -> Result<(&str, usize), &'static str> {
-    match BINARY.find(rest).map(|s| s.as_str()) {
-        Some(s) => Ok((s, s.len())),
-        None => Err("Not a binary"),
+fn format_pair(pair: Pair<&str>, indent_level: usize, is_newline: bool) -> String {
+    let indent = if is_newline { "  ".repeat(indent_level) } else { "".to_string() };
+    let children: Vec<_> = pair.clone().into_inner().collect();
+    let len = children.len();
+    let children: Vec<_> = children
+        .into_iter()
+        .map(|pair| format_pair(pair, if len > 1 { indent_level + 1 } else { indent_level }, len > 1))
+        .collect();
+    let dash = if is_newline { "- " } else { "" };
+    match len {
+        0 => format!("{}{}{}: {:?}", indent, dash, pair.as_rule(), pair.as_span().as_str()),
+        1 => format!("{}{}{} > {}", indent, dash, pair.as_rule(), children[0]),
+        _ => format!("{}{}{}\n{}", indent, dash, pair.as_rule(), children.join("\n")),
     }
 }
 
-static PREFIX: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(
-        r"^((?x) 
-    [+-]
-    | [!¬]
-    | [∂]
-    | [√∛∜]
-    | [⅟½↉⅓⅔¼¾⅕⅖⅗⅘⅙⅚⅐⅛⅜⅝⅞]
-)",
-    )
-    .unwrap()
-});
-
-pub fn is_prefix(rest: &str) -> Result<(&str, usize), &'static str> {
-    match PREFIX.find(rest).map(|s| s.as_str()) {
-        Some(s) => Ok((s, s.len())),
-        None => Err("Not a prefix"),
+pub fn get_position(s: &Pair<Rule>) -> Range {
+    let us = s.as_span().start_pos().line_col();
+    let es = s.as_span().end_pos().line_col();
+    Range {
+        // index: s.start_pos().pos() as u64,
+        start: Position { line: us.0 as u32, character: us.1 as u32 },
+        end: Position { line: es.0 as u32, character: es.1 as u32 },
     }
 }
 
-static SUFFIX: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(
-        r"^((?x) 
-     [?!]
-    | [%‰‱]
-    | [℃℉]
-    | [°′″‴⁗]
-)",
-    )
-    .unwrap()
-});
-
-pub fn is_suffix(rest: &str) -> Result<(&str, usize), &'static str> {
-    match SUFFIX.find(rest).map(|s| s.as_str()) {
-        Some(s) => Ok((s, s.len())),
-        None => Err("Not a suffix"),
-    }
+pub fn unescape(s: &str) -> &str {
+    return s;
 }

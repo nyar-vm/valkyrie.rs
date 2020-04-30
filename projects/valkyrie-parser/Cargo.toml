@@ -3,23 +3,25 @@ name = "valkyrie-parser"
 version = "0.2.1"
 authors = ["192608617@qq.com"]
 edition = "2018"
-description = "Lexer and token definitions for Valkyrie language"
-repository = "https://github.com/nyar-vm/valkyrie.rs"
+description = "The hand write parser of valkyrie language"
+documentation = "https://github.com/nyar-vm/valkyrie.rs"
+repository = "https://github.com/nyar-lang/NyarNative"
 license = "MPL-2.0"
 
 [dependencies]
-peginator = "0.6.0"
-unicode-ident = "1.0.6"
-regex = "1.7.1"
+pratt = "0.4.0"
+bit-set = "0.5.3"
+regex = "1.8.1"
+pex = { version = "0.1.7", features = ["regex"]}
+# lazy_static = "1.4"
 
-[dependencies.valkyrie-errors]
-#version = "0.0.1"
-path = "../valkyrie-errors"
-features = ["peginator"]
-
-[dependencies.valkyrie-ast]
-version = "0.0.0"
-path = "../valkyrie-ast"
+#[dependencies.valkyrie-pest]
+#path = "../valkyrie-pest"
+#version = "0.2"
+#
+#[dependencies.nyar-hir]
+#path = "../nyar-hir"
+#version = "0.2"
 
 [dev-dependencies]
 

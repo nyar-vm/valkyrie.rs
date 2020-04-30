@@ -1,12 +1,24 @@
-#![feature(once_cell)]
+#![feature(lazy_cell)]
+#![feature(const_trait_impl)]
+// #![feature(once_cell)]
+//
+// pub mod grammar;
+// pub mod utils;
+//
+// pub mod ast {
+//     pub use nyar_hir::ast::*;
+// }
+//
+// mod traits;
+//
+// pub use grammar::LexerContext;
+// pub use nyar_hir::{NyarError, NyarErrorKind, Result};
+// pub use traits::ASTDump;
 
-use valkyrie_errors::{FileID, ValkyrieError};
-
-mod parser;
-pub mod utils;
-
-#[derive(Debug, Default)]
-pub struct ValkyrieParser {
-    file: FileID,
-    errors: Vec<ValkyrieError>,
-}
+pub mod expression;
+pub mod helpers;
+pub mod infix;
+pub mod number;
+pub mod prefix;
+pub mod suffix;
+pub mod symbol;
