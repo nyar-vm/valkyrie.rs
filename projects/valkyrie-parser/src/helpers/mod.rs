@@ -16,13 +16,6 @@ pub fn ignore(input: ParseState) -> ParseResult<()> {
         .end_choice()
 }
 
-pub struct LispFormatter {
-    pub indent: usize,
-    pub indent_text: String,
-}
-
-pub trait Lispify {}
-
 #[inline]
 pub fn parse_value(input: ParseState) -> ParseResult<ValkyrieExpression> {
     input

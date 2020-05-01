@@ -215,9 +215,3 @@ where
     }
 }
 
-#[test]
-fn main() {
-    let tt = ExpressionStream::parse(ParseState::new("1 + 2? ^ 3 ^ 4 + 5 * 6! * 7")).unwrap();
-    let expr = ExpressionResolver.parse(&mut tt.into_iter()).unwrap();
-    println!("{:#?}", expr);
-}

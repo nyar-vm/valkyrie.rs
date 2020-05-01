@@ -1,19 +1,11 @@
-use crate::debug_lexer;
-use valkyrie_errors::ValkyrieResult;
+use lispify::helpers::colored_lisp;
+use pex::ParseState;
+use pratt::PrattParser;
+use valkyrie_parser::expression::{ExpressionResolver, ExpressionStream};
 
 #[test]
-fn test_unary() {
-    // debug_lexer(&[
-    //     "tests/literal/symbol.vk", "tests/literal/number.vk", "tests/literal/string.vk", "tests/literal/escape.vk"])
-    //     .unwrap();
-}
-
-#[test]
-fn test_binary() -> ValkyrieResult {
-    debug_lexer(&[
-        "tests/expression/infix1.vk",
-        "tests/expression/infix2.vk",
-        "tests/expression/infix3.vk",
-        "tests/expression/infix4.vk",
-    ])
+fn main() {
+    let tt = ExpressionStream::parse(ParseState::new("1 + 2? ^ 3 ^ 4 + 5 * 6! * 7")).unwrap();
+    let expr = ExpressionResolver.parse(&mut tt.into_iter()).unwrap();
+    println!("{}", colored_lisp(expr.lispify(), 144).unwrap());
 }

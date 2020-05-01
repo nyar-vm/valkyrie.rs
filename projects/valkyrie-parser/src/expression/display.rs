@@ -1,5 +1,6 @@
 use super::*;
 use std::fmt::Write;
+use lispify::{Lisp, Lispify, LispNumber, LispOperator};
 
 impl Display for ValkyrieOperatorKind {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
@@ -27,5 +28,39 @@ impl Display for ValkyrieOperatorKind {
 impl Display for ValkyrieOperator {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.kind)
+    }
+}
+
+impl Lispify for ValkyrieOperatorKind {
+    type Output = LispOperator;
+
+    fn lispify(&self) -> Self::Output {
+        LispOperator {
+            operator:  self.to_string(),
+            rest: None,
+        }
+
+    }
+}
+
+impl Lispify for ValkyrieOperator {
+    type Output = LispOperator;
+
+    fn lispify(&self) -> Self::Output {
+        self.kind.lispify()
+    }
+}
+
+impl Lispify for ValkyrieExpression {
+    type Output = Lisp;
+
+    fn lispify(&self) -> Self::Output {
+        match self {
+            ValkyrieExpression::Prefix(_) => {todo!()}
+            ValkyrieExpression::Binary(_) => {todo!()}
+            ValkyrieExpression::Suffix(_) => {todo!()}
+            ValkyrieExpression::Number(_) => {todo!()}
+            ValkyrieExpression::Symbol(_) => {todo!()}
+        }
     }
 }

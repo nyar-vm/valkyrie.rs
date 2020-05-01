@@ -1,4 +1,5 @@
 use std::fmt::{Display, Formatter};
+use lispify::{Lisp, Lispify, LispNumber};
 use crate::number::ValkyrieNumber;
 
 impl Display for ValkyrieNumber {
@@ -9,5 +10,16 @@ impl Display for ValkyrieNumber {
             f.write_str(&unit.name)?;
         }
         Ok(())
+    }
+}
+
+impl Lispify for ValkyrieNumber {
+    type Output = LispNumber;
+
+    fn lispify(&self) -> Self::Output {
+        LispNumber {
+            number: self.value.clone(),
+            unit: self.unit.clone().map(|s| s.name).unwrap_or_default(),
+        }
     }
 }

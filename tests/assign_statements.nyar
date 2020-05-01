@@ -4,3 +4,7 @@ let mut x, ref y, lazy rec z:(iq) = (z);
 
 a = 2
 (b, c) = 2
+
+
+// 其 cps 形式是
+
