@@ -32,7 +32,7 @@ impl ValkyrieSuffix {
     }
     pub fn as_operator(&self) -> ValkyrieOperator {
         let kind = match self.normalized.as_str() {
-            "!" => ValkyrieOperatorKind::Raise,
+            "!" => ValkyrieOperatorKind::Unwrap,
             "?" => ValkyrieOperatorKind::Raise,
             _ => unreachable!("Unknown operator: {}", self.normalized),
         };

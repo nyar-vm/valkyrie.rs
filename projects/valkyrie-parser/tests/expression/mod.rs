@@ -1,11 +1,14 @@
-use lispify::helpers::colored_lisp;
+use lispify::{helpers::colored_lisp, Lispify};
 use pex::ParseState;
 use pratt::PrattParser;
 use valkyrie_parser::expression::{ExpressionResolver, ExpressionStream};
 
 #[test]
 fn main() {
-    let tt = ExpressionStream::parse(ParseState::new("1 + 2? ^ 3 ^ 4 + 5 * 6! * 7")).unwrap();
+    let raw = "12 + global::x";
+    let tt = ExpressionStream::parse(ParseState::new(raw)).unwrap();
     let expr = ExpressionResolver.parse(&mut tt.into_iter()).unwrap();
-    println!("{}", colored_lisp(expr.lispify(), 144).unwrap());
+    println!("input: {raw}");
+    // println!("output:\n {expr:#?}");
+    println!("output:\n {}", colored_lisp(expr.lispify(), 42).unwrap());
 }
