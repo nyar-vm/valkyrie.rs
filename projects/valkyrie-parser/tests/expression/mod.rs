@@ -6,7 +6,7 @@ use valkyrie_parser::expression::{ExpressionResolver, ExpressionStream};
 #[test]
 fn main1() {
     let resolver = ExpressionResolver::default();
-    let raw = "y! * 7";
+    let raw = "(y! * 7)";
     let tt = ExpressionStream::parse(ParseState::new(raw)).unwrap();
     let expr = resolver.resolve(tt).unwrap();
     println!("input: {raw}");

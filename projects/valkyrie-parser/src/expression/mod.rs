@@ -16,7 +16,7 @@ pub struct ExpressionResolver {}
 
 impl ExpressionResolver {
     pub fn resolve(&self, stream: Vec<ExpressionStream>) -> Result<ValkyrieExpression, StopBecause> {
-        // println!("stream: {stream:#?}");
+        println!("stream: {stream:#?}");
         let mut effect = ExpressionResolver {};
         match effect.parse(stream.into_iter()) {
             Ok(o) => Ok(o),
