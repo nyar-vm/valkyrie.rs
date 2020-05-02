@@ -1,14 +1,19 @@
-mod parser;
 mod display;
+mod parser;
 
+use regex::Regex;
 use std::sync::LazyLock;
-use regex::{ Regex};
 
-use pex::helpers::{make_from_str, whitespace};
-use pex::{ParseResult, ParseState, StopBecause};
-use std::fmt::{Display, Formatter};
-use std::ops::Range;
-use std::str::FromStr;
+use crate::expression::ValkyrieExpression;
+use pex::{
+    helpers::{make_from_str, whitespace},
+    ParseResult, ParseState, StopBecause,
+};
+use std::{
+    fmt::{Display, Formatter},
+    ops::Range,
+    str::FromStr,
+};
 
 /// These names cannot be used as function names
 pub const KEYWORDS: [&str; 3] = ["true", "false", "null"];
@@ -34,6 +39,12 @@ pub struct ValkyrieNamepath {
     pub names: Vec<ValkyrieIdentifier>,
     /// The range of the identifier.
     pub range: Range<usize>,
+}
+
+impl From<ValkyrieNamepath> for ValkyrieExpression {
+    fn from(value: ValkyrieNamepath) -> Self {
+        ValkyrieExpression::Symbol(Box::new(value))
+    }
 }
 
 impl ValkyrieIdentifier {

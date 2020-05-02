@@ -11,7 +11,24 @@ use crate::{helpers::parse_value, number::ValkyrieNumber, symbol::ValkyrieNamepa
 use std::fmt::Display;
 
 /// A resolver
-pub struct ExpressionResolver;
+#[derive(Default)]
+pub struct ExpressionResolver {}
+
+impl ExpressionResolver {
+    pub fn resolve(&self, stream: Vec<ExpressionStream>) -> Result<ValkyrieExpression, StopBecause> {
+        // println!("stream: {stream:#?}");
+        let mut effect = ExpressionResolver {};
+        match effect.parse(stream.into_iter()) {
+            Ok(o) => Ok(o),
+            Err(PrattError::UserError(e)) => Err(e)?,
+            Err(PrattError::EmptyInput) => unreachable!(),
+            Err(PrattError::UnexpectedNilfix(_)) => unreachable!(),
+            Err(PrattError::UnexpectedPrefix(_)) => unreachable!(),
+            Err(PrattError::UnexpectedInfix(_)) => unreachable!(),
+            Err(PrattError::UnexpectedPostfix(_)) => unreachable!(),
+        }
+    }
+}
 
 // a..b
 // a..<b
@@ -123,6 +140,8 @@ pub enum ValkyrieOperatorKind {
     Negative,
     /// `+`
     Plus,
+    /// `++`
+    Concat,
     /// `-`
     Minus,
     /// `*`
@@ -214,4 +233,3 @@ where
         }
     }
 }
-

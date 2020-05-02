@@ -20,22 +20,26 @@ impl ValkyrieInfix {
 
     pub fn precedence(&self) -> Precedence {
         match self.normalized.as_str() {
-            "+" | "-" => Precedence(2),
-            "*" | "/" => Precedence(3),
-            "^" => Precedence(4),
+            "++" => Precedence(100),
+            "+" | "-" => Precedence(200),
+            "*" | "/" => Precedence(300),
+            "^" => Precedence(400),
             _ => unreachable!("Unknown operator: {}", self.normalized),
         }
     }
     pub fn associativity(&self) -> Associativity {
         match self.normalized.as_str() {
+            "++" => Associativity::Left,
             "+" | "-" => Associativity::Left,
             "*" | "/" => Associativity::Left,
             "^" => Associativity::Right,
+
             _ => unreachable!("Unknown operator: {}", self.normalized),
         }
     }
     pub fn as_operator(&self) -> ValkyrieOperator {
         let kind = match self.normalized.as_str() {
+            "++" => ValkyrieOperatorKind::Concat,
             "+" => ValkyrieOperatorKind::Plus,
             "-" => ValkyrieOperatorKind::Minus,
             "*" => ValkyrieOperatorKind::Mul,

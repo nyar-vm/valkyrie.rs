@@ -21,6 +21,6 @@ pub fn parse_value(input: ParseState) -> ParseResult<ValkyrieExpression> {
     input
         .begin_choice()
         .or_else(|s| ValkyrieNumber::parse(s).map_inner(Into::into))
-        .or_else(|s| ValkyrieNamepath::parse(s).map_inner(|s| ValkyrieExpression::Symbol(Box::new(s))))
+        .or_else(|s| ValkyrieNamepath::parse(s).map_inner(Into::into))
         .end_choice()
 }

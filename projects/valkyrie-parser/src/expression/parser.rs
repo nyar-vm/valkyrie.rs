@@ -22,28 +22,29 @@ fn parse_infix_term<'i>(input: ParseState<'i>, stream: &mut Vec<ExpressionStream
 
 /// `(~ prefix)* ~ value (~ suffix)*`
 fn parse_term<'i>(state: ParseState<'i>, stream: &mut Vec<ExpressionStream>) -> ParseResult<'i, ()> {
-    let (state, prefix) = state.match_repeats(parse_prefix)?;
-    stream.extend(prefix);
-    let (state, value) = parse_expr_value(state)?;
-    stream.push(value);
-    let (state, suffix) = state.match_repeats(parse_suffix)?;
-    stream.extend(suffix);
+    let (state, _) = state.match_repeats(|s| parse_prefix(s, stream))?;
+    let (state, _) = parse_expr_value(state, stream)?;
+    let (state, _) = state.match_repeats(|s| parse_suffix(s, stream))?;
     state.finish(())
 }
 
 #[inline(always)]
-fn parse_prefix(input: ParseState) -> ParseResult<ExpressionStream> {
+fn parse_prefix<'a>(input: ParseState<'a>, stream: &mut Vec<ExpressionStream>) -> ParseResult<'a, ()> {
     let (state, prefix) = input.skip(ignore).match_fn(ValkyriePrefix::parse)?;
-    state.finish(ExpressionStream::Prefix(prefix))
+    stream.push(ExpressionStream::Prefix(prefix));
+    state.finish(())
 }
 
 #[inline(always)]
-fn parse_suffix(input: ParseState) -> ParseResult<ExpressionStream> {
+fn parse_suffix<'a>(input: ParseState<'a>, stream: &mut Vec<ExpressionStream>) -> ParseResult<'a, ()> {
     let (state, suffix) = input.skip(ignore).match_fn(ValkyrieSuffix::parse)?;
-    state.finish(ExpressionStream::Postfix(suffix))
+    stream.push(ExpressionStream::Postfix(suffix));
+    state.finish(())
 }
 
 #[inline(always)]
-fn parse_expr_value(input: ParseState) -> ParseResult<ExpressionStream> {
-    input.skip(ignore).match_fn(parse_value).map_inner(ExpressionStream::Term)
+fn parse_expr_value<'a>(input: ParseState<'a>, stream: &mut Vec<ExpressionStream>) -> ParseResult<'a, ()> {
+    let (state, term) = input.skip(ignore).match_fn(parse_value)?;
+    stream.push(ExpressionStream::Term(term));
+    state.finish(())
 }

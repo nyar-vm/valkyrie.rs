@@ -7,6 +7,7 @@ impl Display for ValkyrieOperatorKind {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match self {
             ValkyrieOperatorKind::Not => f.write_char('!'),
+            ValkyrieOperatorKind::Concat => f.write_str("++"),
             ValkyrieOperatorKind::Positive => f.write_char('+'),
             ValkyrieOperatorKind::Negative => f.write_char('-'),
             ValkyrieOperatorKind::Plus => f.write_char('+'),
