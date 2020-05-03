@@ -17,10 +17,10 @@ fn main1() {
 #[test]
 fn main() {
     let resolver = ExpressionResolver::default();
-    let raw = "12 + global::x? ^ 3 ^ 4 + 5 * (y! - 1) * 7 ++ list";
+    let raw = "5cm + 20℃ + global::x? ^ 3 ^ (4 - 2) + 5 * (y! - 1) * 7 ++ list";
     let tt = ExpressionStream::parse(ParseState::new(raw)).unwrap();
     let expr = resolver.resolve(tt).unwrap();
-    println!("input: {raw}");
+    println!("input:\n{raw}");
     // println!("output:\n {expr:#?}");
-    println!("output:\n {}", colored_lisp(expr.lispify(), 30).unwrap());
+    println!("output:\n{}", colored_lisp(expr.lispify(), 42).unwrap());
 }

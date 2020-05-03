@@ -16,17 +16,23 @@ pub struct ExpressionResolver {}
 
 impl ExpressionResolver {
     pub fn resolve(&self, stream: Vec<ExpressionStream>) -> Result<ValkyrieExpression, StopBecause> {
-        println!("stream: {stream:#?}");
+        // println!("stream: {stream:#?}");
         let mut effect = ExpressionResolver {};
         match effect.parse(stream.into_iter()) {
             Ok(o) => Ok(o),
-            Err(PrattError::UserError(e)) => Err(e)?,
-            Err(PrattError::EmptyInput) => unreachable!(),
-            Err(PrattError::UnexpectedNilfix(_)) => unreachable!(),
-            Err(PrattError::UnexpectedPrefix(_)) => unreachable!(),
-            Err(PrattError::UnexpectedInfix(_)) => unreachable!(),
-            Err(PrattError::UnexpectedPostfix(_)) => unreachable!(),
+            Err(e) => make_stop_reason(e),
         }
+    }
+}
+
+fn make_stop_reason<T>(e: PrattError<ExpressionStream, StopBecause>) -> Result<T, StopBecause> {
+    match e {
+        PrattError::UserError(e) => Err(e),
+        PrattError::EmptyInput => unreachable!(),
+        PrattError::UnexpectedNilfix(_) => unreachable!(),
+        PrattError::UnexpectedPrefix(_) => unreachable!(),
+        PrattError::UnexpectedInfix(_) => unreachable!(),
+        PrattError::UnexpectedPostfix(_) => unreachable!(),
     }
 }
 
@@ -193,12 +199,7 @@ where
             ExpressionStream::Term(term) => Ok(term),
             ExpressionStream::Group(group) => match self.parse(&mut group.into_iter()) {
                 Ok(o) => Ok(o),
-                Err(PrattError::UserError(e)) => Err(e)?,
-                Err(PrattError::EmptyInput) => unreachable!(),
-                Err(PrattError::UnexpectedNilfix(_)) => unreachable!(),
-                Err(PrattError::UnexpectedPrefix(_)) => unreachable!(),
-                Err(PrattError::UnexpectedInfix(_)) => unreachable!(),
-                Err(PrattError::UnexpectedPostfix(_)) => unreachable!(),
+                Err(e) => make_stop_reason(e),
             },
             _ => unreachable!(),
         }

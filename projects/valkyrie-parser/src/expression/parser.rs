@@ -4,7 +4,7 @@ impl ExpressionStream {
     /// term (~ infix ~ term)*
     /// 1 + (1 + +3? + 4)
     pub fn parse(state: ParseState) -> ParseResult<Vec<ExpressionStream>> {
-        let mut stream = Vec::new();
+        let mut stream = Vec::with_capacity(4);
         let (state, _) = state.match_fn(|s| parse_term(s, &mut stream))?;
         let (state, _) = state.match_repeats(|s| parse_infix_term(s, &mut stream))?;
         state.finish(stream)
@@ -21,17 +21,16 @@ fn parse_infix_term<'i>(input: ParseState<'i>, stream: &mut Vec<ExpressionStream
 }
 
 /// `( ~ term ~ )`
-pub fn parse_group(state: ParseState) -> ParseResult<Vec<ExpressionStream>> {
-    let mut group = Vec::with_capacity(4);
-    let (state, _) = state.skip(ignore).match_char('(')?;
-    let (state, _) = state.skip(ignore).match_fn(|s| parse_pure_term(s, &mut group))?;
+pub fn parse_group(input: ParseState) -> ParseResult<Vec<ExpressionStream>> {
+    let (state, _) = input.match_char('(')?;
+    let (state, group) = state.skip(ignore).match_fn(ExpressionStream::parse)?;
     let (state, _) = state.skip(ignore).match_char(')')?;
     // Only join the global stream after all success
     state.finish(group)
 }
 
 /// `(~ prefix)* ~ value (~ suffix)*`
-fn parse_pure_term<'i>(state: ParseState<'i>, stream: &mut Vec<ExpressionStream>) -> ParseResult<'i, ()> {
+fn parse_term<'i>(state: ParseState<'i>, stream: &mut Vec<ExpressionStream>) -> ParseResult<'i, ()> {
     let (state, _) = state.match_repeats(|s| parse_prefix(s, stream))?;
     let (state, _) = parse_expr_value(state, stream)?;
     let (state, _) = state.match_repeats(|s| parse_suffix(s, stream))?;

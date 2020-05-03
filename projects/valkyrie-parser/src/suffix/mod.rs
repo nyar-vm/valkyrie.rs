@@ -27,6 +27,8 @@ impl ValkyrieSuffix {
         match self.normalized.as_str() {
             "!" => Precedence(1000),
             "?" => Precedence(1000),
+            "℃" | "℉" => Precedence(1000),
+
             _ => unreachable!("Unknown operator: {}", self.normalized),
         }
     }
@@ -34,6 +36,8 @@ impl ValkyrieSuffix {
         let kind = match self.normalized.as_str() {
             "!" => ValkyrieOperatorKind::Unwrap,
             "?" => ValkyrieOperatorKind::Raise,
+            "℃" => ValkyrieOperatorKind::Celsius,
+            "℉" => ValkyrieOperatorKind::Fahrenheit,
             _ => unreachable!("Unknown operator: {}", self.normalized),
         };
         ValkyrieOperator::new(kind, self.range.clone())

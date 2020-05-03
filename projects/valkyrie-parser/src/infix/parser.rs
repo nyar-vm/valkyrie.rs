@@ -12,7 +12,7 @@ static INFIX: LazyLock<Regex> = LazyLock::new(|| {
       \#
     | [.]{2}[=<]
     | [.]{1,3}
-    | [{}\[\]()]
+    #| [⟦⟧⁅⁆⟬⟭{}\[\]()]
     | [,;$§¶^]
     | @[*!?@]?
     # start with <, >
@@ -45,7 +45,7 @@ static INFIX: LazyLock<Regex> = LazyLock::new(|| {
     | === | == | =
     # unicode
     | [∈∊∉⊑⋢⨳∀∁∂∃∄¬±√∛∜⊹⋗]
-    | [⟦⟧⁅⁆⟬⟭]
+
     | [↻↺⇆↹⇄⇋⇌⇅]
 )"#,
     )
