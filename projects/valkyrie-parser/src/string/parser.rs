@@ -2,7 +2,7 @@ use super::*;
 use crate::expression::ValkyrieExpression;
 use pex::{
     helpers::{make_from_str, whitespace},
-    ParseResult, ParseState, StopBecause,
+    ParseResult, ParseState, StopBecause, StringView, SurroundPair,
 };
 use regex::Regex;
 use std::{str::FromStr, sync::LazyLock};
@@ -12,7 +12,7 @@ impl FromStr for ValkyrieString {
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let state = ParseState::new(s.trim_end()).skip(whitespace);
-        make_from_str(state, Self::parse)
+        make_from_str(state, ValkyrieString::parse)
     }
 }
 
@@ -55,8 +55,36 @@ impl ValkyrieString {
 
 impl From<ValkyrieString> for ValkyrieExpression {
     fn from(value: ValkyrieString) -> Self {
-        ValkyrieExpression::Number(Box::new(value))
+        ValkyrieExpression::String(Box::new(value))
     }
+}
+fn parse_single_quote(input: ParseState) -> ParseResult<SurroundPair> {
+    if !input.residual.starts_with('\'') {
+        return StopBecause::missing_character('\'', input.start_offset)?;
+    }
+    let (state, lhs) = input.match_str_if(|c| c == '\'', "QUOTE")?;
+    if lhs.len() == 2 {
+        return state.finish(SurroundPair {
+            head: StringView::new("'", input.start_offset),
+            body: StringView::new("", input.start_offset + 1),
+            tail: StringView::new("'", input.start_offset + 1),
+        });
+    }
+    match state.residual.find(lhs) {
+        Some(s) => {
+            println!("s: {}", s);
+            unimplemented!()
+        }
+        None => StopBecause::missing_character('\'', state.start_offset)?,
+    }
+    unimplemented!()
+}
+#[test]
+fn test_string() {
+    let text = "'''2'''";
+    let state = ParseState::new(text);
+    let pair = parse_single_quote(state).unwrap();
+    println!("pair: {:?}", pair);
 }
 
 pub static BYTES: LazyLock<Regex> = LazyLock::new(|| {

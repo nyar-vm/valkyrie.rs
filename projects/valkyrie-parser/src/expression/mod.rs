@@ -7,7 +7,7 @@ use std::{
 };
 mod display;
 mod parser;
-use crate::{helpers::parse_value, number::ValkyrieNumber, symbol::ValkyrieNamepath};
+use crate::{helpers::parse_value, number::ValkyrieNumber, string::ValkyrieString, symbol::ValkyrieNamepath};
 use std::fmt::Display;
 
 /// A resolver
@@ -60,6 +60,7 @@ pub enum ValkyrieExpression {
     Suffix(Box<ValkyrieUnary>),
     Number(Box<ValkyrieNumber>),
     Symbol(Box<ValkyrieNamepath>),
+    String(Box<ValkyrieString>),
 }
 
 #[derive(Debug)]
