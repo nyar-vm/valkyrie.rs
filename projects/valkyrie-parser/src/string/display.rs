@@ -1,4 +1,5 @@
 use super::*;
+use lispify::{LispSymbol, ListString};
 
 impl Display for ValkyrieString {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
@@ -12,9 +13,9 @@ impl Display for ValkyrieString {
 }
 
 impl Lispify for ValkyrieString {
-    type Output = LispNumber;
+    type Output = ListString;
 
     fn lispify(&self) -> Self::Output {
-        LispNumber { number: self.value.clone(), unit: self.unit.clone().map(|s| s.name).unwrap_or_default() }
+        ListString { text: self.value.to_owned(), unit: self.unit.clone().map(|u| u.name).unwrap_or_default() }
     }
 }

@@ -59,6 +59,7 @@ impl Lispify for ValkyrieExpression {
             ValkyrieExpression::Suffix(v) => v.lispify().into(),
             ValkyrieExpression::Number(v) => v.lispify().into(),
             ValkyrieExpression::Symbol(v) => v.lispify().into(),
+            ValkyrieExpression::String(v) => v.lispify().into(),
         }
     }
 }

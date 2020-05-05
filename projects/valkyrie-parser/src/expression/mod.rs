@@ -20,12 +20,12 @@ impl ExpressionResolver {
         let mut effect = ExpressionResolver {};
         match effect.parse(stream.into_iter()) {
             Ok(o) => Ok(o),
-            Err(e) => make_stop_reason(e),
+            Err(e) => say_stop_reason(e),
         }
     }
 }
 
-fn make_stop_reason<T>(e: PrattError<ExpressionStream, StopBecause>) -> Result<T, StopBecause> {
+fn say_stop_reason<T>(e: PrattError<ExpressionStream, StopBecause>) -> Result<T, StopBecause> {
     match e {
         PrattError::UserError(e) => Err(e),
         PrattError::EmptyInput => unreachable!(),
@@ -107,6 +107,7 @@ impl ValkyrieExpression {
             ValkyrieExpression::Suffix(u) => u.range.clone(),
             ValkyrieExpression::Number(u) => u.range.clone(),
             ValkyrieExpression::Symbol(u) => u.range.clone(),
+            ValkyrieExpression::String(u) => u.range.clone(),
         }
     }
     pub fn update_range(&mut self) {
@@ -200,7 +201,7 @@ where
             ExpressionStream::Term(term) => Ok(term),
             ExpressionStream::Group(group) => match self.parse(&mut group.into_iter()) {
                 Ok(o) => Ok(o),
-                Err(e) => make_stop_reason(e),
+                Err(e) => say_stop_reason(e),
             },
             _ => unreachable!(),
         }

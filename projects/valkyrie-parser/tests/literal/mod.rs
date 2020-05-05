@@ -22,13 +22,18 @@
 //     debug_lexer(&["tests/literal/tuple.vk", "tests/literal/table.vk"]).unwrap();
 // }
 
+use lispify::{helpers::colored_lisp, Lispify};
 use std::str::FromStr;
-use lispify::helpers::{ colored_lisp};
-use lispify::Lispify;
-use valkyrie_parser::number::ValkyrieNumber;
+use valkyrie_parser::{number::ValkyrieNumber, string::ValkyrieString};
 
 #[test]
 fn test_number() {
     let n = ValkyrieNumber::from_str("1_cm").expect("1");
+    println!("{}", colored_lisp(n.lispify(), 144).unwrap());
+}
+
+#[test]
+fn test_string() {
+    let n = ValkyrieString::from_str(r#"''''a\"""\''''"#).expect("1");
     println!("{}", colored_lisp(n.lispify(), 144).unwrap());
 }

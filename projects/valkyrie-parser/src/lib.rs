@@ -20,6 +20,8 @@ pub mod helpers;
 pub mod infix;
 pub mod number;
 pub mod prefix;
+pub mod slice;
 pub mod string;
 pub mod suffix;
 pub mod symbol;
+pub mod table;

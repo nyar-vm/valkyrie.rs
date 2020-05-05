@@ -1,23 +1,22 @@
 use super::*;
 use crate::expression::ValkyrieExpression;
 use pex::{
-    helpers::{make_from_str, quotation_pair, quotation_pair_nested, surround_pair, whitespace},
-    ParseResult, ParseState, StopBecause, StringView, SurroundPair,
+    helpers::{make_from_str, whitespace},
+    ParseResult, ParseState, StopBecause,
 };
 use regex::Regex;
 use std::{str::FromStr, sync::LazyLock};
 
-impl FromStr for ValkyrieString {
+impl FromStr for ValkyrieSlice {
     type Err = StopBecause;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let state = ParseState::new(s.trim_end()).skip(whitespace);
-
-        make_from_str(state, ValkyrieString::parse)
+        make_from_str(state, Self::parse)
     }
 }
 
-impl FromStr for ValkyrieTemplate {
+impl FromStr for ValkyrieBytes {
     type Err = StopBecause;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
@@ -37,25 +36,26 @@ pub static NUMBER: LazyLock<Regex> = LazyLock::new(|| {
     .unwrap()
 });
 
-impl ValkyrieString {
+impl ValkyrieSlice {
     /// - regular: `\p{XID_Start}|_)\p{XID_Continue}*`
     /// - escaped: ``` `(\.|[^`])*` ```
     pub fn parse(input: ParseState) -> ParseResult<Self> {
-        let (state, unit) = input.match_optional(ValkyrieIdentifier::parse)?;
-        let (state, pair) = state
-            .begin_choice()
-            .or_else(|s| quotation_pair_nested(s, '\''))
-            .or_else(|s| quotation_pair_nested(s, '"'))
-            .or_else(|s| quotation_pair(s, '«', '»'))
-            .end_choice()?;
-
-        state.finish(ValkyrieString { value: pair.body.as_string(), unit, range: state.away_from(input) })
+        let (state, m) = input.match_regex(&NUMBER, "NUMBER")?;
+        let (state, unit) = state.match_optional(parse_unit)?;
+        let mut value = String::with_capacity(m.as_str().len());
+        for c in m.as_str().chars() {
+            if c != '_' {
+                value.push(c);
+            }
+        }
+        let id = ValkyrieSlice { value, unit, range: state.away_from(input) };
+        state.finish(id)
     }
 }
 
-impl From<ValkyrieString> for ValkyrieExpression {
-    fn from(value: ValkyrieString) -> Self {
-        ValkyrieExpression::String(Box::new(value))
+impl From<ValkyrieSlice> for ValkyrieExpression {
+    fn from(value: ValkyrieSlice) -> Self {
+        ValkyrieExpression::Number(Box::new(value))
     }
 }
 
@@ -71,7 +71,7 @@ pub static BYTES: LazyLock<Regex> = LazyLock::new(|| {
 });
 
 // ZeroBytePattern::new(&[("⍚", 16), ("⍙", 8), ("⍜", 2)]);
-impl ValkyrieTemplate {
+impl ValkyrieBytes {
     /// ```js
     /// ⍚F => [15]
     /// ⍚FF => [255]
@@ -95,7 +95,7 @@ impl ValkyrieTemplate {
             }
             None => value = vec![],
         }
-        state.finish(ValkyrieTemplate { bytes: value, unit, range: Default::default() })
+        state.finish(ValkyrieBytes { bytes: value, unit, range: Default::default() })
     }
 }
 

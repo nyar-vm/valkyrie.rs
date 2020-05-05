@@ -1,6 +1,6 @@
 mod escaper;
 pub use self::escaper::StringRewrite;
-use crate::{expression::ValkyrieExpression, number::ValkyrieNumber, symbol::ValkyrieNamepath};
+use crate::{expression::ValkyrieExpression, number::ValkyrieNumber, string::ValkyrieString, symbol::ValkyrieNamepath};
 use pex::{
     helpers::{comment_line, whitespace},
     ParseResult, ParseState,
@@ -20,7 +20,8 @@ pub fn ignore(input: ParseState) -> ParseResult<()> {
 pub fn parse_value(input: ParseState) -> ParseResult<ValkyrieExpression> {
     input
         .begin_choice()
-        .or_else(|s| ValkyrieNumber::parse(s).map_inner(Into::into))
         .or_else(|s| ValkyrieNamepath::parse(s).map_inner(Into::into))
+        .or_else(|s| ValkyrieNumber::parse(s).map_inner(Into::into))
+        .or_else(|s| ValkyrieString::parse(s).map_inner(Into::into))
         .end_choice()
 }
