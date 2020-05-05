@@ -1,4 +1,22 @@
 use super::*;
+use pex::helpers::whitespace;
+
+impl FromStr for ValkyrieExpression {
+    type Err = StopBecause;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        let state = ParseState::new(s.trim_end()).skip(whitespace);
+        make_from_str(state, ValkyrieExpression::parse)
+    }
+}
+
+impl ValkyrieExpression {
+    pub fn parse(input: ParseState) -> ParseResult<Self> {
+        let resolver = ExpressionResolver::default();
+        let (state, stream) = ExpressionStream::parse(input)?;
+        state.finish(resolver.resolve(stream)?)
+    }
+}
 
 impl ExpressionStream {
     /// term (~ infix ~ term)*

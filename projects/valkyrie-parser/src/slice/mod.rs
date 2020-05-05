@@ -1,39 +1,39 @@
 mod display;
 mod parser;
 
-use crate::symbol::ValkyrieIdentifier;
+use crate::{expression::ValkyrieExpression, symbol::ValkyrieIdentifier};
 use std::ops::Range;
 
 /// A number literal.
 #[derive(Debug, Clone, Eq, Hash)]
 pub struct ValkyrieSlice {
     /// The raw string of the number.
-    pub value: String,
-    /// The unit of the number, if any.
-    pub unit: Option<ValkyrieIdentifier>,
+    pub terms: Vec<ValkyrieSliceTerm>,
     /// The range of the number.
     pub range: Range<usize>,
 }
 
 /// A number literal.
 #[derive(Debug, Clone, Eq, Hash)]
-pub struct ValkyrieBytes {
+pub struct ValkyrieSliceTerm {
     /// The raw string of the number.
-    pub bytes: Vec<u8>,
+    pub start: Option<ValkyrieExpression>,
     /// The unit of the number, if any.
-    pub unit: Option<ValkyrieIdentifier>,
+    pub end: Option<ValkyrieExpression>,
+    /// The unit of the number, if any.
+    pub step: Option<ValkyrieExpression>,
     /// The range of the number.
     pub range: Range<usize>,
 }
 
-impl PartialEq for ValkyrieSlice {
+impl PartialEq for ValkyrieSliceTerm {
     fn eq(&self, other: &Self) -> bool {
-        self.value.eq(&other.value) && self.unit.eq(&other.unit)
+        self.value.eq(&other.value) && self.end.eq(&other.end)
     }
 }
 
-impl PartialEq for ValkyrieBytes {
+impl PartialEq for ValkyrieSlice {
     fn eq(&self, other: &Self) -> bool {
-        self.bytes.eq(&other.bytes) && self.unit.eq(&other.unit)
+        self.terms.eq(&other.terms) && self.unit.eq(&other.unit)
     }
 }

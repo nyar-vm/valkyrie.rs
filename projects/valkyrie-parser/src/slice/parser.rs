@@ -1,5 +1,5 @@
 use super::*;
-use crate::expression::ValkyrieExpression;
+use crate::{expression::ValkyrieExpression, helpers::ignore};
 use pex::{
     helpers::{make_from_str, whitespace},
     ParseResult, ParseState, StopBecause,
@@ -7,21 +7,21 @@ use pex::{
 use regex::Regex;
 use std::{str::FromStr, sync::LazyLock};
 
+impl FromStr for ValkyrieSliceTerm {
+    type Err = StopBecause;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        let state = ParseState::new(s.trim_end()).skip(whitespace);
+        make_from_str(state, ValkyrieSliceTerm::parse)
+    }
+}
+
 impl FromStr for ValkyrieSlice {
     type Err = StopBecause;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let state = ParseState::new(s.trim_end()).skip(whitespace);
-        make_from_str(state, Self::parse)
-    }
-}
-
-impl FromStr for ValkyrieBytes {
-    type Err = StopBecause;
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let state = ParseState::new(s.trim_end()).skip(whitespace);
-        make_from_str(state, Self::parse)
+        make_from_str(state, ValkyrieSlice::parse)
     }
 }
 
@@ -36,25 +36,22 @@ pub static NUMBER: LazyLock<Regex> = LazyLock::new(|| {
     .unwrap()
 });
 
-impl ValkyrieSlice {
-    /// - regular: `\p{XID_Start}|_)\p{XID_Continue}*`
-    /// - escaped: ``` `(\.|[^`])*` ```
+impl ValkyrieSliceTerm {
+    /// - regular: `[ (~ start)? ~ : (~ end)? ~ : (~ step)? ~ ]`
     pub fn parse(input: ParseState) -> ParseResult<Self> {
-        let (state, m) = input.match_regex(&NUMBER, "NUMBER")?;
-        let (state, unit) = state.match_optional(parse_unit)?;
-        let mut value = String::with_capacity(m.as_str().len());
-        for c in m.as_str().chars() {
-            if c != '_' {
-                value.push(c);
-            }
-        }
-        let id = ValkyrieSlice { value, unit, range: state.away_from(input) };
-        state.finish(id)
+        let (state, _) = input.match_char('[')?;
+        let (state, start) = state.skip(ignore).match_optional(ValkyrieExpression::parse)?;
+        let (state, _) = state.skip(ignore).match_char(':')?;
+        let (state, end) = state.skip(ignore).match_optional(ValkyrieExpression::parse)?;
+        let (state, _) = state.skip(ignore).match_optional(|s| s.match_char(':'))?;
+        let (state, step) = state.skip(ignore).match_optional(ValkyrieExpression::parse)?;
+        let (state, _) = state.skip(ignore).match_char(']')?;
+        state.finish(ValkyrieSliceTerm { start, end, step, range: state.away_from(input) })
     }
 }
 
-impl From<ValkyrieSlice> for ValkyrieExpression {
-    fn from(value: ValkyrieSlice) -> Self {
+impl From<ValkyrieSliceTerm> for ValkyrieExpression {
+    fn from(value: ValkyrieSliceTerm) -> Self {
         ValkyrieExpression::Number(Box::new(value))
     }
 }
@@ -71,7 +68,7 @@ pub static BYTES: LazyLock<Regex> = LazyLock::new(|| {
 });
 
 // ZeroBytePattern::new(&[("⍚", 16), ("⍙", 8), ("⍜", 2)]);
-impl ValkyrieBytes {
+impl ValkyrieSlice {
     /// ```js
     /// ⍚F => [15]
     /// ⍚FF => [255]
@@ -95,7 +92,7 @@ impl ValkyrieBytes {
             }
             None => value = vec![],
         }
-        state.finish(ValkyrieBytes { bytes: value, unit, range: Default::default() })
+        state.finish(ValkyrieSlice { terms: value, unit, range: Default::default() })
     }
 }
 

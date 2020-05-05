@@ -8,8 +8,8 @@ use std::{
 mod display;
 mod parser;
 use crate::{helpers::parse_value, number::ValkyrieNumber, string::ValkyrieString, symbol::ValkyrieNamepath};
-use std::fmt::Display;
-
+use pex::helpers::make_from_str;
+use std::{fmt::Display, str::FromStr};
 /// A resolver
 #[derive(Default)]
 pub struct ExpressionResolver {}
