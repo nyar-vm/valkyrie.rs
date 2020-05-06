@@ -44,7 +44,7 @@ fn say_stop_reason<T>(e: PrattError<ExpressionStream, StopBecause>) -> Result<T,
 // ..a
 // ...
 // From this
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub enum ExpressionStream {
     Prefix(ValkyriePrefix),
     Postfix(ValkyrieSuffix),
@@ -53,8 +53,9 @@ pub enum ExpressionStream {
     Group(Vec<ExpressionStream>),
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub enum ValkyrieExpression {
+    Placeholder,
     Prefix(Box<ValkyrieUnary>),
     Binary(Box<ValkyrieBinary>),
     Suffix(Box<ValkyrieUnary>),
@@ -63,14 +64,20 @@ pub enum ValkyrieExpression {
     String(Box<ValkyrieString>),
 }
 
-#[derive(Debug)]
+impl PartialEq for ValkyrieExpression {
+    fn eq(&self, other: &Self) -> bool {
+        todo!()
+    }
+}
+
+#[derive(Clone, Debug)]
 pub struct ValkyrieUnary {
     pub operator: ValkyrieOperator,
     pub body: ValkyrieExpression,
     pub range: Range<usize>,
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct ValkyrieBinary {
     pub operator: ValkyrieOperator,
     pub lhs: ValkyrieExpression,
@@ -78,7 +85,7 @@ pub struct ValkyrieBinary {
     pub range: Range<usize>,
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct ValkyrieOperator {
     pub kind: ValkyrieOperatorKind,
     pub range: Range<usize>,
@@ -102,6 +109,7 @@ impl ValkyrieExpression {
     }
     pub fn get_range(&self) -> Range<usize> {
         match self {
+            ValkyrieExpression::Placeholder => unreachable!("Placeholder expressions should not be called"),
             ValkyrieExpression::Prefix(u) => u.range.clone(),
             ValkyrieExpression::Binary(b) => b.range.clone(),
             ValkyrieExpression::Suffix(u) => u.range.clone(),
@@ -138,7 +146,7 @@ impl ValkyrieOperator {
     }
 }
 
-#[derive(Debug)]
+#[derive(Copy, Clone, Debug, Eq, PartialEq, Hash)]
 pub enum ValkyrieOperatorKind {
     /// `!`
     Not,

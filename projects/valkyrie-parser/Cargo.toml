@@ -13,12 +13,15 @@ url = "2.3.1"
 pratt = "0.4.0"
 bit-set = "0.5.3"
 regex = "1.8.1"
-pex = { version = "0.1.9", features = ["regex"]}
-# lazy_static = "1.4"
 
 [dependencies.lispify]
 version = "0.0.0"
 path = "D:\\Java\\pex-sexpr\\projects\\sexpr"
+
+[dependencies.pex]
+version = "0.1.10"
+features = ["regex"]
+path = "D:\\Java\\pex\\projects\\pex-core"
 
 #[dependencies.valkyrie-pest]
 #path = "../valkyrie-pest"

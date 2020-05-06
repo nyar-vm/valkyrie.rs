@@ -8,6 +8,7 @@ use std::{
 mod display;
 mod parser;
 
+#[derive(Clone)]
 pub struct ValkyrieSuffix {
     normalized: String,
     range: Range<usize>,

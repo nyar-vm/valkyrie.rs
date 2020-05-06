@@ -8,6 +8,7 @@ use std::{
 mod display;
 mod parser;
 
+#[derive(Clone)]
 pub struct ValkyrieInfix {
     normalized: String,
     range: Range<usize>,

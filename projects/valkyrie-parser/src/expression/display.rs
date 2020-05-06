@@ -54,6 +54,7 @@ impl Lispify for ValkyrieExpression {
 
     fn lispify(&self) -> Self::Output {
         match self {
+            ValkyrieExpression::Placeholder => unreachable!("Placeholder expressions should not be called"),
             ValkyrieExpression::Prefix(v) => v.lispify().into(),
             ValkyrieExpression::Binary(v) => v.lispify().into(),
             ValkyrieExpression::Suffix(v) => v.lispify().into(),

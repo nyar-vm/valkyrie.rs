@@ -1,17 +1,17 @@
 use lispify::{helpers::colored_lisp, Lispify};
 use pex::ParseState;
 use pratt::PrattParser;
-use valkyrie_parser::expression::{ExpressionResolver, ExpressionStream};
+use valkyrie_parser::{
+    expression::{ExpressionResolver, ExpressionStream},
+    slice::ValkyrieSlice,
+};
 
 #[test]
 fn main1() {
-    let resolver = ExpressionResolver::default();
-    let raw = "(y! * 7)";
-    let tt = ExpressionStream::parse(ParseState::new(raw)).unwrap();
-    let expr = resolver.resolve(tt).unwrap();
-    println!("input: {raw}");
-    println!("output:\n {expr:#?}");
-    println!("output:\n {}", colored_lisp(expr.lispify(), 42).unwrap());
+    let raw = "[1, 2 ]";
+    let slice = ValkyrieSlice::parse(ParseState::new(raw)).unwrap();
+    println!("output:\n {slice:#?}");
+    println!("output:\n {}", colored_lisp(slice.lispify(), 42).unwrap());
 }
 
 #[test]
