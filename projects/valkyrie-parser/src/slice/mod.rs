@@ -29,6 +29,8 @@ pub struct ValkyrieSlice {
 #[derive(Debug, Clone)]
 pub struct ValkyrieSliceTerm {
     /// The raw string of the number.
+    pub is_index: bool,
+    /// The raw string of the number.
     pub start: Option<ValkyrieExpression>,
     /// The unit of the number, if any.
     pub end: Option<ValkyrieExpression>,

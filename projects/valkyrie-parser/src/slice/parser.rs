@@ -32,13 +32,16 @@ impl ValkyrieSlice {
 }
 
 impl ValkyrieSliceTerm {
-    /// - `(start)? ~ : (~ end)? ~ : (~ step)?`
+    /// - `start? ~ : ~ end? (~ : ~ step?)? `
     pub fn parse(input: ParseState) -> ParseResult<Self> {
-        let (state, start) = input.match_optional(ValkyrieExpression::parse)?;
-        let (state, _) = state.skip(ignore).match_char(':')?;
-        let (state, end) = state.skip(ignore).match_optional(ValkyrieExpression::parse)?;
-        let (state, _) = state.skip(ignore).match_optional(|s| s.match_char(':'))?;
-        let (state, step) = state.skip(ignore).match_optional(ValkyrieExpression::parse)?;
-        state.finish(ValkyrieSliceTerm { start, end, step, range: state.away_from(input) })
+        todo!()
     }
+}
+
+fn maybe_step<T>(input: ParseState) -> ParseResult<ValkyrieExpression> {
+    let (state, _) = input.skip(ignore).match_char(':')?;
+}
+
+fn maybe_index<T>(input: ParseState) -> ParseResult<Vec<T>> {
+    input.skip(ignore).match_fn()
 }
