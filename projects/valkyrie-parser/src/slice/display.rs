@@ -21,9 +21,31 @@ impl Lispify for ValkyrieSlice {
 }
 
 impl Lispify for ValkyrieSliceTerm {
-    type Output = LispNumber;
+    type Output = Lisp;
 
     fn lispify(&self) -> Self::Output {
-        todo!()
+        let mut terms = Vec::with_capacity(4);
+        if self.is_index {
+            terms.push(LispSymbol::new("index").into());
+            if let Some(s) = &self.start {
+                terms.push(s.lispify().into());
+            }
+        }
+        else {
+            terms.push(LispSymbol::new("slice").into());
+            match &self.start {
+                None => terms.push(Lisp::keyword("nil")),
+                Some(s) => terms.push(s.lispify().into()),
+            }
+            match &self.end {
+                None => terms.push(Lisp::keyword("nil")),
+                Some(s) => terms.push(s.lispify().into()),
+            }
+            match &self.step {
+                None => terms.push(Lisp::keyword("nil")),
+                Some(s) => terms.push(s.lispify().into()),
+            }
+        }
+        Lisp::Any(terms)
     }
 }

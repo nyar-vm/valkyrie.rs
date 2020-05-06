@@ -19,7 +19,7 @@ static INFIX: LazyLock<Regex> = LazyLock::new(|| {
     | >{1,3} | >= | /> | ≥ | ⩾ | ≫
     | <{1,3} | <= | </ | ≤ | ⩽ | <: | <! 
     # start with :
-    | ∷ | :: | :> | := | ≔ | :
+    | :> | := | ≔
     # start with -
     | -= | -> | ⟶ | -{1,2}
     # start with ~
