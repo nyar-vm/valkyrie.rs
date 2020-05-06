@@ -27,22 +27,34 @@ pub struct ValkyrieSlice {
 
 /// A number literal.
 #[derive(Debug, Clone)]
-pub struct ValkyrieSliceTerm {
-    /// The raw string of the number.
-    pub is_index: bool,
-    /// The raw string of the number.
-    pub start: Option<ValkyrieExpression>,
-    /// The unit of the number, if any.
-    pub end: Option<ValkyrieExpression>,
-    /// The unit of the number, if any.
-    pub step: Option<ValkyrieExpression>,
-    /// The range of the number.
-    pub range: Range<usize>,
+pub enum ValkyrieSliceTerm {
+    Single {
+        element: ValkyrieExpression,
+        /// The range of the number.
+        range: Range<usize>,
+    },
+    Ranged {
+        /// The raw string of the number.
+        start: Option<ValkyrieExpression>,
+        /// The unit of the number, if any.
+        end: Option<ValkyrieExpression>,
+        /// The unit of the number, if any.
+        step: Option<ValkyrieExpression>,
+        /// The range of the number.
+        range: Range<usize>,
+    },
 }
 
 impl PartialEq for ValkyrieSliceTerm {
     fn eq(&self, other: &Self) -> bool {
-        self.start.eq(&other.start) && self.end.eq(&other.end) && self.step.eq(&other.step)
+        match (self, other) {
+            (Self::Single { element, .. }, Self::Single { element: other, .. }) => element.eq(other),
+            (
+                Self::Ranged { start, end, step, .. },
+                Self::Ranged { start: other_start, end: other_end, step: other_step, .. },
+            ) => start.eq(other_start) && end.eq(other_end) && step.eq(other_step),
+            _ => false,
+        }
     }
 }
 

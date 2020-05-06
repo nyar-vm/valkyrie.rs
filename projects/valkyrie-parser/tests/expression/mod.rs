@@ -8,7 +8,7 @@ use valkyrie_parser::{
 
 #[test]
 fn main1() {
-    let raw = "[1:2]";
+    let raw = "[:]";
     let slice = ValkyrieSlice::parse(ParseState::new(raw)).unwrap();
     println!("output:\n {slice:#?}");
     println!("output:\n {}", colored_lisp(slice.lispify(), 42).unwrap());

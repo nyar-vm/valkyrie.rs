@@ -24,28 +24,25 @@ impl Lispify for ValkyrieSliceTerm {
     type Output = Lisp;
 
     fn lispify(&self) -> Self::Output {
-        let mut terms = Vec::with_capacity(4);
-        if self.is_index {
-            terms.push(LispSymbol::new("index").into());
-            if let Some(s) = &self.start {
-                terms.push(s.lispify().into());
+        match self {
+            ValkyrieSliceTerm::Single { element, range } => return element.lispify().into(),
+            ValkyrieSliceTerm::Ranged { start, end, step, range } => {
+                let mut terms = Vec::with_capacity(4);
+                terms.push(LispSymbol::new("range").into());
+                match start {
+                    None => terms.push(Lisp::keyword("nil")),
+                    Some(s) => terms.push(s.lispify().into()),
+                }
+                match end {
+                    None => terms.push(Lisp::keyword("nil")),
+                    Some(s) => terms.push(s.lispify().into()),
+                }
+                match step {
+                    None => terms.push(Lisp::keyword("nil")),
+                    Some(s) => terms.push(s.lispify().into()),
+                }
+                Lisp::Any(terms)
             }
         }
-        else {
-            terms.push(LispSymbol::new("slice").into());
-            match &self.start {
-                None => terms.push(Lisp::keyword("nil")),
-                Some(s) => terms.push(s.lispify().into()),
-            }
-            match &self.end {
-                None => terms.push(Lisp::keyword("nil")),
-                Some(s) => terms.push(s.lispify().into()),
-            }
-            match &self.step {
-                None => terms.push(Lisp::keyword("nil")),
-                Some(s) => terms.push(s.lispify().into()),
-            }
-        }
-        Lisp::Any(terms)
     }
 }

@@ -34,25 +34,25 @@ impl ValkyrieSlice {
 impl ValkyrieSliceTerm {
     /// - `start? ~ : ~ end? (~ : ~ step?)? `
     pub fn parse(input: ParseState) -> ParseResult<Self> {
-        input.begin_choice().or_else(maybe_slice).or_else(maybe_index).end_choice()
+        input.begin_choice().or_else(ValkyrieSliceTerm::parse_single).or_else(ValkyrieSliceTerm::parse_ranged).end_choice()
     }
-}
-
-fn maybe_slice(input: ParseState) -> ParseResult<ValkyrieSliceTerm> {
-    let (state, start) = input.match_optional(ValkyrieExpression::parse)?;
-    let (state, _) = state.skip(ignore).match_char('~')?;
-    let (state, end) = state.skip(ignore).match_optional(ValkyrieExpression::parse)?;
-    let (state, step) = state.match_optional(maybe_step)?;
-    state.finish(ValkyrieSliceTerm { is_index: false, start, end, step, range: state.away_from(input) })
+    /// contains `:`
+    pub fn parse_ranged(input: ParseState) -> ParseResult<ValkyrieSliceTerm> {
+        let (state, start) = input.match_optional(ValkyrieExpression::parse)?;
+        let (state, _) = state.skip(ignore).match_char('~')?;
+        let (state, end) = state.skip(ignore).match_optional(ValkyrieExpression::parse)?;
+        let (state, step) = state.match_optional(maybe_step)?;
+        state.finish(ValkyrieSliceTerm::Ranged { start, end, step, range: state.away_from(input) })
+    }
+    /// without `:`
+    pub fn parse_single(input: ParseState) -> ParseResult<ValkyrieSliceTerm> {
+        let (state, term) = input.skip(ignore).match_fn(ValkyrieExpression::parse)?;
+        state.finish(ValkyrieSliceTerm::Single { element: term, range: state.away_from(input) })
+    }
 }
 
 fn maybe_step(input: ParseState) -> ParseResult<ValkyrieExpression> {
     let (state, _) = input.skip(ignore).match_char(':')?;
     let (state, term) = state.skip(ignore).match_fn(ValkyrieExpression::parse)?;
     state.finish(term)
-}
-
-fn maybe_index(input: ParseState) -> ParseResult<ValkyrieSliceTerm> {
-    let (state, term) = input.skip(ignore).match_fn(ValkyrieExpression::parse)?;
-    state.finish(ValkyrieSliceTerm { is_index: true, start: Some(term), end: None, step: None, range: state.away_from(input) })
 }
