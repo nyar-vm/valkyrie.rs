@@ -15,6 +15,7 @@
 // pub use nyar_hir::{NyarError, NyarErrorKind, Result};
 // pub use traits::ASTDump;
 
+pub mod apply;
 pub mod expression;
 pub mod helpers;
 pub mod infix;

@@ -2,16 +2,18 @@ use lispify::{helpers::colored_lisp, Lispify};
 use pex::ParseState;
 use pratt::PrattParser;
 use valkyrie_parser::{
-    expression::{ExpressionResolver, ExpressionStream},
-    slice::ValkyrieSlice,
+    expression::{ExpressionResolver, ExpressionStream, ValkyrieExpression},
+    slice::{ValkyrieView, ValkyrieViewTerm},
+    string::ValkyrieString,
 };
 
 #[test]
 fn main1() {
-    let raw = "[:]";
-    let slice = ValkyrieSlice::parse(ParseState::new(raw)).unwrap();
-    println!("output:\n {slice:#?}");
-    println!("output:\n {}", colored_lisp(slice.lispify(), 42).unwrap());
+    let raw = "[1, :, ::, :n:, index::range, index: :range]";
+    let slice = ValkyrieView::parse(ParseState::new(raw)).unwrap();
+    println!("input:\nplaceholder{raw}");
+    // println!("output:\n {expr:#?}");
+    println!("output:\n{}", colored_lisp(slice.lispify(), 42).unwrap());
 }
 
 #[test]

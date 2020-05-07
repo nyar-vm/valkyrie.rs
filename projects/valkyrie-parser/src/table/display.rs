@@ -1,25 +1,49 @@
-use std::fmt::{Display, Formatter};
-use lispify::{Lisp, Lispify, LispNumber};
-use crate::number::ValkyrieNumber;
+use super::*;
+use lispify::LispSymbol;
 
-impl Display for ValkyrieNumber {
+impl Display for ValkyrieView {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        f.write_str(&self.value)?;
-        if let Some(unit) = &self.unit {
-            f.write_str(" ")?;
-            f.write_str(&unit.name)?;
-        }
-        Ok(())
+        todo!()
     }
 }
 
-impl Lispify for ValkyrieNumber {
-    type Output = LispNumber;
+impl Lispify for ValkyrieView {
+    type Output = Lisp;
 
     fn lispify(&self) -> Self::Output {
-        LispNumber {
-            number: self.value.clone(),
-            unit: self.unit.clone().map(|s| s.name).unwrap_or_default(),
+        let mut terms = Vec::with_capacity(self.terms.len() + 2);
+        terms.push(Lisp::function("index"));
+        terms.push(self.base.lispify().into());
+        for term in &self.terms {
+            terms.push(term.lispify().into());
+        }
+        Lisp::Any(terms)
+    }
+}
+
+impl Lispify for ValkyrieViewTerm {
+    type Output = Lisp;
+
+    fn lispify(&self) -> Self::Output {
+        match self {
+            ValkyrieViewTerm::Index { element, range } => return element.lispify().into(),
+            ValkyrieViewTerm::Range { start, end, step, range } => {
+                let mut terms = Vec::with_capacity(4);
+                terms.push(Lisp::function("range").into());
+                match start {
+                    None => terms.push(Lisp::keyword("nil")),
+                    Some(s) => terms.push(s.lispify().into()),
+                }
+                match end {
+                    None => terms.push(Lisp::keyword("nil")),
+                    Some(s) => terms.push(s.lispify().into()),
+                }
+                match step {
+                    None => terms.push(Lisp::keyword("nil")),
+                    Some(s) => terms.push(s.lispify().into()),
+                }
+                Lisp::Any(terms)
+            }
         }
     }
 }

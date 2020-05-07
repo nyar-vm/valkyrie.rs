@@ -1,39 +1,67 @@
 mod display;
 mod parser;
-
-use crate::symbol::ValkyrieIdentifier;
-use std::ops::Range;
+use crate::{expression::ValkyrieExpression, helpers::ignore, number::ValkyrieNumber, symbol::ValkyrieIdentifier};
+use lispify::{Lisp, LispNumber, Lispify};
+use pex::{
+    helpers::{make_from_str, whitespace},
+    BracketPattern, ParseResult, ParseState, StopBecause,
+};
+use regex::Regex;
+use std::{
+    fmt::{Display, Formatter},
+    ops::Range,
+    str::FromStr,
+    sync::LazyLock,
+};
 
 /// A number literal.
-#[derive(Debug, Clone, Eq, Hash)]
-pub struct ValkyrieTable {
+#[derive(Debug, Clone)]
+pub struct ValkyrieView {
     /// The raw string of the number.
-    pub value: String,
-    /// The unit of the number, if any.
-    pub unit: Option<ValkyrieIdentifier>,
+    pub base: ValkyrieExpression,
+    /// The raw string of the number.
+    pub terms: Vec<ValkyrieViewTerm>,
     /// The range of the number.
     pub range: Range<usize>,
 }
 
 /// A number literal.
-#[derive(Debug, Clone, Eq, Hash)]
-pub struct ValkyrieBytes {
-    /// The raw string of the number.
-    pub bytes: Vec<u8>,
-    /// The unit of the number, if any.
-    pub unit: Option<ValkyrieIdentifier>,
-    /// The range of the number.
-    pub range: Range<usize>,
+#[derive(Debug, Clone)]
+pub enum ValkyrieViewTerm {
+    /// `array[index]`, also can be a slice `array[[1, 2, 3]]`
+    Index {
+        element: ValkyrieExpression,
+        /// The range of the number.
+        range: Range<usize>,
+    },
+    /// `a[start:end:step]`
+    Range {
+        /// The raw string of the number.
+        start: Option<ValkyrieExpression>,
+        /// The unit of the number, if any.
+        end: Option<ValkyrieExpression>,
+        /// The unit of the number, if any.
+        step: Option<ValkyrieExpression>,
+        /// The range of the number.
+        range: Range<usize>,
+    },
 }
 
-impl PartialEq for ValkyrieTable {
+impl PartialEq for ValkyrieViewTerm {
     fn eq(&self, other: &Self) -> bool {
-        self.value.eq(&other.value) && self.unit.eq(&other.unit)
+        match (self, other) {
+            (Self::Index { element, .. }, Self::Index { element: other, .. }) => element.eq(other),
+            (
+                Self::Range { start, end, step, .. },
+                Self::Range { start: other_start, end: other_end, step: other_step, .. },
+            ) => start.eq(other_start) && end.eq(other_end) && step.eq(other_step),
+            _ => false,
+        }
     }
 }
 
-impl PartialEq for ValkyrieBytes {
+impl PartialEq for ValkyrieView {
     fn eq(&self, other: &Self) -> bool {
-        self.bytes.eq(&other.bytes) && self.unit.eq(&other.unit)
+        self.terms.eq(&other.terms)
     }
 }
