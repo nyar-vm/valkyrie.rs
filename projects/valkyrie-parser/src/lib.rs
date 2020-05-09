@@ -25,4 +25,4 @@ pub mod slice;
 pub mod string;
 pub mod suffix;
 pub mod symbol;
-// pub mod table;
+pub mod table;

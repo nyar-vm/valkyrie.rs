@@ -1,13 +1,13 @@
 use super::*;
 use lispify::LispSymbol;
 
-impl Display for ValkyrieView {
+impl Display for ValkyrieApply {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         todo!()
     }
 }
 
-impl Lispify for ValkyrieView {
+impl Lispify for ValkyrieApply {
     type Output = Lisp;
 
     fn lispify(&self) -> Self::Output {
@@ -21,29 +21,24 @@ impl Lispify for ValkyrieView {
     }
 }
 
-impl Lispify for ValkyrieViewTerm {
+impl Lispify for ValkyrieTableTerm {
     type Output = Lisp;
 
     fn lispify(&self) -> Self::Output {
         match self {
-            ValkyrieViewTerm::Index { element, range } => return element.lispify().into(),
-            ValkyrieViewTerm::Range { start, end, step, range } => {
-                let mut terms = Vec::with_capacity(4);
-                terms.push(Lisp::function("range").into());
-                match start {
-                    None => terms.push(Lisp::keyword("nil")),
-                    Some(s) => terms.push(s.lispify().into()),
-                }
-                match end {
-                    None => terms.push(Lisp::keyword("nil")),
-                    Some(s) => terms.push(s.lispify().into()),
-                }
-                match step {
-                    None => terms.push(Lisp::keyword("nil")),
-                    Some(s) => terms.push(s.lispify().into()),
-                }
-                Lisp::Any(terms)
-            }
+            ValkyrieTableTerm::Item(v) => v.lispify(),
+            ValkyrieTableTerm::Pair(v) => v.lispify(),
         }
+    }
+}
+
+impl Lispify for ValkyriePair {
+    type Output = Lisp;
+
+    fn lispify(&self) -> Self::Output {
+        let mut terms = Vec::with_capacity(2);
+        terms.push(self.key.lispify().into());
+        terms.push(self.value.lispify().into());
+        Lisp::Any(terms)
     }
 }

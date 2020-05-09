@@ -53,7 +53,7 @@ pub enum ExpressionStream {
     Group(Vec<ExpressionStream>),
 }
 
-#[derive(Clone, Debug)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 pub enum ValkyrieExpression {
     Placeholder,
     Prefix(Box<ValkyrieUnary>),
@@ -64,20 +64,24 @@ pub enum ValkyrieExpression {
     String(Box<ValkyrieString>),
 }
 
-impl PartialEq for ValkyrieExpression {
-    fn eq(&self, other: &Self) -> bool {
-        todo!()
-    }
-}
-
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Eq)]
 pub struct ValkyrieUnary {
     pub operator: ValkyrieOperator,
     pub body: ValkyrieExpression,
     pub range: Range<usize>,
 }
 
-#[derive(Clone, Debug)]
+impl PartialEq for ValkyrieUnary {
+    fn eq(&self, other: &Self) -> bool {
+        self.operator.eq(&other.operator) && self.body.eq(&other.body)
+    }
+}
+impl PartialEq for ValkyrieBinary {
+    fn eq(&self, other: &Self) -> bool {
+        self.operator.eq(&other.operator) && self.lhs.eq(&other.lhs) && self.rhs.eq(&other.rhs)
+    }
+}
+#[derive(Clone, Debug, Eq)]
 pub struct ValkyrieBinary {
     pub operator: ValkyrieOperator,
     pub lhs: ValkyrieExpression,
@@ -85,12 +89,16 @@ pub struct ValkyrieBinary {
     pub range: Range<usize>,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Eq)]
 pub struct ValkyrieOperator {
     pub kind: ValkyrieOperatorKind,
     pub range: Range<usize>,
 }
-
+impl PartialEq for ValkyrieOperator {
+    fn eq(&self, other: &Self) -> bool {
+        self.kind.eq(&other.kind)
+    }
+}
 impl ValkyrieExpression {
     pub fn binary(o: ValkyrieOperator, lhs: ValkyrieExpression, rhs: ValkyrieExpression) -> ValkyrieExpression {
         let mut out = ValkyrieExpression::Binary(Box::new(ValkyrieBinary { operator: o, lhs, rhs, range: Default::default() }));

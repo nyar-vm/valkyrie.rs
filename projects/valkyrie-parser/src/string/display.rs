@@ -1,5 +1,5 @@
 use super::*;
-use lispify::{LispSymbol, ListString};
+use lispify::ListString;
 
 impl Display for ValkyrieString {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {

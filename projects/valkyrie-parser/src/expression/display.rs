@@ -1,6 +1,6 @@
 use super::*;
 use crate::symbol::ValkyrieIdentifier;
-use lispify::{Lisp, LispNumber, LispOperator, LispSymbol, Lispify};
+use lispify::{Lisp, LispNumber, LispSymbol, Lispify};
 use std::fmt::Write;
 
 impl Display for ValkyrieOperatorKind {
@@ -34,15 +34,15 @@ impl Display for ValkyrieOperator {
 }
 
 impl Lispify for ValkyrieOperatorKind {
-    type Output = LispOperator;
+    type Output = Lisp;
 
     fn lispify(&self) -> Self::Output {
-        LispOperator { operator: self.to_string(), rest: None }
+        Lisp::Operator(self.to_string())
     }
 }
 
 impl Lispify for ValkyrieOperator {
-    type Output = LispOperator;
+    type Output = Lisp;
 
     fn lispify(&self) -> Self::Output {
         self.kind.lispify()
@@ -85,20 +85,16 @@ impl Lispify for ValkyrieIdentifier {
 }
 
 impl Lispify for ValkyrieBinary {
-    type Output = LispOperator;
+    type Output = Lisp;
 
     fn lispify(&self) -> Self::Output {
-        let head = self.operator.lispify().operator;
-        let rest = vec![self.lhs.lispify(), self.rhs.lispify()];
-        LispOperator { operator: head, rest: Some(rest) }
+        Lisp::operator(self.operator.to_string(), &[self.lhs.lispify(), self.rhs.lispify()])
     }
 }
 impl Lispify for ValkyrieUnary {
-    type Output = LispOperator;
+    type Output = Lisp;
 
     fn lispify(&self) -> Self::Output {
-        let head = self.operator.lispify().operator;
-        let rest = vec![self.body.lispify()];
-        LispOperator { operator: head, rest: Some(rest) }
+        Lisp::operator(self.operator.to_string(), &[self.body.lispify()])
     }
 }

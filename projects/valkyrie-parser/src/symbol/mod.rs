@@ -33,12 +33,18 @@ impl PartialEq for ValkyrieIdentifier {
 }
 
 /// A namepath is a series of identifiers separated by dots.
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Eq)]
 pub struct ValkyrieNamepath {
     /// The names of the identifier.
     pub names: Vec<ValkyrieIdentifier>,
     /// The range of the identifier.
     pub range: Range<usize>,
+}
+
+impl PartialEq for ValkyrieNamepath {
+    fn eq(&self, other: &Self) -> bool {
+        self.names.eq(&other.names)
+    }
 }
 
 impl From<ValkyrieNamepath> for ValkyrieExpression {

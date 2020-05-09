@@ -1,11 +1,30 @@
 use lispify::{helpers::colored_lisp, Lispify};
 use pex::ParseState;
-use pratt::PrattParser;
+
 use valkyrie_parser::{
-    expression::{ExpressionResolver, ExpressionStream, ValkyrieExpression},
-    slice::{ValkyrieView, ValkyrieViewTerm},
-    string::ValkyrieString,
+    apply::ValkyrieApply,
+    expression::{ExpressionResolver, ExpressionStream},
+    slice::ValkyrieView,
+    table::ValkyrieTable,
 };
+
+#[test]
+fn test_table() {
+    let raw = "[1, 2, 3, a: 2]";
+    let slice = ValkyrieTable::parse(ParseState::new(raw)).unwrap();
+    println!("input:\nplaceholder{raw}");
+    // println!("output:\n {expr:#?}");
+    println!("output:\n{}", colored_lisp(slice.lispify(), 42).unwrap());
+}
+
+#[test]
+fn test_apply() {
+    let raw = "(1, 2, 3, a: 2)";
+    let slice = ValkyrieApply::parse(ParseState::new(raw)).unwrap();
+    println!("input:\nplaceholder{raw}");
+    // println!("output:\n {expr:#?}");
+    println!("output:\n{}", colored_lisp(slice.lispify(), 42).unwrap());
+}
 
 #[test]
 fn main1() {
@@ -19,7 +38,7 @@ fn main1() {
 #[test]
 fn main() {
     let resolver = ExpressionResolver::default();
-    let raw = "5cm + 20℃ + global::x? ^ 3 ^ (4 - 2) + 5 * (y! - 1) * 7 ++ list";
+    let raw = "5cm + 20℃ + global::x? ^ 3 ^ (4 - '2') + 5 * (y! - 1) * 7 ++ list";
     let tt = ExpressionStream::parse(ParseState::new(raw)).unwrap();
     let expr = resolver.resolve(tt).unwrap();
     println!("input:\n{raw}");

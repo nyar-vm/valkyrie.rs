@@ -1,5 +1,5 @@
-use lispify::{LispNumber, Lispify};
-use std::fmt::{Display, Formatter, Write};
+use lispify::Lispify;
+use std::fmt::{Display, Formatter};
 
 mod display;
 mod parser;
