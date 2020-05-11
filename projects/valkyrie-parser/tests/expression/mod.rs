@@ -10,10 +10,16 @@ use valkyrie_parser::{
 
 #[test]
 fn test_table() {
-    let raw = "[1, 2, 3, a: 2]";
+    let raw = r#"[
+    a: 1, 
+    2, 
+    3, 
+    b: 2,
+    **kwargs
+]"#;
     let slice = ValkyrieTable::parse(ParseState::new(raw)).unwrap();
     println!("input:\nplaceholder{raw}");
-    // println!("output:\n {expr:#?}");
+    println!("output:\n {slice:#?}");
     println!("output:\n{}", colored_lisp(slice.lispify(), 42).unwrap());
 }
 

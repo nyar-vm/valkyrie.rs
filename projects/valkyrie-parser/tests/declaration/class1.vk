@@ -1,9 +1,43 @@
 
 
 
-class A {}
+class A {
+	inherit Base;
+	inherit Base2;
+}
 
 
 class B {
 	item
+}
+
+
+@require {
+	a: b
+}
+public static void fun main(args: [String], type A, ) {
+
+}
+
+union A(u8): A + B {
+	A
+}
+
+def a() {
+
+}
+
+class A(B, C): C + D {
+	pub static a(): Ref<B> + D {
+		return 1
+	}
+	a {
+		get {
+			return 1
+		}
+		set {
+			return 1
+		}
+	}
+
 }

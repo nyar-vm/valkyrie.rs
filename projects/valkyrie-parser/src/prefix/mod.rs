@@ -27,9 +27,8 @@ impl ValkyriePrefix {
 
     pub fn precedence(&self) -> Precedence {
         match self.normalized.as_str() {
-            "+" | "-" => Precedence(2),
-            "*" | "/" => Precedence(3),
-            "^" => Precedence(4),
+            "*" => Precedence(5),
+            "**" => Precedence(5),
             _ => unreachable!("Unknown operator: {}", self.normalized),
         }
     }
@@ -43,11 +42,10 @@ impl ValkyriePrefix {
     }
     pub fn as_operator(&self) -> ValkyrieOperator {
         let kind = match self.normalized.as_str() {
-            "+" => ValkyrieOperatorKind::Plus,
-            "-" => ValkyrieOperatorKind::Minus,
-            "*" => ValkyrieOperatorKind::Mul,
-            "/" => ValkyrieOperatorKind::Div,
-            "^" => ValkyrieOperatorKind::Pow,
+            "+" => ValkyrieOperatorKind::Positive,
+            "-" => ValkyrieOperatorKind::Negative,
+            "*" => ValkyrieOperatorKind::Unbox,
+            "**" => ValkyrieOperatorKind::Unpack,
             _ => unreachable!("Unknown operator: {}", self.normalized),
         };
         ValkyrieOperator::new(kind, self.range.clone())

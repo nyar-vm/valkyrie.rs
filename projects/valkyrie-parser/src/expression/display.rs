@@ -23,6 +23,8 @@ impl Display for ValkyrieOperatorKind {
             ValkyrieOperatorKind::Transpose => f.write_char('ᵀ'),
             ValkyrieOperatorKind::Transjugate => f.write_char('ᴴ'),
             ValkyrieOperatorKind::Hermitian => f.write_str("Hermitian"),
+            ValkyrieOperatorKind::Unbox => f.write_char('*'),
+            ValkyrieOperatorKind::Unpack => f.write_str("**"),
         }
     }
 }

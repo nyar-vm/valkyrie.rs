@@ -162,6 +162,10 @@ pub enum ValkyrieOperatorKind {
     Positive,
     /// `-`
     Negative,
+    /// `*`
+    Unbox,
+    /// `**`
+    Unpack,
     /// `+`
     Plus,
     /// `++`
