@@ -1,35 +1,49 @@
 use lispify::{helpers::colored_lisp, Lispify};
 use pex::ParseState;
+use std::str::FromStr;
 
 use valkyrie_parser::{
-    apply::ValkyrieApply,
+    apply::{ValkyrieApply, ValkyrieTableTerm},
     expression::{ExpressionResolver, ExpressionStream},
     slice::ValkyrieView,
     table::ValkyrieTable,
 };
 
 #[test]
+fn test_expr() {
+    let raw = r#"
+#   ***kwargs
+x
+"#;
+    let slice = ValkyrieTableTerm::from_str(raw).unwrap();
+    println!("input:\n{raw}");
+    // println!("output:\n {slice:#?}");
+    println!("output:\n{}", colored_lisp(slice.lispify(), 42).unwrap());
+}
+
+#[test]
 fn test_table() {
     let raw = r#"[
+    2,
+    3,
     a: 1, 
-    2, 
-    3, 
     b: 2,
-    **kwargs
+#   *args,
+#   **kwargs
 ]"#;
-    let slice = ValkyrieTable::parse(ParseState::new(raw)).unwrap();
-    println!("input:\nplaceholder{raw}");
-    println!("output:\n {slice:#?}");
+    let slice = ValkyrieTable::from_str(raw).unwrap();
+    println!("input:\n{raw}");
+    // println!("output:\n {slice:#?}");
     println!("output:\n{}", colored_lisp(slice.lispify(), 42).unwrap());
 }
 
 #[test]
 fn test_apply() {
-    let raw = "(1, 2, 3, a: 2)";
-    let slice = ValkyrieApply::parse(ParseState::new(raw)).unwrap();
+    let raw = "(1, 2, 3, a: 2, `b`: value)";
+    let apply = ValkyrieApply::parse(ParseState::new(raw)).unwrap();
     println!("input:\nplaceholder{raw}");
-    // println!("output:\n {expr:#?}");
-    println!("output:\n{}", colored_lisp(slice.lispify(), 42).unwrap());
+    println!("output:\n {apply:#?}");
+    println!("output:\n{}", colored_lisp(apply.lispify(), 42).unwrap());
 }
 
 #[test]

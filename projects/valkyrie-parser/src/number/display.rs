@@ -1,6 +1,4 @@
-use std::fmt::{Display, Formatter};
-use lispify::{Lisp, Lispify, LispNumber};
-use crate::number::ValkyrieNumber;
+use super::*;
 
 impl Display for ValkyrieNumber {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
@@ -17,9 +15,6 @@ impl Lispify for ValkyrieNumber {
     type Output = LispNumber;
 
     fn lispify(&self) -> Self::Output {
-        LispNumber {
-            number: self.value.clone(),
-            unit: self.unit.clone().map(|s| s.name).unwrap_or_default(),
-        }
+        LispNumber { number: self.value.clone(), unit: self.unit.clone().map(|s| s.name).unwrap_or_default() }
     }
 }

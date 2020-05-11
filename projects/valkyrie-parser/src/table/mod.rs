@@ -1,13 +1,13 @@
 mod display;
 mod parser;
-use crate::{expression::ValkyrieExpression, helpers::ignore};
+use crate::helpers::ignore;
 use lispify::{Lisp, Lispify};
 use pex::{
     helpers::{make_from_str, whitespace},
     BracketPattern, ParseResult, ParseState, StopBecause,
 };
 
-use crate::apply::{ValkyrieApply, ValkyrieTableTerm};
+use crate::apply::ValkyrieTableTerm;
 use std::{
     fmt::{Display, Formatter},
     ops::Range,

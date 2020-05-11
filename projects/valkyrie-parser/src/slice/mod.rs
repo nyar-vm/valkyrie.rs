@@ -1,17 +1,16 @@
 mod display;
 mod parser;
-use crate::{expression::ValkyrieExpression, helpers::ignore, number::ValkyrieNumber, symbol::ValkyrieIdentifier};
-use lispify::{Lisp, LispNumber, Lispify};
+use crate::{expression::ValkyrieExpression, helpers::ignore, symbol::ValkyrieIdentifier};
+use lispify::{Lisp, Lispify};
 use pex::{
     helpers::{make_from_str, whitespace},
     BracketPattern, ParseResult, ParseState, StopBecause,
 };
-use regex::Regex;
+
 use std::{
     fmt::{Display, Formatter},
     ops::Range,
     str::FromStr,
-    sync::LazyLock,
 };
 
 /// A number literal.

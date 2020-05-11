@@ -1,5 +1,4 @@
 use super::*;
-use lispify::LispSymbol;
 
 impl Display for ValkyrieView {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
@@ -26,8 +25,8 @@ impl Lispify for ValkyrieViewTerm {
 
     fn lispify(&self) -> Self::Output {
         match self {
-            ValkyrieViewTerm::Index { element, range } => return element.lispify().into(),
-            ValkyrieViewTerm::Range { start, end, step, range } => {
+            ValkyrieViewTerm::Index { element, .. } => return element.lispify().into(),
+            ValkyrieViewTerm::Range { start, end, step, .. } => {
                 let mut terms = Vec::with_capacity(4);
                 terms.push(Lisp::function("range").into());
                 match start {

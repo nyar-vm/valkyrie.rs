@@ -1,6 +1,6 @@
 use super::*;
 use crate::symbol::ValkyrieIdentifier;
-use lispify::{Lisp, LispNumber, LispSymbol, Lispify};
+use lispify::{Lisp, LispSymbol, Lispify};
 use std::fmt::Write;
 
 impl Display for ValkyrieOperatorKind {

@@ -1,5 +1,4 @@
 use super::*;
-use lispify::LispSymbol;
 
 impl Display for ValkyrieApply {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
@@ -36,7 +35,8 @@ impl Lispify for ValkyriePair {
     type Output = Lisp;
 
     fn lispify(&self) -> Self::Output {
-        let mut terms = Vec::with_capacity(2);
+        let mut terms = Vec::with_capacity(3);
+        terms.push(Lisp::function("pair"));
         terms.push(self.key.lispify().into());
         terms.push(self.value.lispify().into());
         Lisp::Any(terms)

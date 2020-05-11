@@ -18,12 +18,8 @@ impl FromStr for ValkyrieView {
     }
 }
 
-// ZeroBytePattern::new(&[("⍚", 16), ("⍙", 8), ("⍜", 2)]);
 impl ValkyrieView {
-    /// ```js
-    /// []
-    /// [term (, term)* ,?]
-    /// ```
+    /// `[` ~ `]` | `[` [term](ValkyrieViewTerm::parse) ( ~ `,` ~ [term](ValkyrieViewTerm::parse))* `,`? `]`
     pub fn parse(input: ParseState) -> ParseResult<Self> {
         let pat = BracketPattern::new("[", "]");
         let (state, terms) = pat.consume(input, ignore, ValkyrieViewTerm::parse)?;
@@ -32,11 +28,11 @@ impl ValkyrieView {
 }
 
 impl ValkyrieViewTerm {
-    /// - `start? ~ : ~ end? (~ : ~ step?)? `
+    /// [range](ValkyrieViewTerm::parse_ranged) | [index](ValkyrieViewTerm::parse_single)
     pub fn parse(input: ParseState) -> ParseResult<Self> {
         input.begin_choice().or_else(ValkyrieViewTerm::parse_ranged).or_else(ValkyrieViewTerm::parse_single).end_choice()
     }
-    /// - `start? ~ : ~ end? (~ : ~ step?)? `
+    /// [start](ValkyrieExpression::parse)? ~ `:` ~ [end](ValkyrieExpression::parse)? (~ `:` ~ [step](ValkyrieExpression::parse)?)?
     pub fn parse_ranged(input: ParseState) -> ParseResult<ValkyrieViewTerm> {
         let (state, start) = input.match_optional(ValkyrieExpression::parse)?;
         let (state, _) = state.skip(ignore).match_char(':')?;
@@ -44,9 +40,9 @@ impl ValkyrieViewTerm {
         let (state, step) = state.match_optional(maybe_step)?;
         state.finish(ValkyrieViewTerm::Range { start, end, step: step.flatten(), range: state.away_from(input) })
     }
-    /// - `term`
+    /// - [term](ValkyrieExpression::parse)
     pub fn parse_single(input: ParseState) -> ParseResult<ValkyrieViewTerm> {
-        let (state, term) = input.skip(ignore).match_fn(ValkyrieExpression::parse)?;
+        let (state, term) = ValkyrieExpression::parse(input)?;
         state.finish(ValkyrieViewTerm::Index { element: term, range: state.away_from(input) })
     }
 }

@@ -1,19 +1,30 @@
 mod escaper;
+
 pub use self::escaper::StringRewrite;
 use crate::{expression::ValkyrieExpression, number::ValkyrieNumber, string::ValkyrieString, symbol::ValkyrieNamepath};
 use pex::{
     helpers::{comment_line, whitespace},
     ParseResult, ParseState,
 };
+use regex::Regex;
+use std::sync::LazyLock;
+
+pub static IGNORE: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(
+        r"^(?x)(
+    # whitespace
+      \s
+    # comments
+    | \# [^\r\n]*
+)*",
+    )
+    .unwrap()
+});
 
 /// Ignores whitespace and comments.
 #[inline]
 pub fn ignore(input: ParseState) -> ParseResult<()> {
-    input
-        .begin_choice()
-        .or_else(|s| whitespace(s).map_inner(|_| ()))
-        .or_else(|s| comment_line(s, "//").map_inner(|_| ()))
-        .end_choice()
+    input.match_regex(&IGNORE, "IGNORE").map_inner(|_| ())
 }
 
 #[inline]
