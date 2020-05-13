@@ -16,6 +16,7 @@
 // pub use traits::ASTDump;
 
 pub mod apply;
+pub mod dot_call;
 pub mod expression;
 pub mod helpers;
 pub mod infix;

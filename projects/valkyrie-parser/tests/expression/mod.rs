@@ -4,6 +4,7 @@ use std::str::FromStr;
 
 use valkyrie_parser::{
     apply::{ValkyrieApply, ValkyrieTableTerm},
+    dot_call::ValkyrieDotCall,
     expression::{ExpressionResolver, ExpressionStream},
     slice::ValkyrieView,
     table::ValkyrieTable,
@@ -12,10 +13,9 @@ use valkyrie_parser::{
 #[test]
 fn test_expr() {
     let raw = r#"
-#   ***kwargs
-x
+.a(x)
 "#;
-    let slice = ValkyrieTableTerm::from_str(raw).unwrap();
+    let slice = ValkyrieDotCall::from_str(raw).unwrap();
     println!("input:\n{raw}");
     // println!("output:\n {slice:#?}");
     println!("output:\n{}", colored_lisp(slice.lispify(), 42).unwrap());
