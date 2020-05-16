@@ -3,21 +3,21 @@ use pex::ParseState;
 use std::str::FromStr;
 
 use valkyrie_parser::{
-    apply::{ValkyrieApply, ValkyrieTableTerm},
-    dot_call::ValkyrieDotCall,
+    call_apply::ValkyrieApply,
+    call_dot::ValkyrieDotCall,
+    call_index::ValkyrieView,
     expression::{ExpressionResolver, ExpressionStream},
-    slice::ValkyrieView,
     table::ValkyrieTable,
 };
 
 #[test]
 fn test_expr() {
     let raw = r#"
-.a(x)
+.a(x, b: 1, c)
 "#;
     let slice = ValkyrieDotCall::from_str(raw).unwrap();
     println!("input:\n{raw}");
-    // println!("output:\n {slice:#?}");
+    // println!("output:\n {call_index:#?}");
     println!("output:\n{}", colored_lisp(slice.lispify(), 42).unwrap());
 }
 
@@ -33,7 +33,7 @@ fn test_table() {
 ]"#;
     let slice = ValkyrieTable::from_str(raw).unwrap();
     println!("input:\n{raw}");
-    // println!("output:\n {slice:#?}");
+    // println!("output:\n {call_index:#?}");
     println!("output:\n{}", colored_lisp(slice.lispify(), 42).unwrap());
 }
 
@@ -42,7 +42,7 @@ fn test_apply() {
     let raw = "(1, 2, 3, a: 2, `b`: value)";
     let apply = ValkyrieApply::parse(ParseState::new(raw)).unwrap();
     println!("input:\nplaceholder{raw}");
-    println!("output:\n {apply:#?}");
+    // println!("output:\n {call_apply:#?}");
     println!("output:\n{}", colored_lisp(apply.lispify(), 42).unwrap());
 }
 

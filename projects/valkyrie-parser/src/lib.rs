@@ -15,14 +15,15 @@
 // pub use nyar_hir::{NyarError, NyarErrorKind, Result};
 // pub use traits::ASTDump;
 
-pub mod apply;
-pub mod dot_call;
+pub mod call_apply;
+pub mod call_dot;
+pub mod call_index;
 pub mod expression;
 pub mod helpers;
 pub mod infix;
 pub mod number;
 pub mod prefix;
-pub mod slice;
+pub mod repl;
 pub mod string;
 pub mod suffix;
 pub mod symbol;

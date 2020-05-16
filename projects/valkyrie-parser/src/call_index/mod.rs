@@ -1,6 +1,6 @@
 mod display;
 mod parser;
-use crate::{expression::ValkyrieExpression, helpers::ignore, symbol::ValkyrieIdentifier};
+use crate::{expression::ValkyrieExpression, helpers::ignore};
 use lispify::{Lisp, Lispify};
 use pex::{
     helpers::{make_from_str, whitespace},
@@ -27,7 +27,7 @@ pub struct ValkyrieView {
 /// A number literal.
 #[derive(Debug, Clone)]
 pub enum ValkyrieViewTerm {
-    /// `array[index]`, also can be a slice `array[[1, 2, 3]]`
+    /// `array[index]`, also can be a call_index `array[[1, 2, 3]]`
     Index {
         element: ValkyrieExpression,
         /// The range of the number.

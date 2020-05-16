@@ -1,5 +1,4 @@
 use super::*;
-use crate::apply::ValkyriePair;
 
 impl FromStr for ValkyrieDotCall {
     type Err = StopBecause;

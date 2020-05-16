@@ -2,10 +2,7 @@ mod escaper;
 
 pub use self::escaper::StringRewrite;
 use crate::{expression::ValkyrieExpression, number::ValkyrieNumber, string::ValkyrieString, symbol::ValkyrieNamepath};
-use pex::{
-    helpers::{comment_line, whitespace},
-    ParseResult, ParseState,
-};
+use pex::{ParseResult, ParseState};
 use regex::Regex;
 use std::sync::LazyLock;
 
