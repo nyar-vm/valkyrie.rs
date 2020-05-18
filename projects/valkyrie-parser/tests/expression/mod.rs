@@ -3,10 +3,10 @@ use pex::ParseState;
 use std::str::FromStr;
 
 use valkyrie_parser::{
-    call_apply::ValkyrieApply,
     call_dot::ValkyrieDotCall,
     call_index::ValkyrieView,
     expression::{ExpressionResolver, ExpressionStream},
+    repl::parse_repl,
     table::ValkyrieTable,
 };
 
@@ -39,11 +39,11 @@ fn test_table() {
 
 #[test]
 fn test_apply() {
-    let raw = "(1, 2, 3, a: 2, `b`: value)";
-    let apply = ValkyrieApply::parse(ParseState::new(raw)).unwrap();
-    println!("input:\nplaceholder{raw}");
-    // println!("output:\n {call_apply:#?}");
-    println!("output:\n{}", colored_lisp(apply.lispify(), 42).unwrap());
+    let raw = "1 2 3";
+    let apply = parse_repl(raw).expect("failed to parse");
+    for expr in &apply {
+        println!("{}", colored_lisp(expr.lispify(), 144).unwrap());
+    }
 }
 
 #[test]

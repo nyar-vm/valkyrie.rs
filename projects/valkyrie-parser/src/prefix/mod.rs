@@ -1,5 +1,5 @@
 use crate::expression::{ValkyrieOperator, ValkyrieOperatorKind};
-use pratt::{Associativity, Precedence};
+use pratt::Precedence;
 use std::{
     fmt::{Debug, Formatter},
     ops::Range,
@@ -27,16 +27,9 @@ impl ValkyriePrefix {
 
     pub fn precedence(&self) -> Precedence {
         match self.normalized.as_str() {
-            "*" => Precedence(5),
-            "**" => Precedence(5),
-            _ => unreachable!("Unknown operator: {}", self.normalized),
-        }
-    }
-    pub fn associativity(&self) -> Associativity {
-        match self.normalized.as_str() {
-            "+" | "-" => Associativity::Left,
-            "*" | "/" => Associativity::Left,
-            "^" => Associativity::Right,
+            "*" => Precedence(1000),
+            "**" => Precedence(1000),
+            "+" | "-" => Precedence(1000),
             _ => unreachable!("Unknown operator: {}", self.normalized),
         }
     }

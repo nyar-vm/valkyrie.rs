@@ -21,9 +21,8 @@ impl FromStr for ValkyrieBytes {
 // 16^^AEF
 pub static NUMBER: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(
-        r"^(?ux)(
-    [0-9](_*[0-9])*
-
+        r"^(?x)(
+    [0-9](_*[0-9])*([.][0-9](_*[0-9])*)?
 )",
     )
     .unwrap()

@@ -24,7 +24,15 @@
 
 use lispify::{helpers::colored_lisp, Lispify};
 use std::str::FromStr;
-use valkyrie_parser::{number::ValkyrieNumber, string::ValkyrieString};
+use valkyrie_parser::{number::ValkyrieNumber, repl::parse_repl, string::ValkyrieString};
+
+#[test]
+fn test_apply() {
+    let apply = parse_repl(include_str!("number.vk")).expect("failed to parse");
+    for expr in &apply {
+        println!("{}", colored_lisp(expr.lispify(), 144).unwrap());
+    }
+}
 
 #[test]
 fn test_number() {

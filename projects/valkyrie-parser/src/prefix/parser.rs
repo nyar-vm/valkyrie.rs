@@ -9,8 +9,9 @@ use std::{str::FromStr, sync::LazyLock};
 static PREFIX: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(
         r#"^(?x)
-      [¬!~]
-    | [±√∛∜]
+      [+\-±]
+    | [¬!~]
+    | [√∛∜]
     # | [*]{1,2}
 "#,
     )
