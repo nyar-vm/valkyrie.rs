@@ -1,8 +1,16 @@
 use super::*;
 
-pub fn parse_repl(s: &str) -> Result<Vec<ValkyrieREPL>, StopBecause> {
-    // let normed = s.replace("\\\n", "\n");
-    make_from_str(ParseState::new(s), parse_many)
+#[track_caller]
+pub fn parse_repl(s: &str) -> Vec<ValkyrieREPL> {
+    let input = ParseState::new(s);
+    let (state, repl) = match input.match_repeats(ValkyrieREPL::parse) {
+        ParseResult::Pending(s, v) => (s.skip(ignore), v),
+        ParseResult::Stop(e) => panic!("Failed to parse REPL: {:?}", e),
+    };
+    if !state.residual.is_empty() {
+        panic!("Expect EOF, found:\n{}", state.residual)
+    }
+    repl
 }
 
 #[inline(always)]

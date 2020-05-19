@@ -11,10 +11,11 @@ impl FromStr for ValkyrieIdentifier {
 
 pub static IDENTIFIER: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(
-        r"(?ux)
-    ^(?P<regular>(?:\p{XID_Start}|_)\p{XID_Continue}*)
-|   ^`(?P<escaped>(?:\\.|[^`])*)`
-    ",
+        r"^(?x)(
+      [∞∅]
+    | (?P<regular>(?:\p{XID_Start}|_)\p{XID_Continue}*)
+    | `(?P<escaped>(?:\\.|[^`])*)`
+)",
     )
     .unwrap()
 });

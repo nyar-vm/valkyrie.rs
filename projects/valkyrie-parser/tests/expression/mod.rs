@@ -40,7 +40,7 @@ fn test_table() {
 #[test]
 fn test_apply() {
     let raw = "1 2 3";
-    let apply = parse_repl(raw).expect("failed to parse");
+    let apply = parse_repl(raw);
     for expr in &apply {
         println!("{}", colored_lisp(expr.lispify(), 144).unwrap());
     }
