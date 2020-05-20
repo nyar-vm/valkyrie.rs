@@ -4,9 +4,27 @@ a ^ b ^ c;
 
 1 + 2 * 3 ^ (4 - 5);
 
-##
+# compare
 
 a > b > c;
-a >> b >> c;
-a >>> b >>> c;
+a ≫ b >> c;
+a ⋙ b >>> c;
+
+
+# a >= b >= c >= d;
+
+
+a < b < c;
+a ≪ b << c;
+a ⋘ b <<< c;
+
+# a <= b <= c <= d;
+
+
+# contains
+
+a in b;
+a not in b;
+a !in b;
+a !in b;
 

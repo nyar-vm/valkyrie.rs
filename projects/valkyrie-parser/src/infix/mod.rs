@@ -15,27 +15,39 @@ pub struct ValkyrieInfix {
 }
 
 impl ValkyrieInfix {
-    pub fn new<S: ToString>(s: S, range: Range<usize>) -> ValkyrieInfix {
-        ValkyrieInfix { normalized: s.to_string(), range }
+    pub fn new<S: AsRef<str>>(infix: S, range: Range<usize>) -> ValkyrieInfix {
+        let text = infix.as_ref();
+        let mut normalized = String::with_capacity(text.len());
+        for c in text.chars() {
+            match c {
+                ' ' => continue,
+                '∈' | '∊' => normalized.push_str("in"),
+                '≫' => normalized.push_str(">>"),
+                '≪' => normalized.push_str("<<"),
+                '⋙' => normalized.push_str(">>>"),
+                '⋘' => normalized.push_str("<<<"),
+                '∉' => normalized.push_str("!in"),
+                _ => normalized.push(c),
+            }
+        }
+        ValkyrieInfix { normalized, range }
     }
-
     pub fn precedence(&self) -> Precedence {
         match self.normalized.as_str() {
             "++" => Precedence(100),
             "+" | "-" => Precedence(200),
             "*" | "/" => Precedence(300),
             "^" => Precedence(400),
+            "==" | "<" | ">" => Precedence(100),
+            "<<" | ">>" => Precedence(450),
+            "<<<" | ">>>" => Precedence(550),
             _ => unreachable!("Unknown operator: {}", self.normalized),
         }
     }
     pub fn associativity(&self) -> Associativity {
         match self.normalized.as_str() {
-            "++" => Associativity::Left,
-            "+" | "-" => Associativity::Left,
-            "*" | "/" => Associativity::Left,
             "^" => Associativity::Right,
-
-            _ => unreachable!("Unknown operator: {}", self.normalized),
+            _ => Associativity::Left,
         }
     }
     pub fn as_operator(&self) -> ValkyrieOperator {
@@ -46,6 +58,12 @@ impl ValkyrieInfix {
             "*" => ValkyrieOperatorKind::Mul,
             "/" => ValkyrieOperatorKind::Div,
             "^" => ValkyrieOperatorKind::Pow,
+            ">" => ValkyrieOperatorKind::Greater,
+            ">>" => ValkyrieOperatorKind::MuchGreater,
+            ">>>" => ValkyrieOperatorKind::VeryMuchGreater,
+            "<" => ValkyrieOperatorKind::Less,
+            "<<" => ValkyrieOperatorKind::MuchLess,
+            "<<<" => ValkyrieOperatorKind::VeryMuchLess,
             _ => unreachable!("Unknown operator: {}", self.normalized),
         };
         ValkyrieOperator::new(kind, self.range.clone())

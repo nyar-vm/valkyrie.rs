@@ -170,6 +170,16 @@ pub enum ValkyrieOperatorKind {
     Plus,
     /// `++`
     Concat,
+    /// `>`
+    Greater,
+    /// `<`
+    Less,
+    /// `≫`, `>>`
+    MuchGreater,
+    MuchLess,
+    /// `⋙`, `>>>`
+    VeryMuchGreater,
+    VeryMuchLess,
     /// `-`
     Minus,
     /// `*`

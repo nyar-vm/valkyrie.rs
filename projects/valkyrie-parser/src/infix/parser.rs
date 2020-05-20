@@ -14,9 +14,10 @@ static INFIX: LazyLock<Regex> = LazyLock::new(|| {
     # | [⟦⟧⁅⁆⟬⟭{}\[\]()]
     | [$§¶^]
     | @[*!?@]?
+    | (\b(not)\b\s+)?\b(in)\b
     # start with <, >
-    | >{1,3} | >= | /> | ≥ | ⩾ | ≫
-    | <{1,3} | <= | </ | ≤ | ⩽ | <: | <! 
+    | >{1,3} | >= | /> | ≥ | ⩾ | ≫ | ⋙
+    | <{1,3} | <= | </ | ≤ | ⩽ | ≪ | ⋘ |  <: | <! 
     # start with :
     | :> | := | ≔
     # start with -
@@ -62,16 +63,7 @@ impl FromStr for ValkyrieInfix {
 impl ValkyrieInfix {
     pub fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, m) = input.match_regex(&INFIX, "INFIX")?;
-        let mut normalized = String::with_capacity(m.len());
-        for c in m.as_str().chars() {
-            match c {
-                ' ' => continue,
-                '∈' | '∊' => normalized.push_str("in"),
-                '∉' => normalized.push_str("!in"),
-                _ => normalized.push(c),
-            }
-        }
-        let id = ValkyrieInfix { normalized: m.as_str().to_string(), range: state.away_from(input) };
+        let id = ValkyrieInfix::new(m.as_str(), state.away_from(input));
         state.finish(id)
     }
 }

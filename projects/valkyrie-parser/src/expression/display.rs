@@ -25,6 +25,12 @@ impl Display for ValkyrieOperatorKind {
             ValkyrieOperatorKind::Hermitian => f.write_str("Hermitian"),
             ValkyrieOperatorKind::Unbox => f.write_char('*'),
             ValkyrieOperatorKind::Unpack => f.write_str("**"),
+            ValkyrieOperatorKind::Greater => f.write_char('>'),
+            ValkyrieOperatorKind::MuchGreater => f.write_char('≫'),
+            ValkyrieOperatorKind::VeryMuchGreater => f.write_char('⋙'),
+            ValkyrieOperatorKind::Less => f.write_char('<'),
+            ValkyrieOperatorKind::MuchLess => f.write_char('≪'),
+            ValkyrieOperatorKind::VeryMuchLess => f.write_char('⋘'),
         }
     }
 }
