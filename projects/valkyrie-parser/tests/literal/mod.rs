@@ -2,9 +2,9 @@ use super::*;
 
 #[test]
 fn lex_number() {
-    lisp_debug(include_str!("number.vk"), "literal/number_debug.rkt").expect("number");
-    lisp_debug(include_str!("symbol.vk"), "literal/symbol_debug.rkt").expect("symbol");
-    lisp_debug(include_str!("multiline.vk"), "literal/multiline_debug.rkt").expect("multiline");
+    repl_debug(include_str!("number.vk"), "literal/number_debug.rkt").expect("number");
+    repl_debug(include_str!("symbol.vk"), "literal/symbol_debug.rkt").expect("symbol");
+    repl_debug(include_str!("multiline.vk"), "literal/multiline_debug.rkt").expect("multiline");
 }
 
 #[test]

@@ -30,6 +30,7 @@ impl ValkyriePrefix {
             "*" => Precedence(1000),
             "**" => Precedence(1000),
             "+" | "-" => Precedence(1000),
+            "!" => Precedence(1000),
             _ => unreachable!("Unknown operator: {}", self.normalized),
         }
     }
@@ -39,6 +40,7 @@ impl ValkyriePrefix {
             "-" => ValkyrieOperatorKind::Negative,
             "*" => ValkyrieOperatorKind::Unbox,
             "**" => ValkyrieOperatorKind::Unpack,
+            "!" => ValkyrieOperatorKind::Not,
             _ => unreachable!("Unknown operator: {}", self.normalized),
         };
         ValkyrieOperator::new(kind, self.range.clone())

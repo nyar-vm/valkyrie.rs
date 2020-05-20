@@ -2,12 +2,20 @@ use lispify::{
     helpers::{colored_lisp, display_lisp},
     Lispify,
 };
+use pex::ParseState;
 use std::{
     fs::File,
     io::Write,
     path::{Path, PathBuf},
+    str::FromStr,
 };
-use valkyrie_parser::repl::parse_repl;
+use valkyrie_parser::{
+    call_dot::ValkyrieDotCall,
+    call_index::ValkyrieView,
+    expression::{ExpressionResolver, ExpressionStream},
+    repl::parse_repl,
+    table::ValkyrieTable,
+};
 // use std::io::stdout;
 //
 // use valkyrie_errors::{FileID, TextManager, ValkyrieResult};
@@ -47,7 +55,7 @@ fn here() -> PathBuf {
     Path::new(env!("CARGO_MANIFEST_DIR")).join("tests").canonicalize().expect("failed to get manifest dir")
 }
 
-fn lisp_debug(text: &str, output: &str) -> std::io::Result<()> {
+fn repl_debug(text: &str, output: &str) -> std::io::Result<()> {
     let mut file = File::create(here().join(output))?;
     let apply = parse_repl(text);
     for expr in &apply {
