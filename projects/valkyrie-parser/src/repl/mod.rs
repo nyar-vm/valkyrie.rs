@@ -2,7 +2,7 @@ mod display;
 mod parser;
 use crate::{expression::ValkyrieExpression, helpers::ignore};
 use lispify::{Lisp, Lispify};
-use pex::{helpers::make_from_str, ParseResult, ParseState, StopBecause};
+use pex::{ParseResult, ParseState};
 
 pub use self::parser::parse_repl;
 use std::fmt::{Display, Formatter};

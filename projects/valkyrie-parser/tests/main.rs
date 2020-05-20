@@ -1,3 +1,13 @@
+use lispify::{
+    helpers::{colored_lisp, display_lisp},
+    Lispify,
+};
+use std::{
+    fs::File,
+    io::Write,
+    path::{Path, PathBuf},
+};
+use valkyrie_parser::repl::parse_repl;
 // use std::io::stdout;
 //
 // use valkyrie_errors::{FileID, TextManager, ValkyrieResult};
@@ -32,3 +42,17 @@ mod literal;
 //     }
 //     Ok(())
 // }
+
+fn here() -> PathBuf {
+    Path::new(env!("CARGO_MANIFEST_DIR")).join("tests").canonicalize().expect("failed to get manifest dir")
+}
+
+fn lisp_debug(text: &str, output: &str) -> std::io::Result<()> {
+    let mut file = File::create(here().join(output))?;
+    let apply = parse_repl(text);
+    for expr in &apply {
+        writeln!(file, "{}", display_lisp(expr.lispify(), 144).unwrap())?;
+        println!("{}", colored_lisp(expr.lispify(), 144).unwrap());
+    }
+    Ok(())
+}

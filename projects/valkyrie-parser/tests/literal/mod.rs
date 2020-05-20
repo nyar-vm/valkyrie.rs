@@ -1,49 +1,18 @@
-// use valkyrie_errors::ValkyrieResult;
-//
-// use crate::debug_lexer;
-//
-// #[test]
-// fn test_atomic() -> ValkyrieResult {
-//     debug_lexer(&["tests/literal/symbol.vk", "tests/literal/binary.vk"])
-// }
-//
-// #[test]
-// fn test_number() -> ValkyrieResult {
-//     debug_lexer(&["tests/literal/number.vk"])
-// }
-//
-// #[test]
-// fn test_string() -> ValkyrieResult {
-//     debug_lexer(&["tests/literal/string.vk", "tests/literal/escape.vk"])
-// }
-//
-// #[test]
-// fn test_composite() {
-//     debug_lexer(&["tests/literal/tuple.vk", "tests/literal/table.vk"]).unwrap();
-// }
-
-use lispify::{helpers::colored_lisp, Lispify};
-use std::str::FromStr;
-use valkyrie_parser::{repl::parse_repl, string::ValkyrieString};
+use super::*;
 
 #[test]
 fn lex_number() {
-    let apply = parse_repl(include_str!("number.vk"));
-    for expr in &apply {
-        println!("{}", colored_lisp(expr.lispify(), 144).unwrap());
-    }
+    lisp_debug(include_str!("number.vk"), "literal/number_debug.rkt").expect("number");
+    lisp_debug(include_str!("symbol.vk"), "literal/symbol_debug.rkt").expect("symbol");
+    lisp_debug(include_str!("multiline.vk"), "literal/multiline_debug.rkt").expect("multiline");
 }
 
 #[test]
-fn lex_symbol() {
-    let apply = parse_repl(include_str!("symbol.vk"));
+fn test_table() {
+    let mut file = File::create(here().join("table_debug.rkt")).expect("File to create `table_debug.rkt`");
+    let apply = parse_repl(include_str!("table.vk"));
     for expr in &apply {
+        writeln!(file, "{}", colored_lisp(expr.lispify(), 144).unwrap()).unwrap();
         println!("{}", colored_lisp(expr.lispify(), 144).unwrap());
     }
-}
-
-#[test]
-fn test_string() {
-    let n = ValkyrieString::from_str(r#"''''a\"""\''''"#).expect("1");
-    println!("{}", colored_lisp(n.lispify(), 144).unwrap());
 }

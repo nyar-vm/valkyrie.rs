@@ -15,7 +15,7 @@ bit-set = "0.5.3"
 regex = "1.8.1"
 
 [dependencies.lispify]
-version = "0.0.0"
+version = "0.0.1"
 #path = "D:\\Java\\pex-sexpr\\projects\\sexpr"
 
 [dependencies.pex]
