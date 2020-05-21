@@ -1,0 +1,88 @@
+@wolfram import System.{Fibonacci, Factorial}
+@py import numpy as np
+@py import pandas.dataframe
+
+
+import .mod as x
+import ..mod as z
+import lib.*
+import mod::*
+import "./mod" as y
+import "../lib/mod"::{
+	a as b
+	c as d
+	e.f.{g as h}
+}
+
+
+public class Array {
+
+}
+
+trait Sequence {
+
+}
+
+trait Associate {
+	type Key;
+	type Value;
+}
+
+public class List {
+
+}
+
+
+class NDArray {
+	meta dimension: Array<Integer>
+	meta data_type: T
+	where {
+
+	}
+	require {
+
+	}
+	ensure {
+	}
+}
+
+
+def widge(type T: Type, data: T) {
+    object {
+        member: T,
+    }
+}
+
+let foo = widget(42, T: u8)
+let bar = widget("hello", T: u8)
+
+class String {
+	as_characters(self) -> Unicode
+	characters(self) {
+		self.as_characters().count()
+	}
+}
+
+
+@ndet
+def random() {
+	@liberate() {
+
+	}
+}
+
+@unlimited(non_det_evaluate)
+fn multiply(a: i64, b: i64) i64 {
+    return a * b;
+}
+
+micro a() {
+
+}
+
+
+@allow(evaluate: [diverge, arbitrary])
+def main() -> Result<T> {
+    let len = @eval random();
+    const my_static_array: [len]u8 = undefined;
+}
