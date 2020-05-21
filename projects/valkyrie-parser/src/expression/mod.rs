@@ -180,16 +180,20 @@ pub enum ValkyrieOperatorKind {
     /// `⋙`, `>>>`
     VeryMuchGreater,
     VeryMuchLess,
+    /// `≡`, `≢`
+    Equal(bool),
+    ///
+    StrictlyEqual(bool),
+    ///
+    Belongs(bool),
     /// `-`
     Minus,
     /// `*`
-    Mul,
+    Multiply,
     /// `/`
-    Div,
+    Divide,
     /// `^`
-    Pow,
-    /// `==`
-    Eq,
+    Power,
     /// `!`
     Unwrap,
     /// `?`

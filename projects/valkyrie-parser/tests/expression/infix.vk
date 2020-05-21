@@ -4,27 +4,39 @@ a ^ b ^ c;
 
 1 + 2 * 3 ^ (4 - 5);
 
-# compare
+# Equality
+
+a ≖ b == c;
+a ≠ b != c;
+a ≡ b === c;
+a ≢ b !== c =!= c;
+a =!= b =!= c;
+
+# Ordering
 
 a > b > c;
-a ≫ b >> c;
-a ⋙ b >>> c;
 
 
 # a >= b >= c >= d;
 
-
 a < b < c;
-a ≪ b << c;
-a ⋘ b <<< c;
 
 # a <= b <= c <= d;
 
 
+#
+
+a ≫ b >> c;
+a ⋙ b >>> c;
+a ≪ b << c;
+a ⋘ b <<< c;
+
 # contains
 
-a in b;
-a not in b;
-a !in b;
-a !in b;
+a ∈ list;
+a ∊ list;
+a ∉ list;
+a in list;
+a not in list;
+
 

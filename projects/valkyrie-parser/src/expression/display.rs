@@ -12,10 +12,9 @@ impl Display for ValkyrieOperatorKind {
             ValkyrieOperatorKind::Negative => f.write_char('-'),
             ValkyrieOperatorKind::Plus => f.write_char('+'),
             ValkyrieOperatorKind::Minus => f.write_char('-'),
-            ValkyrieOperatorKind::Mul => f.write_char('*'),
-            ValkyrieOperatorKind::Div => f.write_char('/'),
-            ValkyrieOperatorKind::Pow => f.write_char('^'),
-            ValkyrieOperatorKind::Eq => f.write_char('='),
+            ValkyrieOperatorKind::Multiply => f.write_char('*'),
+            ValkyrieOperatorKind::Divide => f.write_char('/'),
+            ValkyrieOperatorKind::Power => f.write_char('^'),
             ValkyrieOperatorKind::Unwrap => f.write_char('!'),
             ValkyrieOperatorKind::Raise => f.write_char('?'),
             ValkyrieOperatorKind::Celsius => f.write_char('℃'),
@@ -31,6 +30,18 @@ impl Display for ValkyrieOperatorKind {
             ValkyrieOperatorKind::Less => f.write_char('<'),
             ValkyrieOperatorKind::MuchLess => f.write_char('≪'),
             ValkyrieOperatorKind::VeryMuchLess => f.write_char('⋘'),
+            ValkyrieOperatorKind::Belongs(v) => match v {
+                true => f.write_char('∈'),
+                false => f.write_char('∉'),
+            },
+            ValkyrieOperatorKind::Equal(v) => match v {
+                true => f.write_char('≖'),
+                false => f.write_char('≠'),
+            },
+            ValkyrieOperatorKind::StrictlyEqual(v) => match v {
+                true => f.write_char('≡'),
+                false => f.write_char('≢'),
+            },
         }
     }
 }

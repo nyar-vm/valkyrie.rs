@@ -1,8 +1,4 @@
 
-~ contains
-a in A;
-a not in A;
-
 ~ type check
 a <: A;
 a is not A;
@@ -34,5 +30,3 @@ true && false;
 0 + 0.0 + 0cm;
 "" ++ '';
 "$x" ++ '${y}';
-a >> a;
-a << b;
