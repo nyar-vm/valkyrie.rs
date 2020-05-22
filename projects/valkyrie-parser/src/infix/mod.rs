@@ -1,12 +1,102 @@
 use crate::expression::{ValkyrieOperator, ValkyrieOperatorKind};
-use pratt::{Associativity, Precedence};
+use pex::{
+    helpers::{make_from_str, whitespace},
+    ParseResult, ParseState, StopBecause,
+};
+use pratt::Precedence;
 use std::{
     fmt::{Debug, Formatter},
     ops::Range,
 };
 
+use pratt::{Associativity, Precedence};
+use regex::Regex;
+use std::{
+    fmt::{Debug, Formatter},
+    ops::Range,
+    str::FromStr,
+    sync::LazyLock,
+};
 mod display;
 mod parser;
+use pex::{
+    helpers::{make_from_str, whitespace},
+    ParseResult, ParseState, StopBecause,
+};
+use regex::Regex;
+use std::{str::FromStr, sync::LazyLock};
+
+mod display;
+mod parser;
+
+#[derive(Clone, Debug, Eq)]
+pub struct ValkyrieOperator {
+    pub kind: ValkyrieOperatorKind,
+    pub range: Range<usize>,
+}
+
+#[derive(Copy, Clone, Debug, Eq, PartialEq, Hash)]
+pub enum ValkyrieOperatorKind {
+    /// prefix operator: `!`
+    Not,
+    /// prefix operator: `+`
+    Positive,
+    /// prefix operator: `-`
+    Negative,
+    /// prefix operator: `*`
+    Unbox,
+    /// prefix operator: `**`
+    Unpack,
+    /// prefix operator: `⅟`
+    Inverse,
+    /// prefix operator: `⅟`
+    Surd(u8),
+    /// binary operator: `+`
+    Plus,
+    /// binary operator: `++`
+    Concat,
+    /// binary operator: `>`
+    Greater,
+    /// binary operator: `<`
+    Less,
+    /// binary operator: `≫`, `>>`
+    MuchGreater,
+    /// binary operator:
+    MuchLess,
+    /// binary operator: `⋙`, `>>>`
+    VeryMuchGreater,
+    /// binary operator:
+    VeryMuchLess,
+    /// binary operator: `≡`, `≢`
+    Equal(bool),
+    /// binary operator:
+    StrictlyEqual(bool),
+    /// binary operator:
+    Belongs(bool),
+    /// binary operator: `-`
+    Minus,
+    /// binary operator: `*`
+    Multiply,
+    /// binary operator: `/`
+    Divide,
+    /// binary operator: `^`
+    Power,
+    /// suffix operator: `!`
+    Unwrap,
+    /// suffix operator: `?`
+    Raise,
+    /// suffix operator: `℃`
+    Celsius,
+    /// suffix operator: `℉`
+    Fahrenheit,
+    /// suffix operator: `a%, b‰, c‱`
+    DivideByDecimalPower(u8),
+    /// suffix operator: `ᵀ`, `\^T`, `\transpose`
+    Transpose,
+    /// suffix operator: `ᴴ`, `\^H`, `\conjugate_transpose
+    Transjugate,
+    Hermitian,
+}
 
 #[derive(Clone)]
 pub struct ValkyrieInfix {
@@ -14,65 +104,14 @@ pub struct ValkyrieInfix {
     range: Range<usize>,
 }
 
-impl ValkyrieInfix {
-    pub fn new<S: AsRef<str>>(infix: S, range: Range<usize>) -> ValkyrieInfix {
-        let text = infix.as_ref();
-        let mut normalized = String::with_capacity(text.len());
-        for c in text.chars() {
-            match c {
-                ' ' => continue,
-                '∈' | '∊' => normalized.push_str("in"),
-                '∉' => normalized.push_str("notin"),
-                '≫' => normalized.push_str(">>"),
-                '≪' => normalized.push_str("<<"),
-                '⋙' => normalized.push_str(">>>"),
-                '⋘' => normalized.push_str("<<<"),
-                '≖' => normalized.push_str("!="),
-                _ => normalized.push(c),
-            }
-        }
-        ValkyrieInfix { normalized, range }
-    }
-    pub fn precedence(&self) -> Precedence {
-        match self.normalized.as_str() {
-            "++" => Precedence(100),
-            "+" | "-" => Precedence(200),
-            "*" | "/" => Precedence(300),
-            "^" => Precedence(400),
-            "==" | "!=" | "<" | ">" => Precedence(100),
-            "<<" | ">>" => Precedence(450),
-            "<<<" | ">>>" => Precedence(550),
-            "in" | "notin" => Precedence(550),
-            _ => unreachable!("Unknown operator: {}", self.normalized),
-        }
-    }
-    pub fn associativity(&self) -> Associativity {
-        match self.normalized.as_str() {
-            "^" => Associativity::Right,
-            _ => Associativity::Left,
-        }
-    }
-    pub fn as_operator(&self) -> ValkyrieOperator {
-        let kind = match self.normalized.as_str() {
-            "++" => ValkyrieOperatorKind::Concat,
-            "+" => ValkyrieOperatorKind::Plus,
-            "-" => ValkyrieOperatorKind::Minus,
-            "*" => ValkyrieOperatorKind::Multiply,
-            "/" => ValkyrieOperatorKind::Divide,
-            "^" => ValkyrieOperatorKind::Power,
-            ">" => ValkyrieOperatorKind::Greater,
-            ">>" => ValkyrieOperatorKind::MuchGreater,
-            ">>>" => ValkyrieOperatorKind::VeryMuchGreater,
-            "<" => ValkyrieOperatorKind::Less,
-            "<<" => ValkyrieOperatorKind::MuchLess,
-            "<<<" => ValkyrieOperatorKind::VeryMuchLess,
-            "==" => ValkyrieOperatorKind::Equal(true),
-            "!=" => ValkyrieOperatorKind::Equal(false),
-            "in" => ValkyrieOperatorKind::Belongs(true),
-            "notin" => ValkyrieOperatorKind::Belongs(false),
+#[derive(Clone)]
+pub struct ValkyriePrefix {
+    normalized: String,
+    range: Range<usize>,
+}
 
-            _ => unreachable!("Unknown operator: {}", self.normalized),
-        };
-        ValkyrieOperator::new(kind, self.range.clone())
-    }
+#[derive(Clone)]
+pub struct ValkyrieSuffix {
+    normalized: String,
+    range: Range<usize>,
 }
