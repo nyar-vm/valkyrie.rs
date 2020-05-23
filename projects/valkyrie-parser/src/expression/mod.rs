@@ -1,15 +1,22 @@
-use crate::{helpers::ignore, infix::ValkyrieInfix, prefix::ValkyriePrefix, suffix::ValkyrieSuffix};
+use crate::{helpers::ignore, operators::ValkyrieInfix};
 use pex::{ParseResult, ParseState, StopBecause};
-use pratt::{Affix, PrattError, PrattParser};
+use pratt::{Affix, PrattError, PrattParser, Precedence};
 use std::{
     fmt::{Debug, Formatter},
     ops::Range,
 };
 mod display;
 mod parser;
-use crate::{helpers::parse_value, number::ValkyrieNumber, string::ValkyrieString, symbol::ValkyrieNamepath};
+use crate::{
+    helpers::parse_value,
+    number::ValkyrieNumber,
+    operators::{ValkyrieOperator, ValkyrieOperatorKind, ValkyriePrefix, ValkyrieSuffix},
+    string::ValkyrieString,
+    symbol::ValkyrieNamepath,
+};
 use pex::helpers::make_from_str;
 use std::{fmt::Display, str::FromStr};
+
 /// A resolver
 #[derive(Default)]
 pub struct ExpressionResolver {}
@@ -89,11 +96,6 @@ pub struct ValkyrieBinary {
     pub range: Range<usize>,
 }
 
-#[derive(Clone, Debug, Eq)]
-pub struct ValkyrieOperator {
-    pub kind: ValkyrieOperatorKind,
-    pub range: Range<usize>,
-}
 impl PartialEq for ValkyrieOperator {
     fn eq(&self, other: &Self) -> bool {
         self.kind.eq(&other.kind)
@@ -146,67 +148,6 @@ impl ValkyrieExpression {
             _ => {}
         }
     }
-}
-
-impl ValkyrieOperator {
-    pub fn new(kind: ValkyrieOperatorKind, range: Range<usize>) -> Self {
-        Self { kind, range }
-    }
-}
-
-#[derive(Copy, Clone, Debug, Eq, PartialEq, Hash)]
-pub enum ValkyrieOperatorKind {
-    /// `!`
-    Not,
-    /// `+`
-    Positive,
-    /// `-`
-    Negative,
-    /// `*`
-    Unbox,
-    /// `**`
-    Unpack,
-    /// `+`
-    Plus,
-    /// `++`
-    Concat,
-    /// `>`
-    Greater,
-    /// `<`
-    Less,
-    /// `≫`, `>>`
-    MuchGreater,
-    MuchLess,
-    /// `⋙`, `>>>`
-    VeryMuchGreater,
-    VeryMuchLess,
-    /// `≡`, `≢`
-    Equal(bool),
-    ///
-    StrictlyEqual(bool),
-    ///
-    Belongs(bool),
-    /// `-`
-    Minus,
-    /// `*`
-    Multiply,
-    /// `/`
-    Divide,
-    /// `^`
-    Power,
-    /// `!`
-    Unwrap,
-    /// `?`
-    Raise,
-    /// `℃`
-    Celsius,
-    /// `℉`
-    Fahrenheit,
-    /// `ᵀ`, `\^T`, `\transpose`
-    Transpose,
-    /// `ᴴ`, `\^H`, `\conjugate_transpose
-    Transjugate,
-    Hermitian,
 }
 
 impl<I> PrattParser<I> for ExpressionResolver

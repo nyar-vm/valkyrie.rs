@@ -13,12 +13,6 @@ pub fn parse_repl(s: &str) -> Vec<ValkyrieREPL> {
     repl
 }
 
-#[inline(always)]
-fn parse_many(input: ParseState) -> ParseResult<Vec<ValkyrieREPL>> {
-    let (state, o) = input.match_repeats(ValkyrieREPL::parse)?;
-    state.skip(ignore).finish(o)
-}
-
 impl ValkyrieREPL {
     /// - [term](ValkyrieExpression::parse)
     pub fn parse(input: ParseState) -> ParseResult<Self> {

@@ -42,6 +42,17 @@ impl Display for ValkyrieOperatorKind {
                 true => f.write_char('≡'),
                 false => f.write_char('≢'),
             },
+            ValkyrieOperatorKind::Inverse => f.write_char('i'),
+            ValkyrieOperatorKind::Surd(v) => match v {
+                3 => f.write_char('∛'),
+                4 => f.write_char('∜'),
+                _ => f.write_char('√'),
+            },
+            ValkyrieOperatorKind::DivideByDecimalPower(v) => match v {
+                3 => f.write_char('‰'),
+                4 => f.write_char('‱'),
+                _ => f.write_char('%'),
+            },
         }
     }
 }

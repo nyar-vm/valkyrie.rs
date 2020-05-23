@@ -118,55 +118,10 @@ impl Debug for ValkyriePrefix {
     }
 }
 
-impl ValkyriePrefix {
-    pub fn new<S: ToString>(s: S, range: Range<usize>) -> ValkyriePrefix {
-        ValkyriePrefix { normalized: s.to_string(), range }
-    }
-    pub fn precedence(&self) -> Precedence {
-        self.as_operator().kind.precedence()
-    }
-    pub fn as_operator(&self) -> ValkyrieOperator {
-        let kind = match self.normalized.as_str() {
-            "+" => ValkyrieOperatorKind::Positive,
-            "-" => ValkyrieOperatorKind::Negative,
-            "*" => ValkyrieOperatorKind::Unbox,
-            "**" => ValkyrieOperatorKind::Unpack,
-            "!" => ValkyrieOperatorKind::Not,
-            "⅟" => ValkyrieOperatorKind::Minus,
-            "√" => ValkyrieOperatorKind::Surd(2),
-            "∛" => ValkyrieOperatorKind::Surd(3),
-            "∜" => ValkyrieOperatorKind::Surd(4),
-            _ => unreachable!("Unknown operator: {}", self.normalized),
-        };
-        ValkyrieOperator::new(kind, self.range.clone())
-    }
-}
 
 impl Debug for ValkyrieSuffix {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "Infix({}, {:?})", self.normalized, self.range)
-    }
-}
-
-impl ValkyrieSuffix {
-    pub fn new<S: ToString>(s: S, range: Range<usize>) -> ValkyrieSuffix {
-        ValkyrieSuffix { normalized: s.to_string(), range }
-    }
-    pub fn precedence(&self) -> Precedence {
-        self.as_operator().kind.precedence()
-    }
-    pub fn as_operator(&self) -> ValkyrieOperator {
-        let kind = match self.normalized.as_str() {
-            "!" => ValkyrieOperatorKind::Unwrap,
-            "?" => ValkyrieOperatorKind::Raise,
-            "℃" => ValkyrieOperatorKind::Celsius,
-            "℉" => ValkyrieOperatorKind::Fahrenheit,
-            "%" => ValkyrieOperatorKind::DivideByDecimalPower(2),
-            "‰" => ValkyrieOperatorKind::DivideByDecimalPower(3),
-            "‱" => ValkyrieOperatorKind::DivideByDecimalPower(4),
-            _ => unreachable!("Unknown operator: {}", self.normalized),
-        };
-        ValkyrieOperator::new(kind, self.range.clone())
     }
 }
 

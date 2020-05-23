@@ -1,4 +1,5 @@
 use super::*;
+use crate::operators::ValkyriePrefix;
 use pex::helpers::whitespace;
 
 impl FromStr for ValkyrieExpression {
