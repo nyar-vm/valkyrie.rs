@@ -1,4 +1,4 @@
-use crate::traits::ValkyrieParser;
+use crate::traits::ThisParser;
 use lispify::{Lisp, Lispify};
 use pex::{
     helpers::{make_from_str, whitespace},
@@ -7,7 +7,7 @@ use pex::{
 use pratt::{Associativity, Precedence};
 use regex::Regex;
 use std::{
-    fmt::{Debug, Display, Formatter},
+    fmt::{Debug, Display, Formatter, Write},
     ops::Range,
     str::FromStr,
     sync::LazyLock,
@@ -35,7 +35,7 @@ pub struct ValkyrieSuffix {
     range: Range<usize>,
 }
 
-impl ValkyrieParser for ValkyrieOperator {
+impl ThisParser for ValkyrieOperator {
     fn parse(input: ParseState) -> ParseResult<Self> {
         todo!()
     }

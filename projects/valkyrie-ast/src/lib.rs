@@ -25,10 +25,16 @@
 //
 // mod control_flow;
 // mod display;
-// mod expression_level;
-mod operators;
+mod expression_level;
+mod utils;
 
-pub use crate::operators::{ValkyrieOperator, ValkyrieOperatorKind};
+pub use crate::{
+    expression_level::{
+        identifier::ValkyrieIdentifier,
+        operators::{ValkyrieOperator, ValkyrieOperatorKind},
+    },
+    utils::FileSpan,
+};
 
 // mod package_level;
 //

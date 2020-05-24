@@ -1,13 +1,7 @@
 use super::*;
-
-impl FromStr for ValkyrieIdentifier {
-    type Err = StopBecause;
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let state = ParseState::new(s.trim_end()).skip(whitespace);
-        make_from_str(state, Self::parse)
-    }
-}
+use crate::traits::ThisParser;
+use lispify::{Lisp, LispSymbol};
+use valkyrie_ast::ValkyrieIdentifier;
 
 pub static IDENTIFIER: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(
@@ -20,13 +14,19 @@ pub static IDENTIFIER: LazyLock<Regex> = LazyLock::new(|| {
     .unwrap()
 });
 
-impl ValkyrieIdentifier {
-    /// - regular: `\p{XID_Start}|_)\p{XID_Continue}*`
-    /// - escaped: ``` `(\.|[^`])*` ```
-    pub fn parse(input: ParseState) -> ParseResult<Self> {
+impl ThisParser for ValkyrieIdentifier {
+    fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, m) = input.match_regex(&IDENTIFIER, "IDENTIFIER")?;
-        let id = ValkyrieIdentifier { name: m.as_str().to_string(), range: state.away_from(input) };
+        let id = ValkyrieIdentifier::new(m.as_str(), &m.range());
         state.finish(id)
+    }
+
+    fn parse_many(input: ParseState) -> ParseResult<Self> {
+        todo!()
+    }
+
+    fn as_lisp(&self) -> Lisp {
+        LispSymbol { name: self.name.clone(), path: vec![] }.into()
     }
 }
 
@@ -50,11 +50,4 @@ fn pare_colon_id<'i>(input: ParseState<'i>, names: &mut Vec<ValkyrieIdentifier>)
     let (state, id) = state.match_fn(|s| ValkyrieIdentifier::parse(s))?;
     names.push(id);
     state.finish(())
-}
-
-#[test]
-pub fn test() {
-    let input = "`_he\\u2222llo`";
-    let id = ValkyrieIdentifier::from_str(input).unwrap();
-    println!("{}", id)
 }

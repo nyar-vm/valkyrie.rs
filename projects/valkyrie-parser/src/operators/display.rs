@@ -1,6 +1,4 @@
 use super::*;
-use std::fmt::Write;
-use valkyrie_ast::{ValkyrieOperator, ValkyrieOperatorKind};
 
 impl Debug for ValkyrieInfix {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
@@ -20,28 +18,12 @@ impl Debug for ValkyrieSuffix {
     }
 }
 
-impl Lispify for ValkyrieOperatorKind {
-    type Output = Lisp;
-
-    fn lispify(&self) -> Self::Output {
-        Lisp::Operator(self.to_string())
-    }
-}
-
-impl Lispify for ValkyrieOperator {
-    type Output = Lisp;
-
-    fn lispify(&self) -> Self::Output {
-        self.kind.lispify()
-    }
-}
-
 impl ValkyriePrefix {
     pub fn new<S: ToString>(s: S, range: Range<usize>) -> ValkyriePrefix {
         ValkyriePrefix { normalized: s.to_string(), range }
     }
     pub fn precedence(&self) -> Precedence {
-        self.as_operator().kind.precedence()
+        Precedence(self.as_operator().kind.precedence())
     }
     pub fn as_operator(&self) -> ValkyrieOperator {
         let kind = match self.normalized.as_str() {
@@ -85,7 +67,7 @@ impl ValkyrieInfix {
         ValkyrieInfix { normalized, range }
     }
     pub fn precedence(&self) -> Precedence {
-        self.as_operator().kind.precedence()
+        Precedence(self.as_operator().kind.precedence())
     }
     pub fn associativity(&self) -> Associativity {
         match self.normalized.as_str() {
@@ -126,7 +108,7 @@ impl ValkyrieSuffix {
         ValkyrieSuffix { normalized: s.to_string(), range }
     }
     pub fn precedence(&self) -> Precedence {
-        self.as_operator().kind.precedence()
+        Precedence(self.as_operator().kind.precedence())
     }
     pub fn as_operator(&self) -> ValkyrieOperator {
         let kind = match self.normalized.as_str() {

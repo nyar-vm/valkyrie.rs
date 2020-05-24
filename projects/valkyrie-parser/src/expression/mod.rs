@@ -1,4 +1,4 @@
-use crate::{helpers::ignore, operators::ValkyrieInfix, symbol::ValkyrieIdentifier};
+use crate::{helpers::ignore, operators::ValkyrieInfix};
 use lispify::{Lisp, LispSymbol, Lispify};
 use pex::{ParseResult, ParseState, StopBecause};
 use pratt::{Affix, PrattError, PrattParser};
@@ -11,10 +11,11 @@ use crate::{
     operators::{ValkyriePrefix, ValkyrieSuffix},
     string::ValkyrieString,
     symbol::ValkyrieNamepath,
+    traits::ThisParser,
 };
 use pex::helpers::make_from_str;
 use std::str::FromStr;
-use valkyrie_ast::ValkyrieOperator;
+use valkyrie_ast::{ValkyrieOperator, ValkyrieOperatorKind};
 
 /// A resolver
 #[derive(Default)]
@@ -95,11 +96,20 @@ pub struct ValkyrieBinary {
     pub range: Range<usize>,
 }
 
-impl PartialEq for ValkyrieOperator {
-    fn eq(&self, other: &Self) -> bool {
-        self.kind.eq(&other.kind)
+impl ThisParser for ValkyrieOperatorKind {
+    fn parse(input: ParseState) -> ParseResult<Self> {
+        todo!()
+    }
+
+    fn parse_many(input: ParseState) -> ParseResult<Self> {
+        todo!()
+    }
+
+    fn as_lisp(&self) -> Lisp {
+        Lisp::Operator(self.to_string())
     }
 }
+
 impl ValkyrieExpression {
     pub fn binary(o: ValkyrieOperator, lhs: ValkyrieExpression, rhs: ValkyrieExpression) -> ValkyrieExpression {
         let mut out = ValkyrieExpression::Binary(Box::new(ValkyrieBinary { operator: o, lhs, rhs, range: Default::default() }));

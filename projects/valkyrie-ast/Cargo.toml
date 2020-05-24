@@ -10,6 +10,9 @@ license = "MPL-2.0"
 edition = "2021"
 
 [dependencies]
+url = "2.3.1"
+serde = { version = "1.0.163", features = ["derive"], optional = true }
+
 #unicode-ident = "1.0.6"
 #indexmap = "1.9.2"
 #itertools = "0.10.5"
@@ -26,3 +29,4 @@ edition = "2021"
 
 [features]
 default = []
+serde = ["dep:serde", "url/serde"]

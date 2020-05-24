@@ -1,4 +1,5 @@
 use super::*;
+use valkyrie_ast::ValkyrieIdentifier;
 
 impl Lispify for ValkyrieExpression {
     type Output = Lisp;
@@ -24,14 +25,6 @@ impl Lispify for ValkyrieNamepath {
         let first = terms.next().unwrap_or_default();
 
         LispSymbol { name: first, path: terms.collect() }
-    }
-}
-
-impl Lispify for ValkyrieIdentifier {
-    type Output = LispSymbol;
-
-    fn lispify(&self) -> Self::Output {
-        LispSymbol { name: self.name.clone(), path: vec![] }
     }
 }
 

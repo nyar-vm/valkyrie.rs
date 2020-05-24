@@ -1,6 +1,6 @@
 mod display;
 mod parser;
-use crate::{expression::ValkyrieExpression, helpers::ignore, symbol::ValkyrieIdentifier};
+use crate::{expression::ValkyrieExpression, helpers::ignore};
 use lispify::{Lisp, Lispify};
 use pex::{
     helpers::{make_from_str, whitespace},
@@ -13,6 +13,7 @@ use std::{
     ops::Range,
     str::FromStr,
 };
+use valkyrie_ast::ValkyrieIdentifier;
 
 /// A number literal.
 #[derive(Debug, Clone)]

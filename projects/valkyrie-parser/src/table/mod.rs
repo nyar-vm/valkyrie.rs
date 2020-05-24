@@ -7,7 +7,7 @@ use pex::{
     BracketPattern, ParseResult, ParseState, StopBecause,
 };
 
-use crate::{expression::ValkyrieExpression, symbol::ValkyrieIdentifier};
+use crate::expression::ValkyrieExpression;
 use std::{
     fmt::{Display, Formatter},
     ops::Range,

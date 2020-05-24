@@ -1,4 +1,5 @@
 use super::*;
+use valkyrie_ast::ValkyrieIdentifier;
 
 impl FromStr for ValkyrieDotCall {
     type Err = StopBecause;

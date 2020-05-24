@@ -35,7 +35,7 @@ use pex::{
     ParseResult, ParseState, StopBecause,
 };
 
-pub trait ValkyrieParser
+pub trait ThisParser
 where
     Self: Sized,
 {

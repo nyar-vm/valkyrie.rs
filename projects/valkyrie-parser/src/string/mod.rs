@@ -4,8 +4,9 @@ use std::fmt::{Display, Formatter};
 mod display;
 mod parser;
 
-use crate::symbol::ValkyrieIdentifier;
+
 use std::ops::Range;
+use valkyrie_ast::ValkyrieIdentifier;
 
 /// A number literal.
 #[derive(Debug, Clone, Eq, Hash)]
