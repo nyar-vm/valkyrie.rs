@@ -1,243 +1,136 @@
-use std::ops::Range;
-
-use crate::ValkyrieIdentifier;
-use serde::{Deserialize, Serialize};
-use valkyrie_errors::{
-    third_party::{
-        Affix,
-        Associativity::{Left, Right},
-        PrattParser, Precedence,
-    },
-    FileID, FileSpan, SyntaxError, ValkyrieResult,
+mod display;
+use std::{
+    fmt::{Display, Formatter, Write},
+    ops::Range,
 };
 
-use crate::{BinaryExpression, UnaryExpression, ValkyrieASTNode};
-
-pub mod annotaiton;
-pub mod keywords;
-pub mod resolver;
-
-// From this
-#[derive(Debug)]
-pub enum UnknownOrder {
-    Infix(ValkyrieOperator),
-    Prefix(ValkyrieOperator),
-    Suffix(ValkyrieOperator),
-    Value(ValkyrieASTNode),
-    Group(Vec<UnknownOrder>),
-}
-
-#[derive(Copy, Clone, Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug, Eq)]
 pub struct ValkyrieOperator {
-    pub kind: OperatorKind,
-    pub span: FileSpan,
+    pub kind: ValkyrieOperatorKind,
+    pub range: Range<usize>,
 }
 
-#[derive(Copy, Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
-pub enum OperatorKind {
-    // suffix operator: `a!`
-    Bang,
-    // suffix operator: `a?`
-    Question,
-    // suffix operator: `a%, b‰, c‱`
-    DivideByDecimalPower(u8),
-    // suffix operator: `℃'
-    Celsius,
-    // suffix operator: '℉`
-    Fahrenheit,
-    // suffix operator: `!a`
-    Not,
-    // suffix operator: `⇵a`
-    Flip,
-    // prefix positive: `⇆a`
-    Reverse,
-    // prefix positive: `+a`
-    Positive,
-    // prefix negative: `-a`
-    Negative,
-    // prefix operator: `√a, ∛b, ∜c`
-    RootOf(u8),
-    // infix operator: `+`
-    Add,
-    // ++
-    Concat,
-    //
-    Subtract,
-    // >
-    Greater,
-    // >=
-    GreaterEqual,
-    // <
-    Less,
-    // <=
-    LessEqual,
-    // infix operator `∗ ⋆ ⋆`
-    MultiplyBroadcast,
-    // infix operator `/ ⁄ ∕`
-    Divide,
-    // infix operator `÷`
-    Quotient,
-    // infix operator `^`
-    Power,
-    LogicGate(u8),
+impl PartialEq for ValkyrieOperator {
+    fn eq(&self, other: &Self) -> bool {
+        self.kind.eq(&other.kind)
+    }
+}
 
-    // function return operator `→`
-    Return,
-    Is(bool),
-    //
-    As,
-    // a in b, a ∊
-    In(bool),
-    // a contains b
-    Contains(bool),
+#[derive(Copy, Clone, Debug, Eq, PartialEq, Hash)]
+pub enum ValkyrieOperatorKind {
+    /// prefix operator: `!`
+    Not,
+    /// prefix operator: `+`
+    Positive,
+    /// prefix operator: `-`
+    Negative,
+    /// prefix operator: `*`
+    Unbox,
+    /// prefix operator: `**`
+    Unpack,
+    /// prefix operator: `⅟`
+    Inverse,
+    /// prefix operator: `⅟`
+    Surd(u8),
+    /// binary operator: `+`
+    Plus,
+    /// binary operator: `++`
+    Concat,
+    /// binary operator: `>`
+    Greater,
+    /// binary operator: `<`
+    Less,
+    /// binary operator: `≫`, `>>`
+    MuchGreater,
+    /// binary operator:
+    MuchLess,
+    /// binary operator: `⋙`, `>>>`
+    VeryMuchGreater,
+    /// binary operator:
+    VeryMuchLess,
+    /// binary operator: `≡`, `≢`
+    Equal(bool),
+    /// binary operator:
+    StrictlyEqual(bool),
+    /// binary operator: `in, not in`
+    Belongs(bool),
+    /// binary operator: `⊑, ⋢, is, is not`
+    IsA(bool),
+
+    /// binary operator: `-`
+    Minus,
+    /// binary operator: `*`
+    Multiply,
+    /// binary operator: `/`
+    Divide,
+    /// binary operator: `^`
+    Power,
+    /// suffix operator: `!`
+    Unwrap,
+    /// suffix operator: `?`
+    Raise,
+    /// suffix operator: `℃`
+    Celsius,
+    /// suffix operator: `℉`
+    Fahrenheit,
+    /// suffix operator: `a%, b‰, c‱`
+    DivideByDecimalPower(u8),
+    /// suffix operator: `ᵀ`, `\^T`, `\transpose`
+    Transpose,
+    /// suffix operator: `ᴴ`, `\^H`, `\conjugate_transpose
+    Transjugate,
+    Hermitian,
 }
 
 impl ValkyrieOperator {
-    pub fn prefix(s: &str, file: FileID, range: &Range<usize>) -> ValkyrieResult<Self> {
-        match OperatorKind::parse_prefix(s) {
-            Ok(o) => Ok(Self { kind: o, span: FileSpan { file, head: range.start, tail: range.end } }),
-            Err(e) => Err(e.with_file(file).with_range(range))?,
-        }
-    }
-    pub fn infix(s: &str, file: FileID, range: &Range<usize>) -> ValkyrieResult<Self> {
-        match OperatorKind::parse_infix(s) {
-            Ok(o) => Ok(Self { kind: o, span: FileSpan { file, head: range.start, tail: range.end } }),
-            Err(e) => Err(e.with_file(file).with_range(range))?,
-        }
-    }
-    pub fn suffix(s: &str, file: FileID, range: &Range<usize>) -> ValkyrieResult<Self> {
-        match OperatorKind::parse_suffix(s) {
-            Ok(o) => Ok(Self { kind: o, span: FileSpan { file, head: range.start, tail: range.end } }),
-            Err(e) => Err(e.with_file(file).with_range(range))?,
-        }
+    pub fn new(kind: ValkyrieOperatorKind, range: Range<usize>) -> Self {
+        Self { kind, range }
     }
 }
 
-impl OperatorKind {
-    pub fn parse_prefix(s: &str) -> Result<Self, SyntaxError> {
-        let out = match Self::normalize(s).as_str() {
-            "√" => OperatorKind::RootOf(2),
-            "∛" => OperatorKind::RootOf(3),
-            "∜" => OperatorKind::RootOf(4),
-            "+" => OperatorKind::Positive,
-            "-" => OperatorKind::Negative,
-            _ => Err(SyntaxError::new(format!("Unknown prefix `{}`", s)))?,
-        };
-        Ok(out)
-    }
-    pub fn parse_infix(s: &str) -> Result<Self, SyntaxError> {
-        let normed = Self::normalize(s);
-        let out = match normed.as_str() {
-            "+" => OperatorKind::Add,
-            "++" => OperatorKind::Concat,
-            "-" => OperatorKind::Subtract,
-            "*" => OperatorKind::MultiplyBroadcast,
-            "/" => OperatorKind::Divide,
-            // root of
-            "^" => OperatorKind::Power,
-            // comparison
-            "<" => OperatorKind::Less,
-            "<=" => OperatorKind::LessEqual,
-            "<<" => OperatorKind::Less,
-            ">" => OperatorKind::Greater,
-            ">=" => OperatorKind::GreaterEqual,
-            ">>" => OperatorKind::Less,
-            // other
-            "->" => OperatorKind::Return,
-            "∊" | "∈" => OperatorKind::In(true),
-            "∉" | "!∈" => OperatorKind::In(false),
-            "∍" | "∋" => OperatorKind::Contains(true),
-            "∌" | "!∋" => OperatorKind::Contains(false),
-            "<:" => OperatorKind::Is(true),
-            "!<:" => OperatorKind::Is(false),
-            "<:!" => OperatorKind::Is(false),
-            // logic gate
-            "∧" | "&&" => OperatorKind::LogicGate(0b0001),
-            "⊼" => OperatorKind::LogicGate(0b0100),
-            "⩟" => OperatorKind::LogicGate(0b0000),
-            "∨" | "||" => OperatorKind::LogicGate(0b0111),
-            "⊽" => OperatorKind::LogicGate(0b0010),
-            "⊻" => OperatorKind::LogicGate(0b0110),
-            // "==" => OperatorKind::Equal,
-            s if s.starts_with("is") && s.ends_with("not") => OperatorKind::Is(false),
-            _ => Err(SyntaxError::new(format!("Unknown infix `{}`", normed)))?,
-        };
-        Ok(out)
-    }
-    pub fn parse_suffix(s: &str) -> Result<Self, SyntaxError> {
-        let out = match Self::normalize(s).as_str() {
-            "!" => OperatorKind::Bang,
-            "?" => OperatorKind::Question,
-            _ => Err(SyntaxError::new(format!("Unknown suffix `{}`", s)))?,
-        };
-        Ok(out)
-    }
-}
-
-impl OperatorKind {
-    pub fn normalize(s: &str) -> String {
-        let mut out = String::with_capacity(s.len());
-        let mut chars = s.chars().peekable();
-        while let Some(c) = chars.next() {
-            match c {
-                '⋆' | '∗' => out.push('*'),
-                '÷' | '⁄' | '∕' => out.push('/'),
-                '→' => out.push_str("->"),
-                '¬' => out.push('!'),
-                'n' => {
-                    if chars.next() == Some('o') && chars.next() == Some('t') {
-                        out.push_str("!");
-                    }
-                }
-                'i' => match chars.next() {
-                    Some('s') => out.push_str("<:"),
-                    Some('n') => out.push('∈'),
-                    _ => {}
-                },
-                //
-                s if s.is_whitespace() => continue,
-                _ => out.push(c),
-            }
-        }
-
-        out
-    }
-}
-
-impl OperatorKind {
-    pub fn literal(&self) -> &str {
-        // Ligatures are not supported in document
+impl ValkyrieOperatorKind {
+    pub fn precedence(&self) -> u32 {
         match self {
-            OperatorKind::Add => "+",
-            OperatorKind::Subtract => "-",
-            OperatorKind::MultiplyBroadcast => "×",
-            OperatorKind::Divide => "÷",
-            OperatorKind::Return => "→",
-            OperatorKind::Is(_) => {
-                todo!()
-            }
-            OperatorKind::In(_) => {
-                todo!()
-            }
-            OperatorKind::Contains(_) => {
-                todo!()
-            }
-            _ => {
-                todo!("{:?}", self)
-            }
-        }
-    }
-    pub fn name(&self) -> &str {
-        match self {
-            OperatorKind::Add => "plus",
-            OperatorKind::Subtract => "minus",
-            OperatorKind::MultiplyBroadcast => "multiply",
-            OperatorKind::Divide => "divide",
-            OperatorKind::Return => "return",
-            OperatorKind::Is(_) => {
-                todo!()
-            }
-            _ => todo!("{:?}", self),
+            //
+            ValkyrieOperatorKind::Concat => Precedence(14000),
+            ValkyrieOperatorKind::Belongs(_) => Precedence(14000),
+            ValkyrieOperatorKind::IsA(_) => Precedence(14000),
+            // infix - 3
+            ValkyrieOperatorKind::Equal(_) => Precedence(14700),
+            ValkyrieOperatorKind::StrictlyEqual(_) => Precedence(14700),
+            // infix - 2
+            ValkyrieOperatorKind::Greater => Precedence(14800),
+            ValkyrieOperatorKind::Less => Precedence(14800),
+            // infix - 1
+            ValkyrieOperatorKind::MuchLess => Precedence(14900),
+            ValkyrieOperatorKind::MuchGreater => Precedence(14900),
+            ValkyrieOperatorKind::VeryMuchGreater => Precedence(14950),
+            ValkyrieOperatorKind::VeryMuchLess => Precedence(14950),
+            // infix + 0
+            ValkyrieOperatorKind::Plus => Precedence(15000),
+            ValkyrieOperatorKind::Minus => Precedence(15000),
+            // infix + 1
+            ValkyrieOperatorKind::Multiply => Precedence(15100),
+            ValkyrieOperatorKind::Divide => Precedence(15100),
+            // infix + 2
+            ValkyrieOperatorKind::Power => Precedence(15200),
+            // prefix + 0
+            ValkyrieOperatorKind::Not => Precedence(25000),
+            ValkyrieOperatorKind::Positive => Precedence(25000),
+            ValkyrieOperatorKind::Negative => Precedence(25000),
+            ValkyrieOperatorKind::Unbox => Precedence(25000),
+            ValkyrieOperatorKind::Unpack => Precedence(25000),
+            ValkyrieOperatorKind::Inverse => Precedence(25000),
+            ValkyrieOperatorKind::Surd(_) => Precedence(25000),
+            // postfix + 0
+            ValkyrieOperatorKind::Unwrap => Precedence(45000),
+            ValkyrieOperatorKind::Raise => Precedence(45000),
+            ValkyrieOperatorKind::Celsius => Precedence(45000),
+            ValkyrieOperatorKind::Fahrenheit => Precedence(45000),
+            ValkyrieOperatorKind::Transpose => Precedence(45000),
+            ValkyrieOperatorKind::Transjugate => Precedence(45000),
+            ValkyrieOperatorKind::Hermitian => Precedence(45000),
+            ValkyrieOperatorKind::DivideByDecimalPower(_) => Precedence(45000),
         }
     }
 }

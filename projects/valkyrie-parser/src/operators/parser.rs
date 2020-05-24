@@ -1,5 +1,50 @@
 use super::*;
 
+impl FromStr for ValkyrieInfix {
+    type Err = StopBecause;
+
+    fn from_str(s: &str) -> Result<Self, StopBecause> {
+        let state = ParseState::new(s.trim_end()).skip(whitespace);
+        make_from_str(state, ValkyrieInfix::parse)
+    }
+}
+impl FromStr for ValkyriePrefix {
+    type Err = StopBecause;
+
+    fn from_str(s: &str) -> Result<Self, StopBecause> {
+        let state = ParseState::new(s.trim_end()).skip(whitespace);
+        make_from_str(state, ValkyriePrefix::parse)
+    }
+}
+impl FromStr for ValkyrieSuffix {
+    type Err = StopBecause;
+
+    fn from_str(s: &str) -> Result<Self, StopBecause> {
+        let state = ParseState::new(s.trim_end()).skip(whitespace);
+        make_from_str(state, ValkyrieSuffix::parse)
+    }
+}
+
+static PREFIX: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(
+        r#"^(?x)(
+      [+\-±]
+    | [¬!~]
+    | [⅟√∛∜]
+    # | [*]{1,2}
+)"#,
+    )
+    .unwrap()
+});
+
+impl ValkyriePrefix {
+    pub fn parse(input: ParseState) -> ParseResult<Self> {
+        let (state, m) = input.match_regex(&PREFIX, "PREFIX")?;
+        let id = ValkyriePrefix { normalized: m.as_str().to_string(), range: state.away_from(input) };
+        state.finish(id)
+    }
+}
+
 static INFIX: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(
         r#"^(?x)(
@@ -11,6 +56,9 @@ static INFIX: LazyLock<Regex> = LazyLock::new(|| {
     # contains
     | (\b(not)\b\s+)?\b(in)\b
     | [∈∊∉]
+    # is
+    | \b(is)\b(\s+\b(not)\b)?
+    | [⊑⋢]
     # start with <, >
     | === | ≡ 
     | !== | =!= | ≢
@@ -44,21 +92,12 @@ static INFIX: LazyLock<Regex> = LazyLock::new(|| {
     | => | ⇒
     | =
     # unicode
-    | [⊑⋢⨳∀∁∂∃∄¬±√∛∜⊹⋗]
+    | [⨳∀∁∂∃∄¬±√∛∜⊹⋗]
     | [↻↺⇆↹⇄⇋⇌⇅]
 )"#,
     )
     .unwrap()
 });
-
-impl FromStr for ValkyrieInfix {
-    type Err = StopBecause;
-
-    fn from_str(s: &str) -> Result<Self, StopBecause> {
-        let state = ParseState::new(s.trim_end()).skip(whitespace);
-        make_from_str(state, ValkyrieInfix::parse)
-    }
-}
 
 impl ValkyrieInfix {
     pub fn parse(input: ParseState) -> ParseResult<Self> {
@@ -82,57 +121,6 @@ static POSTFIX: LazyLock<Regex> = LazyLock::new(|| {
     )
     .unwrap()
 });
-
-static PREFIX: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(
-        r#"^(?x)(
-      [+\-±]
-    | [¬~]
-    | [⅟√∛∜]
-    # | [*]{1,2}
-)"#,
-    )
-    .unwrap()
-});
-
-impl FromStr for ValkyriePrefix {
-    type Err = StopBecause;
-
-    fn from_str(s: &str) -> Result<Self, StopBecause> {
-        let state = ParseState::new(s.trim_end()).skip(whitespace);
-        make_from_str(state, ValkyriePrefix::parse)
-    }
-}
-
-impl ValkyriePrefix {
-    pub fn parse(input: ParseState) -> ParseResult<Self> {
-        let (state, m) = input.match_regex(&PREFIX, "PREFIX")?;
-        let id = ValkyriePrefix { normalized: m.as_str().to_string(), range: state.away_from(input) };
-        state.finish(id)
-    }
-}
-
-impl Debug for ValkyriePrefix {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "Infix({}, {:?})", self.normalized, self.range)
-    }
-}
-
-
-impl Debug for ValkyrieSuffix {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "Infix({}, {:?})", self.normalized, self.range)
-    }
-}
-
-impl FromStr for ValkyrieSuffix {
-    type Err = StopBecause;
-
-    fn from_str(s: &str) -> Result<Self, StopBecause> {
-        let state = ParseState::new(s.trim_end()).skip(whitespace);
-        make_from_str(state, ValkyrieSuffix::parse)
-    }
-}
 
 impl ValkyrieSuffix {
     pub fn parse(input: ParseState) -> ParseResult<Self> {

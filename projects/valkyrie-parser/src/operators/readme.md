@@ -163,6 +163,8 @@ a.[b]
 
 Logic gate can be called by `p.logic_gate(q, mask)`
 
+
+
 | No. | Mask | Expression |  
 |----:|:-----|:----------:|
 |   1 | 0000 |  `false`   | 

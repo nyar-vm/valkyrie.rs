@@ -40,4 +40,8 @@ a ∉ list;
 a in list;
 a not in list;
 
+# subtyping
+a is String;
+b is not String;
 
+# a && b || c ∨ d ⊽ e ⊻ f ∧ g ⊼ h ⩟ i;

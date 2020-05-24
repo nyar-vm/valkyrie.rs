@@ -1,21 +1,20 @@
-use crate::{helpers::ignore, operators::ValkyrieInfix};
+use crate::{helpers::ignore, operators::ValkyrieInfix, symbol::ValkyrieIdentifier};
+use lispify::{Lisp, LispSymbol, Lispify};
 use pex::{ParseResult, ParseState, StopBecause};
-use pratt::{Affix, PrattError, PrattParser, Precedence};
-use std::{
-    fmt::{Debug, Formatter},
-    ops::Range,
-};
+use pratt::{Affix, PrattError, PrattParser};
+use std::{fmt::Debug, ops::Range};
 mod display;
 mod parser;
 use crate::{
     helpers::parse_value,
     number::ValkyrieNumber,
-    operators::{ValkyrieOperator, ValkyrieOperatorKind, ValkyriePrefix, ValkyrieSuffix},
+    operators::{ValkyriePrefix, ValkyrieSuffix},
     string::ValkyrieString,
     symbol::ValkyrieNamepath,
 };
 use pex::helpers::make_from_str;
-use std::{fmt::Display, str::FromStr};
+use std::str::FromStr;
+use valkyrie_ast::ValkyrieOperator;
 
 /// A resolver
 #[derive(Default)]
