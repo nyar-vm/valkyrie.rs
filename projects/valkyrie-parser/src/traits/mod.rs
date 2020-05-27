@@ -44,6 +44,8 @@ where
         let state = ParseState::new(input.trim_end());
         make_from_str(state.skip(whitespace), Self::parse)
     }
-    fn parse_many(input: ParseState) -> ParseResult<Self>;
+    fn parse_many(input: ParseState) -> ParseResult<Vec<Self>> {
+        todo!()
+    }
     fn as_lisp(&self) -> Lisp;
 }

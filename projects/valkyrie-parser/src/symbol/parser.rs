@@ -1,7 +1,7 @@
 use super::*;
 use crate::traits::ThisParser;
 use lispify::{Lisp, LispSymbol};
-use valkyrie_ast::ValkyrieIdentifier;
+use valkyrie_ast::IdentifierNode;
 
 pub static IDENTIFIER: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(
@@ -14,15 +14,11 @@ pub static IDENTIFIER: LazyLock<Regex> = LazyLock::new(|| {
     .unwrap()
 });
 
-impl ThisParser for ValkyrieIdentifier {
+impl ThisParser for IdentifierNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, m) = input.match_regex(&IDENTIFIER, "IDENTIFIER")?;
-        let id = ValkyrieIdentifier::new(m.as_str(), &m.range());
+        let id = IdentifierNode::new(m.as_str(), &m.range());
         state.finish(id)
-    }
-
-    fn parse_many(input: ParseState) -> ParseResult<Self> {
-        todo!()
     }
 
     fn as_lisp(&self) -> Lisp {
@@ -30,24 +26,31 @@ impl ThisParser for ValkyrieIdentifier {
     }
 }
 
-impl ValkyrieNamepath {
+impl ThisParser for NamepathNode {
     /// `id (~ :: ~ b)*`
-    pub fn parse(input: ParseState) -> ParseResult<Self> {
+    fn parse(input: ParseState) -> ParseResult<Self> {
         let mut names = Vec::new();
-        let (state, id) = input.match_fn(ValkyrieIdentifier::parse)?;
+        let (state, id) = input.match_fn(IdentifierNode::parse)?;
         names.push(id);
         let (state, _) = state.match_repeats(|s| pare_colon_id(s, &mut names))?;
-        state.finish(ValkyrieNamepath { names, range: state.away_from(input) })
+        state.finish(NamepathNode::new(names, &state.away_from(input)))
+    }
+
+    fn as_lisp(&self) -> Lisp {
+        let mut terms = self.names.iter().map(|s| s.name.clone());
+        let first = terms.next().unwrap_or_default();
+        LispSymbol { name: first, path: terms.collect() }.into()
     }
 }
 
-fn pare_colon_id<'i>(input: ParseState<'i>, names: &mut Vec<ValkyrieIdentifier>) -> ParseResult<'i, ()> {
+
+fn pare_colon_id<'i>(input: ParseState<'i>, names: &mut Vec<IdentifierNode>) -> ParseResult<'i, ()> {
     let (state, _) = input
         .begin_choice()
         .or_else(|s| s.match_str("::").map_inner(|_| ()))
         .or_else(|s| s.match_char('∷').map_inner(|_| ()))
         .end_choice()?;
-    let (state, id) = state.match_fn(|s| ValkyrieIdentifier::parse(s))?;
+    let (state, id) = state.match_fn(|s| IdentifierNode::parse(s))?;
     names.push(id);
     state.finish(())
 }

@@ -1,43 +1,45 @@
 use super::*;
+use crate::utils::take_range;
 mod display;
 
 #[derive(Clone, Debug, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ValkyrieIdentifier {
+pub struct IdentifierNode {
     pub name: String,
     pub span: Range<u32>,
 }
 
 /// A namepath is a series of identifiers separated by dots.
 #[derive(Clone, Debug, Eq)]
-pub struct ValkyrieNamepath {
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct NamepathNode {
     /// The names of the identifier.
-    pub names: Vec<ValkyrieIdentifier>,
+    pub names: Vec<IdentifierNode>,
     /// The range of the identifier.
-    pub range: Range<u32>,
+    pub span: Range<u32>,
 }
 
-impl ValkyrieIdentifier {
-    pub fn is_normal(&self) -> bool {
-        self.name.starts_with(|c: char| c.is_ascii_lowercase())
+impl NamepathNode {
+    pub fn new<I>(names: I, range: &Range<usize>) -> Self
+    where
+        I: IntoIterator<Item = IdentifierNode>,
+    {
+        Self { names: names.into_iter().collect(), span: small_range(range) }
+    }
+    pub fn get_range(&self) -> Range<usize> {
+        take_range(&self.span)
     }
 }
 
-impl ValkyrieIdentifier {
+impl IdentifierNode {
     pub fn new<S: ToString>(s: S, range: &Range<usize>) -> Self {
         Self { name: s.to_string(), span: small_range(range) }
     }
-}
-
-impl Display for ValkyrieIdentifier {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        f.write_str(&self.name)
+    pub fn get_range(&self) -> Range<usize> {
+        take_range(&self.span)
     }
-}
-
-impl Display for ValkyrieIdentifier {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        todo!()
+    pub fn is_normal(&self) -> bool {
+        self.name.starts_with(|c: char| c.is_ascii_lowercase())
     }
 }
 

@@ -13,7 +13,7 @@ use std::{
     ops::Range,
     str::FromStr,
 };
-use valkyrie_ast::ValkyrieIdentifier;
+use valkyrie_ast::IdentifierNode;
 
 /// A number literal.
 #[derive(Debug, Clone)]
@@ -21,7 +21,7 @@ pub struct ValkyrieDotCall {
     /// The raw string of the number.
     pub base: ValkyrieExpression,
     /// The raw string of the number.
-    pub caller: ValkyrieIdentifier,
+    pub caller: IdentifierNode,
     /// The range of the number.
     pub terms: Vec<ValkyrieTableTerm>,
     /// The range of the number.

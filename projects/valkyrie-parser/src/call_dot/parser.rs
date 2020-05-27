@@ -1,5 +1,6 @@
 use super::*;
-use valkyrie_ast::ValkyrieIdentifier;
+use crate::traits::ThisParser;
+use valkyrie_ast::IdentifierNode;
 
 impl FromStr for ValkyrieDotCall {
     type Err = StopBecause;
@@ -17,7 +18,7 @@ impl ValkyrieDotCall {
     /// ```
     pub fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, _) = input.match_char('.')?;
-        let (state, caller) = state.skip(ignore).match_fn(ValkyrieIdentifier::parse)?;
+        let (state, caller) = state.skip(ignore).match_fn(IdentifierNode::parse)?;
         let (finally, args) = state.skip(ignore).match_fn(ValkyrieApply::parse)?;
         finally.finish(ValkyrieDotCall {
             base: ValkyrieExpression::Placeholder,

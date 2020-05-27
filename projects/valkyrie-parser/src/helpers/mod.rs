@@ -1,10 +1,11 @@
 mod escaper;
 
 pub use self::escaper::StringRewrite;
-use crate::{expression::ValkyrieExpression, number::ValkyrieNumber, string::ValkyrieString, symbol::ValkyrieNamepath};
+use crate::{expression::ValkyrieExpression, string::ValkyrieString, traits::ThisParser};
 use pex::{ParseResult, ParseState};
 use regex::Regex;
 use std::sync::LazyLock;
+use valkyrie_ast::{NamepathNode, NumberNode};
 
 pub static IGNORE: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(
@@ -28,8 +29,8 @@ pub fn ignore(input: ParseState) -> ParseResult<()> {
 pub fn parse_value(input: ParseState) -> ParseResult<ValkyrieExpression> {
     input
         .begin_choice()
-        .or_else(|s| ValkyrieNamepath::parse(s).map_inner(Into::into))
-        .or_else(|s| ValkyrieNumber::parse(s).map_inner(Into::into))
+        .or_else(|s| NamepathNode::parse(s).map_inner(Into::into))
+        .or_else(|s| NumberNode::parse(s).map_inner(Into::into))
         .or_else(|s| ValkyrieString::parse(s).map_inner(Into::into))
         .end_choice()
 }

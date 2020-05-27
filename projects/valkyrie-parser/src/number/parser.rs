@@ -1,13 +1,7 @@
 use super::*;
-
-impl FromStr for ValkyrieNumber {
-    type Err = StopBecause;
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let state = ParseState::new(s.trim_end()).skip(whitespace);
-        make_from_str(state, Self::parse)
-    }
-}
+use crate::traits::ThisParser;
+use lispify::Lisp;
+use valkyrie_ast::NumberNode;
 
 impl FromStr for ValkyrieBytes {
     type Err = StopBecause;
@@ -28,10 +22,8 @@ pub static NUMBER: LazyLock<Regex> = LazyLock::new(|| {
     .unwrap()
 });
 
-impl ValkyrieNumber {
-    /// - regular: `\p{XID_Start}|_)\p{XID_Continue}*`
-    /// - escaped: ``` `(\.|[^`])*` ```
-    pub fn parse(input: ParseState) -> ParseResult<Self> {
+impl ThisParser for NumberNode {
+    fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, m) = input.match_regex(&NUMBER, "NUMBER")?;
         let (state, unit) = state.match_optional(parse_unit)?;
         let mut value = String::with_capacity(m.as_str().len());
@@ -40,13 +32,18 @@ impl ValkyrieNumber {
                 value.push(c);
             }
         }
-        let id = ValkyrieNumber { value, unit, range: state.away_from(input) };
-        state.finish(id)
+        let mut number = NumberNode::new(m.as_str(), &state.away_from(input));
+        number.unit = unit;
+        state.finish(number)
+    }
+
+    fn as_lisp(&self) -> Lisp {
+        LispNumber { number: self.value.clone(), unit: self.unit.clone().map(|s| s.name).unwrap_or_default() }.into()
     }
 }
 
-impl From<ValkyrieNumber> for ValkyrieExpression {
-    fn from(value: ValkyrieNumber) -> Self {
+impl From<NumberNode> for ValkyrieExpression {
+    fn from(value: NumberNode) -> Self {
         ValkyrieExpression::Number(Box::new(value))
     }
 }
@@ -137,9 +134,9 @@ fn parse_hex(raw: &str) -> Vec<u8> {
     bytes
 }
 
-fn parse_unit(input: ParseState) -> ParseResult<ValkyrieIdentifier> {
+fn parse_unit(input: ParseState) -> ParseResult<IdentifierNode> {
     let (state, _) = input.match_optional(|s| s.match_char('_'))?;
-    let (state, id) = state.match_fn(ValkyrieIdentifier::parse)?;
+    let (state, id) = state.match_fn(IdentifierNode::parse)?;
     state.finish(id)
 }
 

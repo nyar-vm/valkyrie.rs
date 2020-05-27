@@ -1,4 +1,6 @@
 use super::*;
+use crate::traits::ThisParser;
+use valkyrie_ast::IdentifierNode;
 
 impl FromStr for ValkyrieTable {
     type Err = StopBecause;
@@ -60,10 +62,10 @@ impl ValkyriePair {
         let (state, value) = state.skip(ignore).match_fn(Self::parse_value)?;
         state.finish(ValkyriePair { key, value })
     }
-    /// [key](ValkyrieIdentifier::parse)
+    /// [key](IdentifierNode::parse)
     #[inline(always)]
-    fn parse_key(input: ParseState) -> ParseResult<ValkyrieIdentifier> {
-        ValkyrieIdentifier::parse(input)
+    fn parse_key(input: ParseState) -> ParseResult<IdentifierNode> {
+        IdentifierNode::parse(input)
     }
     /// [value](ValkyrieExpression::parse)
     #[inline(always)]

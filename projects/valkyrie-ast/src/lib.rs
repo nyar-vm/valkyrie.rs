@@ -26,16 +26,17 @@
 // mod control_flow;
 // mod display;
 mod expression_level;
+mod package_level;
 mod utils;
 
 pub use crate::{
     expression_level::{
-        identifier::ValkyrieIdentifier,
+        decimal::NumberNode,
+        identifier::{IdentifierNode, NamepathNode},
         operators::{ValkyrieOperator, ValkyrieOperatorKind},
     },
-    utils::FileSpan,
+    package_level::{NamespaceDeclareNode, NamespaceKind},
 };
-
 // mod package_level;
 //
 // #[derive(Clone, Debug, Serialize, Deserialize)]

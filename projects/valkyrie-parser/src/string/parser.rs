@@ -5,6 +5,7 @@ use pex::{
     ParseResult, ParseState, StopBecause,
 };
 
+use crate::traits::ThisParser;
 use std::str::FromStr;
 
 impl FromStr for ValkyrieString {
@@ -30,7 +31,7 @@ impl ValkyrieString {
     /// - regular: `\p{XID_Start}|_)\p{XID_Continue}*`
     /// - escaped: ``` `(\.|[^`])*` ```
     pub fn parse(input: ParseState) -> ParseResult<Self> {
-        let (state, unit) = input.match_optional(ValkyrieIdentifier::parse)?;
+        let (state, unit) = input.match_optional(IdentifierNode::parse)?;
         let (state, pair) = state
             .begin_choice()
             .or_else(|s| quotation_pair_nested(s, '\''))

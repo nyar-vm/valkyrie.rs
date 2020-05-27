@@ -1,3 +1,4 @@
+use crate::traits::ThisParser;
 use super::*;
 
 impl Display for ValkyrieApply {
@@ -37,7 +38,7 @@ impl Lispify for ValkyriePair {
     fn lispify(&self) -> Self::Output {
         let mut terms = Vec::with_capacity(3);
         terms.push(Lisp::function("pair"));
-        terms.push(self.key.lispify().into());
+        terms.push(self.key.as_lisp().into());
         terms.push(self.value.lispify().into());
         Lisp::Any(terms)
     }

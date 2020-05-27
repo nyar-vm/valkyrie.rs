@@ -27,8 +27,6 @@ path = "C:\\Users\\Dell\\CLionProjects\\pex\\projects\\pex-core"
 version = "0.0.0"
 features = []
 path = "../valkyrie-ast"
-#path = "C:\\Users\\Dell\\CLionProjects\\pex\\projects\\pex-core"
-
 
 #[dependencies.valkyrie-pest]
 #path = "../valkyrie-pest"

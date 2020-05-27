@@ -1,5 +1,15 @@
 use super::*;
 
+impl ThisParser for ValkyrieOperator {
+    fn parse(input: ParseState) -> ParseResult<Self> {
+        todo!()
+    }
+
+    fn as_lisp(&self) -> Lisp {
+        todo!()
+    }
+}
+
 impl FromStr for ValkyrieInfix {
     type Err = StopBecause;
 

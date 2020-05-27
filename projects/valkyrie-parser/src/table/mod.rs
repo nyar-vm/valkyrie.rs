@@ -13,6 +13,7 @@ use std::{
     ops::Range,
     str::FromStr,
 };
+use valkyrie_ast::IdentifierNode;
 
 /// A number literal.
 #[derive(Debug, Clone)]
@@ -34,13 +35,13 @@ pub enum ValkyrieTableTerm {
 
 #[derive(Debug, Clone, Eq, PartialEq)]
 pub struct ValkyriePair {
-    pub key: ValkyrieIdentifier,
+    pub key: IdentifierNode,
     pub value: ValkyrieExpression,
 }
 
 impl ValkyriePair {
     pub fn get_range(&self) -> Range<usize> {
-        self.key.range.start..self.value.get_range().end
+        self.key.get_range().start..self.value.get_range().end
     }
 }
 

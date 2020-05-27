@@ -1,5 +1,5 @@
 use crate::{helpers::ignore, operators::ValkyrieInfix};
-use lispify::{Lisp, LispSymbol, Lispify};
+use lispify::{Lisp, Lispify};
 use pex::{ParseResult, ParseState, StopBecause};
 use pratt::{Affix, PrattError, PrattParser};
 use std::{fmt::Debug, ops::Range};
@@ -7,15 +7,13 @@ mod display;
 mod parser;
 use crate::{
     helpers::parse_value,
-    number::ValkyrieNumber,
     operators::{ValkyriePrefix, ValkyrieSuffix},
     string::ValkyrieString,
-    symbol::ValkyrieNamepath,
     traits::ThisParser,
 };
 use pex::helpers::make_from_str;
 use std::str::FromStr;
-use valkyrie_ast::{ValkyrieOperator, ValkyrieOperatorKind};
+use valkyrie_ast::{NamepathNode, NumberNode, ValkyrieOperator, ValkyrieOperatorKind};
 
 /// A resolver
 #[derive(Default)]
@@ -66,8 +64,8 @@ pub enum ValkyrieExpression {
     Prefix(Box<ValkyrieUnary>),
     Binary(Box<ValkyrieBinary>),
     Suffix(Box<ValkyrieUnary>),
-    Number(Box<ValkyrieNumber>),
-    Symbol(Box<ValkyrieNamepath>),
+    Number(Box<NumberNode>),
+    Symbol(Box<NamepathNode>),
     String(Box<ValkyrieString>),
 }
 
@@ -101,10 +99,6 @@ impl ThisParser for ValkyrieOperatorKind {
         todo!()
     }
 
-    fn parse_many(input: ParseState) -> ParseResult<Self> {
-        todo!()
-    }
-
     fn as_lisp(&self) -> Lisp {
         Lisp::Operator(self.to_string())
     }
@@ -132,8 +126,8 @@ impl ValkyrieExpression {
             ValkyrieExpression::Prefix(u) => u.range.clone(),
             ValkyrieExpression::Binary(b) => b.range.clone(),
             ValkyrieExpression::Suffix(u) => u.range.clone(),
-            ValkyrieExpression::Number(u) => u.range.clone(),
-            ValkyrieExpression::Symbol(u) => u.range.clone(),
+            ValkyrieExpression::Number(u) => u.get_range(),
+            ValkyrieExpression::Symbol(u) => u.get_range(),
             ValkyrieExpression::String(u) => u.range.clone(),
         }
     }
