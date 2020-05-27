@@ -1,18 +1,13 @@
 mod display;
 mod parser;
 use crate::expression::ValkyrieExpression;
-use lispify::{LispNumber, Lispify};
+use lispify::LispNumber;
 use pex::{
     helpers::{make_from_str, whitespace},
     ParseResult, ParseState, StopBecause,
 };
 use regex::Regex;
-use std::{
-    fmt::{Display, Formatter},
-    ops::Range,
-    str::FromStr,
-    sync::LazyLock,
-};
+use std::{fmt::Formatter, ops::Range, str::FromStr, sync::LazyLock};
 use valkyrie_ast::IdentifierNode;
 
 /// A number literal.

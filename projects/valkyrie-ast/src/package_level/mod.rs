@@ -13,7 +13,10 @@
 mod arithmetic;
 
 use crate::{utils::small_range, IdentifierNode};
-use std::ops::Range;
+use std::{
+    fmt::{Display, Formatter, Write},
+    ops::Range,
+};
 
 #[derive(Copy, Clone, Debug, Eq, PartialEq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -24,6 +27,30 @@ pub enum NamespaceKind {
     Unique,
     // In the v language, there only one shared namespace
     Test,
+}
+
+impl Display for NamespaceKind {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        f.write_str("namespace")?;
+        match self {
+            NamespaceKind::Shared => Ok(()),
+            NamespaceKind::Unique => f.write_char('!'),
+            NamespaceKind::Test => f.write_char('?'),
+        }
+    }
+}
+
+impl Display for NamespaceDeclareNode {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{} ", self.kind)?;
+        for (idx, id) in self.path.iter().enumerate() {
+            if idx != 0 {
+                f.write_char('.')?;
+            }
+            Display::fmt(id, f)?;
+        }
+        Ok(())
+    }
 }
 
 #[derive(Clone, Debug, Eq, Hash)]

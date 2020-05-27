@@ -19,6 +19,8 @@ pub enum ValkyrieOperatorKind {
     Unbox,
     /// prefix operator: `**`
     Unpack,
+    /// prefix operator: `**`
+    UnpackAll,
     /// prefix operator: `⅟`
     Inverse,
     /// prefix operator: `⅟`
@@ -111,6 +113,7 @@ impl ValkyrieOperatorKind {
             ValkyrieOperatorKind::Negative => 25000,
             ValkyrieOperatorKind::Unbox => 25000,
             ValkyrieOperatorKind::Unpack => 25000,
+            ValkyrieOperatorKind::UnpackAll => 25000,
             ValkyrieOperatorKind::Inverse => 25000,
             ValkyrieOperatorKind::Surd(_) => 25000,
             // postfix + 0

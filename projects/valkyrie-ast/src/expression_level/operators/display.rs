@@ -1,4 +1,5 @@
 use super::*;
+use std::{char::ParseCharError, str::FromStr};
 
 impl Display for ValkyrieOperator {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
@@ -26,7 +27,8 @@ impl Display for ValkyrieOperatorKind {
             ValkyrieOperatorKind::Transjugate => f.write_char('ᴴ'),
             ValkyrieOperatorKind::Hermitian => f.write_str("Hermitian"),
             ValkyrieOperatorKind::Unbox => f.write_char('*'),
-            ValkyrieOperatorKind::Unpack => f.write_str("**"),
+            ValkyrieOperatorKind::Unpack => f.write_str("⁑"),
+            ValkyrieOperatorKind::UnpackAll => f.write_char('⁂'),
             ValkyrieOperatorKind::Greater => f.write_char('>'),
             ValkyrieOperatorKind::MuchGreater => f.write_char('≫'),
             ValkyrieOperatorKind::VeryMuchGreater => f.write_char('⋙'),

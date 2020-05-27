@@ -8,7 +8,6 @@ mod parser;
 use crate::{
     helpers::parse_value,
     operators::{ValkyriePrefix, ValkyrieSuffix},
-    string::ValkyrieString,
     traits::ThisParser,
 };
 use pex::helpers::make_from_str;
@@ -66,7 +65,7 @@ pub enum ValkyrieExpression {
     Suffix(Box<ValkyrieUnary>),
     Number(Box<NumberNode>),
     Symbol(Box<NamepathNode>),
-    String(Box<ValkyrieString>),
+    String(Box<StringLiteralNode>),
 }
 
 #[derive(Clone, Debug, Eq)]

@@ -15,7 +15,7 @@ use valkyrie_parser::{call_dot::ValkyrieDotCall, call_index::ValkyrieView, repl:
 // use valkyrie_errors::{FileID, TextManager, ValkyrieResult};
 // use valkyrie_parser::ValkyrieParser;
 //
-// mod declaration;
+mod declaration;
 mod expression;
 mod literal;
 // mod statement;
@@ -53,6 +53,7 @@ fn repl_debug(text: &str, output: &str) -> std::io::Result<()> {
     let mut file = File::create(here().join(output))?;
     let apply = parse_repl(text);
     for expr in &apply {
+        println!("{}", expr);
         writeln!(file, "{}", display_lisp(expr.lispify(), 144).unwrap())?;
         println!("{}", colored_lisp(expr.lispify(), 144).unwrap());
     }

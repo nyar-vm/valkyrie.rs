@@ -41,7 +41,8 @@ static PREFIX: LazyLock<Regex> = LazyLock::new(|| {
       [+\-±]
     | [¬!~]
     | [⅟√∛∜]
-    # | [*]{1,2}
+    | [*]{1,3}
+    | [⁑⁂]
 )"#,
     )
     .unwrap()

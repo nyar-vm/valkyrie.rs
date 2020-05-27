@@ -3,7 +3,7 @@ use lispify::Lisp;
 use pex::{ParseResult, ParseState};
 use regex::Regex;
 use std::sync::LazyLock;
-use valkyrie_ast::{IdentifierNode, NamepathNode, NamespaceDeclareNode, NamespaceKind};
+use valkyrie_ast::{IdentifierNode, NamespaceDeclareNode, NamespaceKind};
 
 pub static NAMESPACE: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(
@@ -26,7 +26,15 @@ impl ThisParser for NamespaceDeclareNode {
     }
 
     fn as_lisp(&self) -> Lisp {
-        todo!()
+        let mut terms = Vec::with_capacity(self.path.len() + 1);
+        let kind = match self.kind {
+            NamespaceKind::Shared => "namespace/shared",
+            NamespaceKind::Unique => "namespace/unique",
+            NamespaceKind::Test => "namespace/test",
+        };
+        terms.push(Lisp::keyword(kind));
+        terms.extend(self.path.iter().map(|id| id.as_lisp()));
+        Lisp::Any(terms)
     }
 }
 

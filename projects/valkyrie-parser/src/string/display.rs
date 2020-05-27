@@ -1,7 +1,7 @@
 use super::*;
 use lispify::ListString;
 
-impl Display for ValkyrieString {
+impl Display for StringLiteralNode {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         f.write_str(&self.value)?;
         if let Some(unit) = &self.unit {
@@ -12,7 +12,7 @@ impl Display for ValkyrieString {
     }
 }
 
-impl Lispify for ValkyrieString {
+impl Lispify for StringLiteralNode {
     type Output = ListString;
 
     fn lispify(&self) -> Self::Output {

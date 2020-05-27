@@ -8,17 +8,17 @@ use pex::{
 use crate::traits::ThisParser;
 use std::str::FromStr;
 
-impl FromStr for ValkyrieString {
+impl FromStr for StringLiteralNode {
     type Err = StopBecause;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let state = ParseState::new(s.trim_end()).skip(whitespace);
 
-        make_from_str(state, ValkyrieString::parse)
+        make_from_str(state, StringLiteralNode::parse)
     }
 }
 
-impl FromStr for ValkyrieTemplate {
+impl FromStr for StringTemplateNode {
     type Err = StopBecause;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
@@ -27,7 +27,7 @@ impl FromStr for ValkyrieTemplate {
     }
 }
 
-impl ValkyrieString {
+impl StringLiteralNode {
     /// - regular: `\p{XID_Start}|_)\p{XID_Continue}*`
     /// - escaped: ``` `(\.|[^`])*` ```
     pub fn parse(input: ParseState) -> ParseResult<Self> {
@@ -39,18 +39,18 @@ impl ValkyrieString {
             .or_else(|s| quotation_pair(s, '«', '»'))
             .end_choice()?;
 
-        state.finish(ValkyrieString { value: pair.body.as_string(), unit, range: state.away_from(input) })
+        state.finish(StringLiteralNode { value: pair.body.as_string(), unit, range: state.away_from(input) })
     }
 }
 
-impl From<ValkyrieString> for ValkyrieExpression {
-    fn from(value: ValkyrieString) -> Self {
+impl From<StringLiteralNode> for ValkyrieExpression {
+    fn from(value: StringLiteralNode) -> Self {
         ValkyrieExpression::String(Box::new(value))
     }
 }
 
 // ZeroBytePattern::new(&[("⍚", 16), ("⍙", 8), ("⍜", 2)]);
-impl ValkyrieTemplate {
+impl StringTemplateNode {
     /// ```js
     /// ⍚F => [15]
     /// ⍚FF => [255]

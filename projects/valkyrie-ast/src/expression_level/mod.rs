@@ -1,5 +1,8 @@
 use crate::{
-    expression_level::identifier::{IdentifierNode, NamepathNode},
+    expression_level::{
+        identifier::{IdentifierNode, NamepathNode},
+        string::StringLiteralNode,
+    },
     utils::small_range,
     ValkyrieOperator,
 };
@@ -12,3 +15,4 @@ mod arithmetic;
 pub mod decimal;
 pub mod identifier;
 pub mod operators;
+pub mod string;

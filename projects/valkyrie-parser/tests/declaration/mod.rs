@@ -1,13 +1,7 @@
 use super::*;
 
 #[test]
-fn test_unary() {
-    // debug_lexer(&[
-    //     "tests/literal/symbol.vk", "tests/literal/number.vk", "tests/literal/string.vk", "tests/literal/escape.vk"])
-    //     .unwrap();
+fn lex_namespace() {
+    repl_debug(include_str!("namespaces.vk"), "declaration/namespaces_debug.rkt").expect("namespaces");
 }
-
-#[test]
-fn test_class() -> ValkyrieResult {
-    debug_lexer(&["tests/declaration/class1.vk"])
-}
+//

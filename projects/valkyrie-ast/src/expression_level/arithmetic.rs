@@ -1,5 +1,5 @@
 use super::*;
-use crate::NumberNode;
+
 
 impl PartialEq for IdentifierNode {
     fn eq(&self, other: &Self) -> bool {
@@ -18,6 +18,11 @@ impl PartialEq for NamepathNode {
     }
 }
 impl PartialEq for NumberNode {
+    fn eq(&self, other: &Self) -> bool {
+        self.value.eq(&other.value) && self.unit.eq(&other.unit)
+    }
+}
+impl PartialEq for StringLiteralNode {
     fn eq(&self, other: &Self) -> bool {
         self.value.eq(&other.value) && self.unit.eq(&other.unit)
     }
