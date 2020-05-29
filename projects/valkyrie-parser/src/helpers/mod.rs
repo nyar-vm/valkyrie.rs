@@ -1,7 +1,7 @@
 mod escaper;
 
 pub use self::escaper::StringRewrite;
-use crate::{expression::ValkyrieExpression, traits::ThisParser};
+use crate::{expression::ValkyrieExpression, table::TableNode, traits::ThisParser};
 use pex::{ParseResult, ParseState};
 use regex::Regex;
 use std::sync::LazyLock;
@@ -32,5 +32,6 @@ pub fn parse_value(input: ParseState) -> ParseResult<ValkyrieExpression> {
         .or_else(|s| NamepathNode::parse(s).map_inner(Into::into))
         .or_else(|s| NumberLiteralNode::parse(s).map_inner(Into::into))
         .or_else(|s| StringLiteralNode::parse(s).map_inner(Into::into))
+        .or_else(|s| TableNode::parse(s).map_inner(Into::into))
         .end_choice()
 }

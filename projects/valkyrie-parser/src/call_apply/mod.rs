@@ -3,7 +3,7 @@ mod parser;
 use crate::{
     expression::ValkyrieExpression,
     helpers::ignore,
-    table::{ValkyriePair, ValkyrieTableTerm},
+    table::{PairNode, TableTermNode},
 };
 use lispify::{Lisp, Lispify};
 use pex::{
@@ -22,7 +22,7 @@ pub struct ValkyrieApply {
     /// The raw string of the number.
     pub base: ValkyrieExpression,
     /// The raw string of the number.
-    pub terms: Vec<ValkyrieTableTerm>,
+    pub terms: Vec<TableTermNode>,
     /// The range of the number.
     pub range: Range<usize>,
 }

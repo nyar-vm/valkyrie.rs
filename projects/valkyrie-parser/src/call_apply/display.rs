@@ -1,5 +1,5 @@
-use crate::traits::ThisParser;
 use super::*;
+use crate::traits::ThisParser;
 
 impl Display for ValkyrieApply {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
@@ -21,18 +21,18 @@ impl Lispify for ValkyrieApply {
     }
 }
 
-impl Lispify for ValkyrieTableTerm {
+impl Lispify for TableTermNode {
     type Output = Lisp;
 
     fn lispify(&self) -> Self::Output {
         match self {
-            ValkyrieTableTerm::Item(v) => v.lispify(),
-            ValkyrieTableTerm::Pair(v) => v.lispify(),
+            TableTermNode::Item(v) => v.lispify(),
+            TableTermNode::Pair(v) => v.lispify(),
         }
     }
 }
 
-impl Lispify for ValkyriePair {
+impl Lispify for PairNode {
     type Output = Lisp;
 
     fn lispify(&self) -> Self::Output {

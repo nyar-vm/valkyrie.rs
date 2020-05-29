@@ -10,10 +10,10 @@ impl FromStr for ValkyrieApply {
 }
 
 impl ValkyrieApply {
-    /// `(` ~ `)` | `(` [term](ValkyrieTableTerm::parse) ( ~ `,` ~ [term](ValkyrieTableTerm::parse))* `,`? `)`
+    /// `(` ~ `)` | `(` [term](TableTermNode::parse) ( ~ `,` ~ [term](TableTermNode::parse))* `,`? `)`
     pub fn parse(input: ParseState) -> ParseResult<Self> {
         let pat = BracketPattern::new("(", ")");
-        let (state, terms) = pat.consume(input, ignore, ValkyrieTableTerm::parse)?;
+        let (state, terms) = pat.consume(input, ignore, TableTermNode::parse)?;
         state.finish(ValkyrieApply { base: ValkyrieExpression::Placeholder, terms: terms.body, range: state.away_from(input) })
     }
 }

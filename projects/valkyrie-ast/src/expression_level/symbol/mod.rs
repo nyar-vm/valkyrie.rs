@@ -6,7 +6,7 @@ mod display;
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct IdentifierNode {
     pub name: String,
-    pub span: FileSpan,
+    pub span: Range<usize>,
 }
 
 /// A namepath is a series of identifiers separated by dots.

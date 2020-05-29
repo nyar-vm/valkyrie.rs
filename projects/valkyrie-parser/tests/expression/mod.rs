@@ -4,6 +4,7 @@ use super::*;
 fn lex_expression() {
     repl_debug(include_str!("infix.vk"), "expression/infix_debug.rkt").expect("infix");
     repl_debug(include_str!("unary.vk"), "expression/unary_debug.rkt").expect("unary");
+    repl_debug(include_str!("table.vk"), "expression/table_debug.rkt").expect("table");
 }
 
 #[test]
@@ -12,22 +13,6 @@ fn test_expr() {
 .a(x, b: 1, c)
 "#;
     let slice = ValkyrieDotCall::from_str(raw).unwrap();
-    println!("input:\n{raw}");
-    // println!("output:\n {call_index:#?}");
-    println!("output:\n{}", colored_lisp(slice.lispify(), 42).unwrap());
-}
-
-#[test]
-fn test_table() {
-    let raw = r#"[
-    2,
-    3,
-    a: 1, 
-    b: 2,
-#   *args,
-#   **kwargs
-]"#;
-    let slice = ValkyrieTable::from_str(raw).unwrap();
     println!("input:\n{raw}");
     // println!("output:\n {call_index:#?}");
     println!("output:\n{}", colored_lisp(slice.lispify(), 42).unwrap());

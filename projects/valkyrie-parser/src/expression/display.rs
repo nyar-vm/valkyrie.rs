@@ -12,18 +12,19 @@ impl Lispify for ValkyrieExpression {
             ValkyrieExpression::Number(v) => v.as_lisp().into(),
             ValkyrieExpression::Symbol(v) => v.as_lisp().into(),
             ValkyrieExpression::String(v) => v.as_lisp().into(),
+            ValkyrieExpression::Table(v) => v.as_lisp().into(),
         }
     }
 }
 
-impl Lispify for ValkyrieBinary {
+impl Lispify for BinaryNode {
     type Output = Lisp;
 
     fn lispify(&self) -> Self::Output {
         Lisp::operator(self.operator.to_string(), &[self.lhs.lispify(), self.rhs.lispify()])
     }
 }
-impl Lispify for ValkyrieUnary {
+impl Lispify for UnaryNode {
     type Output = Lisp;
 
     fn lispify(&self) -> Self::Output {

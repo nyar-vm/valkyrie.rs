@@ -17,7 +17,7 @@ a[2::]
 #[test]
 fn debug_slice() -> Result<()> {
     let ast: ASTKind = ASTDump::parse(SLICE);
-    ast.save("tests/expression/debug_slice.clj")
+    ast.save("tests/expression/table.vk")
 }
 
 const INDEX: &str = r#"

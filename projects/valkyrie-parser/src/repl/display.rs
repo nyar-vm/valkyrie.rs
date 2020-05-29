@@ -1,6 +1,6 @@
 use super::*;
 use crate::{
-    expression::{ValkyrieBinary, ValkyrieUnary},
+    expression::{BinaryNode, UnaryNode},
     traits::ThisParser,
 };
 
@@ -23,17 +23,18 @@ impl Display for ValkyrieExpression {
             ValkyrieExpression::Number(v) => Display::fmt(v, f),
             ValkyrieExpression::Symbol(v) => Display::fmt(v, f),
             ValkyrieExpression::String(v) => Display::fmt(v, f),
+            ValkyrieExpression::Table(v) => Display::fmt(v, f),
         }
     }
 }
 
-impl Display for ValkyrieUnary {
+impl Display for UnaryNode {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}{}", self.operator, self.body)
     }
 }
 
-impl Display for ValkyrieBinary {
+impl Display for BinaryNode {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{} {} {}", self.lhs, self.operator, self.rhs)
     }
