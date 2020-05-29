@@ -6,17 +6,9 @@ use pex::{
 };
 
 use crate::traits::ThisParser;
+use lispify::{Lisp, ListString};
 use std::str::FromStr;
-
-impl FromStr for StringLiteralNode {
-    type Err = StopBecause;
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let state = ParseState::new(s.trim_end()).skip(whitespace);
-
-        make_from_str(state, StringLiteralNode::parse)
-    }
-}
+use valkyrie_ast::StringLiteralNode;
 
 impl FromStr for StringTemplateNode {
     type Err = StopBecause;
@@ -27,10 +19,8 @@ impl FromStr for StringTemplateNode {
     }
 }
 
-impl StringLiteralNode {
-    /// - regular: `\p{XID_Start}|_)\p{XID_Continue}*`
-    /// - escaped: ``` `(\.|[^`])*` ```
-    pub fn parse(input: ParseState) -> ParseResult<Self> {
+impl ThisParser for StringLiteralNode {
+    fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, unit) = input.match_optional(IdentifierNode::parse)?;
         let (state, pair) = state
             .begin_choice()
@@ -40,6 +30,10 @@ impl StringLiteralNode {
             .end_choice()?;
 
         state.finish(StringLiteralNode { value: pair.body.as_string(), unit, range: state.away_from(input) })
+    }
+
+    fn as_lisp(&self) -> Lisp {
+        ListString { text: self.value.to_owned(), unit: self.unit.clone().map(|u| u.name).unwrap_or_default() }.into()
     }
 }
 

@@ -1,7 +1,7 @@
 use super::*;
 use crate::traits::ThisParser;
 use lispify::Lisp;
-use valkyrie_ast::NumberNode;
+use valkyrie_ast::NumberLiteralNode;
 
 impl FromStr for ValkyrieBytes {
     type Err = StopBecause;
@@ -22,7 +22,7 @@ pub static NUMBER: LazyLock<Regex> = LazyLock::new(|| {
     .unwrap()
 });
 
-impl ThisParser for NumberNode {
+impl ThisParser for NumberLiteralNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, m) = input.match_regex(&NUMBER, "NUMBER")?;
         let (state, unit) = state.match_optional(parse_unit)?;
@@ -32,7 +32,7 @@ impl ThisParser for NumberNode {
                 value.push(c);
             }
         }
-        let mut number = NumberNode::new(m.as_str(), &state.away_from(input));
+        let mut number = NumberLiteralNode::new(m.as_str(), &state.away_from(input));
         number.unit = unit;
         state.finish(number)
     }
@@ -42,8 +42,8 @@ impl ThisParser for NumberNode {
     }
 }
 
-impl From<NumberNode> for ValkyrieExpression {
-    fn from(value: NumberNode) -> Self {
+impl From<NumberLiteralNode> for ValkyrieExpression {
+    fn from(value: NumberLiteralNode) -> Self {
         ValkyrieExpression::Number(Box::new(value))
     }
 }

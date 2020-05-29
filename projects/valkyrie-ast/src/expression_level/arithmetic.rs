@@ -1,6 +1,5 @@
 use super::*;
 
-
 impl PartialEq for IdentifierNode {
     fn eq(&self, other: &Self) -> bool {
         self.name.eq(&other.name)
@@ -17,7 +16,7 @@ impl PartialEq for NamepathNode {
         self.names.eq(&other.names)
     }
 }
-impl PartialEq for NumberNode {
+impl PartialEq for NumberLiteralNode {
     fn eq(&self, other: &Self) -> bool {
         self.value.eq(&other.value) && self.unit.eq(&other.unit)
     }

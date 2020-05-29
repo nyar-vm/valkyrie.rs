@@ -4,13 +4,12 @@ use crate::{
         string::StringLiteralNode,
     },
     utils::small_range,
-    ValkyrieOperator,
+    NumberLiteralNode, ValkyrieOperator,
 };
 use std::{
     fmt::{Display, Formatter, Write},
     ops::Range,
 };
-
 mod arithmetic;
 pub mod decimal;
 pub mod identifier;

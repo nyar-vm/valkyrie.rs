@@ -1,5 +1,7 @@
 use super::*;
 
+mod display;
+
 /// A number literal.
 #[derive(Debug, Clone, Eq, Hash)]
 pub struct StringLiteralNode {

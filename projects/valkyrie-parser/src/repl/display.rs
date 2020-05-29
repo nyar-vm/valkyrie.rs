@@ -29,12 +29,13 @@ impl Display for ValkyrieExpression {
 
 impl Display for ValkyrieUnary {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        todo!()
+        write!(f, "{}{}", self.operator, self.body)
     }
 }
+
 impl Display for ValkyrieBinary {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        todo!()
+        write!(f, "{} {} {}", self.lhs, self.operator, self.rhs)
     }
 }
 

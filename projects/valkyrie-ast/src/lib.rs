@@ -31,9 +31,10 @@ mod utils;
 
 pub use crate::{
     expression_level::{
-        decimal::NumberNode,
+        decimal::NumberLiteralNode,
         identifier::{IdentifierNode, NamepathNode},
         operators::{ValkyrieOperator, ValkyrieOperatorKind},
+        string::StringLiteralNode,
     },
     package_level::{NamespaceDeclareNode, NamespaceKind},
 };

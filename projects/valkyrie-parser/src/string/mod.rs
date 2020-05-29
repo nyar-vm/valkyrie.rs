@@ -18,12 +18,6 @@ pub struct StringTemplateNode {
     pub range: Range<usize>,
 }
 
-impl PartialEq for StringLiteralNode {
-    fn eq(&self, other: &Self) -> bool {
-        self.value.eq(&other.value) && self.unit.eq(&other.unit)
-    }
-}
-
 impl PartialEq for StringTemplateNode {
     fn eq(&self, other: &Self) -> bool {
         self.bytes.eq(&other.bytes) && self.unit.eq(&other.unit)

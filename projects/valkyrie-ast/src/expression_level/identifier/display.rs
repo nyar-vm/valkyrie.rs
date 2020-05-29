@@ -8,6 +8,12 @@ impl Display for IdentifierNode {
 
 impl Display for NamepathNode {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        todo!()
+        for (idx, item) in self.names.iter().enumerate() {
+            if idx != 0 {
+                f.write_str("∷")?;
+            }
+            Display::fmt(item, f)?;
+        }
+        Ok(())
     }
 }
