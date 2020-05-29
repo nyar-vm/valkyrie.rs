@@ -1,6 +1,6 @@
 [package]
 name = "valkyrie-ast"
-version = "0.0.0"
+version = "0.0.1"
 authors = ["Aster <192607617@qq.com>"]
 description = "Abstract Syntax Tree of valkyrie language"
 repository = "https://github.com/nyar-vm/valkyrie.rs"
@@ -10,8 +10,9 @@ license = "MPL-2.0"
 edition = "2021"
 
 [dependencies]
+syntax-error = "0.0.1"
 url = "2.3.1"
-serde = { version = "1.0.163", features = ["derive"], optional = true }
+#serde = { version = "1.0.163", features = ["derive"], optional = true }
 
 #unicode-ident = "1.0.6"
 #indexmap = "1.9.2"
@@ -29,4 +30,4 @@ serde = { version = "1.0.163", features = ["derive"], optional = true }
 
 [features]
 default = []
-serde = ["dep:serde", "url/serde"]
+#serde = ["dep:serde", "url/serde"]

@@ -9,6 +9,7 @@ repository = "https://github.com/nyar-lang/NyarNative"
 license = "MPL-2.0"
 
 [dependencies]
+syntax-error = "0.0.1"
 url = "2.3.1"
 pratt = "0.4.0"
 bit-set = "0.5.3"
@@ -24,7 +25,7 @@ features = ["regex"]
 path = "C:\\Users\\Dell\\CLionProjects\\pex\\projects\\pex-core"
 
 [dependencies.valkyrie-ast]
-version = "0.0.0"
+version = "0.0.1"
 features = []
 path = "../valkyrie-ast"
 

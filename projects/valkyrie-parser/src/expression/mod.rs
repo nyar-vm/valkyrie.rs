@@ -126,8 +126,8 @@ impl ValkyrieExpression {
             ValkyrieExpression::Binary(b) => b.range.clone(),
             ValkyrieExpression::Suffix(u) => u.range.clone(),
             ValkyrieExpression::Number(u) => u.get_range(),
-            ValkyrieExpression::Symbol(u) => u.get_range(),
-            ValkyrieExpression::String(u) => u.range.clone(),
+            ValkyrieExpression::Symbol(u) => u.span.clone(),
+            ValkyrieExpression::String(u) => u.span.clone(),
         }
     }
     pub fn update_range(&mut self) {

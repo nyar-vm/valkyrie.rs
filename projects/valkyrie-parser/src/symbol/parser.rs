@@ -17,7 +17,7 @@ pub static IDENTIFIER: LazyLock<Regex> = LazyLock::new(|| {
 impl ThisParser for IdentifierNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, m) = input.match_regex(&IDENTIFIER, "IDENTIFIER")?;
-        let id = IdentifierNode::new(m.as_str(), &m.range());
+        let id = IdentifierNode::new(m.as_str(), m.range());
         state.finish(id)
     }
 
@@ -33,7 +33,7 @@ impl ThisParser for NamepathNode {
         let (state, id) = input.match_fn(IdentifierNode::parse)?;
         names.push(id);
         let (state, _) = state.match_repeats(|s| pare_colon_id(s, &mut names))?;
-        state.finish(NamepathNode::new(names, &state.away_from(input)))
+        state.finish(NamepathNode::new(names, state.away_from(input)))
     }
 
     fn as_lisp(&self) -> Lisp {
@@ -42,7 +42,6 @@ impl ThisParser for NamepathNode {
         LispSymbol { name: first, path: terms.collect() }.into()
     }
 }
-
 
 fn pare_colon_id<'i>(input: ParseState<'i>, names: &mut Vec<IdentifierNode>) -> ParseResult<'i, ()> {
     let (state, _) = input

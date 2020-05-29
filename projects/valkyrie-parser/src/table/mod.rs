@@ -41,7 +41,7 @@ pub struct ValkyriePair {
 
 impl ValkyriePair {
     pub fn get_range(&self) -> Range<usize> {
-        self.key.get_range().start..self.value.get_range().end
+        self.key.span.start..self.value.get_range().end
     }
 }
 

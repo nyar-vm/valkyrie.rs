@@ -1,12 +1,12 @@
 use super::*;
-use crate::utils::take_range;
+use crate::utils::{take_range, FileSpan};
 mod display;
 
 #[derive(Clone, Debug, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct IdentifierNode {
     pub name: String,
-    pub span: Range<u32>,
+    pub span: FileSpan,
 }
 
 /// A namepath is a series of identifiers separated by dots.
@@ -16,27 +16,21 @@ pub struct NamepathNode {
     /// The names of the identifier.
     pub names: Vec<IdentifierNode>,
     /// The range of the identifier.
-    pub span: Range<u32>,
+    pub span: Range<usize>,
 }
 
 impl NamepathNode {
-    pub fn new<I>(names: I, range: &Range<usize>) -> Self
+    pub fn new<I>(names: I, range: Range<usize>) -> Self
     where
         I: IntoIterator<Item = IdentifierNode>,
     {
-        Self { names: names.into_iter().collect(), span: small_range(range) }
-    }
-    pub fn get_range(&self) -> Range<usize> {
-        take_range(&self.span)
+        Self { names: names.into_iter().collect(), span: range }
     }
 }
 
 impl IdentifierNode {
-    pub fn new<S: ToString>(s: S, range: &Range<usize>) -> Self {
-        Self { name: s.to_string(), span: small_range(range) }
-    }
-    pub fn get_range(&self) -> Range<usize> {
-        take_range(&self.span)
+    pub fn new<S: ToString>(s: S, range: Range<usize>) -> Self {
+        Self { name: s.to_string(), span: range }
     }
     pub fn is_normal(&self) -> bool {
         self.name.starts_with(|c: char| c.is_ascii_lowercase())
