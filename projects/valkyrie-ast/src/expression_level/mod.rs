@@ -4,7 +4,7 @@ use crate::{
         symbol::{IdentifierNode, NamepathNode},
     },
     utils::small_range,
-    NumberLiteralNode, ValkyrieOperator,
+    NumberLiteralNode, OperatorNode,
 };
 use std::{
     fmt::{Display, Formatter, Write},
@@ -15,3 +15,4 @@ pub mod number;
 pub mod operators;
 pub mod string;
 pub mod symbol;
+pub mod table;

@@ -25,21 +25,21 @@ impl ValkyriePrefix {
     pub fn precedence(&self) -> Precedence {
         Precedence(self.as_operator().kind.precedence())
     }
-    pub fn as_operator(&self) -> ValkyrieOperator {
+    pub fn as_operator(&self) -> OperatorNode {
         let kind = match self.normalized.as_str() {
-            "+" => ValkyrieOperatorKind::Positive,
-            "-" => ValkyrieOperatorKind::Negative,
-            "*" => ValkyrieOperatorKind::Unbox,
-            "⁑" | "**" => ValkyrieOperatorKind::Unpack,
-            "⁂" | "***" => ValkyrieOperatorKind::UnpackAll,
-            "!" => ValkyrieOperatorKind::Not,
-            "⅟" => ValkyrieOperatorKind::Minus,
-            "√" => ValkyrieOperatorKind::Surd(2),
-            "∛" => ValkyrieOperatorKind::Surd(3),
-            "∜" => ValkyrieOperatorKind::Surd(4),
+            "+" => OperatorKind::Positive,
+            "-" => OperatorKind::Negative,
+            "*" => OperatorKind::Unbox,
+            "⁑" | "**" => OperatorKind::Unpack,
+            "⁂" | "***" => OperatorKind::UnpackAll,
+            "!" => OperatorKind::Not,
+            "⅟" => OperatorKind::Minus,
+            "√" => OperatorKind::Surd(2),
+            "∛" => OperatorKind::Surd(3),
+            "∜" => OperatorKind::Surd(4),
             _ => unreachable!("Unknown operator: {}", self.normalized),
         };
-        ValkyrieOperator::new(kind, self.range.clone())
+        OperatorNode::new(kind, self.range.clone())
     }
 }
 
@@ -76,31 +76,31 @@ impl ValkyrieInfix {
             _ => Associativity::Left,
         }
     }
-    pub fn as_operator(&self) -> ValkyrieOperator {
+    pub fn as_operator(&self) -> OperatorNode {
         let kind = match self.normalized.as_str() {
-            "++" => ValkyrieOperatorKind::Concat,
-            "+" => ValkyrieOperatorKind::Plus,
-            "-" => ValkyrieOperatorKind::Minus,
-            "*" => ValkyrieOperatorKind::Multiply,
-            "/" => ValkyrieOperatorKind::Divide,
-            "^" => ValkyrieOperatorKind::Power,
-            ">" => ValkyrieOperatorKind::Greater,
-            ">>" => ValkyrieOperatorKind::MuchGreater,
-            ">>>" => ValkyrieOperatorKind::VeryMuchGreater,
-            "<" => ValkyrieOperatorKind::Less,
-            "<<" => ValkyrieOperatorKind::MuchLess,
-            "<<<" => ValkyrieOperatorKind::VeryMuchLess,
-            "==" => ValkyrieOperatorKind::Equal(true),
-            "!=" => ValkyrieOperatorKind::Equal(false),
-            "===" => ValkyrieOperatorKind::StrictlyEqual(true),
-            "!==" | "=!=" => ValkyrieOperatorKind::StrictlyEqual(false),
-            "in" => ValkyrieOperatorKind::Belongs(true),
-            "notin" => ValkyrieOperatorKind::Belongs(false),
-            "is" => ValkyrieOperatorKind::IsA(true),
-            "isnot" => ValkyrieOperatorKind::IsA(false),
+            "++" => OperatorKind::Concat,
+            "+" => OperatorKind::Plus,
+            "-" => OperatorKind::Minus,
+            "*" => OperatorKind::Multiply,
+            "/" => OperatorKind::Divide,
+            "^" => OperatorKind::Power,
+            ">" => OperatorKind::Greater,
+            ">>" => OperatorKind::MuchGreater,
+            ">>>" => OperatorKind::VeryMuchGreater,
+            "<" => OperatorKind::Less,
+            "<<" => OperatorKind::MuchLess,
+            "<<<" => OperatorKind::VeryMuchLess,
+            "==" => OperatorKind::Equal(true),
+            "!=" => OperatorKind::Equal(false),
+            "===" => OperatorKind::StrictlyEqual(true),
+            "!==" | "=!=" => OperatorKind::StrictlyEqual(false),
+            "in" => OperatorKind::Belongs(true),
+            "notin" => OperatorKind::Belongs(false),
+            "is" => OperatorKind::IsA(true),
+            "isnot" => OperatorKind::IsA(false),
             _ => unreachable!("Unknown operator: {}", self.normalized),
         };
-        ValkyrieOperator::new(kind, self.range.clone())
+        OperatorNode::new(kind, self.range.clone())
     }
 }
 
@@ -111,17 +111,17 @@ impl ValkyrieSuffix {
     pub fn precedence(&self) -> Precedence {
         Precedence(self.as_operator().kind.precedence())
     }
-    pub fn as_operator(&self) -> ValkyrieOperator {
+    pub fn as_operator(&self) -> OperatorNode {
         let kind = match self.normalized.as_str() {
-            "!" => ValkyrieOperatorKind::Unwrap,
-            "?" => ValkyrieOperatorKind::Raise,
-            "℃" => ValkyrieOperatorKind::Celsius,
-            "℉" => ValkyrieOperatorKind::Fahrenheit,
-            "%" => ValkyrieOperatorKind::DivideByDecimalPower(2),
-            "‰" => ValkyrieOperatorKind::DivideByDecimalPower(3),
-            "‱" => ValkyrieOperatorKind::DivideByDecimalPower(4),
+            "!" => OperatorKind::Unwrap,
+            "?" => OperatorKind::Raise,
+            "℃" => OperatorKind::Celsius,
+            "℉" => OperatorKind::Fahrenheit,
+            "%" => OperatorKind::DivideByDecimalPower(2),
+            "‰" => OperatorKind::DivideByDecimalPower(3),
+            "‱" => OperatorKind::DivideByDecimalPower(4),
             _ => unreachable!("Unknown operator: {}", self.normalized),
         };
-        ValkyrieOperator::new(kind, self.range.clone())
+        OperatorNode::new(kind, self.range.clone())
     }
 }

@@ -1,8 +1,5 @@
 use super::*;
-use crate::{
-    expression::{BinaryNode, UnaryNode},
-    traits::ThisParser,
-};
+use crate::traits::ThisParser;
 
 impl Display for ValkyrieREPL {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
@@ -25,18 +22,6 @@ impl Display for ValkyrieExpression {
             ValkyrieExpression::String(v) => Display::fmt(v, f),
             ValkyrieExpression::Table(v) => Display::fmt(v, f),
         }
-    }
-}
-
-impl Display for UnaryNode {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}{}", self.operator, self.body)
-    }
-}
-
-impl Display for BinaryNode {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{} {} {}", self.lhs, self.operator, self.rhs)
     }
 }
 

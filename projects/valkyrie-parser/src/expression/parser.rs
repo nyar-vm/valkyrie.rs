@@ -11,6 +11,25 @@ impl FromStr for ValkyrieExpression {
     }
 }
 
+impl ThisParser for PrefixNode<ValkyrieExpression> {
+    fn parse(_: ParseState) -> ParseResult<Self> {
+        unreachable!()
+    }
+
+    fn as_lisp(&self) -> Lisp {
+        Lisp::operator(self.operator.to_string(), &[self.body.lispify()])
+    }
+}
+impl ThisParser for InfixNode<ValkyrieExpression> {
+    fn parse(_: ParseState) -> ParseResult<Self> {
+        unreachable!()
+    }
+
+    fn as_lisp(&self) -> Lisp {
+        Lisp::operator(self.operator.to_string(), &[self.lhs.lispify(), self.rhs.lispify()])
+    }
+}
+
 impl ValkyrieExpression {
     pub fn parse(input: ParseState) -> ParseResult<Self> {
         let resolver = ExpressionResolver::default();

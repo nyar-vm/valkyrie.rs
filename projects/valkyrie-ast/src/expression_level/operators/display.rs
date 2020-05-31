@@ -1,67 +1,84 @@
 use super::*;
-use std::{char::ParseCharError, str::FromStr};
 
-impl Display for ValkyrieOperator {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", self.kind)
-    }
-}
-
-impl Display for ValkyrieOperatorKind {
+impl Display for OperatorKind {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match self {
-            ValkyrieOperatorKind::Not => f.write_char('!'),
-            ValkyrieOperatorKind::Concat => f.write_str("++"),
-            ValkyrieOperatorKind::Positive => f.write_char('+'),
-            ValkyrieOperatorKind::Negative => f.write_char('-'),
-            ValkyrieOperatorKind::Plus => f.write_char('+'),
-            ValkyrieOperatorKind::Minus => f.write_char('-'),
-            ValkyrieOperatorKind::Multiply => f.write_char('*'),
-            ValkyrieOperatorKind::Divide => f.write_char('/'),
-            ValkyrieOperatorKind::Power => f.write_char('^'),
-            ValkyrieOperatorKind::Unwrap => f.write_char('!'),
-            ValkyrieOperatorKind::Raise => f.write_char('?'),
-            ValkyrieOperatorKind::Celsius => f.write_char('℃'),
-            ValkyrieOperatorKind::Fahrenheit => f.write_char('℉'),
-            ValkyrieOperatorKind::Transpose => f.write_char('ᵀ'),
-            ValkyrieOperatorKind::Transjugate => f.write_char('ᴴ'),
-            ValkyrieOperatorKind::Hermitian => f.write_str("Hermitian"),
-            ValkyrieOperatorKind::Unbox => f.write_char('*'),
-            ValkyrieOperatorKind::Unpack => f.write_str("⁑"),
-            ValkyrieOperatorKind::UnpackAll => f.write_char('⁂'),
-            ValkyrieOperatorKind::Greater => f.write_char('>'),
-            ValkyrieOperatorKind::MuchGreater => f.write_char('≫'),
-            ValkyrieOperatorKind::VeryMuchGreater => f.write_char('⋙'),
-            ValkyrieOperatorKind::Less => f.write_char('<'),
-            ValkyrieOperatorKind::MuchLess => f.write_char('≪'),
-            ValkyrieOperatorKind::VeryMuchLess => f.write_char('⋘'),
-            ValkyrieOperatorKind::Belongs(v) => match v {
+            OperatorKind::Not => f.write_char('!'),
+            OperatorKind::Concat => f.write_str("++"),
+            OperatorKind::Positive => f.write_char('+'),
+            OperatorKind::Negative => f.write_char('-'),
+            OperatorKind::Plus => f.write_char('+'),
+            OperatorKind::Minus => f.write_char('-'),
+            OperatorKind::Multiply => f.write_char('*'),
+            OperatorKind::Divide => f.write_char('/'),
+            OperatorKind::Power => f.write_char('^'),
+            OperatorKind::Unwrap => f.write_char('!'),
+            OperatorKind::Raise => f.write_char('?'),
+            OperatorKind::Celsius => f.write_char('℃'),
+            OperatorKind::Fahrenheit => f.write_char('℉'),
+            OperatorKind::Transpose => f.write_char('ᵀ'),
+            OperatorKind::Transjugate => f.write_char('ᴴ'),
+            OperatorKind::Hermitian => f.write_str("Hermitian"),
+            OperatorKind::Unbox => f.write_char('*'),
+            OperatorKind::Unpack => f.write_str("⁑"),
+            OperatorKind::UnpackAll => f.write_char('⁂'),
+            OperatorKind::Greater => f.write_char('>'),
+            OperatorKind::MuchGreater => f.write_char('≫'),
+            OperatorKind::VeryMuchGreater => f.write_char('⋙'),
+            OperatorKind::Less => f.write_char('<'),
+            OperatorKind::MuchLess => f.write_char('≪'),
+            OperatorKind::VeryMuchLess => f.write_char('⋘'),
+            OperatorKind::Belongs(v) => match v {
                 true => f.write_char('∈'),
                 false => f.write_char('∉'),
             },
-            ValkyrieOperatorKind::IsA(v) => match v {
+            OperatorKind::IsA(v) => match v {
                 true => f.write_char('⊑'),
                 false => f.write_char('⋢'),
             },
-            ValkyrieOperatorKind::Equal(v) => match v {
+            OperatorKind::Equal(v) => match v {
                 true => f.write_char('≖'),
                 false => f.write_char('≠'),
             },
-            ValkyrieOperatorKind::StrictlyEqual(v) => match v {
+            OperatorKind::StrictlyEqual(v) => match v {
                 true => f.write_char('≡'),
                 false => f.write_char('≢'),
             },
-            ValkyrieOperatorKind::Inverse => f.write_char('i'),
-            ValkyrieOperatorKind::Surd(v) => match v {
+            OperatorKind::Inverse => f.write_char('i'),
+            OperatorKind::Surd(v) => match v {
                 3 => f.write_char('∛'),
                 4 => f.write_char('∜'),
                 _ => f.write_char('√'),
             },
-            ValkyrieOperatorKind::DivideByDecimalPower(v) => match v {
+            OperatorKind::DivideByDecimalPower(v) => match v {
                 3 => f.write_char('‰'),
                 4 => f.write_char('‱'),
                 _ => f.write_char('%'),
             },
         }
+    }
+}
+
+impl Display for OperatorNode {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.kind)
+    }
+}
+
+impl<E> Display for PrefixNode<E> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.operator)
+    }
+}
+
+impl<E> Display for InfixNode<E> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.operator)
+    }
+}
+
+impl<E> Display for PostfixNode<E> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.operator)
     }
 }

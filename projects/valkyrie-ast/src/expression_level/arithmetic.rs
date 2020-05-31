@@ -5,7 +5,7 @@ impl PartialEq for IdentifierNode {
         self.name.eq(&other.name)
     }
 }
-impl PartialEq for ValkyrieOperator {
+impl PartialEq for OperatorNode {
     fn eq(&self, other: &Self) -> bool {
         self.kind.eq(&other.kind)
     }

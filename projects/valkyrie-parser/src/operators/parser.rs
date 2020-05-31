@@ -1,6 +1,6 @@
 use super::*;
 
-impl ThisParser for ValkyrieOperator {
+impl ThisParser for OperatorNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
         todo!()
     }

@@ -32,12 +32,14 @@ mod utils;
 pub use crate::{
     expression_level::{
         number::NumberLiteralNode,
-        operators::{ValkyrieOperator, ValkyrieOperatorKind},
+        operators::{InfixNode, OperatorKind, OperatorNode, PostfixNode, PrefixNode},
         string::StringLiteralNode,
         symbol::{IdentifierNode, NamepathNode},
     },
     package_level::{NamespaceDeclareNode, NamespaceKind},
+    utils::{FileID, FileSpan, FileStorage},
 };
+
 // mod package_level;
 //
 // #[derive(Clone, Debug, Serialize, Deserialize)]

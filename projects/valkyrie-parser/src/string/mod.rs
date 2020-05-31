@@ -1,6 +1,3 @@
-use lispify::Lispify;
-use std::fmt::{Display, Formatter};
-
 mod display;
 mod parser;
 

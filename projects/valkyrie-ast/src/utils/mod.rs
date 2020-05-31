@@ -1,9 +1,8 @@
 use std::{
     collections::BTreeMap,
     fmt::{Debug, Display},
-    hash::{Hash, Hasher},
+    hash::Hash,
     ops::Range,
-    path::Path,
 };
 use syntax_error::{Cache, Source};
 use url::Url;

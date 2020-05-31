@@ -9,7 +9,7 @@ use std::{
     path::{Path, PathBuf},
     str::FromStr,
 };
-use valkyrie_parser::{call_dot::ValkyrieDotCall, call_index::ValkyrieView, repl::parse_repl, table::TableNode};
+use valkyrie_parser::{call_dot::ValkyrieDotCall, call_index::ValkyrieView, repl::parse_repl};
 // use std::io::stdout;
 //
 // use valkyrie_errors::{FileID, TextManager, ValkyrieResult};

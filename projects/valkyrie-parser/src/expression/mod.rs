@@ -13,7 +13,7 @@ use crate::{
 };
 use pex::helpers::make_from_str;
 use std::str::FromStr;
-use valkyrie_ast::{NamepathNode, NumberLiteralNode, StringLiteralNode, ValkyrieOperator, ValkyrieOperatorKind};
+use valkyrie_ast::{InfixNode, NamepathNode, NumberLiteralNode, OperatorKind, OperatorNode, PrefixNode, StringLiteralNode};
 
 /// A resolver
 #[derive(Default)]
@@ -61,41 +61,16 @@ pub enum ExpressionStream {
 #[derive(Debug, Clone, Eq, PartialEq)]
 pub enum ValkyrieExpression {
     Placeholder,
-    Prefix(Box<UnaryNode>),
-    Binary(Box<BinaryNode>),
-    Suffix(Box<UnaryNode>),
+    Prefix(Box<PrefixNode<ValkyrieExpression>>),
+    Binary(Box<InfixNode<ValkyrieExpression>>),
+    Suffix(Box<PrefixNode<ValkyrieExpression>>),
     Number(Box<NumberLiteralNode>),
     Symbol(Box<NamepathNode>),
     String(Box<StringLiteralNode>),
     Table(Box<TableNode>),
 }
 
-#[derive(Clone, Debug, Eq)]
-pub struct UnaryNode {
-    pub operator: ValkyrieOperator,
-    pub body: ValkyrieExpression,
-    pub range: Range<usize>,
-}
-
-impl PartialEq for UnaryNode {
-    fn eq(&self, other: &Self) -> bool {
-        self.operator.eq(&other.operator) && self.body.eq(&other.body)
-    }
-}
-impl PartialEq for BinaryNode {
-    fn eq(&self, other: &Self) -> bool {
-        self.operator.eq(&other.operator) && self.lhs.eq(&other.lhs) && self.rhs.eq(&other.rhs)
-    }
-}
-#[derive(Clone, Debug, Eq)]
-pub struct BinaryNode {
-    pub operator: ValkyrieOperator,
-    pub lhs: ValkyrieExpression,
-    pub rhs: ValkyrieExpression,
-    pub range: Range<usize>,
-}
-
-impl ThisParser for ValkyrieOperatorKind {
+impl ThisParser for OperatorKind {
     fn parse(input: ParseState) -> ParseResult<Self> {
         todo!()
     }
@@ -106,18 +81,18 @@ impl ThisParser for ValkyrieOperatorKind {
 }
 
 impl ValkyrieExpression {
-    pub fn binary(o: ValkyrieOperator, lhs: ValkyrieExpression, rhs: ValkyrieExpression) -> ValkyrieExpression {
-        let mut out = ValkyrieExpression::Binary(Box::new(BinaryNode { operator: o, lhs, rhs, range: Default::default() }));
+    pub fn binary(o: OperatorNode, lhs: ValkyrieExpression, rhs: ValkyrieExpression) -> ValkyrieExpression {
+        let mut out = ValkyrieExpression::Binary(Box::new(InfixNode { operator: o, lhs, rhs, range: Default::default() }));
         out.update_range();
         out
     }
-    pub fn prefix(o: ValkyrieOperator, rhs: ValkyrieExpression) -> ValkyrieExpression {
-        let mut out = ValkyrieExpression::Prefix(Box::new(UnaryNode { operator: o, body: rhs, range: Default::default() }));
+    pub fn prefix(o: OperatorNode, rhs: ValkyrieExpression) -> ValkyrieExpression {
+        let mut out = ValkyrieExpression::Prefix(Box::new(PrefixNode { operator: o, body: rhs, range: Default::default() }));
         out.update_range();
         out
     }
-    pub fn suffix(o: ValkyrieOperator, rhs: ValkyrieExpression) -> ValkyrieExpression {
-        let mut out = ValkyrieExpression::Suffix(Box::new(UnaryNode { operator: o, body: rhs, range: Default::default() }));
+    pub fn suffix(o: OperatorNode, rhs: ValkyrieExpression) -> ValkyrieExpression {
+        let mut out = ValkyrieExpression::Suffix(Box::new(PrefixNode { operator: o, body: rhs, range: Default::default() }));
         out.update_range();
         out
     }

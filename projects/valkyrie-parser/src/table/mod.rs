@@ -15,16 +15,6 @@ use std::{
 };
 use valkyrie_ast::IdentifierNode;
 
-/// A number literal.
-#[derive(Debug, Clone, Eq)]
-pub struct TableNode {
-    pub index0: bool,
-    /// The raw string of the number.
-    pub terms: Vec<TableTermNode>,
-    /// The range of the number.
-    pub range: Range<usize>,
-}
-
 impl From<TableNode> for ValkyrieExpression {
     fn from(value: TableNode) -> Self {
         ValkyrieExpression::Table(Box::new(value))
@@ -56,21 +46,6 @@ impl PartialEq for TableNode {
     fn eq(&self, other: &Self) -> bool {
         self.terms.eq(&other.terms)
     }
-}
-
-/// A number literal.
-#[derive(Debug, Clone, Eq, PartialEq)]
-pub enum TableTermNode {
-    /// `array[index]`, also can be a call_index `array[[1, 2, 3]]`
-    Item(ValkyrieExpression),
-    /// `a[start:end:step]`
-    Pair(PairNode),
-}
-
-#[derive(Debug, Clone, Eq, PartialEq)]
-pub struct PairNode {
-    pub key: IdentifierNode,
-    pub value: ValkyrieExpression,
 }
 
 impl PairNode {

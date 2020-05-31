@@ -1,14 +1,36 @@
 use super::*;
 mod display;
 
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct PrefixNode<E> {
+    pub operator: OperatorNode,
+    pub body: E,
+    pub range: Range<usize>,
+}
+
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct InfixNode<E> {
+    pub operator: OperatorNode,
+    pub lhs: E,
+    pub rhs: E,
+    pub range: Range<usize>,
+}
+
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct PostfixNode<E> {
+    pub operator: OperatorNode,
+    pub body: E,
+    pub range: Range<usize>,
+}
+
 #[derive(Clone, Debug, Eq, Hash)]
-pub struct ValkyrieOperator {
-    pub kind: ValkyrieOperatorKind,
+pub struct OperatorNode {
+    pub kind: OperatorKind,
     pub range: Range<usize>,
 }
 
 #[derive(Copy, Clone, Debug, Eq, PartialEq, Hash)]
-pub enum ValkyrieOperatorKind {
+pub enum OperatorKind {
     /// prefix operator: `!`
     Not,
     /// prefix operator: `+`
@@ -75,56 +97,56 @@ pub enum ValkyrieOperatorKind {
     Hermitian,
 }
 
-impl ValkyrieOperator {
-    pub fn new(kind: ValkyrieOperatorKind, range: Range<usize>) -> Self {
+impl OperatorNode {
+    pub fn new(kind: OperatorKind, range: Range<usize>) -> Self {
         Self { kind, range }
     }
 }
 
-impl ValkyrieOperatorKind {
+impl OperatorKind {
     pub fn precedence(&self) -> u32 {
         match self {
             //
-            ValkyrieOperatorKind::Concat => 14000,
-            ValkyrieOperatorKind::Belongs(_) => 14000,
-            ValkyrieOperatorKind::IsA(_) => 14000,
+            OperatorKind::Concat => 14000,
+            OperatorKind::Belongs(_) => 14000,
+            OperatorKind::IsA(_) => 14000,
             // infix - 3
-            ValkyrieOperatorKind::Equal(_) => 14700,
-            ValkyrieOperatorKind::StrictlyEqual(_) => 14700,
+            OperatorKind::Equal(_) => 14700,
+            OperatorKind::StrictlyEqual(_) => 14700,
             // infix - 2
-            ValkyrieOperatorKind::Greater => 14800,
-            ValkyrieOperatorKind::Less => 14800,
+            OperatorKind::Greater => 14800,
+            OperatorKind::Less => 14800,
             // infix - 1
-            ValkyrieOperatorKind::MuchLess => 14900,
-            ValkyrieOperatorKind::MuchGreater => 14900,
-            ValkyrieOperatorKind::VeryMuchGreater => 14950,
-            ValkyrieOperatorKind::VeryMuchLess => 14950,
+            OperatorKind::MuchLess => 14900,
+            OperatorKind::MuchGreater => 14900,
+            OperatorKind::VeryMuchGreater => 14950,
+            OperatorKind::VeryMuchLess => 14950,
             // infix + 0
-            ValkyrieOperatorKind::Plus => 15000,
-            ValkyrieOperatorKind::Minus => 15000,
+            OperatorKind::Plus => 15000,
+            OperatorKind::Minus => 15000,
             // infix + 1
-            ValkyrieOperatorKind::Multiply => 15100,
-            ValkyrieOperatorKind::Divide => 15100,
+            OperatorKind::Multiply => 15100,
+            OperatorKind::Divide => 15100,
             // infix + 2
-            ValkyrieOperatorKind::Power => 15200,
+            OperatorKind::Power => 15200,
             // prefix + 0
-            ValkyrieOperatorKind::Not => 25000,
-            ValkyrieOperatorKind::Positive => 25000,
-            ValkyrieOperatorKind::Negative => 25000,
-            ValkyrieOperatorKind::Unbox => 25000,
-            ValkyrieOperatorKind::Unpack => 25000,
-            ValkyrieOperatorKind::UnpackAll => 25000,
-            ValkyrieOperatorKind::Inverse => 25000,
-            ValkyrieOperatorKind::Surd(_) => 25000,
+            OperatorKind::Not => 25000,
+            OperatorKind::Positive => 25000,
+            OperatorKind::Negative => 25000,
+            OperatorKind::Unbox => 25000,
+            OperatorKind::Unpack => 25000,
+            OperatorKind::UnpackAll => 25000,
+            OperatorKind::Inverse => 25000,
+            OperatorKind::Surd(_) => 25000,
             // postfix + 0
-            ValkyrieOperatorKind::Unwrap => 45000,
-            ValkyrieOperatorKind::Raise => 45000,
-            ValkyrieOperatorKind::Celsius => 45000,
-            ValkyrieOperatorKind::Fahrenheit => 45000,
-            ValkyrieOperatorKind::Transpose => 45000,
-            ValkyrieOperatorKind::Transjugate => 45000,
-            ValkyrieOperatorKind::Hermitian => 45000,
-            ValkyrieOperatorKind::DivideByDecimalPower(_) => 45000,
+            OperatorKind::Unwrap => 45000,
+            OperatorKind::Raise => 45000,
+            OperatorKind::Celsius => 45000,
+            OperatorKind::Fahrenheit => 45000,
+            OperatorKind::Transpose => 45000,
+            OperatorKind::Transjugate => 45000,
+            OperatorKind::Hermitian => 45000,
+            OperatorKind::DivideByDecimalPower(_) => 45000,
         }
     }
 }
