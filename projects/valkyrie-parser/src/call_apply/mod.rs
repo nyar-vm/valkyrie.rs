@@ -6,11 +6,7 @@ use pex::{
     helpers::{make_from_str, whitespace},
     BracketPattern, ParseResult, ParseState, StopBecause,
 };
-use std::{
-    fmt::{Display, Formatter},
-    ops::Range,
-    str::FromStr,
-};
+use std::{ops::Range, str::FromStr};
 use valkyrie_ast::TableTermNode;
 
 /// A number literal.

@@ -3,7 +3,8 @@ use super::*;
 mod display;
 
 /// A number literal.
-#[derive(Debug, Clone, Eq, Hash)]
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct StringLiteralNode {
     /// The raw string of the number.
     pub value: String,

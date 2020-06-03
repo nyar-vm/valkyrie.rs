@@ -2,7 +2,7 @@ use super::*;
 
 mod display;
 
-#[derive(Clone, Debug, Eq, Hash)]
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct IdentifierNode {
     pub name: String,
@@ -10,7 +10,7 @@ pub struct IdentifierNode {
 }
 
 /// A namepath is a series of identifiers separated by dots.
-#[derive(Clone, Debug, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct NamepathNode {
     /// The names of the identifier.

@@ -1,12 +1,12 @@
 use super::*;
 
-impl Display for ValkyrieView {
+impl Display for ViewNode {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         todo!()
     }
 }
 
-impl Lispify for ValkyrieView {
+impl Lispify for ViewNode {
     type Output = Lisp;
 
     fn lispify(&self) -> Self::Output {
@@ -20,13 +20,13 @@ impl Lispify for ValkyrieView {
     }
 }
 
-impl Lispify for ValkyrieViewTerm {
+impl Lispify for ViewTermNode {
     type Output = Lisp;
 
     fn lispify(&self) -> Self::Output {
         match self {
-            ValkyrieViewTerm::Index { element, .. } => return element.lispify().into(),
-            ValkyrieViewTerm::Range { start, end, step, .. } => {
+            ViewTermNode::Index { element, .. } => return element.lispify().into(),
+            ViewTermNode::Range { start, end, step, .. } => {
                 let mut terms = Vec::with_capacity(4);
                 terms.push(Lisp::function("range").into());
                 match start {

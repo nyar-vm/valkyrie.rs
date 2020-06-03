@@ -1,6 +1,5 @@
 use super::*;
 use crate::traits::ThisParser;
-use valkyrie_ast::PairNode;
 
 impl FromStr for ValkyrieApply {
     type Err = StopBecause;

@@ -7,7 +7,7 @@ use pex::{
     ParseResult, ParseState, StopBecause,
 };
 use regex::Regex;
-use std::{fmt::Formatter, ops::Range, str::FromStr, sync::LazyLock};
+use std::{ops::Range, str::FromStr, sync::LazyLock};
 use valkyrie_ast::IdentifierNode;
 
 /// A number literal.

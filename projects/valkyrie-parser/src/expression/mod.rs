@@ -13,7 +13,8 @@ use crate::{
 use pex::helpers::make_from_str;
 use std::str::FromStr;
 use valkyrie_ast::{
-    InfixNode, NamepathNode, NumberLiteralNode, OperatorKind, OperatorNode, PrefixNode, StringLiteralNode, TableNode,
+    InfixNode, NamepathNode, NumberLiteralNode, OperatorKind, OperatorNode, PostfixNode, PrefixNode, StringLiteralNode,
+    TableNode,
 };
 
 /// A resolver
@@ -64,7 +65,7 @@ pub enum ValkyrieExpression {
     Placeholder,
     Prefix(Box<PrefixNode<ValkyrieExpression>>),
     Binary(Box<InfixNode<ValkyrieExpression>>),
-    Suffix(Box<PrefixNode<ValkyrieExpression>>),
+    Suffix(Box<PostfixNode<ValkyrieExpression>>),
     Number(Box<NumberLiteralNode>),
     Symbol(Box<NamepathNode>),
     String(Box<StringLiteralNode>),
@@ -93,7 +94,7 @@ impl ValkyrieExpression {
         out
     }
     pub fn suffix(o: OperatorNode, rhs: ValkyrieExpression) -> ValkyrieExpression {
-        let mut out = ValkyrieExpression::Suffix(Box::new(PrefixNode { operator: o, body: rhs, range: Default::default() }));
+        let mut out = ValkyrieExpression::Suffix(Box::new(PostfixNode { operator: o, body: rhs, range: Default::default() }));
         out.update_range();
         out
     }
