@@ -35,6 +35,7 @@ pub use crate::{
         operators::{InfixNode, OperatorKind, OperatorNode, PostfixNode, PrefixNode},
         string::StringLiteralNode,
         symbol::{IdentifierNode, NamepathNode},
+        table::{PairNode, TableKind, TableNode, TableTermNode},
     },
     package_level::{NamespaceDeclareNode, NamespaceKind},
     utils::{FileID, FileSpan, FileStorage},

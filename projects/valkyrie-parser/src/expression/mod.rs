@@ -8,12 +8,13 @@ mod parser;
 use crate::{
     helpers::parse_value,
     operators::{ValkyriePrefix, ValkyrieSuffix},
-    table::TableNode,
     traits::ThisParser,
 };
 use pex::helpers::make_from_str;
 use std::str::FromStr;
-use valkyrie_ast::{InfixNode, NamepathNode, NumberLiteralNode, OperatorKind, OperatorNode, PrefixNode, StringLiteralNode};
+use valkyrie_ast::{
+    InfixNode, NamepathNode, NumberLiteralNode, OperatorKind, OperatorNode, PrefixNode, StringLiteralNode, TableNode,
+};
 
 /// A resolver
 #[derive(Default)]
@@ -67,7 +68,7 @@ pub enum ValkyrieExpression {
     Number(Box<NumberLiteralNode>),
     Symbol(Box<NamepathNode>),
     String(Box<StringLiteralNode>),
-    Table(Box<TableNode>),
+    Table(Box<TableNode<ValkyrieExpression>>),
 }
 
 impl ThisParser for OperatorKind {

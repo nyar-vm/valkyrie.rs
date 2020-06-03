@@ -1,10 +1,6 @@
 mod display;
 mod parser;
-use crate::{
-    expression::ValkyrieExpression,
-    helpers::ignore,
-    table::{PairNode, TableTermNode},
-};
+use crate::{expression::ValkyrieExpression, helpers::ignore};
 use lispify::{Lisp, Lispify};
 use pex::{
     helpers::{make_from_str, whitespace},
@@ -15,6 +11,7 @@ use std::{
     ops::Range,
     str::FromStr,
 };
+use valkyrie_ast::TableTermNode;
 
 /// A number literal.
 #[derive(Debug, Clone)]
@@ -22,7 +19,7 @@ pub struct ValkyrieApply {
     /// The raw string of the number.
     pub base: ValkyrieExpression,
     /// The raw string of the number.
-    pub terms: Vec<TableTermNode>,
+    pub terms: Vec<TableTermNode<ValkyrieExpression>>,
     /// The range of the number.
     pub range: Range<usize>,
 }

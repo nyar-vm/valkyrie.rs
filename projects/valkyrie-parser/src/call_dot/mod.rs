@@ -7,13 +7,13 @@ use pex::{
     ParseResult, ParseState, StopBecause,
 };
 
-use crate::{call_apply::ValkyrieApply, table::TableTermNode};
+use crate::call_apply::ValkyrieApply;
 use std::{
     fmt::{Display, Formatter},
     ops::Range,
     str::FromStr,
 };
-use valkyrie_ast::IdentifierNode;
+use valkyrie_ast::{IdentifierNode, TableTermNode};
 
 /// A number literal.
 #[derive(Debug, Clone)]
@@ -23,7 +23,7 @@ pub struct ValkyrieDotCall {
     /// The raw string of the number.
     pub caller: IdentifierNode,
     /// The range of the number.
-    pub terms: Vec<TableTermNode>,
+    pub terms: Vec<TableTermNode<ValkyrieExpression>>,
     /// The range of the number.
     pub range: Range<usize>,
 }

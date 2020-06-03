@@ -1,5 +1,5 @@
-use crate::traits::ThisParser;
 use super::*;
+use crate::traits::ThisParser;
 
 impl Display for ValkyrieDotCall {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
@@ -15,7 +15,7 @@ impl Lispify for ValkyrieDotCall {
         terms.push(self.base.lispify().into());
         terms.push(Lisp::Any(vec![Lisp::keyword("."), self.caller.as_lisp().into()]));
         for term in &self.terms {
-            terms.push(term.lispify().into());
+            terms.push(term.as_lisp().into());
         }
         Lisp::Any(terms)
     }

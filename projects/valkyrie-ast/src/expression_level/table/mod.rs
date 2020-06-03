@@ -1,28 +1,38 @@
+use super::*;
+
+mod display;
+
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum TableKind {
+    /// `(a, b, c)`
     Tuple,
-    Table,
+    /// `{a, b, c}`
+    OffsetTable,
+    /// `{a = 1, b = 2, c = 3}`
+    OrdinalTable,
 }
 
 /// A number literal.
-#[derive(Debug, Clone, Eq)]
-pub struct TableNode {
-    pub index0: bool,
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct TableNode<E> {
+    pub kind: TableKind,
     /// The raw string of the number.
-    pub terms: Vec<TableTermNode>,
+    pub terms: Vec<TableTermNode<E>>,
     /// The range of the number.
     pub range: Range<usize>,
 }
+
 /// A number literal.
-#[derive(Debug, Clone, Eq, PartialEq)]
-pub enum TableTermNode {
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum TableTermNode<E> {
     /// `array[index]`, also can be a call_index `array[[1, 2, 3]]`
-    Item(ValkyrieExpression),
+    Item(E),
     /// `a[start:end:step]`
-    Pair(PairNode),
+    Pair(PairNode<IdentifierNode, E>),
 }
 
-#[derive(Debug, Clone, Eq, PartialEq)]
-pub struct PairNode {
-    pub key: IdentifierNode,
-    pub value: ValkyrieExpression,
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct PairNode<K, V> {
+    pub key: K,
+    pub value: V,
 }

@@ -1,11 +1,11 @@
 mod escaper;
 
 pub use self::escaper::StringRewrite;
-use crate::{expression::ValkyrieExpression, table::TableNode, traits::ThisParser};
+use crate::{expression::ValkyrieExpression, traits::ThisParser};
 use pex::{ParseResult, ParseState};
 use regex::Regex;
 use std::sync::LazyLock;
-use valkyrie_ast::{NamepathNode, NumberLiteralNode, StringLiteralNode};
+use valkyrie_ast::{NamepathNode, NumberLiteralNode, StringLiteralNode, TableNode};
 
 pub static IGNORE: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(
