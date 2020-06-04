@@ -1,4 +1,6 @@
 use super::*;
+use valkyrie_ast::{IdentifierNode, ViewNode};
+use valkyrie_parser::ThisParser;
 
 #[test]
 fn lex_expression() {
@@ -21,7 +23,7 @@ fn test_expr() {
 
 #[test]
 fn test_apply() {
-    let raw = "1 2 3";
+    let raw = "ℤ";
     let apply = parse_repl(raw);
     for expr in &apply {
         println!("{}", colored_lisp(expr.lispify(), 144).unwrap());
@@ -30,9 +32,16 @@ fn test_apply() {
 
 #[test]
 fn main1() {
-    let raw = "[1, :, ::, :n:, index::range, index: :range]";
-    let slice = ViewNode::parse(ParseState::new(raw)).unwrap();
+    let raw = "ℤ";
+    let slice = IdentifierNode::parse_text(raw).unwrap();
+    println!("input:\n{slice:#?}");
+    println!("output:\n{}", colored_lisp(slice.as_lisp(), 42).unwrap());
+}
+
+#[test]
+fn main2() {
+    let raw = "⁅:, ::, : :, 1, :index0:, ::-1, i::j, i: :j⁆";
+    let slice = ViewNode::parse_text(raw).unwrap();
     println!("input:\nplaceholder{raw}");
-    // println!("output:\n {expr:#?}");
-    println!("output:\n{}", colored_lisp(slice.lispify(), 42).unwrap());
+    println!("output:\n{}", colored_lisp(slice.as_lisp(), 42).unwrap());
 }

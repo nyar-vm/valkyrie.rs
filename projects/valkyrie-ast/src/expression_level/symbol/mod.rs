@@ -12,19 +12,49 @@ pub struct IdentifierNode {
 /// A namepath is a series of identifiers separated by dots.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct NamepathNode {
+pub struct NamePathNode {
     /// The names of the identifier.
     pub names: Vec<IdentifierNode>,
     /// The range of the identifier.
     pub span: Range<usize>,
 }
 
-impl NamepathNode {
+/// A namepath is a series of identifiers separated by dots.
+#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum MacroKind {
+    /// `@`
+    Normal,
+    /// `@@`
+    Environment,
+    /// `@!`
+    Dict,
+}
+
+/// A namepath is a series of identifiers separated by dots.
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct MacroPathNode {
+    /// The names of the identifier.
+    pub path: NamePathNode,
+    /// The names of the identifier.
+    pub names: Vec<IdentifierNode>,
+    /// The range of the identifier.
+    pub span: Range<usize>,
+}
+
+impl NamePathNode {
     pub fn new<I>(names: I, range: Range<usize>) -> Self
     where
         I: IntoIterator<Item = IdentifierNode>,
     {
         Self { names: names.into_iter().collect(), span: range }
+    }
+}
+
+impl MacroPathNode {
+    pub fn new(path: NamePathNode, names: Vec<IdentifierNode>, range: Range<usize>) -> Self {
+        Self { path, names, span: range }
     }
 }
 

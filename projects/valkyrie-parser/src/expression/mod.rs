@@ -13,7 +13,7 @@ use crate::{
 use pex::helpers::make_from_str;
 use std::str::FromStr;
 use valkyrie_ast::{
-    InfixNode, NamepathNode, NumberLiteralNode, OperatorKind, OperatorNode, PostfixNode, PrefixNode, StringLiteralNode,
+    InfixNode, NamePathNode, NumberLiteralNode, OperatorKind, OperatorNode, PostfixNode, PrefixNode, StringLiteralNode,
     TableNode,
 };
 
@@ -67,7 +67,7 @@ pub enum ValkyrieExpression {
     Binary(Box<InfixNode<ValkyrieExpression>>),
     Suffix(Box<PostfixNode<ValkyrieExpression>>),
     Number(Box<NumberLiteralNode>),
-    Symbol(Box<NamepathNode>),
+    Symbol(Box<NamePathNode>),
     String(Box<StringLiteralNode>),
     Table(Box<TableNode<ValkyrieExpression>>),
 }

@@ -1,3 +1,5 @@
+@![unlimit]
+
 array[1]
 array[1][1]
 array[1, 1]
@@ -15,3 +17,6 @@ array[:, ::]
 
 
 [ (~ start)? ~ : (~ end)? (~ : ~ step?)? ~ ]
+
+array[0]
+array⁅1⁆

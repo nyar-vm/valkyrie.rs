@@ -8,6 +8,14 @@
 [[], [[]], [[], [[]]]];
 
 # mixed structure
+array[];
+array⁅⁆;
+array[0];
+array⁅1⁆;
+array[:, ::, : :, 1, :index0:, ::-1, i::j, i: :j];
+array⁅:, ::, : :, 1, :index0:, ::-1, i::j, i: :j⁆;
+
+
 
 [
 	v,

@@ -61,7 +61,7 @@ static INFIX: LazyLock<Regex> = LazyLock::new(|| {
         r#"^(?x)(
       [.]{2}[=<]
     # | [.]{1,3}
-    # | [⟦⟧⁅⁆⟬⟭{}\[\]()]
+    # | [⟦⟧⟬⟭{}\[\]()]
     | [$§¶^]
     | @[*!?@]?
     # contains
@@ -98,7 +98,7 @@ static INFIX: LazyLock<Regex> = LazyLock::new(|| {
     | [|]> | [|]{1,2} | ⊁
     | ⊻=? | ⊼=? | ⊽=? | [⩕⩖]
     # start with ?
-    | [?]{3} | [?]
+    | [?]{3}
     # start with =
     | => | ⇒
     | =

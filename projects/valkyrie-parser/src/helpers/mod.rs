@@ -5,7 +5,7 @@ use crate::{expression::ValkyrieExpression, traits::ThisParser};
 use pex::{ParseResult, ParseState};
 use regex::Regex;
 use std::sync::LazyLock;
-use valkyrie_ast::{NamepathNode, NumberLiteralNode, StringLiteralNode, TableNode};
+use valkyrie_ast::{NamePathNode, NumberLiteralNode, StringLiteralNode, TableNode};
 
 pub static IGNORE: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(
@@ -29,7 +29,7 @@ pub fn ignore(input: ParseState) -> ParseResult<()> {
 pub fn parse_value(input: ParseState) -> ParseResult<ValkyrieExpression> {
     input
         .begin_choice()
-        .or_else(|s| NamepathNode::parse(s).map_inner(Into::into))
+        .or_else(|s| NamePathNode::parse(s).map_inner(Into::into))
         .or_else(|s| NumberLiteralNode::parse(s).map_inner(Into::into))
         .or_else(|s| StringLiteralNode::parse(s).map_inner(Into::into))
         .or_else(|s| TableNode::parse(s).map_inner(Into::into))

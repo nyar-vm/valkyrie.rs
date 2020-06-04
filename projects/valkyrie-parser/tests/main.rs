@@ -2,14 +2,14 @@ use lispify::{
     helpers::{colored_lisp, display_lisp},
     Lispify,
 };
-use pex::ParseState;
+
 use std::{
     fs::File,
     io::Write,
     path::{Path, PathBuf},
     str::FromStr,
 };
-use valkyrie_parser::{call_dot::ValkyrieDotCall, call_index::ViewNode, repl::parse_repl};
+use valkyrie_parser::{call_dot::ValkyrieDotCall, repl::parse_repl};
 // use std::io::stdout;
 //
 // use valkyrie_errors::{FileID, TextManager, ValkyrieResult};
