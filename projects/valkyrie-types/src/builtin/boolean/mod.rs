@@ -7,14 +7,14 @@ use std::{
 
 use indexmap::IndexMap;
 
-use crate::{types::ValkyrieMetaType, ValkyrieTypeLegacy, ValkyrieValue};
+use crate::{types::ValkyrieMetaType, ValkyrieType, ValkyrieValue};
 
-impl ValkyrieTypeLegacy for bool {
+impl ValkyrieType for bool {
     fn boxed(self) -> ValkyrieValue {
         ValkyrieValue::Boolean(self)
     }
 
-    fn type_info(&self) -> Arc<ValkyrieMetaType> {
+    fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
         let mut meta = ValkyrieMetaType::default();
         meta.set_namepath("std.primitive.Boolean");
         Arc::new(meta)

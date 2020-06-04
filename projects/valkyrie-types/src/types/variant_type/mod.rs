@@ -21,12 +21,12 @@ impl Default for ValkyrieVariantType {
     }
 }
 
-impl ValkyrieTypeLegacy for ValkyrieVariantType {
+impl ValkyrieType for ValkyrieVariantType {
     fn boxed(self) -> ValkyrieValue {
         ValkyrieValue::Variant(Arc::new(self))
     }
 
-    fn type_info(&self) -> Arc<ValkyrieMetaType> {
+    fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
         let mut this = ValkyrieMetaType::default();
         *this.mut_namepath() = self.namepath.clone();
         this.mut_generic_types().extend(self.generics.iter().cloned());

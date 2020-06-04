@@ -1,19 +1,22 @@
 use std::sync::Arc;
 
-use crate::{types::ValkyrieMetaType, ValkyrieTypeLegacy, ValkyrieValue, ValkyrieVariantType};
+use crate::{types::ValkyrieMetaType, ValkyrieType, ValkyrieValue, ValkyrieVariantType};
 
-impl<T> ValkyrieTypeLegacy for Option<T>
+impl<T> ValkyrieType for Option<T>
 where
-    T: ValkyrieTypeLegacy + 'static,
+    T: ValkyrieType + 'static,
 {
     fn boxed(self) -> ValkyrieValue {
         let this = ValkyrieVariantType::new("std.primitive.Option".to_string());
         this.boxed()
     }
-    fn type_info(&self) -> Arc<ValkyrieMetaType>
+    fn dynamic_type(&self) -> Arc<ValkyrieMetaType>
     where
         Self: Sized,
     {
-        unimplemented!()
+        let mut this = ValkyrieMetaType::default();
+        this.set_namepath("std.primitive.Option");
+        this.mut_generic_types().push(T::static_type());
+        Arc::new(this)
     }
 }

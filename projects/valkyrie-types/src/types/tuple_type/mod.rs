@@ -36,12 +36,12 @@ impl Default for ValkyrieClass {
     }
 }
 
-impl ValkyrieTypeLegacy for ValkyrieClass {
+impl ValkyrieType for ValkyrieClass {
     fn boxed(self) -> ValkyrieValue {
         ValkyrieValue::Class(Arc::new(self))
     }
 
-    fn type_info(&self) -> Arc<ValkyrieMetaType> {
+    fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
         let mut this = ValkyrieMetaType::default();
         this.set_namepath("std.primitive.List");
 

@@ -1,10 +1,10 @@
 use std::sync::Arc;
 
-use crate::{types::ValkyrieMetaType, ValkyrieClass, ValkyrieTypeLegacy, ValkyrieValue};
+use crate::{types::ValkyrieMetaType, ValkyrieClass, ValkyrieType, ValkyrieValue};
 
-impl<T> ValkyrieTypeLegacy for Vec<T>
+impl<T> ValkyrieType for Vec<T>
 where
-    T: ValkyrieTypeLegacy,
+    T: ValkyrieType,
 {
     fn boxed(self) -> ValkyrieValue {
         let mut out = ValkyrieClass::list();
@@ -14,10 +14,10 @@ where
         ValkyrieValue::Class(Arc::new(out))
     }
 
-    fn type_info(&self) -> Arc<ValkyrieMetaType> {
+    fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
         let mut this = ValkyrieMetaType::default();
-        this.set_namepath("std.collection.Vector");
-        // meta.mut_generic_types().push(T::type_info());
+        this.set_namepath("std.collection.Array");
+        this.mut_generic_types().push(T::static_type());
         Arc::new(this)
     }
 }
