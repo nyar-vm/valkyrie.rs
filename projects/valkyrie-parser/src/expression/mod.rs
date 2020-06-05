@@ -13,7 +13,7 @@ use crate::{
 use pex::helpers::make_from_str;
 use std::str::FromStr;
 use valkyrie_ast::{
-    InfixNode, NamePathNode, NumberLiteralNode, OperatorKind, OperatorNode, PostfixNode, PrefixNode, StringLiteralNode,
+    InfixNode, NamePathNode, NumberLiteralNode, ValkyrieOperator, OperatorNode, PostfixNode, PrefixNode, StringLiteralNode,
     TableNode,
 };
 
@@ -72,7 +72,7 @@ pub enum ValkyrieExpression {
     Table(Box<TableNode<ValkyrieExpression>>),
 }
 
-impl ThisParser for OperatorKind {
+impl ThisParser for ValkyrieOperator {
     fn parse(input: ParseState) -> ParseResult<Self> {
         todo!()
     }

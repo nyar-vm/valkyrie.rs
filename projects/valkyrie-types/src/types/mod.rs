@@ -7,7 +7,10 @@ use std::{
 
 use itertools::Itertools;
 
-use crate::{ValkyrieAtomicType, ValkyrieClass, ValkyrieClassType, ValkyrieValue, ValkyrieVariantType};
+use crate::{
+    types::atomic_type::ValkyrieDocument, ValkyrieAtomicType, ValkyrieClass, ValkyrieClassType, ValkyrieValue,
+    ValkyrieVariantType,
+};
 
 pub mod atomic_type;
 pub mod class_type;
@@ -20,7 +23,7 @@ pub mod variant_type;
 #[derive(Clone, Debug, Default)]
 pub struct ValkyrieMetaType {
     namepath: Vec<String>,
-    document: String,
+    document: ValkyrieDocument,
     generic_types: Vec<Arc<ValkyrieMetaType>>,
 }
 

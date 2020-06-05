@@ -32,7 +32,7 @@ mod utils;
 pub use crate::{
     expression_level::{
         number::NumberLiteralNode,
-        operators::{InfixNode, OperatorKind, OperatorNode, PostfixNode, PrefixNode},
+        operators::{InfixNode, OperatorNode, PostfixNode, PrefixNode},
         string::StringLiteralNode,
         symbol::{IdentifierNode, MacroKind, MacroPathNode, NamePathNode},
         table::{PairNode, TableKind, TableNode, TableTermNode},
@@ -41,7 +41,7 @@ pub use crate::{
     package_level::{NamespaceDeclareNode, NamespaceKind},
     utils::{FileID, FileSpan, FileStorage},
 };
-
+pub use valkyrie_types::ValkyrieOperator;
 // mod package_level;
 //
 // #[derive(Clone, Debug, Serialize, Deserialize)]

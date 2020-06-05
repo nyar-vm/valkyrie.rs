@@ -12,7 +12,7 @@ use std::{
     str::FromStr,
     sync::LazyLock,
 };
-use valkyrie_ast::{OperatorKind, OperatorNode};
+use valkyrie_ast::{ValkyrieOperator, OperatorNode};
 
 mod display;
 mod parser;

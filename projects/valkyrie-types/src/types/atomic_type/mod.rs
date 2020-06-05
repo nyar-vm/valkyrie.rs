@@ -6,7 +6,8 @@ pub struct ValkyrieAtomicType {
     namepath: Vec<String>,
     document: ValkyrieDocument,
 }
-#[derive(Debug, Default)]
+
+#[derive(Clone, Debug, Default)]
 pub struct ValkyrieDocument {
     input: String,
 }
