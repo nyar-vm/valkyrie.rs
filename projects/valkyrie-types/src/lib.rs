@@ -16,4 +16,5 @@ mod types;
 mod values;
 // #[cfg(test)]
 pub mod testing;
+mod utils;
 pub use crate::functions::operators::ValkyrieOperator;

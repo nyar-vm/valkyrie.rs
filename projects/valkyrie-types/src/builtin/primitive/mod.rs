@@ -1,16 +1,19 @@
 use std::sync::Arc;
 
-use crate::{types::ValkyrieMetaType, ValkyrieClass, ValkyrieType, ValkyrieValue};
+use crate::{types::ValkyrieMetaType, utils::primitive_type, ValkyrieClass, ValkyrieType, ValkyrieValue};
+
+use super::*;
 
 impl ValkyrieType for u8 {
     fn boxed(self) -> ValkyrieValue {
         ValkyrieValue::Unsigned8(self)
     }
 
+    fn static_type() -> Arc<ValkyrieMetaType> {
+        primitive_type("std.primitive.Unsigned8")
+    }
     fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
-        let mut this = ValkyrieMetaType::default();
-        this.set_namepath("std.primitive.Unsigned8");
-        Arc::new(this)
+        primitive_type("std.primitive.Unsigned8")
     }
 }
 
@@ -19,10 +22,12 @@ impl ValkyrieType for u16 {
         ValkyrieValue::Unsigned16(self)
     }
 
+    fn static_type() -> Arc<ValkyrieMetaType> {
+        primitive_type("std.primitive.Unsigned16")
+    }
+
     fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
-        let mut this = ValkyrieMetaType::default();
-        this.set_namepath("std.primitive.Unsigned16");
-        Arc::new(this)
+        primitive_type("std.primitive.Unsigned16")
     }
 }
 
@@ -31,10 +36,12 @@ impl ValkyrieType for u32 {
         ValkyrieValue::Unsigned32(self)
     }
 
+    fn static_type() -> Arc<ValkyrieMetaType> {
+        primitive_type("std.primitive.Unsigned32")
+    }
+
     fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
-        let mut this = ValkyrieMetaType::default();
-        this.set_namepath("std.primitive.Unsigned32");
-        Arc::new(this)
+        primitive_type("std.primitive.Unsigned32")
     }
 }
 
@@ -43,10 +50,11 @@ impl ValkyrieType for u64 {
         ValkyrieValue::Unsigned64(self)
     }
 
+    fn static_type() -> Arc<ValkyrieMetaType> {
+        primitive_type("std.primitive.Unsigned64")
+    }
     fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
-        let mut this = ValkyrieMetaType::default();
-        this.set_namepath("std.primitive.Unsigned64");
-        Arc::new(this)
+        primitive_type("std.primitive.Unsigned64")
     }
 }
 
@@ -55,10 +63,11 @@ impl ValkyrieType for u128 {
         ValkyrieValue::Unsigned128(self)
     }
 
+    fn static_type() -> Arc<ValkyrieMetaType> {
+        primitive_type("std.primitive.Unsigned128")
+    }
     fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
-        let mut this = ValkyrieMetaType::default();
-        this.set_namepath("std.primitive.Unsigned128");
-        Arc::new(this)
+        primitive_type("std.primitive.Unsigned128")
     }
 }
 
@@ -67,13 +76,13 @@ impl ValkyrieType for usize {
         ValkyrieValue::Unsigned64(self as u64)
     }
 
-    fn static_type() -> Arc<ValkyrieMetaType> {
-        let mut this = ValkyrieMetaType::default();
-        this.set_namepath("std.primitive.Unsigned64");
-        Arc::new(this)
-    }
     fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
-        Self::static_type()
+        if cfg!(target_pointer_width = "64") {
+            primitive_type("std.primitive.Unsigned64")
+        }
+        else {
+            primitive_type("std.primitive.Unsigned32")
+        }
     }
 }
 
@@ -82,10 +91,13 @@ impl ValkyrieType for i8 {
         ValkyrieValue::Integer8(self)
     }
 
-    fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
+    fn static_type() -> Arc<ValkyrieMetaType> {
         let mut this = ValkyrieMetaType::default();
         this.set_namepath("std.primitive.Integer8");
         Arc::new(this)
+    }
+    fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
+        Self::static_type()
     }
 }
 
@@ -94,10 +106,13 @@ impl ValkyrieType for i16 {
         ValkyrieValue::Integer16(self)
     }
 
-    fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
+    fn static_type() -> Arc<ValkyrieMetaType> {
         let mut this = ValkyrieMetaType::default();
         this.set_namepath("std.primitive.Integer16");
         Arc::new(this)
+    }
+    fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
+        Self::static_type()
     }
 }
 

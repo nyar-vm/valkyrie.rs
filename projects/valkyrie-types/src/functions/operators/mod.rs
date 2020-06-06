@@ -175,9 +175,15 @@ impl ValkyrieOperator {
     }
     pub fn accept_arguments(&self) -> usize {
         match self {
-            ValkyrieOperator::Plus => 0,
-            ValkyrieOperator::Multiply => 0,
+            ValkyrieOperator::Plus | ValkyrieOperator::Multiply => 0,
             _ => 1,
+        }
+    }
+    pub fn overrideable(&self) -> bool {
+        match self {
+            ValkyrieOperator::Equal(false) => false,
+            ValkyrieOperator::StrictlyEqual(false) => false,
+            _ => true,
         }
     }
 }

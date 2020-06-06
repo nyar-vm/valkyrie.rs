@@ -27,18 +27,6 @@ pub struct ValkyrieMetaType {
     generic_types: Vec<Arc<ValkyrieMetaType>>,
 }
 
-impl ValkyrieType for () {
-    fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::Class(Arc::new(ValkyrieClass::tuple()))
-    }
-
-    fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
-        let mut this = ValkyrieMetaType::default();
-        this.set_namepath("std.primitive.Unit");
-        Arc::new(this)
-    }
-}
-
 impl Default for ValkyrieValue {
     fn default() -> Self {
         ValkyrieValue::Never

@@ -1,9 +1,4 @@
-use std::{
-    collections::BTreeMap,
-    fmt::{Debug, Display},
-};
 use syntax_error::{sources, Cache, ColorGenerator, Fmt, Label, Report, ReportKind, Source};
-use url::Url;
 
 #[test]
 fn main() {

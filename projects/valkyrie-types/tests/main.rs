@@ -32,3 +32,15 @@ fn test_option() {
     // let value: Option<Option<usize>> = Some(None);
     // assert_type(value, "Option[Option[u64]]", "std::primitive::Option[std::primitive::Option]");
 }
+
+#[test]
+fn test_tuple() {
+    let value: (u8, u16, u32, u64) = (0, 0, 0, 0);
+    assert_type(
+        value,
+        "Tuple[Unsigned8, Unsigned16, Unsigned32, Unsigned64]",
+        "std::primitive::Tuple[std::primitive::Unsigned8, std::primitive::Unsigned16, std::primitive::Unsigned32, std::primitive::Unsigned64]",
+    );
+    // let value: Option<Option<usize>> = Some(None);
+    // assert_type(value, "Option[Option[u64]]", "std::primitive::Option[std::primitive::Option]");
+}
