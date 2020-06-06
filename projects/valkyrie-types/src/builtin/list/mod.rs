@@ -1,4 +1,7 @@
-use std::sync::Arc;
+use std::{
+    collections::{BTreeMap, BTreeSet, VecDeque},
+    sync::Arc,
+};
 
 use crate::{types::ValkyrieMetaType, ValkyrieClass, ValkyrieType, ValkyrieValue};
 
@@ -18,6 +21,48 @@ where
         let mut this = ValkyrieMetaType::default();
         this.set_namepath("std.collection.Array");
         this.mut_generic_types().push(T::static_type());
+        Arc::new(this)
+    }
+}
+
+impl<T> ValkyrieType for BTreeSet<T>
+where
+    T: ValkyrieType,
+{
+    fn boxed(self) -> ValkyrieValue {
+        let mut out = ValkyrieClass::list();
+        for item in self {
+            out.extend_one(item.boxed());
+        }
+        ValkyrieValue::Class(Arc::new(out))
+    }
+
+    fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
+        let mut this = ValkyrieMetaType::default();
+        this.set_namepath("std.collection.SortedSet");
+        this.mut_generic_types().push(T::static_type());
+        Arc::new(this)
+    }
+}
+
+impl<K, V> ValkyrieType for BTreeMap<K, V>
+where
+    K: ValkyrieType,
+    V: ValkyrieType,
+{
+    fn boxed(self) -> ValkyrieValue {
+        let mut out = ValkyrieClass::list();
+        for item in self {
+            out.extend_one(item.boxed());
+        }
+        ValkyrieValue::Class(Arc::new(out))
+    }
+
+    fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
+        let mut this = ValkyrieMetaType::default();
+        this.set_namepath("std.collection.SortedMap");
+        this.mut_generic_types().push(K::static_type());
+        this.mut_generic_types().push(V::static_type());
         Arc::new(this)
     }
 }

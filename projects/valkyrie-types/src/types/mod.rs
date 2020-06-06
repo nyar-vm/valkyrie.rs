@@ -8,8 +8,8 @@ use std::{
 use itertools::Itertools;
 
 use crate::{
-    types::atomic_type::ValkyrieDocument, ValkyrieAtomicType, ValkyrieClass, ValkyrieClassType, ValkyrieValue,
-    ValkyrieVariantType,
+    types::atomic_type::ValkyrieDocument, utils::primitive_type, ValkyrieAtomicType, ValkyrieClass, ValkyrieClassType,
+    ValkyrieValue, ValkyrieVariantType,
 };
 
 pub mod atomic_type;
@@ -39,12 +39,9 @@ impl ValkyrieType for ValkyrieValue {
     }
 
     fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
-        let mut this = ValkyrieMetaType::default();
         match self {
-            ValkyrieValue::Never => {
-                this.set_namepath("std.primitive.Any");
-                Arc::new(this)
-            }
+            ValkyrieValue::Never => primitive_type("std.primitive.Never"),
+            ValkyrieValue::Null => primitive_type("std.primitive.Null"),
             ValkyrieValue::Boolean(v) => v.dynamic_type(),
             ValkyrieValue::Unsigned8(v) => v.dynamic_type(),
             ValkyrieValue::Unsigned16(v) => v.dynamic_type(),

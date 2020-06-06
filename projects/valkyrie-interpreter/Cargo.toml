@@ -2,12 +2,13 @@
 name = "valkyrie-interpreter"
 version = "0.2.2"
 authors = ["192607617@qq.com"]
-edition = "2021"
 description = "High level intermediate representation for Nyar"
 repository = "https://github.com/nyar-vm/valkyrie.rs"
 license = "MPL-2.0"
+edition = "2021"
 
 [dependencies]
+clap = { version = "4.2.7", features = ["derive"] }
 serde = { version = "1.0.152", features = ["derive"] }
 serde_json = "1.0.91"
 serde-types = "0.1.1"
@@ -18,8 +19,10 @@ json5 = "0.4.1"
 version = "0.3.6"
 features = []
 
+[dependencies.jupyter]
+version = "0.1.2"
+path = "C:\\Users\\Dell\\CLionProjects\\jupyter-protocol\\projects\\jupyter"
 
-[dev-dependencies]
-
-[features]
-default = []
+[dependencies.jupyter-derive]
+version = "0.0.0"
+path = "C:\\Users\\Dell\\CLionProjects\\jupyter-protocol\\projects\\jupyter-derive"
