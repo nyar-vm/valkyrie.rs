@@ -1,26 +1,123 @@
+#![feature(generator_trait)]
+
 use clap::{Parser, Subcommand};
 use jupyter::{
-    async_trait, ExecutionReply, ExecutionRequest, ExecutionResult, InstallAction, JupyterResult, JupyterServerProtocol,
-    JupyterServerSockets, LanguageInfo, OpenAction, StartAction, UnboundedSender, UninstallAction,
+    async_trait, Executed, ExecutionReply, ExecutionRequest, ExecutionResult, InstallAction, JupyterResult,
+    JupyterServerProtocol, JupyterServerSockets, JupyterTheme, LanguageInfo, OpenAction, StartAction, UnboundedSender,
+    UninstallAction,
 };
 use jupyter_derive::{include_png32, include_png64};
-use std::path::PathBuf;
+use serde_json::Value;
+use std::{ops::Generator, path::PathBuf};
+use valkyrie_parser::{
+    expression::ValkyrieExpression,
+    repl::{parse_repl, ValkyrieREPL},
+};
+mod expression;
+
+use valkyrie_types::{ValkyrieError, ValkyrieResult, ValkyrieValue};
 
 pub struct ValkyrieExecutor {
     sockets: JupyterServerSockets,
+    config: ValkyrieConfig,
+}
+
+pub struct ValkyrieConfig {
+    running_time: bool,
+}
+
+impl Default for ValkyrieConfig {
+    fn default() -> Self {
+        ValkyrieConfig { running_time: false }
+    }
 }
 
 impl Default for ValkyrieExecutor {
     fn default() -> Self {
-        ValkyrieExecutor { sockets: Default::default() }
+        ValkyrieExecutor { sockets: Default::default(), config: ValkyrieConfig::default() }
     }
 }
 
 impl ValkyrieExecutor {
-    pub async fn execute(&mut self, code: &str, id: usize) -> JupyterResult<()> {
-        self.sockets.send_executed(code).await;
-        self.sockets.send_executed(id as f64).await;
-        Ok(())
+    pub async fn execute_repl(&mut self, tree: ValkyrieREPL) -> ValkyrieResult<ValkyrieValue> {
+        match tree {
+            ValkyrieREPL::Namespace(_) => Ok(ValkyrieValue::Nothing),
+            ValkyrieREPL::Expression(e) => self.execute_expr(*e).await,
+        }
+    }
+
+    pub(crate) async fn send_value(&self, value: ValkyrieValue) {
+        match value {
+            // never type never sends
+            ValkyrieValue::Nothing => {}
+            ValkyrieValue::Null => self.sockets.send_executed(DisplayKeywords { text: "null".to_string() }).await,
+            ValkyrieValue::Unit => self.sockets.send_executed(DisplayKeywords { text: "()".to_string() }).await,
+            ValkyrieValue::Boolean(v) => self.sockets.send_executed(DisplayKeywords { text: v.to_string() }).await,
+            ValkyrieValue::Unsigned8(v) => self.sockets.send_executed(DisplayNumber { text: v.to_string() }).await,
+            ValkyrieValue::Unsigned16(v) => self.sockets.send_executed(DisplayNumber { text: v.to_string() }).await,
+            ValkyrieValue::Unsigned32(v) => self.sockets.send_executed(DisplayNumber { text: v.to_string() }).await,
+            ValkyrieValue::Unsigned64(v) => self.sockets.send_executed(DisplayNumber { text: v.to_string() }).await,
+            ValkyrieValue::Unsigned128(v) => self.sockets.send_executed(DisplayNumber { text: v.to_string() }).await,
+            ValkyrieValue::Integer8(v) => self.sockets.send_executed(DisplayNumber { text: v.to_string() }).await,
+            ValkyrieValue::Integer16(v) => self.sockets.send_executed(DisplayNumber { text: v.to_string() }).await,
+            ValkyrieValue::Integer32(v) => self.sockets.send_executed(DisplayNumber { text: v.to_string() }).await,
+            ValkyrieValue::Integer64(v) => self.sockets.send_executed(DisplayNumber { text: v.to_string() }).await,
+            ValkyrieValue::Integer128(v) => self.sockets.send_executed(DisplayNumber { text: v.to_string() }).await,
+            ValkyrieValue::Float32(v) => self.sockets.send_executed(DisplayNumber { text: v.to_string() }).await,
+            ValkyrieValue::Float64(v) => self.sockets.send_executed(DisplayNumber { text: v.to_string() }).await,
+            ValkyrieValue::String(_) => {
+                todo!()
+            }
+            ValkyrieValue::Buffer(_) => {
+                todo!()
+            }
+            ValkyrieValue::Class(_) => {
+                todo!()
+            }
+            ValkyrieValue::Variant(_) => {
+                todo!()
+            }
+        }
+    }
+}
+
+pub struct DisplayKeywords {
+    text: String,
+}
+
+impl Executed for DisplayKeywords {
+    fn mime_type(&self) -> String {
+        "text/html".to_string()
+    }
+
+    fn as_json(&self, _: JupyterTheme) -> Value {
+        Value::String(format!(r#"<span style="color: pink">{}</span>"#, self.text))
+    }
+}
+
+pub struct DisplayError {
+    text: String,
+}
+impl Executed for DisplayError {
+    fn mime_type(&self) -> String {
+        "text/html".to_string()
+    }
+
+    fn as_json(&self, _: JupyterTheme) -> Value {
+        Value::String(format!(r#"<span style="color: red">{}</span>"#, self.text))
+    }
+}
+
+pub struct DisplayNumber {
+    text: String,
+}
+impl Executed for DisplayNumber {
+    fn mime_type(&self) -> String {
+        "text/html".to_string()
+    }
+
+    fn as_json(&self, _: JupyterTheme) -> Value {
+        Value::String(format!(r#"<span class="color: oriange">{}</span>"#, self.text))
     }
 }
 
@@ -37,12 +134,19 @@ impl JupyterServerProtocol for ValkyrieExecutor {
     }
 
     async fn running(&mut self, code: ExecutionRequest) -> ExecutionReply {
-        match self.execute(&code.code, code.execution_count as usize).await {
-            Ok(_) => code.as_reply(true, code.execution_count),
-            Err(_) => code.as_reply(false, code.execution_count),
+        for i in parse_repl(&code.code) {
+            match self.execute_repl(i).await {
+                Ok(v) => self.send_value(v).await,
+                Err(e) => self.sockets.send_executed(DisplayError { text: format!("Error: {}", e) }).await,
+            }
         }
+        // unless fatal error
+        code.as_reply(true, code.execution_count)
     }
 
+    fn running_time(&self, time: f64) -> String {
+        if self.config.running_time { format!("<sub>Elapsed time: {:.2} seconds.</sub>", time) } else { String::new() }
+    }
     async fn bind_execution_socket(&self, sender: UnboundedSender<ExecutionResult>) {
         self.sockets.bind_execution_socket(sender).await
     }

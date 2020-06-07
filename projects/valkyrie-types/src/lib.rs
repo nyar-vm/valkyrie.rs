@@ -11,10 +11,14 @@ pub use self::{
 
 mod builtin;
 mod codegen;
+mod errors;
 mod functions;
 mod types;
 mod values;
 // #[cfg(test)]
 pub mod testing;
 mod utils;
-pub use crate::functions::operators::ValkyrieOperator;
+pub use crate::{
+    errors::{ValkyrieError, ValkyrieErrorKind, ValkyrieResult},
+    functions::operators::ValkyrieOperator,
+};

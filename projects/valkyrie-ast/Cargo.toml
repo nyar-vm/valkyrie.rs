@@ -10,12 +10,12 @@ license = "MPL-2.0"
 edition = "2021"
 
 [dependencies]
-syntax-error = "0.0.1"
+syntax-error = "0.0.2"
 url = "2.3.1"
 #serde = { version = "1.0.163", features = ["derive"], optional = true }
 
 [dependencies.valkyrie-types]
-version = "0.0.0"
+version = "0.0.1"
 path = "../valkyrie-types"
 
 

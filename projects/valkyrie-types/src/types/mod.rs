@@ -29,7 +29,7 @@ pub struct ValkyrieMetaType {
 
 impl Default for ValkyrieValue {
     fn default() -> Self {
-        ValkyrieValue::Never
+        ValkyrieValue::Null
     }
 }
 
@@ -40,8 +40,9 @@ impl ValkyrieType for ValkyrieValue {
 
     fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
         match self {
-            ValkyrieValue::Never => primitive_type("std.primitive.Never"),
+            ValkyrieValue::Nothing => primitive_type("std.primitive.Never"),
             ValkyrieValue::Null => primitive_type("std.primitive.Null"),
+            ValkyrieValue::Unit => primitive_type("std.primitive.Unit"),
             ValkyrieValue::Boolean(v) => v.dynamic_type(),
             ValkyrieValue::Unsigned8(v) => v.dynamic_type(),
             ValkyrieValue::Unsigned16(v) => v.dynamic_type(),
@@ -64,6 +65,12 @@ impl ValkyrieType for ValkyrieValue {
 }
 
 impl ValkyrieMetaType {
+    pub fn new(namepath: &str) -> Self {
+        let mut o = Self::default();
+        o.set_namepath(namepath);
+        o
+    }
+
     pub fn set_namepath(&mut self, namepath: &str) {
         self.namepath.clear();
         for s in namepath.split('.') {

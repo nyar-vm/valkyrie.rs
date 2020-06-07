@@ -29,6 +29,7 @@
 //     }
 // }
 
+use crate::helpers::ignore;
 use lispify::Lisp;
 use pex::{
     helpers::{make_from_str, whitespace},
@@ -45,7 +46,8 @@ where
         make_from_str(state.skip(whitespace), Self::parse)
     }
     fn parse_many(input: ParseState) -> ParseResult<Vec<Self>> {
-        todo!()
+        let (state, terms) = input.match_repeats(Self::parse)?;
+        if state.skip(ignore).residual.is_empty() { state.finish(terms) } else { StopBecause::expect_eof(state.start_offset)? }
     }
     fn as_lisp(&self) -> Lisp;
 }

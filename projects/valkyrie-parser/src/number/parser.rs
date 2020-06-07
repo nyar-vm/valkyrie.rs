@@ -134,7 +134,7 @@ fn parse_hex(raw: &str) -> Vec<u8> {
     bytes
 }
 
-fn parse_unit(input: ParseState) -> ParseResult<dyn ExactSizeIterator> {
+fn parse_unit(input: ParseState) -> ParseResult<IdentifierNode> {
     let (state, _) = input.match_optional(|s| s.match_char('_'))?;
     let (state, id) = state.match_fn(IdentifierNode::parse)?;
     state.finish(id)

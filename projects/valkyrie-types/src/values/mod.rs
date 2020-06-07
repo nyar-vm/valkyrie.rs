@@ -3,16 +3,25 @@ use std::sync::Arc;
 use crate::{ValkyrieClass, ValkyrieVariantType};
 
 pub enum ValkyrieValue {
+    /// ADT = -1
+    Nothing,
     /// ADT = 0
-    Never,
-    /// ADT = 1
     Null,
+    /// ADT = 1
+    Unit,
     /// ADT = 2
+    ///
+    /// Native boolean type, 8bit
     Boolean(bool),
+    /// Native number type, 8bit
     Unsigned8(u8),
+    /// Native number type, 16bit
     Unsigned16(u16),
+    /// Native number type, 32bit
     Unsigned32(u32),
+    /// Native number type, 64bit
     Unsigned64(u64),
+    /// Native number type, 128bit
     Unsigned128(u128),
     Integer8(i8),
     Integer16(i16),
