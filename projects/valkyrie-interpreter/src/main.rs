@@ -16,7 +16,7 @@ use valkyrie_parser::{
 };
 mod expression;
 
-use valkyrie_types::{third_party::pex::ParseState, ValkyrieError, ValkyrieResult, ValkyrieValue};
+use valkyrie_types::{third_party::pex::ParseState, ValkyrieResult, ValkyrieValue};
 
 pub struct ValkyrieExecutor {
     sockets: JupyterServerSockets,
@@ -45,7 +45,14 @@ impl ValkyrieExecutor {
         for i in terms {
             match self.execute_repl(i).await {
                 Ok(v) => self.send_value(v).await,
-                Err(e) => self.sockets.send_executed(DisplayError { text: format!("Error: {}", e) }).await,
+                Err(e) => {
+                    if e.is_fatal() {
+                        return Err(e);
+                    }
+                    else {
+                        self.sockets.send_executed(DisplayError { text: format!("Error: {}", e) }).await;
+                    }
+                }
             }
         }
         Ok(())

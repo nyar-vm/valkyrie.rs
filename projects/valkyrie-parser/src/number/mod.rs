@@ -2,12 +2,12 @@ mod display;
 mod parser;
 use crate::expression::ValkyrieExpression;
 use lispify::LispNumber;
-use regex::Regex;
+
 use std::{ops::Range, str::FromStr, sync::LazyLock};
 use valkyrie_ast::IdentifierNode;
 use valkyrie_types::third_party::pex::{
     helpers::{make_from_str, whitespace},
-    ParseResult, ParseState, StopBecause,
+    ParseResult, ParseState, Regex, StopBecause,
 };
 
 /// A number literal.

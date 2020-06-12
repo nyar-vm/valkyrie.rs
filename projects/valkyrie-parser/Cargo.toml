@@ -13,7 +13,6 @@ syntax-error = "0.0.2"
 url = "2.3.1"
 pratt = "0.4.0"
 bit-set = "0.5.3"
-regex = "1.8.1"
 
 [dependencies.lispify]
 version = "0.0.1"

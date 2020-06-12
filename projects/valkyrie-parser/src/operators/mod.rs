@@ -1,7 +1,7 @@
 use crate::traits::ThisParser;
 use lispify::Lisp;
 use pratt::{Associativity, Precedence};
-use regex::Regex;
+
 use std::{
     fmt::{Debug, Formatter},
     ops::Range,
@@ -11,7 +11,7 @@ use std::{
 use valkyrie_ast::{OperatorNode, ValkyrieOperator};
 use valkyrie_types::third_party::pex::{
     helpers::{make_from_str, whitespace},
-    ParseResult, ParseState, StopBecause,
+    ParseResult, ParseState, Regex, StopBecause,
 };
 
 mod display;

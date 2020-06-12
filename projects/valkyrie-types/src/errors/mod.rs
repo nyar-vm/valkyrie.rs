@@ -13,6 +13,12 @@ pub struct ValkyrieError {
     level: ValkyrieErrorLevel,
 }
 
+impl ValkyrieError {
+    pub fn is_fatal(&self) -> bool {
+        self.level == ValkyrieErrorLevel::Fatal
+    }
+}
+
 #[derive(Debug)]
 pub enum ValkyrieErrorKind {
     Custom(String),
@@ -23,6 +29,7 @@ pub enum ValkyrieErrorKind {
 #[derive(Copy, Clone, Debug, Ord, PartialOrd, Eq, PartialEq, Hash)]
 pub enum ValkyrieErrorLevel {
     Trace = 0,
+    Fatal = 255,
 }
 
 impl ValkyrieError {

@@ -1,8 +1,7 @@
-use regex::Regex;
 use std::sync::LazyLock;
 
 use crate::expression::ValkyrieExpression;
-use valkyrie_types::third_party::pex::{ParseResult, ParseState};
+use valkyrie_types::third_party::pex::{ParseResult, ParseState, Regex};
 
 use valkyrie_ast::NamePathNode;
 
