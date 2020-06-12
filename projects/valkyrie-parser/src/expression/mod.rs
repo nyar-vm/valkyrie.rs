@@ -1,8 +1,8 @@
 use crate::{helpers::ignore, operators::ValkyrieInfix};
 use lispify::{Lisp, Lispify};
-use pex::{ParseResult, ParseState, StopBecause};
 use pratt::{Affix, PrattError, PrattParser};
 use std::{fmt::Debug, ops::Range};
+use valkyrie_types::third_party::pex::{ParseResult, ParseState, StopBecause};
 mod display;
 mod parser;
 use crate::{
@@ -10,12 +10,12 @@ use crate::{
     operators::{ValkyriePrefix, ValkyrieSuffix},
     traits::ThisParser,
 };
-use pex::helpers::make_from_str;
 use std::str::FromStr;
 use valkyrie_ast::{
-    InfixNode, NamePathNode, NumberLiteralNode, ValkyrieOperator, OperatorNode, PostfixNode, PrefixNode, StringLiteralNode,
-    TableNode,
+    InfixNode, NamePathNode, NumberLiteralNode, OperatorNode, PostfixNode, PrefixNode, StringLiteralNode, TableNode,
+    ValkyrieOperator,
 };
+use valkyrie_types::third_party::pex::helpers::make_from_str;
 
 /// A resolver
 #[derive(Default)]

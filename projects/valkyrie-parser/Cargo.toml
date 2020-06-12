@@ -19,15 +19,15 @@ regex = "1.8.1"
 version = "0.0.1"
 #path = "D:\\Java\\pex-sexpr\\projects\\sexpr"
 
-[dependencies.pex]
-version = "0.1.11"
-features = ["regex"]
-path = "C:\\Users\\Dell\\CLionProjects\\pex\\projects\\pex-core"
-
 [dependencies.valkyrie-ast]
 version = "0.0.1"
 features = []
 path = "../valkyrie-ast"
+
+[dependencies.valkyrie-types]
+version = "0.0.1"
+features = ["pex"]
+path = "../valkyrie-types"
 
 #[dependencies.valkyrie-pest]
 #path = "../valkyrie-pest"

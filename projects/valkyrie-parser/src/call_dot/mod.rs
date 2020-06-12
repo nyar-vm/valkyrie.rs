@@ -2,7 +2,7 @@ mod display;
 mod parser;
 use crate::{expression::ValkyrieExpression, helpers::ignore};
 use lispify::{Lisp, Lispify};
-use pex::{
+use valkyrie_types::third_party::pex::{
     helpers::{make_from_str, whitespace},
     ParseResult, ParseState, StopBecause,
 };

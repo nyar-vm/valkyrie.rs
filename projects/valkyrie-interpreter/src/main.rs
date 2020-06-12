@@ -12,10 +12,11 @@ use std::{ops::Generator, path::PathBuf};
 use valkyrie_parser::{
     expression::ValkyrieExpression,
     repl::{parse_repl, ValkyrieREPL},
+    ThisParser,
 };
 mod expression;
 
-use valkyrie_types::{ValkyrieError, ValkyrieResult, ValkyrieValue};
+use valkyrie_types::{third_party::pex::ParseState, ValkyrieError, ValkyrieResult, ValkyrieValue};
 
 pub struct ValkyrieExecutor {
     sockets: JupyterServerSockets,
@@ -39,6 +40,17 @@ impl Default for ValkyrieExecutor {
 }
 
 impl ValkyrieExecutor {
+    pub(crate) async fn repl_parse_and_run(&mut self, code: &str) -> ValkyrieResult<()> {
+        let (_, terms) = ValkyrieREPL::parse_many(ParseState::new(code))?;
+        for i in terms {
+            match self.execute_repl(i).await {
+                Ok(v) => self.send_value(v).await,
+                Err(e) => self.sockets.send_executed(DisplayError { text: format!("Error: {}", e) }).await,
+            }
+        }
+        Ok(())
+    }
+
     pub async fn execute_repl(&mut self, tree: ValkyrieREPL) -> ValkyrieResult<ValkyrieValue> {
         match tree {
             ValkyrieREPL::Namespace(_) => Ok(ValkyrieValue::Nothing),
@@ -134,14 +146,13 @@ impl JupyterServerProtocol for ValkyrieExecutor {
     }
 
     async fn running(&mut self, code: ExecutionRequest) -> ExecutionReply {
-        for i in parse_repl(&code.code) {
-            match self.execute_repl(i).await {
-                Ok(v) => self.send_value(v).await,
-                Err(e) => self.sockets.send_executed(DisplayError { text: format!("Error: {}", e) }).await,
+        match self.repl_parse_and_run(&code.code).await {
+            Ok(_) => code.as_reply(true, code.execution_count),
+            Err(e) => {
+                self.sockets.send_executed(DisplayError { text: e.to_string() }).await;
+                code.as_reply(false, code.execution_count)
             }
         }
-        // unless fatal error
-        code.as_reply(true, code.execution_count)
     }
 
     fn running_time(&self, time: f64) -> String {

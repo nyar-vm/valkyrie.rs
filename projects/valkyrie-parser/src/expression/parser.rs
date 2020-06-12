@@ -1,6 +1,6 @@
 use super::*;
 use crate::operators::ValkyriePrefix;
-use pex::helpers::whitespace;
+use valkyrie_types::third_party::pex::helpers::whitespace;
 
 impl FromStr for ValkyrieExpression {
     type Err = StopBecause;

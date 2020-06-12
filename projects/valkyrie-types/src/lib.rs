@@ -9,6 +9,11 @@ pub use self::{
     values::ValkyrieValue,
 };
 
+pub mod third_party {
+    #[cfg(feature = "pex")]
+    pub use pex;
+}
+
 mod builtin;
 mod codegen;
 mod errors;

@@ -15,7 +15,7 @@ indexmap = "1.9.2"
 inwelling = "0.5.0"
 itertools = "0.10.5"
 
-
+pex = { version = "0.1.13", features = ["regex"],  optional = true }
 
 [dev-dependencies]
 

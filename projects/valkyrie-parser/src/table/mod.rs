@@ -1,7 +1,7 @@
 use crate::{expression::ValkyrieExpression, helpers::ignore, traits::ThisParser};
 use lispify::{Lisp, Lispify};
-use pex::{BracketPattern, ParseResult, ParseState};
 use valkyrie_ast::{IdentifierNode, PairNode, TableKind, TableNode, TableTermNode};
+use valkyrie_types::third_party::pex::{BracketPattern, ParseResult, ParseState};
 
 impl From<TableNode<ValkyrieExpression>> for ValkyrieExpression {
     fn from(value: TableNode<ValkyrieExpression>) -> Self {

@@ -1,9 +1,9 @@
 use crate::{helpers::ignore, traits::ThisParser};
 use lispify::Lisp;
-use pex::{ParseResult, ParseState};
 use regex::Regex;
 use std::sync::LazyLock;
 use valkyrie_ast::{IdentifierNode, NamespaceDeclareNode, NamespaceKind};
+use valkyrie_types::third_party::pex::{ParseResult, ParseState};
 
 pub static NAMESPACE: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(

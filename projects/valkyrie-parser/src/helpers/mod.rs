@@ -2,10 +2,10 @@ mod escaper;
 
 pub use self::escaper::StringRewrite;
 use crate::{expression::ValkyrieExpression, traits::ThisParser};
-use pex::{ParseResult, ParseState};
 use regex::Regex;
 use std::sync::LazyLock;
 use valkyrie_ast::{NamePathNode, NumberLiteralNode, StringLiteralNode, TableNode};
+use valkyrie_types::third_party::pex::{ParseResult, ParseState};
 
 pub static IGNORE: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(

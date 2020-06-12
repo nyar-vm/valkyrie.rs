@@ -31,7 +31,7 @@
 
 use crate::helpers::ignore;
 use lispify::Lisp;
-use pex::{
+use valkyrie_types::third_party::pex::{
     helpers::{make_from_str, whitespace},
     ParseResult, ParseState, StopBecause,
 };

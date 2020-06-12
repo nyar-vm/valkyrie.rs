@@ -1,9 +1,5 @@
 use crate::traits::ThisParser;
 use lispify::Lisp;
-use pex::{
-    helpers::{make_from_str, whitespace},
-    ParseResult, ParseState, StopBecause,
-};
 use pratt::{Associativity, Precedence};
 use regex::Regex;
 use std::{
@@ -12,7 +8,11 @@ use std::{
     str::FromStr,
     sync::LazyLock,
 };
-use valkyrie_ast::{ValkyrieOperator, OperatorNode};
+use valkyrie_ast::{OperatorNode, ValkyrieOperator};
+use valkyrie_types::third_party::pex::{
+    helpers::{make_from_str, whitespace},
+    ParseResult, ParseState, StopBecause,
+};
 
 mod display;
 mod parser;

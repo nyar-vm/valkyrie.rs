@@ -2,12 +2,12 @@ mod display;
 mod parser;
 use crate::{expression::ValkyrieExpression, helpers::ignore};
 use lispify::{Lisp, Lispify};
-use pex::{
+use std::{ops::Range, str::FromStr};
+use valkyrie_ast::TableTermNode;
+use valkyrie_types::third_party::pex::{
     helpers::{make_from_str, whitespace},
     BracketPattern, ParseResult, ParseState, StopBecause,
 };
-use std::{ops::Range, str::FromStr};
-use valkyrie_ast::TableTermNode;
 
 /// A number literal.
 #[derive(Debug, Clone)]

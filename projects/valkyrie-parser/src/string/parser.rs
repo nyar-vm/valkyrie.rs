@@ -1,6 +1,6 @@
 use super::*;
 use crate::expression::ValkyrieExpression;
-use pex::{
+use valkyrie_types::third_party::pex::{
     helpers::{make_from_str, quotation_pair, quotation_pair_nested, whitespace},
     ParseResult, ParseState, StopBecause,
 };

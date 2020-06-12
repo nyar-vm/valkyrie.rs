@@ -2,7 +2,7 @@ use regex::Regex;
 use std::sync::LazyLock;
 
 use crate::expression::ValkyrieExpression;
-use pex::{ParseResult, ParseState};
+use valkyrie_types::third_party::pex::{ParseResult, ParseState};
 
 use valkyrie_ast::NamePathNode;
 
