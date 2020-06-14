@@ -16,19 +16,13 @@ pub fn parse_repl(s: &str) -> Vec<ValkyrieREPL> {
 }
 
 impl ThisParser for ValkyrieREPL {
+    /// - [term](ValkyrieExpression::parse)
     fn parse(input: ParseState) -> ParseResult<Self> {
-        todo!()
+        input.begin_choice().or_else(maybe_expression).end_choice()
     }
 
     fn as_lisp(&self) -> Lisp {
         todo!()
-    }
-}
-
-impl ValkyrieREPL {
-    /// - [term](ValkyrieExpression::parse)
-    pub fn parse(input: ParseState) -> ParseResult<Self> {
-        input.begin_choice().or_else(maybe_expression).end_choice()
     }
 }
 

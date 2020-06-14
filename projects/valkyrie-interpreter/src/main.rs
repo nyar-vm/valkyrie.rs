@@ -8,12 +8,8 @@ use jupyter::{
 };
 use jupyter_derive::{include_png32, include_png64};
 use serde_json::Value;
-use std::{ops::Generator, path::PathBuf};
-use valkyrie_parser::{
-    expression::ValkyrieExpression,
-    repl::{parse_repl, ValkyrieREPL},
-    ThisParser,
-};
+use std::path::PathBuf;
+use valkyrie_parser::{repl::ValkyrieREPL, ThisParser};
 mod expression;
 
 use valkyrie_types::{third_party::pex::ParseState, ValkyrieResult, ValkyrieValue};
@@ -165,6 +161,7 @@ impl JupyterServerProtocol for ValkyrieExecutor {
     fn running_time(&self, time: f64) -> String {
         if self.config.running_time { format!("<sub>Elapsed time: {:.2} seconds.</sub>", time) } else { String::new() }
     }
+
     async fn bind_execution_socket(&self, sender: UnboundedSender<ExecutionResult>) {
         self.sockets.bind_execution_socket(sender).await
     }

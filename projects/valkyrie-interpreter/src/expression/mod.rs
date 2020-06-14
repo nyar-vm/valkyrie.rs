@@ -3,7 +3,7 @@ use std::{
     collections::BTreeMap,
     sync::{Arc, Mutex},
 };
-use valkyrie_ast::{IdentifierNode, NamePathNode, NumberLiteralNode};
+use valkyrie_ast::{NamePathNode, NumberLiteralNode};
 use valkyrie_parser::expression::ValkyrieExpression;
 use valkyrie_types::{ValkyrieError, ValkyrieResult, ValkyrieValue};
 

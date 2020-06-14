@@ -119,9 +119,7 @@ fn parse_hex(raw: &str) -> Vec<u8> {
         match char {
             '0'..='9' => byte |= (char as u8 - b'0') << index,
             'A'..='F' => byte |= (char as u8 - b'A' + 10) << index,
-            _ => {
-                continue;
-            }
+            _ => continue,
         }
         index += 4;
         if index == 8 {
