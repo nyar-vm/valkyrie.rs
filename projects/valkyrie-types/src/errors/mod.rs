@@ -61,12 +61,3 @@ impl Display for ValkyrieErrorKind {
         }
     }
 }
-
-impl From<ParseIntError> for ValkyrieError {
-    fn from(value: ParseIntError) -> Self {
-        Self {
-            kind: Box::new(ValkyrieErrorKind::SyntaxError { message: value.to_string(), range: 0..0 }),
-            level: ValkyrieErrorLevel::Trace,
-        }
-    }
-}

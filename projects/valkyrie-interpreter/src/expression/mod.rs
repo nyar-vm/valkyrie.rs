@@ -3,7 +3,7 @@ use std::{
     collections::BTreeMap,
     sync::{Arc, Mutex},
 };
-use valkyrie_ast::{NamePathNode, NumberLiteralNode};
+use valkyrie_ast::{NamePathNode, NumberLiteralNode, StringLiteralNode};
 use valkyrie_parser::expression::ValkyrieExpression;
 use valkyrie_types::{ValkyrieError, ValkyrieResult, ValkyrieValue};
 
@@ -27,9 +27,7 @@ impl ValkyrieExecutor {
             }
             ValkyrieExpression::Number(v) => self.execute_number(*v).await,
             ValkyrieExpression::Symbol(v) => self.execute_symbol(*v).await,
-            ValkyrieExpression::String(_) => {
-                todo!()
-            }
+            ValkyrieExpression::String(v) => self.execute_string(*v).await,
             ValkyrieExpression::Table(_) => {
                 todo!()
             }
@@ -42,6 +40,8 @@ impl ValkyrieExecutor {
                 "u16" => Ok(ValkyrieValue::Unsigned16(number.value.parse::<u16>()?)),
                 "u32" => Ok(ValkyrieValue::Unsigned32(number.value.parse::<u32>()?)),
                 "u64" => Ok(ValkyrieValue::Unsigned64(number.value.parse::<u64>()?)),
+                "f32" => Ok(ValkyrieValue::Float32(number.value.parse::<f32>()?)),
+                "f64" => Ok(ValkyrieValue::Float64(number.value.parse::<f64>()?)),
                 _ => Err(ValkyrieError::custom(format!("Unknown unit: {}", s.name))),
             },
             None => match number.value.parse::<i64>() {
@@ -63,6 +63,18 @@ impl ValkyrieExecutor {
                 }
             }
             _ => Err(ValkyrieError::custom(format!("Unknown symbol: {:?}", number.names))),
+        }
+    }
+    pub(crate) async fn execute_string(&mut self, mut string: StringLiteralNode) -> ValkyrieResult<ValkyrieValue> {
+        match string.unit {
+            Some(s) => match s.name.as_str() {
+                "re" => todo!(),
+                "sh" => todo!(),
+                "json" => todo!(),
+                _ => Err(ValkyrieError::custom(format!("Unknown handler: {}", s.name))),
+            },
+            // TODO: template string
+            None => Ok(ValkyrieValue::String(Arc::new(string.value))),
         }
     }
 }
