@@ -1,11 +1,13 @@
 use crate::ValkyrieExecutor;
+use serde_json::Value;
 use std::{
     collections::BTreeMap,
+    str::FromStr,
     sync::{Arc, Mutex},
 };
 use valkyrie_ast::{NamePathNode, NumberLiteralNode, StringLiteralNode};
 use valkyrie_parser::expression::ValkyrieExpression;
-use valkyrie_types::{ValkyrieError, ValkyrieResult, ValkyrieValue};
+use valkyrie_types::{ValkyrieClass, ValkyrieError, ValkyrieResult, ValkyrieValue};
 
 pub struct ExecutorScope {
     parent: Option<Arc<Mutex<ExecutorScope>>>,
@@ -76,5 +78,8 @@ impl ValkyrieExecutor {
             // TODO: template string
             None => Ok(ValkyrieValue::String(Arc::new(string.value))),
         }
+    }
+    pub(crate) async fn execute_json(&mut self, mut string: StringLiteralNode) -> ValkyrieResult<ValkyrieValue> {
+        todo!()
     }
 }

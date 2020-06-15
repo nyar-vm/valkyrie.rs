@@ -1,4 +1,6 @@
 use std::sync::Arc;
+mod der;
+mod ser;
 
 use crate::{ValkyrieClass, ValkyrieVariantType};
 
