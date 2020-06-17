@@ -8,7 +8,7 @@ use std::{
 use itertools::Itertools;
 
 use crate::{
-    types::atomic_type::ValkyrieDocument, utils::primitive_type, ValkyrieAtomicType, ValkyrieClass, ValkyrieClassType,
+    types::atomic_type::ValkyrieDocument, utils::primitive_type, ValkyrieAtomicType, ValkyrieClassType, ValkyrieTable,
     ValkyrieValue, ValkyrieVariantType,
 };
 

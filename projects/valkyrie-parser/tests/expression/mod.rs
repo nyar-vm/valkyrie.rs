@@ -1,6 +1,6 @@
 use super::*;
-use valkyrie_ast::{IdentifierNode, ViewNode};
-use valkyrie_parser::ThisParser;
+use valkyrie_ast::{GenericCall, IdentifierNode, ViewNode};
+use valkyrie_parser::{expression::ValkyrieExpression, ThisParser};
 
 #[test]
 fn lex_expression() {
@@ -32,8 +32,8 @@ fn test_apply() {
 
 #[test]
 fn main1() {
-    let raw = "ℤ";
-    let slice = IdentifierNode::parse_text(raw).unwrap();
+    let raw = "<T<U,>, 1, >";
+    let slice = GenericCall::<ValkyrieExpression>::parse_text(raw).unwrap();
     println!("input:\n{slice:#?}");
     println!("output:\n{}", colored_lisp(slice.as_lisp(), 42).unwrap());
 }

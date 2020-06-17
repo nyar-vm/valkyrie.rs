@@ -7,7 +7,7 @@ use std::{
 };
 use valkyrie_ast::{NamePathNode, NumberLiteralNode, StringLiteralNode};
 use valkyrie_parser::expression::ValkyrieExpression;
-use valkyrie_types::{ValkyrieClass, ValkyrieError, ValkyrieResult, ValkyrieValue};
+use valkyrie_types::{ValkyrieError, ValkyrieResult, ValkyrieTable, ValkyrieValue};
 
 pub struct ExecutorScope {
     parent: Option<Arc<Mutex<ExecutorScope>>>,

@@ -35,7 +35,7 @@ impl ExpressionResolver {
 fn say_stop_reason<T>(e: PrattError<ExpressionStream, StopBecause>) -> Result<T, StopBecause> {
     match e {
         PrattError::UserError(e) => Err(e),
-        PrattError::EmptyInput => unreachable!(),
+        PrattError::EmptyInput => Err(StopBecause::ShouldNotBe { message: "EOF", position: 0 }),
         PrattError::UnexpectedNilfix(_) => unreachable!(),
         PrattError::UnexpectedPrefix(_) => unreachable!(),
         PrattError::UnexpectedInfix(_) => unreachable!(),

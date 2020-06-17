@@ -4,6 +4,7 @@ use std::{
     ops::Range,
 };
 mod arithmetic;
+pub mod generic;
 pub mod number;
 pub mod operators;
 pub mod string;

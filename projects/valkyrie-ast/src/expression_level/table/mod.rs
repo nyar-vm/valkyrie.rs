@@ -23,7 +23,8 @@ pub struct TableNode<E> {
 }
 
 /// A number literal.
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum TableTermNode<E> {
     /// `array[index]`, also can be a call_index `array[[1, 2, 3]]`
     Item(E),
@@ -31,7 +32,8 @@ pub enum TableTermNode<E> {
     Pair(PairNode<IdentifierNode, E>),
 }
 
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct PairNode<K, V> {
     pub key: K,
     pub value: V,

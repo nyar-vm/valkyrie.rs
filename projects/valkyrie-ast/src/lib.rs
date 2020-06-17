@@ -31,6 +31,7 @@ mod utils;
 
 pub use crate::{
     expression_level::{
+        generic::{GenericArgumentNode, GenericCall},
         number::NumberLiteralNode,
         operators::{InfixNode, OperatorNode, PostfixNode, PrefixNode},
         string::StringLiteralNode,

@@ -4,7 +4,7 @@ use std::sync::Arc;
 mod der;
 mod ser;
 
-use crate::{ValkyrieClass, ValkyrieVariantType};
+use crate::{ValkyrieTable, ValkyrieVariantType};
 
 pub enum ValkyrieValue {
     /// ADT = -1
@@ -23,6 +23,6 @@ pub enum ValkyrieValue {
     UTF8Character(char),
     UTF8String(Arc<String>),
     Buffer(Arc<Vec<u8>>),
-    Class(Arc<ValkyrieClass>),
+    Class(Arc<ValkyrieTable>),
     Variant(Arc<ValkyrieVariantType>),
 }

@@ -1,7 +1,7 @@
 use dashu::integer::IBig;
 use std::sync::Arc;
 
-use crate::{types::ValkyrieMetaType, utils::primitive_type, ValkyrieClass, ValkyrieType, ValkyrieValue};
+use crate::{types::ValkyrieMetaType, utils::primitive_type, ValkyrieTable, ValkyrieType, ValkyrieValue};
 
 use super::*;
 

@@ -1,11 +1,14 @@
 use std::sync::LazyLock;
 
 use crate::expression::ValkyrieExpression;
-use valkyrie_types::third_party::pex::{ParseResult, ParseState, Regex};
+use valkyrie_types::third_party::pex::{ParseResult, ParseState, Regex, StopBecause};
 
 use valkyrie_ast::NamePathNode;
 
-use crate::{helpers::ignore, traits::ThisParser};
+use crate::{
+    helpers::{ignore, parse_name_join},
+    traits::ThisParser,
+};
 use lispify::{Lisp, LispSymbol};
 use valkyrie_ast::{IdentifierNode, MacroPathNode};
 
@@ -70,11 +73,7 @@ impl ThisParser for NamePathNode {
 }
 
 fn pare_colon_id<'i>(input: ParseState<'i>, names: &mut Vec<IdentifierNode>) -> ParseResult<'i, ()> {
-    let (state, _) = input
-        .begin_choice()
-        .or_else(|s| s.match_str("::").map_inner(|_| ()))
-        .or_else(|s| s.match_char('∷').map_inner(|_| ()))
-        .end_choice()?;
+    let (state, _) = parse_name_join(input)?;
     let (state, id) = state.match_fn(|s| IdentifierNode::parse(s))?;
     names.push(id);
     state.finish(())

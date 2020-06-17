@@ -2,11 +2,12 @@ use super::*;
 use crate::utils::primitive_type;
 use indexmap::IndexMap;
 
-pub struct ValkyrieClass {
-    items: IndexMap<String, ValkyrieValue>,
+pub struct ValkyrieTable {
+    tuple: bool,
+    items: Vec<ValkyrieValue>,
 }
 
-impl ValkyrieClass {
+impl ValkyrieTable {
     pub fn list() -> Self {
         Self { tuple: false, items: Vec::new() }
     }
@@ -31,13 +32,13 @@ impl ValkyrieClass {
     }
 }
 
-impl Default for ValkyrieClass {
+impl Default for ValkyrieTable {
     fn default() -> Self {
         todo!()
     }
 }
 
-impl ValkyrieType for ValkyrieClass {
+impl ValkyrieType for ValkyrieTable {
     fn boxed(self) -> ValkyrieValue {
         ValkyrieValue::Class(Arc::new(self))
     }
@@ -52,7 +53,7 @@ impl ValkyrieType for ValkyrieClass {
 
 impl ValkyrieType for () {
     fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::Class(Arc::new(ValkyrieClass::tuple()))
+        ValkyrieValue::Class(Arc::new(ValkyrieTable::tuple()))
     }
 
     fn static_type() -> Arc<ValkyrieMetaType> {
@@ -68,7 +69,7 @@ where
     T1: ValkyrieType,
 {
     fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::Class(Arc::new(ValkyrieClass::tuple()))
+        ValkyrieValue::Class(Arc::new(ValkyrieTable::tuple()))
     }
 
     fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
@@ -85,7 +86,7 @@ where
     T2: ValkyrieType,
 {
     fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::Class(Arc::new(ValkyrieClass::tuple()))
+        ValkyrieValue::Class(Arc::new(ValkyrieTable::tuple()))
     }
 
     fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
@@ -104,7 +105,7 @@ where
     T3: ValkyrieType,
 {
     fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::Class(Arc::new(ValkyrieClass::tuple()))
+        ValkyrieValue::Class(Arc::new(ValkyrieTable::tuple()))
     }
 
     fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
@@ -125,7 +126,7 @@ where
     T4: ValkyrieType,
 {
     fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::Class(Arc::new(ValkyrieClass::tuple()))
+        ValkyrieValue::Class(Arc::new(ValkyrieTable::tuple()))
     }
 
     fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
@@ -148,7 +149,7 @@ where
     T5: ValkyrieType,
 {
     fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::Class(Arc::new(ValkyrieClass::tuple()))
+        ValkyrieValue::Class(Arc::new(ValkyrieTable::tuple()))
     }
 
     fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
