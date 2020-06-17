@@ -76,7 +76,7 @@ impl ValkyrieExecutor {
                 _ => Err(ValkyrieError::custom(format!("Unknown handler: {}", s.name))),
             },
             // TODO: template string
-            None => Ok(ValkyrieValue::String(Arc::new(string.value))),
+            None => Ok(ValkyrieValue::UTF8String(Arc::new(string.value))),
         }
     }
     pub(crate) async fn execute_json(&mut self, mut string: StringLiteralNode) -> ValkyrieResult<ValkyrieValue> {

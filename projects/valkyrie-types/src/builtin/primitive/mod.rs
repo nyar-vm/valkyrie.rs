@@ -201,7 +201,7 @@ impl ValkyrieType for f64 {
 
 impl ValkyrieType for String {
     fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::String(Arc::new(self))
+        ValkyrieValue::UTF8String(Arc::new(self))
     }
 
     fn dynamic_type(&self) -> Arc<ValkyrieMetaType>

@@ -82,7 +82,7 @@ impl ValkyrieExecutor {
             ValkyrieValue::Integer128(v) => self.sockets.send_executed(DisplayNumber::new(v)).await,
             ValkyrieValue::Float32(v) => self.sockets.send_executed(DisplayNumber::new(v)).await,
             ValkyrieValue::Float64(v) => self.sockets.send_executed(DisplayNumber::new(v)).await,
-            ValkyrieValue::String(v) => self.sockets.send_executed(Value::String(v.as_str().to_string())).await,
+            ValkyrieValue::UTF8String(v) => self.sockets.send_executed(Value::String(v.as_str().to_string())).await,
             ValkyrieValue::Buffer(_) => {
                 todo!()
             }

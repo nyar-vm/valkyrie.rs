@@ -57,7 +57,7 @@ impl ValkyrieType for ValkyrieValue {
             ValkyrieValue::Float32(v) => v.dynamic_type(),
             ValkyrieValue::Float64(v) => v.dynamic_type(),
             ValkyrieValue::Buffer(v) => v.dynamic_type(),
-            ValkyrieValue::String(v) => v.dynamic_type(),
+            ValkyrieValue::UTF8String(v) => v.dynamic_type(),
             ValkyrieValue::Class(v) => v.dynamic_type(),
             ValkyrieValue::Variant(v) => v.dynamic_type(),
         }
