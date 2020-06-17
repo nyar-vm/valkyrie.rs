@@ -30,9 +30,9 @@ impl<E: Display> Display for TableNode<E> {
             if i != 0 {
                 write!(f, ", ")?;
             }
-            match term {
-                TableTermNode::Item(item) => write!(f, "{}", item)?,
-                TableTermNode::Pair(pair) => write!(f, "{}: {}", pair.key, pair.value)?,
+            match &term.key {
+                Some(key) => write!(f, "{}: {}", key, term.value)?,
+                None => write!(f, "{}", term.value)?,
             }
         }
         write!(f, "{}", self.kind.end_str())

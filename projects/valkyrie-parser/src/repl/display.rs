@@ -30,7 +30,7 @@ impl Lispify for ValkyrieREPL {
 
     fn lispify(&self) -> Self::Output {
         match self {
-            ValkyrieREPL::Expression(v) => v.lispify(),
+            ValkyrieREPL::Expression(v) => v.as_lisp(),
             ValkyrieREPL::Namespace(v) => v.as_lisp(),
         }
     }

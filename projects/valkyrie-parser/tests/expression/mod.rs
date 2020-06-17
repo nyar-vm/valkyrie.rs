@@ -32,7 +32,7 @@ fn test_apply() {
 
 #[test]
 fn main1() {
-    let raw = "<T<U,>, 1, >";
+    let raw = ":: <T, 1, >";
     let slice = GenericCall::<ValkyrieExpression>::parse_text(raw).unwrap();
     println!("input:\n{slice:#?}");
     println!("output:\n{}", colored_lisp(slice.as_lisp(), 42).unwrap());

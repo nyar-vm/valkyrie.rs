@@ -9,7 +9,7 @@ A(0, G: int)
 A⦇int⦈(0)
 A⦅int⦆(0)
 A⦓int⦔(0)
-A⟅ing⟆(30)
+A⟅tuple⟆(30)
 ```
 
 

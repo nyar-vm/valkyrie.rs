@@ -17,7 +17,7 @@ impl ThisParser for PrefixNode<ValkyrieExpression> {
     }
 
     fn as_lisp(&self) -> Lisp {
-        Lisp::operator(self.operator.to_string(), &[self.body.lispify()])
+        Lisp::operator(self.operator.to_string(), &[self.body.as_lisp()])
     }
 }
 impl ThisParser for InfixNode<ValkyrieExpression> {
@@ -26,7 +26,7 @@ impl ThisParser for InfixNode<ValkyrieExpression> {
     }
 
     fn as_lisp(&self) -> Lisp {
-        Lisp::operator(self.operator.to_string(), &[self.lhs.lispify(), self.rhs.lispify()])
+        Lisp::operator(self.operator.to_string(), &[self.lhs.as_lisp(), self.rhs.as_lisp()])
     }
 }
 
@@ -36,7 +36,26 @@ impl ThisParser for PostfixNode<ValkyrieExpression> {
     }
 
     fn as_lisp(&self) -> Lisp {
-        Lisp::operator(self.operator.to_string(), &[self.body.lispify()])
+        Lisp::operator(self.operator.to_string(), &[self.body.as_lisp()])
+    }
+}
+
+impl ThisParser for ValkyrieExpression {
+    fn parse(input: ParseState) -> ParseResult<Self> {
+        todo!()
+    }
+
+    fn as_lisp(&self) -> Lisp {
+        match self {
+            ValkyrieExpression::Placeholder => Lisp::Keyword("placeholder".into()),
+            ValkyrieExpression::Prefix(v) => v.as_lisp().into(),
+            ValkyrieExpression::Binary(v) => v.as_lisp().into(),
+            ValkyrieExpression::Suffix(v) => v.as_lisp().into(),
+            ValkyrieExpression::Number(v) => v.as_lisp().into(),
+            ValkyrieExpression::Symbol(v) => v.as_lisp().into(),
+            ValkyrieExpression::String(v) => v.as_lisp().into(),
+            ValkyrieExpression::Table(v) => v.as_lisp().into(),
+        }
     }
 }
 

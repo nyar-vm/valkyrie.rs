@@ -17,7 +17,7 @@ pub enum TableKind {
 pub struct TableNode<E> {
     pub kind: TableKind,
     /// The raw string of the number.
-    pub terms: Vec<TableTermNode<E>>,
+    pub terms: Vec<CallTermNode<IdentifierNode, E>>,
     /// The range of the number.
     pub range: Range<usize>,
 }
@@ -25,16 +25,16 @@ pub struct TableNode<E> {
 /// A number literal.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum TableTermNode<E> {
-    /// `array[index]`, also can be a call_index `array[[1, 2, 3]]`
-    Item(E),
-    /// `a[start:end:step]`
-    Pair(PairNode<IdentifierNode, E>),
+pub struct CallTermNode<K, V> {
+    pub key: Option<K>,
+    pub value: V,
 }
 
+/// `function(0, a: Type, b: Integer = 1)`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct PairNode<K, V> {
-    pub key: K,
+pub struct ArgumentTermNode<K, V, D> {
+    pub key: Option<K>,
     pub value: V,
+    pub default: Option<D>,
 }

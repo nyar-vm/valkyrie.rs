@@ -10,4 +10,5 @@ pub mod operators;
 pub mod string;
 pub mod symbol;
 pub mod table;
+pub mod tuple;
 pub mod view;

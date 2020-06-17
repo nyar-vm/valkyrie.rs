@@ -18,7 +18,7 @@ impl ThisParser for ViewNode<ValkyrieExpression> {
     fn as_lisp(&self) -> Lisp {
         let mut terms = Vec::with_capacity(self.terms.len() + 2);
         terms.push(Lisp::function("index"));
-        terms.push(self.base.lispify().into());
+        terms.push(self.base.as_lisp().into());
         for term in &self.terms {
             terms.push(term.as_lisp().into());
         }
@@ -45,7 +45,7 @@ impl ThisParser for ViewTermNode<ValkyrieExpression> {
 
     fn as_lisp(&self) -> Lisp {
         match self {
-            ViewTermNode::Index(v) => v.lispify(),
+            ViewTermNode::Index(v) => v.as_lisp(),
             ViewTermNode::Range(v) => v.as_lisp(),
         }
     }
@@ -61,15 +61,15 @@ impl ThisParser for ViewRangeNode<ValkyrieExpression> {
         terms.push(Lisp::function("range").into());
         match &self.start {
             None => terms.push(Lisp::keyword("nil")),
-            Some(s) => terms.push(s.lispify().into()),
+            Some(s) => terms.push(s.as_lisp().into()),
         }
         match &self.end {
             None => terms.push(Lisp::keyword("nil")),
-            Some(s) => terms.push(s.lispify().into()),
+            Some(s) => terms.push(s.as_lisp().into()),
         }
         match &self.step {
             None => terms.push(Lisp::keyword("nil")),
-            Some(s) => terms.push(s.lispify().into()),
+            Some(s) => terms.push(s.as_lisp().into()),
         }
         Lisp::Any(terms)
     }
