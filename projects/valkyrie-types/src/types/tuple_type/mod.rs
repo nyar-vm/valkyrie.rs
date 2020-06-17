@@ -1,9 +1,9 @@
 use super::*;
 use crate::utils::primitive_type;
+use indexmap::IndexMap;
 
 pub struct ValkyrieClass {
-    tuple: bool,
-    items: Vec<ValkyrieValue>,
+    items: IndexMap<String, ValkyrieValue>,
 }
 
 impl ValkyrieClass {

@@ -1,4 +1,6 @@
+use dashu::integer::IBig;
 use std::sync::Arc;
+
 mod der;
 mod ser;
 
@@ -15,21 +17,7 @@ pub enum ValkyrieValue {
     ///
     /// Native boolean type, 8bit
     Boolean(bool),
-    /// Native number type, 8bit
-    Unsigned8(u8),
-    /// Native number type, 16bit
-    Unsigned16(u16),
-    /// Native number type, 32bit
-    Unsigned32(u32),
-    /// Native number type, 64bit
-    Unsigned64(u64),
-    /// Native number type, 128bit
-    Unsigned128(u128),
-    Integer8(i8),
-    Integer16(i16),
-    Integer32(i32),
-    Integer64(i64),
-    Integer128(i128),
+    Integer(IBig),
     Float32(f32),
     Float64(f64),
     UTF8Character(char),

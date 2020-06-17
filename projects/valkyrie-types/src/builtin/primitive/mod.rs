@@ -1,3 +1,4 @@
+use dashu::integer::IBig;
 use std::sync::Arc;
 
 use crate::{types::ValkyrieMetaType, utils::primitive_type, ValkyrieClass, ValkyrieType, ValkyrieValue};
@@ -6,7 +7,7 @@ use super::*;
 
 impl ValkyrieType for u8 {
     fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::Unsigned8(self)
+        todo!()
     }
 
     fn static_type() -> Arc<ValkyrieMetaType> {
@@ -19,7 +20,7 @@ impl ValkyrieType for u8 {
 
 impl ValkyrieType for u16 {
     fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::Unsigned16(self)
+        todo!()
     }
 
     fn static_type() -> Arc<ValkyrieMetaType> {
@@ -33,7 +34,7 @@ impl ValkyrieType for u16 {
 
 impl ValkyrieType for u32 {
     fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::Unsigned32(self)
+        todo!()
     }
 
     fn static_type() -> Arc<ValkyrieMetaType> {
@@ -47,7 +48,7 @@ impl ValkyrieType for u32 {
 
 impl ValkyrieType for u64 {
     fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::Unsigned64(self)
+        todo!()
     }
 
     fn static_type() -> Arc<ValkyrieMetaType> {
@@ -60,7 +61,7 @@ impl ValkyrieType for u64 {
 
 impl ValkyrieType for u128 {
     fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::Unsigned128(self)
+        todo!()
     }
 
     fn static_type() -> Arc<ValkyrieMetaType> {
@@ -73,7 +74,7 @@ impl ValkyrieType for u128 {
 
 impl ValkyrieType for usize {
     fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::Unsigned64(self as u64)
+        todo!()
     }
 
     fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
@@ -88,7 +89,7 @@ impl ValkyrieType for usize {
 
 impl ValkyrieType for i8 {
     fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::Integer8(self)
+        todo!()
     }
 
     fn static_type() -> Arc<ValkyrieMetaType> {
@@ -103,7 +104,7 @@ impl ValkyrieType for i8 {
 
 impl ValkyrieType for i16 {
     fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::Integer16(self)
+        todo!()
     }
 
     fn static_type() -> Arc<ValkyrieMetaType> {
@@ -118,7 +119,7 @@ impl ValkyrieType for i16 {
 
 impl ValkyrieType for i32 {
     fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::Integer32(self)
+        todo!()
     }
 
     fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
@@ -130,7 +131,7 @@ impl ValkyrieType for i32 {
 
 impl ValkyrieType for i64 {
     fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::Integer64(self)
+        todo!()
     }
 
     fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
@@ -142,7 +143,7 @@ impl ValkyrieType for i64 {
 
 impl ValkyrieType for i128 {
     fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::Integer128(self)
+        todo!()
     }
 
     fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
@@ -154,12 +155,24 @@ impl ValkyrieType for i128 {
 
 impl ValkyrieType for isize {
     fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::Integer64(self as i64)
+        todo!()
     }
 
     fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
         let mut this = ValkyrieMetaType::default();
         this.set_namepath("std.primitive.Integer64");
+        Arc::new(this)
+    }
+}
+
+impl ValkyrieType for IBig {
+    fn boxed(self) -> ValkyrieValue {
+        ValkyrieValue::Integer(self)
+    }
+
+    fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
+        let mut this = ValkyrieMetaType::default();
+        this.set_namepath("std.math.Integer");
         Arc::new(this)
     }
 }
@@ -188,16 +201,17 @@ impl ValkyrieType for f64 {
     }
 }
 
-// impl<T> ValkyrieType for Arc<T> {
-//     fn type_info() -> ValkyrieMetaType
-//         where
-//             Self: Sized,
-//     {
-//         let mut meta = ValkyrieMetaType::default();
-//         meta.set_namepath("core.Arc");
-//         meta
-//     }
-// }
+impl ValkyrieType for char {
+    fn boxed(self) -> ValkyrieValue {
+        ValkyrieValue::UTF8Character(self)
+    }
+
+    fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
+        let mut this = ValkyrieMetaType::default();
+        this.set_namepath("std.text.Unicode");
+        Arc::new(this)
+    }
+}
 
 impl ValkyrieType for String {
     fn boxed(self) -> ValkyrieValue {

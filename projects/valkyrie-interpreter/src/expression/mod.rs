@@ -30,7 +30,7 @@ impl ValkyrieExecutor {
             ValkyrieExpression::Number(v) => self.execute_number(*v).await,
             ValkyrieExpression::Symbol(v) => self.execute_symbol(*v).await,
             ValkyrieExpression::String(v) => self.execute_string(*v).await,
-            ValkyrieExpression::Table(_) => {
+            ValkyrieExpression::Table(v) => {
                 todo!()
             }
         }
@@ -38,16 +38,12 @@ impl ValkyrieExecutor {
     pub(crate) async fn execute_number(&mut self, number: NumberLiteralNode) -> ValkyrieResult<ValkyrieValue> {
         match number.unit {
             Some(s) => match s.name.as_str() {
-                "u8" => Ok(ValkyrieValue::Unsigned8(number.value.parse::<u8>()?)),
-                "u16" => Ok(ValkyrieValue::Unsigned16(number.value.parse::<u16>()?)),
-                "u32" => Ok(ValkyrieValue::Unsigned32(number.value.parse::<u32>()?)),
-                "u64" => Ok(ValkyrieValue::Unsigned64(number.value.parse::<u64>()?)),
                 "f32" => Ok(ValkyrieValue::Float32(number.value.parse::<f32>()?)),
                 "f64" => Ok(ValkyrieValue::Float64(number.value.parse::<f64>()?)),
                 _ => Err(ValkyrieError::custom(format!("Unknown unit: {}", s.name))),
             },
-            None => match number.value.parse::<i64>() {
-                Ok(v) => Ok(ValkyrieValue::Integer64(v)),
+            None => match number.value.parse() {
+                Ok(v) => Ok(ValkyrieValue::Integer(v)),
                 Err(e) => Err(ValkyrieError::custom(format!("Unknown number: {}", e))),
             },
         }
@@ -72,14 +68,16 @@ impl ValkyrieExecutor {
             Some(s) => match s.name.as_str() {
                 "re" => todo!(),
                 "sh" => todo!(),
-                "json" => todo!(),
+                "json" => self.execute_json(&string.value).await,
                 _ => Err(ValkyrieError::custom(format!("Unknown handler: {}", s.name))),
             },
             // TODO: template string
             None => Ok(ValkyrieValue::UTF8String(Arc::new(string.value))),
         }
     }
-    pub(crate) async fn execute_json(&mut self, mut string: StringLiteralNode) -> ValkyrieResult<ValkyrieValue> {
+    pub(crate) async fn execute_json(&mut self, string: &str) -> ValkyrieResult<ValkyrieValue> {
+        // let value: Value = serde_json::from_str(string)?;
+        // Ok(value)
         todo!()
     }
 }
