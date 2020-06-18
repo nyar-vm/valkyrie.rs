@@ -1,6 +1,6 @@
 mod display;
 mod parser;
-use crate::{expression::ValkyrieExpression, helpers::ignore};
+use crate::{expression::TermExpressionNode, helpers::ignore};
 use lispify::{Lisp, Lispify};
 use valkyrie_types::third_party::pex::{
     helpers::{make_from_str, whitespace},
@@ -18,11 +18,11 @@ use valkyrie_ast::{CallTermNode, IdentifierNode};
 #[derive(Debug, Clone)]
 pub struct ValkyrieDotCall {
     /// The raw string of the number.
-    pub base: ValkyrieExpression,
+    pub base: TermExpressionNode,
     /// The raw string of the number.
     pub caller: IdentifierNode,
     /// The range of the number.
-    pub terms: Vec<CallTermNode<IdentifierNode, ValkyrieExpression>>,
+    pub terms: Vec<CallTermNode<IdentifierNode, TermExpressionNode>>,
     /// The range of the number.
     pub range: Range<usize>,
 }

@@ -1,5 +1,5 @@
 use super::*;
-use crate::expression::ValkyrieExpression;
+use crate::expression::TermExpressionNode;
 use valkyrie_types::third_party::pex::{
     helpers::{make_from_str, quotation_pair, quotation_pair_nested, whitespace},
     ParseResult, ParseState, StopBecause,
@@ -37,9 +37,9 @@ impl ThisParser for StringLiteralNode {
     }
 }
 
-impl From<StringLiteralNode> for ValkyrieExpression {
+impl From<StringLiteralNode> for TermExpressionNode {
     fn from(value: StringLiteralNode) -> Self {
-        ValkyrieExpression::String(Box::new(value))
+        TermExpressionNode::String(Box::new(value))
     }
 }
 

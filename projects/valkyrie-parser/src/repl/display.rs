@@ -10,17 +10,18 @@ impl Display for ValkyrieREPL {
     }
 }
 
-impl Display for ValkyrieExpression {
+impl Display for TermExpressionNode {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match self {
-            ValkyrieExpression::Placeholder => f.write_str("???"),
-            ValkyrieExpression::Prefix(v) => Display::fmt(v, f),
-            ValkyrieExpression::Binary(v) => Display::fmt(v, f),
-            ValkyrieExpression::Suffix(v) => Display::fmt(v, f),
-            ValkyrieExpression::Number(v) => Display::fmt(v, f),
-            ValkyrieExpression::Symbol(v) => Display::fmt(v, f),
-            ValkyrieExpression::String(v) => Display::fmt(v, f),
-            ValkyrieExpression::Table(v) => Display::fmt(v, f),
+            TermExpressionNode::Placeholder => f.write_str("???"),
+            TermExpressionNode::Prefix(v) => Display::fmt(v, f),
+            TermExpressionNode::Binary(v) => Display::fmt(v, f),
+            TermExpressionNode::Suffix(v) => Display::fmt(v, f),
+            TermExpressionNode::Number(v) => Display::fmt(v, f),
+            TermExpressionNode::Symbol(v) => Display::fmt(v, f),
+            TermExpressionNode::String(v) => Display::fmt(v, f),
+            TermExpressionNode::Table(v) => Display::fmt(v, f),
+            TermExpressionNode::Apply(v) => Display::fmt(v, f),
         }
     }
 }

@@ -37,7 +37,7 @@ pub use crate::{
         string::StringLiteralNode,
         symbol::{IdentifierNode, MacroKind, MacroPathNode, NamePathNode},
         table::{CallTermNode, TableKind, TableNode},
-        tuple::{TupleArgumentNode, TupleCallNode},
+        tuple::{ApplyArgumentNode, ApplyCallNode},
         view::{ViewNode, ViewRangeNode, ViewTermNode},
     },
     package_level::{NamespaceDeclareNode, NamespaceKind},

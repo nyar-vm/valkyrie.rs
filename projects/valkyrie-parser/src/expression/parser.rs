@@ -1,17 +1,9 @@
 use super::*;
 use crate::operators::ValkyriePrefix;
-use valkyrie_types::third_party::pex::helpers::whitespace;
+use valkyrie_ast::{ApplyCallNode, IdentifierNode};
+use valkyrie_types::third_party::pex::{helpers::whitespace, Parsed};
 
-impl FromStr for ValkyrieExpression {
-    type Err = StopBecause;
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let state = ParseState::new(s.trim_end()).skip(whitespace);
-        make_from_str(state, ValkyrieExpression::parse)
-    }
-}
-
-impl ThisParser for PrefixNode<ValkyrieExpression> {
+impl ThisParser for PrefixNode<TermExpressionNode> {
     fn parse(_: ParseState) -> ParseResult<Self> {
         unreachable!()
     }
@@ -20,7 +12,7 @@ impl ThisParser for PrefixNode<ValkyrieExpression> {
         Lisp::operator(self.operator.to_string(), &[self.body.as_lisp()])
     }
 }
-impl ThisParser for InfixNode<ValkyrieExpression> {
+impl ThisParser for InfixNode<TermExpressionNode> {
     fn parse(_: ParseState) -> ParseResult<Self> {
         unreachable!()
     }
@@ -30,7 +22,7 @@ impl ThisParser for InfixNode<ValkyrieExpression> {
     }
 }
 
-impl ThisParser for PostfixNode<ValkyrieExpression> {
+impl ThisParser for PostfixNode<TermExpressionNode> {
     fn parse(_: ParseState) -> ParseResult<Self> {
         unreachable!()
     }
@@ -40,30 +32,25 @@ impl ThisParser for PostfixNode<ValkyrieExpression> {
     }
 }
 
-impl ThisParser for ValkyrieExpression {
+impl ThisParser for TermExpressionNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
-        todo!()
+        let resolver = ExpressionResolver::default();
+        let (state, stream) = ExpressionStream::parse(input)?;
+        state.finish(resolver.resolve(stream)?)
     }
 
     fn as_lisp(&self) -> Lisp {
         match self {
-            ValkyrieExpression::Placeholder => Lisp::Keyword("placeholder".into()),
-            ValkyrieExpression::Prefix(v) => v.as_lisp().into(),
-            ValkyrieExpression::Binary(v) => v.as_lisp().into(),
-            ValkyrieExpression::Suffix(v) => v.as_lisp().into(),
-            ValkyrieExpression::Number(v) => v.as_lisp().into(),
-            ValkyrieExpression::Symbol(v) => v.as_lisp().into(),
-            ValkyrieExpression::String(v) => v.as_lisp().into(),
-            ValkyrieExpression::Table(v) => v.as_lisp().into(),
+            TermExpressionNode::Placeholder => Lisp::Keyword("placeholder".into()),
+            TermExpressionNode::Prefix(v) => v.as_lisp().into(),
+            TermExpressionNode::Binary(v) => v.as_lisp().into(),
+            TermExpressionNode::Suffix(v) => v.as_lisp().into(),
+            TermExpressionNode::Number(v) => v.as_lisp().into(),
+            TermExpressionNode::Symbol(v) => v.as_lisp().into(),
+            TermExpressionNode::String(v) => v.as_lisp().into(),
+            TermExpressionNode::Table(v) => v.as_lisp().into(),
+            TermExpressionNode::Apply(v) => v.as_lisp().into(),
         }
-    }
-}
-
-impl ValkyrieExpression {
-    pub fn parse(input: ParseState) -> ParseResult<Self> {
-        let resolver = ExpressionResolver::default();
-        let (state, stream) = ExpressionStream::parse(input)?;
-        state.finish(resolver.resolve(stream)?)
     }
 }
 
@@ -118,7 +105,7 @@ fn parse_suffix<'a>(input: ParseState<'a>, stream: &mut Vec<ExpressionStream>) -
     state.finish(())
 }
 
-#[inline(always)]
+#[inline]
 fn parse_expr_value<'a>(input: ParseState<'a>, stream: &mut Vec<ExpressionStream>) -> ParseResult<'a, ()> {
     let (state, term) = input
         .skip(ignore)
@@ -126,6 +113,45 @@ fn parse_expr_value<'a>(input: ParseState<'a>, stream: &mut Vec<ExpressionStream
         .or_else(|s| parse_group(s).map_inner(ExpressionStream::Group))
         .or_else(|s| parse_value(s).map_inner(ExpressionStream::Term))
         .end_choice()?;
+
     stream.push(term);
     state.finish(())
+}
+
+pub enum TermExpressionCall {
+    Apply(ApplyCallNode<TermExpressionNode>),
+}
+
+#[inline]
+pub fn parse_value(input: ParseState) -> ParseResult<TermExpressionNode> {
+    let (state, mut base) = input
+        .begin_choice()
+        .or_else(|s| NamePathNode::parse(s).map_inner(Into::into))
+        .or_else(|s| NumberLiteralNode::parse(s).map_inner(Into::into))
+        .or_else(|s| StringLiteralNode::parse(s).map_inner(Into::into))
+        .or_else(|s| TableNode::parse(s).map_inner(Into::into))
+        .end_choice()?;
+
+    let (state, rest) = state.match_repeats(TermExpressionCall::parse)?;
+
+    for caller in rest {
+        match caller {
+            TermExpressionCall::Apply(mut v) => {
+                v.base = base;
+                base = TermExpressionNode::Apply(Box::new(v))
+            }
+        }
+    }
+    state.finish(base)
+}
+
+impl ThisParser for TermExpressionCall {
+    fn parse(input: ParseState) -> ParseResult<Self> {
+        let (state, skip) = ignore(input)?;
+        input.begin_choice().or_else(|s| ApplyCallNode::parse(s).map_inner(TermExpressionCall::Apply)).end_choice()
+    }
+
+    fn as_lisp(&self) -> Lisp {
+        unreachable!()
+    }
 }

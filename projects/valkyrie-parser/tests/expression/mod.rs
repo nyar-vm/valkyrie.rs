@@ -1,6 +1,6 @@
 use super::*;
-use valkyrie_ast::{GenericCall, IdentifierNode, ViewNode};
-use valkyrie_parser::{expression::ValkyrieExpression, ThisParser};
+use valkyrie_ast::{ApplyCallNode, GenericCall, IdentifierNode, ViewNode};
+use valkyrie_parser::{expression::TermExpressionNode, ThisParser};
 
 #[test]
 fn lex_expression() {
@@ -11,29 +11,21 @@ fn lex_expression() {
 }
 
 #[test]
-fn test_expr() {
-    let raw = r#"
-.a(x, b: 1, c)
-"#;
-    let slice = ValkyrieDotCall::from_str(raw).unwrap();
-    println!("input:\n{raw}");
-    // println!("output:\n {call_index:#?}");
-    println!("output:\n{}", colored_lisp(slice.lispify(), 42).unwrap());
+fn test_apply2() {
+    repl_debug(include_str!("apply.vk"), "expression/apply_debug.rkt").expect("apply");
 }
 
 #[test]
 fn test_apply() {
-    let raw = "ℤ";
-    let apply = parse_repl(raw);
-    for expr in &apply {
-        println!("{}", colored_lisp(expr.lispify(), 144).unwrap());
-    }
+    let raw = "f(0, a: 1, **args, ***kwargs)";
+    let apply = TermExpressionNode::parse_text(raw).unwrap();
+    println!("{}", colored_lisp(apply.as_lisp(), 144).unwrap());
 }
 
 #[test]
 fn main1() {
     let raw = ":: <T, 1, >";
-    let slice = GenericCall::<ValkyrieExpression>::parse_text(raw).unwrap();
+    let slice = GenericCall::<TermExpressionNode>::parse_text(raw).unwrap();
     println!("input:\n{slice:#?}");
     println!("output:\n{}", colored_lisp(slice.as_lisp(), 42).unwrap());
 }

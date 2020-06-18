@@ -16,26 +16,21 @@ pub fn parse_repl(s: &str) -> Vec<ValkyrieREPL> {
 }
 
 impl ThisParser for ValkyrieREPL {
-    /// - [term](ValkyrieExpression::parse)
+    /// - [term](TermExpressionNode::parse)
     fn parse(input: ParseState) -> ParseResult<Self> {
-        input.begin_choice().or_else(maybe_expression).end_choice()
+        let (state, expr) = input
+            .skip(ignore)
+            .begin_choice()
+            .or_else(|s| NamespaceDeclareNode::parse(s).map_inner(Into::into))
+            .or_else(|s| TermExpressionNode::parse(s).map_inner(Into::into))
+            .end_choice()?;
+        let (state, _) = state.skip(ignore).match_optional(|s| s.match_char(';'))?;
+        state.finish(expr)
     }
 
     fn as_lisp(&self) -> Lisp {
         todo!()
     }
-}
-
-/// ~ term ~ ;?
-fn maybe_expression(input: ParseState) -> ParseResult<ValkyrieREPL> {
-    let (state, expr) = input
-        .skip(ignore)
-        .begin_choice()
-        .or_else(|s| NamespaceDeclareNode::parse(s).map_inner(Into::into))
-        .or_else(|s| ValkyrieExpression::parse(s).map_inner(Into::into))
-        .end_choice()?;
-    let (state, _) = state.skip(ignore).match_optional(|s| s.match_char(';'))?;
-    state.finish(expr)
 }
 
 impl From<NamespaceDeclareNode> for ValkyrieREPL {
@@ -44,8 +39,8 @@ impl From<NamespaceDeclareNode> for ValkyrieREPL {
     }
 }
 
-impl From<ValkyrieExpression> for ValkyrieREPL {
-    fn from(value: ValkyrieExpression) -> Self {
+impl From<TermExpressionNode> for ValkyrieREPL {
+    fn from(value: TermExpressionNode) -> Self {
         ValkyrieREPL::Expression(Box::new(value))
     }
 }

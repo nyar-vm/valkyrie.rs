@@ -1,7 +1,7 @@
-use crate::{expression::ValkyrieExpression, helpers::ignore};
+use crate::{expression::TermExpressionNode, helpers::ignore};
 use lispify::{Lisp, Lispify};
 use std::{ops::Range, str::FromStr};
-use valkyrie_ast::{CallTermNode, TupleArgumentNode, TupleCallNode};
+use valkyrie_ast::{ApplyArgumentNode, ApplyCallNode, CallTermNode};
 use valkyrie_types::third_party::pex::{
     helpers::{make_from_str, whitespace},
     BracketPattern, ParseResult, ParseState, StopBecause,
@@ -20,7 +20,7 @@ impl<E> ThisParser for GenericArgumentNode<E> {
     }
 }
 
-impl ThisParser for GenericCall<ValkyrieExpression> {
+impl ThisParser for GenericCall<TermExpressionNode> {
     /// `::<T> | ⦓T⦔`
     fn parse(input: ParseState) -> ParseResult<Self> {
         input
@@ -41,29 +41,29 @@ impl ThisParser for GenericCall<ValkyrieExpression> {
     }
 }
 
-fn qwerty_generic(input: ParseState) -> ParseResult<GenericCall<ValkyrieExpression>> {
+fn qwerty_generic(input: ParseState) -> ParseResult<GenericCall<TermExpressionNode>> {
     let pat = BracketPattern::new("<", ">");
     let (state, _) = input.match_optional(parse_name_join)?;
     let (state, terms) = pat.consume(state.skip(ignore), ignore, CallTermNode::parse)?;
     state.finish(GenericCall { terms: terms.body, range: state.away_from(input) })
 }
 
-fn unicode_generic(input: ParseState) -> ParseResult<GenericCall<ValkyrieExpression>> {
+fn unicode_generic(input: ParseState) -> ParseResult<GenericCall<TermExpressionNode>> {
     let pat = BracketPattern::new("⦓", "⦔");
     let (state, terms) = pat.consume(input, ignore, CallTermNode::parse)?;
     state.finish(GenericCall { terms: terms.body, range: state.away_from(input) })
 }
 
-impl ThisParser for TupleCallNode<ValkyrieExpression> {
+impl ThisParser for ApplyCallNode<TermExpressionNode> {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let pat = BracketPattern::new("(", ")");
         let (state, terms) = pat.consume(input, ignore, CallTermNode::parse)?;
-        state.finish(TupleCallNode { base: ValkyrieExpression::Placeholder, terms: terms.body, range: state.away_from(input) })
+        state.finish(ApplyCallNode { base: TermExpressionNode::Placeholder, terms: terms.body, range: state.away_from(input) })
     }
 
     fn as_lisp(&self) -> Lisp {
         let mut terms = Vec::with_capacity(self.terms.len() + 2);
-        terms.push(Lisp::function("index"));
+        terms.push(Lisp::keyword("apply"));
         terms.push(self.base.as_lisp().into());
         for term in &self.terms {
             terms.push(term.as_lisp().into());

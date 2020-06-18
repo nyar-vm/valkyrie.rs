@@ -42,9 +42,9 @@ impl ThisParser for NumberLiteralNode {
     }
 }
 
-impl From<NumberLiteralNode> for ValkyrieExpression {
+impl From<NumberLiteralNode> for TermExpressionNode {
     fn from(value: NumberLiteralNode) -> Self {
-        ValkyrieExpression::Number(Box::new(value))
+        TermExpressionNode::Number(Box::new(value))
     }
 }
 

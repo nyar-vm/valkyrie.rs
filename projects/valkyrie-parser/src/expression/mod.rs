@@ -6,14 +6,13 @@ use valkyrie_types::third_party::pex::{ParseResult, ParseState, StopBecause};
 mod display;
 mod parser;
 use crate::{
-    helpers::parse_value,
     operators::{ValkyriePrefix, ValkyrieSuffix},
     traits::ThisParser,
 };
 use std::str::FromStr;
 use valkyrie_ast::{
-    InfixNode, NamePathNode, NumberLiteralNode, OperatorNode, PostfixNode, PrefixNode, StringLiteralNode, TableNode,
-    ValkyrieOperator,
+    ApplyCallNode, InfixNode, NamePathNode, NumberLiteralNode, OperatorNode, PostfixNode, PrefixNode, StringLiteralNode,
+    TableNode, ValkyrieOperator,
 };
 use valkyrie_types::third_party::pex::helpers::make_from_str;
 
@@ -22,7 +21,7 @@ use valkyrie_types::third_party::pex::helpers::make_from_str;
 pub struct ExpressionResolver {}
 
 impl ExpressionResolver {
-    pub fn resolve(&self, stream: Vec<ExpressionStream>) -> Result<ValkyrieExpression, StopBecause> {
+    pub fn resolve(&self, stream: Vec<ExpressionStream>) -> Result<TermExpressionNode, StopBecause> {
         // println!("stream: {stream:#?}");
         let mut effect = ExpressionResolver {};
         match effect.parse(stream.into_iter()) {
@@ -56,20 +55,21 @@ pub enum ExpressionStream {
     Prefix(ValkyriePrefix),
     Postfix(ValkyrieSuffix),
     Infix(ValkyrieInfix),
-    Term(ValkyrieExpression),
+    Term(TermExpressionNode),
     Group(Vec<ExpressionStream>),
 }
 
 #[derive(Debug, Clone, Eq, PartialEq)]
-pub enum ValkyrieExpression {
+pub enum TermExpressionNode {
     Placeholder,
-    Prefix(Box<PrefixNode<ValkyrieExpression>>),
-    Binary(Box<InfixNode<ValkyrieExpression>>),
-    Suffix(Box<PostfixNode<ValkyrieExpression>>),
+    Prefix(Box<PrefixNode<TermExpressionNode>>),
+    Binary(Box<InfixNode<TermExpressionNode>>),
+    Suffix(Box<PostfixNode<TermExpressionNode>>),
     Number(Box<NumberLiteralNode>),
     Symbol(Box<NamePathNode>),
     String(Box<StringLiteralNode>),
-    Table(Box<TableNode<ValkyrieExpression>>),
+    Apply(Box<ApplyCallNode<TermExpressionNode>>),
+    Table(Box<TableNode<TermExpressionNode>>),
 }
 
 impl ThisParser for ValkyrieOperator {
@@ -82,47 +82,48 @@ impl ThisParser for ValkyrieOperator {
     }
 }
 
-impl ValkyrieExpression {
-    pub fn binary(o: OperatorNode, lhs: ValkyrieExpression, rhs: ValkyrieExpression) -> ValkyrieExpression {
-        let mut out = ValkyrieExpression::Binary(Box::new(InfixNode { operator: o, lhs, rhs, range: Default::default() }));
+impl TermExpressionNode {
+    pub fn binary(o: OperatorNode, lhs: TermExpressionNode, rhs: TermExpressionNode) -> TermExpressionNode {
+        let mut out = TermExpressionNode::Binary(Box::new(InfixNode { operator: o, lhs, rhs, range: Default::default() }));
         out.update_range();
         out
     }
-    pub fn prefix(o: OperatorNode, rhs: ValkyrieExpression) -> ValkyrieExpression {
-        let mut out = ValkyrieExpression::Prefix(Box::new(PrefixNode { operator: o, body: rhs, range: Default::default() }));
+    pub fn prefix(o: OperatorNode, rhs: TermExpressionNode) -> TermExpressionNode {
+        let mut out = TermExpressionNode::Prefix(Box::new(PrefixNode { operator: o, body: rhs, range: Default::default() }));
         out.update_range();
         out
     }
-    pub fn suffix(o: OperatorNode, rhs: ValkyrieExpression) -> ValkyrieExpression {
-        let mut out = ValkyrieExpression::Suffix(Box::new(PostfixNode { operator: o, body: rhs, range: Default::default() }));
+    pub fn suffix(o: OperatorNode, rhs: TermExpressionNode) -> TermExpressionNode {
+        let mut out = TermExpressionNode::Suffix(Box::new(PostfixNode { operator: o, body: rhs, range: Default::default() }));
         out.update_range();
         out
     }
     pub fn get_range(&self) -> Range<usize> {
         match self {
-            ValkyrieExpression::Placeholder => unreachable!("Placeholder expressions should not be called"),
-            ValkyrieExpression::Prefix(u) => u.range.clone(),
-            ValkyrieExpression::Binary(b) => b.range.clone(),
-            ValkyrieExpression::Suffix(u) => u.range.clone(),
-            ValkyrieExpression::Number(u) => u.get_range(),
-            ValkyrieExpression::Symbol(u) => u.span.clone(),
-            ValkyrieExpression::String(u) => u.span.clone(),
-            ValkyrieExpression::Table(u) => u.range.clone(),
+            TermExpressionNode::Placeholder => unreachable!("Placeholder expressions should not be called"),
+            TermExpressionNode::Prefix(u) => u.range.clone(),
+            TermExpressionNode::Binary(b) => b.range.clone(),
+            TermExpressionNode::Suffix(u) => u.range.clone(),
+            TermExpressionNode::Number(u) => u.get_range(),
+            TermExpressionNode::Symbol(u) => u.span.clone(),
+            TermExpressionNode::String(u) => u.span.clone(),
+            TermExpressionNode::Table(u) => u.range.clone(),
+            TermExpressionNode::Apply(v) => v.range.clone(),
         }
     }
     pub fn update_range(&mut self) {
         match self {
-            ValkyrieExpression::Prefix(u) => {
+            TermExpressionNode::Prefix(u) => {
                 let start = u.operator.range.start;
                 let end = u.body.get_range().end;
                 u.range = start..end;
             }
-            ValkyrieExpression::Binary(b) => {
+            TermExpressionNode::Binary(b) => {
                 let start = b.lhs.get_range().start;
                 let end = b.rhs.get_range().end;
                 b.range = start..end;
             }
-            ValkyrieExpression::Suffix(u) => {
+            TermExpressionNode::Suffix(u) => {
                 let start = u.body.get_range().start;
                 let end = u.operator.range.end;
                 u.range = start..end;
@@ -138,7 +139,7 @@ where
 {
     type Error = StopBecause;
     type Input = ExpressionStream;
-    type Output = ValkyrieExpression;
+    type Output = TermExpressionNode;
 
     // Query information about an operator (Affix, Precedence, Associativity)
     fn query(&mut self, tree: &ExpressionStream) -> Result<Affix, StopBecause> {
@@ -153,7 +154,7 @@ where
     }
 
     // Construct a primary expression, e.g. a number
-    fn primary(&mut self, tree: ExpressionStream) -> Result<ValkyrieExpression, StopBecause> {
+    fn primary(&mut self, tree: ExpressionStream) -> Result<TermExpressionNode, StopBecause> {
         match tree {
             ExpressionStream::Term(term) => Ok(term),
             ExpressionStream::Group(group) => match self.parse(&mut group.into_iter()) {
@@ -167,28 +168,28 @@ where
     // Construct a binary infix expression, e.g. 1+1
     fn infix(
         &mut self,
-        lhs: ValkyrieExpression,
+        lhs: TermExpressionNode,
         tree: ExpressionStream,
-        rhs: ValkyrieExpression,
-    ) -> Result<ValkyrieExpression, StopBecause> {
+        rhs: TermExpressionNode,
+    ) -> Result<TermExpressionNode, StopBecause> {
         match tree {
-            ExpressionStream::Infix(o) => Ok(ValkyrieExpression::binary(o.as_operator(), lhs, rhs)),
+            ExpressionStream::Infix(o) => Ok(TermExpressionNode::binary(o.as_operator(), lhs, rhs)),
             _ => unreachable!(),
         }
     }
 
     // Construct a unary prefix expression, e.g. !1
-    fn prefix(&mut self, tree: ExpressionStream, rhs: ValkyrieExpression) -> Result<ValkyrieExpression, StopBecause> {
+    fn prefix(&mut self, tree: ExpressionStream, rhs: TermExpressionNode) -> Result<TermExpressionNode, StopBecause> {
         match tree {
-            ExpressionStream::Prefix(o) => Ok(ValkyrieExpression::prefix(o.as_operator(), rhs)),
+            ExpressionStream::Prefix(o) => Ok(TermExpressionNode::prefix(o.as_operator(), rhs)),
             _ => unreachable!(),
         }
     }
 
     // Construct a unary postfix expression, e.g. 1?
-    fn postfix(&mut self, lhs: ValkyrieExpression, tree: ExpressionStream) -> Result<ValkyrieExpression, StopBecause> {
+    fn postfix(&mut self, lhs: TermExpressionNode, tree: ExpressionStream) -> Result<TermExpressionNode, StopBecause> {
         match tree {
-            ExpressionStream::Postfix(o) => Ok(ValkyrieExpression::suffix(o.as_operator(), lhs)),
+            ExpressionStream::Postfix(o) => Ok(TermExpressionNode::suffix(o.as_operator(), lhs)),
             _ => unreachable!(),
         }
     }

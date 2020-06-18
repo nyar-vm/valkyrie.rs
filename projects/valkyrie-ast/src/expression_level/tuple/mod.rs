@@ -1,18 +1,22 @@
 use crate::{expression_level::table::ArgumentTermNode, CallTermNode, IdentifierNode};
-use std::ops::Range;
+use std::{
+    fmt::{Display, Formatter},
+    ops::Range,
+};
+mod display;
 
-/// `class A<T: S = K>` or `class A⦓T: S = K⦔`
-pub struct TupleArgumentNode<E1, E2> {
+/// `def f(mut self, a, b: int, c: T = 3, **args, ***kwargs)`
+pub struct ApplyArgumentNode<E1, E2> {
     /// The raw string of the number.
     pub terms: Vec<ArgumentTermNode<IdentifierNode, E1, E2>>,
     /// The range of the number.
     pub range: Range<usize>,
 }
 
-/// `A(0, a: 1)`
+/// `f(0, a: 1, **args, ***kwargs)`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct TupleCallNode<E> {
+pub struct ApplyCallNode<E> {
     pub base: E,
     /// The raw string of the number.
     pub terms: Vec<CallTermNode<IdentifierNode, E>>,

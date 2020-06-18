@@ -1,15 +1,15 @@
-use crate::{expression::ValkyrieExpression, helpers::ignore, traits::ThisParser};
+use crate::{expression::TermExpressionNode, helpers::ignore, traits::ThisParser};
 use lispify::{Lisp, Lispify};
 use valkyrie_ast::{CallTermNode, IdentifierNode, TableKind, TableNode};
 use valkyrie_types::third_party::pex::{BracketPattern, ParseResult, ParseState};
 
-impl From<TableNode<ValkyrieExpression>> for ValkyrieExpression {
-    fn from(value: TableNode<ValkyrieExpression>) -> Self {
-        ValkyrieExpression::Table(Box::new(value))
+impl From<TableNode<TermExpressionNode>> for TermExpressionNode {
+    fn from(value: TableNode<TermExpressionNode>) -> Self {
+        TermExpressionNode::Table(Box::new(value))
     }
 }
 
-impl ThisParser for TableNode<ValkyrieExpression> {
+impl ThisParser for TableNode<TermExpressionNode> {
     /// `[` ~ `]` | `[` [term](CallTermNode::parse) ( ~ `,` ~ [term](CallTermNode::parse))* `,`? `]`
     fn parse(input: ParseState) -> ParseResult<Self> {
         let pat = BracketPattern::new("[", "]");
@@ -27,11 +27,11 @@ impl ThisParser for TableNode<ValkyrieExpression> {
     }
 }
 
-impl ThisParser for CallTermNode<IdentifierNode, ValkyrieExpression> {
+impl ThisParser for CallTermNode<IdentifierNode, TermExpressionNode> {
     /// - [start]()? ~ `:` ~ [end]()? (~ `:` ~ [step]?)?
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, key) = input.match_optional(parse_key)?;
-        let (state, value) = state.skip(ignore).match_fn(ValkyrieExpression::parse)?;
+        let (state, value) = state.skip(ignore).match_fn(TermExpressionNode::parse)?;
         state.finish(CallTermNode { key, value })
     }
 

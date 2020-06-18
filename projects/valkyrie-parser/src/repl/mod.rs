@@ -1,6 +1,6 @@
 mod display;
 mod parser;
-use crate::{expression::ValkyrieExpression, helpers::ignore};
+use crate::{expression::TermExpressionNode, helpers::ignore};
 use lispify::{Lisp, Lispify};
 use valkyrie_types::third_party::pex::{ParseResult, ParseState};
 
@@ -12,5 +12,5 @@ use valkyrie_ast::NamespaceDeclareNode;
 #[derive(Debug, Clone, Eq, PartialEq)]
 pub enum ValkyrieREPL {
     Namespace(Box<NamespaceDeclareNode>),
-    Expression(Box<ValkyrieExpression>),
+    Expression(Box<TermExpressionNode>),
 }
