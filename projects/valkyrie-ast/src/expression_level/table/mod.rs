@@ -17,30 +17,9 @@ pub enum TableKind {
 pub struct TableNode<E> {
     pub kind: TableKind,
     /// The raw string of the number.
-    pub terms: Vec<CallTermNode<IdentifierNode, E>>,
+    pub terms: Vec<ApplyTermNode<IdentifierNode, E>>,
     /// The range of the number.
     pub range: Range<usize>,
-}
-
-/// A number literal.
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct CallTermNode<K, V> {
-    pub key: Option<K>,
-    pub value: V,
-}
-
-impl<K, V> Display for CallTermNode<K, V>
-where
-    K: Display,
-    V: Display,
-{
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        match self.key {
-            Some(ref k) => write!(f, "{}: {}", k, self.value),
-            None => Display::fmt(&self.value, f),
-        }
-    }
 }
 
 /// `function(0, a: Type, b: Integer = 1)`

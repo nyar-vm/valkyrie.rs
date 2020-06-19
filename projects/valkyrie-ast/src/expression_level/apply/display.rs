@@ -12,3 +12,16 @@ impl<E: Display> Display for ApplyCallNode<E> {
         write!(f, ")")
     }
 }
+
+impl<K, V> Display for ApplyTermNode<K, V>
+where
+    K: Display,
+    V: Display,
+{
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        match self.key {
+            Some(ref k) => write!(f, "{}: {}", k, self.value),
+            None => Display::fmt(&self.value, f),
+        }
+    }
+}

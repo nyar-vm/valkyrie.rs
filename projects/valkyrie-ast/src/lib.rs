@@ -31,13 +31,13 @@ mod utils;
 
 pub use crate::{
     expression_level::{
+        apply::{ApplyArgumentNode, ApplyCallNode, ApplyDotNode, ApplyTermNode},
         generic::{GenericArgumentNode, GenericCall},
         number::NumberLiteralNode,
         operators::{InfixNode, OperatorNode, PostfixNode, PrefixNode},
         string::StringLiteralNode,
         symbol::{IdentifierNode, MacroKind, MacroPathNode, NamePathNode},
-        table::{CallTermNode, TableKind, TableNode},
-        tuple::{ApplyArgumentNode, ApplyCallNode},
+        table::{TableKind, TableNode},
         view::{ViewNode, ViewRangeNode, ViewTermNode},
     },
     package_level::{NamespaceDeclareNode, NamespaceKind},
