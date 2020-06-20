@@ -1,6 +1,6 @@
 use super::*;
 use crate::operators::ValkyriePrefix;
-use valkyrie_ast::{ApplyCallNode, IdentifierNode};
+use valkyrie_ast::{ApplyCallNode, ApplyTermNode, IdentifierNode};
 use valkyrie_types::third_party::pex::{helpers::whitespace, Parsed};
 
 impl ThisParser for PrefixNode<TermExpressionNode> {
@@ -42,14 +42,15 @@ impl ThisParser for TermExpressionNode {
     fn as_lisp(&self) -> Lisp {
         match self {
             TermExpressionNode::Placeholder => Lisp::Keyword("placeholder".into()),
-            TermExpressionNode::Prefix(v) => v.as_lisp().into(),
-            TermExpressionNode::Binary(v) => v.as_lisp().into(),
-            TermExpressionNode::Suffix(v) => v.as_lisp().into(),
-            TermExpressionNode::Number(v) => v.as_lisp().into(),
-            TermExpressionNode::Symbol(v) => v.as_lisp().into(),
-            TermExpressionNode::String(v) => v.as_lisp().into(),
-            TermExpressionNode::Table(v) => v.as_lisp().into(),
-            TermExpressionNode::Apply(v) => v.as_lisp().into(),
+            TermExpressionNode::Prefix(v) => v.as_lisp(),
+            TermExpressionNode::Binary(v) => v.as_lisp(),
+            TermExpressionNode::Suffix(v) => v.as_lisp(),
+            TermExpressionNode::Number(v) => v.as_lisp(),
+            TermExpressionNode::Symbol(v) => v.as_lisp(),
+            TermExpressionNode::String(v) => v.as_lisp(),
+            TermExpressionNode::Table(v) => v.as_lisp(),
+            TermExpressionNode::Apply(v) => v.as_lisp(),
+            TermExpressionNode::ApplyDot(v) => v.as_lisp(),
         }
     }
 }
@@ -118,8 +119,9 @@ fn parse_expr_value<'a>(input: ParseState<'a>, stream: &mut Vec<ExpressionStream
     state.finish(())
 }
 
-pub enum TermExpressionCall {
+pub enum NormalPostfixCall {
     Apply(ApplyCallNode<TermExpressionNode>),
+    ApplyDot(Box<ApplyDotNode<TermExpressionNode>>),
 }
 
 #[inline]
@@ -132,26 +134,37 @@ pub fn parse_value(input: ParseState) -> ParseResult<TermExpressionNode> {
         .or_else(|s| TableNode::parse(s).map_inner(Into::into))
         .end_choice()?;
 
-    let (state, rest) = state.match_repeats(TermExpressionCall::parse)?;
+    let (state, rest) = state.match_repeats(NormalPostfixCall::parse)?;
 
     for caller in rest {
         match caller {
-            TermExpressionCall::Apply(mut v) => {
+            NormalPostfixCall::Apply(mut v) => {
                 v.base = base;
                 base = TermExpressionNode::Apply(Box::new(v))
             }
+            NormalPostfixCall::ApplyDot(v) => base = TermExpressionNode::ApplyDot(v.rebase(base)),
         }
     }
     state.finish(base)
 }
 
-impl ThisParser for TermExpressionCall {
+impl ThisParser for NormalPostfixCall {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, skip) = ignore(input)?;
-        input.begin_choice().or_else(|s| ApplyCallNode::parse(s).map_inner(TermExpressionCall::Apply)).end_choice()
+        input
+            .begin_choice()
+            .or_else(|s| ApplyCallNode::parse(s).map_inner(NormalPostfixCall::Apply))
+            .or_else(|s| ApplyDotNode::parse(s).map_inner(Into::into))
+            .end_choice()
     }
 
     fn as_lisp(&self) -> Lisp {
         unreachable!()
+    }
+}
+
+impl From<ApplyDotNode<TermExpressionNode>> for NormalPostfixCall {
+    fn from(value: ApplyDotNode<TermExpressionNode>) -> Self {
+        NormalPostfixCall::ApplyDot(Box::new(value))
     }
 }

@@ -35,7 +35,7 @@ impl ThisParser for GenericCall<TermExpressionNode> {
         terms.push(Lisp::function("generic"));
         // terms.push(self.base.lispify().into());
         for term in &self.terms {
-            terms.push(term.as_lisp().into());
+            terms.push(term.as_lisp());
         }
         Lisp::Any(terms)
     }
@@ -64,9 +64,9 @@ impl ThisParser for ApplyCallNode<TermExpressionNode> {
     fn as_lisp(&self) -> Lisp {
         let mut terms = Vec::with_capacity(self.terms.len() + 2);
         terms.push(Lisp::keyword("apply"));
-        terms.push(self.base.as_lisp().into());
+        terms.push(self.base.as_lisp());
         for term in &self.terms {
-            terms.push(term.as_lisp().into());
+            terms.push(term.as_lisp());
         }
         Lisp::Any(terms)
     }

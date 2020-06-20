@@ -6,6 +6,7 @@ use std::{
 pub mod apply;
 mod arithmetic;
 pub mod generic;
+pub mod lambda;
 pub mod number;
 pub mod operators;
 pub mod string;

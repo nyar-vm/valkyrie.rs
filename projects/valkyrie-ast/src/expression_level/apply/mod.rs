@@ -15,6 +15,13 @@ pub struct ApplyDotNode<E> {
     pub range: Range<usize>,
 }
 
+impl<E> ApplyDotNode<E> {
+    pub fn rebase(mut self: Box<Self>, base: E) -> Box<Self> {
+        self.base = base;
+        self
+    }
+}
+
 /// `<BASE>(0, a: 1, **args, ***kwargs)`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]

@@ -7,4 +7,8 @@ f(null, a: 1, **args, ***kwargs)
 # Curry function
 f()(1)(1, 2)(1, 2, 3);
 
-
+# Dot call
+a.b;
+a.b();
+a.b.c();
+a(1).b(1)(2).b(1)(2)(3);

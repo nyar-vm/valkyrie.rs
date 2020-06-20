@@ -11,8 +11,8 @@ use crate::{
 };
 use std::str::FromStr;
 use valkyrie_ast::{
-    ApplyCallNode, InfixNode, NamePathNode, NumberLiteralNode, OperatorNode, PostfixNode, PrefixNode, StringLiteralNode,
-    TableNode, ValkyrieOperator,
+    ApplyCallNode, ApplyDotNode, InfixNode, NamePathNode, NumberLiteralNode, OperatorNode, PostfixNode, PrefixNode,
+    StringLiteralNode, TableNode, ValkyrieOperator,
 };
 use valkyrie_types::third_party::pex::helpers::make_from_str;
 
@@ -62,14 +62,15 @@ pub enum ExpressionStream {
 #[derive(Debug, Clone, Eq, PartialEq)]
 pub enum TermExpressionNode {
     Placeholder,
-    Prefix(Box<PrefixNode<TermExpressionNode>>),
-    Binary(Box<InfixNode<TermExpressionNode>>),
-    Suffix(Box<PostfixNode<TermExpressionNode>>),
+    Prefix(Box<PrefixNode<Self>>),
+    Binary(Box<InfixNode<Self>>),
+    Suffix(Box<PostfixNode<Self>>),
     Number(Box<NumberLiteralNode>),
     Symbol(Box<NamePathNode>),
     String(Box<StringLiteralNode>),
-    Apply(Box<ApplyCallNode<TermExpressionNode>>),
-    Table(Box<TableNode<TermExpressionNode>>),
+    Apply(Box<ApplyCallNode<Self>>),
+    ApplyDot(Box<ApplyDotNode<Self>>),
+    Table(Box<TableNode<Self>>),
 }
 
 impl ThisParser for ValkyrieOperator {
@@ -109,6 +110,7 @@ impl TermExpressionNode {
             TermExpressionNode::String(u) => u.span.clone(),
             TermExpressionNode::Table(u) => u.range.clone(),
             TermExpressionNode::Apply(v) => v.range.clone(),
+            TermExpressionNode::ApplyDot(v) => v.range.clone(),
         }
     }
     pub fn update_range(&mut self) {

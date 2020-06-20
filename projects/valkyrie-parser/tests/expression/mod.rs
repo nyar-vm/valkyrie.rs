@@ -7,7 +7,6 @@ fn lex_expression() {
     repl_debug(include_str!("infix.vk"), "expression/infix_debug.rkt").expect("infix");
     repl_debug(include_str!("unary.vk"), "expression/unary_debug.rkt").expect("unary");
     repl_debug(include_str!("table.vk"), "expression/table_debug.rkt").expect("table");
-    // repl_debug(include_str!("tuple.vk"), "expression/tuple_debug.rkt").expect("tuple");
 }
 
 #[test]
@@ -17,7 +16,7 @@ fn test_apply2() {
 
 #[test]
 fn test_apply() {
-    let raw = "f(0, a: 1, **args, ***kwargs)";
+    let raw = "a.b";
     let apply = TermExpressionNode::parse_text(raw).unwrap();
     println!("{}", colored_lisp(apply.as_lisp(), 144).unwrap());
 }

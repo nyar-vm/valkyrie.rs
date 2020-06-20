@@ -21,7 +21,7 @@ impl ThisParser for TableNode<TermExpressionNode> {
         let mut terms = Vec::with_capacity(self.terms.len() + 2);
         terms.push(Lisp::function("table"));
         for term in &self.terms {
-            terms.push(term.as_lisp().into());
+            terms.push(term.as_lisp());
         }
         Lisp::Any(terms)
     }
@@ -37,7 +37,7 @@ impl ThisParser for ApplyTermNode<IdentifierNode, TermExpressionNode> {
 
     fn as_lisp(&self) -> Lisp {
         match &self.key {
-            Some(key) => Lisp::Any(vec![key.as_lisp().into(), self.value.as_lisp().into()]),
+            Some(key) => Lisp::Any(vec![key.as_lisp(), self.value.as_lisp()]),
             None => self.value.as_lisp(),
         }
     }
