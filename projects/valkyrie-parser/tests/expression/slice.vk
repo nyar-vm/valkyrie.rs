@@ -1,2 +1,9 @@
+# index1
+array[][:][::];
+array[: :];
 array[:, ::, : :, 1, :index0:, ::-1, i::j, i: :j];
+
+# index0
+array⁅⁆⁅:⁆⁅::⁆;
+array⁅: :⁆;
 array⁅:, ::, : :, 1, :index0:, ::-1, i::j, i: :j⁆;

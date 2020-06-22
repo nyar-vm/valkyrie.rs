@@ -23,6 +23,7 @@ impl Display for TermExpressionNode {
             TermExpressionNode::Table(v) => Display::fmt(v, f),
             TermExpressionNode::Apply(v) => Display::fmt(v, f),
             TermExpressionNode::ApplyDot(v) => Display::fmt(v, f),
+            TermExpressionNode::View(v) => Display::fmt(v, f),
         }
     }
 }

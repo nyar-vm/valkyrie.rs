@@ -1,6 +1,6 @@
 use super::*;
 use crate::operators::ValkyriePrefix;
-use valkyrie_ast::{ApplyCallNode, ApplyTermNode, IdentifierNode};
+use valkyrie_ast::{ApplyCallNode, ApplyTermNode, IdentifierNode, ViewNode};
 use valkyrie_types::third_party::pex::{helpers::whitespace, Parsed};
 
 impl ThisParser for PrefixNode<TermExpressionNode> {
@@ -51,6 +51,7 @@ impl ThisParser for TermExpressionNode {
             TermExpressionNode::Table(v) => v.as_lisp(),
             TermExpressionNode::Apply(v) => v.as_lisp(),
             TermExpressionNode::ApplyDot(v) => v.as_lisp(),
+            TermExpressionNode::View(v) => v.as_lisp(),
         }
     }
 }
@@ -122,6 +123,7 @@ fn parse_expr_value<'a>(input: ParseState<'a>, stream: &mut Vec<ExpressionStream
 pub enum NormalPostfixCall {
     Apply(Box<ApplyCallNode<TermExpressionNode>>),
     ApplyDot(Box<ApplyDotNode<TermExpressionNode>>),
+    View(Box<ViewNode<TermExpressionNode>>),
 }
 
 #[inline]
@@ -138,6 +140,7 @@ pub fn parse_value(input: ParseState) -> ParseResult<TermExpressionNode> {
         match caller {
             NormalPostfixCall::Apply(v) => base = TermExpressionNode::Apply(v.rebase(base)),
             NormalPostfixCall::ApplyDot(v) => base = TermExpressionNode::ApplyDot(v.rebase(base)),
+            NormalPostfixCall::View(v) => base = TermExpressionNode::View(v.rebase(base)),
         }
     }
     state.finish(base)
@@ -150,6 +153,7 @@ impl ThisParser for NormalPostfixCall {
             .begin_choice()
             .or_else(|s| ApplyCallNode::parse(s).map_inner(Into::into))
             .or_else(|s| ApplyDotNode::parse(s).map_inner(Into::into))
+            .or_else(|s| ViewNode::parse(s).map_inner(Into::into))
             .end_choice()
     }
 
@@ -167,5 +171,11 @@ impl From<ApplyCallNode<TermExpressionNode>> for NormalPostfixCall {
 impl From<ApplyDotNode<TermExpressionNode>> for NormalPostfixCall {
     fn from(value: ApplyDotNode<TermExpressionNode>) -> Self {
         NormalPostfixCall::ApplyDot(Box::new(value))
+    }
+}
+
+impl From<ViewNode<TermExpressionNode>> for NormalPostfixCall {
+    fn from(value: ViewNode<TermExpressionNode>) -> Self {
+        NormalPostfixCall::View(Box::new(value))
     }
 }

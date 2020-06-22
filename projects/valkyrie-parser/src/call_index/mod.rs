@@ -17,7 +17,10 @@ impl ThisParser for ViewNode<TermExpressionNode> {
 
     fn as_lisp(&self) -> Lisp {
         let mut terms = Vec::with_capacity(self.terms.len() + 2);
-        terms.push(Lisp::function("index"));
+        match self.index0 {
+            true => terms.push(Lisp::keyword("subscript0")),
+            false => terms.push(Lisp::keyword("subscript1")),
+        }
         terms.push(self.base.as_lisp());
         for term in &self.terms {
             terms.push(term.as_lisp());
@@ -29,13 +32,13 @@ impl ThisParser for ViewNode<TermExpressionNode> {
 #[inline]
 fn parse_index1(input: ParseState) -> ParseResult<(bool, BracketPair<ViewTermNode<TermExpressionNode>>)> {
     let pat = BracketPattern::new("[", "]");
-    pat.consume(input, ignore, ViewTermNode::parse).map_inner(|s| (true, s))
+    pat.consume(input, ignore, ViewTermNode::parse).map_inner(|s| (false, s))
 }
 
 #[inline]
 fn parse_index0(input: ParseState) -> ParseResult<(bool, BracketPair<ViewTermNode<TermExpressionNode>>)> {
     let pat = BracketPattern::new("⁅", "⁆");
-    pat.consume(input, ignore, ViewTermNode::parse).map_inner(|s| (false, s))
+    pat.consume(input, ignore, ViewTermNode::parse).map_inner(|s| (true, s))
 }
 
 impl ThisParser for ViewTermNode<TermExpressionNode> {

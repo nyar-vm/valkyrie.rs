@@ -38,6 +38,13 @@ pub struct ViewRangeNode<E> {
     pub range: Range<usize>,
 }
 
+impl<E> ViewNode<E> {
+    pub fn rebase(mut self: Box<Self>, base: E) -> Box<Self> {
+        self.base = base;
+        self
+    }
+}
+
 impl<E> ViewTermNode<E> {
     pub fn indexed(index: E) -> Self {
         Self::Index(index)

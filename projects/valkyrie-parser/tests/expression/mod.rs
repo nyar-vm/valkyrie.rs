@@ -8,12 +8,11 @@ fn lex_expression() {
     repl_debug(include_str!("unary.vk"), "expression/unary_debug.rkt").expect("unary");
     repl_debug(include_str!("table.vk"), "expression/table_debug.rkt").expect("table");
     repl_debug(include_str!("apply.vk"), "expression/apply_debug.rkt").expect("apply");
+    repl_debug(include_str!("slice.vk"), "expression/slice_debug.rkt").expect("slice");
 }
 
 #[test]
-fn test_apply2() {
-    repl_debug(include_str!("slice.vk"), "expression/slice_debug.rkt").expect("slice");
-}
+fn test_apply2() {}
 
 #[test]
 fn test_apply() {

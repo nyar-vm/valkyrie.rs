@@ -12,7 +12,7 @@ use crate::{
 use std::str::FromStr;
 use valkyrie_ast::{
     ApplyCallNode, ApplyDotNode, InfixNode, NamePathNode, NumberLiteralNode, OperatorNode, PostfixNode, PrefixNode,
-    StringLiteralNode, TableNode, ValkyrieOperator,
+    StringLiteralNode, TableNode, ValkyrieOperator, ViewNode,
 };
 use valkyrie_types::third_party::pex::helpers::make_from_str;
 
@@ -67,10 +67,11 @@ pub enum TermExpressionNode {
     Suffix(Box<PostfixNode<Self>>),
     Number(Box<NumberLiteralNode>),
     Symbol(Box<NamePathNode>),
+    Table(Box<TableNode<Self>>),
     String(Box<StringLiteralNode>),
     Apply(Box<ApplyCallNode<Self>>),
     ApplyDot(Box<ApplyDotNode<Self>>),
-    Table(Box<TableNode<Self>>),
+    View(Box<ViewNode<TermExpressionNode>>),
 }
 
 impl ThisParser for ValkyrieOperator {
@@ -111,6 +112,7 @@ impl TermExpressionNode {
             TermExpressionNode::Table(u) => u.range.clone(),
             TermExpressionNode::Apply(v) => v.range.clone(),
             TermExpressionNode::ApplyDot(v) => v.range.clone(),
+            TermExpressionNode::View(v) => v.range.clone(),
         }
     }
     pub fn update_range(&mut self) {
