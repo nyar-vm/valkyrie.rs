@@ -12,7 +12,7 @@
 //
 mod arithmetic;
 
-use crate::{utils::small_range, IdentifierNode};
+use crate::IdentifierNode;
 use std::{
     fmt::{Display, Formatter, Write},
     ops::Range,
@@ -58,7 +58,7 @@ impl Display for NamespaceDeclareNode {
 pub struct NamespaceDeclareNode {
     pub kind: NamespaceKind,
     pub path: Vec<IdentifierNode>,
-    pub span: Range<u32>,
+    pub span: Range<usize>,
 }
 
 impl NamespaceDeclareNode {
@@ -66,7 +66,7 @@ impl NamespaceDeclareNode {
     where
         I: IntoIterator<Item = IdentifierNode>,
     {
-        Self { kind: NamespaceKind::Unique, path: names.into_iter().collect(), span: small_range(range) }
+        Self { kind: NamespaceKind::Unique, path: names.into_iter().collect(), span: range.clone() }
     }
     pub fn with_kind(mut self, kind: NamespaceKind) -> Self {
         self.kind = kind;

@@ -52,5 +52,5 @@ a({}) {}
 #[test]
 fn debug_apply2() -> Result<()> {
     let ast: ASTKind = ASTDump::parse(APPLY);
-    ast.save("tests/expression/debug_apply2.clj")
+    ast.save("tests/expression/slice.vk")
 }

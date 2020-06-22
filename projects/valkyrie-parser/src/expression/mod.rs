@@ -105,7 +105,7 @@ impl TermExpressionNode {
             TermExpressionNode::Prefix(u) => u.range.clone(),
             TermExpressionNode::Binary(b) => b.range.clone(),
             TermExpressionNode::Suffix(u) => u.range.clone(),
-            TermExpressionNode::Number(u) => u.get_range(),
+            TermExpressionNode::Number(u) => u.range.clone(),
             TermExpressionNode::Symbol(u) => u.span.clone(),
             TermExpressionNode::String(u) => u.span.clone(),
             TermExpressionNode::Table(u) => u.range.clone(),

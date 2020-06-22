@@ -1,5 +1,4 @@
 use super::*;
-use crate::utils::take_range;
 mod display;
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
@@ -7,17 +6,11 @@ mod display;
 pub struct NumberLiteralNode {
     pub value: String,
     pub unit: Option<IdentifierNode>,
-    pub span: Range<u32>,
-}
-
-impl NumberLiteralNode {
-    pub fn get_range(&self) -> Range<usize> {
-        take_range(&self.span)
-    }
+    pub range: Range<usize>,
 }
 
 impl NumberLiteralNode {
     pub fn new<S: ToString>(text: S, range: &Range<usize>) -> NumberLiteralNode {
-        NumberLiteralNode { value: text.to_string(), unit: None, span: small_range(range) }
+        NumberLiteralNode { value: text.to_string(), unit: None, range: range.clone() }
     }
 }

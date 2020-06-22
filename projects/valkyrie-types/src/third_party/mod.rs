@@ -6,3 +6,6 @@ pub use serde_json::Value as JsonValue;
 
 #[cfg(feature = "pex")]
 pub use pex;
+
+#[cfg(feature = "url")]
+pub use url::Url;

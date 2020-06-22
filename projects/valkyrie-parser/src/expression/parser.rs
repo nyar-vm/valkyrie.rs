@@ -120,7 +120,7 @@ fn parse_expr_value<'a>(input: ParseState<'a>, stream: &mut Vec<ExpressionStream
 }
 
 pub enum NormalPostfixCall {
-    Apply(ApplyCallNode<TermExpressionNode>),
+    Apply(Box<ApplyCallNode<TermExpressionNode>>),
     ApplyDot(Box<ApplyDotNode<TermExpressionNode>>),
 }
 
@@ -133,15 +133,10 @@ pub fn parse_value(input: ParseState) -> ParseResult<TermExpressionNode> {
         .or_else(|s| StringLiteralNode::parse(s).map_inner(Into::into))
         .or_else(|s| TableNode::parse(s).map_inner(Into::into))
         .end_choice()?;
-
     let (state, rest) = state.match_repeats(NormalPostfixCall::parse)?;
-
     for caller in rest {
         match caller {
-            NormalPostfixCall::Apply(mut v) => {
-                v.base = base;
-                base = TermExpressionNode::Apply(Box::new(v))
-            }
+            NormalPostfixCall::Apply(v) => base = TermExpressionNode::Apply(v.rebase(base)),
             NormalPostfixCall::ApplyDot(v) => base = TermExpressionNode::ApplyDot(v.rebase(base)),
         }
     }
@@ -153,13 +148,19 @@ impl ThisParser for NormalPostfixCall {
         let (state, skip) = ignore(input)?;
         input
             .begin_choice()
-            .or_else(|s| ApplyCallNode::parse(s).map_inner(NormalPostfixCall::Apply))
+            .or_else(|s| ApplyCallNode::parse(s).map_inner(Into::into))
             .or_else(|s| ApplyDotNode::parse(s).map_inner(Into::into))
             .end_choice()
     }
 
     fn as_lisp(&self) -> Lisp {
         unreachable!()
+    }
+}
+
+impl From<ApplyCallNode<TermExpressionNode>> for NormalPostfixCall {
+    fn from(value: ApplyCallNode<TermExpressionNode>) -> Self {
+        NormalPostfixCall::Apply(Box::new(value))
     }
 }
 

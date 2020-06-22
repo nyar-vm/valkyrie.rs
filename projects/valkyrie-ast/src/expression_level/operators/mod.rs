@@ -34,6 +34,13 @@ pub struct OperatorNode {
     pub range: Range<usize>,
 }
 
+impl<E> PrefixNode<E> {
+    pub fn update_range(mut self, range: Range<usize>) -> Self {
+        self.range = range;
+        self
+    }
+}
+
 impl OperatorNode {
     pub fn new(kind: ValkyrieOperator, range: Range<usize>) -> Self {
         Self { kind, range }

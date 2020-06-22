@@ -6,7 +6,7 @@ use valkyrie_types::third_party::pex::{BracketPair, BracketPattern, ParseResult,
 impl ThisParser for ViewNode<TermExpressionNode> {
     /// `[` ~ `]` | `[` [term](ViewTermNode::parse) ( ~ `,` ~ [term](ViewTermNode::parse))* `,`? `]`
     fn parse(input: ParseState) -> ParseResult<Self> {
-        let (state, (index0, terms)) = input.begin_choice().or_else(parse_index0).or_else(parse_index1).end_choice()?;
+        let (state, (index0, terms)) = input.begin_choice().or_else(parse_index1).or_else(parse_index0).end_choice()?;
         state.finish(ViewNode {
             index0,
             base: TermExpressionNode::Placeholder,
@@ -27,12 +27,13 @@ impl ThisParser for ViewNode<TermExpressionNode> {
 }
 
 #[inline]
-fn parse_index0(input: ParseState) -> ParseResult<(bool, BracketPair<ViewTermNode<TermExpressionNode>>)> {
+fn parse_index1(input: ParseState) -> ParseResult<(bool, BracketPair<ViewTermNode<TermExpressionNode>>)> {
     let pat = BracketPattern::new("[", "]");
     pat.consume(input, ignore, ViewTermNode::parse).map_inner(|s| (true, s))
 }
+
 #[inline]
-fn parse_index1(input: ParseState) -> ParseResult<(bool, BracketPair<ViewTermNode<TermExpressionNode>>)> {
+fn parse_index0(input: ParseState) -> ParseResult<(bool, BracketPair<ViewTermNode<TermExpressionNode>>)> {
     let pat = BracketPattern::new("⁅", "⁆");
     pat.consume(input, ignore, ViewTermNode::parse).map_inner(|s| (false, s))
 }

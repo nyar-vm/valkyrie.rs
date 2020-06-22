@@ -1,4 +1,4 @@
-use crate::{expression_level::table::ArgumentTermNode, utils::small_range, ApplyTermNode, IdentifierNode};
+use crate::{expression_level::table::ArgumentTermNode, ApplyTermNode, IdentifierNode};
 use std::{
     fmt::{Display, Formatter, Write},
     ops::Range,

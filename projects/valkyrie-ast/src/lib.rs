@@ -41,7 +41,6 @@ pub use crate::{
         view::{ViewNode, ViewRangeNode, ViewTermNode},
     },
     package_level::{NamespaceDeclareNode, NamespaceKind},
-    utils::{FileID, FileSpan, FileStorage},
 };
 pub use valkyrie_types::ValkyrieOperator;
 // mod package_level;

@@ -1,8 +1,9 @@
 use super::*;
+use std::any::Any;
 
 impl<E: Display> Display for ApplyDotNode<E> {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}.(", self.base)?;
+        write!(f, "{}.{}(", self.base, self.caller)?;
         for (i, v) in self.terms.iter().enumerate() {
             if i != 0 {
                 write!(f, ", ")?;
@@ -12,6 +13,7 @@ impl<E: Display> Display for ApplyDotNode<E> {
         write!(f, ")")
     }
 }
+
 impl<E: Display> Display for ApplyCallNode<E> {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}(", self.base)?;
