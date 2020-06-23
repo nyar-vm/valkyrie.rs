@@ -12,7 +12,9 @@ fn lex_expression() {
 }
 
 #[test]
-fn test_apply2() {}
+fn test_apply2() {
+    repl_debug(include_str!("generic.vk"), "expression/generic_debug.rkt").expect("generic");
+}
 
 #[test]
 fn test_apply() {
@@ -23,7 +25,7 @@ fn test_apply() {
 
 #[test]
 fn main1() {
-    let raw = ":: <T, 1, >";
+    let raw = "A:: <T, 1, >";
     let slice = GenericCall::<TermExpressionNode>::parse_text(raw).unwrap();
     println!("input:\n{slice:#?}");
     println!("output:\n{}", colored_lisp(slice.as_lisp(), 42).unwrap());

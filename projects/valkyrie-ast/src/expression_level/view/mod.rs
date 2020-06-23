@@ -43,6 +43,9 @@ impl<E> ViewNode<E> {
         self.base = base;
         self
     }
+    pub fn method(&self) -> &'static str {
+        if self.index0 { "subscript0" } else { "subscript1" }
+    }
 }
 
 impl<E> ViewTermNode<E> {

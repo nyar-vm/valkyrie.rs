@@ -17,10 +17,7 @@ impl ThisParser for ViewNode<TermExpressionNode> {
 
     fn as_lisp(&self) -> Lisp {
         let mut terms = Vec::with_capacity(self.terms.len() + 2);
-        match self.index0 {
-            true => terms.push(Lisp::keyword("subscript0")),
-            false => terms.push(Lisp::keyword("subscript1")),
-        }
+        terms.push(Lisp::keyword(self.method()));
         terms.push(self.base.as_lisp());
         for term in &self.terms {
             terms.push(term.as_lisp());
@@ -64,15 +61,15 @@ impl ThisParser for ViewRangeNode<TermExpressionNode> {
         let mut terms = Vec::with_capacity(4);
         terms.push(Lisp::function("range").into());
         match &self.start {
-            None => terms.push(Lisp::keyword("nil")),
+            None => terms.push(Lisp::keyword("null")),
             Some(s) => terms.push(s.as_lisp()),
         }
         match &self.end {
-            None => terms.push(Lisp::keyword("nil")),
+            None => terms.push(Lisp::keyword("null")),
             Some(s) => terms.push(s.as_lisp()),
         }
         match &self.step {
-            None => terms.push(Lisp::keyword("nil")),
+            None => terms.push(Lisp::keyword("null")),
             Some(s) => terms.push(s.as_lisp()),
         }
         Lisp::Any(terms)
