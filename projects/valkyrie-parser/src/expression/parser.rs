@@ -52,6 +52,7 @@ impl ThisParser for TermExpressionNode {
             TermExpressionNode::Apply(v) => v.as_lisp(),
             TermExpressionNode::ApplyDot(v) => v.as_lisp(),
             TermExpressionNode::View(v) => v.as_lisp(),
+            TermExpressionNode::GenericCall(v) => v.as_lisp(),
         }
     }
 }
@@ -124,6 +125,7 @@ pub enum NormalPostfixCall {
     Apply(Box<ApplyCallNode<TermExpressionNode>>),
     ApplyDot(Box<ApplyDotNode<TermExpressionNode>>),
     View(Box<ViewNode<TermExpressionNode>>),
+    Generic(Box<GenericCall<TermExpressionNode>>),
 }
 
 #[inline]
@@ -141,6 +143,7 @@ pub fn parse_value(input: ParseState) -> ParseResult<TermExpressionNode> {
             NormalPostfixCall::Apply(v) => base = TermExpressionNode::Apply(v.rebase(base)),
             NormalPostfixCall::ApplyDot(v) => base = TermExpressionNode::ApplyDot(v.rebase(base)),
             NormalPostfixCall::View(v) => base = TermExpressionNode::View(v.rebase(base)),
+            NormalPostfixCall::Generic(v) => base = TermExpressionNode::GenericCall(v.rebase(base)),
         }
     }
     state.finish(base)
@@ -154,6 +157,7 @@ impl ThisParser for NormalPostfixCall {
             .or_else(|s| ApplyCallNode::parse(s).map_inner(Into::into))
             .or_else(|s| ApplyDotNode::parse(s).map_inner(Into::into))
             .or_else(|s| ViewNode::parse(s).map_inner(Into::into))
+            .or_else(|s| GenericCall::parse(s).map_inner(Into::into))
             .end_choice()
     }
 
@@ -177,5 +181,10 @@ impl From<ApplyDotNode<TermExpressionNode>> for NormalPostfixCall {
 impl From<ViewNode<TermExpressionNode>> for NormalPostfixCall {
     fn from(value: ViewNode<TermExpressionNode>) -> Self {
         NormalPostfixCall::View(Box::new(value))
+    }
+}
+impl From<GenericCall<TermExpressionNode>> for NormalPostfixCall {
+    fn from(value: GenericCall<TermExpressionNode>) -> Self {
+        NormalPostfixCall::Generic(Box::new(value))
     }
 }

@@ -11,8 +11,8 @@ use crate::{
 };
 use std::str::FromStr;
 use valkyrie_ast::{
-    ApplyCallNode, ApplyDotNode, InfixNode, NamePathNode, NumberLiteralNode, OperatorNode, PostfixNode, PrefixNode,
-    StringLiteralNode, TableNode, ValkyrieOperator, ViewNode,
+    ApplyCallNode, ApplyDotNode, GenericCall, InfixNode, NamePathNode, NumberLiteralNode, OperatorNode, PostfixNode,
+    PrefixNode, StringLiteralNode, TableNode, ValkyrieOperator, ViewNode,
 };
 use valkyrie_types::third_party::pex::helpers::make_from_str;
 
@@ -72,6 +72,7 @@ pub enum TermExpressionNode {
     Apply(Box<ApplyCallNode<Self>>),
     ApplyDot(Box<ApplyDotNode<Self>>),
     View(Box<ViewNode<TermExpressionNode>>),
+    GenericCall(Box<GenericCall<Self>>),
 }
 
 impl ThisParser for ValkyrieOperator {
@@ -113,6 +114,7 @@ impl TermExpressionNode {
             TermExpressionNode::Apply(v) => v.range.clone(),
             TermExpressionNode::ApplyDot(v) => v.range.clone(),
             TermExpressionNode::View(v) => v.range.clone(),
+            TermExpressionNode::GenericCall(v) => v.range.clone(),
         }
     }
     pub fn update_range(&mut self) {

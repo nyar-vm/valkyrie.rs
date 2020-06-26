@@ -1,36 +1,38 @@
-use crate::{expression::TermExpressionNode, helpers::ignore, traits::ThisParser};
-use lispify::{Lisp, Lispify};
-use std::{
-    fmt::{Display, Formatter},
-    ops::Range,
-    str::FromStr,
+use crate::{
+    expression::TermExpressionNode,
+    helpers::{ignore, parse_name_join},
+    ThisParser,
 };
-use valkyrie_ast::{ApplyCallNode, ApplyDotNode, IdentifierNode};
-use valkyrie_types::third_party::pex::{
-    helpers::{make_from_str, whitespace},
-    ParseResult, ParseState, StopBecause,
-};
+use lispify::Lisp;
+use valkyrie_ast::{ApplyCallNode, ApplyTermNode, GenericCall, IdentifierNode};
+use valkyrie_types::third_party::pex::{BracketPattern, ParseResult, ParseState};
 
-impl ThisParser for ApplyDotNode<TermExpressionNode> {
+impl ThisParser for GenericCall<TermExpressionNode> {
+    /// `::<T> | ⦓T⦔`
     fn parse(input: ParseState) -> ParseResult<Self> {
-        let (state, _) = input.match_char('.')?;
-        let (state, caller) = state.skip(ignore).match_fn(IdentifierNode::parse)?;
-        let (finally, args) = state.skip(ignore).match_optional(ApplyCallNode::parse)?;
-        let terms = match args {
-            Some(v) => v.terms,
-            None => vec![],
-        };
-        finally.finish(ApplyDotNode { base: TermExpressionNode::Placeholder, caller, terms, range: finally.away_from(input) })
+        input.begin_choice().or_else(qwerty_generic).or_else(unicode_generic).end_choice()
     }
 
     fn as_lisp(&self) -> Lisp {
-        let mut terms = Vec::with_capacity(self.terms.len() + 3);
-        terms.push(Lisp::keyword("apply-dot"));
-        terms.push(self.base.as_lisp());
-        terms.push(self.caller.as_lisp());
+        let mut terms = Vec::with_capacity(self.terms.len() + 2);
+        terms.push(Lisp::function("generic"));
+        // terms.push(self.base.lispify().into());
         for term in &self.terms {
             terms.push(term.as_lisp());
         }
         Lisp::Any(terms)
     }
+}
+
+fn qwerty_generic(input: ParseState) -> ParseResult<GenericCall<TermExpressionNode>> {
+    let pat = BracketPattern::new("<", ">");
+    let (state, _) = input.match_optional(parse_name_join)?;
+    let (state, terms) = pat.consume(state.skip(ignore), ignore, ApplyTermNode::parse)?;
+    state.finish(GenericCall { base: TermExpressionNode::Placeholder, terms: terms.body, range: state.away_from(input) })
+}
+
+fn unicode_generic(input: ParseState) -> ParseResult<GenericCall<TermExpressionNode>> {
+    let pat = BracketPattern::new("⦓", "⦔");
+    let (state, terms) = pat.consume(input, ignore, ApplyTermNode::parse)?;
+    state.finish(GenericCall { base: TermExpressionNode::Placeholder, terms: terms.body, range: state.away_from(input) })
 }

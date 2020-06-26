@@ -24,6 +24,7 @@ impl Display for TermExpressionNode {
             TermExpressionNode::Apply(v) => Display::fmt(v, f),
             TermExpressionNode::ApplyDot(v) => Display::fmt(v, f),
             TermExpressionNode::View(v) => Display::fmt(v, f),
+            TermExpressionNode::GenericCall(v) => Display::fmt(v, f),
         }
     }
 }
