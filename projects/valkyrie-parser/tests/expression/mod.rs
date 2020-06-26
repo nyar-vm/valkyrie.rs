@@ -1,5 +1,5 @@
 use super::*;
-use valkyrie_ast::{ApplyCallNode, GenericCall, IdentifierNode, ViewNode};
+use valkyrie_ast::{GenericCall, ViewNode};
 use valkyrie_parser::{expression::TermExpressionNode, ThisParser};
 
 #[test]

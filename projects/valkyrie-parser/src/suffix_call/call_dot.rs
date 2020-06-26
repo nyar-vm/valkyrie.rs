@@ -1,11 +1,4 @@
-use crate::{
-    expression::TermExpressionNode,
-    helpers::{ignore, parse_name_join},
-    ThisParser,
-};
-use lispify::Lisp;
-use valkyrie_ast::{ApplyCallNode, ApplyTermNode, GenericCall, IdentifierNode};
-use valkyrie_types::third_party::pex::{BracketPattern, ParseResult, ParseState};
+use super::*;
 
 impl ThisParser for GenericCall<TermExpressionNode> {
     /// `::<T> | ⦓T⦔`

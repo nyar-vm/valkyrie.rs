@@ -6,9 +6,9 @@ using {
     ~ wow!
     `python`.torch as tf
 }
-~ using "script/path" {
-~    self as script, other
-~}
+using "script/path" {
+    self as script, other
+}
 using lib1.*
 using lib2::*
 using lib3 as z

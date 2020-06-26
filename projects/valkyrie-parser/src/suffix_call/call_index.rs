@@ -1,7 +1,4 @@
-use crate::{expression::TermExpressionNode, helpers::ignore, traits::ThisParser};
-use lispify::{Lisp, Lispify};
-use valkyrie_ast::{ViewNode, ViewRangeNode, ViewTermNode};
-use valkyrie_types::third_party::pex::{BracketPair, BracketPattern, ParseResult, ParseState};
+use super::*;
 
 impl ThisParser for ViewNode<TermExpressionNode> {
     /// `[` ~ `]` | `[` [term](ViewTermNode::parse) ( ~ `,` ~ [term](ViewTermNode::parse))* `,`? `]`
