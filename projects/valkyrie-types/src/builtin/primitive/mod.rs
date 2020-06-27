@@ -1,9 +1,7 @@
 use dashu::integer::IBig;
 use std::sync::Arc;
 
-use crate::{types::ValkyrieMetaType, utils::primitive_type, ValkyrieTable, ValkyrieType, ValkyrieValue};
-
-use super::*;
+use crate::{types::ValkyrieMetaType, utils::primitive_type, ValkyrieType, ValkyrieValue};
 
 impl ValkyrieType for u8 {
     fn boxed(self) -> ValkyrieValue {

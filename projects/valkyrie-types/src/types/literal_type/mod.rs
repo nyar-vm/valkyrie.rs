@@ -1,5 +1,3 @@
-use super::*;
-
 pub struct ValkyrieLiteralType<T> {
     data: T,
 }

@@ -1,6 +1,6 @@
 use std::num::{ParseFloatError, ParseIntError};
 
-use crate::{errors::ValkyrieErrorLevel, ValkyrieError, ValkyrieErrorKind};
+use crate::ValkyrieError;
 #[cfg(feature = "pex")]
 use pex::StopBecause;
 

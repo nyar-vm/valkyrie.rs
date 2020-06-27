@@ -21,7 +21,5 @@ mod values;
 // #[cfg(test)]
 pub mod testing;
 mod utils;
-pub use crate::{
-    errors::{ValkyrieError, ValkyrieErrorKind, ValkyrieResult},
-    functions::operators::ValkyrieOperator,
-};
+pub use crate::errors::{ValkyrieError, ValkyrieErrorKind, ValkyrieResult};
+pub use valkyrie_ast::ValkyrieOperator;

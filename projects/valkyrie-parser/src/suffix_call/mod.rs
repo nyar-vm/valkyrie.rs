@@ -4,18 +4,12 @@ use crate::{
     ThisParser,
 };
 use lispify::{Lisp, Lispify};
-use std::{
-    fmt::{Display, Formatter},
-    ops::Range,
-};
+use std::fmt::Display;
 use valkyrie_ast::{
-    ApplyArgumentNode, ApplyCallNode, ApplyDotNode, ApplyTermNode, GenericArgumentNode, GenericCall, IdentifierNode, ViewNode,
-    ViewRangeNode, ViewTermNode,
+    ApplyCallNode, ApplyDotNode, ApplyTermNode, GenericArgumentNode, GenericCall, IdentifierNode, ViewNode, ViewRangeNode,
+    ViewTermNode,
 };
-use valkyrie_types::third_party::pex::{
-    helpers::{make_from_str, whitespace},
-    BracketPair, BracketPattern, ParseResult, ParseState, StopBecause,
-};
+use valkyrie_types::third_party::pex::{BracketPair, BracketPattern, ParseResult, ParseState};
 
 mod call_apply;
 mod call_dot;

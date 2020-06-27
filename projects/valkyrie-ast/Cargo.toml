@@ -1,6 +1,6 @@
 [package]
 name = "valkyrie-ast"
-version = "0.0.2"
+version = "0.0.3"
 authors = ["Aster <192607617@qq.com>"]
 description = "Abstract Syntax Tree of valkyrie language"
 repository = "https://github.com/nyar-vm/valkyrie.rs"
@@ -13,25 +13,10 @@ edition = "2021"
 #syntax-error = "0.0.2"
 #serde = { version = "1.0.163", features = ["derive"], optional = true }
 
-[dependencies.valkyrie-types]
-version = "0.0.1"
-path = "../valkyrie-types"
-features = ["url"]
-
-
-#unicode-ident = "1.0.6"
-#indexmap = "1.9.2"
-#itertools = "0.10.5"
-#serde = { version = "1.0.152", features = ["derive"] }
-
-#[dependencies.valkyrie-errors]
-#version = "0.0.0"
-#path = "../valkyrie-errors"
-#features = ["dashu", "pratt"]
-
-
-#[dev-dependencies]
-#peginator_codegen = "0.6.0"
+#[dependencies.valkyrie-types]
+#version = "0.0.1"
+#path = "../valkyrie-types"
+#features = ["url"]
 
 [features]
 default = []

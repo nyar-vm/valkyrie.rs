@@ -3,6 +3,7 @@ use std::{
     fmt::{Display, Formatter, Write},
     ops::Range,
 };
+
 pub mod apply;
 mod arithmetic;
 pub mod generic;
