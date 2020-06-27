@@ -7,13 +7,19 @@ pub use crate::{
     control_flow::looping::LoopStatementNode,
     expression_level::{
         apply::{ApplyArgumentNode, ApplyCallNode, ApplyDotNode, ApplyTermNode},
+        ctor::NewStructureNode,
         generic::{GenericArgumentNode, GenericCall},
+        lambda::LambdaArgumentNode,
         number::NumberLiteralNode,
         operators::{InfixNode, OperatorNode, PostfixNode, PrefixNode, ValkyrieOperator},
         string::StringLiteralNode,
         symbol::{IdentifierNode, MacroKind, MacroPathNode, NamePathNode},
         table::{TableKind, TableNode},
         view::{ViewNode, ViewRangeNode, ViewTermNode},
+        TermExpressionNode,
     },
-    package_level::{NamespaceDeclareNode, NamespaceKind},
+    package_level::{
+        namespace::{NamespaceDeclarationNode, NamespaceKind},
+        TopStatementNode,
+    },
 };

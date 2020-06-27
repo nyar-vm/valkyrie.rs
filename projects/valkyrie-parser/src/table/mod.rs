@@ -1,13 +1,7 @@
-use crate::{expression::TermExpressionNode, helpers::ignore, traits::ThisParser};
+use crate::{helpers::ignore, traits::ThisParser};
 use lispify::{Lisp, Lispify};
-use valkyrie_ast::{ApplyTermNode, IdentifierNode, TableKind, TableNode};
+use valkyrie_ast::{ApplyTermNode, IdentifierNode, TableKind, TableNode, TermExpressionNode};
 use valkyrie_types::third_party::pex::{BracketPattern, ParseResult, ParseState};
-
-impl From<TableNode<TermExpressionNode>> for TermExpressionNode {
-    fn from(value: TableNode<TermExpressionNode>) -> Self {
-        TermExpressionNode::Table(Box::new(value))
-    }
-}
 
 impl ThisParser for TableNode<TermExpressionNode> {
     /// `[` ~ `]` | `[` [term](ApplyTermNode::parse) ( ~ `,` ~ [term](ApplyTermNode::parse))* `,`? `]`

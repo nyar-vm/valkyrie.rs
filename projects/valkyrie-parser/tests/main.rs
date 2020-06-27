@@ -7,7 +7,6 @@ use std::{
     fs::File,
     io::Write,
     path::{Path, PathBuf},
-    str::FromStr,
 };
 use valkyrie_parser::repl::parse_repl;
 // use std::io::stdout;

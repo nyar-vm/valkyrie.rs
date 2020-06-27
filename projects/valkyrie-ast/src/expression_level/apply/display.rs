@@ -1,5 +1,4 @@
 use super::*;
-use std::any::Any;
 
 impl<E: Display> Display for ApplyDotNode<E> {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {

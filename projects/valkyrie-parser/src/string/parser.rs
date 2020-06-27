@@ -1,5 +1,4 @@
 use super::*;
-use crate::expression::TermExpressionNode;
 use valkyrie_types::third_party::pex::{
     helpers::{make_from_str, quotation_pair, quotation_pair_nested, whitespace},
     ParseResult, ParseState, StopBecause,
@@ -34,12 +33,6 @@ impl ThisParser for StringLiteralNode {
 
     fn as_lisp(&self) -> Lisp {
         ListString { text: self.value.to_owned(), unit: self.unit.clone().map(|u| u.name).unwrap_or_default() }.into()
-    }
-}
-
-impl From<StringLiteralNode> for TermExpressionNode {
-    fn from(value: StringLiteralNode) -> Self {
-        TermExpressionNode::String(Box::new(value))
     }
 }
 

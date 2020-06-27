@@ -1,7 +1,7 @@
 mod display;
 use super::*;
 
-/// `<BASE>.f(0, a: 1, **args, ***kwargs)`
+/// `term.call(0, a: 1, **args, ***kwargs)`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ApplyDotNode<E> {
@@ -15,7 +15,7 @@ pub struct ApplyDotNode<E> {
     pub range: Range<usize>,
 }
 
-/// `<BASE>(0, a: 1, **args, ***kwargs)`
+/// `apply(0, a: 1, **args, ***kwargs)`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ApplyCallNode<E> {
@@ -26,7 +26,7 @@ pub struct ApplyCallNode<E> {
     pub range: Range<usize>,
 }
 
-/// A number literal.
+/// `term` or `field: term`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ApplyTermNode<K, V> {

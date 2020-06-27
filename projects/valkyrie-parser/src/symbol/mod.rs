@@ -1,7 +1,6 @@
 use std::sync::LazyLock;
 
-use crate::expression::TermExpressionNode;
-use valkyrie_types::third_party::pex::{ParseResult, ParseState, Regex, StopBecause};
+use valkyrie_types::third_party::pex::{ParseResult, ParseState, Regex};
 
 use valkyrie_ast::NamePathNode;
 
@@ -81,9 +80,3 @@ fn pare_colon_id<'i>(input: ParseState<'i>, names: &mut Vec<IdentifierNode>) -> 
 
 /// These names cannot be used as function names
 pub const KEYWORDS: [&str; 3] = ["true", "false", "null"];
-
-impl From<NamePathNode> for TermExpressionNode {
-    fn from(value: NamePathNode) -> Self {
-        TermExpressionNode::Symbol(Box::new(value))
-    }
-}

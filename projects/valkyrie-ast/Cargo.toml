@@ -1,8 +1,8 @@
 [package]
 name = "valkyrie-ast"
-version = "0.0.3"
+version = "0.0.4"
 authors = ["Aster <192607617@qq.com>"]
-description = "Abstract Syntax Tree of valkyrie language"
+description = "Strong typed abstract syntax tree of valkyrie language"
 repository = "https://github.com/nyar-vm/valkyrie.rs"
 documentation = "https://docs.rs/valkyrie-ast"
 readme = "Readme.md"
@@ -10,13 +10,6 @@ license = "MPL-2.0"
 edition = "2021"
 
 [dependencies]
-#syntax-error = "0.0.2"
-#serde = { version = "1.0.163", features = ["derive"], optional = true }
-
-#[dependencies.valkyrie-types]
-#version = "0.0.1"
-#path = "../valkyrie-types"
-#features = ["url"]
 
 [features]
 default = []

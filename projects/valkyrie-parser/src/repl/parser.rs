@@ -1,6 +1,6 @@
 use super::*;
 use crate::traits::ThisParser;
-use valkyrie_ast::NamespaceDeclareNode;
+use valkyrie_ast::NamespaceDeclarationNode;
 
 #[track_caller]
 pub fn parse_repl(s: &str) -> Vec<ValkyrieREPL> {
@@ -21,7 +21,7 @@ impl ThisParser for ValkyrieREPL {
         let (state, expr) = input
             .skip(ignore)
             .begin_choice()
-            .or_else(|s| NamespaceDeclareNode::parse(s).map_inner(Into::into))
+            .or_else(|s| NamespaceDeclarationNode::parse(s).map_inner(Into::into))
             .or_else(|s| TermExpressionNode::parse(s).map_inner(Into::into))
             .end_choice()?;
         let (state, _) = state.skip(ignore).match_optional(|s| s.match_char(';'))?;
@@ -33,8 +33,8 @@ impl ThisParser for ValkyrieREPL {
     }
 }
 
-impl From<NamespaceDeclareNode> for ValkyrieREPL {
-    fn from(value: NamespaceDeclareNode) -> Self {
+impl From<NamespaceDeclarationNode> for ValkyrieREPL {
+    fn from(value: NamespaceDeclarationNode) -> Self {
         ValkyrieREPL::Namespace(Box::new(value))
     }
 }

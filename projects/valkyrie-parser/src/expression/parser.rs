@@ -1,7 +1,4 @@
 use super::*;
-use crate::operators::ValkyriePrefix;
-use valkyrie_ast::{ApplyCallNode, ApplyTermNode, IdentifierNode, ViewNode};
-use valkyrie_types::third_party::pex::{helpers::whitespace, Parsed};
 
 impl ThisParser for PrefixNode<TermExpressionNode> {
     fn parse(_: ParseState) -> ParseResult<Self> {
@@ -12,6 +9,7 @@ impl ThisParser for PrefixNode<TermExpressionNode> {
         Lisp::operator(self.operator.to_string(), &[self.body.as_lisp()])
     }
 }
+
 impl ThisParser for InfixNode<TermExpressionNode> {
     fn parse(_: ParseState) -> ParseResult<Self> {
         unreachable!()

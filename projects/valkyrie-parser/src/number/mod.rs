@@ -1,6 +1,5 @@
 mod display;
 mod parser;
-use crate::expression::TermExpressionNode;
 use lispify::LispNumber;
 
 use std::{ops::Range, str::FromStr, sync::LazyLock};

@@ -2,7 +2,8 @@ use super::*;
 
 mod display;
 
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum TableKind {
     /// `(a, b, c)`
     Tuple,
@@ -13,7 +14,8 @@ pub enum TableKind {
 }
 
 /// A number literal.
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct TableNode<E> {
     pub kind: TableKind,
     /// The raw string of the number.

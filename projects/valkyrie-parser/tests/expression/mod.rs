@@ -1,6 +1,6 @@
 use super::*;
-use valkyrie_ast::{GenericCall, ViewNode};
-use valkyrie_parser::{expression::TermExpressionNode, ThisParser};
+use valkyrie_ast::{GenericCall, TermExpressionNode, ViewNode};
+use valkyrie_parser::ThisParser;
 
 #[test]
 fn lex_expression() {
@@ -9,12 +9,11 @@ fn lex_expression() {
     repl_debug(include_str!("table.vk"), "expression/table_debug.rkt").expect("table");
     repl_debug(include_str!("apply.vk"), "expression/apply_debug.rkt").expect("apply");
     repl_debug(include_str!("slice.vk"), "expression/slice_debug.rkt").expect("slice");
+    repl_debug(include_str!("generic.vk"), "expression/generic_debug.rkt").expect("generic");
 }
 
 #[test]
-fn test_apply2() {
-    repl_debug(include_str!("generic.vk"), "expression/generic_debug.rkt").expect("generic");
-}
+fn test_apply2() {}
 
 #[test]
 fn test_apply() {

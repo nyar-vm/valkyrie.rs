@@ -1,6 +1,0 @@
-(generic)
-(generic T)
-(generic T U)
-(generic)
-(generic T)
-(apply (generic T U) 1 2)

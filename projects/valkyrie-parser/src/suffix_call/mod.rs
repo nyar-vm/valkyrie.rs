@@ -1,13 +1,12 @@
 use crate::{
-    expression::TermExpressionNode,
     helpers::{ignore, parse_name_join},
     ThisParser,
 };
-use lispify::{Lisp, Lispify};
-use std::fmt::Display;
+use lispify::Lisp;
+
 use valkyrie_ast::{
-    ApplyCallNode, ApplyDotNode, ApplyTermNode, GenericArgumentNode, GenericCall, IdentifierNode, ViewNode, ViewRangeNode,
-    ViewTermNode,
+    ApplyCallNode, ApplyDotNode, ApplyTermNode, GenericArgumentNode, GenericCall, IdentifierNode, TermExpressionNode, ViewNode,
+    ViewRangeNode, ViewTermNode,
 };
 use valkyrie_types::third_party::pex::{BracketPair, BracketPattern, ParseResult, ParseState};
 

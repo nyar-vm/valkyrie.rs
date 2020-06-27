@@ -1,7 +1,7 @@
 use crate::{helpers::ignore, operators::ValkyrieInfix};
 use lispify::{Lisp, Lispify};
 use pratt::{Affix, PrattError, PrattParser};
-use std::{fmt::Debug, ops::Range};
+use std::fmt::Debug;
 use valkyrie_types::third_party::pex::{ParseResult, ParseState, StopBecause};
 mod display;
 mod parser;
@@ -9,13 +9,11 @@ use crate::{
     operators::{ValkyriePrefix, ValkyrieSuffix},
     traits::ThisParser,
 };
-use std::str::FromStr;
-use valkyrie_ast::{
-    ApplyCallNode, ApplyDotNode, GenericCall, InfixNode, NamePathNode, NumberLiteralNode, OperatorNode, PostfixNode,
-    PrefixNode, StringLiteralNode, TableNode, ValkyrieOperator, ViewNode,
-};
-use valkyrie_types::third_party::pex::helpers::make_from_str;
 
+use valkyrie_ast::{
+    ApplyCallNode, ApplyDotNode, GenericCall, InfixNode, NamePathNode, NumberLiteralNode, PostfixNode, PrefixNode,
+    StringLiteralNode, TableNode, TermExpressionNode, ValkyrieOperator, ViewNode,
+};
 /// A resolver
 #[derive(Default)]
 pub struct ExpressionResolver {}
@@ -59,22 +57,6 @@ pub enum ExpressionStream {
     Group(Vec<ExpressionStream>),
 }
 
-#[derive(Debug, Clone, Eq, PartialEq)]
-pub enum TermExpressionNode {
-    Placeholder,
-    Prefix(Box<PrefixNode<Self>>),
-    Binary(Box<InfixNode<Self>>),
-    Suffix(Box<PostfixNode<Self>>),
-    Number(Box<NumberLiteralNode>),
-    Symbol(Box<NamePathNode>),
-    Table(Box<TableNode<Self>>),
-    String(Box<StringLiteralNode>),
-    Apply(Box<ApplyCallNode<Self>>),
-    ApplyDot(Box<ApplyDotNode<Self>>),
-    View(Box<ViewNode<TermExpressionNode>>),
-    GenericCall(Box<GenericCall<Self>>),
-}
-
 impl ThisParser for ValkyrieOperator {
     fn parse(input: ParseState) -> ParseResult<Self> {
         todo!()
@@ -82,60 +64,6 @@ impl ThisParser for ValkyrieOperator {
 
     fn as_lisp(&self) -> Lisp {
         Lisp::Operator(self.to_string())
-    }
-}
-
-impl TermExpressionNode {
-    pub fn binary(o: OperatorNode, lhs: TermExpressionNode, rhs: TermExpressionNode) -> TermExpressionNode {
-        let mut out = TermExpressionNode::Binary(Box::new(InfixNode { operator: o, lhs, rhs, range: Default::default() }));
-        out.update_range();
-        out
-    }
-    pub fn prefix(o: OperatorNode, rhs: TermExpressionNode) -> TermExpressionNode {
-        let mut out = TermExpressionNode::Prefix(Box::new(PrefixNode { operator: o, body: rhs, range: Default::default() }));
-        out.update_range();
-        out
-    }
-    pub fn suffix(o: OperatorNode, rhs: TermExpressionNode) -> TermExpressionNode {
-        let mut out = TermExpressionNode::Suffix(Box::new(PostfixNode { operator: o, body: rhs, range: Default::default() }));
-        out.update_range();
-        out
-    }
-    pub fn get_range(&self) -> Range<usize> {
-        match self {
-            TermExpressionNode::Placeholder => unreachable!("Placeholder expressions should not be called"),
-            TermExpressionNode::Prefix(u) => u.range.clone(),
-            TermExpressionNode::Binary(b) => b.range.clone(),
-            TermExpressionNode::Suffix(u) => u.range.clone(),
-            TermExpressionNode::Number(u) => u.range.clone(),
-            TermExpressionNode::Symbol(u) => u.span.clone(),
-            TermExpressionNode::String(u) => u.span.clone(),
-            TermExpressionNode::Table(u) => u.range.clone(),
-            TermExpressionNode::Apply(v) => v.range.clone(),
-            TermExpressionNode::ApplyDot(v) => v.range.clone(),
-            TermExpressionNode::View(v) => v.range.clone(),
-            TermExpressionNode::GenericCall(v) => v.range.clone(),
-        }
-    }
-    pub fn update_range(&mut self) {
-        match self {
-            TermExpressionNode::Prefix(u) => {
-                let start = u.operator.range.start;
-                let end = u.body.get_range().end;
-                u.range = start..end;
-            }
-            TermExpressionNode::Binary(b) => {
-                let start = b.lhs.get_range().start;
-                let end = b.rhs.get_range().end;
-                b.range = start..end;
-            }
-            TermExpressionNode::Suffix(u) => {
-                let start = u.body.get_range().start;
-                let end = u.operator.range.end;
-                u.range = start..end;
-            }
-            _ => {}
-        }
     }
 }
 

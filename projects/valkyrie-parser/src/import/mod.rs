@@ -1,7 +1,7 @@
 use crate::{helpers::ignore, traits::ThisParser};
 use lispify::Lisp;
 use std::sync::LazyLock;
-use valkyrie_ast::{IdentifierNode, NamespaceDeclareNode, NamespaceKind};
+use valkyrie_ast::{IdentifierNode, NamespaceDeclarationNode, NamespaceKind};
 use valkyrie_types::third_party::pex::{ParseResult, ParseState, Regex};
 
 pub static NAMESPACE: LazyLock<Regex> = LazyLock::new(|| {
@@ -13,7 +13,7 @@ pub static NAMESPACE: LazyLock<Regex> = LazyLock::new(|| {
     .unwrap()
 });
 
-impl ThisParser for NamespaceDeclareNode {
+impl ThisParser for NamespaceDeclarationNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, ns) = input.match_regex(&NAMESPACE, "NAMESPACE")?;
         let (finally, names) = state.skip(ignore).match_fn(parse)?;
@@ -21,7 +21,7 @@ impl ThisParser for NamespaceDeclareNode {
             "namespace*" => NamespaceKind::Test,
             _ => NamespaceKind::Unique,
         };
-        finally.finish(NamespaceDeclareNode::new(names, &finally.away_from(input)).with_kind(kind))
+        finally.finish(NamespaceDeclarationNode::new(names, &finally.away_from(input)).with_kind(kind))
     }
 
     fn as_lisp(&self) -> Lisp {

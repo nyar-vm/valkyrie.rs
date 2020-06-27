@@ -9,7 +9,7 @@ pub struct IdentifierNode {
     pub span: Range<usize>,
 }
 
-/// A namepath is a series of identifiers separated by dots.
+/// `package∷module∷name`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct NamePathNode {
@@ -31,7 +31,7 @@ pub enum MacroKind {
     Dict,
 }
 
-/// A namepath is a series of identifiers separated by dots.
+/// `@module∷name.function`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct MacroPathNode {

@@ -1,9 +1,8 @@
 mod escaper;
 
 pub use self::escaper::StringRewrite;
-use crate::{expression::TermExpressionNode, traits::ThisParser};
+
 use std::sync::LazyLock;
-use valkyrie_ast::{NamePathNode, NumberLiteralNode, StringLiteralNode, TableNode};
 use valkyrie_types::third_party::pex::{
     ParseResult,
     ParseResult::{Pending, Stop},

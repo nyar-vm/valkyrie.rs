@@ -42,12 +42,6 @@ impl ThisParser for NumberLiteralNode {
     }
 }
 
-impl From<NumberLiteralNode> for TermExpressionNode {
-    fn from(value: NumberLiteralNode) -> Self {
-        TermExpressionNode::Number(Box::new(value))
-    }
-}
-
 pub static BYTES: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(
         r"(?ux)
