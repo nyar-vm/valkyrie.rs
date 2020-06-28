@@ -20,7 +20,7 @@ pub use crate::{
         symbol::{IdentifierNode, MacroKind, MacroPathNode, NamePathNode},
         table::{TableKind, TableNode},
         view::{ViewNode, ViewRangeNode, ViewTermNode},
-        TermExpressionNode,
+        TermExpressionNode, TermExpressionType,
     },
     package_level::{
         classes::ClassDeclarationNode,

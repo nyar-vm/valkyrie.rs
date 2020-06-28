@@ -14,5 +14,6 @@ mod suffix_call;
 pub mod symbol;
 pub mod table;
 mod traits;
+mod control_flow;
 
 pub use crate::traits::ThisParser;

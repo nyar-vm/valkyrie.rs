@@ -1,33 +1,7 @@
-use valkyrie_errors::ValkyrieResult;
-
-use crate::debug_lexer;
+use super::*;
 
 #[test]
-fn test_using() -> ValkyrieResult {
-    debug_lexer(&["tests/statement/import.vk"])
+fn lex_looping() {
+    repl_debug(include_str!("loop.vk"), "statement/loop_debug.rkt").expect("loop");
 }
-
-#[test]
-fn test_if() -> ValkyrieResult {
-    debug_lexer(&["tests/statement/if_nests.vk"])
-}
-
-#[test]
-fn test_for() -> ValkyrieResult {
-    debug_lexer(&["tests/statement/for_loop.vk"])
-}
-
-#[test]
-fn test_while() -> ValkyrieResult {
-    debug_lexer(&["tests/statement/while.vk"])
-}
-
-#[test]
-fn test_string() -> ValkyrieResult {
-    debug_lexer(&[])
-}
-
-#[test]
-fn test_composite() -> ValkyrieResult {
-    debug_lexer(&[])
-}
+//

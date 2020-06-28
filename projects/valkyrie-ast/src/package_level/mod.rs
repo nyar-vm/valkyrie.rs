@@ -3,8 +3,9 @@ mod dispatch;
 pub mod namespace;
 
 use crate::{
+    expression_level::TermExpressionNode,
     package_level::{classes::ClassDeclarationNode, namespace::NamespaceDeclarationNode},
-    IdentifierNode, TermExpressionNode,
+    IdentifierNode, LoopStatementNode, TermExpressionType,
 };
 use alloc::{boxed::Box, string::String, vec::Vec};
 use core::{
@@ -26,6 +27,7 @@ pub enum TopStatementNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum ReplStatementNode {
     DeclareClass(Box<ClassDeclarationNode>),
+    Loop(Box<LoopStatementNode>),
     Expression(Box<TermExpressionNode>),
 }
 
@@ -33,5 +35,18 @@ pub enum ReplStatementNode {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum FunctionStatementNode {
+    Loop(Box<LoopStatementNode>),
     Expression(Box<TermExpressionNode>),
+}
+
+impl From<LoopStatementNode> for FunctionStatementNode {
+    fn from(value: LoopStatementNode) -> Self {
+        Self::Loop(Box::new(value))
+    }
+}
+
+impl From<LoopStatementNode> for ReplStatementNode {
+    fn from(value: LoopStatementNode) -> Self {
+        Self::Loop(Box::new(value))
+    }
 }

@@ -1,8 +1,12 @@
+mod declaration;
+mod expression;
+mod literal;
+mod statement;
+
 use lispify::{
     helpers::{colored_lisp, display_lisp},
     Lispify,
 };
-
 use std::{
     fs::File,
     io::Write,
@@ -10,10 +14,6 @@ use std::{
 };
 use valkyrie_ast::{ReplStatementNode, TopStatementNode};
 use valkyrie_parser::{repl::parse_repl, ThisParser};
-
-mod declaration;
-mod expression;
-mod literal;
 
 fn here() -> PathBuf {
     Path::new(env!("CARGO_MANIFEST_DIR")).join("tests").canonicalize().expect("failed to get manifest dir")

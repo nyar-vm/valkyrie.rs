@@ -15,6 +15,7 @@ impl Display for ReplStatementNode {
         match self {
             ReplStatementNode::DeclareClass(v) => Display::fmt(v, f),
             ReplStatementNode::Expression(v) => Display::fmt(v, f),
+            ReplStatementNode::Loop(v) => Display::fmt(v, f),
         }
     }
 }
@@ -23,6 +24,7 @@ impl Display for FunctionStatementNode {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         match self {
             FunctionStatementNode::Expression(v) => Display::fmt(v, f),
+            FunctionStatementNode::Loop(v) => Display::fmt(v, f),
         }
     }
 }
@@ -44,6 +46,7 @@ impl From<TermExpressionNode> for ReplStatementNode {
         ReplStatementNode::Expression(Box::new(value))
     }
 }
+
 impl From<TermExpressionNode> for FunctionStatementNode {
     fn from(value: TermExpressionNode) -> Self {
         FunctionStatementNode::Expression(Box::new(value))

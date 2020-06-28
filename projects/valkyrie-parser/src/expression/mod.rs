@@ -12,14 +12,14 @@ use crate::{
 
 use valkyrie_ast::{
     ApplyCallNode, ApplyDotNode, GenericCall, InfixNode, NamePathNode, NumberLiteralNode, PostfixNode, PrefixNode,
-    StringLiteralNode, TableNode, TermExpressionNode, ValkyrieOperator, ViewNode,
+    StringLiteralNode, TableNode, TermExpressionType, ValkyrieOperator, ViewNode,
 };
 /// A resolver
 #[derive(Default)]
 pub struct ExpressionResolver {}
 
 impl ExpressionResolver {
-    pub fn resolve(&self, stream: Vec<ExpressionStream>) -> Result<TermExpressionNode, StopBecause> {
+    pub fn resolve(&self, stream: Vec<ExpressionStream>) -> Result<TermExpressionType, StopBecause> {
         // println!("stream: {stream:#?}");
         let mut effect = ExpressionResolver {};
         match effect.parse(stream.into_iter()) {
@@ -53,7 +53,7 @@ pub enum ExpressionStream {
     Prefix(ValkyriePrefix),
     Postfix(ValkyrieSuffix),
     Infix(ValkyrieInfix),
-    Term(TermExpressionNode),
+    Term(TermExpressionType),
     Group(Vec<ExpressionStream>),
 }
 
@@ -73,7 +73,7 @@ where
 {
     type Error = StopBecause;
     type Input = ExpressionStream;
-    type Output = TermExpressionNode;
+    type Output = TermExpressionType;
 
     // Query information about an operator (Affix, Precedence, Associativity)
     fn query(&mut self, tree: &ExpressionStream) -> Result<Affix, StopBecause> {
@@ -88,7 +88,7 @@ where
     }
 
     // Construct a primary expression, e.g. a number
-    fn primary(&mut self, tree: ExpressionStream) -> Result<TermExpressionNode, StopBecause> {
+    fn primary(&mut self, tree: ExpressionStream) -> Result<TermExpressionType, StopBecause> {
         match tree {
             ExpressionStream::Term(term) => Ok(term),
             ExpressionStream::Group(group) => match self.parse(&mut group.into_iter()) {
@@ -102,28 +102,28 @@ where
     // Construct a binary infix expression, e.g. 1+1
     fn infix(
         &mut self,
-        lhs: TermExpressionNode,
+        lhs: TermExpressionType,
         tree: ExpressionStream,
-        rhs: TermExpressionNode,
-    ) -> Result<TermExpressionNode, StopBecause> {
+        rhs: TermExpressionType,
+    ) -> Result<TermExpressionType, StopBecause> {
         match tree {
-            ExpressionStream::Infix(o) => Ok(TermExpressionNode::binary(o.as_operator(), lhs, rhs)),
+            ExpressionStream::Infix(o) => Ok(TermExpressionType::binary(o.as_operator(), lhs, rhs)),
             _ => unreachable!(),
         }
     }
 
     // Construct a unary prefix expression, e.g. !1
-    fn prefix(&mut self, tree: ExpressionStream, rhs: TermExpressionNode) -> Result<TermExpressionNode, StopBecause> {
+    fn prefix(&mut self, tree: ExpressionStream, rhs: TermExpressionType) -> Result<TermExpressionType, StopBecause> {
         match tree {
-            ExpressionStream::Prefix(o) => Ok(TermExpressionNode::prefix(o.as_operator(), rhs)),
+            ExpressionStream::Prefix(o) => Ok(TermExpressionType::prefix(o.as_operator(), rhs)),
             _ => unreachable!(),
         }
     }
 
     // Construct a unary postfix expression, e.g. 1?
-    fn postfix(&mut self, lhs: TermExpressionNode, tree: ExpressionStream) -> Result<TermExpressionNode, StopBecause> {
+    fn postfix(&mut self, lhs: TermExpressionType, tree: ExpressionStream) -> Result<TermExpressionType, StopBecause> {
         match tree {
-            ExpressionStream::Postfix(o) => Ok(TermExpressionNode::suffix(o.as_operator(), lhs)),
+            ExpressionStream::Postfix(o) => Ok(TermExpressionType::suffix(o.as_operator(), lhs)),
             _ => unreachable!(),
         }
     }

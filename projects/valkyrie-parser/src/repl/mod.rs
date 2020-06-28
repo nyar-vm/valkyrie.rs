@@ -1,7 +1,10 @@
 use crate::{helpers::ignore, traits::ThisParser};
 use lispify::{Lisp, Lispify};
 use std::fmt::{Display, Formatter};
-use valkyrie_ast::{ClassDeclarationNode, NamespaceDeclarationNode, ReplStatementNode, TermExpressionNode, TopStatementNode};
+use valkyrie_ast::{
+    ClassDeclarationNode, LoopStatementNode, NamespaceDeclarationNode, ReplStatementNode, TermExpressionNode,
+    TermExpressionType, TopStatementNode,
+};
 use valkyrie_types::third_party::pex::{ParseResult, ParseState};
 
 #[track_caller]
@@ -18,10 +21,14 @@ pub fn parse_repl(s: &str) -> Vec<ReplStatementNode> {
 }
 
 impl ThisParser for ReplStatementNode {
-    /// - [term](TermExpressionNode::parse)
+    /// - [term](TermExpressionType::parse)
     fn parse(input: ParseState) -> ParseResult<Self> {
-        let (state, expr) =
-            input.skip(ignore).begin_choice().or_else(|s| TermExpressionNode::parse(s).map_inner(Into::into)).end_choice()?;
+        let (state, expr) = input
+            .skip(ignore)
+            .begin_choice()
+            .or_else(|s| LoopStatementNode::parse(s).map_inner(Into::into))
+            .or_else(|s| TermExpressionNode::parse(s).map_inner(Into::into))
+            .end_choice()?;
         let (state, _) = state.skip(ignore).match_optional(|s| s.match_char(';'))?;
         state.finish(expr)
     }
@@ -30,6 +37,7 @@ impl ThisParser for ReplStatementNode {
         match self {
             ReplStatementNode::DeclareClass(v) => v.as_lisp(),
             ReplStatementNode::Expression(v) => v.as_lisp(),
+            ReplStatementNode::Loop(v) => v.as_lisp(),
         }
     }
 }

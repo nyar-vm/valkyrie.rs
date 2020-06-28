@@ -10,16 +10,15 @@ impl<E> ThisParser for GenericArgumentNode<E> {
     }
 }
 
-impl ThisParser for ApplyCallNode<TermExpressionNode> {
+impl ThisParser for ApplyCallNode<TermExpressionType> {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let pat = BracketPattern::new("(", ")");
         let (state, terms) = pat.consume(input, ignore, ApplyTermNode::parse)?;
-        state.finish(ApplyCallNode { base: TermExpressionNode::Placeholder, terms: terms.body, range: state.away_from(input) })
+        state.finish(ApplyCallNode { base: TermExpressionType::Placeholder, terms: terms.body, range: state.away_from(input) })
     }
 
     fn as_lisp(&self) -> Lisp {
-        let mut terms = Vec::with_capacity(self.terms.len() + 2);
-        terms.push(Lisp::keyword("apply"));
+        let mut terms = Vec::with_capacity(self.terms.len() + 1);
         terms.push(self.base.as_lisp());
         for term in &self.terms {
             terms.push(term.as_lisp());
@@ -28,7 +27,7 @@ impl ThisParser for ApplyCallNode<TermExpressionNode> {
     }
 }
 
-impl ThisParser for ApplyDotNode<TermExpressionNode> {
+impl ThisParser for ApplyDotNode<TermExpressionType> {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, _) = input.match_char('.')?;
         let (state, caller) = state.skip(ignore).match_fn(IdentifierNode::parse)?;
@@ -37,7 +36,7 @@ impl ThisParser for ApplyDotNode<TermExpressionNode> {
             Some(v) => v.terms,
             None => vec![],
         };
-        finally.finish(ApplyDotNode { base: TermExpressionNode::Placeholder, caller, terms, range: finally.away_from(input) })
+        finally.finish(ApplyDotNode { base: TermExpressionType::Placeholder, caller, terms, range: finally.away_from(input) })
     }
 
     fn as_lisp(&self) -> Lisp {

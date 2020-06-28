@@ -30,6 +30,20 @@ pub fn ignore<'i>(input: ParseState<'i>) -> ParseResult<&'i str> {
     }
 }
 
+/// `;` or `;;`
+#[inline]
+pub fn parse_eos(input: ParseState) -> ParseResult<bool> {
+    if input.residual.starts_with(";;") {
+        input.advance(";;").finish(false)
+    }
+    else if input.residual.starts_with(";") {
+        input.advance(";").finish(true)
+    }
+    else {
+        input.finish(false)
+    }
+}
+
 /// `::` or `∷`
 #[inline]
 pub fn parse_name_join(input: ParseState) -> ParseResult<&str> {

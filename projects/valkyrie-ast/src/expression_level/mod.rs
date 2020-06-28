@@ -27,7 +27,15 @@ use core::{
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum TermExpressionNode {
+pub struct TermExpressionNode {
+    pub expression: TermExpressionType,
+    pub eos: bool,
+    pub range: Range<usize>,
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum TermExpressionType {
     Placeholder,
     Symbol(Box<NamePathNode>),
     Number(Box<NumberLiteralNode>),
@@ -42,36 +50,36 @@ pub enum TermExpressionNode {
     GenericCall(Box<GenericCall<Self>>),
 }
 
-impl TermExpressionNode {
-    pub fn binary(o: OperatorNode, lhs: TermExpressionNode, rhs: TermExpressionNode) -> TermExpressionNode {
-        let mut out = TermExpressionNode::Binary(Box::new(InfixNode { operator: o, lhs, rhs, range: Default::default() }));
+impl TermExpressionType {
+    pub fn binary(o: OperatorNode, lhs: TermExpressionType, rhs: TermExpressionType) -> TermExpressionType {
+        let mut out = TermExpressionType::Binary(Box::new(InfixNode { operator: o, lhs, rhs, range: Default::default() }));
         out.update_range();
         out
     }
-    pub fn prefix(o: OperatorNode, rhs: TermExpressionNode) -> TermExpressionNode {
-        let mut out = TermExpressionNode::Prefix(Box::new(PrefixNode { operator: o, body: rhs, range: Default::default() }));
+    pub fn prefix(o: OperatorNode, rhs: TermExpressionType) -> TermExpressionType {
+        let mut out = TermExpressionType::Prefix(Box::new(PrefixNode { operator: o, body: rhs, range: Default::default() }));
         out.update_range();
         out
     }
-    pub fn suffix(o: OperatorNode, rhs: TermExpressionNode) -> TermExpressionNode {
-        let mut out = TermExpressionNode::Suffix(Box::new(PostfixNode { operator: o, body: rhs, range: Default::default() }));
+    pub fn suffix(o: OperatorNode, rhs: TermExpressionType) -> TermExpressionType {
+        let mut out = TermExpressionType::Suffix(Box::new(PostfixNode { operator: o, body: rhs, range: Default::default() }));
         out.update_range();
         out
     }
     pub fn get_range(&self) -> Range<usize> {
         match self {
-            TermExpressionNode::Placeholder => unreachable!("Placeholder expressions should not be called"),
-            TermExpressionNode::Prefix(u) => u.range.clone(),
-            TermExpressionNode::Binary(b) => b.range.clone(),
-            TermExpressionNode::Suffix(u) => u.range.clone(),
-            TermExpressionNode::Number(u) => u.range.clone(),
-            TermExpressionNode::Symbol(u) => u.span.clone(),
-            TermExpressionNode::String(u) => u.span.clone(),
-            TermExpressionNode::Table(u) => u.range.clone(),
-            TermExpressionNode::Apply(v) => v.range.clone(),
-            TermExpressionNode::ApplyDot(v) => v.range.clone(),
-            TermExpressionNode::View(v) => v.range.clone(),
-            TermExpressionNode::GenericCall(v) => v.range.clone(),
+            TermExpressionType::Placeholder => unreachable!("Placeholder expressions should not be called"),
+            TermExpressionType::Prefix(u) => u.range.clone(),
+            TermExpressionType::Binary(b) => b.range.clone(),
+            TermExpressionType::Suffix(u) => u.range.clone(),
+            TermExpressionType::Number(u) => u.range.clone(),
+            TermExpressionType::Symbol(u) => u.span.clone(),
+            TermExpressionType::String(u) => u.span.clone(),
+            TermExpressionType::Table(u) => u.range.clone(),
+            TermExpressionType::Apply(v) => v.range.clone(),
+            TermExpressionType::ApplyDot(v) => v.range.clone(),
+            TermExpressionType::View(v) => v.range.clone(),
+            TermExpressionType::GenericCall(v) => v.range.clone(),
         }
     }
 }

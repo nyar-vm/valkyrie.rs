@@ -1,12 +1,12 @@
 use super::*;
 
-impl ThisParser for ViewNode<TermExpressionNode> {
+impl ThisParser for ViewNode<TermExpressionType> {
     /// `[` ~ `]` | `[` [term](ViewTermNode::parse) ( ~ `,` ~ [term](ViewTermNode::parse))* `,`? `]`
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, (index0, terms)) = input.begin_choice().or_else(parse_index1).or_else(parse_index0).end_choice()?;
         state.finish(ViewNode {
             index0,
-            base: TermExpressionNode::Placeholder,
+            base: TermExpressionType::Placeholder,
             terms: terms.body,
             range: state.away_from(input),
         })
@@ -24,18 +24,18 @@ impl ThisParser for ViewNode<TermExpressionNode> {
 }
 
 #[inline]
-fn parse_index1(input: ParseState) -> ParseResult<(bool, BracketPair<ViewTermNode<TermExpressionNode>>)> {
+fn parse_index1(input: ParseState) -> ParseResult<(bool, BracketPair<ViewTermNode<TermExpressionType>>)> {
     let pat = BracketPattern::new("[", "]");
     pat.consume(input, ignore, ViewTermNode::parse).map_inner(|s| (false, s))
 }
 
 #[inline]
-fn parse_index0(input: ParseState) -> ParseResult<(bool, BracketPair<ViewTermNode<TermExpressionNode>>)> {
+fn parse_index0(input: ParseState) -> ParseResult<(bool, BracketPair<ViewTermNode<TermExpressionType>>)> {
     let pat = BracketPattern::new("⁅", "⁆");
     pat.consume(input, ignore, ViewTermNode::parse).map_inner(|s| (true, s))
 }
 
-impl ThisParser for ViewTermNode<TermExpressionNode> {
+impl ThisParser for ViewTermNode<TermExpressionType> {
     /// [range](ViewTermNode::parse_ranged) | [index](ViewTermNode::parse_single)
     fn parse(input: ParseState) -> ParseResult<Self> {
         input.begin_choice().or_else(parse_ranged).or_else(parse_single).end_choice()
@@ -49,7 +49,7 @@ impl ThisParser for ViewTermNode<TermExpressionNode> {
     }
 }
 
-impl ThisParser for ViewRangeNode<TermExpressionNode> {
+impl ThisParser for ViewRangeNode<TermExpressionType> {
     fn parse(input: ParseState) -> ParseResult<Self> {
         todo!()
     }
@@ -73,22 +73,22 @@ impl ThisParser for ViewRangeNode<TermExpressionNode> {
     }
 }
 
-/// [start](TermExpressionNode::parse)? ~ `:` ~ [end](TermExpressionNode::parse)? (~ `:` ~ [step](TermExpressionNode::parse)?)?
-pub fn parse_ranged(input: ParseState) -> ParseResult<ViewTermNode<TermExpressionNode>> {
-    let (state, start) = input.match_optional(TermExpressionNode::parse)?;
+/// [start](TermExpressionType::parse)? ~ `:` ~ [end](TermExpressionType::parse)? (~ `:` ~ [step](TermExpressionType::parse)?)?
+pub fn parse_ranged(input: ParseState) -> ParseResult<ViewTermNode<TermExpressionType>> {
+    let (state, start) = input.match_optional(TermExpressionType::parse)?;
     let (state, _) = state.skip(ignore).match_char(':')?;
-    let (state, end) = state.skip(ignore).match_optional(TermExpressionNode::parse)?;
+    let (state, end) = state.skip(ignore).match_optional(TermExpressionType::parse)?;
     let (state, step) = state.match_optional(maybe_step)?;
     state.finish(ViewTermNode::ranged(start, end, step.flatten(), state.away_from(input)))
 }
-/// - [term](TermExpressionNode::parse)
-pub fn parse_single(input: ParseState) -> ParseResult<ViewTermNode<TermExpressionNode>> {
-    let (state, term) = TermExpressionNode::parse(input)?;
+/// - [term](TermExpressionType::parse)
+pub fn parse_single(input: ParseState) -> ParseResult<ViewTermNode<TermExpressionType>> {
+    let (state, term) = TermExpressionType::parse(input)?;
     state.finish(ViewTermNode::indexed(term))
 }
 /// `~ : ~ step?`
-fn maybe_step(input: ParseState) -> ParseResult<Option<TermExpressionNode>> {
+fn maybe_step(input: ParseState) -> ParseResult<Option<TermExpressionType>> {
     let (state, _) = input.skip(ignore).match_char(':')?;
-    let (state, term) = state.skip(ignore).match_optional(TermExpressionNode::parse)?;
+    let (state, term) = state.skip(ignore).match_optional(TermExpressionType::parse)?;
     state.finish(term)
 }

@@ -1,5 +1,5 @@
 use super::*;
-use valkyrie_ast::{GenericCall, TermExpressionNode, ViewNode};
+use valkyrie_ast::{GenericCall, TermExpressionType, ViewNode};
 use valkyrie_parser::ThisParser;
 
 #[test]
@@ -18,14 +18,14 @@ fn test_apply2() {}
 #[test]
 fn test_apply() {
     let raw = "a.b";
-    let apply = TermExpressionNode::parse_text(raw).unwrap();
+    let apply = TermExpressionType::parse_text(raw).unwrap();
     println!("{}", colored_lisp(apply.as_lisp(), 144).unwrap());
 }
 
 #[test]
 fn main1() {
     let raw = "A:: <T, 1, >";
-    let slice = GenericCall::<TermExpressionNode>::parse_text(raw).unwrap();
+    let slice = GenericCall::<TermExpressionType>::parse_text(raw).unwrap();
     println!("input:\n{slice:#?}");
     println!("output:\n{}", colored_lisp(slice.as_lisp(), 42).unwrap());
 }
