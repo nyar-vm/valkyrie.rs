@@ -1,7 +1,7 @@
 use super::*;
 
 impl<E: Display> Display for ViewNode<E> {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         Display::fmt(&self.base, f)?;
         f.write_char(if self.index0 { '[' } else { '⁅' })?;
         for (idx, item) in self.terms.iter().enumerate() {
@@ -15,7 +15,7 @@ impl<E: Display> Display for ViewNode<E> {
 }
 
 impl<E: Display> Display for ViewTermNode<E> {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         match self {
             ViewTermNode::Index(v) => Display::fmt(v, f),
             ViewTermNode::Range(v) => Display::fmt(v, f),
@@ -24,7 +24,7 @@ impl<E: Display> Display for ViewTermNode<E> {
 }
 
 impl<E: Display> Display for ViewRangeNode<E> {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         if let Some(start) = &self.start {
             Display::fmt(start, f)?;
         }

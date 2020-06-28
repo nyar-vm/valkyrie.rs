@@ -29,7 +29,7 @@ pub struct TextItem {
 }
 
 impl Debug for TextManager {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         let files: Vec<&str> = self.text_map.values().map(|v| v.path.as_str()).collect();
         f.debug_struct("TextManager").field("root", &self.root.display()).field("files", &files).finish()
     }

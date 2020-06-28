@@ -1,19 +1,19 @@
 use super::*;
 
 impl Debug for ValkyrieInfix {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         write!(f, "Infix({}, {:?})", self.as_operator(), self.range)
     }
 }
 
 impl Debug for ValkyriePrefix {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         write!(f, "Prefix({}, {:?})", self.normalized, self.range)
     }
 }
 
 impl Debug for ValkyrieSuffix {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         write!(f, "Postfix({}, {:?})", self.normalized, self.range)
     }
 }

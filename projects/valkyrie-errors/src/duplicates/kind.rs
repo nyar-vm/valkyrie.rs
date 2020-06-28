@@ -1,7 +1,7 @@
 use super::*;
 
 impl Debug for DuplicateKind {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         match self {
             DuplicateKind::Type => f.write_str("Type"),
             DuplicateKind::Function => f.write_str("Function"),
@@ -11,7 +11,7 @@ impl Debug for DuplicateKind {
 }
 
 impl Display for DuplicateKind {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         match self {
             DuplicateKind::Type => f.write_str("type"),
             DuplicateKind::Function => f.write_str("function"),

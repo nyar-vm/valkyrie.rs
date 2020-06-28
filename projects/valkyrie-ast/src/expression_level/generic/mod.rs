@@ -1,9 +1,5 @@
 mod display;
-use crate::{utils::comma_terms, ApplyTermNode, IdentifierNode};
-use std::{
-    fmt::{Display, Formatter},
-    ops::Range,
-};
+use super::*;
 
 /// `class A<T: S = K>` or `class A⦓T: S = K⦔`
 pub struct GenericArgumentNode<E> {

@@ -1,7 +1,7 @@
 use super::*;
 
 impl Display for TermExpressionNode {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         match self {
             TermExpressionNode::Placeholder => f.write_str("???"),
             TermExpressionNode::Prefix(v) => Display::fmt(v, f),

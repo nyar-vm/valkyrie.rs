@@ -20,7 +20,7 @@ impl<'de> Deserialize<'de> for ValkyrieValue {
 impl<'de> Visitor<'de> for ValueVisitor {
     type Value = ValkyrieValue;
 
-    fn expecting(&self, formatter: &mut std::fmt::Formatter) -> std::fmt::Result {
+    fn expecting(&self, formatter: &mut std::fmt::Formatter) -> core::fmt::Result {
         formatter.write_str("Expecting a Valkyrie Value")
     }
 

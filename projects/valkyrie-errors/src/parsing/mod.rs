@@ -31,7 +31,7 @@ pub struct SyntaxError {
 }
 
 impl Display for SyntaxError {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         f.write_str(&self.info)
     }
 }

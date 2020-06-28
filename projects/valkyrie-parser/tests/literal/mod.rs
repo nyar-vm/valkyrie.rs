@@ -1,4 +1,5 @@
 use super::*;
+use valkyrie_parser::ThisParser;
 
 #[test]
 fn lex_number() {
@@ -12,7 +13,7 @@ fn test_table() {
     let mut file = File::create(here().join("table_debug.rkt")).expect("File to create `table_debug.rkt`");
     let apply = parse_repl(include_str!("table.vk"));
     for expr in &apply {
-        writeln!(file, "{}", colored_lisp(expr.lispify(), 144).unwrap()).unwrap();
-        println!("{}", colored_lisp(expr.lispify(), 144).unwrap());
+        writeln!(file, "{}", colored_lisp(expr.as_lisp(), 144).unwrap()).unwrap();
+        println!("{}", colored_lisp(expr.as_lisp(), 144).unwrap());
     }
 }

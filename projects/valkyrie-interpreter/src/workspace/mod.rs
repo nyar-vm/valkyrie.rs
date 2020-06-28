@@ -49,7 +49,7 @@ struct WorkspaceVisitor<'de> {
 impl<'de, 'body> Visitor<'de> for WorkspaceVisitor<'body> {
     type Value = ();
 
-    fn expecting(&self, formatter: &mut Formatter) -> std::fmt::Result {
+    fn expecting(&self, formatter: &mut Formatter) -> core::fmt::Result {
         formatter.write_str("Except Workspace object")
     }
     fn visit_map<A>(self, mut map: A) -> Result<Self::Value, A::Error>

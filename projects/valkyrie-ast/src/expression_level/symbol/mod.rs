@@ -68,7 +68,7 @@ impl IdentifierNode {
 }
 
 // impl Display for ValkyrieIdentifier {
-//     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+//     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
 //         // if string is pure xid
 //         write!(f, "{}", self.name)
 //         // if self.name.chars().all(|c| c.is_xid_continue()) {

@@ -1,4 +1,4 @@
-use crate::{ApplyCallNode, ApplyTermNode, IdentifierNode, TermExpressionNode};
+use super::*;
 
 /// `new kind Type<G>() {body}`
 ///

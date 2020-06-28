@@ -1,6 +1,6 @@
-use std::fmt::{Display, Formatter};
+use core::fmt::{Display, Formatter};
 
-pub fn comma_terms<T: Display>(f: &mut Formatter<'_>, input: &[T]) -> std::fmt::Result {
+pub fn comma_terms<T: Display>(f: &mut Formatter<'_>, input: &[T]) -> core::fmt::Result {
     let mut terms = input.iter();
     match terms.next() {
         Some(term) => Display::fmt(term, f)?,

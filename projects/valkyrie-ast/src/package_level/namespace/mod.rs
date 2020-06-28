@@ -1,21 +1,4 @@
-// use serde::{Deserialize, Serialize};
-// use std::{ops::Range, str::FromStr};
-//
-// use valkyrie_errors::FileID;
-//
-// use crate::{ValkyrieASTKind, ValkyrieASTNode, ValkyrieIdentifier};
-// use std::slice::Iter;
-//
-// pub mod class_field;
-// pub mod class_method;
-// pub mod classes;
-//
-
-use crate::IdentifierNode;
-use std::{
-    fmt::{Display, Formatter, Write},
-    ops::Range,
-};
+use super::*;
 
 #[derive(Copy, Clone, Debug, Eq, PartialEq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -29,7 +12,7 @@ pub enum NamespaceKind {
 }
 
 impl Display for NamespaceKind {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         f.write_str("namespace")?;
         match self {
             NamespaceKind::Shared => Ok(()),
@@ -40,7 +23,7 @@ impl Display for NamespaceKind {
 }
 
 impl Display for NamespaceDeclarationNode {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         write!(f, "{} ", self.kind)?;
         for (idx, id) in self.path.iter().enumerate() {
             if idx != 0 {

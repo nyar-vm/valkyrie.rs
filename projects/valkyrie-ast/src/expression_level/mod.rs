@@ -11,10 +11,16 @@ pub mod table;
 pub mod view;
 
 use crate::{
-    expression_level::table::ArgumentTermNode, ApplyCallNode, ApplyDotNode, ApplyTermNode, GenericCall, IdentifierNode,
-    InfixNode, NamePathNode, NumberLiteralNode, OperatorNode, PostfixNode, PrefixNode, StringLiteralNode, TableNode, ViewNode,
+    expression_level::table::ArgumentTermNode, utils::comma_terms, ApplyCallNode, ApplyDotNode, ApplyTermNode, GenericCall,
+    IdentifierNode, InfixNode, NamePathNode, NumberLiteralNode, OperatorNode, PostfixNode, PrefixNode, StringLiteralNode,
+    TableNode, ViewNode,
 };
-use std::{
+use alloc::{
+    boxed::Box,
+    string::{String, ToString},
+    vec::Vec,
+};
+use core::{
     fmt::{Display, Formatter, Write},
     ops::Range,
 };

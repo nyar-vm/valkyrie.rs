@@ -41,8 +41,8 @@ features = []
 path = "../valkyrie-ast"
 
 [dependencies.jupyter]
-version = "0.1.6"
-path = "D:\\Java\\jupyter-protocol\\projects\\jupyter"
+version = "0.1.5"
+#path = "D:\\Java\\jupyter-protocol\\projects\\jupyter"
 
 [dependencies.jupyter-derive]
 version = "0.0.1"

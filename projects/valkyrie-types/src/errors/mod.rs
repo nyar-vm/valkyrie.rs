@@ -47,13 +47,13 @@ impl Error for ValkyrieError {}
 impl Error for ValkyrieErrorKind {}
 
 impl Display for ValkyrieError {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         Display::fmt(&self.kind, f)
     }
 }
 
 impl Display for ValkyrieErrorKind {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         match self {
             ValkyrieErrorKind::Custom(message) => write!(f, "{}", message),
             ValkyrieErrorKind::SyntaxError { message, range } => write!(f, "{}", message),

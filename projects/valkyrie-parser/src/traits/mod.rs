@@ -31,9 +31,12 @@
 
 use crate::helpers::ignore;
 use lispify::Lisp;
-use valkyrie_types::third_party::pex::{
-    helpers::{make_from_str, whitespace},
-    ParseResult, ParseState, StopBecause,
+use valkyrie_types::{
+    third_party::pex::{
+        helpers::{make_from_str, whitespace},
+        ParseResult, ParseState, StopBecause,
+    },
+    ValkyrieError,
 };
 
 pub trait ThisParser
@@ -45,9 +48,16 @@ where
         let state = ParseState::new(input.trim_end());
         make_from_str(state.skip(whitespace), Self::parse)
     }
-    fn parse_many(input: ParseState) -> ParseResult<Vec<Self>> {
-        let (state, terms) = input.match_repeats(Self::parse)?;
-        if state.skip(ignore).residual.is_empty() { state.finish(terms) } else { StopBecause::expect_eof(state.start_offset)? }
+    fn parse_many(input: &str) -> Result<Vec<Self>, ValkyrieError> {
+        let input = ParseState::new(input);
+        let (state, repl) = match input.match_repeats(Self::parse) {
+            ParseResult::Pending(s, v) => (s.skip(ignore), v),
+            ParseResult::Stop(e) => Err(ValkyrieError::custom(format!("Failed to parse REPL: {:?}", e)))?,
+        };
+        if !state.residual.is_empty() {
+            Err(ValkyrieError::custom(format!("Expect EOF, found:\n{}", state.residual)))?
+        }
+        Ok(repl)
     }
     fn as_lisp(&self) -> Lisp;
 }

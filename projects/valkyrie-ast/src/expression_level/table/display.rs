@@ -1,7 +1,7 @@
 use super::*;
 
 impl Display for TableKind {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         write!(f, "{} {}", self.begin_str(), self.end_str())
     }
 }
@@ -24,7 +24,7 @@ impl TableKind {
 }
 
 impl<E: Display> Display for TableNode<E> {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         write!(f, "{}", self.kind.begin_str())?;
         for (i, term) in self.terms.iter().enumerate() {
             if i != 0 {

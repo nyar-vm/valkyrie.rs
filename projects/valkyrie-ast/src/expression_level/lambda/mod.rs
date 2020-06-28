@@ -1,5 +1,6 @@
 use crate::{expression_level::table::ArgumentTermNode, package_level::TopStatementNode, IdentifierNode};
-use std::ops::Range;
+use alloc::vec::Vec;
+use core::ops::Range;
 
 pub struct LambdaArgumentNode {
     /// The raw string of the number.

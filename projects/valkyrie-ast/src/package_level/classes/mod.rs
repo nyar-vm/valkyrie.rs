@@ -1,5 +1,5 @@
 use super::*;
-use crate::IdentifierNode;
+use core::fmt::Debug;
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -13,7 +13,14 @@ pub struct ClassDeclarationNode {
 
 impl Default for ClassDeclarationNode {
     fn default() -> Self {
-        Self { namepath: vec![], modifiers: vec![], extends: None, implements: vec![], statements: vec![] }
+        Self { namepath: Vec::new(), modifiers: Vec::new(), extends: None, implements: Vec::new(), statements: Vec::new() }
+    }
+}
+
+impl Display for ClassDeclarationNode {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        f.write_str("class")?;
+        todo!()
     }
 }
 

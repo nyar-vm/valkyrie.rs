@@ -112,7 +112,7 @@ impl ValkyrieMetaType {
 }
 
 impl Display for ValkyrieMetaType {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> core::fmt::Result {
         f.write_str(&self.display_type(false))
     }
 }

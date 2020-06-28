@@ -1,3 +1,7 @@
+#![no_std]
+
+extern crate alloc;
+
 mod control_flow;
 mod expression_level;
 mod package_level;
@@ -19,7 +23,8 @@ pub use crate::{
         TermExpressionNode,
     },
     package_level::{
+        classes::ClassDeclarationNode,
         namespace::{NamespaceDeclarationNode, NamespaceKind},
-        TopStatementNode,
+        FunctionStatementNode, ReplStatementNode, TopStatementNode,
     },
 };
