@@ -1,5 +1,6 @@
 loop {}
+loop {loop {}}
 
 loop {
-    print("Hello, world!");
+    print("Loop!");
 }

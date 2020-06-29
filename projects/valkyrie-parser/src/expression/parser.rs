@@ -1,8 +1,8 @@
 use super::*;
 use crate::helpers::{parse_eos, parse_name_join};
-use valkyrie_ast::TermExpressionNode;
+use valkyrie_ast::{ExpressionContext, ExpressionNode};
 
-impl ThisParser for PrefixNode<TermExpressionType> {
+impl ThisParser for PrefixNode<ExpressionType> {
     fn parse(_: ParseState) -> ParseResult<Self> {
         unreachable!()
     }
@@ -12,7 +12,7 @@ impl ThisParser for PrefixNode<TermExpressionType> {
     }
 }
 
-impl ThisParser for InfixNode<TermExpressionType> {
+impl ThisParser for InfixNode<ExpressionType> {
     fn parse(_: ParseState) -> ParseResult<Self> {
         unreachable!()
     }
@@ -22,7 +22,7 @@ impl ThisParser for InfixNode<TermExpressionType> {
     }
 }
 
-impl ThisParser for PostfixNode<TermExpressionType> {
+impl ThisParser for PostfixNode<ExpressionType> {
     fn parse(_: ParseState) -> ParseResult<Self> {
         unreachable!()
     }
@@ -32,11 +32,11 @@ impl ThisParser for PostfixNode<TermExpressionType> {
     }
 }
 
-impl ThisParser for TermExpressionNode {
+impl ThisParser for ExpressionNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
-        let (state, term) = TermExpressionType::parse(input)?;
+        let (state, term) = ExpressionType::parse(input)?;
         let (state, eos) = state.skip(ignore).match_fn(parse_eos)?;
-        state.finish(TermExpressionNode { expression: term, eos, range: state.away_from(input) })
+        state.finish(ExpressionNode { context: ExpressionContext::Term, expression: term, eos, range: state.away_from(input) })
     }
 
     fn as_lisp(&self) -> Lisp {
@@ -44,7 +44,7 @@ impl ThisParser for TermExpressionNode {
     }
 }
 
-impl ThisParser for TermExpressionType {
+impl ThisParser for ExpressionType {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let resolver = ExpressionResolver::default();
         let (state, stream) = ExpressionStream::parse(input)?;
@@ -53,18 +53,18 @@ impl ThisParser for TermExpressionType {
 
     fn as_lisp(&self) -> Lisp {
         match self {
-            TermExpressionType::Placeholder => Lisp::Keyword("placeholder".into()),
-            TermExpressionType::Prefix(v) => v.as_lisp(),
-            TermExpressionType::Binary(v) => v.as_lisp(),
-            TermExpressionType::Suffix(v) => v.as_lisp(),
-            TermExpressionType::Number(v) => v.as_lisp(),
-            TermExpressionType::Symbol(v) => v.as_lisp(),
-            TermExpressionType::String(v) => v.as_lisp(),
-            TermExpressionType::Table(v) => v.as_lisp(),
-            TermExpressionType::Apply(v) => v.as_lisp(),
-            TermExpressionType::ApplyDot(v) => v.as_lisp(),
-            TermExpressionType::View(v) => v.as_lisp(),
-            TermExpressionType::GenericCall(v) => v.as_lisp(),
+            ExpressionType::Placeholder => Lisp::Keyword("placeholder".into()),
+            ExpressionType::Prefix(v) => v.as_lisp(),
+            ExpressionType::Binary(v) => v.as_lisp(),
+            ExpressionType::Suffix(v) => v.as_lisp(),
+            ExpressionType::Number(v) => v.as_lisp(),
+            ExpressionType::Symbol(v) => v.as_lisp(),
+            ExpressionType::String(v) => v.as_lisp(),
+            ExpressionType::Table(v) => v.as_lisp(),
+            ExpressionType::Apply(v) => v.as_lisp(),
+            ExpressionType::ApplyDot(v) => v.as_lisp(),
+            ExpressionType::View(v) => v.as_lisp(),
+            ExpressionType::GenericCall(v) => v.as_lisp(),
         }
     }
 }
@@ -134,14 +134,14 @@ fn parse_expr_value<'a>(input: ParseState<'a>, stream: &mut Vec<ExpressionStream
 }
 
 pub enum NormalPostfixCall {
-    Apply(Box<ApplyCallNode<TermExpressionType>>),
-    ApplyDot(Box<ApplyDotNode<TermExpressionType>>),
-    View(Box<ViewNode<TermExpressionType>>),
-    Generic(Box<GenericCall<TermExpressionType>>),
+    Apply(Box<ApplyCallNode<ExpressionType>>),
+    ApplyDot(Box<ApplyDotNode<ExpressionType>>),
+    View(Box<ViewNode<ExpressionType>>),
+    Generic(Box<GenericCall<ExpressionType>>),
 }
 
 #[inline]
-pub fn parse_value(input: ParseState) -> ParseResult<TermExpressionType> {
+pub fn parse_value(input: ParseState) -> ParseResult<ExpressionType> {
     let (state, mut base) = input
         .begin_choice()
         .or_else(|s| NamePathNode::parse(s).map_inner(Into::into))
@@ -152,10 +152,10 @@ pub fn parse_value(input: ParseState) -> ParseResult<TermExpressionType> {
     let (state, rest) = state.match_repeats(NormalPostfixCall::parse)?;
     for caller in rest {
         match caller {
-            NormalPostfixCall::Apply(v) => base = TermExpressionType::Apply(v.rebase(base)),
-            NormalPostfixCall::ApplyDot(v) => base = TermExpressionType::ApplyDot(v.rebase(base)),
-            NormalPostfixCall::View(v) => base = TermExpressionType::View(v.rebase(base)),
-            NormalPostfixCall::Generic(v) => base = TermExpressionType::GenericCall(v.rebase(base)),
+            NormalPostfixCall::Apply(v) => base = ExpressionType::Apply(v.rebase(base)),
+            NormalPostfixCall::ApplyDot(v) => base = ExpressionType::ApplyDot(v.rebase(base)),
+            NormalPostfixCall::View(v) => base = ExpressionType::View(v.rebase(base)),
+            NormalPostfixCall::Generic(v) => base = ExpressionType::GenericCall(v.rebase(base)),
         }
     }
     state.finish(base)
@@ -178,25 +178,25 @@ impl ThisParser for NormalPostfixCall {
     }
 }
 
-impl From<ApplyCallNode<TermExpressionType>> for NormalPostfixCall {
-    fn from(value: ApplyCallNode<TermExpressionType>) -> Self {
+impl From<ApplyCallNode<ExpressionType>> for NormalPostfixCall {
+    fn from(value: ApplyCallNode<ExpressionType>) -> Self {
         NormalPostfixCall::Apply(Box::new(value))
     }
 }
 
-impl From<ApplyDotNode<TermExpressionType>> for NormalPostfixCall {
-    fn from(value: ApplyDotNode<TermExpressionType>) -> Self {
+impl From<ApplyDotNode<ExpressionType>> for NormalPostfixCall {
+    fn from(value: ApplyDotNode<ExpressionType>) -> Self {
         NormalPostfixCall::ApplyDot(Box::new(value))
     }
 }
 
-impl From<ViewNode<TermExpressionType>> for NormalPostfixCall {
-    fn from(value: ViewNode<TermExpressionType>) -> Self {
+impl From<ViewNode<ExpressionType>> for NormalPostfixCall {
+    fn from(value: ViewNode<ExpressionType>) -> Self {
         NormalPostfixCall::View(Box::new(value))
     }
 }
-impl From<GenericCall<TermExpressionType>> for NormalPostfixCall {
-    fn from(value: GenericCall<TermExpressionType>) -> Self {
+impl From<GenericCall<ExpressionType>> for NormalPostfixCall {
+    fn from(value: GenericCall<ExpressionType>) -> Self {
         NormalPostfixCall::Generic(Box::new(value))
     }
 }

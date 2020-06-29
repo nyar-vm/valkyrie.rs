@@ -1,7 +1,15 @@
-use crate::{expression_level::table::ArgumentTermNode, package_level::TopStatementNode, IdentifierNode};
-use alloc::vec::Vec;
-use core::ops::Range;
+use super::*;
 
+/// `{lambda(args), ...}`
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct LambdaNode {
+    pub arguments: Option<LambdaArgumentNode>,
+}
+
+/// `lambda(args)`
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct LambdaArgumentNode {
     /// The raw string of the number.
     pub terms: Vec<TopStatementNode>,

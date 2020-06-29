@@ -3,7 +3,7 @@ use crate::{
     ThisParser,
 };
 use lispify::Lisp;
-use valkyrie_ast::{FunctionStatementNode, LoopStatementNode, TermExpressionNode, TermExpressionType};
+use valkyrie_ast::{ExpressionNode, ExpressionType, FunctionStatementNode, LoopStatementNode};
 use valkyrie_types::third_party::pex::{BracketPattern, ParseResult, ParseState};
 
 impl ThisParser for LoopStatementNode {
@@ -32,7 +32,7 @@ impl ThisParser for FunctionStatementNode {
             .skip(ignore)
             .begin_choice()
             .or_else(|s| LoopStatementNode::parse(s).map_inner(Into::into))
-            .or_else(|s| TermExpressionNode::parse(s).map_inner(Into::into))
+            .or_else(|s| ExpressionNode::parse(s).map_inner(Into::into))
             .end_choice()
     }
 

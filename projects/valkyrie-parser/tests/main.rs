@@ -13,7 +13,12 @@ use std::{
     path::{Path, PathBuf},
 };
 use valkyrie_ast::{ReplStatementNode, TopStatementNode};
-use valkyrie_parser::{repl::parse_repl, ThisParser};
+use valkyrie_parser::ThisParser;
+
+#[test]
+fn ready() {
+    println!("it works!")
+}
 
 fn here() -> PathBuf {
     Path::new(env!("CARGO_MANIFEST_DIR")).join("tests").canonicalize().expect("failed to get manifest dir")

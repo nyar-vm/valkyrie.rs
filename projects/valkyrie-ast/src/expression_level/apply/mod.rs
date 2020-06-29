@@ -1,7 +1,7 @@
 mod display;
 use super::*;
 
-/// `term.call(0, a: 1, **args, ***kwargs)`
+/// `term.call(0, a: 1, ⁑args, ⁂kwargs)`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ApplyDotNode<E> {
@@ -15,7 +15,7 @@ pub struct ApplyDotNode<E> {
     pub range: Range<usize>,
 }
 
-/// `apply(0, a: 1, **args, ***kwargs)`
+/// `apply(0, a: 1, ⁑args, ⁂kwargs)`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ApplyCallNode<E> {
@@ -34,7 +34,7 @@ pub struct ApplyTermNode<K, V> {
     pub value: V,
 }
 
-/// `def f(mut self, a, b: int, c: T = 3, **args, ***kwargs)`
+/// `def f(mut self, a, b: int, c: T = 3, ⁑args, ⁂kwargs)`
 pub struct ApplyArgumentNode<E1, E2> {
     /// The raw string of the number.
     pub terms: Vec<ArgumentTermNode<IdentifierNode, E1, E2>>,

@@ -11,9 +11,9 @@ pub mod table;
 pub mod view;
 
 use crate::{
-    expression_level::table::ArgumentTermNode, utils::comma_terms, ApplyCallNode, ApplyDotNode, ApplyTermNode, GenericCall,
-    IdentifierNode, InfixNode, NamePathNode, NumberLiteralNode, OperatorNode, PostfixNode, PrefixNode, StringLiteralNode,
-    TableNode, ViewNode,
+    expression_level::table::ArgumentTermNode, package_level::TopStatementNode, utils::comma_terms, ApplyCallNode,
+    ApplyDotNode, ApplyTermNode, GenericCall, IdentifierNode, InfixNode, NamePathNode, NumberLiteralNode, OperatorNode,
+    PostfixNode, PrefixNode, StringLiteralNode, TableNode, ViewNode,
 };
 use alloc::{
     boxed::Box,
@@ -27,15 +27,23 @@ use core::{
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct TermExpressionNode {
-    pub expression: TermExpressionType,
+pub struct ExpressionNode {
+    pub context: ExpressionContext,
+    pub expression: ExpressionType,
     pub eos: bool,
     pub range: Range<usize>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum TermExpressionType {
+pub enum ExpressionContext {
+    Term,
+    Type,
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum ExpressionType {
     Placeholder,
     Symbol(Box<NamePathNode>),
     Number(Box<NumberLiteralNode>),
@@ -50,36 +58,36 @@ pub enum TermExpressionType {
     GenericCall(Box<GenericCall<Self>>),
 }
 
-impl TermExpressionType {
-    pub fn binary(o: OperatorNode, lhs: TermExpressionType, rhs: TermExpressionType) -> TermExpressionType {
-        let mut out = TermExpressionType::Binary(Box::new(InfixNode { operator: o, lhs, rhs, range: Default::default() }));
+impl ExpressionType {
+    pub fn binary(o: OperatorNode, lhs: ExpressionType, rhs: ExpressionType) -> ExpressionType {
+        let mut out = ExpressionType::Binary(Box::new(InfixNode { operator: o, lhs, rhs, range: Default::default() }));
         out.update_range();
         out
     }
-    pub fn prefix(o: OperatorNode, rhs: TermExpressionType) -> TermExpressionType {
-        let mut out = TermExpressionType::Prefix(Box::new(PrefixNode { operator: o, body: rhs, range: Default::default() }));
+    pub fn prefix(o: OperatorNode, rhs: ExpressionType) -> ExpressionType {
+        let mut out = ExpressionType::Prefix(Box::new(PrefixNode { operator: o, body: rhs, range: Default::default() }));
         out.update_range();
         out
     }
-    pub fn suffix(o: OperatorNode, rhs: TermExpressionType) -> TermExpressionType {
-        let mut out = TermExpressionType::Suffix(Box::new(PostfixNode { operator: o, body: rhs, range: Default::default() }));
+    pub fn suffix(o: OperatorNode, rhs: ExpressionType) -> ExpressionType {
+        let mut out = ExpressionType::Suffix(Box::new(PostfixNode { operator: o, body: rhs, range: Default::default() }));
         out.update_range();
         out
     }
     pub fn get_range(&self) -> Range<usize> {
         match self {
-            TermExpressionType::Placeholder => unreachable!("Placeholder expressions should not be called"),
-            TermExpressionType::Prefix(u) => u.range.clone(),
-            TermExpressionType::Binary(b) => b.range.clone(),
-            TermExpressionType::Suffix(u) => u.range.clone(),
-            TermExpressionType::Number(u) => u.range.clone(),
-            TermExpressionType::Symbol(u) => u.span.clone(),
-            TermExpressionType::String(u) => u.span.clone(),
-            TermExpressionType::Table(u) => u.range.clone(),
-            TermExpressionType::Apply(v) => v.range.clone(),
-            TermExpressionType::ApplyDot(v) => v.range.clone(),
-            TermExpressionType::View(v) => v.range.clone(),
-            TermExpressionType::GenericCall(v) => v.range.clone(),
+            ExpressionType::Placeholder => unreachable!("Placeholder expressions should not be called"),
+            ExpressionType::Prefix(u) => u.range.clone(),
+            ExpressionType::Binary(b) => b.range.clone(),
+            ExpressionType::Suffix(u) => u.range.clone(),
+            ExpressionType::Number(u) => u.range.clone(),
+            ExpressionType::Symbol(u) => u.span.clone(),
+            ExpressionType::String(u) => u.span.clone(),
+            ExpressionType::Table(u) => u.range.clone(),
+            ExpressionType::Apply(v) => v.range.clone(),
+            ExpressionType::ApplyDot(v) => v.range.clone(),
+            ExpressionType::View(v) => v.range.clone(),
+            ExpressionType::GenericCall(v) => v.range.clone(),
         }
     }
 }

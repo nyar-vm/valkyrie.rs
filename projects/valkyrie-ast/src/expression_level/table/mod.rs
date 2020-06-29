@@ -7,13 +7,13 @@ mod display;
 pub enum TableKind {
     /// `(a, b, c)`
     Tuple,
-    /// `{a, b, c}`
+    /// `[a, b, c]`
     OffsetTable,
     /// `{a = 1, b = 2, c = 3}`
     OrdinalTable,
 }
 
-/// A number literal.
+/// `[table]` or `(tuple)`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct TableNode<E> {

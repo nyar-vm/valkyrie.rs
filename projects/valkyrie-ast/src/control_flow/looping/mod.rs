@@ -3,7 +3,7 @@ use crate::FunctionStatementNode;
 use alloc::vec::Vec;
 use core::fmt::{Debug, Display, Formatter};
 
-/// `loop { }`
+/// `loop { ... }`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct LoopStatementNode {

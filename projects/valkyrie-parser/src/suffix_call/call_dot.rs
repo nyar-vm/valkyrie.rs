@@ -1,31 +1,25 @@
 use super::*;
 
-impl ThisParser for GenericCall<TermExpressionType> {
-    /// `::<T> | ⦓T⦔`
+impl ThisParser for ApplyDotNode<ExpressionType> {
     fn parse(input: ParseState) -> ParseResult<Self> {
-        input.begin_choice().or_else(qwerty_generic).or_else(unicode_generic).end_choice()
+        let (state, _) = input.match_char('.')?;
+        let (state, caller) = state.skip(ignore).match_fn(IdentifierNode::parse)?;
+        let (finally, args) = state.skip(ignore).match_optional(ApplyCallNode::parse)?;
+        let terms = match args {
+            Some(v) => v.terms,
+            None => vec![],
+        };
+        finally.finish(ApplyDotNode { base: ExpressionType::Placeholder, caller, terms, range: finally.away_from(input) })
     }
 
     fn as_lisp(&self) -> Lisp {
-        let mut terms = Vec::with_capacity(self.terms.len() + 2);
-        terms.push(Lisp::function("generic"));
-        // terms.push(self.base.lispify().into());
+        let mut terms = Vec::with_capacity(self.terms.len() + 3);
+        terms.push(Lisp::keyword("apply-dot"));
+        terms.push(self.base.as_lisp());
+        terms.push(self.caller.as_lisp());
         for term in &self.terms {
             terms.push(term.as_lisp());
         }
         Lisp::Any(terms)
     }
-}
-
-fn qwerty_generic(input: ParseState) -> ParseResult<GenericCall<TermExpressionType>> {
-    let pat = BracketPattern::new("<", ">");
-    let (state, _) = input.match_optional(parse_name_join)?;
-    let (state, terms) = pat.consume(state.skip(ignore), ignore, ApplyTermNode::parse)?;
-    state.finish(GenericCall { base: TermExpressionType::Placeholder, terms: terms.body, range: state.away_from(input) })
-}
-
-fn unicode_generic(input: ParseState) -> ParseResult<GenericCall<TermExpressionType>> {
-    let pat = BracketPattern::new("⦓", "⦔");
-    let (state, terms) = pat.consume(input, ignore, ApplyTermNode::parse)?;
-    state.finish(GenericCall { base: TermExpressionType::Placeholder, terms: terms.body, range: state.away_from(input) })
 }

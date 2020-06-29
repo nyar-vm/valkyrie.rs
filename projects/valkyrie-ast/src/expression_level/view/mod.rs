@@ -1,7 +1,7 @@
 use super::*;
 mod display;
 
-/// A number literal.
+/// `array⁅index0⁆` or `array[index1]`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ViewNode<E> {
@@ -14,7 +14,7 @@ pub struct ViewNode<E> {
     pub range: Range<usize>,
 }
 
-/// A number literal.
+/// `⁅index⁆` or `⁅start : end : step⁆`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum ViewTermNode<E> {
@@ -24,7 +24,7 @@ pub enum ViewTermNode<E> {
     Range(ViewRangeNode<E>),
 }
 
-///
+/// `⁅start : end : step⁆`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ViewRangeNode<E> {

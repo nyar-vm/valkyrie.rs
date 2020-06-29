@@ -1,2 +1,3 @@
 (loop)
-(loop (print Hello, world!))
+(loop (loop))
+(loop (apply print Loop!))

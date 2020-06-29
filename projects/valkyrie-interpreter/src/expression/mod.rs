@@ -6,7 +6,7 @@ use std::{
     sync::{Arc, Mutex},
 };
 use valkyrie_ast::{NamePathNode, NumberLiteralNode, StringLiteralNode};
-use valkyrie_parser::expression::TermExpressionType;
+use valkyrie_parser::expression::ExpressionType;
 use valkyrie_types::{ValkyrieError, ValkyrieResult, ValkyrieTable, ValkyrieValue};
 
 pub struct ExecutorScope {
@@ -15,22 +15,22 @@ pub struct ExecutorScope {
 }
 
 impl ValkyrieExecutor {
-    pub(crate) async fn execute_expr(&mut self, expr: TermExpressionType) -> ValkyrieResult<ValkyrieValue> {
+    pub(crate) async fn execute_expr(&mut self, expr: ExpressionType) -> ValkyrieResult<ValkyrieValue> {
         match expr {
-            TermExpressionType::Placeholder => Err(ValkyrieError::custom("Placeholder expression should never be executed")),
-            TermExpressionType::Prefix(_) => {
+            ExpressionType::Placeholder => Err(ValkyrieError::custom("Placeholder expression should never be executed")),
+            ExpressionType::Prefix(_) => {
                 todo!()
             }
-            TermExpressionType::Binary(_) => {
+            ExpressionType::Binary(_) => {
                 todo!()
             }
-            TermExpressionType::Suffix(_) => {
+            ExpressionType::Suffix(_) => {
                 todo!()
             }
-            TermExpressionType::Number(v) => self.execute_number(*v).await,
-            TermExpressionType::Symbol(v) => self.execute_symbol(*v).await,
-            TermExpressionType::String(v) => self.execute_string(*v).await,
-            TermExpressionType::Table(v) => {
+            ExpressionType::Number(v) => self.execute_number(*v).await,
+            ExpressionType::Symbol(v) => self.execute_symbol(*v).await,
+            ExpressionType::String(v) => self.execute_string(*v).await,
+            ExpressionType::Table(v) => {
                 todo!()
             }
         }

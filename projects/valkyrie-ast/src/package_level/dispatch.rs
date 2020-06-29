@@ -35,20 +35,20 @@ impl From<NamespaceDeclarationNode> for TopStatementNode {
     }
 }
 
-impl From<TermExpressionNode> for TopStatementNode {
-    fn from(value: TermExpressionNode) -> Self {
+impl From<ExpressionNode> for TopStatementNode {
+    fn from(value: ExpressionNode) -> Self {
         TopStatementNode::Expression(Box::new(value))
     }
 }
 
-impl From<TermExpressionNode> for ReplStatementNode {
-    fn from(value: TermExpressionNode) -> Self {
+impl From<ExpressionNode> for ReplStatementNode {
+    fn from(value: ExpressionNode) -> Self {
         ReplStatementNode::Expression(Box::new(value))
     }
 }
 
-impl From<TermExpressionNode> for FunctionStatementNode {
-    fn from(value: TermExpressionNode) -> Self {
+impl From<ExpressionNode> for FunctionStatementNode {
+    fn from(value: ExpressionNode) -> Self {
         FunctionStatementNode::Expression(Box::new(value))
     }
 }

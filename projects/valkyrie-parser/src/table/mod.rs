@@ -1,9 +1,9 @@
 use crate::{helpers::ignore, traits::ThisParser};
 use lispify::{Lisp, Lispify};
-use valkyrie_ast::{ApplyTermNode, IdentifierNode, TableKind, TableNode, TermExpressionType};
+use valkyrie_ast::{ApplyTermNode, ExpressionType, IdentifierNode, TableKind, TableNode};
 use valkyrie_types::third_party::pex::{BracketPattern, ParseResult, ParseState};
 
-impl ThisParser for TableNode<TermExpressionType> {
+impl ThisParser for TableNode<ExpressionType> {
     /// `[` ~ `]` | `[` [term](ApplyTermNode::parse) ( ~ `,` ~ [term](ApplyTermNode::parse))* `,`? `]`
     fn parse(input: ParseState) -> ParseResult<Self> {
         let pat = BracketPattern::new("[", "]");
@@ -21,11 +21,11 @@ impl ThisParser for TableNode<TermExpressionType> {
     }
 }
 
-impl ThisParser for ApplyTermNode<IdentifierNode, TermExpressionType> {
+impl ThisParser for ApplyTermNode<IdentifierNode, ExpressionType> {
     /// - [start]()? ~ `:` ~ [end]()? (~ `:` ~ [step]?)?
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, key) = input.match_optional(parse_key)?;
-        let (state, value) = state.skip(ignore).match_fn(TermExpressionType::parse)?;
+        let (state, value) = state.skip(ignore).match_fn(ExpressionType::parse)?;
         state.finish(ApplyTermNode { key, value })
     }
 
