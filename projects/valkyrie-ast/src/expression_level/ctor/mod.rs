@@ -1,9 +1,9 @@
 use super::*;
 
-/// `new kind Type<G>() {body}`
+/// `new stack Type⦓G⦔(args) { body }`
 ///
 /// ```vk
-/// new stack Type<G>(*args) {
+/// new stack Type<G>(**args) {
 ///     value,
 ///     pair(key, value),
 ///     key: value,

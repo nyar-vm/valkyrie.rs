@@ -24,6 +24,7 @@ pub use crate::{
     },
     package_level::{
         classes::ClassDeclarationNode,
+        import::{ImportAliasNode, ImportFlattenTerm, ImportGroupNode, ImportRootKind, ImportStatementNode, ImportTermNode},
         namespace::{NamespaceDeclarationNode, NamespaceKind},
         FunctionStatementNode, ReplStatementNode, TopStatementNode,
     },

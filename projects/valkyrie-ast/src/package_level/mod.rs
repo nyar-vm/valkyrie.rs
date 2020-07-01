@@ -1,11 +1,12 @@
 pub mod classes;
 mod dispatch;
+pub mod import;
 pub mod namespace;
 
 use crate::{
     expression_level::ExpressionNode,
     package_level::{classes::ClassDeclarationNode, namespace::NamespaceDeclarationNode},
-     IdentifierNode, LoopStatementNode,
+    IdentifierNode, LoopStatementNode,
 };
 use alloc::{boxed::Box, string::String, vec::Vec};
 use core::{

@@ -7,10 +7,7 @@ use std::{
 
 use itertools::Itertools;
 
-use crate::{
-    types::atomic_type::ValkyrieDocument, utils::primitive_type, ValkyrieAtomicType, ValkyrieClassType, ValkyrieTable,
-    ValkyrieValue, ValkyrieVariantType,
-};
+use crate::{types::atomic_type::ValkyrieDocument, utils::primitive_type, ValkyrieClassType, ValkyrieValue};
 
 pub mod atomic_type;
 pub mod class_type;

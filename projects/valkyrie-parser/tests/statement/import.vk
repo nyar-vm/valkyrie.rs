@@ -20,3 +20,17 @@ using lib5.{
         g as h
     }
 }
+using torch
+using numpy as np
+using pandas.database as db
+
+using .mod
+using ..mod as z
+using lib.*
+using mod::*
+using "./mod" as y
+using "../lib/mod"::{
+	a as b
+	c as d
+	e.f.{g as h}
+}
