@@ -1,10 +1,12 @@
 use crate::{IdentifierNode, NamePathNode, StringLiteralNode};
 use alloc::{boxed::Box, string::String, vec, vec::Vec};
+use core::ops::Range;
 
 /// `import namespace node`
 pub struct ImportStatementNode {
     pub head: ImportRootKind,
-    pub group: ImportGroupNode,
+    pub group: Vec<ImportTermNode>,
+    pub range: Range<usize>,
 }
 
 pub enum ImportRootKind {

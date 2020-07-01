@@ -5,8 +5,8 @@ use crate::{
 use lispify::Lisp;
 use std::sync::LazyLock;
 use valkyrie_ast::{
-    IdentifierNode, ImportAliasNode, ImportGroupNode, ImportStatementNode, ImportTermNode, NamespaceDeclarationNode,
-    NamespaceKind,
+    IdentifierNode, ImportAliasNode, ImportGroupNode, ImportRootKind, ImportStatementNode, ImportTermNode, NamePathNode,
+    NamespaceDeclarationNode, NamespaceKind, StringLiteralNode,
 };
 use valkyrie_types::third_party::pex::{ParseResult, ParseState, Regex};
 
@@ -52,12 +52,7 @@ fn parse(input: ParseState) -> ParseResult<Vec<IdentifierNode>> {
 }
 
 fn pare_colon_id<'i>(input: ParseState<'i>, names: &mut Vec<IdentifierNode>) -> ParseResult<'i, ()> {
-    let (state, _) = input
-        .begin_choice()
-        .or_else(|s| s.match_char('.').map_inner(|_| ()))
-        .or_else(|s| s.match_str("::").map_inner(|_| ()))
-        .or_else(|s| s.match_char('∷').map_inner(|_| ()))
-        .end_choice()?;
+    let (state, _) = parse_name_join_dot(input)?;
     let (state, id) = state.match_fn(|s| IdentifierNode::parse(s))?;
     names.push(id);
     state.finish(())
@@ -65,7 +60,32 @@ fn pare_colon_id<'i>(input: ParseState<'i>, names: &mut Vec<IdentifierNode>) -> 
 
 impl ThisParser for ImportStatementNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
+        let (state, _) = input.match_str("using")?;
+        let (state, head) = state.skip(ignore).match_fn(ImportRootKind::parse)?;
+        let mut group = vec![];
+        let (state, _) = state.match_fn(|s| parse_maybe_group(s, &mut group))?;
+        state.finish(ImportStatementNode { head, group, range: state.away_from(input) })
+    }
+
+    fn as_lisp(&self) -> Lisp {
         todo!()
+    }
+}
+
+impl ThisParser for ImportRootKind {
+    fn parse(input: ParseState) -> ParseResult<Self> {
+        input
+            .begin_choice()
+            .or_else(|s| {
+                let (state, names) = NamePathNode::parse(s)?;
+                state.finish(ImportRootKind::Symbol(Box::new(names)))
+            })
+            .or_else(|s| {
+                let (state, names) = StringLiteralNode::parse(s)?;
+                state.finish(ImportRootKind::String(Box::new(names)))
+            })
+            .or_else(|s| s.finish(ImportRootKind::Nothing))
+            .end_choice()
     }
 
     fn as_lisp(&self) -> Lisp {
@@ -105,14 +125,9 @@ impl ThisParser for ImportAliasNode {
 
 impl ThisParser for ImportGroupNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
-        /// `.? { body }`
-        fn parse_maybe_group(input: ParseState) -> ParseResult<Vec<ImportTermNode>> {
-            let (state, _) = input.match_optional(parse_name_join_dot)?;
-            todo!()
-        }
-
+        let mut group = vec![];
         let (state, path) = parse_any_name_path(input)?;
-        let (state, group) = state.skip(ignore).match_fn(parse_maybe_group)?;
+        let (state, _) = state.match_fn(|s| parse_maybe_group(s, &mut group))?;
         state.finish(ImportGroupNode::new(path, group))
     }
 
@@ -122,5 +137,31 @@ impl ThisParser for ImportGroupNode {
         items.push(self.path.as_lisp());
         items.extend(self.group.iter().map(|term| term.as_lisp()));
         Lisp::Any(items)
+    }
+}
+
+/// `.? { body }`
+fn parse_maybe_group<'a>(input: ParseState<'a>, items: &mut Vec<ImportTermNode>) -> ParseResult<'a, ()> {
+    let (state, _) = input.skip(ignore).match_optional(parse_name_join_dot)?;
+    let (state, _) = state.skip(ignore).match_str("{")?;
+    let (state, _) = state.match_repeats(|s| {
+        let (state, term) = s.skip(ignore).match_fn(ImportTermNode::parse)?;
+        items.push(term);
+        parse_group_delimiter(state)
+    })?;
+    let (state, _) = state.skip(ignore).match_str("}")?;
+    state.finish(())
+}
+
+fn parse_group_delimiter(input: ParseState) -> ParseResult<()> {
+    let state = input.skip(ignore);
+    if state.residual.starts_with(",") {
+        state.advance(",").finish(())
+    }
+    else if state.residual.starts_with(";") {
+        state.advance(";").finish(())
+    }
+    else {
+        state.finish(())
     }
 }
