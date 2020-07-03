@@ -1,6 +1,6 @@
 [package]
 name = "valkyrie-ast"
-version = "0.0.6"
+version = "0.0.7"
 authors = ["Aster <192607617@qq.com>"]
 description = "Strong typed abstract syntax tree of valkyrie language"
 repository = "https://github.com/nyar-vm/valkyrie.rs"

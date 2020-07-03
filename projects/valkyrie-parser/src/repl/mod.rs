@@ -2,8 +2,8 @@ use crate::{helpers::ignore, traits::ThisParser};
 use lispify::{Lisp, Lispify};
 use std::fmt::{Display, Formatter};
 use valkyrie_ast::{
-    ClassDeclarationNode, ExpressionNode, ExpressionType, LoopStatementNode, NamespaceDeclarationNode, ReplStatementNode,
-    TopStatementNode,
+    ClassDeclarationNode, ExpressionNode, ExpressionType, ImportStatementNode, LoopStatementNode, NamespaceDeclarationNode,
+    ReplStatementNode, TopStatementNode,
 };
 use valkyrie_types::third_party::pex::{ParseResult, ParseState};
 
@@ -35,6 +35,7 @@ impl ThisParser for TopStatementNode {
             .skip(ignore)
             .begin_choice()
             .or_else(|s| NamespaceDeclarationNode::parse(s).map_inner(Into::into))
+            .or_else(|s| ImportStatementNode::parse(s).map_inner(Into::into))
             .or_else(|s| ExpressionNode::parse(s).map_inner(Into::into))
             .end_choice()?;
         let (state, _) = state.skip(ignore).match_optional(|s| s.match_char(';'))?;
@@ -43,9 +44,10 @@ impl ThisParser for TopStatementNode {
 
     fn as_lisp(&self) -> Lisp {
         match self {
-            TopStatementNode::DeclareNamespace(v) => v.as_lisp(),
-            TopStatementNode::DeclareClass(v) => v.as_lisp(),
+            TopStatementNode::Namespace(v) => v.as_lisp(),
+            TopStatementNode::Class(v) => v.as_lisp(),
             TopStatementNode::Expression(v) => v.as_lisp(),
+            TopStatementNode::Import(v) => v.as_lisp(),
         }
     }
 }

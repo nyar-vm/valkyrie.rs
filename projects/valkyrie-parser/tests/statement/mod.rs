@@ -14,6 +14,6 @@ fn lex_use() {
 #[test]
 fn test_apply() {
     let raw = "using a.b.c { c as abc }";
-    let apply = ImportStatementNode::parse_text(raw).unwrap();
+    let apply = TopStatementNode::parse_text(raw).unwrap();
     println!("{}", colored_lisp(apply.as_lisp(), 144).unwrap());
 }

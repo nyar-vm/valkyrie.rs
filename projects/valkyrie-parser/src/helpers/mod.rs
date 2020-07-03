@@ -35,14 +35,16 @@ pub fn ignore<'i>(input: ParseState<'i>) -> ParseResult<&'i str> {
 /// `;` or `;;`
 #[inline]
 pub fn parse_eos(input: ParseState) -> ParseResult<bool> {
-    if input.residual.starts_with(";;") {
-        input.advance(";;").finish(false)
+    let state = input.skip(ignore);
+
+    if state.residual.starts_with(";;") {
+        state.advance(";;").finish(false)
     }
-    else if input.residual.starts_with(";") {
-        input.advance(";").finish(true)
+    else if state.residual.starts_with(";") {
+        state.advance(";").finish(true)
     }
     else {
-        input.finish(false)
+        state.finish(false)
     }
 }
 

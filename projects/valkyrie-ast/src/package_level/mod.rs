@@ -6,7 +6,7 @@ pub mod namespace;
 use crate::{
     expression_level::ExpressionNode,
     package_level::{classes::ClassDeclarationNode, namespace::NamespaceDeclarationNode},
-    IdentifierNode, LoopStatementNode,
+    IdentifierNode, ImportStatementNode, LoopStatementNode,
 };
 use alloc::{boxed::Box, string::String, vec::Vec};
 use core::{
@@ -18,8 +18,9 @@ use core::{
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum TopStatementNode {
-    DeclareNamespace(Box<NamespaceDeclarationNode>),
-    DeclareClass(Box<ClassDeclarationNode>),
+    Namespace(Box<NamespaceDeclarationNode>),
+    Import(Box<ImportStatementNode>),
+    Class(Box<ClassDeclarationNode>),
     Expression(Box<ExpressionNode>),
 }
 

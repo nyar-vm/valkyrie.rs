@@ -1,11 +1,11 @@
 use crate::{
-    helpers::{ignore, parse_any_name_path, parse_name_join_dot},
+    helpers::{ignore, parse_any_name_path, parse_eos, parse_name_join_dot},
     traits::ThisParser,
 };
 use lispify::Lisp;
 use std::sync::LazyLock;
 use valkyrie_ast::{
-    IdentifierNode, ImportAliasNode, ImportGroupNode, ImportRootKind, ImportStatementNode, ImportTermNode, NamePathNode,
+    IdentifierNode, ImportAliasNode, ImportGroupNode, ImportStatementNode, ImportStatementType, ImportTermNode, NamePathNode,
     NamespaceDeclarationNode, NamespaceKind, StringLiteralNode,
 };
 use valkyrie_types::third_party::pex::{ParseResult, ParseState, Regex};
@@ -61,35 +61,45 @@ fn pare_colon_id<'i>(input: ParseState<'i>, names: &mut Vec<IdentifierNode>) -> 
 impl ThisParser for ImportStatementNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, _) = input.match_str("using")?;
-        let (state, head) = state.skip(ignore).match_fn(ImportRootKind::parse)?;
+        let (state, head) = state.skip(ignore).match_fn(ImportStatementType::parse)?;
         let mut group = vec![];
         let (state, _) = state.match_fn(|s| parse_maybe_group(s, &mut group))?;
-        state.finish(ImportStatementNode { head, group, range: state.away_from(input) })
+        let (finally, _) = parse_eos(state)?;
+        finally.finish(ImportStatementNode { head, group, range: finally.away_from(input) })
     }
 
     fn as_lisp(&self) -> Lisp {
-        todo!()
+        let mut terms = Vec::with_capacity(self.group.len() + 2);
+        terms.push(Lisp::keyword("using"));
+        match &self.head {
+            ImportStatementType::Nothing => {}
+            ImportStatementType::Symbol(v) => terms.push(v.as_lisp()),
+            ImportStatementType::String(v) => terms.push(v.as_lisp()),
+        }
+        terms.extend(self.group.iter().map(|id| id.as_lisp()));
+        Lisp::Any(terms)
     }
 }
 
-impl ThisParser for ImportRootKind {
+impl ThisParser for ImportStatementType {
     fn parse(input: ParseState) -> ParseResult<Self> {
         input
             .begin_choice()
             .or_else(|s| {
-                let (state, names) = NamePathNode::parse(s)?;
-                state.finish(ImportRootKind::Symbol(Box::new(names)))
+                // let (state, names) = parse_any_name_path(s)?;
+                // state.finish(ImportStatementType::Symbol(Box::new(names)))
+                unimplemented!()
             })
             .or_else(|s| {
                 let (state, names) = StringLiteralNode::parse(s)?;
-                state.finish(ImportRootKind::String(Box::new(names)))
+                state.finish(ImportStatementType::String(Box::new(names)))
             })
-            .or_else(|s| s.finish(ImportRootKind::Nothing))
+            .or_else(|s| s.finish(ImportStatementType::Nothing))
             .end_choice()
     }
 
     fn as_lisp(&self) -> Lisp {
-        todo!()
+        unreachable!()
     }
 }
 

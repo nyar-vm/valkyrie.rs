@@ -3,10 +3,17 @@ use super::*;
 impl Display for TopStatementNode {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         match self {
-            TopStatementNode::DeclareNamespace(v) => Display::fmt(v, f),
-            TopStatementNode::DeclareClass(v) => Display::fmt(v, f),
+            TopStatementNode::Namespace(v) => Display::fmt(v, f),
+            TopStatementNode::Class(v) => Display::fmt(v, f),
             TopStatementNode::Expression(v) => Display::fmt(v, f),
+            TopStatementNode::Import(v) => Display::fmt(v, f),
         }
+    }
+}
+
+impl From<ImportStatementNode> for TopStatementNode {
+    fn from(value: ImportStatementNode) -> Self {
+        TopStatementNode::Import(Box::new(value))
     }
 }
 
@@ -31,7 +38,7 @@ impl Display for FunctionStatementNode {
 
 impl From<NamespaceDeclarationNode> for TopStatementNode {
     fn from(value: NamespaceDeclarationNode) -> Self {
-        TopStatementNode::DeclareNamespace(Box::new(value))
+        TopStatementNode::Namespace(Box::new(value))
     }
 }
 
