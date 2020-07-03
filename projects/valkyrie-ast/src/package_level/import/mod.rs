@@ -1,10 +1,5 @@
 use crate::{IdentifierNode, NamePathNode, StringLiteralNode};
-use alloc::{
-    boxed::Box,
-    string::{String, ToString},
-    vec,
-    vec::Vec,
-};
+use alloc::{boxed::Box, string::ToString, vec, vec::Vec};
 use core::{
     fmt::{Display, Formatter},
     ops::Range,
@@ -15,19 +10,17 @@ mod display;
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ImportStatementNode {
-    pub head: ImportStatementType,
+    pub r#type: ImportStatementType,
     pub range: Range<usize>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum ImportStatementType {
-    /// `import {}`
-    Nothing,
     /// `import root as alias`
     Alias(Box<ImportAliasNode>),
     /// `import root {}`
-    Symbol(Box<ImportGroupNode>),
+    Group(Box<ImportGroupNode>),
     /// `import "url" {}`
     String(Box<StringLiteralNode>),
 }
@@ -72,10 +65,27 @@ impl ImportAliasNode {
 pub struct ImportFlattenTerm {
     pub external: Option<StringLiteralNode>,
     pub path: NamePathNode,
+    pub alias: Option<IdentifierNode>,
 }
 
 impl ImportStatementNode {
     pub fn flatten(&self) -> Vec<ImportFlattenTerm> {
-        vec![]
+        match &self.r#type {
+            ImportStatementType::Alias(node) => {
+                vec![ImportFlattenTerm { external: None, path: node.path.clone(), alias: Some(node.alias.clone()) }]
+            }
+            ImportStatementType::Group(node) => {
+                todo!();
+            }
+            ImportStatementType::String(node) => {
+                todo!()
+            }
+        }
+    }
+}
+
+impl ImportGroupNode {
+    fn resolve(&self, parent: NamePathNode, all: &mut Vec<ImportFlattenTerm>) {
+        todo!();
     }
 }

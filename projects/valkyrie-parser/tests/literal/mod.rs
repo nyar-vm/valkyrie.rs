@@ -1,5 +1,4 @@
 use super::*;
-use valkyrie_parser::ThisParser;
 
 #[test]
 fn lex_number() {

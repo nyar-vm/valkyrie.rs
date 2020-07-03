@@ -2,8 +2,4 @@ namespace import;
 
 using;
 using std;
-using {`python`.numpy as npy}
-
-using "script/path" {
-    self as script, other
-}
+using `python`.numpy as npy

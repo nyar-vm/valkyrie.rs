@@ -50,6 +50,10 @@ impl NamePathNode {
     {
         Self { names: names.into_iter().collect(), span: range }
     }
+    pub fn join<I: IntoIterator<Item = IdentifierNode>>(mut self, other: I) -> Self {
+        self.names.extend(other);
+        self
+    }
 }
 
 impl MacroPathNode {

@@ -65,18 +65,17 @@ impl ThisParser for ImportStatementNode {
         let mut group = vec![];
         let (state, _) = state.match_fn(|s| parse_maybe_group(s, &mut group))?;
         let (finally, _) = parse_eos(state)?;
-        finally.finish(ImportStatementNode { head, group, range: finally.away_from(input) })
+        finally.finish(ImportStatementNode { r#type: head, range: finally.away_from(input) })
     }
 
     fn as_lisp(&self) -> Lisp {
-        let mut terms = Vec::with_capacity(self.group.len() + 2);
+        let mut terms = Vec::with_capacity(2);
         terms.push(Lisp::keyword("using"));
-        match &self.head {
-            ImportStatementType::Nothing => {}
-            ImportStatementType::Symbol(v) => terms.push(v.as_lisp()),
+        match &self.r#type {
+            ImportStatementType::Group(v) => terms.push(v.as_lisp()),
             ImportStatementType::String(v) => terms.push(v.as_lisp()),
+            ImportStatementType::Alias(v) => terms.push(v.as_lisp()),
         }
-        terms.extend(self.group.iter().map(|id| id.as_lisp()));
         Lisp::Any(terms)
     }
 }
@@ -86,15 +85,17 @@ impl ThisParser for ImportStatementType {
         input
             .begin_choice()
             .or_else(|s| {
-                // let (state, names) = parse_any_name_path(s)?;
-                // state.finish(ImportStatementType::Symbol(Box::new(names)))
-                unimplemented!()
+                let (state, names) = ImportAliasNode::parse(s)?;
+                state.finish(ImportStatementType::Alias(Box::new(names)))
+            })
+            .or_else(|s| {
+                let (state, names) = ImportGroupNode::parse(s)?;
+                state.finish(ImportStatementType::Group(Box::new(names)))
             })
             .or_else(|s| {
                 let (state, names) = StringLiteralNode::parse(s)?;
                 state.finish(ImportStatementType::String(Box::new(names)))
             })
-            .or_else(|s| s.finish(ImportStatementType::Nothing))
             .end_choice()
     }
 

@@ -1,5 +1,4 @@
 use super::*;
-use valkyrie_ast::{ExpressionType, ImportAliasNode, ImportGroupNode, ImportStatementNode, ImportTermNode};
 
 #[test]
 fn lex_looping() {

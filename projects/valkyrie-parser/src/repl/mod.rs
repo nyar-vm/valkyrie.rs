@@ -1,9 +1,9 @@
 use crate::{helpers::ignore, traits::ThisParser};
-use lispify::{Lisp, Lispify};
-use std::fmt::{Display, Formatter};
+use lispify::Lisp;
+
 use valkyrie_ast::{
-    ClassDeclarationNode, ExpressionNode, ExpressionType, ImportStatementNode, LoopStatementNode, NamespaceDeclarationNode,
-    ReplStatementNode, TopStatementNode,
+    ClassDeclarationNode, ExpressionNode, ImportStatementNode, LoopStatementNode, NamespaceDeclarationNode, ReplStatementNode,
+    TopStatementNode,
 };
 use valkyrie_types::third_party::pex::{ParseResult, ParseState};
 

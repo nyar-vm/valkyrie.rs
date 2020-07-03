@@ -11,7 +11,7 @@ pub use crate::{
     control_flow::looping::LoopStatementNode,
     expression_level::{
         apply::{ApplyArgumentNode, ApplyCallNode, ApplyDotNode, ApplyTermNode},
-        ctor::NewStructureNode,
+        ctor::{NewStructureCollectNode, NewStructureNode},
         generic::{GenericArgumentNode, GenericCall},
         lambda::{LambdaArgumentNode, LambdaNode},
         number::NumberLiteralNode,

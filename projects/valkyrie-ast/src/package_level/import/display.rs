@@ -3,15 +3,19 @@ use super::*;
 impl Display for ImportStatementNode {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         write!(f, "import ")?;
-        match &self.head {
-            ImportStatementType::Nothing => {}
-            ImportStatementType::Symbol(node) => Display::fmt(node, f)?,
-            ImportStatementType::String(node) => Display::fmt(node, f)?,
-        }
-        if !self.group.is_empty() {
-            write!(f, " {{ {} }}", self.group.iter().map(|x| x.to_string()).collect::<Vec<_>>().join(", "))?;
-        }
+        Display::fmt(&self.r#type, f)?;
+
         Ok(())
+    }
+}
+
+impl Display for ImportStatementType {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        match self {
+            ImportStatementType::Group(node) => Display::fmt(node, f),
+            ImportStatementType::String(node) => Display::fmt(node, f),
+            ImportStatementType::Alias(node) => Display::fmt(node, f),
+        }
     }
 }
 
