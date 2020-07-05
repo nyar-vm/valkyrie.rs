@@ -12,7 +12,7 @@ use std::{
     io::Write,
     path::{Path, PathBuf},
 };
-use valkyrie_ast::{ReplStatementNode, TopStatementNode};
+use valkyrie_ast::{StatementNode, StatementType};
 use valkyrie_parser::ThisParser;
 
 #[test]
@@ -26,7 +26,7 @@ fn here() -> PathBuf {
 
 fn top_debug(text: &str, output: &str) -> std::io::Result<()> {
     let mut file = File::create(here().join(output))?;
-    let apply = TopStatementNode::parse_many(text).unwrap();
+    let apply = StatementType::parse_many(text).unwrap();
     for expr in &apply {
         println!("{}", expr);
         writeln!(file, "{}", display_lisp(expr.as_lisp(), 144).unwrap())?;
@@ -37,7 +37,7 @@ fn top_debug(text: &str, output: &str) -> std::io::Result<()> {
 
 fn repl_debug(text: &str, output: &str) -> std::io::Result<()> {
     let mut file = File::create(here().join(output))?;
-    let apply = ReplStatementNode::parse_many(text).unwrap();
+    let apply = StatementNode::parse_many(text).unwrap();
     for expr in &apply {
         println!("{}", expr);
         writeln!(file, "{}", display_lisp(expr.as_lisp(), 144).unwrap())?;

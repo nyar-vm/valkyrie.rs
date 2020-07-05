@@ -1,6 +1,7 @@
 use super::*;
 use core::fmt::Debug;
 
+/// `class Name(Super): Trait {}`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ClassDeclarationNode {

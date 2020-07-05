@@ -1,5 +1,5 @@
 use super::*;
-use crate::FunctionStatementNode;
+use crate::{StatementNode, StatementType};
 use alloc::vec::Vec;
 use core::fmt::{Debug, Display, Formatter};
 
@@ -7,7 +7,7 @@ use core::fmt::{Debug, Display, Formatter};
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct LoopStatementNode {
-    pub body: Vec<FunctionStatementNode>,
+    pub body: Vec<StatementNode>,
     pub eos: bool,
     pub range: Range<usize>,
 }

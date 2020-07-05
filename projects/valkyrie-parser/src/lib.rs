@@ -10,10 +10,10 @@ pub mod import;
 mod looping;
 pub mod number;
 pub mod operators;
-pub mod repl;
+pub mod statements;
 pub mod string;
 mod suffix_call;
 pub mod table;
 mod traits;
 
-pub use crate::traits::ThisParser;
+pub use crate::{statements::repl::ReplRoot, traits::ThisParser};

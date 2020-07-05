@@ -11,9 +11,9 @@ pub mod table;
 pub mod view;
 
 use crate::{
-    expression_level::table::ArgumentTermNode, package_level::TopStatementNode, utils::comma_terms, ApplyCallNode,
-    ApplyDotNode, ApplyTermNode, GenericCall, IdentifierNode, InfixNode, NamePathNode, NumberLiteralNode, OperatorNode,
-    PostfixNode, PrefixNode, StringLiteralNode, TableNode, ViewNode,
+    expression_level::table::ArgumentTermNode, package_level::StatementType, utils::comma_terms, ApplyCallNode, ApplyDotNode,
+    ApplyTermNode, GenericCall, IdentifierNode, InfixNode, NamePathNode, NumberLiteralNode, OperatorNode, PostfixNode,
+    PrefixNode, StringLiteralNode, TableNode, ViewNode,
 };
 use alloc::{
     boxed::Box,

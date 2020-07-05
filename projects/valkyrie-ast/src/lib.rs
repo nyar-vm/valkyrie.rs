@@ -28,6 +28,6 @@ pub use crate::{
             ImportAliasNode, ImportFlattenTerm, ImportGroupNode, ImportStatementNode, ImportStatementType, ImportTermNode,
         },
         namespace::{NamespaceDeclarationNode, NamespaceKind},
-        FunctionStatementNode, ReplStatementNode, TopStatementNode,
+        StatementNode, StatementType,
     },
 };

@@ -15,6 +15,7 @@ mod builtin;
 mod codegen;
 mod errors;
 mod functions;
+mod modifiers;
 
 mod types;
 mod values;

@@ -12,7 +12,7 @@ pub struct LambdaNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct LambdaArgumentNode {
     /// The raw string of the number.
-    pub terms: Vec<TopStatementNode>,
+    pub terms: Vec<StatementType>,
     /// The range of the number.
     pub range: Range<usize>,
 }
