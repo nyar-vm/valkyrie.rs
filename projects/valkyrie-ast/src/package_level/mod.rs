@@ -6,7 +6,7 @@ pub mod namespace;
 use crate::{
     expression_level::ExpressionNode,
     package_level::{classes::ClassDeclarationNode, namespace::NamespaceDeclarationNode},
-    IdentifierNode, ImportStatementNode, LoopStatementNode,
+    ForLoopNode, IdentifierNode, ImportStatementNode, WhileLoopNode,
 };
 use alloc::{boxed::Box, string::String, vec::Vec};
 use core::{
@@ -26,9 +26,11 @@ pub struct StatementNode {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum StatementType {
+    Nothing,
     Namespace(Box<NamespaceDeclarationNode>),
     Import(Box<ImportStatementNode>),
     Class(Box<ClassDeclarationNode>),
-    Loop(Box<LoopStatementNode>),
+    While(Box<WhileLoopNode>),
+    For(Box<ForLoopNode>),
     Expression(Box<ExpressionNode>),
 }

@@ -1,4 +1,5 @@
 use super::*;
+use valkyrie_ast::{ForLoopNode, WhileLoopNode};
 
 impl ThisParser for StatementNode {
     /// - [term](ExpressionType::parse)
@@ -19,7 +20,8 @@ impl ThisParser for StatementType {
             .begin_choice()
             .or_else(|s| NamespaceDeclarationNode::parse(s).map_inner(Into::into))
             .or_else(|s| ImportStatementNode::parse(s).map_inner(Into::into))
-            .or_else(|s| LoopStatementNode::parse(s).map_inner(Into::into))
+            .or_else(|s| WhileLoopNode::parse(s).map_inner(Into::into))
+            .or_else(|s| ForLoopNode::parse(s).map_inner(Into::into))
             .or_else(|s| ClassDeclarationNode::parse(s).map_inner(Into::into))
             .or_else(|s| ExpressionNode::parse(s).map_inner(Into::into))
             .end_choice()?;
@@ -29,9 +31,11 @@ impl ThisParser for StatementType {
 
     fn as_lisp(&self) -> Lisp {
         match self {
+            StatementType::Nothing => Lisp::Any(vec![]),
             StatementType::Namespace(v) => v.as_lisp(),
             StatementType::Import(v) => v.as_lisp(),
-            StatementType::Loop(v) => v.as_lisp(),
+            StatementType::While(v) => v.as_lisp(),
+            StatementType::For(v) => v.as_lisp(),
             StatementType::Class(v) => v.as_lisp(),
             StatementType::Expression(v) => v.as_lisp(),
         }

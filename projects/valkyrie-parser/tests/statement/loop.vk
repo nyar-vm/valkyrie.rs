@@ -1,6 +1,0 @@
-loop {}
-loop {loop {}}
-
-loop {
-    print("Loop!");
-}

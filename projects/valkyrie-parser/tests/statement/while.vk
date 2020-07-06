@@ -1,21 +1,6 @@
+while {}
+while {while {}}
+
 while {
-    looping
-}
-
-while true {
-    looping
-}
-
-while a > 0 {
-    looping
-}
-else {
-    nothing
-}
-
-
-while ~~~?~~~ cond ~~~?~~~ {
-	~~~?~~~
-} ~~~?~~~ else ~~~?~~~ {
-	~~~?~~~
+    print("Loop!");
 }

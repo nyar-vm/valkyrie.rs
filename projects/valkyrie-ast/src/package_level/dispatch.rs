@@ -13,11 +13,13 @@ impl Display for StatementNode {
 impl Display for StatementType {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         match self {
+            StatementType::Nothing => f.write_str(";;"),
             StatementType::Namespace(v) => Display::fmt(v, f),
             StatementType::Class(v) => Display::fmt(v, f),
             StatementType::Expression(v) => Display::fmt(v, f),
             StatementType::Import(v) => Display::fmt(v, f),
-            StatementType::Loop(v) => Display::fmt(v, f),
+            StatementType::While(v) => Display::fmt(v, f),
+            StatementType::For(v) => Display::fmt(v, f),
         }
     }
 }
@@ -39,9 +41,15 @@ impl From<ClassDeclarationNode> for StatementType {
     }
 }
 
-impl From<LoopStatementNode> for StatementType {
-    fn from(value: LoopStatementNode) -> Self {
-        StatementType::Loop(Box::new(value))
+impl From<WhileLoopNode> for StatementType {
+    fn from(value: WhileLoopNode) -> Self {
+        StatementType::While(Box::new(value))
+    }
+}
+
+impl From<ForLoopNode> for StatementType {
+    fn from(value: ForLoopNode) -> Self {
+        StatementType::For(Box::new(value))
     }
 }
 

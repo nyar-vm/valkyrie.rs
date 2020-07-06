@@ -3,17 +3,17 @@ use crate::{
     ThisParser,
 };
 use lispify::Lisp;
-use valkyrie_ast::{ExpressionNode, ExpressionType, LoopStatementNode, StatementNode};
+use valkyrie_ast::{ConditionType, ExpressionNode, ExpressionType, ForLoopNode, StatementNode, WhileLoopNode};
 use valkyrie_types::third_party::pex::{BracketPattern, ParseResult, ParseState};
 
-impl ThisParser for LoopStatementNode {
+impl ThisParser for WhileLoopNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
-        let (state, _) = input.match_str("loop")?;
+        let (state, _) = input.match_str("while")?;
+        let (state, condition) = state.skip(ignore).match_fn(ConditionType::parse)?;
         let (state, _) = state.skip(ignore).match_str("{")?;
         let (state, stmts) = state.match_repeats(StatementNode::parse)?;
-        let (state, _) = state.skip(ignore).match_str("}")?;
-        let (finally, eos) = state.skip(ignore).match_fn(parse_eos)?;
-        finally.finish(LoopStatementNode { body: stmts, range: finally.away_from(finally) })
+        let (finally, _) = state.skip(ignore).match_str("}")?;
+        finally.finish(WhileLoopNode { condition, body: stmts, r#else: vec![], range: finally.away_from(input) })
     }
 
     fn as_lisp(&self) -> Lisp {
@@ -23,5 +23,33 @@ impl ThisParser for LoopStatementNode {
             terms.push(term.as_lisp());
         }
         Lisp::Any(terms)
+    }
+}
+
+impl ThisParser for ConditionType {
+    fn parse(input: ParseState) -> ParseResult<Self> {
+        input
+            .begin_choice()
+            .or_else(|s| {
+                let (state, e) = ExpressionNode::parse(s)?;
+                state.finish(ConditionType::Expression(Box::new(e)))
+            })
+            .or_else(|s| s.finish(ConditionType::AlwaysTrue))
+            .end_choice()
+    }
+
+    fn as_lisp(&self) -> Lisp {
+        todo!()
+    }
+}
+
+impl ThisParser for ForLoopNode {
+    fn parse(input: ParseState) -> ParseResult<Self> {
+        let (state, _) = input.match_str("for")?;
+        state.finish(ForLoopNode { body: vec![], r#else: vec![], range: state.away_from(input) })
+    }
+
+    fn as_lisp(&self) -> Lisp {
+        todo!()
     }
 }
