@@ -13,7 +13,7 @@ impl ThisParser for LoopStatementNode {
         let (state, stmts) = state.match_repeats(StatementNode::parse)?;
         let (state, _) = state.skip(ignore).match_str("}")?;
         let (finally, eos) = state.skip(ignore).match_fn(parse_eos)?;
-        finally.finish(LoopStatementNode { body: stmts, eos, range: finally.away_from(finally) })
+        finally.finish(LoopStatementNode { body: stmts, range: finally.away_from(finally) })
     }
 
     fn as_lisp(&self) -> Lisp {

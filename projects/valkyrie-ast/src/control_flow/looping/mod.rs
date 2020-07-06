@@ -8,7 +8,6 @@ use core::fmt::{Debug, Display, Formatter};
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct LoopStatementNode {
     pub body: Vec<StatementNode>,
-    pub eos: bool,
     pub range: Range<usize>,
 }
 

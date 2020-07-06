@@ -30,7 +30,6 @@ use core::{
 pub struct ExpressionNode {
     pub context: ExpressionContext,
     pub expression: ExpressionType,
-    pub eos: bool,
     pub range: Range<usize>,
 }
 

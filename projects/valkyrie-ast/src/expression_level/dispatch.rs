@@ -2,11 +2,7 @@ use super::*;
 
 impl Display for ExpressionNode {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        Display::fmt(&self.expression, f)?;
-        if self.eos {
-            f.write_char(';')?;
-        }
-        Ok(())
+        Display::fmt(&self.expression, f)
     }
 }
 

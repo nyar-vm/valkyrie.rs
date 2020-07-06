@@ -35,8 +35,7 @@ impl ThisParser for PostfixNode<ExpressionType> {
 impl ThisParser for ExpressionNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, term) = ExpressionType::parse(input)?;
-        let (state, eos) = state.skip(ignore).match_fn(parse_eos)?;
-        state.finish(ExpressionNode { context: ExpressionContext::Term, expression: term, eos, range: state.away_from(input) })
+        state.finish(ExpressionNode { context: ExpressionContext::Term, expression: term, range: state.away_from(input) })
     }
 
     fn as_lisp(&self) -> Lisp {

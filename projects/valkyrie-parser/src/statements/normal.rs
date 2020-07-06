@@ -19,6 +19,7 @@ impl ThisParser for StatementType {
             .begin_choice()
             .or_else(|s| NamespaceDeclarationNode::parse(s).map_inner(Into::into))
             .or_else(|s| ImportStatementNode::parse(s).map_inner(Into::into))
+            .or_else(|s| LoopStatementNode::parse(s).map_inner(Into::into))
             .or_else(|s| ClassDeclarationNode::parse(s).map_inner(Into::into))
             .or_else(|s| ExpressionNode::parse(s).map_inner(Into::into))
             .end_choice()?;
