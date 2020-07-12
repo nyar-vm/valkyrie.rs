@@ -1,6 +1,13 @@
 while {}
-while {while {}}
-
-while {
+while true {
     print("Loop!");
+    while n > 0 {
+        print("Deep loop!");
+        while k != n {
+            print("Deeper loop!");
+        }
+        else {
+            print("Empty deeper loop!");
+        }
+    }
 }
