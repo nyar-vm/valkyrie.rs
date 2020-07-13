@@ -37,9 +37,25 @@ pub struct ApplyTermNode<K, V> {
 /// `def f(mut self, a, b: int, c: T = 3, ⁑args, ⁂kwargs)`
 pub struct ApplyArgumentNode<E1, E2> {
     /// The raw string of the number.
-    pub terms: Vec<ArgumentTermNode<IdentifierNode, E1, E2>>,
+    pub terms: Vec<ArgumentTermNode<ArgumentKeyNode, E1, E2>>,
     /// The range of the number.
     pub range: Range<usize>,
+}
+
+/// `function(0, a: Type, b: Integer = 1)`
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ArgumentTermNode<K, V, D> {
+    pub key: K,
+    pub value: Option<V>,
+    pub default: Option<D>,
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ArgumentKeyNode {
+    pub modifiers: Vec<IdentifierNode>,
+    pub name: IdentifierNode,
 }
 
 impl<E> ApplyCallNode<E> {

@@ -1,6 +1,42 @@
 
 
+vow {
+    ensure positive {
+        self > 0
+    }
+}
+refine class Positive(Integer) {
 
+}
+
+violate {
+    y._private_field
+}
+
+vow {
+    require {
+        self > 0
+    }
+    ensure {
+        self != infinity
+    }
+}
+def a() {
+    @assert // 断言
+    @assume // 假设
+    @refute // 否定
+}
+
+
+contract T, U {
+    forall {f32, f64}
+    // 前置
+    require {
+
+    }
+    ensure // 后置
+    where // 约束
+}
 class A {
 	inherit Base;
 	inherit Base2;

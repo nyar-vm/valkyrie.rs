@@ -10,7 +10,7 @@ mod utils;
 pub use crate::{
     control_flow::looping::{ConditionType, ForLoopNode, PatternType, WhileLoopNode},
     expression_level::{
-        apply::{ApplyArgumentNode, ApplyCallNode, ApplyDotNode, ApplyTermNode},
+        apply::{ApplyArgumentNode, ApplyCallNode, ApplyDotNode, ApplyTermNode, ArgumentKeyNode, ArgumentTermNode},
         ctor::{NewStructureCollectNode, NewStructureNode},
         generic::{GenericArgumentNode, GenericCall},
         lambda::{LambdaArgumentNode, LambdaNode},
@@ -24,6 +24,7 @@ pub use crate::{
     },
     package_level::{
         classes::ClassDeclarationNode,
+        function::{FunctionDeclarationNode, FunctionType},
         import::{
             ImportAliasNode, ImportFlattenTerm, ImportGroupNode, ImportStatementNode, ImportStatementType, ImportTermNode,
         },

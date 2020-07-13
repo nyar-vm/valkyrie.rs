@@ -4,6 +4,7 @@
 mod atomic;
 mod conditional;
 mod control_flow;
+mod declarations;
 pub mod expression;
 pub mod helpers;
 pub mod import;

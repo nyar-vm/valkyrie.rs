@@ -1,9 +1,26 @@
 use super::*;
 
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum FunctionType {
+    Macro,
+    Micro,
+}
+
+impl Display for FunctionType {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        match self {
+            FunctionType::Macro => f.write_str("macro"),
+            FunctionType::Micro => f.write_str("micro"),
+        }
+    }
+}
+
 /// `class Name(Super): Trait {}`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ClassDeclarationNode {
+pub struct FunctionDeclarationNode {
+    pub r#type: FunctionType,
     pub namepath: NamePathNode,
     pub modifiers: Vec<IdentifierNode>,
     pub extends: Option<String>,
@@ -11,15 +28,17 @@ pub struct ClassDeclarationNode {
     pub statements: Vec<IdentifierNode>,
 }
 
-impl IndentDisplay for ClassDeclarationNode {
+impl FunctionDeclarationNode {}
+
+impl IndentDisplay for FunctionDeclarationNode {
     fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
-        f.write_str("class")?;
+        write!(f, "{} {}", self.r#type, self.namepath)?;
 
         f.write_char('}')
     }
 }
 
-impl Display for ClassDeclarationNode {
+impl Display for FunctionDeclarationNode {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         IndentFormatter::wrap(self, f)
     }

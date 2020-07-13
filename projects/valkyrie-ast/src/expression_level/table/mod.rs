@@ -24,11 +24,3 @@ pub struct TableNode<E> {
     pub range: Range<usize>,
 }
 
-/// `function(0, a: Type, b: Integer = 1)`
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ArgumentTermNode<K, V, D> {
-    pub key: Option<K>,
-    pub value: V,
-    pub default: Option<D>,
-}

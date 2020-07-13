@@ -1,18 +1,20 @@
 pub mod classes;
 mod dispatch;
+pub mod function;
 pub mod import;
 pub mod license;
 pub mod namespace;
 use crate::{
     expression_level::ExpressionNode,
     package_level::{classes::ClassDeclarationNode, namespace::NamespaceDeclarationNode},
-    ForLoopNode, IdentifierNode, ImportStatementNode, WhileLoopNode,
+    ForLoopNode, IdentifierNode, ImportStatementNode, NamePathNode, WhileLoopNode,
 };
 use alloc::{boxed::Box, string::String, vec::Vec};
 use core::{
-    fmt::{Display, Formatter, Write},
+    fmt::{Debug, Display, Formatter, Write},
     ops::Range,
 };
+use indentation::{IndentDisplay, IndentFormatter};
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
