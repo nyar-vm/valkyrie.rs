@@ -1,7 +1,4 @@
 use super::*;
-use crate::{ApplyCallNode, ExpressionType, StatementType};
-use core::fmt::Write;
-use indentation::{IndentDisplay, IndentFormatter};
 
 impl Display for ConditionType {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
@@ -60,12 +57,6 @@ impl IndentDisplay for ExpressionType {
     }
 }
 
-impl<E: Display> IndentDisplay for ApplyCallNode<E> {
-    fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
-        write!(f, "{}", self)
-    }
-}
-
 impl IndentDisplay for WhileLoopNode {
     fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
         write!(f, "while {} {{", self.condition)?;
@@ -77,15 +68,18 @@ impl IndentDisplay for WhileLoopNode {
         f.dedent();
         f.write_newline()?;
         f.write_char('}')?;
-        if self.r#else.is_empty() {
-            return Ok(());
-        }
-        write!(f, " else {{\n    ")?;
-        for i in &self.r#else {
-            write!(f, "{}\n    ", i)?;
+        format_else_body(f, &self.r#else)
+    }
+}
+
+impl IndentDisplay for ForLoopNode {
+    fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
+        for i in &self.body {
+            write!(f, "{}\n", i)?;
         }
         f.write_newline()?;
-        f.write_char('}')
+        f.write_char('}')?;
+        format_else_body(f, &self.r#else)
     }
 }
 
@@ -97,17 +91,6 @@ impl Display for WhileLoopNode {
 
 impl Display for ForLoopNode {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        for i in &self.body {
-            write!(f, "{}\n", i)?;
-        }
-        write!(f, "}}")?;
-        if !self.r#else.is_empty() {
-            write!(f, " else {{\n")?;
-            for i in &self.r#else {
-                write!(f, "{}\n", i)?;
-            }
-            write!(f, "}}")?;
-        }
-        Ok(())
+        IndentFormatter::wrap(self, f)
     }
 }

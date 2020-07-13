@@ -1,27 +1,30 @@
 use super::*;
+use crate::NamePathNode;
 use core::fmt::Debug;
+use indentation::{IndentDisplay, IndentFormatter};
 
 /// `class Name(Super): Trait {}`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ClassDeclarationNode {
-    pub namepath: Vec<IdentifierNode>,
+    pub namepath: NamePathNode,
     pub modifiers: Vec<IdentifierNode>,
     pub extends: Option<String>,
     pub implements: Vec<String>,
     pub statements: Vec<IdentifierNode>,
 }
 
-impl Default for ClassDeclarationNode {
-    fn default() -> Self {
-        Self { namepath: Vec::new(), modifiers: Vec::new(), extends: None, implements: Vec::new(), statements: Vec::new() }
+impl IndentDisplay for ClassDeclarationNode {
+    fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
+        f.write_str("class")?;
+
+        f.write_char('}')
     }
 }
 
 impl Display for ClassDeclarationNode {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        f.write_str("class")?;
-        todo!()
+        IndentFormatter::wrap(self, f)
     }
 }
 

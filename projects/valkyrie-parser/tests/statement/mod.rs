@@ -1,4 +1,5 @@
 use super::*;
+use valkyrie_ast::ClassDeclarationNode;
 
 #[test]
 fn lex_looping() {
@@ -12,7 +13,7 @@ fn lex_use() {
 
 #[test]
 fn test_apply() {
-    let raw = "using a.b.c { c as abc }";
-    let apply = StatementType::parse_text(raw).unwrap();
+    let raw = "class A { }";
+    let apply = ClassDeclarationNode::parse_text(raw).unwrap();
     println!("{}", colored_lisp(apply.as_lisp(), 144).unwrap());
 }

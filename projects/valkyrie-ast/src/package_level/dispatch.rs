@@ -21,9 +21,7 @@ impl IndentDisplay for StatementType {
             StatementType::Import(_) => {
                 todo!()
             }
-            StatementType::Class(_) => {
-                todo!()
-            }
+            StatementType::Class(v) => v.indent_fmt(f),
             StatementType::While(v) => v.indent_fmt(f),
             StatementType::For(_) => {
                 todo!()

@@ -8,7 +8,7 @@ mod package_level;
 mod utils;
 
 pub use crate::{
-    control_flow::looping::{ConditionType, ForLoopNode, WhileLoopNode},
+    control_flow::looping::{ConditionType, ForLoopNode, PatternType, WhileLoopNode},
     expression_level::{
         apply::{ApplyArgumentNode, ApplyCallNode, ApplyDotNode, ApplyTermNode},
         ctor::{NewStructureCollectNode, NewStructureNode},

@@ -1,19 +1,19 @@
-use crate::{helpers::ignore, operators::ValkyrieInfix};
+mod display;
+mod parser;
+
+use crate::{
+    helpers::{ignore, parse_eos, parse_name_join},
+    operators::{ValkyrieInfix, ValkyriePrefix, ValkyrieSuffix},
+    traits::ThisParser,
+};
 use lispify::{Lisp, Lispify};
 use pratt::{Affix, PrattError, PrattParser};
 use std::fmt::Debug;
-use valkyrie_types::third_party::pex::{ParseResult, ParseState, StopBecause};
-mod display;
-mod parser;
-use crate::{
-    operators::{ValkyriePrefix, ValkyrieSuffix},
-    traits::ThisParser,
-};
-
 use valkyrie_ast::{
-    ApplyCallNode, ApplyDotNode, ExpressionType, GenericCall, InfixNode, NamePathNode, NumberLiteralNode, PostfixNode,
-    PrefixNode, StringLiteralNode, TableNode, ValkyrieOperator, ViewNode,
+    ApplyCallNode, ApplyDotNode, ExpressionContext, ExpressionNode, ExpressionType, GenericCall, InfixNode, NamePathNode,
+    NumberLiteralNode, PostfixNode, PrefixNode, StringLiteralNode, TableNode, ValkyrieOperator, ViewNode,
 };
+use valkyrie_types::third_party::pex::{ParseResult, ParseState, StopBecause};
 /// A resolver
 #[derive(Default)]
 pub struct ExpressionResolver {}

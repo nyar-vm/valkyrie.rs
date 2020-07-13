@@ -1,19 +1,29 @@
-use crate::{
-    helpers::{ignore, parse_eos},
-    ThisParser,
-};
+use crate::{helpers::ignore, ThisParser};
 use lispify::Lisp;
 use std::ops::Range;
-use valkyrie_ast::{ConditionType, ElseNode, ExpressionNode, ExpressionType, ForLoopNode, StatementNode, WhileLoopNode};
-use valkyrie_types::third_party::pex::{BracketPattern, ParseResult, ParseState};
+use valkyrie_ast::{ConditionType, ExpressionNode, ForLoopNode, PatternType, StatementNode, WhileLoopNode};
+use valkyrie_types::third_party::pex::{ParseResult, ParseState};
+
+pub(crate) struct FunctionBody {
+    pub body: Vec<StatementNode>,
+}
+
+pub(crate) struct ElseBody {
+    pub body: Vec<StatementNode>,
+}
 
 impl ThisParser for WhileLoopNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, _) = input.match_str("while")?;
         let (state, condition) = state.skip(ignore).match_fn(ConditionType::parse)?;
-        let (finally, stmts) = state.skip(ignore).match_fn(parse_function_body)?;
-
-        finally.finish(WhileLoopNode { condition, body: stmts, r#else: vec![], range: finally.away_from(input) })
+        let (state, stmts) = state.skip(ignore).match_fn(FunctionBody::parse)?;
+        let (finally, rest) = state.skip(ignore).match_optional(ElseBody::parse)?;
+        finally.finish(WhileLoopNode {
+            condition,
+            body: stmts.body,
+            r#else: rest.map(|r#else| r#else.body).unwrap_or_default(),
+            range: finally.away_from(input),
+        })
     }
 
     fn as_lisp(&self) -> Lisp {
@@ -24,13 +34,6 @@ impl ThisParser for WhileLoopNode {
         }
         Lisp::Any(terms)
     }
-}
-
-pub fn parse_function_body(input: ParseState) -> ParseResult<Vec<StatementNode>> {
-    let (state, _) = input.match_str("{")?;
-    let (state, stmts) = state.match_repeats(StatementNode::parse)?;
-    let (finally, _) = state.skip(ignore).match_str("}")?;
-    finally.finish(stmts)
 }
 
 impl ThisParser for ConditionType {
@@ -53,7 +56,13 @@ impl ThisParser for ConditionType {
 impl ThisParser for ForLoopNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, _) = input.match_str("for")?;
-        state.finish(ForLoopNode { body: vec![], r#else: vec![], range: state.away_from(input) })
+        state.finish(ForLoopNode {
+            pattern: PatternType::Case,
+            condition: ConditionType::AlwaysTrue,
+            body: vec![],
+            r#else: vec![],
+            range: state.away_from(input),
+        })
     }
 
     fn as_lisp(&self) -> Lisp {
@@ -67,10 +76,24 @@ pub struct ForStatementNode<E, B> {
     pub range: Range<usize>,
 }
 
-impl ThisParser for ElseNode {
+impl ThisParser for FunctionBody {
     fn parse(input: ParseState) -> ParseResult<Self> {
-        let (state, _) = input.skip(ignore).match_str("else")?;
-        todo!()
+        let (state, _) = input.match_str("{")?;
+        let (state, stmts) = state.match_repeats(StatementNode::parse)?;
+        let (finally, _) = state.skip(ignore).match_str("}")?;
+        finally.finish(FunctionBody { body: stmts })
+    }
+
+    fn as_lisp(&self) -> Lisp {
+        unreachable!()
+    }
+}
+
+impl ThisParser for ElseBody {
+    fn parse(input: ParseState) -> ParseResult<Self> {
+        let (state, _) = input.match_str("else")?;
+        let (state, func) = state.skip(ignore).match_fn(FunctionBody::parse)?;
+        state.finish(ElseBody { body: func.body })
     }
 
     fn as_lisp(&self) -> Lisp {
