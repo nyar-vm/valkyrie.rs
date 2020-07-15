@@ -7,7 +7,7 @@ pub mod namespace;
 use crate::{
     expression_level::ExpressionNode,
     package_level::{classes::ClassDeclarationNode, namespace::NamespaceDeclarationNode},
-    ForLoopNode, IdentifierNode, ImportStatementNode, NamePathNode, WhileLoopNode,
+    ExpressionType, ForLoopNode, FunctionDeclarationNode, IdentifierNode, ImportStatementNode, NamePathNode, WhileLoopNode,
 };
 use alloc::{boxed::Box, string::String, vec::Vec};
 use core::{
@@ -32,7 +32,8 @@ pub enum StatementType {
     Namespace(Box<NamespaceDeclarationNode>),
     Import(Box<ImportStatementNode>),
     Class(Box<ClassDeclarationNode>),
+    Function(Box<FunctionDeclarationNode>),
     While(Box<WhileLoopNode>),
     For(Box<ForLoopNode>),
-    Expression(Box<ExpressionNode>),
+    Expression(Box<ExpressionNode<ExpressionType>>),
 }

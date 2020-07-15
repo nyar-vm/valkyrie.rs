@@ -1,8 +1,12 @@
-def function() {
+micro function() {
+
+}
+
+macro module::function() {
 
 }
 
 
-def module::function() {
-
+micro function(a, k: T, p: U) {
+    print("Hello, world!")
 }

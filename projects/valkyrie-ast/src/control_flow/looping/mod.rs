@@ -34,12 +34,12 @@ pub struct ForLoopNode {
 pub enum ConditionType {
     AlwaysTrue,
     Case,
-    Expression(Box<ExpressionNode>),
+    Expression(Box<ExpressionNode<ExpressionType>>),
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum PatternType {
-    Tuple(Vec<ExpressionNode>),
+    Tuple(Vec<ExpressionNode<ExpressionType>>),
     Case,
 }

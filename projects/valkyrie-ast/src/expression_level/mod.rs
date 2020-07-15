@@ -26,9 +26,9 @@ use core::{
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ExpressionNode {
+pub struct ExpressionNode<T> {
     pub context: ExpressionContext,
-    pub expression: ExpressionType,
+    pub expression: T,
     pub range: Range<usize>,
 }
 

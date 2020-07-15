@@ -35,3 +35,24 @@ where
         }
     }
 }
+impl<K: Display, V: Display, D: Display> Display for ArgumentTermNode<K, V, D> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        write!(f, "{}", self.key)?;
+        if let Some(value) = &self.value {
+            write!(f, ": {}", value)?;
+        }
+        if let Some(default) = &self.default {
+            write!(f, " = {}", default)?;
+        }
+        Ok(())
+    }
+}
+
+impl Display for ArgumentKeyNode {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        for modifier in &self.modifiers {
+            write!(f, "{} ", modifier)?;
+        }
+        write!(f, "{}", self.name)
+    }
+}

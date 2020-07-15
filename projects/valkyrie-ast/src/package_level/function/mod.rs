@@ -1,48 +1,32 @@
 use super::*;
+use crate::{ApplyArgumentNode, ArgumentTermNode, ExpressionType};
 
+mod display;
+
+/// The function type
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum FunctionType {
+    /// A function that lazy evaluate the arguments
     Macro,
+    /// A function that eager evaluate the arguments
     Micro,
-}
-
-impl Display for FunctionType {
-    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        match self {
-            FunctionType::Macro => f.write_str("macro"),
-            FunctionType::Micro => f.write_str("micro"),
-        }
-    }
 }
 
 /// `class Name(Super): Trait {}`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct FunctionDeclarationNode {
+    /// The range of the number.
     pub r#type: FunctionType,
     pub namepath: NamePathNode,
     pub modifiers: Vec<IdentifierNode>,
-    pub extends: Option<String>,
-    pub implements: Vec<String>,
-    pub statements: Vec<IdentifierNode>,
+    pub attributes: Option<String>,
+    pub arguments: ApplyArgumentNode<ExpressionNode<ExpressionType>, ExpressionNode<ExpressionType>>,
+    pub body: Vec<StatementNode>,
 }
 
 impl FunctionDeclarationNode {}
-
-impl IndentDisplay for FunctionDeclarationNode {
-    fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
-        write!(f, "{} {}", self.r#type, self.namepath)?;
-
-        f.write_char('}')
-    }
-}
-
-impl Display for FunctionDeclarationNode {
-    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        IndentFormatter::wrap(self, f)
-    }
-}
 
 // impl ClassDeclare {
 //     pub fn get_namepath(&self) -> Iter<'_, ValkyrieIdentifier> {

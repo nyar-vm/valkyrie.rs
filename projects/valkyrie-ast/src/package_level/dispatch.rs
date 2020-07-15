@@ -27,6 +27,7 @@ impl IndentDisplay for StatementType {
                 todo!()
             }
             StatementType::Expression(v) => v.indent_fmt(f),
+            StatementType::Function(v) => v.indent_fmt(f),
         }
     }
 }
@@ -60,7 +61,11 @@ impl From<ClassDeclarationNode> for StatementType {
         StatementType::Class(Box::new(value))
     }
 }
-
+impl From<FunctionDeclarationNode> for StatementType {
+    fn from(value: FunctionDeclarationNode) -> Self {
+        Self::Function(Box::new(value))
+    }
+}
 impl From<WhileLoopNode> for StatementType {
     fn from(value: WhileLoopNode) -> Self {
         StatementType::While(Box::new(value))
@@ -73,8 +78,8 @@ impl From<ForLoopNode> for StatementType {
     }
 }
 
-impl From<ExpressionNode> for StatementType {
-    fn from(value: ExpressionNode) -> Self {
+impl From<ExpressionNode<ExpressionType>> for StatementType {
+    fn from(value: ExpressionNode<ExpressionType>) -> Self {
         StatementType::Expression(Box::new(value))
     }
 }

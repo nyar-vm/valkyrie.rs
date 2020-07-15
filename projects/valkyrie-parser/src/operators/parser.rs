@@ -10,31 +10,6 @@ impl ThisParser for OperatorNode {
     }
 }
 
-impl FromStr for ValkyrieInfix {
-    type Err = StopBecause;
-
-    fn from_str(s: &str) -> Result<Self, StopBecause> {
-        let state = ParseState::new(s.trim_end()).skip(whitespace);
-        make_from_str(state, ValkyrieInfix::parse)
-    }
-}
-impl FromStr for ValkyriePrefix {
-    type Err = StopBecause;
-
-    fn from_str(s: &str) -> Result<Self, StopBecause> {
-        let state = ParseState::new(s.trim_end()).skip(whitespace);
-        make_from_str(state, ValkyriePrefix::parse)
-    }
-}
-impl FromStr for ValkyrieSuffix {
-    type Err = StopBecause;
-
-    fn from_str(s: &str) -> Result<Self, StopBecause> {
-        let state = ParseState::new(s.trim_end()).skip(whitespace);
-        make_from_str(state, ValkyrieSuffix::parse)
-    }
-}
-
 static PREFIX: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(
         r#"^(?x)(
@@ -110,9 +85,24 @@ static INFIX: LazyLock<Regex> = LazyLock::new(|| {
     .unwrap()
 });
 
+static TYPE_INFIX: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(
+        r#"^(?x)(
+      [&|]
+    # | [.]{1,3}
+    # | [⟦⟧⟬⟭{}\[\]()]
+    | [+]
+)"#,
+    )
+    .unwrap()
+});
+
 impl ValkyrieInfix {
-    pub fn parse(input: ParseState) -> ParseResult<Self> {
-        let (state, m) = input.match_regex(&INFIX, "INFIX")?;
+    pub fn parse(input: ParseState, type_level: bool) -> ParseResult<Self> {
+        let (state, m) = match type_level {
+            true => input.match_regex(&INFIX, "INFIX"),
+            false => input.match_regex(&TYPE_INFIX, "TYPE_INFIX"),
+        }?;
         let id = ValkyrieInfix::new(m.as_str(), state.away_from(input));
         state.finish(id)
     }

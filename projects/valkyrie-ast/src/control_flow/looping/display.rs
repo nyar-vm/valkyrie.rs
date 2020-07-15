@@ -10,7 +10,7 @@ impl Display for ConditionType {
     }
 }
 
-impl IndentDisplay for ExpressionNode {
+impl<T: IndentDisplay> IndentDisplay for ExpressionNode<T> {
     fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
         self.expression.indent_fmt(f)
     }
@@ -22,8 +22,8 @@ impl IndentDisplay for ExpressionType {
             ExpressionType::Placeholder => {
                 todo!()
             }
-            ExpressionType::Symbol(_) => {
-                todo!()
+            ExpressionType::Symbol(v) => {
+                write!(f, "{}", v)
             }
             ExpressionType::Number(_) => {
                 todo!()

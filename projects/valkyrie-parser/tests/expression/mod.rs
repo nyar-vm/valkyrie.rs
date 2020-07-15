@@ -1,5 +1,5 @@
 use super::*;
-use valkyrie_ast::{ExpressionType, GenericCall, ViewNode};
+use valkyrie_ast::{ArgumentTermNode, ExpressionType, GenericCall, ViewNode};
 use valkyrie_parser::ThisParser;
 
 #[test]
@@ -20,14 +20,6 @@ fn test_apply() {
     let raw = "a.b";
     let apply = ExpressionType::parse_text(raw).unwrap();
     println!("{}", colored_lisp(apply.as_lisp(), 144).unwrap());
-}
-
-#[test]
-fn main1() {
-    let raw = "A { loop }";
-    let slice = GenericCall::<ExpressionType>::parse_text(raw).unwrap();
-    println!("input:\n{slice:#?}");
-    println!("output:\n{}", colored_lisp(slice.as_lisp(), 42).unwrap());
 }
 
 #[test]

@@ -35,6 +35,8 @@ pub struct ApplyTermNode<K, V> {
 }
 
 /// `def f(mut self, a, b: int, c: T = 3, ⁑args, ⁂kwargs)`
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ApplyArgumentNode<E1, E2> {
     /// The raw string of the number.
     pub terms: Vec<ArgumentTermNode<ArgumentKeyNode, E1, E2>>,
@@ -56,6 +58,20 @@ pub struct ArgumentTermNode<K, V, D> {
 pub struct ArgumentKeyNode {
     pub modifiers: Vec<IdentifierNode>,
     pub name: IdentifierNode,
+}
+
+impl<E1, E2> ApplyArgumentNode<E1, E2> {
+    pub fn map_value<F, T>(self, f: F) -> ApplyArgumentNode<T, E2>
+    where
+        F: FnOnce(E1) -> T + Copy,
+    {
+        let terms = self
+            .terms
+            .into_iter()
+            .map(|term| ArgumentTermNode { key: term.key, value: term.value.map(f), default: term.default })
+            .collect();
+        ApplyArgumentNode { terms, range: self.range }
+    }
 }
 
 impl<E> ApplyCallNode<E> {

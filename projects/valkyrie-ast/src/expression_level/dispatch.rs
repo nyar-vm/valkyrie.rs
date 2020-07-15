@@ -1,6 +1,6 @@
 use super::*;
 
-impl Display for ExpressionNode {
+impl<T: Display> Display for ExpressionNode<T> {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         Display::fmt(&self.expression, f)
     }
