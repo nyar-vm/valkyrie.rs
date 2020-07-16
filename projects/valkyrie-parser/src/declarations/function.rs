@@ -1,27 +1,14 @@
 use super::*;
-use crate::expression::TypeLevelExpressionType;
-use valkyrie_ast::{ExpressionContext, ExpressionNode, ExpressionType};
 
 impl ThisParser for FunctionDeclarationNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, head) = FunctionType::parse(input)?;
         let (state, name) = state.skip(ignore).match_fn(NamePathNode::parse)?;
-        let (state, args) = state
-            .skip(ignore)
-            .match_fn(ApplyArgumentNode::<ExpressionNode<TypeLevelExpressionType>, ExpressionNode<ExpressionType>>::parse)?;
-        let (finally, body) = state.skip(ignore).match_fn(FunctionBody::parse)?;
-        finally.finish(FunctionDeclarationNode {
-            r#type: head,
-            namepath: name,
-            modifiers: vec![],
-            attributes: None,
-            arguments: args.map_value(|s| ExpressionNode {
-                context: ExpressionContext::Type,
-                expression: s.expression.wrapper,
-                range: s.range,
-            }),
-            body: body.body,
-        })
+        let (state, method) = CommonFunctionBody::parse(state)?;
+        let mut f = method.as_function();
+        f.r#type = head;
+        f.namepath = name;
+        state.finish(f)
     }
 
     fn as_lisp(&self) -> Lisp {

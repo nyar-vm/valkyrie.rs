@@ -89,9 +89,8 @@ static TYPE_INFIX: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(
         r#"^(?x)(
       [&|]
-    # | [.]{1,3}
-    # | [⟦⟧⟬⟭{}\[\]()]
     | [+]
+    | [⊑⋢]
 )"#,
     )
     .unwrap()

@@ -24,7 +24,7 @@ pub use crate::{
     },
     package_level::{
         classes::ClassDeclarationNode,
-        function::{FunctionDeclarationNode, FunctionType},
+        function::{CommonFunctionPart, FunctionDeclarationNode, FunctionType},
         import::{
             ImportAliasNode, ImportFlattenTerm, ImportGroupNode, ImportStatementNode, ImportStatementType, ImportTermNode,
         },

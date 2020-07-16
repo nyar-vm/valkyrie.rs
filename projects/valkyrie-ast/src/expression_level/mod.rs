@@ -11,8 +11,8 @@ pub mod table;
 pub mod view;
 
 use crate::{
-    expression_level, utils::comma_terms, ApplyCallNode, ApplyDotNode, ApplyTermNode, GenericCall, IdentifierNode, InfixNode,
-    NamePathNode, NumberLiteralNode, OperatorNode, PostfixNode, PrefixNode, StringLiteralNode, TableNode, ViewNode,
+    utils::comma_terms, ApplyCallNode, ApplyDotNode, ApplyTermNode, GenericCall, IdentifierNode, InfixNode, NamePathNode,
+    NumberLiteralNode, OperatorNode, PostfixNode, PrefixNode, StringLiteralNode, TableNode, ViewNode,
 };
 use alloc::{
     boxed::Box,
@@ -54,6 +54,22 @@ pub enum ExpressionType {
     ApplyDot(Box<ApplyDotNode<Self>>),
     View(Box<ViewNode<Self>>),
     GenericCall(Box<GenericCall<Self>>),
+}
+
+impl<T> ExpressionNode<T> {
+    pub fn map<F, U>(self, f: F) -> ExpressionNode<U>
+    where
+        F: FnOnce(T) -> U,
+    {
+        ExpressionNode {
+            context: self.context,
+            expression: f(self.expression),
+            range: self.range,
+        }
+    }
+    pub fn with_context(self, context: ExpressionContext) -> ExpressionNode<T> {
+        ExpressionNode { context, ..self }
+    }
 }
 
 impl ExpressionType {

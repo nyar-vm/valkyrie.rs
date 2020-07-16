@@ -23,10 +23,37 @@ pub struct FunctionDeclarationNode {
     pub modifiers: Vec<IdentifierNode>,
     pub attributes: Option<String>,
     pub arguments: ApplyArgumentNode<ExpressionNode<ExpressionType>, ExpressionNode<ExpressionType>>,
+    pub r#return: Option<ExpressionNode<ExpressionType>>,
+    pub body: Vec<StatementNode>,
+}
+
+/// `(args) -> return { body }`
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct CommonFunctionPart {
+    /// The range of the number.
+    pub arguments: ApplyArgumentNode<ExpressionNode<ExpressionType>, ExpressionNode<ExpressionType>>,
+    pub r#return: Option<ExpressionNode<ExpressionType>>,
     pub body: Vec<StatementNode>,
 }
 
 impl FunctionDeclarationNode {}
+
+impl CommonFunctionPart {
+    /// Create a new complete function body
+    #[allow(clippy::wrong_self_convention)]
+    pub fn as_function(self, r#type: FunctionType, name: NamePathNode) -> FunctionDeclarationNode {
+        FunctionDeclarationNode {
+            r#type,
+            namepath: name,
+            modifiers: Vec::new(),
+            attributes: None,
+            arguments: self.arguments,
+            r#return: self.r#return,
+            body: self.body,
+        }
+    }
+}
 
 // impl ClassDeclare {
 //     pub fn get_namepath(&self) -> Iter<'_, ValkyrieIdentifier> {
