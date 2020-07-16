@@ -100,8 +100,8 @@ static TYPE_INFIX: LazyLock<Regex> = LazyLock::new(|| {
 impl ValkyrieInfix {
     pub fn parse(input: ParseState, type_level: bool) -> ParseResult<Self> {
         let (state, m) = match type_level {
-            true => input.match_regex(&INFIX, "INFIX"),
-            false => input.match_regex(&TYPE_INFIX, "TYPE_INFIX"),
+            true => input.match_regex(&TYPE_INFIX, "TYPE_INFIX"),
+            false => input.match_regex(&INFIX, "INFIX"),
         }?;
         let id = ValkyrieInfix::new(m.as_str(), state.away_from(input));
         state.finish(id)

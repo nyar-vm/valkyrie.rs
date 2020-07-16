@@ -34,7 +34,7 @@ pub struct ApplyTermNode<K, V> {
     pub value: V,
 }
 
-/// `def f(mut self, a, b: int, c: T = 3, ⁑args, ⁂kwargs)`
+/// `(mut self, a, b: int, c: T = 3, ⁑args, ⁂kwargs)`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ApplyArgumentNode<E1, E2> {
@@ -44,7 +44,7 @@ pub struct ApplyArgumentNode<E1, E2> {
     pub range: Range<usize>,
 }
 
-/// `function(0, a: Type, b: Integer = 1)`
+/// `a: Integer = 1`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ArgumentTermNode<K, V, D> {

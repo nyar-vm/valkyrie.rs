@@ -7,6 +7,6 @@ macro module::function() {
 }
 
 
-micro function(a, k: T, p: U) {
+micro function(a, k: T, p: U = 1) {
     print("Hello, world!")
 }
