@@ -10,47 +10,47 @@ impl Display for ConditionType {
     }
 }
 
-impl<T: IndentDisplay> IndentDisplay for ExpressionNode<T> {
+impl<const T: ExpressionContext> IndentDisplay for ExpressionNode<T> {
     fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
-        self.expression.indent_fmt(f)
+        self.body.indent_fmt(f)
     }
 }
 
-impl IndentDisplay for ExpressionType {
+impl IndentDisplay for ExpressionBody {
     fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
         match self {
-            ExpressionType::Placeholder => {
+            ExpressionBody::Placeholder => {
                 todo!()
             }
-            ExpressionType::Symbol(v) => {
+            ExpressionBody::Symbol(v) => {
                 write!(f, "{}", v)
             }
-            ExpressionType::Number(_) => {
+            ExpressionBody::Number(_) => {
                 todo!()
             }
-            ExpressionType::String(_) => {
+            ExpressionBody::String(_) => {
                 todo!()
             }
-            ExpressionType::Prefix(_) => {
+            ExpressionBody::Prefix(_) => {
                 todo!()
             }
-            ExpressionType::Binary(_) => {
+            ExpressionBody::Binary(_) => {
                 todo!()
             }
-            ExpressionType::Suffix(_) => {
+            ExpressionBody::Suffix(_) => {
                 todo!()
             }
-            ExpressionType::Table(_) => {
+            ExpressionBody::Table(_) => {
                 todo!()
             }
-            ExpressionType::Apply(v) => v.indent_fmt(f),
-            ExpressionType::ApplyDot(_) => {
+            ExpressionBody::Apply(v) => v.indent_fmt(f),
+            ExpressionBody::ApplyDot(_) => {
                 todo!()
             }
-            ExpressionType::View(_) => {
+            ExpressionBody::View(_) => {
                 todo!()
             }
-            ExpressionType::GenericCall(_) => {
+            ExpressionBody::GenericCall(_) => {
                 todo!()
             }
         }

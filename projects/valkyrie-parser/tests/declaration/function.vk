@@ -2,11 +2,11 @@ micro function() {
 
 }
 
-macro module::function() {
+macro module::function(): R {
 
 }
 
 
-micro function(a, k: T, p: U = 1) {
+micro function(a, k: T, p: U = 1) -> R {
     print("Hello, world!")
 }

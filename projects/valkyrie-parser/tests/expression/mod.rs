@@ -1,5 +1,5 @@
 use super::*;
-use valkyrie_ast::{ArgumentTermNode, ExpressionType, GenericCall, ViewNode};
+use valkyrie_ast::{ArgumentTermNode, ExpressionBody, GenericCall, ViewNode};
 use valkyrie_parser::ThisParser;
 
 #[test]
@@ -18,7 +18,7 @@ fn test_apply2() {}
 #[test]
 fn test_apply() {
     let raw = "a.b";
-    let apply = ExpressionType::parse_text(raw).unwrap();
+    let apply = ExpressionBody::parse_text(raw).unwrap();
     println!("{}", colored_lisp(apply.as_lisp(), 144).unwrap());
 }
 

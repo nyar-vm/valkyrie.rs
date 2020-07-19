@@ -1,13 +1,12 @@
 use super::*;
+use valkyrie_ast::FunctionCommonPart;
 
 impl ThisParser for FunctionDeclarationNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, head) = FunctionType::parse(input)?;
         let (state, name) = state.skip(ignore).match_fn(NamePathNode::parse)?;
-        let (state, method) = CommonFunctionBody::parse(state)?;
-        let mut f = method.as_function();
-        f.r#type = head;
-        f.namepath = name;
+        let (state, method) = FunctionCommonPart::parse(state)?;
+        let f = method.as_function(head, name);
         state.finish(f)
     }
 

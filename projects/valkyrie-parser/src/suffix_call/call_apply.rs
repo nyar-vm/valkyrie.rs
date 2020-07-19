@@ -10,11 +10,11 @@ impl<E> ThisParser for GenericArgumentNode<E> {
     }
 }
 
-impl ThisParser for ApplyCallNode<ExpressionType> {
+impl ThisParser for ApplyCallNode<ExpressionBody> {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let pat = BracketPattern::new("(", ")");
         let (state, terms) = pat.consume(input, ignore, ApplyTermNode::parse)?;
-        state.finish(ApplyCallNode { base: ExpressionType::Placeholder, terms: terms.body, range: state.away_from(input) })
+        state.finish(ApplyCallNode { base: ExpressionBody::Placeholder, terms: terms.body, range: state.away_from(input) })
     }
 
     fn as_lisp(&self) -> Lisp {

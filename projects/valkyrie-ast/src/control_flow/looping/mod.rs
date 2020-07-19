@@ -1,4 +1,5 @@
 use super::*;
+use crate::ExpressionContext;
 mod display;
 
 /// `while cond {...} else {...}`
@@ -34,12 +35,12 @@ pub struct ForLoopNode {
 pub enum ConditionType {
     AlwaysTrue,
     Case,
-    Expression(Box<ExpressionNode<ExpressionType>>),
+    Expression(Box<ExpressionNode<{ ExpressionContext::Term }>>),
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum PatternType {
-    Tuple(Vec<ExpressionNode<ExpressionType>>),
+    Tuple(Vec<ExpressionNode<{ ExpressionContext::Term }>>),
     Case,
 }

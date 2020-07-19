@@ -1,21 +1,17 @@
 use super::*;
 use crate::utils::comma_terms;
+use core::borrow::BorrowMut;
 
 impl IndentDisplay for FunctionDeclarationNode {
     fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
         write!(f, "{} {}", self.r#type, self.namepath)?;
         f.write_char('(')?;
-        f.indent();
-        for term in self.arguments.terms.iter() {
-            f.write_newline()?;
-            term.indent_fmt(f)?;
-            f.write_str(",")?;
-        }
-        f.dedent();
-        f.write_newline()?;
+        comma_terms(f.borrow_mut(), &self.arguments.terms)?;
         f.write_char(')')?;
-
-        f.write_char('{')?;
+        if let Some(ret) = &self.r#return {
+            write!(f, ": {ret}")?
+        }
+        f.write_str(" {")?;
         f.indent();
         for term in self.body.iter() {
             f.write_newline()?;

@@ -1,6 +1,6 @@
 use super::*;
 
-impl ThisParser for GenericCall<ExpressionType> {
+impl ThisParser for GenericCall<ExpressionBody> {
     /// `::<T> | ⦓T⦔`
     fn parse(input: ParseState) -> ParseResult<Self> {
         input.begin_choice().or_else(qwerty_generic).or_else(unicode_generic).end_choice()
@@ -17,15 +17,15 @@ impl ThisParser for GenericCall<ExpressionType> {
     }
 }
 
-fn qwerty_generic(input: ParseState) -> ParseResult<GenericCall<ExpressionType>> {
+fn qwerty_generic(input: ParseState) -> ParseResult<GenericCall<ExpressionBody>> {
     let pat = BracketPattern::new("<", ">");
     let (state, _) = input.match_optional(parse_name_join)?;
     let (state, terms) = pat.consume(state.skip(ignore), ignore, ApplyTermNode::parse)?;
-    state.finish(GenericCall { base: ExpressionType::Placeholder, terms: terms.body, range: state.away_from(input) })
+    state.finish(GenericCall { base: ExpressionBody::Placeholder, terms: terms.body, range: state.away_from(input) })
 }
 
-fn unicode_generic(input: ParseState) -> ParseResult<GenericCall<ExpressionType>> {
+fn unicode_generic(input: ParseState) -> ParseResult<GenericCall<ExpressionBody>> {
     let pat = BracketPattern::new("⦓", "⦔");
     let (state, terms) = pat.consume(input, ignore, ApplyTermNode::parse)?;
-    state.finish(GenericCall { base: ExpressionType::Placeholder, terms: terms.body, range: state.away_from(input) })
+    state.finish(GenericCall { base: ExpressionBody::Placeholder, terms: terms.body, range: state.away_from(input) })
 }

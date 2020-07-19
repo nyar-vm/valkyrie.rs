@@ -1,3 +1,4 @@
+#![feature(adt_const_params)]
 #![no_std]
 
 extern crate alloc;
@@ -20,11 +21,11 @@ pub use crate::{
         symbol::{IdentifierNode, MacroKind, MacroPathNode, NamePathNode},
         table::{TableKind, TableNode},
         view::{ViewNode, ViewRangeNode, ViewTermNode},
-        ExpressionContext, ExpressionNode, ExpressionType,
+        ExpressionBody, ExpressionContext, ExpressionNode, ExpressionTermNode, ExpressionTypeNode,
     },
     package_level::{
         classes::ClassDeclarationNode,
-        function::{CommonFunctionPart, FunctionDeclarationNode, FunctionType},
+        function::{FunctionCommonPart, FunctionDeclarationNode, FunctionType},
         import::{
             ImportAliasNode, ImportFlattenTerm, ImportGroupNode, ImportStatementNode, ImportStatementType, ImportTermNode,
         },

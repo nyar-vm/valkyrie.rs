@@ -1,6 +1,6 @@
 use super::*;
 
-impl ThisParser for ApplyDotNode<ExpressionType> {
+impl ThisParser for ApplyDotNode<ExpressionBody> {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, _) = input.match_char('.')?;
         let (state, caller) = state.skip(ignore).match_fn(IdentifierNode::parse)?;
@@ -9,7 +9,7 @@ impl ThisParser for ApplyDotNode<ExpressionType> {
             Some(v) => v.terms,
             None => vec![],
         };
-        finally.finish(ApplyDotNode { base: ExpressionType::Placeholder, caller, terms, range: finally.away_from(input) })
+        finally.finish(ApplyDotNode { base: ExpressionBody::Placeholder, caller, terms, range: finally.away_from(input) })
     }
 
     fn as_lisp(&self) -> Lisp {

@@ -2,6 +2,8 @@ mod display;
 use super::*;
 
 /// `class A⦓T: S = K⦔` or `class A<T: S = K>`
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct GenericArgumentNode<E> {
     /// The raw string of the number.
     pub terms: Vec<ApplyTermNode<IdentifierNode, E>>,

@@ -1,5 +1,5 @@
 use super::*;
-use crate::{ApplyArgumentNode, ArgumentTermNode, ExpressionType};
+use crate::{ApplyArgumentNode, ArgumentTermNode, ExpressionBody, ExpressionContext, GenericArgumentNode};
 
 mod display;
 
@@ -22,24 +22,25 @@ pub struct FunctionDeclarationNode {
     pub namepath: NamePathNode,
     pub modifiers: Vec<IdentifierNode>,
     pub attributes: Option<String>,
-    pub arguments: ApplyArgumentNode<ExpressionNode<ExpressionType>, ExpressionNode<ExpressionType>>,
-    pub r#return: Option<ExpressionNode<ExpressionType>>,
+    pub arguments: ApplyArgumentNode<ExpressionNode<{ ExpressionContext::Type }>, ExpressionNode<{ ExpressionContext::Term }>>,
+    pub r#return: Option<ExpressionNode<{ ExpressionContext::Term }>>,
     pub body: Vec<StatementNode>,
 }
 
 /// `(args) -> return { body }`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct CommonFunctionPart {
+pub struct FunctionCommonPart {
+    pub generic: Option<GenericArgumentNode<ExpressionNode<{ ExpressionContext::Term }>>>,
     /// The range of the number.
-    pub arguments: ApplyArgumentNode<ExpressionNode<ExpressionType>, ExpressionNode<ExpressionType>>,
-    pub r#return: Option<ExpressionNode<ExpressionType>>,
+    pub arguments: ApplyArgumentNode<ExpressionNode<{ ExpressionContext::Type }>, ExpressionNode<{ ExpressionContext::Term }>>,
+    pub r#return: Option<ExpressionNode<{ ExpressionContext::Term }>>,
     pub body: Vec<StatementNode>,
 }
 
 impl FunctionDeclarationNode {}
 
-impl CommonFunctionPart {
+impl FunctionCommonPart {
     /// Create a new complete function body
     #[allow(clippy::wrong_self_convention)]
     pub fn as_function(self, r#type: FunctionType, name: NamePathNode) -> FunctionDeclarationNode {

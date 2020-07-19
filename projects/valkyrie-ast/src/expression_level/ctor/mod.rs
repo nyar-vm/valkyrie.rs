@@ -22,8 +22,8 @@ use super::*;
 /// ```
 pub struct NewStructureNode {
     pub modifiers: Vec<IdentifierNode>,
-    pub arguments: Vec<ApplyTermNode<IdentifierNode, ExpressionType>>,
-    pub body: Vec<ExpressionType>,
+    pub arguments: Vec<ApplyTermNode<IdentifierNode, ExpressionBody>>,
+    pub body: Vec<ExpressionBody>,
 }
 
 pub enum NewStructureCollectNode {}
