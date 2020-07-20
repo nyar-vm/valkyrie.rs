@@ -1,6 +1,5 @@
 use super::*;
 use crate::utils::primitive_type;
-use indexmap::IndexMap;
 
 pub struct ValkyrieTable {
     tuple: bool,

@@ -10,7 +10,11 @@ mod package_level;
 mod utils;
 
 pub use crate::{
-    control_flow::looping::{ConditionType, ForLoopNode, PatternType, WhileLoopNode},
+    control_flow::{
+        control::{ControlNode, ControlType},
+        if_else::{ConditionNode, ConditionType, IfStatementNode},
+        looping::{ForLoopNode, PatternType, WhileLoopNode},
+    },
     expression_level::{
         apply::{ApplyArgumentNode, ApplyCallNode, ApplyDotNode, ApplyTermNode, ArgumentKeyNode, ArgumentTermNode},
         ctor::{NewStructureCollectNode, NewStructureNode},

@@ -19,11 +19,13 @@ impl ThisParser for FunctionDeclarationNode {
         }
         items.push(Lisp::Any(args));
         //
-        let mut body = vec![Lisp::keyword("body")];
-        for term in self.body.iter() {
-            body.push(term.as_lisp());
+        if let Some(s) = &self.body {
+            let mut body = vec![Lisp::keyword("body")];
+            for term in s.iter() {
+                body.push(term.as_lisp());
+            }
+            items.push(Lisp::Any(body));
         }
-        items.push(Lisp::Any(body));
         //
         Lisp::Any(items)
     }

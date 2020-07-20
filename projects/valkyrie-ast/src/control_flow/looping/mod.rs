@@ -32,14 +32,6 @@ pub struct ForLoopNode {
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum ConditionType {
-    AlwaysTrue,
-    Case,
-    Expression(Box<ExpressionTermNode>),
-}
-
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum PatternType {
     Tuple(Vec<ExpressionTermNode>),
     Case,

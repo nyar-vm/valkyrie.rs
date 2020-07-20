@@ -1,12 +1,14 @@
 mod display;
+
 use super::*;
+use crate::ArgumentTermNode;
 
 /// `class A⦓T: S = K⦔` or `class A<T: S = K>`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct GenericArgumentNode<E> {
+pub struct GenericArgumentNode {
     /// The raw string of the number.
-    pub terms: Vec<ApplyTermNode<IdentifierNode, E>>,
+    pub terms: Vec<ArgumentTermNode<IdentifierNode, ExpressionTypeNode, ExpressionTypeNode>>,
     /// The range of the number.
     pub range: Range<usize>,
 }
@@ -14,17 +16,17 @@ pub struct GenericArgumentNode<E> {
 /// `A⦓T⦔` or `A::<T>` or `A(G: T)`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct GenericCall<E> {
-    pub base: E,
+pub struct GenericCall {
+    pub base: ExpressionTypeNode,
     /// The raw string of the number.
-    pub terms: Vec<ApplyTermNode<IdentifierNode, E>>,
+    pub terms: Vec<ApplyTermNode<IdentifierNode, ExpressionTypeNode>>,
     /// The range of the number.
     pub range: Range<usize>,
 }
 
-impl<E> GenericCall<E> {
-    pub fn rebase(mut self: Box<Self>, base: E) -> Box<Self> {
-        self.base = base;
+impl GenericCall {
+    pub fn rebase(mut self: Box<Self>, base: ExpressionBody) -> Box<Self> {
+        self.base.body = base;
         self
     }
 }

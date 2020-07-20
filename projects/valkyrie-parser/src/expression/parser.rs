@@ -150,7 +150,7 @@ pub enum NormalPostfixCall {
     Apply(Box<ApplyCallNode<ExpressionBody>>),
     ApplyDot(Box<ApplyDotNode<ExpressionBody>>),
     View(Box<ViewNode<ExpressionBody>>),
-    Generic(Box<GenericCall<ExpressionBody>>),
+    Generic(Box<GenericCall>),
 }
 
 #[inline]
@@ -208,8 +208,8 @@ impl From<ViewNode<ExpressionBody>> for NormalPostfixCall {
         NormalPostfixCall::View(Box::new(value))
     }
 }
-impl From<GenericCall<ExpressionBody>> for NormalPostfixCall {
-    fn from(value: GenericCall<ExpressionBody>) -> Self {
+impl From<GenericCall> for NormalPostfixCall {
+    fn from(value: GenericCall) -> Self {
         NormalPostfixCall::Generic(Box::new(value))
     }
 }

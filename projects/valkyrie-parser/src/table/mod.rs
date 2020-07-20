@@ -21,11 +21,19 @@ impl ThisParser for TableNode<ExpressionBody> {
     }
 }
 
-impl ThisParser for ApplyTermNode<IdentifierNode, ExpressionBody> {
+impl<K, V> ThisParser for ApplyTermNode<K, V>
+where
+    K: ThisParser,
+    V: ThisParser,
+{
     /// - [start]()? ~ `:` ~ [end]()? (~ `:` ~ [step]?)?
     fn parse(input: ParseState) -> ParseResult<Self> {
-        let (state, key) = input.match_optional(parse_key)?;
-        let (state, value) = state.skip(ignore).match_fn(ExpressionBody::parse)?;
+        let (state, key) = input.match_optional(|s| {
+            let (state, term) = K::parse(s)?;
+            let (state, _) = state.skip(ignore).match_char(':')?;
+            state.finish(term)
+        })?;
+        let (state, value) = state.skip(ignore).match_fn(V::parse)?;
         state.finish(ApplyTermNode { key, value })
     }
 
@@ -35,12 +43,4 @@ impl ThisParser for ApplyTermNode<IdentifierNode, ExpressionBody> {
             None => self.value.as_lisp(),
         }
     }
-}
-
-/// - `key ~ :`
-#[inline]
-pub fn parse_key(input: ParseState) -> ParseResult<IdentifierNode> {
-    let (state, term) = IdentifierNode::parse(input)?;
-    let (state, _) = state.skip(ignore).match_char(':')?;
-    state.finish(term)
 }

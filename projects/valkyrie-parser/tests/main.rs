@@ -1,3 +1,4 @@
+#![allow(unused, dead_code)]
 mod declaration;
 mod expression;
 mod literal;

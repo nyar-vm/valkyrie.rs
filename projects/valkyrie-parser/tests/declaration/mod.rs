@@ -1,4 +1,5 @@
 use super::*;
+use valkyrie_ast::GenericArgumentNode;
 
 #[test]
 fn lex_namespace() {
@@ -7,6 +8,13 @@ fn lex_namespace() {
 }
 
 #[test]
-fn lex_classes() {
+fn lex_function() {
     top_debug(include_str!("function.vk"), "declaration/function_debug.rkt").expect("function");
+}
+
+#[test]
+fn test_apply() {
+    let raw = "::<B>";
+    let apply = GenericArgumentNode::parse_text(raw).unwrap();
+    println!("{}", colored_lisp(apply.as_lisp(), 144).unwrap());
 }

@@ -10,3 +10,15 @@ macro module::function(): R {
 micro function(a, k: T, p: U = 1) -> R {
     print("Hello, world!")
 }
+
+
+micro function::<G, R>(g: G) -> R {
+    print("Hello, world!")
+}
+
+
+micro function⦓G, R⦔(g: G = 0) -> R {
+    macro function(g: G) -> R {
+        print("Hello, world!")
+    }
+}

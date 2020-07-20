@@ -36,6 +36,12 @@ pub struct ExpressionNode<const T: ExpressionContext> {
     pub range: Range<usize>,
 }
 
+impl<const T: ExpressionContext> Default for ExpressionNode<T> {
+    fn default() -> Self {
+        Self { body: ExpressionBody::Placeholder, range: Default::default() }
+    }
+}
+
 #[repr(u8)]
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -58,7 +64,7 @@ pub enum ExpressionBody {
     Apply(Box<ApplyCallNode<Self>>),
     ApplyDot(Box<ApplyDotNode<Self>>),
     View(Box<ViewNode<Self>>),
-    GenericCall(Box<GenericCall<Self>>),
+    GenericCall(Box<GenericCall>),
 }
 
 impl<const T: ExpressionContext> ExpressionNode<T> {}

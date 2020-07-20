@@ -5,22 +5,29 @@ use core::borrow::BorrowMut;
 impl IndentDisplay for FunctionDeclarationNode {
     fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
         write!(f, "{} {}", self.r#type, self.namepath)?;
+        if let Some(s) = &self.generic {
+            Display::fmt(s, f.borrow_mut())?
+        }
+
         f.write_char('(')?;
         comma_terms(f.borrow_mut(), &self.arguments.terms)?;
         f.write_char(')')?;
         if let Some(ret) = &self.r#return {
             write!(f, ": {ret}")?
         }
-        f.write_str(" {")?;
-        f.indent();
-        for term in self.body.iter() {
+        if let Some(s) = &self.body {
+            f.write_str(" {")?;
+            f.indent();
+            for term in s.iter() {
+                f.write_newline()?;
+                term.indent_fmt(f)?;
+                f.write_str(";")?;
+            }
+            f.dedent();
             f.write_newline()?;
-            term.indent_fmt(f)?;
-            f.write_str(";")?;
+            f.write_char('}')?;
         }
-        f.dedent();
-        f.write_newline()?;
-        f.write_char('}')
+        Ok(())
     }
 }
 

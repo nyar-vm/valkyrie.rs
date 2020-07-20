@@ -74,10 +74,10 @@ impl ImportStatementNode {
             ImportStatementType::Alias(node) => {
                 vec![ImportFlattenTerm { external: None, path: node.path.clone(), alias: Some(node.alias.clone()) }]
             }
-            ImportStatementType::Group(node) => {
+            ImportStatementType::Group(_node) => {
                 todo!();
             }
-            ImportStatementType::String(node) => {
+            ImportStatementType::String(_node) => {
                 todo!()
             }
         }
@@ -85,7 +85,7 @@ impl ImportStatementNode {
 }
 
 impl ImportGroupNode {
-    fn resolve(&self, parent: NamePathNode, all: &mut Vec<ImportFlattenTerm>) {
+    fn resolve(&self, _parent: NamePathNode, _all: &mut Vec<ImportFlattenTerm>) {
         todo!();
     }
 }

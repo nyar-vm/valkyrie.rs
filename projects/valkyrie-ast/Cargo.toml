@@ -1,6 +1,6 @@
 [package]
 name = "valkyrie-ast"
-version = "0.0.7"
+version = "0.0.8"
 authors = ["Aster <192607617@qq.com>"]
 description = "Strong typed abstract syntax tree of valkyrie language"
 repository = "https://github.com/nyar-vm/valkyrie.rs"
@@ -12,8 +12,8 @@ license = "MPL-2.0"
 edition = "2021"
 
 [dependencies.indentation]
-version = "0.1.4"
-path = "C:\\Users\\Dell\\CLionProjects\\pex-sexpr\\projects\\indentation"
+version = "0.1.5"
+#path = "C:\\Users\\Dell\\CLionProjects\\pex-sexpr\\projects\\indentation"
 
 [features]
 default = []

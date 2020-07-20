@@ -21,20 +21,21 @@ pub struct FunctionDeclarationNode {
     pub namepath: NamePathNode,
     pub modifiers: Vec<IdentifierNode>,
     pub attributes: Option<String>,
+    pub generic: Option<GenericArgumentNode>,
     pub arguments: ApplyArgumentNode<ExpressionTypeNode, ExpressionTermNode>,
     pub r#return: Option<ExpressionTypeNode>,
-    pub body: Vec<StatementNode>,
+    pub body: Option<Vec<StatementNode>>,
 }
 
-/// `(args) -> return { body }`
+/// `::<G>(args) -> return { body }`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct FunctionCommonPart {
-    pub generic: Option<GenericArgumentNode<ExpressionTermNode>>,
+    pub generic: Option<GenericArgumentNode>,
     /// The range of the number.
     pub arguments: ApplyArgumentNode<ExpressionTypeNode, ExpressionTermNode>,
     pub r#return: Option<ExpressionTypeNode>,
-    pub body: Vec<StatementNode>,
+    pub body: Option<Vec<StatementNode>>,
 }
 
 impl FunctionDeclarationNode {}
@@ -48,6 +49,7 @@ impl FunctionCommonPart {
             namepath: name,
             modifiers: Vec::new(),
             attributes: None,
+            generic: self.generic,
             arguments: self.arguments,
             r#return: self.r#return,
             body: self.body,

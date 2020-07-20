@@ -1,12 +1,31 @@
 use super::*;
+use valkyrie_ast::ArgumentTermNode;
 
-impl<E> ThisParser for GenericArgumentNode<E> {
+impl ThisParser for GenericArgumentNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
-        todo!()
+        let (state, terms) = input
+            .begin_choice()
+            .or_else(|s| {
+                let (state, _) = s.match_optional(parse_name_join)?;
+                let pat = BracketPattern::new("<", ">");
+                pat.consume(state.skip(ignore), ignore, ArgumentTermNode::parse)
+            })
+            .or_else(|s| {
+                let pat = BracketPattern::new("⦓", "⦔");
+                pat.consume(s, ignore, ArgumentTermNode::parse)
+            })
+            .end_choice()?;
+        state.finish(GenericArgumentNode { terms: terms.body, range: state.away_from(input) })
     }
 
     fn as_lisp(&self) -> Lisp {
-        todo!()
+        let mut terms = Vec::with_capacity(self.terms.len() + 2);
+        terms.push(Lisp::keyword("define/generic"));
+        // terms.push(self.base.lispify().into());
+        for term in &self.terms {
+            terms.push(term.as_lisp());
+        }
+        Lisp::Any(terms)
     }
 }
 

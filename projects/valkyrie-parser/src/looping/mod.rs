@@ -70,12 +70,6 @@ impl ThisParser for ForLoopNode {
     }
 }
 
-pub struct ForStatementNode<E, B> {
-    pub iterator: E,
-    pub body: B,
-    pub range: Range<usize>,
-}
-
 impl ThisParser for FunctionBody {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, _) = input.match_str("{")?;
