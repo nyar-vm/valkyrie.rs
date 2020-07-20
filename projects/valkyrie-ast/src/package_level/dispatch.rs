@@ -1,5 +1,4 @@
 use super::*;
-use indentation::{IndentDisplay, IndentFormatter};
 
 impl IndentDisplay for StatementNode {
     fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
@@ -15,17 +14,11 @@ impl IndentDisplay for StatementType {
     fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
         match self {
             StatementType::Nothing => f.write_str(";;"),
-            StatementType::Namespace(_) => {
-                todo!()
-            }
-            StatementType::Import(_) => {
-                todo!()
-            }
+            StatementType::Namespace(v) => Display::fmt(v, f.borrow_mut()),
+            StatementType::Import(v) => Display::fmt(v, f.borrow_mut()),
             StatementType::Class(v) => v.indent_fmt(f),
             StatementType::While(v) => v.indent_fmt(f),
-            StatementType::For(_) => {
-                todo!()
-            }
+            StatementType::For(v) => Display::fmt(v, f.borrow_mut()),
             StatementType::Expression(v) => v.indent_fmt(f),
             StatementType::Function(v) => v.indent_fmt(f),
         }
@@ -78,8 +71,8 @@ impl From<ForLoopNode> for StatementType {
     }
 }
 
-impl From<ExpressionNode<{ ExpressionContext::Term }>> for StatementType {
-    fn from(value: ExpressionNode<{ ExpressionContext::Term }>) -> Self {
+impl From<ExpressionTermNode> for StatementType {
+    fn from(value: ExpressionTermNode) -> Self {
         StatementType::Expression(Box::new(value))
     }
 }

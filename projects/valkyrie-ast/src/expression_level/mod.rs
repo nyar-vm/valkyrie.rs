@@ -24,7 +24,9 @@ use core::{
     ops::Range,
 };
 
+/// The top level elements in script mode.
 pub type ExpressionTermNode = ExpressionNode<{ ExpressionContext::Term }>;
+/// The top level elements in script mode.
 pub type ExpressionTypeNode = ExpressionNode<{ ExpressionContext::Type }>;
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]

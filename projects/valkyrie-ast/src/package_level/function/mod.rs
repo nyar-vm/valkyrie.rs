@@ -1,5 +1,4 @@
 use super::*;
-use crate::{ApplyArgumentNode, ArgumentTermNode, ExpressionBody, ExpressionContext, GenericArgumentNode};
 
 mod display;
 
@@ -22,8 +21,8 @@ pub struct FunctionDeclarationNode {
     pub namepath: NamePathNode,
     pub modifiers: Vec<IdentifierNode>,
     pub attributes: Option<String>,
-    pub arguments: ApplyArgumentNode<ExpressionNode<{ ExpressionContext::Type }>, ExpressionNode<{ ExpressionContext::Term }>>,
-    pub r#return: Option<ExpressionNode<{ ExpressionContext::Term }>>,
+    pub arguments: ApplyArgumentNode<ExpressionTypeNode, ExpressionTermNode>,
+    pub r#return: Option<ExpressionTypeNode>,
     pub body: Vec<StatementNode>,
 }
 
@@ -31,10 +30,10 @@ pub struct FunctionDeclarationNode {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct FunctionCommonPart {
-    pub generic: Option<GenericArgumentNode<ExpressionNode<{ ExpressionContext::Term }>>>,
+    pub generic: Option<GenericArgumentNode<ExpressionTermNode>>,
     /// The range of the number.
-    pub arguments: ApplyArgumentNode<ExpressionNode<{ ExpressionContext::Type }>, ExpressionNode<{ ExpressionContext::Term }>>,
-    pub r#return: Option<ExpressionNode<{ ExpressionContext::Term }>>,
+    pub arguments: ApplyArgumentNode<ExpressionTypeNode, ExpressionTermNode>,
+    pub r#return: Option<ExpressionTypeNode>,
     pub body: Vec<StatementNode>,
 }
 

@@ -19,40 +19,18 @@ impl<const T: ExpressionContext> IndentDisplay for ExpressionNode<T> {
 impl IndentDisplay for ExpressionBody {
     fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
         match self {
-            ExpressionBody::Placeholder => {
-                todo!()
-            }
-            ExpressionBody::Symbol(v) => {
-                write!(f, "{}", v)
-            }
-            ExpressionBody::Number(_) => {
-                todo!()
-            }
-            ExpressionBody::String(_) => {
-                todo!()
-            }
-            ExpressionBody::Prefix(_) => {
-                todo!()
-            }
-            ExpressionBody::Binary(_) => {
-                todo!()
-            }
-            ExpressionBody::Suffix(_) => {
-                todo!()
-            }
-            ExpressionBody::Table(_) => {
-                todo!()
-            }
+            ExpressionBody::Placeholder => f.write_str("???"),
+            ExpressionBody::Symbol(v) => Display::fmt(v, f.borrow_mut()),
+            ExpressionBody::Number(v) => Display::fmt(v, f.borrow_mut()),
+            ExpressionBody::String(v) => Display::fmt(v, f.borrow_mut()),
+            ExpressionBody::Prefix(v) => Display::fmt(v, f.borrow_mut()),
+            ExpressionBody::Binary(v) => Display::fmt(v, f.borrow_mut()),
+            ExpressionBody::Suffix(v) => Display::fmt(v, f.borrow_mut()),
+            ExpressionBody::Table(v) => Display::fmt(v, f.borrow_mut()),
             ExpressionBody::Apply(v) => v.indent_fmt(f),
-            ExpressionBody::ApplyDot(_) => {
-                todo!()
-            }
-            ExpressionBody::View(_) => {
-                todo!()
-            }
-            ExpressionBody::GenericCall(_) => {
-                todo!()
-            }
+            ExpressionBody::ApplyDot(v) => Display::fmt(v, f.borrow_mut()),
+            ExpressionBody::View(v) => Display::fmt(v, f.borrow_mut()),
+            ExpressionBody::GenericCall(v) => Display::fmt(v, f.borrow_mut()),
         }
     }
 }

@@ -18,10 +18,6 @@ use valkyrie_types::third_party::pex::{ParseResult, ParseState, StopBecause};
 #[derive(Default)]
 pub struct ExpressionResolver {}
 
-pub(crate) struct TypeLevelExpressionType {
-    pub wrapper: ExpressionBody,
-}
-
 impl ExpressionResolver {
     pub fn resolve(&self, stream: Vec<ExpressionStream>) -> Result<ExpressionBody, StopBecause> {
         // println!("stream: {stream:#?}");

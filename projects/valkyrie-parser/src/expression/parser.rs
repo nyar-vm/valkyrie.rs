@@ -33,8 +33,10 @@ impl ThisParser for PostfixNode<ExpressionBody> {
 
 impl ThisParser for ExpressionTermNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
-        let (state, term) = ExpressionBody::parse(input)?;
-        state.finish(ExpressionNode { body: term, range: state.away_from(input) })
+        let resolver = ExpressionResolver::default();
+        let (state, stream) = ExpressionStream::parse(input, false)?;
+        let body = resolver.resolve(stream)?;
+        state.finish(ExpressionNode { body, range: state.away_from(input) })
     }
 
     fn as_lisp(&self) -> Lisp {
@@ -44,24 +46,14 @@ impl ThisParser for ExpressionTermNode {
 
 impl ThisParser for ExpressionTypeNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
-        let (state, term) = ExpressionBody::parse(input)?;
-        state.finish(ExpressionNode { body: term, range: state.away_from(input) })
+        let resolver = ExpressionResolver::default();
+        let (state, stream) = ExpressionStream::parse(input, true)?;
+        let body = resolver.resolve(stream)?;
+        state.finish(ExpressionNode { body, range: state.away_from(input) })
     }
 
     fn as_lisp(&self) -> Lisp {
         self.body.as_lisp()
-    }
-}
-
-impl ThisParser for TypeLevelExpressionType {
-    fn parse(input: ParseState) -> ParseResult<Self> {
-        let resolver = ExpressionResolver::default();
-        let (state, stream) = ExpressionStream::parse(input, true)?;
-        state.finish(TypeLevelExpressionType { wrapper: resolver.resolve(stream)? })
-    }
-
-    fn as_lisp(&self) -> Lisp {
-        unreachable!()
     }
 }
 

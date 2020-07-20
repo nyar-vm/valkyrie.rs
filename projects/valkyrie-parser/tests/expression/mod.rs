@@ -1,6 +1,4 @@
 use super::*;
-use valkyrie_ast::{ArgumentTermNode, ExpressionBody, GenericCall, ViewNode};
-use valkyrie_parser::ThisParser;
 
 #[test]
 fn lex_expression() {

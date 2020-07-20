@@ -1,5 +1,6 @@
-#![feature(adt_const_params)]
 #![no_std]
+#![allow(incomplete_features)]
+#![feature(adt_const_params)]
 
 extern crate alloc;
 

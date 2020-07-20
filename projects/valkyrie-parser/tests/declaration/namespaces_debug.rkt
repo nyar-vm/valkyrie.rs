@@ -1,4 +1,6 @@
 (namespace/unique std)
-(namespace/unique std string)
-(namespace/unique std integer)
-(namespace/test std decimal)
+namespace
+(! (apply-dot std string))
+(? namespace)
+std∷integer
+(* namespace std∷decimal)

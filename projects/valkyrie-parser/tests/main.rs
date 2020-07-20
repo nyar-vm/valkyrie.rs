@@ -3,16 +3,13 @@ mod expression;
 mod literal;
 mod statement;
 
-use lispify::{
-    helpers::{colored_lisp, display_lisp},
-    Lispify,
-};
+use lispify::helpers::{colored_lisp, display_lisp};
 use std::{
     fs::File,
     io::Write,
     path::{Path, PathBuf},
 };
-use valkyrie_ast::{StatementNode, StatementType};
+use valkyrie_ast::{ExpressionBody, StatementNode, StatementType, ViewNode};
 use valkyrie_parser::ThisParser;
 
 #[test]

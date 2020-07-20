@@ -5,13 +5,13 @@ pub mod import;
 pub mod license;
 pub mod namespace;
 use crate::{
-    expression_level::ExpressionNode,
     package_level::{classes::ClassDeclarationNode, namespace::NamespaceDeclarationNode},
-    ExpressionBody, ExpressionContext, ForLoopNode, FunctionDeclarationNode, IdentifierNode, ImportStatementNode, NamePathNode,
-    WhileLoopNode,
+    ApplyArgumentNode, ArgumentTermNode, ExpressionTermNode, ExpressionTypeNode, ForLoopNode, FunctionDeclarationNode,
+    GenericArgumentNode, IdentifierNode, ImportStatementNode, NamePathNode, WhileLoopNode,
 };
 use alloc::{boxed::Box, string::String, vec::Vec};
 use core::{
+    borrow::BorrowMut,
     fmt::{Debug, Display, Formatter, Write},
     ops::Range,
 };
@@ -36,5 +36,5 @@ pub enum StatementType {
     Function(Box<FunctionDeclarationNode>),
     While(Box<WhileLoopNode>),
     For(Box<ForLoopNode>),
-    Expression(Box<ExpressionNode<{ ExpressionContext::Term }>>),
+    Expression(Box<ExpressionTermNode>),
 }
