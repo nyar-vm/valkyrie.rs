@@ -27,7 +27,7 @@ pub struct ConditionNode {
 pub enum ConditionType {
     AlwaysTrue,
     Case,
-    Expression(Box<ExpressionTermNode>),
+    Expression(Box<ExpressionNode>),
 }
 
 pub(crate) fn format_else_body(f: &mut IndentFormatter, body: &[StatementNode]) -> core::fmt::Result {

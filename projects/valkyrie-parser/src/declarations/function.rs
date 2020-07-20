@@ -1,5 +1,4 @@
 use super::*;
-use valkyrie_ast::FunctionCommonPart;
 
 impl ThisParser for FunctionDeclarationNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
@@ -52,11 +51,15 @@ impl ThisParser for FunctionType {
     }
 }
 
-impl<E1: ThisParser, E2: ThisParser> ThisParser for ApplyArgumentNode<E1, E2> {
+impl ThisParser for ApplyArgumentNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let pattern = BracketPattern::new("(", ")");
-        let (state, terms) = pattern.consume(input, ignore, ArgumentTermNode::parse)?;
-        state.finish(ApplyArgumentNode { terms: terms.body, range: state.away_from(input) })
+        let (state, terms) =
+            pattern.consume(input, ignore, ArgumentTermNode::<ArgumentKeyNode, ParseTypeExpression, ExpressionNode>::parse)?;
+        state.finish(ApplyArgumentNode {
+            terms: terms.body.into_iter().map(|s| s.map_value(|v| v.expr)).collect(),
+            range: state.away_from(input),
+        })
     }
 
     fn as_lisp(&self) -> Lisp {

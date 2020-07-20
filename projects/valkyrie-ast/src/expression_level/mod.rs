@@ -11,8 +11,9 @@ pub mod table;
 pub mod view;
 
 use crate::{
-    utils::comma_terms, ApplyCallNode, ApplyDotNode, ApplyTermNode, GenericCall, IdentifierNode, InfixNode, NamePathNode,
-    NumberLiteralNode, OperatorNode, PostfixNode, PrefixNode, StringLiteralNode, TableNode, ViewNode,
+    utils::comma_terms, ApplyCallNode, ApplyDotNode, ApplyTermNode, GenericCall, IdentifierNode, InfixNode, LambdaCallNode,
+    LambdaDotNode, LambdaNode, NamePathNode, NumberLiteralNode, OperatorNode, PostfixNode, PrefixNode, StatementNode,
+    StringLiteralNode, TableNode, ViewNode,
 };
 use alloc::{
     boxed::Box,
@@ -23,31 +24,30 @@ use core::{
     fmt::{Display, Formatter, Write},
     ops::Range,
 };
+use indentation::{IndentDisplay, IndentFormatter};
 
-/// The top level elements in script mode.
-pub type ExpressionTermNode = ExpressionNode<{ ExpressionContext::Term }>;
-/// The top level elements in script mode.
-pub type ExpressionTypeNode = ExpressionNode<{ ExpressionContext::Type }>;
-
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ExpressionNode<const T: ExpressionContext> {
+pub struct ExpressionNode {
+    pub r#type: ExpressionType,
     pub body: ExpressionBody,
     pub range: Range<usize>,
-}
-
-impl<const T: ExpressionContext> Default for ExpressionNode<T> {
-    fn default() -> Self {
-        Self { body: ExpressionBody::Placeholder, range: Default::default() }
-    }
 }
 
 #[repr(u8)]
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum ExpressionContext {
+pub enum ExpressionType {
     Term,
     Type,
+}
+
+#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ExpressionContext {
+    pub type_level: bool,
+    pub allow_newline: bool,
+    pub allow_curly: bool,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
@@ -63,11 +63,33 @@ pub enum ExpressionBody {
     Table(Box<TableNode<Self>>),
     Apply(Box<ApplyCallNode<Self>>),
     ApplyDot(Box<ApplyDotNode<Self>>),
+    LambdaCall(Box<LambdaCallNode>),
+    LambdaDot(Box<LambdaDotNode>),
     View(Box<ViewNode<Self>>),
     GenericCall(Box<GenericCall>),
 }
 
-impl<const T: ExpressionContext> ExpressionNode<T> {}
+impl Default for ExpressionContext {
+    fn default() -> Self {
+        ExpressionContext { type_level: false, allow_newline: true, allow_curly: false }
+    }
+}
+
+impl ExpressionContext {
+    pub fn in_type() -> Self {
+        ExpressionContext { type_level: true, allow_newline: true, allow_curly: false }
+    }
+    pub fn in_free() -> Self {
+        ExpressionContext { type_level: false, allow_newline: true, allow_curly: true }
+    }
+    /// In a repl statement
+    pub fn in_repl() -> Self {
+        ExpressionContext { type_level: false, allow_newline: false, allow_curly: true }
+    }
+    pub fn as_type(&self) -> ExpressionType {
+        if self.type_level { ExpressionType::Type } else { ExpressionType::Term }
+    }
+}
 
 impl ExpressionBody {
     pub fn binary(o: OperatorNode, lhs: ExpressionBody, rhs: ExpressionBody) -> ExpressionBody {

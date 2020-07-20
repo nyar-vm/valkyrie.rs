@@ -16,5 +16,6 @@ pub mod string;
 mod suffix_call;
 pub mod table;
 mod traits;
+pub(crate) mod utils;
 
 pub use crate::{statements::repl::ReplRoot, traits::ThisParser};

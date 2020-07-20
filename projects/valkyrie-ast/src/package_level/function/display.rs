@@ -1,6 +1,4 @@
 use super::*;
-use crate::utils::comma_terms;
-use core::borrow::BorrowMut;
 
 impl IndentDisplay for FunctionDeclarationNode {
     fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {

@@ -22,8 +22,8 @@ pub struct FunctionDeclarationNode {
     pub modifiers: Vec<IdentifierNode>,
     pub attributes: Option<String>,
     pub generic: Option<GenericArgumentNode>,
-    pub arguments: ApplyArgumentNode<ExpressionTypeNode, ExpressionTermNode>,
-    pub r#return: Option<ExpressionTypeNode>,
+    pub arguments: ApplyArgumentNode,
+    pub r#return: Option<ExpressionNode>,
     pub body: Option<Vec<StatementNode>>,
 }
 
@@ -33,8 +33,8 @@ pub struct FunctionDeclarationNode {
 pub struct FunctionCommonPart {
     pub generic: Option<GenericArgumentNode>,
     /// The range of the number.
-    pub arguments: ApplyArgumentNode<ExpressionTypeNode, ExpressionTermNode>,
-    pub r#return: Option<ExpressionTypeNode>,
+    pub arguments: ApplyArgumentNode,
+    pub r#return: Option<ExpressionNode>,
     pub body: Option<Vec<StatementNode>>,
 }
 

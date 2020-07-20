@@ -1,46 +1,16 @@
 use crate::{helpers::ignore, traits::ThisParser};
 use lispify::{Lisp, Lispify};
+use std::ops::Range;
 use valkyrie_ast::{ApplyTermNode, ExpressionBody, IdentifierNode, TableKind, TableNode};
 use valkyrie_types::third_party::pex::{BracketPattern, ParseResult, ParseState};
 
-impl ThisParser for TableNode<ExpressionBody> {
-    /// `[` ~ `]` | `[` [term](ApplyTermNode::parse) ( ~ `,` ~ [term](ApplyTermNode::parse))* `,`? `]`
-    fn parse(input: ParseState) -> ParseResult<Self> {
-        let pat = BracketPattern::new("[", "]");
-        let (state, terms) = pat.consume(input, ignore, ApplyTermNode::parse)?;
-        state.finish(TableNode { kind: TableKind::OffsetTable, terms: terms.body, range: state.away_from(input) })
-    }
+mod table;
+mod tuple;
 
-    fn as_lisp(&self) -> Lisp {
-        let mut terms = Vec::with_capacity(self.terms.len() + 2);
-        terms.push(Lisp::function("table"));
-        for term in &self.terms {
-            terms.push(term.as_lisp());
-        }
-        Lisp::Any(terms)
-    }
-}
 
-impl<K, V> ThisParser for ApplyTermNode<K, V>
-where
-    K: ThisParser,
-    V: ThisParser,
-{
-    /// - [start]()? ~ `:` ~ [end]()? (~ `:` ~ [step]?)?
-    fn parse(input: ParseState) -> ParseResult<Self> {
-        let (state, key) = input.match_optional(|s| {
-            let (state, term) = K::parse(s)?;
-            let (state, _) = state.skip(ignore).match_char(':')?;
-            state.finish(term)
-        })?;
-        let (state, value) = state.skip(ignore).match_fn(V::parse)?;
-        state.finish(ApplyTermNode { key, value })
-    }
-
-    fn as_lisp(&self) -> Lisp {
-        match &self.key {
-            Some(key) => Lisp::Any(vec![key.as_lisp(), self.value.as_lisp()]),
-            None => self.value.as_lisp(),
-        }
-    }
+pub(crate) struct TupleNode<E> {
+    /// The raw string of the number.
+    pub terms: Vec<ApplyTermNode<IdentifierNode, E>>,
+    /// The range of the number.
+    pub range: Range<usize>,
 }

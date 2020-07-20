@@ -1,11 +1,10 @@
-
 use super::*;
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ControlNode {
     pub r#type: ControlType,
-    pub expression: Option<ExpressionTermNode>,
+    pub expression: Option<ExpressionNode>,
     pub range: Range<usize>,
 }
 

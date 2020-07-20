@@ -6,8 +6,9 @@ pub mod license;
 pub mod namespace;
 use crate::{
     package_level::{classes::ClassDeclarationNode, namespace::NamespaceDeclarationNode},
-    ApplyArgumentNode, ArgumentTermNode, ExpressionTermNode, ExpressionTypeNode, ForLoopNode, FunctionDeclarationNode,
-    GenericArgumentNode, IdentifierNode, ImportStatementNode, NamePathNode, WhileLoopNode,
+    utils::comma_terms,
+    ApplyArgumentNode, ArgumentTermNode, ExpressionNode, ForLoopNode, FunctionDeclarationNode, GenericArgumentNode,
+    IdentifierNode, ImportStatementNode, NamePathNode, WhileLoopNode,
 };
 use alloc::{boxed::Box, string::String, vec::Vec};
 use core::{
@@ -36,5 +37,5 @@ pub enum StatementType {
     Function(Box<FunctionDeclarationNode>),
     While(Box<WhileLoopNode>),
     For(Box<ForLoopNode>),
-    Expression(Box<ExpressionTermNode>),
+    Expression(Box<ExpressionNode>),
 }

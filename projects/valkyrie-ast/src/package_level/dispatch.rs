@@ -71,8 +71,8 @@ impl From<ForLoopNode> for StatementType {
     }
 }
 
-impl From<ExpressionTermNode> for StatementType {
-    fn from(value: ExpressionTermNode) -> Self {
+impl From<ExpressionNode> for StatementType {
+    fn from(value: ExpressionNode) -> Self {
         StatementType::Expression(Box::new(value))
     }
 }

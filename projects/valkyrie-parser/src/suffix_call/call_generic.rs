@@ -1,5 +1,5 @@
 use super::*;
-use valkyrie_ast::ExpressionTypeNode;
+use valkyrie_ast::ExpressionNode;
 
 impl ThisParser for GenericCall {
     /// `::<T> | ⦓T⦔`
@@ -22,11 +22,11 @@ fn qwerty_generic(input: ParseState) -> ParseResult<GenericCall> {
     let pat = BracketPattern::new("<", ">");
     let (state, _) = input.match_optional(parse_name_join)?;
     let (state, terms) = pat.consume(state.skip(ignore), ignore, ApplyTermNode::parse)?;
-    state.finish(GenericCall { base: ExpressionTypeNode::default(), terms: terms.body, range: state.away_from(input) })
+    state.finish(GenericCall { base: ExpressionNode::default(), terms: terms.body, range: state.away_from(input) })
 }
 
 fn unicode_generic(input: ParseState) -> ParseResult<GenericCall> {
     let pat = BracketPattern::new("⦓", "⦔");
     let (state, terms) = pat.consume(input, ignore, ApplyTermNode::parse)?;
-    state.finish(GenericCall { base: ExpressionTypeNode::default(), terms: terms.body, range: state.away_from(input) })
+    state.finish(GenericCall { base: ExpressionNode::default(), terms: terms.body, range: state.away_from(input) })
 }

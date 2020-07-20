@@ -1,5 +1,6 @@
 use super::*;
-use valkyrie_ast::{ExpressionTermNode, ExpressionTypeNode};
+use crate::{table::TupleNode, utils::parse_expression_body};
+use valkyrie_ast::{ExpressionContext, ExpressionNode, LambdaCallNode, LambdaDotNode, LambdaNode};
 
 impl ThisParser for PrefixNode<ExpressionBody> {
     fn parse(_: ParseState) -> ParseResult<Self> {
@@ -31,25 +32,9 @@ impl ThisParser for PostfixNode<ExpressionBody> {
     }
 }
 
-impl ThisParser for ExpressionTermNode {
+impl ThisParser for ExpressionNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
-        let resolver = ExpressionResolver::default();
-        let (state, stream) = ExpressionStream::parse(input, false)?;
-        let body = resolver.resolve(stream)?;
-        state.finish(ExpressionNode { body, range: state.away_from(input) })
-    }
-
-    fn as_lisp(&self) -> Lisp {
-        self.body.as_lisp()
-    }
-}
-
-impl ThisParser for ExpressionTypeNode {
-    fn parse(input: ParseState) -> ParseResult<Self> {
-        let resolver = ExpressionResolver::default();
-        let (state, stream) = ExpressionStream::parse(input, true)?;
-        let body = resolver.resolve(stream)?;
-        state.finish(ExpressionNode { body, range: state.away_from(input) })
+        parse_expression_node(input, ExpressionContext::default())
     }
 
     fn as_lisp(&self) -> Lisp {
@@ -59,9 +44,7 @@ impl ThisParser for ExpressionTypeNode {
 
 impl ThisParser for ExpressionBody {
     fn parse(input: ParseState) -> ParseResult<Self> {
-        let resolver = ExpressionResolver::default();
-        let (state, stream) = ExpressionStream::parse(input, false)?;
-        state.finish(resolver.resolve(stream)?)
+        parse_expression_body(input, ExpressionContext::default())
     }
 
     fn as_lisp(&self) -> Lisp {
@@ -78,6 +61,8 @@ impl ThisParser for ExpressionBody {
             ExpressionBody::ApplyDot(v) => v.as_lisp(),
             ExpressionBody::View(v) => v.as_lisp(),
             ExpressionBody::GenericCall(v) => v.as_lisp(),
+            ExpressionBody::LambdaCall(v) => v.as_lisp(),
+            ExpressionBody::LambdaDot(v) => v.as_lisp(),
         }
     }
 }
@@ -85,36 +70,40 @@ impl ThisParser for ExpressionBody {
 impl ExpressionStream {
     /// term (~ infix ~ term)*
     /// 1 + (1 + +3? + 4)
-    pub fn parse(state: ParseState, type_level: bool) -> ParseResult<Vec<ExpressionStream>> {
+    pub fn parse(input: ParseState, ctx: ExpressionContext) -> ParseResult<Vec<ExpressionStream>> {
         let mut stream = Vec::with_capacity(4);
-        let (state, _) = state.match_fn(|s| parse_term(s, &mut stream, type_level))?;
-        let (state, _) = state.match_repeats(|s| parse_infix_term(s, &mut stream, type_level))?;
+        let (state, _) = input.match_fn(|s| parse_term(s, &mut stream, ctx))?;
+        let (state, _) = state.match_repeats(|s| parse_infix_term(s, &mut stream, ctx))?;
         state.finish(stream)
     }
 }
 
 /// `~ infix ~ term`
 #[inline(always)]
-fn parse_infix_term<'i>(input: ParseState<'i>, stream: &mut Vec<ExpressionStream>, type_level: bool) -> ParseResult<'i, ()> {
-    let (state, infix) = ValkyrieInfix::parse(input.skip(ignore), type_level)?;
+fn parse_infix_term<'i>(
+    input: ParseState<'i>,
+    stream: &mut Vec<ExpressionStream>,
+    ctx: ExpressionContext,
+) -> ParseResult<'i, ()> {
+    let (state, infix) = ValkyrieInfix::parse(input.skip(ignore), ctx.type_level)?;
     stream.push(ExpressionStream::Infix(infix));
-    let (state, _) = state.skip(ignore).match_fn(|s| parse_term(s, stream, type_level))?;
+    let (state, _) = state.skip(ignore).match_fn(|s| parse_term(s, stream, ctx))?;
     state.finish(())
 }
 
 /// `( ~ term ~ )`
-pub fn parse_group(input: ParseState, type_level: bool) -> ParseResult<Vec<ExpressionStream>> {
+pub fn parse_group(input: ParseState, ctx: ExpressionContext) -> ParseResult<Vec<ExpressionStream>> {
     let (state, _) = input.match_char('(')?;
-    let (state, group) = state.skip(ignore).match_fn(|s| ExpressionStream::parse(s, type_level))?;
+    let (state, group) = state.skip(ignore).match_fn(|s| ExpressionStream::parse(s, ctx))?;
     let (state, _) = state.skip(ignore).match_char(')')?;
     // Only join the global stream after all success
     state.finish(group)
 }
 
 /// `(~ prefix)* ~ value (~ suffix)*`
-fn parse_term<'i>(state: ParseState<'i>, stream: &mut Vec<ExpressionStream>, type_level: bool) -> ParseResult<'i, ()> {
+fn parse_term<'i>(state: ParseState<'i>, stream: &mut Vec<ExpressionStream>, ctx: ExpressionContext) -> ParseResult<'i, ()> {
     let (state, _) = state.match_repeats(|s| parse_prefix(s, stream))?;
-    let (state, _) = parse_expr_value(state, stream, type_level)?;
+    let (state, _) = parse_expr_value(state, stream, ctx)?;
     let (state, _) = state.match_repeats(|s| parse_suffix(s, stream))?;
     state.finish(())
 }
@@ -134,12 +123,16 @@ fn parse_suffix<'a>(input: ParseState<'a>, stream: &mut Vec<ExpressionStream>) -
 }
 
 #[inline]
-fn parse_expr_value<'a>(input: ParseState<'a>, stream: &mut Vec<ExpressionStream>, type_level: bool) -> ParseResult<'a, ()> {
+fn parse_expr_value<'a>(
+    input: ParseState<'a>,
+    stream: &mut Vec<ExpressionStream>,
+    ctx: ExpressionContext,
+) -> ParseResult<'a, ()> {
     let (state, term) = input
         .skip(ignore)
         .begin_choice()
-        .or_else(|s| parse_group(s, type_level).map_inner(ExpressionStream::Group))
-        .or_else(|s| parse_value(s).map_inner(ExpressionStream::Term))
+        .or_else(|s| parse_group(s, ctx).map_inner(ExpressionStream::Group))
+        .or_else(|s| parse_value(s, ctx.allow_curly).map_inner(ExpressionStream::Term))
         .end_choice()?;
 
     stream.push(term);
@@ -151,65 +144,58 @@ pub enum NormalPostfixCall {
     ApplyDot(Box<ApplyDotNode<ExpressionBody>>),
     View(Box<ViewNode<ExpressionBody>>),
     Generic(Box<GenericCall>),
+    Lambda(Box<LambdaCallNode>),
+    LambdaDot(Box<LambdaDotNode>),
 }
 
 #[inline]
-pub fn parse_value(input: ParseState) -> ParseResult<ExpressionBody> {
+pub fn parse_value(input: ParseState, allow_curly: bool) -> ParseResult<ExpressionBody> {
     let (state, mut base) = input
         .begin_choice()
         .or_else(|s| NamePathNode::parse(s).map_inner(Into::into))
         .or_else(|s| NumberLiteralNode::parse(s).map_inner(Into::into))
         .or_else(|s| StringLiteralNode::parse(s).map_inner(Into::into))
         .or_else(|s| TableNode::parse(s).map_inner(Into::into))
+        .or_else(|s| TupleNode::parse(s).map_inner(|s| ExpressionBody::Table(Box::new(s.as_table()))))
         .end_choice()?;
-    let (state, rest) = state.match_repeats(NormalPostfixCall::parse)?;
+    let (state, rest) = match allow_curly {
+        true => state.match_repeats(NormalPostfixCall::parse_allow_curly),
+        false => state.match_repeats(NormalPostfixCall::parse),
+    }?;
     for caller in rest {
         match caller {
             NormalPostfixCall::Apply(v) => base = ExpressionBody::Apply(v.rebase(base)),
             NormalPostfixCall::ApplyDot(v) => base = ExpressionBody::ApplyDot(v.rebase(base)),
             NormalPostfixCall::View(v) => base = ExpressionBody::View(v.rebase(base)),
             NormalPostfixCall::Generic(v) => base = ExpressionBody::GenericCall(v.rebase(base)),
+            NormalPostfixCall::Lambda(v) => base = ExpressionBody::LambdaCall(v.rebase(base)),
+            NormalPostfixCall::LambdaDot(v) => base = ExpressionBody::LambdaDot(v.rebase(base)),
         }
     }
     state.finish(base)
 }
 
-impl ThisParser for NormalPostfixCall {
+impl NormalPostfixCall {
     fn parse(input: ParseState) -> ParseResult<Self> {
-        let (state, skip) = ignore(input)?;
         input
+            .skip(ignore)
             .begin_choice()
-            .or_else(|s| ApplyCallNode::parse(s).map_inner(Into::into))
-            .or_else(|s| ApplyDotNode::parse(s).map_inner(Into::into))
-            .or_else(|s| ViewNode::parse(s).map_inner(Into::into))
-            .or_else(|s| GenericCall::parse(s).map_inner(Into::into))
+            .or_else(|s| ApplyCallNode::parse(s).map_inner(|s| NormalPostfixCall::Apply(Box::new(s))))
+            .or_else(|s| ApplyDotNode::parse(s).map_inner(|s| NormalPostfixCall::ApplyDot(Box::new(s))))
+            .or_else(|s| ViewNode::parse(s).map_inner(|s| NormalPostfixCall::View(Box::new(s))))
+            .or_else(|s| GenericCall::parse(s).map_inner(|s| NormalPostfixCall::Generic(Box::new(s))))
             .end_choice()
     }
-
-    fn as_lisp(&self) -> Lisp {
-        unreachable!()
-    }
-}
-
-impl From<ApplyCallNode<ExpressionBody>> for NormalPostfixCall {
-    fn from(value: ApplyCallNode<ExpressionBody>) -> Self {
-        NormalPostfixCall::Apply(Box::new(value))
-    }
-}
-
-impl From<ApplyDotNode<ExpressionBody>> for NormalPostfixCall {
-    fn from(value: ApplyDotNode<ExpressionBody>) -> Self {
-        NormalPostfixCall::ApplyDot(Box::new(value))
-    }
-}
-
-impl From<ViewNode<ExpressionBody>> for NormalPostfixCall {
-    fn from(value: ViewNode<ExpressionBody>) -> Self {
-        NormalPostfixCall::View(Box::new(value))
-    }
-}
-impl From<GenericCall> for NormalPostfixCall {
-    fn from(value: GenericCall) -> Self {
-        NormalPostfixCall::Generic(Box::new(value))
+    fn parse_allow_curly(input: ParseState) -> ParseResult<Self> {
+        input
+            .skip(ignore)
+            .begin_choice()
+            .or_else(|s| ApplyCallNode::parse(s).map_inner(|s| NormalPostfixCall::Apply(Box::new(s))))
+            .or_else(|s| ApplyDotNode::parse(s).map_inner(|s| NormalPostfixCall::ApplyDot(Box::new(s))))
+            .or_else(|s| ViewNode::parse(s).map_inner(|s| NormalPostfixCall::View(Box::new(s))))
+            .or_else(|s| GenericCall::parse(s).map_inner(|s| NormalPostfixCall::Generic(Box::new(s))))
+            .or_else(|s| LambdaCallNode::parse(s).map_inner(|s| NormalPostfixCall::Lambda(Box::new(s))))
+            .or_else(|s| LambdaDotNode::parse(s).map_inner(|s| NormalPostfixCall::LambdaDot(Box::new(s))))
+            .end_choice()
     }
 }

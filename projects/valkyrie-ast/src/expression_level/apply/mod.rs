@@ -37,9 +37,9 @@ pub struct ApplyTermNode<K, V> {
 /// `(mut self, a, b: int, c: T = 3, ⁑args, ⁂kwargs)`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ApplyArgumentNode<E1, E2> {
+pub struct ApplyArgumentNode {
     /// The raw string of the number.
-    pub terms: Vec<ArgumentTermNode<ArgumentKeyNode, E1, E2>>,
+    pub terms: Vec<ArgumentTermNode<ArgumentKeyNode, ExpressionNode, ExpressionNode>>,
     /// The range of the number.
     pub range: Range<usize>,
 }
@@ -60,17 +60,36 @@ pub struct ArgumentKeyNode {
     pub name: IdentifierNode,
 }
 
-impl<E1, E2> ApplyArgumentNode<E1, E2> {
-    pub fn map_value<F, T>(self, f: F) -> ApplyArgumentNode<T, E2>
+impl<K, V, D> ArgumentTermNode<K, V, D> {
+    pub fn map_key<F, O>(self, f: F) -> ArgumentTermNode<O, V, D>
     where
-        F: FnOnce(E1) -> T + Copy,
+        F: FnOnce(K) -> O,
     {
-        let terms = self
-            .terms
-            .into_iter()
-            .map(|term| ArgumentTermNode { key: term.key, value: term.value.map(f), default: term.default })
-            .collect();
-        ApplyArgumentNode { terms, range: self.range }
+        ArgumentTermNode {
+            key: f(self.key),
+            value: self.value,
+            default: self.default,
+        }
+    }
+    pub fn map_value<F, O>(self, f: F) -> ArgumentTermNode<K, O, D>
+    where
+        F: FnOnce(V) -> O,
+    {
+        ArgumentTermNode {
+            key: self.key,
+            value: self.value.map(f),
+            default: self.default,
+        }
+    }
+    pub fn map_default<F, O>(self, f: F) -> ArgumentTermNode<K, V, O>
+    where
+        F: FnOnce(D) -> O,
+    {
+        ArgumentTermNode {
+            key: self.key,
+            value: self.value,
+            default: self.default.map(f),
+        }
     }
 }
 

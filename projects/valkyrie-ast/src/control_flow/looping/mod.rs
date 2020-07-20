@@ -33,6 +33,6 @@ pub struct ForLoopNode {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum PatternType {
-    Tuple(Vec<ExpressionTermNode>),
+    Tuple(Vec<ExpressionNode>),
     Case,
 }

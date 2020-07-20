@@ -1,6 +1,6 @@
 use super::*;
 
-impl<const T: ExpressionContext> Display for ExpressionNode<T> {
+impl Display for ExpressionNode {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         Display::fmt(&self.body, f)
     }
@@ -21,10 +21,23 @@ impl Display for ExpressionBody {
             ExpressionBody::ApplyDot(v) => Display::fmt(v, f),
             ExpressionBody::View(v) => Display::fmt(v, f),
             ExpressionBody::GenericCall(v) => Display::fmt(v, f),
+            ExpressionBody::LambdaCall(v) => Display::fmt(v, f),
+            ExpressionBody::LambdaDot(v) => Display::fmt(v, f),
         }
     }
 }
 
+impl Default for ExpressionType {
+    fn default() -> Self {
+        Self::Term
+    }
+}
+
+impl Default for ExpressionBody {
+    fn default() -> Self {
+        Self::Placeholder
+    }
+}
 impl From<PrefixNode<ExpressionBody>> for ExpressionBody {
     fn from(value: PrefixNode<ExpressionBody>) -> Self {
         ExpressionBody::Prefix(Box::new(value))

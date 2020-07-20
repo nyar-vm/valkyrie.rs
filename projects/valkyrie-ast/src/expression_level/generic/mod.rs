@@ -8,7 +8,7 @@ use crate::ArgumentTermNode;
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct GenericArgumentNode {
     /// The raw string of the number.
-    pub terms: Vec<ArgumentTermNode<IdentifierNode, ExpressionTypeNode, ExpressionTypeNode>>,
+    pub terms: Vec<ArgumentTermNode<IdentifierNode, ExpressionNode, ExpressionNode>>,
     /// The range of the number.
     pub range: Range<usize>,
 }
@@ -17,9 +17,9 @@ pub struct GenericArgumentNode {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct GenericCall {
-    pub base: ExpressionTypeNode,
+    pub base: ExpressionNode,
     /// The raw string of the number.
-    pub terms: Vec<ApplyTermNode<IdentifierNode, ExpressionTypeNode>>,
+    pub terms: Vec<ApplyTermNode<IdentifierNode, ExpressionNode>>,
     /// The range of the number.
     pub range: Range<usize>,
 }

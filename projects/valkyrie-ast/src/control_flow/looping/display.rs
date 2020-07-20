@@ -10,7 +10,7 @@ impl Display for ConditionType {
     }
 }
 
-impl<const T: ExpressionContext> IndentDisplay for ExpressionNode<T> {
+impl IndentDisplay for ExpressionNode {
     fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
         self.body.indent_fmt(f)
     }
@@ -31,6 +31,8 @@ impl IndentDisplay for ExpressionBody {
             ExpressionBody::ApplyDot(v) => Display::fmt(v, f.borrow_mut()),
             ExpressionBody::View(v) => Display::fmt(v, f.borrow_mut()),
             ExpressionBody::GenericCall(v) => Display::fmt(v, f.borrow_mut()),
+            ExpressionBody::LambdaCall(v) => v.indent_fmt(f),
+            ExpressionBody::LambdaDot(v) => v.indent_fmt(f),
         }
     }
 }

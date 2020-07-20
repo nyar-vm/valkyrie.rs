@@ -5,18 +5,34 @@ use crate::{
     helpers::{ignore, parse_eos, parse_name_join},
     operators::{ValkyrieInfix, ValkyriePrefix, ValkyrieSuffix},
     traits::ThisParser,
+    utils::parse_expression_node,
 };
 use lispify::{Lisp, Lispify};
 use pratt::{Affix, PrattError, PrattParser};
 use std::fmt::Debug;
 use valkyrie_ast::{
-    ApplyCallNode, ApplyDotNode, ExpressionBody, ExpressionContext, ExpressionNode, GenericCall, InfixNode, NamePathNode,
-    NumberLiteralNode, PostfixNode, PrefixNode, StringLiteralNode, TableNode, ValkyrieOperator, ViewNode,
+    ApplyCallNode, ApplyDotNode, ExpressionBody, ExpressionContext, ExpressionNode, ExpressionType, GenericCall, InfixNode,
+    NamePathNode, NumberLiteralNode, PostfixNode, PrefixNode, StringLiteralNode, TableNode, ValkyrieOperator, ViewNode,
 };
 use valkyrie_types::third_party::pex::{ParseResult, ParseState, StopBecause};
+
 /// A resolver
 #[derive(Default)]
 pub struct ExpressionResolver {}
+
+pub(crate) struct ParseTypeExpression {
+    pub expr: ExpressionNode,
+}
+
+impl ThisParser for ParseTypeExpression {
+    fn parse(input: ParseState) -> ParseResult<Self> {
+        parse_expression_node(input, ExpressionContext::in_type()).map_inner(|e| ParseTypeExpression { expr: e })
+    }
+
+    fn as_lisp(&self) -> Lisp {
+        unreachable!()
+    }
+}
 
 impl ExpressionResolver {
     pub fn resolve(&self, stream: Vec<ExpressionStream>) -> Result<ExpressionBody, StopBecause> {

@@ -1,5 +1,6 @@
 use super::*;
-use valkyrie_ast::{ForLoopNode, FunctionDeclarationNode, NamePathNode, WhileLoopNode};
+use crate::utils::parse_expression_node;
+use valkyrie_ast::{ExpressionContext, ForLoopNode, FunctionDeclarationNode, NamePathNode, WhileLoopNode};
 
 impl ThisParser for StatementNode {
     /// - [term](ExpressionType::parse)
@@ -24,7 +25,7 @@ impl ThisParser for StatementType {
             .or_else(|s| FunctionDeclarationNode::parse(s).map_inner(Into::into))
             .or_else(|s| WhileLoopNode::parse(s).map_inner(Into::into))
             .or_else(|s| ForLoopNode::parse(s).map_inner(Into::into))
-            .or_else(|s| ExpressionNode::parse(s).map_inner(Into::into))
+            .or_else(|s| parse_expression_node(s, ExpressionContext::in_free()).map_inner(Into::into))
             .end_choice()?;
         let (state, _) = state.skip(ignore).match_optional(|s| s.match_char(';'))?;
         state.finish(expr)
