@@ -3,6 +3,14 @@ a {
 }
 
 
-s {
+s(args) {
     print("hello")
 }
+
+
+
+chain
+    .{ body }
+    .map {
+        print("hello")
+    }

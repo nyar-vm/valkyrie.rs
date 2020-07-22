@@ -48,6 +48,10 @@ impl ThisParser for LambdaDotNode {
     }
 
     fn as_lisp(&self) -> Lisp {
-        todo!()
+        let mut terms = Vec::with_capacity(self.body.len() + 2);
+        terms.push(Lisp::keyword("call/lambda-dot"));
+        terms.push(self.base.as_lisp());
+        terms.extend(self.body.iter().map(ThisParser::as_lisp));
+        Lisp::Any(terms)
     }
 }

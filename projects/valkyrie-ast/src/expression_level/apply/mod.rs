@@ -65,31 +65,19 @@ impl<K, V, D> ArgumentTermNode<K, V, D> {
     where
         F: FnOnce(K) -> O,
     {
-        ArgumentTermNode {
-            key: f(self.key),
-            value: self.value,
-            default: self.default,
-        }
+        ArgumentTermNode { key: f(self.key), value: self.value, default: self.default }
     }
     pub fn map_value<F, O>(self, f: F) -> ArgumentTermNode<K, O, D>
     where
         F: FnOnce(V) -> O,
     {
-        ArgumentTermNode {
-            key: self.key,
-            value: self.value.map(f),
-            default: self.default,
-        }
+        ArgumentTermNode { key: self.key, value: self.value.map(f), default: self.default }
     }
     pub fn map_default<F, O>(self, f: F) -> ArgumentTermNode<K, V, O>
     where
         F: FnOnce(D) -> O,
     {
-        ArgumentTermNode {
-            key: self.key,
-            value: self.value,
-            default: self.default.map(f),
-        }
+        ArgumentTermNode { key: self.key, value: self.value, default: self.default.map(f) }
     }
 }
 
