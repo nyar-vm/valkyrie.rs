@@ -1,40 +1,48 @@
 use super::*;
-use indentation::{IndentDisplay, IndentFormatter};
 
-impl<E: Display> Display for ApplyDotNode<E> {
-    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        write!(f, "{}.{}(", self.base, self.caller)?;
+impl IndentDisplay for ApplyDotNode {
+    fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
+        self.base.indent_fmt(f)?;
+        f.write_newline()?;
+        write!(f, ".{}(", self.caller)?;
         comma_terms(f, &self.terms)?;
         write!(f, ")")
     }
 }
 
-impl<E: Display> IndentDisplay for ApplyCallNode<E> {
+impl<K, V> IndentDisplay for ApplyTermNode<K, V>
+where
+    K: IndentDisplay,
+    V: IndentDisplay,
+{
+    fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
+        match &self.key {
+            Some(k) => {
+                k.indent_fmt(f)?;
+                f.write_str(": ")?;
+                self.value.indent_fmt(f)
+            }
+            None => self.value.indent_fmt(f),
+        }
+    }
+}
+
+impl IndentDisplay for ApplyCallNode {
     fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
         write!(f, "{}", self)
     }
 }
 
-impl<E: Display> Display for ApplyCallNode<E> {
+impl<K, V> Display for ApplyTermNode<K, V>
+where
+    K: IndentDisplay,
+    V: IndentDisplay,
+{
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        write!(f, "{}(", self.base)?;
-        comma_terms(f, &self.terms)?;
-        write!(f, ")")
+        IndentFormatter::wrap(self, f)
     }
 }
 
-impl<K, V> Display for ApplyTermNode<K, V>
-where
-    K: Display,
-    V: Display,
-{
-    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        match self.key {
-            Some(ref k) => write!(f, "{}: {}", k, self.value),
-            None => Display::fmt(&self.value, f),
-        }
-    }
-}
 impl<K: Display, V: Display, D: Display> Display for ArgumentTermNode<K, V, D> {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         write!(f, "{}", self.key)?;
@@ -54,5 +62,17 @@ impl Display for ArgumentKeyNode {
             write!(f, "{} ", modifier)?;
         }
         write!(f, "{}", self.name)
+    }
+}
+
+impl Display for ApplyDotNode {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        IndentFormatter::wrap(self, f)
+    }
+}
+
+impl Display for ApplyCallNode {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        IndentFormatter::wrap(self, f)
     }
 }

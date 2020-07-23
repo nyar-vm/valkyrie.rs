@@ -1,6 +1,7 @@
 use super::*;
+use valkyrie_ast::ExpressionNode;
 
-impl ThisParser for ApplyDotNode<ExpressionBody> {
+impl ThisParser for ApplyDotNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, _) = input.match_char('.')?;
         let (state, caller) = state.skip(ignore).match_fn(IdentifierNode::parse)?;
@@ -9,7 +10,7 @@ impl ThisParser for ApplyDotNode<ExpressionBody> {
             Some(v) => v.terms,
             None => vec![],
         };
-        finally.finish(ApplyDotNode { base: ExpressionBody::Placeholder, caller, terms, range: finally.away_from(input) })
+        finally.finish(ApplyDotNode { base: ExpressionNode::default(), caller, terms, range: finally.away_from(input) })
     }
 
     fn as_lisp(&self) -> Lisp {

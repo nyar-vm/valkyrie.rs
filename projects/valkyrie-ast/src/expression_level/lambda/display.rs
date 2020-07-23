@@ -18,13 +18,17 @@ impl IndentDisplay for LambdaCallNode {
 impl IndentDisplay for LambdaDotNode {
     fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
         self.base.indent_fmt(f)?;
-        f.write_str(".{\n")?;
         f.indent();
+        f.write_newline()?;
+        f.write_str(".{")?;
+        f.indent();
+        f.write_newline()?;
         for statement in &self.body {
             statement.indent_fmt(f)?;
         }
         f.dedent();
-        f.write_str("}\n")
+        f.write_newline()?;
+        f.write_str("}")
     }
 }
 

@@ -4,13 +4,13 @@ use super::*;
 /// `term.call(0, a: 1, ⁑args, ⁂kwargs)`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ApplyDotNode<E> {
+pub struct ApplyDotNode {
     /// The raw string of the number.
-    pub base: E,
+    pub base: ExpressionNode,
     /// The raw string of the number.
     pub caller: IdentifierNode,
     /// The range of the number.
-    pub terms: Vec<ApplyTermNode<IdentifierNode, E>>,
+    pub terms: Vec<ApplyTermNode<IdentifierNode, ExpressionNode>>,
     /// The range of the number.
     pub range: Range<usize>,
 }
@@ -18,10 +18,10 @@ pub struct ApplyDotNode<E> {
 /// `apply(0, a: 1, ⁑args, ⁂kwargs)`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ApplyCallNode<E> {
-    pub base: E,
+pub struct ApplyCallNode {
+    pub base: ExpressionNode,
     /// The raw string of the number.
-    pub terms: Vec<ApplyTermNode<IdentifierNode, E>>,
+    pub terms: Vec<ApplyTermNode<IdentifierNode, ExpressionNode>>,
     /// The range of the number.
     pub range: Range<usize>,
 }
@@ -81,16 +81,16 @@ impl<K, V, D> ArgumentTermNode<K, V, D> {
     }
 }
 
-impl<E> ApplyCallNode<E> {
-    pub fn rebase(mut self: Box<Self>, base: E) -> Box<Self> {
-        self.base = base;
+impl ApplyCallNode {
+    pub fn rebase(mut self: Box<Self>, base: ExpressionBody) -> Box<Self> {
+        self.base.body = base;
         self
     }
 }
 
-impl<E> ApplyDotNode<E> {
-    pub fn rebase(mut self: Box<Self>, base: E) -> Box<Self> {
-        self.base = base;
+impl ApplyDotNode {
+    pub fn rebase(mut self: Box<Self>, base: ExpressionBody) -> Box<Self> {
+        self.base.body = base;
         self
     }
 }

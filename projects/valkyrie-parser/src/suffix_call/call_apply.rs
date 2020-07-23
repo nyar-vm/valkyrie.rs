@@ -1,5 +1,5 @@
 use super::*;
-use valkyrie_ast::ArgumentTermNode;
+use valkyrie_ast::{ArgumentTermNode, ExpressionNode};
 
 impl ThisParser for GenericArgumentNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
@@ -29,11 +29,11 @@ impl ThisParser for GenericArgumentNode {
     }
 }
 
-impl ThisParser for ApplyCallNode<ExpressionBody> {
+impl ThisParser for ApplyCallNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let pat = BracketPattern::new("(", ")");
         let (state, terms) = pat.consume(input, ignore, ApplyTermNode::parse)?;
-        state.finish(ApplyCallNode { base: ExpressionBody::Placeholder, terms: terms.body, range: state.away_from(input) })
+        state.finish(ApplyCallNode { base: ExpressionNode::default(), terms: terms.body, range: state.away_from(input) })
     }
 
     fn as_lisp(&self) -> Lisp {

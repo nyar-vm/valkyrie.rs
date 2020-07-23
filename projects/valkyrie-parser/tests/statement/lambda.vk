@@ -14,3 +14,9 @@ chain
     .map {
         print("hello")
     }
+    .filter {
+        x > 0
+    }
+    .filter_collect {
+        x > 5
+    }

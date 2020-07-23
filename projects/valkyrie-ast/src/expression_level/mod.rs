@@ -21,6 +21,7 @@ use alloc::{
     vec::Vec,
 };
 use core::{
+    borrow::BorrowMut,
     fmt::{Display, Formatter, Write},
     ops::Range,
 };
@@ -61,8 +62,8 @@ pub enum ExpressionBody {
     Binary(Box<InfixNode<Self>>),
     Suffix(Box<PostfixNode<Self>>),
     Table(Box<TableNode<Self>>),
-    Apply(Box<ApplyCallNode<Self>>),
-    ApplyDot(Box<ApplyDotNode<Self>>),
+    Apply(Box<ApplyCallNode>),
+    ApplyDot(Box<ApplyDotNode>),
     LambdaCall(Box<LambdaCallNode>),
     LambdaDot(Box<LambdaDotNode>),
     View(Box<ViewNode<Self>>),

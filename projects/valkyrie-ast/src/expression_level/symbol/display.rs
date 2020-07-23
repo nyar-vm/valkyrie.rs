@@ -6,6 +6,12 @@ impl Display for IdentifierNode {
     }
 }
 
+impl IndentDisplay for IdentifierNode {
+    fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
+        f.write_str(&self.name)
+    }
+}
+
 impl Display for NamePathNode {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         for (idx, item) in self.names.iter().enumerate() {

@@ -140,8 +140,8 @@ fn parse_expr_value<'a>(
 }
 
 pub enum NormalPostfixCall {
-    Apply(Box<ApplyCallNode<ExpressionBody>>),
-    ApplyDot(Box<ApplyDotNode<ExpressionBody>>),
+    Apply(Box<ApplyCallNode>),
+    ApplyDot(Box<ApplyDotNode>),
     View(Box<ViewNode<ExpressionBody>>),
     Generic(Box<GenericCall>),
     Lambda(Box<LambdaCallNode>),
