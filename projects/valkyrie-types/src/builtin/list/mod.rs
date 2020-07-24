@@ -3,14 +3,14 @@ use std::{
     sync::Arc,
 };
 
-use crate::{types::ValkyrieMetaType, ValkyrieTable, ValkyrieType, ValkyrieValue};
+use crate::{types::ValkyrieMetaType, ValkyrieDataTable, ValkyrieType, ValkyrieValue};
 
 impl<T> ValkyrieType for Vec<T>
 where
     T: ValkyrieType,
 {
     fn boxed(self) -> ValkyrieValue {
-        let mut out = ValkyrieTable::list();
+        let mut out = ValkyrieDataTable::list();
         for item in self {
             out.extend_one(item.boxed());
         }
@@ -30,7 +30,7 @@ where
     T: ValkyrieType,
 {
     fn boxed(self) -> ValkyrieValue {
-        let mut out = ValkyrieTable::list();
+        let mut out = ValkyrieDataTable::list();
         for item in self {
             out.extend_one(item.boxed());
         }
@@ -51,7 +51,7 @@ where
     V: ValkyrieType,
 {
     fn boxed(self) -> ValkyrieValue {
-        let mut out = ValkyrieTable::list();
+        let mut out = ValkyrieDataTable::list();
         for item in self {
             out.extend_one(item.boxed());
         }

@@ -5,9 +5,8 @@ use std::{
     str::FromStr,
     sync::{Arc, Mutex},
 };
-use valkyrie_ast::{NamePathNode, NumberLiteralNode, StringLiteralNode};
-use valkyrie_parser::expression::ExpressionBody;
-use valkyrie_types::{ValkyrieError, ValkyrieResult, ValkyrieTable, ValkyrieValue};
+use valkyrie_ast::{ExpressionBody, NamePathNode, NumberLiteralNode, StringLiteralNode};
+use valkyrie_types::{ValkyrieDataTable, ValkyrieError, ValkyrieResult, ValkyrieValue};
 
 pub struct ExecutorScope {
     parent: Option<Arc<Mutex<ExecutorScope>>>,
@@ -31,6 +30,24 @@ impl ValkyrieExecutor {
             ExpressionBody::Symbol(v) => self.execute_symbol(*v).await,
             ExpressionBody::String(v) => self.execute_string(*v).await,
             ExpressionBody::Table(v) => {
+                todo!()
+            }
+            ExpressionBody::Apply(_) => {
+                todo!()
+            }
+            ExpressionBody::ApplyDot(_) => {
+                todo!()
+            }
+            ExpressionBody::LambdaCall(_) => {
+                todo!()
+            }
+            ExpressionBody::LambdaDot(_) => {
+                todo!()
+            }
+            ExpressionBody::View(_) => {
+                todo!()
+            }
+            ExpressionBody::GenericCall(_) => {
                 todo!()
             }
         }

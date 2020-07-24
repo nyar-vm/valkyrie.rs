@@ -18,7 +18,7 @@ impl Serialize for ValkyrieValue {
             ValkyrieValue::Float64(v) => serializer.serialize_f64(*v),
             ValkyrieValue::UTF8Character(v) => serializer.serialize_char(*v),
             ValkyrieValue::UTF8String(v) => serializer.serialize_str(v),
-            ValkyrieValue::Buffer(_) => {
+            ValkyrieValue::Bytes(_) => {
                 todo!()
             }
             ValkyrieValue::Class(_) => {

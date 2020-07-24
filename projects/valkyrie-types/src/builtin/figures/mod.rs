@@ -1,11 +1,9 @@
 use crate::{types::ValkyrieMetaType, ValkyrieType, ValkyrieValue};
+use image::DynamicImage;
 use std::sync::Arc;
 
 pub struct ValkyrieImage {
-    bytes: Vec<u8>,
-    width: u32,
-    height: u32,
-    channel: u32,
+    any_image: DynamicImage,
 }
 
 impl ValkyrieType for ValkyrieImage {

@@ -1,6 +1,6 @@
 [package]
 name = "valkyrie-types"
-version = "0.0.1"
+version = "0.0.2"
 authors = ["Aster <192607617@qq.com>"]
 description = "..."
 repository = "https://github.com/nyar-vm/valkyrie.rs"
@@ -17,6 +17,9 @@ indexmap = "1.9.2"
 inwelling = "0.5.0"
 itertools = "0.10.5"
 
+image = { version = "0.24.6", features = [], optional = true }
+ndarray = { version = "0.15.6", features = [], optional = true }
+polars = { version = "0.30.0", features = ["lazy"], optional = true }
 url = { version = "2.3.1", features = [], optional = true }
 serde_json = { version = "1.0.96", features = [], optional = true }
 pex = { version = "0.1.15", features = ["regex"], optional = true }

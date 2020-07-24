@@ -30,7 +30,6 @@ where
 impl IndentDisplay for ApplyCallNode {
     fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
         self.base.indent_fmt(f)?;
-        f.write_newline()?;
         write!(f, "(")?;
         comma_terms(f, &self.terms)?;
         write!(f, ")")

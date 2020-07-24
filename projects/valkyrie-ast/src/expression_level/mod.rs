@@ -21,7 +21,6 @@ use alloc::{
     vec::Vec,
 };
 use core::{
-    borrow::BorrowMut,
     fmt::{Display, Formatter, Write},
     ops::Range,
 };

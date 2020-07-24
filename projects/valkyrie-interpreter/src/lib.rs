@@ -11,6 +11,7 @@ use jupyter::{
 use jupyter_derive::{include_png32, include_png64};
 use serde_json::Value;
 use std::path::PathBuf;
+use valkyrie_ast::{StatementNode, StatementType};
 use valkyrie_parser::ThisParser;
 mod display;
 mod expression;
@@ -41,7 +42,7 @@ impl Default for ValkyrieExecutor {
 
 impl ValkyrieExecutor {
     pub(crate) async fn repl_parse_and_run(&mut self, code: &str) -> ValkyrieResult<()> {
-        let (_, terms) = ValkyrieREPL::parse_many(ParseState::new(code))?;
+        let terms = StatementNode::parse_many(code)?;
         for i in terms {
             match self.execute_repl(i).await {
                 Ok(v) => self.send_value(v).await,
@@ -58,10 +59,32 @@ impl ValkyrieExecutor {
         Ok(())
     }
 
-    pub async fn execute_repl(&mut self, tree: ValkyrieREPL) -> ValkyrieResult<ValkyrieValue> {
-        match tree {
-            ValkyrieREPL::Namespace(_) => Ok(ValkyrieValue::Nothing),
-            ValkyrieREPL::Expression(e) => self.execute_expr(*e).await,
+    pub async fn execute_repl(&mut self, tree: StatementNode) -> ValkyrieResult<ValkyrieValue> {
+        match tree.r#type {
+            StatementType::Nothing => {
+                todo!()
+            }
+            StatementType::Namespace(_) => {
+                todo!()
+            }
+            StatementType::Import(_) => {
+                todo!()
+            }
+            StatementType::Class(_) => {
+                todo!()
+            }
+            StatementType::Function(_) => {
+                todo!()
+            }
+            StatementType::While(_) => {
+                todo!()
+            }
+            StatementType::For(_) => {
+                todo!()
+            }
+            StatementType::Expression(_) => {
+                todo!()
+            }
         }
     }
 
@@ -77,7 +100,7 @@ impl ValkyrieExecutor {
             ValkyrieValue::Float64(v) => self.sockets.send_executed(DisplayNumber::new(v)).await,
             ValkyrieValue::UTF8Character(v) => self.sockets.send_executed(Value::String(v.to_string())).await,
             ValkyrieValue::UTF8String(v) => self.sockets.send_executed(Value::String(v.as_str().to_string())).await,
-            ValkyrieValue::Buffer(_) => {
+            ValkyrieValue::Bytes(_) => {
                 todo!()
             }
             ValkyrieValue::Class(_) => {

@@ -1,6 +1,6 @@
 namespace legion;
 
-def fibonacci() -> Iterator[Integer] {
+def fibonacci() -> Iterator<Integer> {
     let mut a = 0;
     let mut b = 1;
     while true {
@@ -12,7 +12,7 @@ def fibonacci() -> Iterator[Integer] {
 
 self.word ?= b"Hello, World!"
 
-extends[T, E] Result[T, E]: Perform {
+extends<T, E> Result<T, E>: Perform {
 	perform(self) -> T / E {
 		match self {
 			Success(s) => s
@@ -21,13 +21,18 @@ extends[T, E] Result[T, E]: Perform {
 	}
 }
 
-extends[T] Option[T]: Perform {
+extends<T> Option<T>: Perform {
 	perform(self) -> T / null {
 		match self {
             Some(s) => s
 			None => raise null
 		}
 	}
+}
+
+cases A(type) {
+    case A;
+    case B;
 }
 
 try Option[u64] {
@@ -50,12 +55,14 @@ try Option[u64] {
 }
 
 which {
-	Some(a) := b && a > 0: print(1)
-	a < 0: print(-1)
-	_: print(0)
+	case a @ Some(a) if a > 0:
+	    print(1)
+	case a < 0:
+	    print(-1)
+	case _: print(0)
 }
 
-if Some(a) := b {
+if case Some(a) = b {
 	print(1)
 }
 else if a < 0 {

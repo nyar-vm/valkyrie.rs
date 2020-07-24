@@ -24,7 +24,7 @@ features = []
 path = "../valkyrie-ast"
 
 [dependencies.valkyrie-types]
-version = "0.0.1"
+version = "0.0.2"
 features = ["pex"]
 path = "../valkyrie-types"
 
