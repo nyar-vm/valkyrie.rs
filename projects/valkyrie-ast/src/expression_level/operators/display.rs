@@ -1,7 +1,7 @@
 use super::*;
 
-impl Display for ValkyrieOperator {
-    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+impl IndentDisplay for ValkyrieOperator {
+    fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
         match self {
             ValkyrieOperator::Not => f.write_char('!'),
             ValkyrieOperator::Concat => f.write_str("++"),
@@ -59,26 +59,62 @@ impl Display for ValkyrieOperator {
     }
 }
 
+impl IndentDisplay for OperatorNode {
+    fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
+        self.kind.indent_fmt(f)
+    }
+}
+
+impl Display for ValkyrieOperator {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        IndentFormatter::wrap(self, f)
+    }
+}
+
 impl Display for OperatorNode {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         write!(f, "{}", self.kind)
     }
 }
 
-impl<E: Display> Display for PrefixNode<E> {
-    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        write!(f, "{}{}", self.operator, self.body)
+impl<E: IndentDisplay> IndentDisplay for PrefixNode<E> {
+    fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
+        self.operator.indent_fmt(f)?;
+        self.body.indent_fmt(f)
     }
 }
 
-impl<E: Display> Display for InfixNode<E> {
-    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        write!(f, "{} {} {}", self.lhs, self.operator, self.rhs)
+impl<E: IndentDisplay> IndentDisplay for InfixNode<E> {
+    fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
+        self.lhs.indent_fmt(f)?;
+        f.write_char(' ')?;
+        self.operator.indent_fmt(f)?;
+        f.write_char(' ')?;
+        self.rhs.indent_fmt(f)
     }
 }
 
-impl<E: Display> Display for PostfixNode<E> {
+impl<E: IndentDisplay> IndentDisplay for PostfixNode<E> {
+    fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
+        self.body.indent_fmt(f)?;
+        self.operator.indent_fmt(f)
+    }
+}
+
+impl<E: IndentDisplay> Display for PrefixNode<E> {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        write!(f, "{}{}", self.body, self.operator)
+        IndentFormatter::wrap(self, f)
+    }
+}
+
+impl<E: IndentDisplay> Display for InfixNode<E> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        IndentFormatter::wrap(self, f)
+    }
+}
+
+impl<E: IndentDisplay> Display for PostfixNode<E> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        IndentFormatter::wrap(self, f)
     }
 }

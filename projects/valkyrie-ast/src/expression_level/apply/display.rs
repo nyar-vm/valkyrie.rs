@@ -29,7 +29,11 @@ where
 
 impl IndentDisplay for ApplyCallNode {
     fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
-        write!(f, "{}", self)
+        self.base.indent_fmt(f)?;
+        f.write_newline()?;
+        write!(f, "(")?;
+        comma_terms(f, &self.terms)?;
+        write!(f, ")")
     }
 }
 
@@ -56,12 +60,18 @@ impl<K: Display, V: Display, D: Display> Display for ArgumentTermNode<K, V, D> {
     }
 }
 
-impl Display for ArgumentKeyNode {
-    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+impl IndentDisplay for ArgumentKeyNode {
+    fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
         for modifier in &self.modifiers {
             write!(f, "{} ", modifier)?;
         }
         write!(f, "{}", self.name)
+    }
+}
+
+impl Display for ArgumentKeyNode {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        IndentFormatter::wrap(self, f)
     }
 }
 

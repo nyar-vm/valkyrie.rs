@@ -12,8 +12,8 @@ pub mod view;
 
 use crate::{
     utils::comma_terms, ApplyCallNode, ApplyDotNode, ApplyTermNode, GenericCall, IdentifierNode, InfixNode, LambdaCallNode,
-    LambdaDotNode, LambdaNode, NamePathNode, NumberLiteralNode, OperatorNode, PostfixNode, PrefixNode, StatementNode,
-    StringLiteralNode, TableNode, ViewNode,
+    LambdaDotNode, NamePathNode, NumberLiteralNode, OperatorNode, PostfixNode, PrefixNode, StatementNode, StringLiteralNode,
+    TableNode, ViewNode,
 };
 use alloc::{
     boxed::Box,
@@ -25,7 +25,7 @@ use core::{
     fmt::{Display, Formatter, Write},
     ops::Range,
 };
-use indentation::{IndentDisplay, IndentFormatter};
+use indentation::{wrap_display, IndentDisplay, IndentFormatter};
 
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]

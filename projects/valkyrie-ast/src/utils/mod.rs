@@ -1,4 +1,4 @@
-use core::fmt::{Display, Formatter, Write};
+use core::fmt::{Formatter, Write};
 use indentation::{IndentDisplay, IndentFormatter};
 
 pub fn comma_terms<T: IndentDisplay>(f: &mut IndentFormatter, input: &[T]) -> core::fmt::Result {

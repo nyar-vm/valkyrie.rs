@@ -16,27 +16,6 @@ impl IndentDisplay for ExpressionNode {
     }
 }
 
-impl IndentDisplay for ExpressionBody {
-    fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
-        match self {
-            ExpressionBody::Placeholder => f.write_str("???"),
-            ExpressionBody::Symbol(v) => Display::fmt(v, f.borrow_mut()),
-            ExpressionBody::Number(v) => Display::fmt(v, f.borrow_mut()),
-            ExpressionBody::String(v) => Display::fmt(v, f.borrow_mut()),
-            ExpressionBody::Prefix(v) => Display::fmt(v, f.borrow_mut()),
-            ExpressionBody::Binary(v) => Display::fmt(v, f.borrow_mut()),
-            ExpressionBody::Suffix(v) => Display::fmt(v, f.borrow_mut()),
-            ExpressionBody::Table(v) => Display::fmt(v, f.borrow_mut()),
-            ExpressionBody::Apply(v) => v.indent_fmt(f),
-            ExpressionBody::ApplyDot(v) => Display::fmt(v, f.borrow_mut()),
-            ExpressionBody::View(v) => Display::fmt(v, f.borrow_mut()),
-            ExpressionBody::GenericCall(v) => Display::fmt(v, f.borrow_mut()),
-            ExpressionBody::LambdaCall(v) => v.indent_fmt(f),
-            ExpressionBody::LambdaDot(v) => v.indent_fmt(f),
-        }
-    }
-}
-
 impl IndentDisplay for WhileLoopNode {
     fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
         write!(f, "while {} {{", self.condition)?;

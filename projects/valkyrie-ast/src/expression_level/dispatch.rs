@@ -6,24 +6,30 @@ impl Display for ExpressionNode {
     }
 }
 
-impl Display for ExpressionBody {
-    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+impl IndentDisplay for ExpressionBody {
+    fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
         match self {
             ExpressionBody::Placeholder => f.write_str("???"),
-            ExpressionBody::Prefix(v) => Display::fmt(v, f),
-            ExpressionBody::Binary(v) => Display::fmt(v, f),
-            ExpressionBody::Suffix(v) => Display::fmt(v, f),
-            ExpressionBody::Number(v) => Display::fmt(v, f),
-            ExpressionBody::Symbol(v) => Display::fmt(v, f),
-            ExpressionBody::String(v) => Display::fmt(v, f),
-            ExpressionBody::Table(v) => Display::fmt(v, f),
-            ExpressionBody::Apply(v) => Display::fmt(v, f),
-            ExpressionBody::ApplyDot(v) => Display::fmt(v, f),
-            ExpressionBody::View(v) => Display::fmt(v, f),
-            ExpressionBody::GenericCall(v) => Display::fmt(v, f),
-            ExpressionBody::LambdaCall(v) => Display::fmt(v, f),
-            ExpressionBody::LambdaDot(v) => Display::fmt(v, f),
+            ExpressionBody::Symbol(node) => node.indent_fmt(f),
+            ExpressionBody::Number(node) => node.indent_fmt(f),
+            ExpressionBody::String(node) => node.indent_fmt(f),
+            ExpressionBody::Prefix(node) => node.indent_fmt(f),
+            ExpressionBody::Binary(node) => node.indent_fmt(f),
+            ExpressionBody::Suffix(node) => node.indent_fmt(f),
+            ExpressionBody::Table(node) => node.indent_fmt(f),
+            ExpressionBody::Apply(node) => node.indent_fmt(f),
+            ExpressionBody::ApplyDot(node) => node.indent_fmt(f),
+            ExpressionBody::LambdaCall(node) => node.indent_fmt(f),
+            ExpressionBody::LambdaDot(node) => node.indent_fmt(f),
+            ExpressionBody::View(node) => node.indent_fmt(f),
+            ExpressionBody::GenericCall(node) => node.indent_fmt(f),
         }
+    }
+}
+
+impl Display for ExpressionBody {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        IndentFormatter::wrap(self, f)
     }
 }
 

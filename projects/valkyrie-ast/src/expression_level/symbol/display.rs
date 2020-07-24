@@ -12,15 +12,21 @@ impl IndentDisplay for IdentifierNode {
     }
 }
 
-impl Display for NamePathNode {
-    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+impl IndentDisplay for NamePathNode {
+    fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
         for (idx, item) in self.names.iter().enumerate() {
             if idx != 0 {
                 f.write_str("∷")?;
             }
-            Display::fmt(item, f)?;
+            item.indent_fmt(f)?;
         }
         Ok(())
+    }
+}
+
+impl Display for NamePathNode {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        IndentFormatter::wrap(self, f)
     }
 }
 
