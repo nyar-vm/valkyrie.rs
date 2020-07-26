@@ -3,7 +3,7 @@ use super::*;
 impl IndentDisplay for StatementNode {
     fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
         self.r#type.indent_fmt(f)?;
-        if self.eos {
+        if self.end_semicolon {
             f.write_str(";")?;
         }
         Ok(())

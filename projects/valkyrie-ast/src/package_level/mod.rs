@@ -22,7 +22,7 @@ use indentation::{IndentDisplay, IndentFormatter};
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct StatementNode {
     pub r#type: StatementType,
-    pub eos: bool,
+    pub end_semicolon: bool,
     pub range: Range<usize>,
 }
 
@@ -39,3 +39,7 @@ pub enum StatementType {
     For(Box<ForLoopNode>),
     Expression(Box<ExpressionNode>),
 }
+
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct StatementContext {}

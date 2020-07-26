@@ -11,6 +11,9 @@ readme = "Readme.md"
 license = "MPL-2.0"
 edition = "2021"
 
+[dependencies]
+pretty = "0.12.1"
+
 [dependencies.indentation]
 version = "0.1.6"
 #path = "C:\\Users\\Dell\\CLionProjects\\pex-sexpr\\projects\\indentation"

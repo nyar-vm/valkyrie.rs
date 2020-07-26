@@ -64,7 +64,7 @@ impl IndentDisplay for ArgumentKeyNode {
         for modifier in &self.modifiers {
             write!(f, "{} ", modifier)?;
         }
-        write!(f, "{}", self.name)
+        write!(f, "{}", self.key)
     }
 }
 

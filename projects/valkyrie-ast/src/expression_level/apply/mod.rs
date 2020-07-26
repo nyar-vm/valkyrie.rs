@@ -57,7 +57,7 @@ pub struct ArgumentTermNode<K, V, D> {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ArgumentKeyNode {
     pub modifiers: Vec<IdentifierNode>,
-    pub name: IdentifierNode,
+    pub key: IdentifierNode,
 }
 
 impl<K, V, D> ArgumentTermNode<K, V, D> {

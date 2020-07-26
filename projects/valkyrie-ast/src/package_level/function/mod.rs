@@ -28,8 +28,9 @@ pub struct FunctionDeclarationNode {
 }
 
 /// `::<G>(args) -> return { body }`
+///
+/// - Auxiliary parsing function, not instantiable.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct FunctionCommonPart {
     pub generic: Option<GenericArgumentNode>,
     /// The range of the number.
@@ -38,7 +39,30 @@ pub struct FunctionCommonPart {
     pub body: Option<Vec<StatementNode>>,
 }
 
-impl FunctionDeclarationNode {}
+/// `public static final synchronized class A {}`
+///
+/// - Auxiliary parsing function, not instantiable.
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+pub struct ModifierPart {
+    pub modifiers: Vec<IdentifierNode>,
+}
+
+impl FunctionDeclarationNode {
+    pub fn has_body(&self) -> bool {
+        self.body.is_some()
+    }
+    /// Does the function has a return type
+    pub fn has_return_type(&self) -> bool {
+        self.r#return.is_some()
+    }
+    /// Does the last statement has a semicolon, or it's empty
+    ///
+    /// Omit return always returns `( )`
+    pub fn omit_return(&self) -> bool {
+        let eos: Option<bool> = try { !self.body.as_ref()?.last()?.end_semicolon };
+        eos.unwrap_or(true)
+    }
+}
 
 impl FunctionCommonPart {
     /// Create a new complete function body
