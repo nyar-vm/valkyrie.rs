@@ -1,4 +1,5 @@
 use super::*;
+use valkyrie_ast::{NumberLiteralNode, PrettyPrint};
 
 #[test]
 fn lex_expression() {
@@ -15,9 +16,9 @@ fn test_apply2() {}
 
 #[test]
 fn test_apply() {
-    let raw = "a.b";
-    let apply = ExpressionBody::parse_text(raw).unwrap();
-    println!("{}", colored_lisp(apply.as_lisp(), 144).unwrap());
+    let raw = "0cm";
+    let apply = NumberLiteralNode::parse_text(raw).unwrap();
+    apply.pretty_print(42)
 }
 
 #[test]

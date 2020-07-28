@@ -1,13 +1,23 @@
-use crate::{helpers::ignore, traits::ThisParser};
+use crate::{
+    helpers::{ignore, parse_eos},
+    traits::ThisParser,
+    utils::{parse_expression_node, parse_modifiers},
+};
 use lispify::Lisp;
-
-use crate::helpers::parse_eos;
 use valkyrie_ast::{
-    ClassDeclarationNode, ExpressionNode, ImportStatementNode, NamespaceDeclarationNode, StatementNode, StatementType,
+    ClassDeclarationNode, ExpressionContext, ExpressionNode, ForLoopNode, FunctionDeclarationNode, FunctionType,
+    ImportStatementNode, NamePathNode, NamespaceDeclarationNode, StatementNode, StatementType, WhileLoopNode,
 };
 use valkyrie_types::third_party::pex::{ParseResult, ParseState};
 
+mod classes;
 mod lambda;
 mod normal;
-pub mod repl;
-pub mod script;
+
+pub struct ReplRoot {
+    pub statements: Vec<StatementNode>,
+}
+
+pub struct ScriptRoot {
+    pub statements: Vec<StatementNode>,
+}

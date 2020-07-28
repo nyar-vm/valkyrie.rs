@@ -11,7 +11,7 @@ use std::{
     path::{Path, PathBuf},
 };
 use valkyrie_ast::{ExpressionBody, StatementNode, StatementType, ViewNode};
-use valkyrie_parser::ThisParser;
+use valkyrie_parser::{ReplRoot, ScriptRoot, ThisParser};
 
 #[test]
 fn ready() {
@@ -24,8 +24,8 @@ fn here() -> PathBuf {
 
 fn top_debug(text: &str, output: &str) -> std::io::Result<()> {
     let mut file = File::create(here().join(output))?;
-    let apply = StatementType::parse_many(text).unwrap();
-    for expr in &apply {
+    let apply = ScriptRoot::parse_text(text).unwrap();
+    for expr in &apply.statements {
         println!("{}", expr);
         writeln!(file, "{}", display_lisp(expr.as_lisp(), 144).unwrap())?;
         println!("{}", colored_lisp(expr.as_lisp(), 144).unwrap());
@@ -35,8 +35,8 @@ fn top_debug(text: &str, output: &str) -> std::io::Result<()> {
 
 fn repl_debug(text: &str, output: &str) -> std::io::Result<()> {
     let mut file = File::create(here().join(output))?;
-    let apply = StatementNode::parse_many(text).unwrap();
-    for expr in &apply {
+    let apply = ReplRoot::parse_text(text).unwrap();
+    for expr in &apply.statements {
         println!("{}", expr);
         writeln!(file, "{}", display_lisp(expr.as_lisp(), 144).unwrap())?;
         println!("{}", colored_lisp(expr.as_lisp(), 144).unwrap());

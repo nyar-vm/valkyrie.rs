@@ -1,5 +1,14 @@
-use crate::expression::{ExpressionResolver, ExpressionStream};
-use valkyrie_ast::{ExpressionBody, ExpressionContext, ExpressionNode};
+use crate::{
+    expression::{ExpressionResolver, ExpressionStream},
+    helpers::{ignore, parse_eos},
+    ThisParser,
+};
+use lispify::Lisp;
+use valkyrie_ast::{
+    ClassDeclarationNode, ExpressionBody, ExpressionContext, ExpressionNode, ForLoopNode, FunctionCommonPart,
+    FunctionDeclarationNode, FunctionType, IdentifierNode, ImportStatementNode, ModifierPart, NamePathNode,
+    NamespaceDeclarationNode, StatementContext, StatementNode, StatementType, WhileLoopNode,
+};
 use valkyrie_types::third_party::pex::{ParseResult, ParseState};
 
 pub fn parse_expression_node(input: ParseState, config: ExpressionContext) -> ParseResult<ExpressionNode> {
@@ -11,4 +20,15 @@ pub fn parse_expression_node(input: ParseState, config: ExpressionContext) -> Pa
 
 pub fn parse_expression_body(input: ParseState, config: ExpressionContext) -> ParseResult<ExpressionBody> {
     parse_expression_node(input, config).map_inner(|s| s.body)
+}
+
+pub fn parse_modifiers<'i, F, T>(input: ParseState<'i>, negative: F) -> ParseResult<'i, ModifierPart>
+where
+    F: FnMut(ParseState<'i>) -> ParseResult<'i, T> + Copy,
+{
+    let (state, out) = input.match_repeats(|s| {
+        let (state, _) = s.skip(ignore).match_negative(negative, "MODIFIER")?;
+        state.match_fn(IdentifierNode::parse)
+    })?;
+    state.finish(ModifierPart { modifiers: out })
 }

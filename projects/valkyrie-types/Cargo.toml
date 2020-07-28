@@ -17,11 +17,11 @@ indexmap = "1.9.2"
 inwelling = "0.5.0"
 itertools = "0.10.5"
 
-image = { version = "0.24.6", features = [], optional = true }
-ndarray = { version = "0.15.6", features = [], optional = true }
-polars = { version = "0.30.0", features = ["lazy"], optional = true }
-url = { version = "2.3.1", features = [], optional = true }
-serde_json = { version = "1.0.96", features = [], optional = true }
+image = { version = "0.24.6", features = []}
+ndarray = { version = "0.15.6", features = []}
+polars = { version = "0.30.0", features = ["lazy"]}
+url = { version = "2.3.1", features = []}
+serde_json = { version = "1.0.96", features = []}
 pex = { version = "0.1.15", features = ["regex"], optional = true }
 
 [dependencies.valkyrie-ast]

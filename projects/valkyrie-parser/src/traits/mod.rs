@@ -36,7 +36,7 @@ use valkyrie_types::{
         helpers::{make_from_str, whitespace},
         ParseResult, ParseState, StopBecause,
     },
-    ValkyrieError,
+    ValkyrieError, ValkyrieResult,
 };
 
 pub trait ThisParser
@@ -44,13 +44,9 @@ where
     Self: Sized,
 {
     fn parse(input: ParseState) -> ParseResult<Self>;
-    fn parse_text(input: &str) -> Result<Self, StopBecause> {
-        let state = ParseState::new(input.trim_end());
-        make_from_str(state.skip(whitespace), Self::parse)
-    }
-    fn parse_many(input: &str) -> Result<Vec<Self>, ValkyrieError> {
+    fn parse_text(input: &str) -> ValkyrieResult<Self> {
         let input = ParseState::new(input);
-        let (state, repl) = match input.match_repeats(Self::parse) {
+        let (state, repl) = match Self::parse(input.skip(ignore)) {
             ParseResult::Pending(s, v) => (s.skip(ignore), v),
             ParseResult::Stop(e) => Err(ValkyrieError::custom(format!("Failed to parse REPL: {:?}", e)))?,
         };

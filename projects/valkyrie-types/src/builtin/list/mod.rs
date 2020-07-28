@@ -14,7 +14,7 @@ where
         for item in self {
             out.extend_one(item.boxed());
         }
-        ValkyrieValue::Class(Arc::new(out))
+        ValkyrieValue::DataTable(Arc::new(out))
     }
 
     fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
@@ -34,7 +34,7 @@ where
         for item in self {
             out.extend_one(item.boxed());
         }
-        ValkyrieValue::Class(Arc::new(out))
+        ValkyrieValue::DataTable(Arc::new(out))
     }
 
     fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
@@ -55,7 +55,7 @@ where
         for item in self {
             out.extend_one(item.boxed());
         }
-        ValkyrieValue::Class(Arc::new(out))
+        ValkyrieValue::DataTable(Arc::new(out))
     }
 
     fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {

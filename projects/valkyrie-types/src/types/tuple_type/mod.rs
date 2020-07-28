@@ -39,7 +39,7 @@ impl Default for ValkyrieDataTable {
 
 impl ValkyrieType for ValkyrieDataTable {
     fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::Class(Arc::new(self))
+        ValkyrieValue::DataTable(Arc::new(self))
     }
 
     fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
@@ -52,7 +52,7 @@ impl ValkyrieType for ValkyrieDataTable {
 
 impl ValkyrieType for () {
     fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::Class(Arc::new(ValkyrieDataTable::tuple()))
+        ValkyrieValue::DataTable(Arc::new(ValkyrieDataTable::tuple()))
     }
 
     fn static_type() -> Arc<ValkyrieMetaType> {
@@ -68,7 +68,7 @@ where
     T1: ValkyrieType,
 {
     fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::Class(Arc::new(ValkyrieDataTable::tuple()))
+        ValkyrieValue::DataTable(Arc::new(ValkyrieDataTable::tuple()))
     }
 
     fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
@@ -85,7 +85,7 @@ where
     T2: ValkyrieType,
 {
     fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::Class(Arc::new(ValkyrieDataTable::tuple()))
+        ValkyrieValue::DataTable(Arc::new(ValkyrieDataTable::tuple()))
     }
 
     fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
@@ -104,7 +104,7 @@ where
     T3: ValkyrieType,
 {
     fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::Class(Arc::new(ValkyrieDataTable::tuple()))
+        ValkyrieValue::DataTable(Arc::new(ValkyrieDataTable::tuple()))
     }
 
     fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
@@ -125,7 +125,7 @@ where
     T4: ValkyrieType,
 {
     fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::Class(Arc::new(ValkyrieDataTable::tuple()))
+        ValkyrieValue::DataTable(Arc::new(ValkyrieDataTable::tuple()))
     }
 
     fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
@@ -148,7 +148,7 @@ where
     T5: ValkyrieType,
 {
     fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::Class(Arc::new(ValkyrieDataTable::tuple()))
+        ValkyrieValue::DataTable(Arc::new(ValkyrieDataTable::tuple()))
     }
 
     fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {

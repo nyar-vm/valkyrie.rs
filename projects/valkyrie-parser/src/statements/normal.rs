@@ -1,13 +1,29 @@
 use super::*;
-use crate::utils::parse_expression_node;
-use valkyrie_ast::{ExpressionContext, ForLoopNode, FunctionDeclarationNode, NamePathNode, WhileLoopNode};
+
+impl ThisParser for ReplRoot {
+    fn parse(input: ParseState) -> ParseResult<Self> {
+        input.match_repeats(|s| parse_statement_node(s, false)).map_inner(|s| ReplRoot { statements: s })
+    }
+
+    fn as_lisp(&self) -> Lisp {
+        unreachable!()
+    }
+}
+
+impl ThisParser for ScriptRoot {
+    fn parse(input: ParseState) -> ParseResult<Self> {
+        input.match_repeats(|s| parse_statement_node(s, false)).map_inner(|s| ScriptRoot { statements: s })
+    }
+
+    fn as_lisp(&self) -> Lisp {
+        unreachable!()
+    }
+}
 
 impl ThisParser for StatementNode {
     /// - [term](ExpressionType::parse)
     fn parse(input: ParseState) -> ParseResult<Self> {
-        let (state, expr) = input.skip(ignore).match_fn(StatementType::parse)?;
-        let (state, eos) = parse_eos(state)?;
-        state.finish(StatementNode { r#type: expr, eos, range: state.away_from(input) })
+        parse_statement_node(input, false)
     }
 
     fn as_lisp(&self) -> Lisp {
@@ -15,20 +31,28 @@ impl ThisParser for StatementNode {
     }
 }
 
+pub fn parse_statement_node(input: ParseState, repl: bool) -> ParseResult<StatementNode> {
+    let parser = match repl {
+        true => parse_repl_statements,
+        false => StatementType::parse,
+    };
+    let (state, expr) = input.skip(ignore).match_fn(parser)?;
+    let (state, eos) = parse_eos(state)?;
+    state.finish(StatementNode { r#type: expr, end_semicolon: eos, range: state.away_from(input) })
+}
+
 impl ThisParser for StatementType {
     fn parse(input: ParseState) -> ParseResult<Self> {
-        let (state, expr) = input
+        input
             .begin_choice()
             .or_else(|s| NamespaceDeclarationNode::parse(s).map_inner(Into::into))
             .or_else(|s| ImportStatementNode::parse(s).map_inner(Into::into))
             .or_else(|s| ClassDeclarationNode::parse(s).map_inner(Into::into))
-            .or_else(|s| FunctionDeclarationNode::parse(s).map_inner(Into::into))
+            .or_else(function_mods)
             .or_else(|s| WhileLoopNode::parse(s).map_inner(Into::into))
             .or_else(|s| ForLoopNode::parse(s).map_inner(Into::into))
             .or_else(|s| parse_expression_node(s, ExpressionContext::in_free()).map_inner(Into::into))
-            .end_choice()?;
-        let (state, _) = state.skip(ignore).match_optional(|s| s.match_char(';'))?;
-        state.finish(expr)
+            .end_choice()
     }
 
     fn as_lisp(&self) -> Lisp {
@@ -45,25 +69,22 @@ impl ThisParser for StatementType {
     }
 }
 
-impl ThisParser for ClassDeclarationNode {
-    fn parse(input: ParseState) -> ParseResult<Self> {
-        let (state, _) = input.match_str("class")?;
-        let (state, namepath) = state.skip(ignore).match_fn(NamePathNode::parse)?;
-        let (state, _) = state.skip(ignore).match_char('{')?;
-        let (state, _) = state.skip(ignore).match_char('}')?;
-        state.finish(ClassDeclarationNode {
-            namepath,
-            modifiers: vec![],
-            extends: None,
-            implements: vec![],
-            statements: vec![],
-        })
-    }
+pub fn parse_repl_statements(input: ParseState) -> ParseResult<StatementType> {
+    input
+        .begin_choice()
+        .or_else(|s| NamespaceDeclarationNode::parse(s).map_inner(Into::into))
+        .or_else(|s| ImportStatementNode::parse(s).map_inner(Into::into))
+        .or_else(|s| ClassDeclarationNode::parse(s).map_inner(Into::into))
+        .or_else(|s| FunctionDeclarationNode::parse(s).map_inner(Into::into))
+        .or_else(|s| WhileLoopNode::parse(s).map_inner(Into::into))
+        .or_else(|s| ForLoopNode::parse(s).map_inner(Into::into))
+        .or_else(|s| parse_expression_node(s, ExpressionContext::in_free()).map_inner(Into::into))
+        .end_choice()
+}
 
-    fn as_lisp(&self) -> Lisp {
-        let mut items = Vec::with_capacity(4);
-        items.push(Lisp::keyword("class"));
-        items.push(self.namepath.as_lisp());
-        Lisp::Any(items)
-    }
+fn function_mods(input: ParseState) -> ParseResult<StatementType> {
+    let (state, mods) = parse_modifiers(input, FunctionType::parse)?;
+    let (state, mut func) = state.skip(ignore).match_fn(FunctionDeclarationNode::parse)?;
+    func.modifiers = mods.modifiers;
+    state.finish(StatementType::Function(Box::new(func)))
 }

@@ -49,6 +49,11 @@ impl ValkyrieType for ValkyrieValue {
             ValkyrieValue::Bytes(v) => v.dynamic_type(),
             ValkyrieValue::Class(v) => v.dynamic_type(),
             ValkyrieValue::Variant(v) => v.dynamic_type(),
+            ValkyrieValue::Json(v) => v.dynamic_type(),
+            ValkyrieValue::NDArray(v) => v.dynamic_type(),
+            ValkyrieValue::Image(v) => v.dynamic_type(),
+            ValkyrieValue::DataFrame(v) => v.dynamic_type(),
+            ValkyrieValue::DataTable(v) => v.dynamic_type(),
         }
     }
 }

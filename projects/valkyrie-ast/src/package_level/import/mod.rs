@@ -1,9 +1,9 @@
 use crate::{IdentifierNode, NamePathNode, StringLiteralNode};
-use alloc::{boxed::Box, string::ToString, vec, vec::Vec};
 use core::{
     fmt::{Display, Formatter},
     ops::Range,
 };
+use std::{boxed::Box, string::ToString, vec, vec::Vec};
 mod display;
 
 /// `import namespace node`

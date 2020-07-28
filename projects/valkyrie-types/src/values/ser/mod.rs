@@ -27,6 +27,21 @@ impl Serialize for ValkyrieValue {
             ValkyrieValue::Variant(_) => {
                 todo!()
             }
+            ValkyrieValue::Json(_) => {
+                todo!()
+            }
+            ValkyrieValue::NDArray(_) => {
+                todo!()
+            }
+            ValkyrieValue::Image(_) => {
+                todo!()
+            }
+            ValkyrieValue::DataFrame(_) => {
+                todo!()
+            }
+            ValkyrieValue::DataTable(_) => {
+                todo!()
+            }
         }
     }
 }

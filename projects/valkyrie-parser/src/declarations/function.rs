@@ -1,11 +1,13 @@
 use super::*;
+use crate::utils::parse_modifiers;
+use valkyrie_ast::ModifierPart;
 
 impl ThisParser for FunctionDeclarationNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, head) = FunctionType::parse(input)?;
         let (state, name) = state.skip(ignore).match_fn(NamePathNode::parse)?;
         let (state, method) = FunctionCommonPart::parse(state)?;
-        let f = method.as_function(head, name);
+        let mut f = method.as_function(head, name);
         state.finish(f)
     }
 
@@ -32,17 +34,14 @@ impl ThisParser for FunctionDeclarationNode {
 
 impl ThisParser for FunctionType {
     fn parse(input: ParseState) -> ParseResult<Self> {
-        if input.residual.starts_with("def") {
-            input.advance("def").finish(FunctionType::Micro)
-        }
-        else if input.residual.starts_with("micro") {
+        if input.residual.starts_with("micro") {
             input.advance("micro").finish(FunctionType::Micro)
         }
         else if input.residual.starts_with("macro") {
             input.advance("macro").finish(FunctionType::Macro)
         }
         else {
-            StopBecause::must_be("def", input.start_offset)?
+            StopBecause::must_be("micro", input.start_offset)?
         }
     }
 
@@ -107,7 +106,7 @@ impl ThisParser for ArgumentKeyNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, mut default) = input.match_repeats(|s| s.skip(ignore).match_fn(IdentifierNode::parse))?;
         match default.pop() {
-            Some(v) => state.finish(ArgumentKeyNode { modifiers: default, name: v }),
+            Some(v) => state.finish(ArgumentKeyNode { modifiers: default, key: v }),
             None => StopBecause::must_be("identifier", input.start_offset)?,
         }
     }
@@ -117,7 +116,7 @@ impl ThisParser for ArgumentKeyNode {
         for modifier in self.modifiers.iter() {
             items.push(modifier.as_lisp());
         }
-        items.push(self.name.as_lisp());
+        items.push(self.key.as_lisp());
         Lisp::Any(items)
     }
 }

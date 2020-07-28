@@ -1,9 +1,6 @@
-#![no_std]
 #![allow(incomplete_features)]
 #![feature(adt_const_params)]
 #![feature(try_blocks)]
-
-extern crate alloc;
 
 mod control_flow;
 mod expression_level;
@@ -30,6 +27,7 @@ pub use crate::{
         view::{ViewNode, ViewRangeNode, ViewTermNode},
         ExpressionBody, ExpressionContext, ExpressionNode, ExpressionType,
     },
+    helper::{PrettyPrint, PrettyProvider},
     package_level::{
         classes::ClassDeclarationNode,
         function::{FunctionCommonPart, FunctionDeclarationNode, FunctionType, ModifierPart},

@@ -26,11 +26,12 @@ pub struct ValkyrieExecutor {
 
 pub struct ValkyrieConfig {
     running_time: bool,
+    image_max_pixel: usize,
 }
 
 impl Default for ValkyrieConfig {
     fn default() -> Self {
-        ValkyrieConfig { running_time: false }
+        ValkyrieConfig { running_time: false, image_max_pixel: 1024 * 768 }
     }
 }
 
@@ -107,6 +108,19 @@ impl ValkyrieExecutor {
                 todo!()
             }
             ValkyrieValue::Variant(_) => {
+                todo!()
+            }
+            ValkyrieValue::Json(v) => self.sockets.send_executed(DisplayNumber::new(v)).await,
+            ValkyrieValue::NDArray(_) => {
+                todo!()
+            }
+            ValkyrieValue::Image(_) => {
+                todo!()
+            }
+            ValkyrieValue::DataFrame(_) => {
+                todo!()
+            }
+            ValkyrieValue::DataTable(_) => {
                 todo!()
             }
         }

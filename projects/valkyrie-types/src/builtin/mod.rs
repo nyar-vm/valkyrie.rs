@@ -1,6 +1,7 @@
 pub mod boolean;
 pub mod data_frame;
 pub mod figures;
+pub mod json_like;
 pub mod list;
 pub mod ndarray;
 pub mod option;

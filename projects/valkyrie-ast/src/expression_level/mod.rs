@@ -15,16 +15,16 @@ use crate::{
     LambdaDotNode, NamePathNode, NumberLiteralNode, OperatorNode, PostfixNode, PrefixNode, StatementNode, StringLiteralNode,
     TableNode, ViewNode,
 };
-use alloc::{
-    boxed::Box,
-    string::{String, ToString},
-    vec::Vec,
-};
 use core::{
     fmt::{Display, Formatter, Write},
     ops::Range,
 };
 use indentation::{wrap_display, IndentDisplay, IndentFormatter};
+use std::{
+    boxed::Box,
+    string::{String, ToString},
+    vec::Vec,
+};
 
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]

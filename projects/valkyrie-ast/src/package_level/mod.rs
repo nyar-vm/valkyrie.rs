@@ -10,13 +10,13 @@ use crate::{
     ApplyArgumentNode, ArgumentTermNode, ExpressionNode, ForLoopNode, FunctionDeclarationNode, GenericArgumentNode,
     IdentifierNode, ImportStatementNode, NamePathNode, WhileLoopNode,
 };
-use alloc::{boxed::Box, string::String, vec::Vec};
 use core::{
     borrow::BorrowMut,
     fmt::{Debug, Display, Formatter, Write},
     ops::Range,
 };
 use indentation::{IndentDisplay, IndentFormatter};
+use std::{boxed::Box, string::String, vec::Vec};
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]

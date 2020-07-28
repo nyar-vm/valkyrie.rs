@@ -1,5 +1,6 @@
 use core::fmt::Write;
 use indentation::{IndentDisplay, IndentFormatter};
+use pretty::termcolor::{Color, ColorSpec};
 
 pub fn comma_terms<T: IndentDisplay>(f: &mut IndentFormatter, input: &[T]) -> core::fmt::Result {
     let mut terms = input.iter();
@@ -12,4 +13,12 @@ pub fn comma_terms<T: IndentDisplay>(f: &mut IndentFormatter, input: &[T]) -> co
         term.indent_fmt(f)?;
     }
     Ok(())
+}
+
+pub(crate) fn number_style() -> ColorSpec {
+    ColorSpec::new().set_fg(Some(Color::Rgb(206, 153, 100))).clone()
+}
+
+pub(crate) fn macro_style() -> ColorSpec {
+    ColorSpec::new().set_fg(Some(Color::Rgb(87, 182, 194))).clone()
 }
