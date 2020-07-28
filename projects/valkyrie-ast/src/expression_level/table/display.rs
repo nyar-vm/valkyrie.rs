@@ -30,7 +30,7 @@ impl<E: IndentDisplay> IndentDisplay for TableNode<E> {
             if i != 0 {
                 write!(f, ", ")?;
             }
-            term.indent_fmt(f)?;
+            // term.indent_fmt(f)?;
         }
         write!(f, "{}", self.kind.end_str())
     }

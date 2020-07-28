@@ -10,7 +10,7 @@ impl IndentDisplay for ExpressionBody {
     fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
         match self {
             ExpressionBody::Placeholder => f.write_str("???"),
-            ExpressionBody::Symbol(node) => node.indent_fmt(f),
+            ExpressionBody::Symbol(node) => f.write_str("???"),
             ExpressionBody::Number(node) => node.indent_fmt(f),
             ExpressionBody::String(node) => node.indent_fmt(f),
             ExpressionBody::Prefix(node) => node.indent_fmt(f),

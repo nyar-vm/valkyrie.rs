@@ -11,15 +11,16 @@ pub mod table;
 pub mod view;
 
 use crate::{
-    utils::comma_terms, ApplyCallNode, ApplyDotNode, ApplyTermNode, GenericCall, IdentifierNode, InfixNode, LambdaCallNode,
-    LambdaDotNode, NamePathNode, NumberLiteralNode, OperatorNode, PostfixNode, PrefixNode, StatementNode, StringLiteralNode,
-    TableNode, ViewNode,
+    helper::PrettyPrint, utils::comma_terms, ApplyCallNode, ApplyDotNode, ApplyTermNode, GenericCall, IdentifierNode,
+    InfixNode, LambdaCallNode, LambdaDotNode, NamePathNode, NumberLiteralNode, OperatorNode, PostfixNode, PrefixNode,
+    PrettyProvider, StatementNode, StringLiteralNode, TableNode, ViewNode,
 };
 use core::{
     fmt::{Display, Formatter, Write},
     ops::Range,
 };
 use indentation::{wrap_display, IndentDisplay, IndentFormatter};
+use pretty::{termcolor::ColorSpec, Arena, DocAllocator, RefDoc};
 use std::{
     boxed::Box,
     string::{String, ToString},

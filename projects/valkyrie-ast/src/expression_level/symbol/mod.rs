@@ -28,7 +28,7 @@ pub enum MacroKind {
     /// `@@`
     Environment,
     /// `@!`
-    Dict,
+    NonCapture,
 }
 
 /// `@module∷name.function`

@@ -1,61 +1,74 @@
 use super::*;
 
-impl IndentDisplay for ValkyrieOperator {
-    fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
+impl ValkyrieOperator {
+    /// Get the normalised string representation of the operator.
+    pub fn as_str(&self) -> &'static str {
         match self {
-            ValkyrieOperator::Not => f.write_char('!'),
-            ValkyrieOperator::Concat => f.write_str("++"),
-            ValkyrieOperator::Positive => f.write_char('+'),
-            ValkyrieOperator::Negative => f.write_char('-'),
-            ValkyrieOperator::Plus => f.write_char('+'),
-            ValkyrieOperator::Minus => f.write_char('-'),
-            ValkyrieOperator::Multiply => f.write_char('*'),
-            ValkyrieOperator::Divide => f.write_char('/'),
-            ValkyrieOperator::Power => f.write_char('^'),
-            ValkyrieOperator::Unwrap => f.write_char('!'),
-            ValkyrieOperator::Raise => f.write_char('?'),
-            ValkyrieOperator::Celsius => f.write_char('℃'),
-            ValkyrieOperator::Fahrenheit => f.write_char('℉'),
-            ValkyrieOperator::Transpose => f.write_char('ᵀ'),
-            ValkyrieOperator::Transjugate => f.write_char('ᴴ'),
-            ValkyrieOperator::Hermitian => f.write_str("Hermitian"),
-            ValkyrieOperator::Unbox => f.write_char('*'),
-            ValkyrieOperator::Unpack => f.write_str("⁑"),
-            ValkyrieOperator::UnpackAll => f.write_char('⁂'),
-            ValkyrieOperator::Greater => f.write_char('>'),
-            ValkyrieOperator::MuchGreater => f.write_char('≫'),
-            ValkyrieOperator::VeryMuchGreater => f.write_char('⋙'),
-            ValkyrieOperator::Less => f.write_char('<'),
-            ValkyrieOperator::MuchLess => f.write_char('≪'),
-            ValkyrieOperator::VeryMuchLess => f.write_char('⋘'),
+            ValkyrieOperator::Not => "!",
+            ValkyrieOperator::Concat => "++",
+            ValkyrieOperator::Positive => "+",
+            ValkyrieOperator::Negative => "-",
+            ValkyrieOperator::Plus => "+",
+            ValkyrieOperator::Minus => "-",
+            ValkyrieOperator::Multiply => "*",
+            ValkyrieOperator::Divide => "/",
+            ValkyrieOperator::Power => "^",
+            ValkyrieOperator::Unwrap => "!",
+            ValkyrieOperator::Raise => "?",
+            ValkyrieOperator::Celsius => "℃",
+            ValkyrieOperator::Fahrenheit => "℉",
+            ValkyrieOperator::Transpose => "ᵀ",
+            ValkyrieOperator::Transjugate => "ᴴ",
+            ValkyrieOperator::Hermitian => "Hermitian",
+            ValkyrieOperator::Unbox => "*",
+            ValkyrieOperator::Unpack => "⁑",
+            ValkyrieOperator::UnpackAll => "⁂",
+            ValkyrieOperator::Greater => ">",
+            ValkyrieOperator::MuchGreater => "≫",
+            ValkyrieOperator::VeryMuchGreater => "⋙",
+            ValkyrieOperator::Less => "<",
+            ValkyrieOperator::MuchLess => "≪",
+            ValkyrieOperator::VeryMuchLess => "⋘",
             ValkyrieOperator::Belongs(v) => match v {
-                true => f.write_char('∈'),
-                false => f.write_char('∉'),
+                true => "∈",
+                false => "∉",
             },
             ValkyrieOperator::IsA(v) => match v {
-                true => f.write_char('⊑'),
-                false => f.write_char('⋢'),
+                true => "⊑",
+                false => "⋢",
             },
             ValkyrieOperator::Equal(v) => match v {
-                true => f.write_char('≖'),
-                false => f.write_char('≠'),
+                true => "≖",
+                false => "≠",
             },
             ValkyrieOperator::StrictlyEqual(v) => match v {
-                true => f.write_char('≡'),
-                false => f.write_char('≢'),
+                true => "≡",
+                false => "≢",
             },
-            ValkyrieOperator::Inverse => f.write_char('i'),
+            ValkyrieOperator::Inverse => "i",
             ValkyrieOperator::Surd(v) => match v {
-                3 => f.write_char('∛'),
-                4 => f.write_char('∜'),
-                _ => f.write_char('√'),
+                3 => "∛",
+                4 => "∜",
+                _ => "√",
             },
             ValkyrieOperator::DivideByDecimalPower(v) => match v {
-                3 => f.write_char('‰'),
-                4 => f.write_char('‱'),
-                _ => f.write_char('%'),
+                3 => "‰",
+                4 => "‱",
+                _ => "%",
             },
         }
+    }
+}
+
+impl PrettyPrint for OperatorNode {
+    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> RefDoc<'a, ColorSpec> {
+        allocator.text(self.kind.as_str()).annotate(allocator.number_style()).into_doc()
+    }
+}
+
+impl IndentDisplay for ValkyrieOperator {
+    fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
+        f.write_str(self.as_str())
     }
 }
 
@@ -73,7 +86,7 @@ impl Display for ValkyrieOperator {
 
 impl Display for OperatorNode {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        write!(f, "{}", self.kind)
+        f.write_str(self.kind.as_str())
     }
 }
 

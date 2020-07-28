@@ -1,10 +1,4 @@
 use super::*;
-use crate::{
-    helper::PrettyPrint,
-    utils::{macro_style, number_style},
-    PrettyProvider,
-};
-use pretty::{termcolor::ColorSpec, Arena, DocAllocator, RefDoc};
 
 impl IndentDisplay for NumberLiteralNode {
     fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
@@ -17,10 +11,10 @@ impl IndentDisplay for NumberLiteralNode {
 
 impl PrettyPrint for NumberLiteralNode {
     fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> RefDoc<'a, ColorSpec> {
-        let num = allocator.text(self.value.to_string()).annotate(number_style());
+        let num = allocator.text(self.value.to_string()).annotate(allocator.number_style());
         match &self.unit {
             Some(s) => {
-                let unit = allocator.text(s.to_string()).annotate(macro_style());
+                let unit = allocator.text(s.name.to_string()).annotate(allocator.macro_style());
                 num.append(unit).into_doc()
             }
             None => num.into_doc(),

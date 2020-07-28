@@ -5,7 +5,7 @@ impl IndentDisplay for ApplyDotNode {
         self.base.indent_fmt(f)?;
         f.write_newline()?;
         write!(f, ".{}(", self.caller)?;
-        comma_terms(f, &self.terms)?;
+        // comma_terms(f, &self.terms)?;
         write!(f, ")")
     }
 }
@@ -31,7 +31,7 @@ impl IndentDisplay for ApplyCallNode {
     fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
         self.base.indent_fmt(f)?;
         write!(f, "(")?;
-        comma_terms(f, &self.terms)?;
+        // comma_terms(f, &self.terms)?;
         write!(f, ")")
     }
 }

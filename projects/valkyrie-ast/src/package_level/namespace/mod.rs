@@ -1,3 +1,6 @@
+use crate::{OperatorNode, PrettyPrint, PrettyProvider};
+use pretty::{termcolor::ColorSpec, DocAllocator, RefDoc};
+
 use super::*;
 
 #[derive(Copy, Clone, Debug, Eq, PartialEq, Hash)]
@@ -11,27 +14,29 @@ pub enum NamespaceKind {
     Test,
 }
 
-impl Display for NamespaceKind {
-    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        f.write_str("namespace")?;
+impl NamespaceKind {
+    /// Get the string representation of the namespace kind
+    pub fn as_str(&self) -> &'static str {
         match self {
-            NamespaceKind::Shared => Ok(()),
-            NamespaceKind::Unique => f.write_char('!'),
-            NamespaceKind::Test => f.write_char('?'),
+            NamespaceKind::Shared => "namespace",
+            NamespaceKind::Unique => "namespace!",
+            NamespaceKind::Test => "namespace?",
         }
+    }
+}
+
+impl PrettyPrint for NamespaceDeclarationNode {
+    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> RefDoc<'a, ColorSpec> {
+        let head = allocator.text(self.kind.as_str()).annotate(allocator.keyword_style());
+        let space = allocator.space();
+        let path = allocator.intersperse(self.path.iter().map(|id| id.pretty(allocator)), allocator.text("."));
+        head.append(space).append(path).into_doc()
     }
 }
 
 impl Display for NamespaceDeclarationNode {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        write!(f, "{} ", self.kind)?;
-        for (idx, id) in self.path.iter().enumerate() {
-            if idx != 0 {
-                f.write_char('.')?;
-            }
-            Display::fmt(id, f)?;
-        }
-        Ok(())
+        f.write_str(&self.pretty_string(9999))
     }
 }
 

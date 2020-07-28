@@ -1,42 +1,43 @@
 use super::*;
 
+impl PrettyPrint for IdentifierNode {
+    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> RefDoc<'a, ColorSpec> {
+        allocator.text(self.name.to_string()).into_doc()
+    }
+}
+
+impl PrettyPrint for NamePathNode {
+    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> RefDoc<'a, ColorSpec> {
+        allocator.intersperse(self.names.iter().map(|id| id.pretty(allocator)), allocator.text("∷")).into_doc()
+    }
+}
+
 impl Display for IdentifierNode {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         f.write_str(&self.name)
     }
 }
 
-impl IndentDisplay for IdentifierNode {
-    fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
-        f.write_str(&self.name)
-    }
-}
-
-impl IndentDisplay for NamePathNode {
-    fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
-        for (idx, item) in self.names.iter().enumerate() {
-            if idx != 0 {
-                f.write_str("∷")?;
-            }
-            item.indent_fmt(f)?;
-        }
-        Ok(())
-    }
-}
-
 impl Display for NamePathNode {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        IndentFormatter::wrap(self, f)
+        f.write_str(&self.pretty_string(9999))
+    }
+}
+
+impl MacroKind {
+    /// Returns the string representation of the macro kind.
+    pub fn as_str(&self) -> &'static str {
+        match self {
+            MacroKind::Normal => "@",
+            MacroKind::Environment => "@@",
+            MacroKind::NonCapture => "@!",
+        }
     }
 }
 
 impl Display for MacroKind {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        match self {
-            MacroKind::Normal => f.write_str("@"),
-            MacroKind::Environment => f.write_str("@@"),
-            MacroKind::Dict => f.write_str("@!"),
-        }
+        f.write_str(self.as_str())
     }
 }
 
