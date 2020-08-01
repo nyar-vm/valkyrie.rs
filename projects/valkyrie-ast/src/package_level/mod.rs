@@ -6,18 +6,17 @@ pub mod license;
 pub mod namespace;
 use crate::{
     package_level::{classes::ClassDeclarationNode, namespace::NamespaceDeclarationNode},
-    utils::comma_terms,
     ApplyArgumentNode, ArgumentTermNode, ExpressionNode, ForLoopNode, FunctionDeclarationNode, GenericArgumentNode,
     IdentifierNode, ImportStatementNode, NamePathNode, PrettyPrint, PrettyProvider, PrettyTree, WhileLoopNode,
 };
-use core::{
-    borrow::BorrowMut,
-    fmt::{Debug, Display, Formatter, Write},
-    ops::Range,
-};
-use indentation::{IndentDisplay, IndentFormatter};
 use pretty::DocAllocator;
-use std::{boxed::Box, string::String, vec::Vec};
+use std::{
+    boxed::Box,
+    fmt::{Display, Formatter, Write},
+    ops::Range,
+    string::String,
+    vec::Vec,
+};
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]

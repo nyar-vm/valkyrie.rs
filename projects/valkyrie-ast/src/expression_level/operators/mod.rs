@@ -134,7 +134,7 @@ impl ValkyrieOperator {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct PrefixNode<E> {
     pub operator: OperatorNode,
-    pub body: E,
+    pub base: E,
     pub range: Range<usize>,
 }
 
@@ -151,7 +151,7 @@ pub struct InfixNode<E> {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct PostfixNode<E> {
     pub operator: OperatorNode,
-    pub body: E,
+    pub base: E,
     pub range: Range<usize>,
 }
 

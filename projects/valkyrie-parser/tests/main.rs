@@ -10,7 +10,7 @@ use std::{
     io::Write,
     path::{Path, PathBuf},
 };
-use valkyrie_ast::{ExpressionBody, StatementNode, StatementType, ViewNode};
+use valkyrie_ast::{ExpressionBody, PrettyPrint, StatementNode, StatementType, ViewNode};
 use valkyrie_parser::{ReplRoot, ScriptRoot, ThisParser};
 
 #[test]
@@ -26,7 +26,7 @@ fn top_debug(text: &str, output: &str) -> std::io::Result<()> {
     let mut file = File::create(here().join(output))?;
     let apply = ScriptRoot::parse_text(text).unwrap();
     for expr in &apply.statements {
-        println!("{}", expr);
+        expr.pretty_print(80);
         writeln!(file, "{}", display_lisp(expr.as_lisp(), 144).unwrap())?;
         println!("{}", colored_lisp(expr.as_lisp(), 144).unwrap());
     }
@@ -37,7 +37,7 @@ fn repl_debug(text: &str, output: &str) -> std::io::Result<()> {
     let mut file = File::create(here().join(output))?;
     let apply = ReplRoot::parse_text(text).unwrap();
     for expr in &apply.statements {
-        println!("{}", expr);
+        expr.pretty_print(80);
         writeln!(file, "{}", display_lisp(expr.as_lisp(), 144).unwrap())?;
         println!("{}", colored_lisp(expr.as_lisp(), 144).unwrap());
     }

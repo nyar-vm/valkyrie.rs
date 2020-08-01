@@ -2,26 +2,20 @@ use super::*;
 use crate::PrettyTree;
 
 impl PrettyPrint for GenericCall {
-    // fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
-    //     write!(f, "{}", self.base)?;
-    //     write!(f, "⦓")?;
-    //     // comma_terms(f, &self.terms)?;
-    //     write!(f, "⦔")
-    // }
-
     fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        todo!()
+        let head = self.base.pretty(allocator);
+        let lhs = allocator.text("⦓").append(allocator.softline());
+        let rhs = allocator.softline().append(allocator.text("⦔"));
+        let body = self.terms.iter().map(|x| x.pretty(allocator).append(allocator.softline()));
+        head.append(lhs).append(allocator.concat(body)).append(rhs)
     }
 }
 
 impl PrettyPrint for GenericArgumentNode {
-    // fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
-    //     write!(f, "⦓")?;
-    //     comma_terms(f, &self.terms)?;
-    //     write!(f, "⦔")
-    // }
-
     fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        todo!()
+        let lhs = allocator.text("⦓").append(allocator.softline());
+        let rhs = allocator.softline().append(allocator.text("⦔"));
+        let body = self.terms.iter().map(|x| x.pretty(allocator).append(allocator.softline()));
+        lhs.append(allocator.concat(body)).append(rhs)
     }
 }

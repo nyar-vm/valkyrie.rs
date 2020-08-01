@@ -79,7 +79,7 @@ impl ThisParser for ValkyrieOperator {
     }
 
     fn as_lisp(&self) -> Lisp {
-        Lisp::Operator(self.to_string())
+        todo!()
     }
 }
 

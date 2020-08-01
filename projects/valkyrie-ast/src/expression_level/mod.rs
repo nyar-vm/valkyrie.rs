@@ -11,16 +11,15 @@ pub mod table;
 pub mod view;
 
 use crate::{
-    helper::PrettyPrint, utils::comma_terms, ApplyCallNode, ApplyDotNode, ApplyTermNode, GenericCall, IdentifierNode,
-    InfixNode, LambdaCallNode, LambdaDotNode, NamePathNode, NumberLiteralNode, OperatorNode, PostfixNode, PrefixNode,
-    PrettyProvider, StatementNode, StringLiteralNode, TableNode, ViewNode,
+    helper::PrettyPrint, ApplyCallNode, ApplyDotNode, ApplyTermNode, GenericCall, IdentifierNode, InfixNode, LambdaCallNode,
+    LambdaDotNode, NamePathNode, NumberLiteralNode, OperatorNode, PostfixNode, PrefixNode, PrettyProvider, StatementNode,
+    StringLiteralNode, TableNode, ViewNode,
 };
 use core::{
     fmt::{Display, Formatter, Write},
     ops::Range,
 };
-use indentation::{wrap_display, IndentDisplay, IndentFormatter};
-use pretty::{termcolor::ColorSpec, Arena, DocAllocator, RefDoc};
+use pretty::DocAllocator;
 use std::{
     boxed::Box,
     string::{String, ToString},
@@ -99,12 +98,12 @@ impl ExpressionBody {
         out
     }
     pub fn prefix(o: OperatorNode, rhs: ExpressionBody) -> ExpressionBody {
-        let mut out = ExpressionBody::Prefix(Box::new(PrefixNode { operator: o, body: rhs, range: Default::default() }));
+        let mut out = ExpressionBody::Prefix(Box::new(PrefixNode { operator: o, base: rhs, range: Default::default() }));
         out.update_range();
         out
     }
     pub fn suffix(o: OperatorNode, rhs: ExpressionBody) -> ExpressionBody {
-        let mut out = ExpressionBody::Suffix(Box::new(PostfixNode { operator: o, body: rhs, range: Default::default() }));
+        let mut out = ExpressionBody::Suffix(Box::new(PostfixNode { operator: o, base: rhs, range: Default::default() }));
         out.update_range();
         out
     }

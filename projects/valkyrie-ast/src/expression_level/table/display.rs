@@ -19,18 +19,10 @@ impl TableKind {
 }
 
 impl<E: PrettyPrint> PrettyPrint for TableNode<E> {
-    // fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
-    //     write!(f, "{}", self.kind.begin_str())?;
-    //     for (i, term) in self.terms.iter().enumerate() {
-    //         if i != 0 {
-    //             write!(f, ", ")?;
-    //         }
-    //         // term.indent_fmt(f)?;
-    //     }
-    //     write!(f, "{}", self.kind.end_str())
-    // }
-
     fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        todo!()
+        let head = allocator.text(self.kind.begin_str());
+        let body = self.terms.iter().map(|x| x.pretty(allocator).append(allocator.text(",")));
+        let tail = allocator.text(self.kind.end_str());
+        head.append(allocator.concat(body)).append(tail)
     }
 }

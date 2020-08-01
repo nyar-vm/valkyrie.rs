@@ -1,8 +1,25 @@
 
 
-class A<T: A = B> {
+class A<T: A = B>
+{
 	def foo(self) -> T { ??? }
 }
 
 
 a::<T>
+
+
+vow A, B, C, D, E, F, G
+{
+    return T
+    where {
+        T: A
+    }
+}
+like(a)
+{
+    callback
+}
+{
+    callback
+}

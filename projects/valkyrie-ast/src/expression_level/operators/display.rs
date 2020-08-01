@@ -69,18 +69,20 @@ impl PrettyPrint for OperatorNode {
 
 impl<E: PrettyPrint> PrettyPrint for PrefixNode<E> {
     fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        todo!()
+        self.operator.pretty(allocator).append(self.base.pretty(allocator))
     }
 }
 
 impl<E: PrettyPrint> PrettyPrint for InfixNode<E> {
     fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        todo!()
+        let lhs = self.lhs.pretty(allocator);
+        let rhs = self.rhs.pretty(allocator);
+        lhs.append(allocator.softline()).append(self.operator.pretty(allocator)).append(allocator.softline()).append(rhs)
     }
 }
 
 impl<E: PrettyPrint> PrettyPrint for PostfixNode<E> {
     fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        todo!()
+        self.base.pretty(allocator).append(self.operator.pretty(allocator))
     }
 }

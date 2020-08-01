@@ -8,7 +8,7 @@ impl ThisParser for PrefixNode<ExpressionBody> {
     }
 
     fn as_lisp(&self) -> Lisp {
-        Lisp::operator(self.operator.kind.as_str(), &[self.body.as_lisp()])
+        Lisp::operator(self.operator.kind.as_str(), &[self.base.as_lisp()])
     }
 }
 
@@ -28,7 +28,7 @@ impl ThisParser for PostfixNode<ExpressionBody> {
     }
 
     fn as_lisp(&self) -> Lisp {
-        Lisp::operator(self.operator.kind.as_str(), &[self.body.as_lisp()])
+        Lisp::operator(self.operator.kind.as_str(), &[self.base.as_lisp()])
     }
 }
 

@@ -1,6 +1,5 @@
 use super::*;
 
-
 impl FunctionType {
     pub fn as_str(&self) -> &'static str {
         match self {
@@ -12,7 +11,7 @@ impl FunctionType {
 
 impl PrettyPrint for FunctionType {
     fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        allocator.text(self.as_str()).annotate(allocator.keyword_style())
+        allocator.keyword(self.as_str())
     }
 }
 

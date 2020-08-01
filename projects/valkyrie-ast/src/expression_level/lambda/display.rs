@@ -2,41 +2,21 @@ use super::*;
 use crate::PrettyTree;
 
 impl PrettyPrint for LambdaCallNode {
-    // fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
-    //     self.base.indent_fmt(f)?;
-    //     f.write_str(" {")?;
-    //     f.indent();
-    //     f.write_newline()?;
-    //     for statement in &self.body {
-    //         statement.indent_fmt(f)?;
-    //     }
-    //     f.dedent();
-    //     f.write_newline()?;
-    //     f.write_str("}")
-    // }
-
     fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        todo!()
+        let head = self.base.pretty(allocator);
+        let lhs = allocator.text("{").append(allocator.softline());
+        let rhs = allocator.softline().append(allocator.text("}"));
+        let body = self.body.iter().map(|x| x.pretty(allocator).append(allocator.softline()));
+        head.append(allocator.space()).append(lhs).append(allocator.concat(body)).append(rhs)
     }
 }
 
 impl PrettyPrint for LambdaDotNode {
-    // fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
-    //     self.base.indent_fmt(f)?;
-    //     f.indent();
-    //     f.write_newline()?;
-    //     f.write_str(".{")?;
-    //     f.indent();
-    //     f.write_newline()?;
-    //     for statement in &self.body {
-    //         statement.indent_fmt(f)?;
-    //     }
-    //     f.dedent();
-    //     f.write_newline()?;
-    //     f.write_str("}")
-    // }
-
     fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        todo!()
+        let head = self.base.pretty(allocator);
+        let lhs = allocator.text(".{").append(allocator.softline());
+        let rhs = allocator.softline().append(allocator.text("}"));
+        let body = self.body.iter().map(|x| x.pretty(allocator).append(allocator.softline()));
+        head.append(lhs).append(allocator.concat(body)).append(rhs)
     }
 }

@@ -47,6 +47,14 @@ pub struct ModifierPart {
     pub modifiers: Vec<IdentifierNode>,
 }
 
+/// `{ a; b; c }`
+///
+/// - Auxiliary parsing function, not instantiable.
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+pub struct FunctionBodyPart {
+    pub body: Vec<StatementNode>,
+}
+
 impl FunctionDeclarationNode {
     pub fn has_body(&self) -> bool {
         self.body.is_some()

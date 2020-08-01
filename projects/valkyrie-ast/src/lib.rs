@@ -30,7 +30,7 @@ pub use crate::{
     helper::{PrettyPrint, PrettyProvider, PrettyTree},
     package_level::{
         classes::ClassDeclarationNode,
-        function::{FunctionCommonPart, FunctionDeclarationNode, FunctionType, ModifierPart},
+        function::{FunctionBodyPart, FunctionCommonPart, FunctionDeclarationNode, FunctionType, ModifierPart},
         import::{
             ImportAliasNode, ImportFlattenTerm, ImportGroupNode, ImportStatementNode, ImportStatementType, ImportTermNode,
         },

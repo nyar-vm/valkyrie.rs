@@ -1,6 +1,6 @@
 use pretty::{
     termcolor::{Buffer, ColorSpec},
-    Arena, DocBuilder, RefDoc,
+    Arena, DocBuilder,
 };
 use std::{ops::Deref, string::String};
 
@@ -27,7 +27,7 @@ impl<'a> PrettyProvider<'a> {
 pub trait PrettyPrint {
     fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a>;
     fn pretty_string(&self, width: usize) -> String {
-        let mut arena = PrettyProvider::new();
+        let arena = PrettyProvider::new();
         let mut buffer = Buffer::ansi();
         if let Err(e) = self.pretty(&arena).render(width, &mut buffer) {
             return format!("Error: {}", e);
@@ -35,14 +35,14 @@ pub trait PrettyPrint {
         unsafe { String::from_utf8_unchecked(buffer.into_inner()) }
     }
     fn pretty_print(&self, width: usize) {
-        let mut arena = PrettyProvider::new();
+        let arena = PrettyProvider::new();
         let mut buffer = Buffer::ansi();
         match self.pretty(&arena).render_colored(width, &mut buffer) {
             Ok(_) => {
-                print!("{}", unsafe { String::from_utf8_unchecked(buffer.into_inner()) });
+                println!("{}", unsafe { String::from_utf8_unchecked(buffer.into_inner()) });
             }
             Err(e) => {
-                eprint!("Error: {}", e);
+                eprintln!("Error: {}", e);
             }
         }
     }
