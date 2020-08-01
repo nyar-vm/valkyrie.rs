@@ -11,7 +11,7 @@ mod utils;
 pub use crate::{
     control_flow::{
         control::{ControlNode, ControlType},
-        if_else::{ConditionNode, ConditionType, IfStatementNode},
+        if_else::{ConditionNode, ConditionType, ElsePart, IfStatementNode},
         looping::{ForLoopNode, PatternType, WhileLoopNode},
     },
     expression_level::{
@@ -27,7 +27,7 @@ pub use crate::{
         view::{ViewNode, ViewRangeNode, ViewTermNode},
         ExpressionBody, ExpressionContext, ExpressionNode, ExpressionType,
     },
-    helper::{PrettyPrint, PrettyProvider},
+    helper::{PrettyPrint, PrettyProvider, PrettyTree},
     package_level::{
         classes::ClassDeclarationNode,
         function::{FunctionCommonPart, FunctionDeclarationNode, FunctionType, ModifierPart},

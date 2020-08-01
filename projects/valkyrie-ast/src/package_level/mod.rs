@@ -8,7 +8,7 @@ use crate::{
     package_level::{classes::ClassDeclarationNode, namespace::NamespaceDeclarationNode},
     utils::comma_terms,
     ApplyArgumentNode, ArgumentTermNode, ExpressionNode, ForLoopNode, FunctionDeclarationNode, GenericArgumentNode,
-    IdentifierNode, ImportStatementNode, NamePathNode, WhileLoopNode,
+    IdentifierNode, ImportStatementNode, NamePathNode, PrettyPrint, PrettyProvider, PrettyTree, WhileLoopNode,
 };
 use core::{
     borrow::BorrowMut,
@@ -16,6 +16,7 @@ use core::{
     ops::Range,
 };
 use indentation::{IndentDisplay, IndentFormatter};
+use pretty::DocAllocator;
 use std::{boxed::Box, string::String, vec::Vec};
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]

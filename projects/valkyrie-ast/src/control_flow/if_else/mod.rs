@@ -1,4 +1,5 @@
 use super::*;
+use crate::{PrettyPrint, PrettyProvider, PrettyTree};
 
 // if a {1}
 // if a {1} else {2}
@@ -30,18 +31,29 @@ pub enum ConditionType {
     Expression(Box<ExpressionNode>),
 }
 
-pub(crate) fn format_else_body(f: &mut IndentFormatter, body: &[StatementNode]) -> core::fmt::Result {
-    if body.is_empty() {
-        return Ok(());
+/// Helper function to format the body of an if statement
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+pub struct ElsePart {
+    pub body: Vec<StatementNode>,
+}
+
+impl PrettyPrint for ElsePart {
+    // pub(crate) fn format_else_body(f: &mut IndentFormatter, body: &[StatementNode]) -> core::fmt::Result {
+    //     if body.is_empty() {
+    //         return Ok(());
+    //     }
+    //     f.write_newline()?;
+    //     f.write_str("else {")?;
+    //     f.indent();
+    //     for node in body {
+    //         f.write_newline()?;
+    //         node.indent_fmt(f)?;
+    //     }
+    //     f.dedent();
+    //     f.write_newline()?;
+    //     f.write_char('}')
+    // }
+    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+        todo!()
     }
-    f.write_newline()?;
-    f.write_str("else {")?;
-    f.indent();
-    for node in body {
-        f.write_newline()?;
-        node.indent_fmt(f)?;
-    }
-    f.dedent();
-    f.write_newline()?;
-    f.write_char('}')
 }

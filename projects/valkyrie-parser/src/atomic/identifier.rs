@@ -1,4 +1,5 @@
 use super::*;
+use valkyrie_ast::PrettyPrint;
 
 pub static IDENTIFIER: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(
@@ -19,6 +20,6 @@ impl ThisParser for IdentifierNode {
     }
 
     fn as_lisp(&self) -> Lisp {
-        Lisp::Function(self.to_string())
+        Lisp::Function(self.pretty_string(144))
     }
 }

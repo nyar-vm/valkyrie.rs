@@ -1,6 +1,6 @@
 use super::*;
 use crate::{table::TupleNode, utils::parse_expression_body};
-use valkyrie_ast::{ExpressionContext, ExpressionNode, LambdaCallNode, LambdaDotNode, LambdaNode};
+use valkyrie_ast::{ExpressionContext, ExpressionNode, LambdaCallNode, LambdaDotNode, LambdaNode, PrettyPrint};
 
 impl ThisParser for PrefixNode<ExpressionBody> {
     fn parse(_: ParseState) -> ParseResult<Self> {
@@ -8,7 +8,7 @@ impl ThisParser for PrefixNode<ExpressionBody> {
     }
 
     fn as_lisp(&self) -> Lisp {
-        Lisp::operator(self.operator.to_string(), &[self.body.as_lisp()])
+        Lisp::operator(self.operator.kind.as_str(), &[self.body.as_lisp()])
     }
 }
 
@@ -18,7 +18,7 @@ impl ThisParser for InfixNode<ExpressionBody> {
     }
 
     fn as_lisp(&self) -> Lisp {
-        Lisp::operator(self.operator.to_string(), &[self.lhs.as_lisp(), self.rhs.as_lisp()])
+        Lisp::operator(self.operator.kind.as_str(), &[self.lhs.as_lisp(), self.rhs.as_lisp()])
     }
 }
 
@@ -28,7 +28,7 @@ impl ThisParser for PostfixNode<ExpressionBody> {
     }
 
     fn as_lisp(&self) -> Lisp {
-        Lisp::operator(self.operator.to_string(), &[self.body.as_lisp()])
+        Lisp::operator(self.operator.kind.as_str(), &[self.body.as_lisp()])
     }
 }
 

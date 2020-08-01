@@ -1,4 +1,5 @@
 use super::*;
+use crate::{PrettyPrint, PrettyProvider, PrettyTree};
 
 /// `class Name(Super): Trait {}`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
@@ -11,17 +12,15 @@ pub struct ClassDeclarationNode {
     pub statements: Vec<IdentifierNode>,
 }
 
-impl IndentDisplay for ClassDeclarationNode {
-    fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
-        f.write_str("class")?;
+impl PrettyPrint for ClassDeclarationNode {
+    // fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
+    //     f.write_str("class")?;
+    //
+    //     f.write_char('}')
+    // }
 
-        f.write_char('}')
-    }
-}
-
-impl Display for ClassDeclarationNode {
-    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        IndentFormatter::wrap(self, f)
+    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+        todo!()
     }
 }
 

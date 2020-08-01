@@ -1,4 +1,5 @@
 use super::*;
+use valkyrie_ast::PrettyPrint;
 
 impl ThisParser for NamePathNode {
     /// `id (~ :: ~ b)*`
@@ -11,7 +12,7 @@ impl ThisParser for NamePathNode {
     }
 
     fn as_lisp(&self) -> Lisp {
-        Lisp::Function(self.to_string())
+        Lisp::Function(self.pretty_string(144))
     }
 }
 

@@ -1,5 +1,6 @@
-use crate::{OperatorNode, PrettyPrint, PrettyProvider};
+use crate::{OperatorNode, PrettyPrint, PrettyProvider, PrettyTree};
 use pretty::{termcolor::ColorSpec, DocAllocator, RefDoc};
+use std::ops::AddAssign;
 
 use super::*;
 
@@ -26,11 +27,12 @@ impl NamespaceKind {
 }
 
 impl PrettyPrint for NamespaceDeclarationNode {
-    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> RefDoc<'a, ColorSpec> {
+    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         let head = allocator.text(self.kind.as_str()).annotate(allocator.keyword_style());
         let space = allocator.space();
         let path = allocator.intersperse(self.path.iter().map(|id| id.pretty(allocator)), allocator.text("."));
-        head.append(space).append(path).into_doc()
+        let semi = allocator.text(";");
+        head.append(space).append(path).append(semi)
     }
 }
 

@@ -2,7 +2,7 @@ use super::*;
 
 impl Debug for ValkyrieInfix {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        write!(f, "Infix({}, {:?})", self.as_operator(), self.range)
+        write!(f, "Infix({}, {:?})", self.as_operator().kind.as_str(), self.range)
     }
 }
 

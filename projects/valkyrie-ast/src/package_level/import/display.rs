@@ -1,41 +1,54 @@
 use super::*;
+use crate::{PrettyPrint, PrettyProvider, PrettyTree};
 
-impl Display for ImportStatementNode {
-    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        write!(f, "import ")?;
-        Display::fmt(&self.r#type, f)?;
+impl PrettyPrint for ImportStatementNode {
+    // fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+    //     write!(f, "import ")?;
+    //     Display::fmt(&self.r#type, f)?;
+    //
+    //     Ok(())
+    // }
 
-        Ok(())
+    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+        todo!()
     }
 }
 
-impl Display for ImportStatementType {
-    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+impl PrettyPrint for ImportStatementType {
+    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         match self {
-            ImportStatementType::Group(node) => Display::fmt(node, f),
-            ImportStatementType::String(node) => Display::fmt(node, f),
-            ImportStatementType::Alias(node) => Display::fmt(node, f),
+            Self::Alias(node) => node.pretty(allocator),
+            Self::Group(node) => node.pretty(allocator),
+            Self::String(node) => node.pretty(allocator),
         }
     }
 }
 
-impl Display for ImportTermNode {
-    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+impl PrettyPrint for ImportTermNode {
+    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         match self {
-            Self::Alias(node) => Display::fmt(node, f),
-            Self::Group(node) => Display::fmt(node, f),
+            Self::Alias(node) => node.pretty(allocator),
+            Self::Group(node) => node.pretty(allocator),
         }
     }
 }
 
-impl Display for ImportGroupNode {
-    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        write!(f, "{} {{ {} }}", self.path, self.group.iter().map(|x| x.to_string()).collect::<Vec<_>>().join(", "))
+impl PrettyPrint for ImportGroupNode {
+    // fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+    //     write!(f, "{} {{ {} }}", self.path, self.group.iter().map(|x| x.to_string()).collect::<Vec<_>>().join(", "))
+    // }
+
+    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+        todo!()
     }
 }
-impl Display for ImportAliasNode {
-    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        write!(f, "{} as {}", self.path, self.alias)
+impl PrettyPrint for ImportAliasNode {
+    // fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+    //     write!(f, "{} as {}", self.path, self.alias)
+    // }
+
+    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+        todo!()
     }
 }
 impl From<ImportAliasNode> for ImportTermNode {

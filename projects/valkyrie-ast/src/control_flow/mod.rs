@@ -1,4 +1,4 @@
-use crate::{control_flow::if_else::format_else_body, ConditionType, ExpressionNode, StatementNode};
+use crate::{ConditionType, ExpressionNode, StatementNode};
 use core::{
     fmt::{Debug, Display, Formatter, Write},
     ops::Range,

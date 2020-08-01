@@ -1,61 +1,37 @@
 use super::*;
+use crate::PrettyTree;
 
-impl<E: IndentDisplay> IndentDisplay for ViewNode<E> {
-    fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
-        self.base.indent_fmt(f)?;
-        f.write_char(if self.index0 { '[' } else { '⁅' })?;
-        for (idx, item) in self.terms.iter().enumerate() {
-            if idx != 0 {
-                f.write_str(", ")?;
-            }
-            item.indent_fmt(f)?;
-        }
-        f.write_char(if self.index0 { ']' } else { '⁆' })
+impl<E: PrettyPrint> PrettyPrint for ViewNode<E> {
+    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+        let lhs = allocator.text(if self.index0 { "[" } else { "⁅" });
+        let terms = allocator.intersperse(self.terms.iter().map(|item| item.pretty(allocator)), allocator.text(", "));
+        let rhs = allocator.text(if self.index0 { "]" } else { "⁆" });
+        lhs.append(terms).append(rhs)
     }
 }
 
-impl<E: IndentDisplay> IndentDisplay for ViewTermNode<E> {
-    fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
+impl<E: PrettyPrint> PrettyPrint for ViewTermNode<E> {
+    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         match self {
-            ViewTermNode::Index(v) => v.indent_fmt(f),
-            ViewTermNode::Range(v) => v.indent_fmt(f),
+            ViewTermNode::Index(v) => v.pretty(allocator),
+            ViewTermNode::Range(v) => v.pretty(allocator),
         }
-    }
-}
-impl<E: IndentDisplay> IndentDisplay for ViewRangeNode<E> {
-    fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
-        if let Some(start) = &self.start {
-            start.indent_fmt(f)?;
-        }
-        f.write_char(':')?;
-        match &self.end {
-            Some(end) => {
-                end.indent_fmt(f)?;
-                f.write_char(':')?;
-            }
-            None => f.write_str(" :")?,
-        }
-        if let Some(step) = &self.step {
-            step.indent_fmt(f)?;
-        }
-        Ok(())
     }
 }
 
-impl<E: IndentDisplay> Display for ViewTermNode<E> {
-    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        IndentFormatter::wrap(self, f)
-    }
-}
-
-impl<E: IndentDisplay> Display for ViewNode<E> {
-    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        IndentFormatter::wrap(self, f)
-    }
-}
-
-impl<E: IndentDisplay> Display for ViewRangeNode<E> {
-    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        IndentFormatter::wrap(self, f)
+impl<E: PrettyPrint> PrettyPrint for ViewRangeNode<E> {
+    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+        let lhs = match &self.start {
+            Some(s) => s.pretty(allocator).append(allocator.text(":")),
+            None => allocator.text(":"),
+        };
+        let middle = match &self.end {
+            Some(e) => allocator.text(":").append(e.pretty(allocator)),
+            None => allocator.text(" :"),
+        };
+        match &self.step {
+            Some(s) => lhs.append(middle).append(s.pretty(allocator)),
+            None => lhs.append(middle),
+        }
     }
 }

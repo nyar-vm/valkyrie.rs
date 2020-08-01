@@ -1,35 +1,30 @@
 use super::*;
+use crate::PrettyTree;
 
-impl Display for ExpressionNode {
-    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        Display::fmt(&self.body, f)
+impl PrettyPrint for ExpressionNode {
+    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+        self.body.pretty(allocator)
     }
 }
 
-impl IndentDisplay for ExpressionBody {
-    fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
+impl PrettyPrint for ExpressionBody {
+    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         match self {
-            ExpressionBody::Placeholder => f.write_str("???"),
-            ExpressionBody::Symbol(node) => f.write_str("???"),
-            ExpressionBody::Number(node) => node.indent_fmt(f),
-            ExpressionBody::String(node) => node.indent_fmt(f),
-            ExpressionBody::Prefix(node) => node.indent_fmt(f),
-            ExpressionBody::Binary(node) => node.indent_fmt(f),
-            ExpressionBody::Suffix(node) => node.indent_fmt(f),
-            ExpressionBody::Table(node) => node.indent_fmt(f),
-            ExpressionBody::Apply(node) => node.indent_fmt(f),
-            ExpressionBody::ApplyDot(node) => node.indent_fmt(f),
-            ExpressionBody::LambdaCall(node) => node.indent_fmt(f),
-            ExpressionBody::LambdaDot(node) => node.indent_fmt(f),
-            ExpressionBody::View(node) => node.indent_fmt(f),
-            ExpressionBody::GenericCall(node) => node.indent_fmt(f),
+            ExpressionBody::Placeholder => allocator.text("???"),
+            ExpressionBody::Symbol(node) => node.pretty(allocator),
+            ExpressionBody::Number(node) => node.pretty(allocator),
+            ExpressionBody::String(node) => node.pretty(allocator),
+            ExpressionBody::Prefix(node) => node.pretty(allocator),
+            ExpressionBody::Binary(node) => node.pretty(allocator),
+            ExpressionBody::Suffix(node) => node.pretty(allocator),
+            ExpressionBody::Table(node) => node.pretty(allocator),
+            ExpressionBody::Apply(node) => node.pretty(allocator),
+            ExpressionBody::ApplyDot(node) => node.pretty(allocator),
+            ExpressionBody::LambdaCall(node) => node.pretty(allocator),
+            ExpressionBody::LambdaDot(node) => node.pretty(allocator),
+            ExpressionBody::View(node) => node.pretty(allocator),
+            ExpressionBody::GenericCall(node) => node.pretty(allocator),
         }
-    }
-}
-
-impl Display for ExpressionBody {
-    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        IndentFormatter::wrap(self, f)
     }
 }
 
@@ -44,6 +39,7 @@ impl Default for ExpressionBody {
         Self::Placeholder
     }
 }
+
 impl From<PrefixNode<ExpressionBody>> for ExpressionBody {
     fn from(value: PrefixNode<ExpressionBody>) -> Self {
         ExpressionBody::Prefix(Box::new(value))
@@ -55,6 +51,7 @@ impl From<InfixNode<ExpressionBody>> for ExpressionBody {
         ExpressionBody::Binary(Box::new(value))
     }
 }
+
 impl From<TableNode<ExpressionBody>> for ExpressionBody {
     fn from(value: TableNode<ExpressionBody>) -> Self {
         ExpressionBody::Table(Box::new(value))

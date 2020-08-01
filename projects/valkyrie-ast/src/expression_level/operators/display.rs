@@ -1,4 +1,5 @@
 use super::*;
+use crate::PrettyTree;
 
 impl ValkyrieOperator {
     /// Get the normalised string representation of the operator.
@@ -61,73 +62,25 @@ impl ValkyrieOperator {
 }
 
 impl PrettyPrint for OperatorNode {
-    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> RefDoc<'a, ColorSpec> {
-        allocator.text(self.kind.as_str()).annotate(allocator.number_style()).into_doc()
+    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+        allocator.text(self.kind.as_str()).annotate(allocator.number_style())
     }
 }
 
-impl IndentDisplay for ValkyrieOperator {
-    fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
-        f.write_str(self.as_str())
+impl<E: PrettyPrint> PrettyPrint for PrefixNode<E> {
+    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+        todo!()
     }
 }
 
-impl IndentDisplay for OperatorNode {
-    fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
-        self.kind.indent_fmt(f)
+impl<E: PrettyPrint> PrettyPrint for InfixNode<E> {
+    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+        todo!()
     }
 }
 
-impl Display for ValkyrieOperator {
-    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        IndentFormatter::wrap(self, f)
-    }
-}
-
-impl Display for OperatorNode {
-    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        f.write_str(self.kind.as_str())
-    }
-}
-
-impl<E: IndentDisplay> IndentDisplay for PrefixNode<E> {
-    fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
-        self.operator.indent_fmt(f)?;
-        self.body.indent_fmt(f)
-    }
-}
-
-impl<E: IndentDisplay> IndentDisplay for InfixNode<E> {
-    fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
-        self.lhs.indent_fmt(f)?;
-        f.write_char(' ')?;
-        self.operator.indent_fmt(f)?;
-        f.write_char(' ')?;
-        self.rhs.indent_fmt(f)
-    }
-}
-
-impl<E: IndentDisplay> IndentDisplay for PostfixNode<E> {
-    fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
-        self.body.indent_fmt(f)?;
-        self.operator.indent_fmt(f)
-    }
-}
-
-impl<E: IndentDisplay> Display for PrefixNode<E> {
-    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        IndentFormatter::wrap(self, f)
-    }
-}
-
-impl<E: IndentDisplay> Display for InfixNode<E> {
-    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        IndentFormatter::wrap(self, f)
-    }
-}
-
-impl<E: IndentDisplay> Display for PostfixNode<E> {
-    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        IndentFormatter::wrap(self, f)
+impl<E: PrettyPrint> PrettyPrint for PostfixNode<E> {
+    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+        todo!()
     }
 }

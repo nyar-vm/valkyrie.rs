@@ -1,26 +1,15 @@
 use super::*;
+use crate::PrettyTree;
 
 impl PrettyPrint for IdentifierNode {
-    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> RefDoc<'a, ColorSpec> {
-        allocator.text(self.name.to_string()).into_doc()
+    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+        allocator.text(self.name.to_string())
     }
 }
 
 impl PrettyPrint for NamePathNode {
-    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> RefDoc<'a, ColorSpec> {
-        allocator.intersperse(self.names.iter().map(|id| id.pretty(allocator)), allocator.text("∷")).into_doc()
-    }
-}
-
-impl Display for IdentifierNode {
-    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        f.write_str(&self.name)
-    }
-}
-
-impl Display for NamePathNode {
-    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        f.write_str(&self.pretty_string(9999))
+    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+        allocator.intersperse(self.names.iter().map(|id| id.pretty(allocator)), allocator.text("∷"))
     }
 }
 
@@ -35,19 +24,27 @@ impl MacroKind {
     }
 }
 
-impl Display for MacroKind {
-    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        f.write_str(self.as_str())
+impl PrettyPrint for MacroKind {
+    // fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+    //     f.write_str(self.as_str())
+    // }
+
+    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+        todo!()
     }
 }
 
-impl Display for MacroPathNode {
-    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        Display::fmt(&self.path, f)?;
-        for item in &self.names {
-            f.write_str(".")?;
-            Display::fmt(item, f)?;
-        }
-        Ok(())
+impl PrettyPrint for MacroPathNode {
+    // fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+    //     Display::fmt(&self.path, f)?;
+    //     for item in &self.names {
+    //         f.write_str(".")?;
+    //         Display::fmt(item, f)?;
+    //     }
+    //     Ok(())
+    // }
+
+    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+        todo!()
     }
 }

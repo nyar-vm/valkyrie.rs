@@ -25,6 +25,5 @@ fn test_apply() {
 fn main2() {
     let raw = "⁅:, ::, : :, 1, :index0:, ::-1, i::j, i: :j⁆";
     let slice = ViewNode::parse_text(raw).unwrap();
-    println!("input:\nplaceholder{raw}");
-    println!("output:\n{}", colored_lisp(slice.as_lisp(), 42).unwrap());
+    slice.pretty_print(42)
 }

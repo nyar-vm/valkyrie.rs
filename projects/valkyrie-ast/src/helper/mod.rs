@@ -1,8 +1,10 @@
 use pretty::{
     termcolor::{Buffer, ColorSpec},
-    Arena, RefDoc,
+    Arena, DocBuilder, RefDoc,
 };
 use std::{ops::Deref, string::String};
+
+pub type PrettyTree<'a> = DocBuilder<'a, Arena<'a, ColorSpec>, ColorSpec>;
 
 pub struct PrettyProvider<'a> {
     arena: Arena<'a, ColorSpec>,
@@ -23,7 +25,7 @@ impl<'a> PrettyProvider<'a> {
 }
 
 pub trait PrettyPrint {
-    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> RefDoc<'a, ColorSpec>;
+    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a>;
     fn pretty_string(&self, width: usize) -> String {
         let mut arena = PrettyProvider::new();
         let mut buffer = Buffer::ansi();

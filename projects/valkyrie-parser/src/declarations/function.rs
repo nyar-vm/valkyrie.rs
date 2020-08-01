@@ -1,6 +1,4 @@
 use super::*;
-use crate::utils::parse_modifiers;
-use valkyrie_ast::ModifierPart;
 
 impl ThisParser for FunctionDeclarationNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
@@ -12,7 +10,7 @@ impl ThisParser for FunctionDeclarationNode {
     }
 
     fn as_lisp(&self) -> Lisp {
-        let mut items = vec![Lisp::keyword(self.r#type.to_string()), self.namepath.as_lisp()];
+        let mut items = vec![Lisp::keyword(self.r#type.pretty_string(144)), self.namepath.as_lisp()];
         //
         let mut args = vec![Lisp::keyword("arguments")];
         for arg in self.arguments.terms.iter() {

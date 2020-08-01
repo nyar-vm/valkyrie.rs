@@ -1,39 +1,25 @@
 use super::*;
+use crate::{PrettyPrint, PrettyProvider, PrettyTree};
+use pretty::DocAllocator;
 
-impl IndentDisplay for StatementNode {
-    fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
-        self.r#type.indent_fmt(f)?;
-        if self.end_semicolon {
-            f.write_str(";")?;
-        }
-        Ok(())
+impl PrettyPrint for StatementNode {
+    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+        self.r#type.pretty(allocator)
     }
 }
 
-impl IndentDisplay for StatementType {
-    fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
+impl PrettyPrint for StatementType {
+    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         match self {
-            StatementType::Nothing => f.write_str(";;"),
-            StatementType::Namespace(v) => Display::fmt(v, f.borrow_mut()),
-            StatementType::Import(v) => Display::fmt(v, f.borrow_mut()),
-            StatementType::Class(v) => v.indent_fmt(f),
-            StatementType::While(v) => v.indent_fmt(f),
-            StatementType::For(v) => Display::fmt(v, f.borrow_mut()),
-            StatementType::Expression(v) => v.indent_fmt(f),
-            StatementType::Function(v) => v.indent_fmt(f),
+            StatementType::Nothing => allocator.text(";;"),
+            StatementType::Namespace(node) => node.pretty(allocator),
+            StatementType::Import(node) => node.pretty(allocator),
+            StatementType::Class(node) => node.pretty(allocator),
+            StatementType::Function(node) => node.pretty(allocator),
+            StatementType::While(node) => node.pretty(allocator),
+            StatementType::For(node) => node.pretty(allocator),
+            StatementType::Expression(node) => node.pretty(allocator),
         }
-    }
-}
-
-impl Display for StatementNode {
-    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        IndentFormatter::wrap(self, f)
-    }
-}
-
-impl Display for StatementType {
-    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        IndentFormatter::wrap(self, f)
     }
 }
 
