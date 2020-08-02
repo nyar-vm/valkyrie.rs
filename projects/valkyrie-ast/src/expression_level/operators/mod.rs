@@ -21,6 +21,8 @@ pub enum ValkyrieOperator {
     Surd(u8),
     /// binary operator: `+`
     Plus,
+    /// binary operator: `+=`
+    PlusAssign,
     /// binary operator: `++`
     Concat,
     /// binary operator: `>`
@@ -76,6 +78,10 @@ impl ValkyrieOperator {
             ValkyrieOperator::Concat => 14000,
             ValkyrieOperator::Belongs(_) => 14000,
             ValkyrieOperator::IsA(_) => 14000,
+
+            // prefix - 3
+            ValkyrieOperator::PlusAssign => 14100,
+
             // infix - 3
             ValkyrieOperator::Equal(_) => 14700,
             ValkyrieOperator::StrictlyEqual(_) => 14700,

@@ -25,11 +25,11 @@ impl<'a> PrettyProvider<'a> {
 }
 
 pub trait PrettyPrint {
-    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a>;
+    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a>;
     fn pretty_string(&self, width: usize) -> String {
         let arena = PrettyProvider::new();
         let mut buffer = Buffer::ansi();
-        if let Err(e) = self.pretty(&arena).render(width, &mut buffer) {
+        if let Err(e) = self.build(&arena).render(width, &mut buffer) {
             return format!("Error: {}", e);
         }
         unsafe { String::from_utf8_unchecked(buffer.into_inner()) }
@@ -37,7 +37,7 @@ pub trait PrettyPrint {
     fn pretty_print(&self, width: usize) {
         let arena = PrettyProvider::new();
         let mut buffer = Buffer::ansi();
-        match self.pretty(&arena).render_colored(width, &mut buffer) {
+        match self.build(&arena).render_colored(width, &mut buffer) {
             Ok(_) => {
                 println!("{}", unsafe { String::from_utf8_unchecked(buffer.into_inner()) });
             }

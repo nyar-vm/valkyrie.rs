@@ -65,7 +65,7 @@ let a = new Name<G>(args) {
     ['C',4]: "Middle C",
     Pair(0, 2),
     term,
-    otehr,
+    other,
 }
 
 let a = new Name<G>(args) {}
@@ -74,5 +74,5 @@ a['C',4] = "Middle C" // indexer
 a.`$setter$size`(Math.PI)
 a.collect(Pair(0, 2)) // collector
 a.collect(term) // collector
-a.collect(otehr) // collector
+a.collect(other) // collector
 ```

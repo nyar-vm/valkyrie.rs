@@ -9,26 +9,26 @@ impl PrettyPrint for ImportStatementNode {
     //     Ok(())
     // }
 
-    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         todo!()
     }
 }
 
 impl PrettyPrint for ImportStatementType {
-    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         match self {
-            Self::Alias(node) => node.pretty(allocator),
-            Self::Group(node) => node.pretty(allocator),
-            Self::String(node) => node.pretty(allocator),
+            Self::Alias(node) => node.build(allocator),
+            Self::Group(node) => node.build(allocator),
+            Self::String(node) => node.build(allocator),
         }
     }
 }
 
 impl PrettyPrint for ImportTermNode {
-    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         match self {
-            Self::Alias(node) => node.pretty(allocator),
-            Self::Group(node) => node.pretty(allocator),
+            Self::Alias(node) => node.build(allocator),
+            Self::Group(node) => node.build(allocator),
         }
     }
 }
@@ -38,7 +38,7 @@ impl PrettyPrint for ImportGroupNode {
     //     write!(f, "{} {{ {} }}", self.path, self.group.iter().map(|x| x.to_string()).collect::<Vec<_>>().join(", "))
     // }
 
-    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         todo!()
     }
 }
@@ -47,7 +47,7 @@ impl PrettyPrint for ImportAliasNode {
     //     write!(f, "{} as {}", self.path, self.alias)
     // }
 
-    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         todo!()
     }
 }

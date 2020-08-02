@@ -2,14 +2,14 @@ use super::*;
 use crate::PrettyTree;
 
 impl PrettyPrint for IdentifierNode {
-    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         allocator.text(self.name.to_string())
     }
 }
 
 impl PrettyPrint for NamePathNode {
-    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        allocator.intersperse(self.names.iter().map(|id| id.pretty(allocator)), allocator.text("∷"))
+    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+        allocator.intersperse(self.names.iter().map(|id| id.build(allocator)), allocator.text("∷"))
     }
 }
 
@@ -24,16 +24,6 @@ impl MacroKind {
     }
 }
 
-impl PrettyPrint for MacroKind {
-    // fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-    //     f.write_str(self.as_str())
-    // }
-
-    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        todo!()
-    }
-}
-
 impl PrettyPrint for MacroPathNode {
     // fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
     //     Display::fmt(&self.path, f)?;
@@ -44,7 +34,7 @@ impl PrettyPrint for MacroPathNode {
     //     Ok(())
     // }
 
-    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         todo!()
     }
 }

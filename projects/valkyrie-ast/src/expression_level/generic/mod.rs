@@ -24,6 +24,12 @@ pub struct GenericCall {
     pub range: Range<usize>,
 }
 
+impl Default for GenericArgumentNode {
+    fn default() -> Self {
+        Self { terms: Vec::new(), range: 0..0 }
+    }
+}
+
 impl GenericCall {
     pub fn rebase(mut self: Box<Self>, base: ExpressionBody) -> Box<Self> {
         self.base.body = base;

@@ -2,7 +2,7 @@ use super::*;
 use crate::PrettyTree;
 
 impl PrettyPrint for NumberLiteralNode {
-    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         let num = allocator.text(self.value.to_string()).annotate(allocator.number_style());
         match &self.unit {
             Some(s) => {

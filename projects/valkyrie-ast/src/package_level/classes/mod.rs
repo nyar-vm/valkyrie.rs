@@ -19,8 +19,10 @@ impl PrettyPrint for ClassDeclarationNode {
     //     f.write_char('}')
     // }
 
-    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        todo!()
+    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+        let head = allocator.keyword("class");
+        let name = self.namepath.build(allocator);
+        head.append(name)
     }
 }
 

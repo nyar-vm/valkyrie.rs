@@ -3,22 +3,22 @@ use crate::{PrettyPrint, PrettyProvider, PrettyTree};
 use pretty::DocAllocator;
 
 impl PrettyPrint for StatementNode {
-    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        self.r#type.pretty(allocator)
+    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+        self.r#type.build(allocator)
     }
 }
 
 impl PrettyPrint for StatementType {
-    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         match self {
             StatementType::Nothing => allocator.text(";;"),
-            StatementType::Namespace(node) => node.pretty(allocator),
-            StatementType::Import(node) => node.pretty(allocator),
-            StatementType::Class(node) => node.pretty(allocator),
-            StatementType::Function(node) => node.pretty(allocator),
-            StatementType::While(node) => node.pretty(allocator),
-            StatementType::For(node) => node.pretty(allocator),
-            StatementType::Expression(node) => node.pretty(allocator),
+            StatementType::Namespace(node) => node.build(allocator),
+            StatementType::Import(node) => node.build(allocator),
+            StatementType::Class(node) => node.build(allocator),
+            StatementType::Function(node) => node.build(allocator),
+            StatementType::While(node) => node.build(allocator),
+            StatementType::For(node) => node.build(allocator),
+            StatementType::Expression(node) => node.build(allocator),
         }
     }
 }
@@ -40,8 +40,8 @@ impl From<ClassDeclarationNode> for StatementType {
         StatementType::Class(Box::new(value))
     }
 }
-impl From<FunctionDeclarationNode> for StatementType {
-    fn from(value: FunctionDeclarationNode) -> Self {
+impl From<FunctionDeclaration> for StatementType {
+    fn from(value: FunctionDeclaration) -> Self {
         Self::Function(Box::new(value))
     }
 }

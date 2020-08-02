@@ -23,7 +23,7 @@ impl Display for StringLiteralNode {
 }
 
 impl PrettyPrint for StringLiteralNode {
-    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         allocator.text(self.to_string()).annotate(allocator.string_style())
     }
 }

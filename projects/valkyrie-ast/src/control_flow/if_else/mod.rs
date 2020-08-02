@@ -53,7 +53,7 @@ impl PrettyPrint for ElsePart {
     //     f.write_newline()?;
     //     f.write_char('}')
     // }
-    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         todo!()
     }
 }

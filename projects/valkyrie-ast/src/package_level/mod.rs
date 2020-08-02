@@ -6,7 +6,7 @@ pub mod license;
 pub mod namespace;
 use crate::{
     package_level::{classes::ClassDeclarationNode, namespace::NamespaceDeclarationNode},
-    ApplyArgumentNode, ArgumentTermNode, ExpressionNode, ForLoopNode, FunctionDeclarationNode, GenericArgumentNode,
+    ApplyArgumentNode, ArgumentTermNode, ExpressionNode, ForLoopNode, FunctionDeclaration, GenericArgumentNode,
     IdentifierNode, ImportStatementNode, NamePathNode, PrettyPrint, PrettyProvider, PrettyTree, WhileLoopNode,
 };
 use pretty::DocAllocator;
@@ -34,7 +34,7 @@ pub enum StatementType {
     Namespace(Box<NamespaceDeclarationNode>),
     Import(Box<ImportStatementNode>),
     Class(Box<ClassDeclarationNode>),
-    Function(Box<FunctionDeclarationNode>),
+    Function(Box<FunctionDeclaration>),
     While(Box<WhileLoopNode>),
     For(Box<ForLoopNode>),
     Expression(Box<ExpressionNode>),

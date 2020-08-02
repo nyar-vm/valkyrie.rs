@@ -1,6 +1,5 @@
 use super::*;
-use crate::{FunctionBodyPart, PrettyPrint, PrettyProvider, PrettyTree};
-use pretty::{DocAllocator, RefDoc};
+use crate::FunctionBodyPart;
 
 impl PrettyPrint for WhileLoopNode {
     /// ```vk
@@ -15,10 +14,13 @@ impl PrettyPrint for WhileLoopNode {
     ///    ...
     /// }
     /// ```
-    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        let head = allocator.keyword("while").append(allocator.space()).append(self.condition.pretty(allocator));
-        let body = allocator.function_body(&self.body);
-        head.append(body)
+    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+        let mut terms = Vec::with_capacity(4);
+        terms.push(allocator.keyword("while"));
+        terms.push(allocator.space());
+        terms.push(self.condition.build(allocator));
+        terms.push(FunctionBodyPart::build_borrowed(&self.body, allocator));
+        allocator.concat(terms)
     }
 }
 
@@ -33,11 +35,11 @@ impl PrettyPrint for ConditionType {
     ///   || b && c
     ///   && d || e
     /// ```
-    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         match self {
             ConditionType::AlwaysTrue => allocator.keyword("true"),
             ConditionType::Case => allocator.keyword("case"),
-            ConditionType::Expression(e) => e.pretty(allocator),
+            ConditionType::Expression(e) => e.build(allocator),
         }
     }
 }
@@ -52,7 +54,7 @@ impl PrettyPrint for ForLoopNode {
     //     format_else_body(f, &self.r#else)
     // }
 
-    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         todo!()
     }
 }

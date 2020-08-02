@@ -10,6 +10,7 @@ impl ValkyrieOperator {
             ValkyrieOperator::Positive => "+",
             ValkyrieOperator::Negative => "-",
             ValkyrieOperator::Plus => "+",
+            ValkyrieOperator::PlusAssign => "+=",
             ValkyrieOperator::Minus => "-",
             ValkyrieOperator::Multiply => "*",
             ValkyrieOperator::Divide => "/",
@@ -62,27 +63,31 @@ impl ValkyrieOperator {
 }
 
 impl PrettyPrint for OperatorNode {
-    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        allocator.text(self.kind.as_str()).annotate(allocator.number_style())
+    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+        allocator.operator(self.kind.as_str())
     }
 }
 
 impl<E: PrettyPrint> PrettyPrint for PrefixNode<E> {
-    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        self.operator.pretty(allocator).append(self.base.pretty(allocator))
+    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+        self.operator.build(allocator).append(self.base.build(allocator))
     }
 }
 
 impl<E: PrettyPrint> PrettyPrint for InfixNode<E> {
-    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        let lhs = self.lhs.pretty(allocator);
-        let rhs = self.rhs.pretty(allocator);
-        lhs.append(allocator.softline()).append(self.operator.pretty(allocator)).append(allocator.softline()).append(rhs)
+    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+        let mut items = Vec::with_capacity(5);
+        items.push(self.lhs.build(allocator));
+        items.push(allocator.space());
+        items.push(self.operator.build(allocator));
+        items.push(allocator.space());
+        items.push(self.rhs.build(allocator));
+        allocator.concat(items)
     }
 }
 
 impl<E: PrettyPrint> PrettyPrint for PostfixNode<E> {
-    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        self.base.pretty(allocator).append(self.operator.pretty(allocator))
+    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+        self.base.build(allocator).append(self.operator.build(allocator))
     }
 }

@@ -1,4 +1,5 @@
 use super::*;
+use std::borrow::Cow;
 
 mod display;
 
@@ -15,13 +16,13 @@ pub enum FunctionType {
 /// `class Name(Super): Trait {}`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct FunctionDeclarationNode {
+pub struct FunctionDeclaration {
     /// The range of the number.
     pub r#type: FunctionType,
     pub namepath: NamePathNode,
     pub modifiers: Vec<IdentifierNode>,
     pub attributes: Option<String>,
-    pub generic: Option<GenericArgumentNode>,
+    pub generic: GenericArgumentNode,
     pub arguments: ApplyArgumentNode,
     pub r#return: Option<ExpressionNode>,
     pub body: Option<Vec<StatementNode>>,
@@ -32,11 +33,22 @@ pub struct FunctionDeclarationNode {
 /// - Auxiliary parsing function, not instantiable.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub struct FunctionCommonPart {
-    pub generic: Option<GenericArgumentNode>,
+    pub generic: GenericArgumentNode,
     /// The range of the number.
     pub arguments: ApplyArgumentNode,
     pub r#return: Option<ExpressionNode>,
     pub body: Option<Vec<StatementNode>>,
+}
+
+/// `function(args) -> type := body`
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct FunctionDeclarationInline {
+    pub generic: GenericArgumentNode,
+    /// The range of the number.
+    pub arguments: ApplyArgumentNode,
+    pub r#return: Option<ExpressionNode>,
+    pub body: Vec<StatementNode>,
 }
 
 /// `public static final synchronized class A {}`
@@ -51,11 +63,17 @@ pub struct ModifierPart {
 ///
 /// - Auxiliary parsing function, not instantiable.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
-pub struct FunctionBodyPart {
-    pub body: Vec<StatementNode>,
+pub struct FunctionBodyPart<'i> {
+    pub body: Cow<'i, [StatementNode]>,
 }
 
-impl FunctionDeclarationNode {
+impl<'a> FunctionBodyPart<'a> {
+    pub fn new(items: Vec<StatementNode>) -> Self {
+        Self { body: Cow::Owned(items) }
+    }
+}
+
+impl FunctionDeclaration {
     pub fn has_body(&self) -> bool {
         self.body.is_some()
     }
@@ -75,8 +93,8 @@ impl FunctionDeclarationNode {
 impl FunctionCommonPart {
     /// Create a new complete function body
     #[allow(clippy::wrong_self_convention)]
-    pub fn as_function(self, r#type: FunctionType, name: NamePathNode) -> FunctionDeclarationNode {
-        FunctionDeclarationNode {
+    pub fn as_function(self, r#type: FunctionType, name: NamePathNode) -> FunctionDeclaration {
+        FunctionDeclaration {
             r#type,
             namepath: name,
             modifiers: Vec::new(),

@@ -19,9 +19,9 @@ impl TableKind {
 }
 
 impl<E: PrettyPrint> PrettyPrint for TableNode<E> {
-    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         let head = allocator.text(self.kind.begin_str());
-        let body = self.terms.iter().map(|x| x.pretty(allocator).append(allocator.text(",")));
+        let body = self.terms.iter().map(|x| x.build(allocator).append(allocator.text(",")));
         let tail = allocator.text(self.kind.end_str());
         head.append(allocator.concat(body)).append(tail)
     }

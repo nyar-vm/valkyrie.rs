@@ -2,28 +2,28 @@ use super::*;
 use crate::PrettyTree;
 
 impl PrettyPrint for ExpressionNode {
-    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        self.body.pretty(allocator)
+    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+        self.body.build(allocator)
     }
 }
 
 impl PrettyPrint for ExpressionBody {
-    fn pretty<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         match self {
             ExpressionBody::Placeholder => allocator.text("???"),
-            ExpressionBody::Symbol(node) => node.pretty(allocator),
-            ExpressionBody::Number(node) => node.pretty(allocator),
-            ExpressionBody::String(node) => node.pretty(allocator),
-            ExpressionBody::Prefix(node) => node.pretty(allocator),
-            ExpressionBody::Binary(node) => node.pretty(allocator),
-            ExpressionBody::Suffix(node) => node.pretty(allocator),
-            ExpressionBody::Table(node) => node.pretty(allocator),
-            ExpressionBody::Apply(node) => node.pretty(allocator),
-            ExpressionBody::ApplyDot(node) => node.pretty(allocator),
-            ExpressionBody::LambdaCall(node) => node.pretty(allocator),
-            ExpressionBody::LambdaDot(node) => node.pretty(allocator),
-            ExpressionBody::View(node) => node.pretty(allocator),
-            ExpressionBody::GenericCall(node) => node.pretty(allocator),
+            ExpressionBody::Symbol(node) => node.build(allocator),
+            ExpressionBody::Number(node) => node.build(allocator),
+            ExpressionBody::String(node) => node.build(allocator),
+            ExpressionBody::Prefix(node) => node.build(allocator),
+            ExpressionBody::Binary(node) => node.build(allocator),
+            ExpressionBody::Suffix(node) => node.build(allocator),
+            ExpressionBody::Table(node) => node.build(allocator),
+            ExpressionBody::Apply(node) => node.build(allocator),
+            ExpressionBody::ApplyDot(node) => node.build(allocator),
+            ExpressionBody::LambdaCall(node) => node.build(allocator),
+            ExpressionBody::LambdaDot(node) => node.build(allocator),
+            ExpressionBody::View(node) => node.build(allocator),
+            ExpressionBody::GenericCall(node) => node.build(allocator),
         }
     }
 }
