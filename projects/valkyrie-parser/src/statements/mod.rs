@@ -5,7 +5,7 @@ use crate::{
 };
 use lispify::Lisp;
 use valkyrie_ast::{
-    ClassDeclarationNode, ExpressionContext, ExpressionNode, ForLoopNode, FunctionDeclarationNode, FunctionType,
+    ClassDeclaration, ExpressionContext, ExpressionNode, ForLoopNode, FunctionDeclaration, FunctionType,
     ImportStatementNode, NamePathNode, NamespaceDeclarationNode, StatementNode, StatementType, WhileLoopNode,
 };
 use valkyrie_types::third_party::pex::{ParseResult, ParseState};

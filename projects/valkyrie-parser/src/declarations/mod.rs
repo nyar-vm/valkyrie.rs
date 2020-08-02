@@ -11,7 +11,7 @@ use crate::{
 use lispify::Lisp;
 use valkyrie_ast::{
     ApplyArgumentNode, ArgumentKeyNode, ArgumentTermNode, ExpressionBody, ExpressionContext, ExpressionNode, ExpressionType,
-    FunctionCommonPart, FunctionDeclarationNode, FunctionType, IdentifierNode, ModifierPart, NamePathNode, PrettyPrint,
+    FunctionCommonPart, FunctionDeclaration, FunctionType, IdentifierNode, ModifierPart, NamePathNode, PrettyPrint,
     StatementNode,
 };
 use valkyrie_types::third_party::pex::{BracketPattern, ParseResult, ParseState, StopBecause};

@@ -28,7 +28,6 @@ fn top_debug(text: &str, output: &str) -> std::io::Result<()> {
     for expr in &apply.statements {
         expr.pretty_print(80);
         writeln!(file, "{}", display_lisp(expr.as_lisp(), 144).unwrap())?;
-        println!("{}", colored_lisp(expr.as_lisp(), 144).unwrap());
     }
     Ok(())
 }

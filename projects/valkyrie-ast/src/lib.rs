@@ -29,7 +29,7 @@ pub use crate::{
     },
     helper::{PrettyPrint, PrettyProvider, PrettyTree},
     package_level::{
-        classes::ClassDeclarationNode,
+        classes::ClassDeclaration,
         function::{
             FunctionBodyPart, FunctionCommonPart, FunctionDeclaration, FunctionDeclarationInline, FunctionType, ModifierPart,
         },

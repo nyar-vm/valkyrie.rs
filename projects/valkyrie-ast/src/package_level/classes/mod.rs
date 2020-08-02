@@ -1,10 +1,14 @@
 use super::*;
 use crate::{PrettyPrint, PrettyProvider, PrettyTree};
+mod display;
 
 /// `class Name(Super): Trait {}`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ClassDeclarationNode {
+pub struct ClassDeclaration {
+    /// The kind of class
+    pub kind: ClassKind,
+    /// The range of the number.
     pub namepath: NamePathNode,
     pub modifiers: Vec<IdentifierNode>,
     pub extends: Option<String>,
@@ -12,18 +16,14 @@ pub struct ClassDeclarationNode {
     pub statements: Vec<IdentifierNode>,
 }
 
-impl PrettyPrint for ClassDeclarationNode {
-    // fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
-    //     f.write_str("class")?;
-    //
-    //     f.write_char('}')
-    // }
-
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        let head = allocator.keyword("class");
-        let name = self.namepath.build(allocator);
-        head.append(name)
-    }
+///
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum ClassKind {
+    /// A function that lazy evaluate the arguments
+    Class,
+    /// A function that eager evaluate the arguments
+    Structure,
 }
 
 // impl ClassDeclare {

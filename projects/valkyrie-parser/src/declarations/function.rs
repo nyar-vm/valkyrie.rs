@@ -1,6 +1,6 @@
 use super::*;
 
-impl ThisParser for FunctionDeclarationNode {
+impl ThisParser for FunctionDeclaration {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, head) = FunctionType::parse(input)?;
         let (state, name) = state.skip(ignore).match_fn(NamePathNode::parse)?;

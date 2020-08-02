@@ -8,7 +8,12 @@ impl ThisParser for FunctionCommonPart {
         let (state, args) = state.skip(ignore).match_fn(ApplyArgumentNode::parse)?;
         let (state, ret) = state.skip(ignore).match_optional(parse_return_type)?;
         let (finally, body) = state.skip(ignore).match_optional(FunctionBody::parse)?;
-        finally.finish(FunctionCommonPart { generic, arguments: args, r#return: ret, body: body.map(|s| s.body) })
+        finally.finish(FunctionCommonPart {
+            generic: generic.unwrap_or_default(),
+            arguments: args,
+            r#return: ret,
+            body: body.map(|s| s.body),
+        })
     }
 
     fn as_lisp(&self) -> Lisp {

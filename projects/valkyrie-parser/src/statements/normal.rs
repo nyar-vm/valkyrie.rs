@@ -47,7 +47,7 @@ impl ThisParser for StatementType {
             .begin_choice()
             .or_else(|s| NamespaceDeclarationNode::parse(s).map_inner(Into::into))
             .or_else(|s| ImportStatementNode::parse(s).map_inner(Into::into))
-            .or_else(|s| ClassDeclarationNode::parse(s).map_inner(Into::into))
+            .or_else(|s| ClassDeclaration::parse(s).map_inner(Into::into))
             .or_else(function_mods)
             .or_else(|s| WhileLoopNode::parse(s).map_inner(Into::into))
             .or_else(|s| ForLoopNode::parse(s).map_inner(Into::into))
@@ -74,8 +74,8 @@ pub fn parse_repl_statements(input: ParseState) -> ParseResult<StatementType> {
         .begin_choice()
         .or_else(|s| NamespaceDeclarationNode::parse(s).map_inner(Into::into))
         .or_else(|s| ImportStatementNode::parse(s).map_inner(Into::into))
-        .or_else(|s| ClassDeclarationNode::parse(s).map_inner(Into::into))
-        .or_else(|s| FunctionDeclarationNode::parse(s).map_inner(Into::into))
+        .or_else(|s| ClassDeclaration::parse(s).map_inner(Into::into))
+        .or_else(|s| FunctionDeclaration::parse(s).map_inner(Into::into))
         .or_else(|s| WhileLoopNode::parse(s).map_inner(Into::into))
         .or_else(|s| ForLoopNode::parse(s).map_inner(Into::into))
         .or_else(|s| parse_expression_node(s, ExpressionContext::in_free()).map_inner(Into::into))
@@ -84,7 +84,7 @@ pub fn parse_repl_statements(input: ParseState) -> ParseResult<StatementType> {
 
 fn function_mods(input: ParseState) -> ParseResult<StatementType> {
     let (state, mods) = parse_modifiers(input, FunctionType::parse)?;
-    let (state, mut func) = state.skip(ignore).match_fn(FunctionDeclarationNode::parse)?;
+    let (state, mut func) = state.skip(ignore).match_fn(FunctionDeclaration::parse)?;
     func.modifiers = mods.modifiers;
     state.finish(StatementType::Function(Box::new(func)))
 }

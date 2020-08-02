@@ -14,18 +14,23 @@ micro function(a, k: T, p: U = 1) -> R {
 
 micro function::<G, R>(g: G) -> R {
     1 + 1
-    auto_eos
+    a in b
     print("Hello, world!")
 }
 
 
-macro function⦓G, R⦔(g: G = 0) -> R {
-    macro function(g: G) -> R {
-        print("Hello, world!")
+macro outer<L>(lhs: L) -> String {
+    # let mut count = 0
+    micro inner<R>(rhs: R) {
+        while count < 10 {
+            count += 1
+            print("{lhs} {rhs}")
+        }
     }
+    "{count}"
 }
 
-
-public static micro main(mut args: [String]) -> Int {
-    print("Hello, world!")
+public static final micro main(mut args: [String]) -> Int {
+    outer("Hello")("world")
+    return 0
 }

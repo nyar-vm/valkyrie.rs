@@ -98,6 +98,7 @@ impl ValkyrieInfix {
             "notin" => ValkyrieOperator::Belongs(false),
             "is" => ValkyrieOperator::IsA(true),
             "isnot" => ValkyrieOperator::IsA(false),
+            "+=" => ValkyrieOperator::PlusAssign,
             _ => unreachable!("Unknown operator: {}", self.normalized),
         };
         OperatorNode::new(kind, self.range.clone())

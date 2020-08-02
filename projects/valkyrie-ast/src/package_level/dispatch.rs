@@ -35,8 +35,8 @@ impl From<ImportStatementNode> for StatementType {
     }
 }
 
-impl From<ClassDeclarationNode> for StatementType {
-    fn from(value: ClassDeclarationNode) -> Self {
+impl From<ClassDeclaration> for StatementType {
+    fn from(value: ClassDeclaration) -> Self {
         StatementType::Class(Box::new(value))
     }
 }

@@ -1,12 +1,12 @@
 use super::*;
 
-impl ThisParser for ClassDeclarationNode {
+impl ThisParser for ClassDeclaration {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, _) = input.match_str("class")?;
         let (state, namepath) = state.skip(ignore).match_fn(NamePathNode::parse)?;
         let (state, _) = state.skip(ignore).match_char('{')?;
         let (state, _) = state.skip(ignore).match_char('}')?;
-        state.finish(ClassDeclarationNode {
+        state.finish(ClassDeclaration {
             namepath,
             modifiers: vec![],
             extends: None,
