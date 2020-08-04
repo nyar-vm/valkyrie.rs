@@ -1,4 +1,5 @@
 use super::*;
+use valkyrie_ast::ClassKind;
 
 impl ThisParser for ClassDeclaration {
     fn parse(input: ParseState) -> ParseResult<Self> {
@@ -7,6 +8,7 @@ impl ThisParser for ClassDeclaration {
         let (state, _) = state.skip(ignore).match_char('{')?;
         let (state, _) = state.skip(ignore).match_char('}')?;
         state.finish(ClassDeclaration {
+            kind: ClassKind::Class,
             namepath,
             modifiers: vec![],
             extends: None,

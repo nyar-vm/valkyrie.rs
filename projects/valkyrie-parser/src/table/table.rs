@@ -1,12 +1,10 @@
 use super::*;
 
-
-
-impl<E: ThisParser> ThisParser for TableNode<E> {
-    /// `[` ~ `]` | `[` [term](ApplyTermNode::parse) ( ~ `,` ~ [term](ApplyTermNode::parse))* `,`? `]`
+impl ThisParser for TableNode {
+    /// `[` ~ `]` | `[` [term](MaybePair::parse) ( ~ `,` ~ [term](MaybePair::parse))* `,`? `]`
     fn parse(input: ParseState) -> ParseResult<Self> {
         let pat = BracketPattern::new("[", "]");
-        let (state, terms) = pat.consume(input, ignore, ApplyTermNode::parse)?;
+        let (state, terms) = pat.consume(input, ignore, MaybePair::parse)?;
         state.finish(TableNode { kind: TableKind::OffsetTable, terms: terms.body, range: state.away_from(input) })
     }
 
@@ -20,10 +18,10 @@ impl<E: ThisParser> ThisParser for TableNode<E> {
     }
 }
 
-impl<K, V> ThisParser for ApplyTermNode<K, V>
-    where
-        K: ThisParser,
-        V: ThisParser,
+impl<K, V> ThisParser for MaybePair<K, V>
+where
+    K: ThisParser,
+    V: ThisParser,
 {
     /// - [start]()? ~ `:` ~ [end]()? (~ `:` ~ [step]?)?
     fn parse(input: ParseState) -> ParseResult<Self> {
@@ -33,7 +31,7 @@ impl<K, V> ThisParser for ApplyTermNode<K, V>
             state.finish(term)
         })?;
         let (state, value) = state.skip(ignore).match_fn(V::parse)?;
-        state.finish(ApplyTermNode { key, value })
+        state.finish(MaybePair { key, value })
     }
 
     fn as_lisp(&self) -> Lisp {

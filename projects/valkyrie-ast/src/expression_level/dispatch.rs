@@ -52,8 +52,8 @@ impl From<InfixNode<ExpressionBody>> for ExpressionBody {
     }
 }
 
-impl From<TableNode<ExpressionBody>> for ExpressionBody {
-    fn from(value: TableNode<ExpressionBody>) -> Self {
+impl From<TableNode> for ExpressionBody {
+    fn from(value: TableNode) -> Self {
         ExpressionBody::Table(Box::new(value))
     }
 }

@@ -16,11 +16,25 @@ pub enum TableKind {
 /// `[table]` or `(tuple)`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct TableNode<E> {
+pub struct TableNode {
     pub kind: TableKind,
     /// The raw string of the number.
-    pub terms: Vec<ApplyTermNode<IdentifierNode, E>>,
+    pub terms: Vec<TableTermNode>,
     /// The range of the number.
     pub range: Range<usize>,
 }
 
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct TableTermNode {
+    pub pair: MaybePair<TableKeyKind, ExpressionNode>,
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum TableKeyKind {
+    Identifier(Box<IdentifierNode>),
+    Number(Box<NumberLiteralNode>),
+    String(Box<StringLiteralNode>),
+    Table(Box<TableNode>),
+}

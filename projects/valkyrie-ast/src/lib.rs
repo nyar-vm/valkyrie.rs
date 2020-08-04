@@ -15,7 +15,7 @@ pub use crate::{
         looping::{ForLoopNode, PatternType, WhileLoopNode},
     },
     expression_level::{
-        apply::{ApplyArgumentNode, ApplyCallNode, ApplyDotNode, ApplyTermNode, ArgumentKeyNode, ArgumentTermNode},
+        apply::{ApplyArgumentNode, ApplyCallNode, ApplyDotNode, ArgumentKeyNode, ArgumentTermNode, MaybePair},
         ctor::{NewStructureCollectNode, NewStructureNode},
         generic::{GenericArgumentNode, GenericCall},
         lambda::{LambdaArgumentNode, LambdaCallNode, LambdaDotNode, LambdaNode},
@@ -23,13 +23,13 @@ pub use crate::{
         operators::{InfixNode, OperatorNode, PostfixNode, PrefixNode, ValkyrieOperator},
         string::StringLiteralNode,
         symbol::{IdentifierNode, MacroKind, MacroPathNode, NamePathNode},
-        table::{TableKind, TableNode},
+        table::{TableKeyKind, TableKind, TableNode, TableTermNode},
         view::{ViewNode, ViewRangeNode, ViewTermNode},
         ExpressionBody, ExpressionContext, ExpressionNode, ExpressionType,
     },
     helper::{PrettyPrint, PrettyProvider, PrettyTree},
     package_level::{
-        classes::ClassDeclaration,
+        classes::{ClassDeclaration, ClassKind},
         function::{
             FunctionBodyPart, FunctionCommonPart, FunctionDeclaration, FunctionDeclarationInline, FunctionType, ModifierPart,
         },

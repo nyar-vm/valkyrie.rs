@@ -19,7 +19,7 @@ pub struct GenericArgumentNode {
 pub struct GenericCall {
     pub base: ExpressionNode,
     /// The raw string of the number.
-    pub terms: Vec<ApplyTermNode<IdentifierNode, ExpressionNode>>,
+    pub terms: Vec<MaybePair<IdentifierNode, ExpressionNode>>,
     /// The range of the number.
     pub range: Range<usize>,
 }

@@ -11,8 +11,8 @@ pub mod table;
 pub mod view;
 
 use crate::{
-    helper::PrettyPrint, ApplyCallNode, ApplyDotNode, ApplyTermNode, GenericCall, IdentifierNode, InfixNode, LambdaCallNode,
-    LambdaDotNode, NamePathNode, NumberLiteralNode, OperatorNode, PostfixNode, PrefixNode, PrettyProvider, StatementNode,
+    helper::PrettyPrint, ApplyCallNode, ApplyDotNode, GenericCall, IdentifierNode, InfixNode, LambdaCallNode, LambdaDotNode,
+    MaybePair, NamePathNode, NumberLiteralNode, OperatorNode, PostfixNode, PrefixNode, PrettyProvider, StatementNode,
     StringLiteralNode, TableNode, ViewNode,
 };
 use core::{
@@ -60,7 +60,7 @@ pub enum ExpressionBody {
     Prefix(Box<PrefixNode<Self>>),
     Binary(Box<InfixNode<Self>>),
     Suffix(Box<PostfixNode<Self>>),
-    Table(Box<TableNode<Self>>),
+    Table(Box<TableNode>),
     Apply(Box<ApplyCallNode>),
     ApplyDot(Box<ApplyDotNode>),
     LambdaCall(Box<LambdaCallNode>),

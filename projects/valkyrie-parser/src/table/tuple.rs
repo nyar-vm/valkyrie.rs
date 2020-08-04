@@ -16,7 +16,7 @@ impl<E: ThisParser> ThisParser for TupleNode<E> {
     /// `(` ~ `)` | `(` ~ term ~ , ~ `)` | `(` ~ term ~ , ~ term ( ~ , ~ term)* ~ `)`
     fn parse(input: ParseState) -> ParseResult<Self> {
         let pat = BracketPattern::new("(", ")").with_one_tailing(true);
-        let (state, terms) = pat.consume(input, ignore, ApplyTermNode::parse)?;
+        let (state, terms) = pat.consume(input, ignore, MaybePair::parse)?;
         state.finish(TupleNode { terms: terms.body, range: state.away_from(input) })
     }
 
