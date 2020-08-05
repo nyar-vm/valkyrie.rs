@@ -59,7 +59,7 @@ impl ThisParser for ExpressionBody {
             ExpressionBody::Table(v) => v.as_lisp(),
             ExpressionBody::Apply(v) => v.as_lisp(),
             ExpressionBody::ApplyDot(v) => v.as_lisp(),
-            ExpressionBody::View(v) => v.as_lisp(),
+            ExpressionBody::Subscript(v) => v.as_lisp(),
             ExpressionBody::GenericCall(v) => v.as_lisp(),
             ExpressionBody::LambdaCall(v) => v.as_lisp(),
             ExpressionBody::LambdaDot(v) => v.as_lisp(),
@@ -142,7 +142,7 @@ fn parse_expr_value<'a>(
 pub enum NormalPostfixCall {
     Apply(Box<ApplyCallNode>),
     ApplyDot(Box<ApplyDotNode>),
-    View(Box<ViewNode<ExpressionBody>>),
+    View(Box<SubscriptNode<ExpressionBody>>),
     Generic(Box<GenericCall>),
     Lambda(Box<LambdaCallNode>),
     LambdaDot(Box<LambdaDotNode>),
@@ -166,7 +166,7 @@ pub fn parse_value(input: ParseState, allow_curly: bool) -> ParseResult<Expressi
         match caller {
             NormalPostfixCall::Apply(v) => base = ExpressionBody::Apply(v.rebase(base)),
             NormalPostfixCall::ApplyDot(v) => base = ExpressionBody::ApplyDot(v.rebase(base)),
-            NormalPostfixCall::View(v) => base = ExpressionBody::View(v.rebase(base)),
+            NormalPostfixCall::View(v) => base = ExpressionBody::Subscript(v.rebase(base)),
             NormalPostfixCall::Generic(v) => base = ExpressionBody::GenericCall(v.rebase(base)),
             NormalPostfixCall::Lambda(v) => base = ExpressionBody::LambdaCall(v.rebase(base)),
             NormalPostfixCall::LambdaDot(v) => base = ExpressionBody::LambdaDot(v.rebase(base)),
@@ -182,7 +182,7 @@ impl NormalPostfixCall {
             .begin_choice()
             .or_else(|s| ApplyCallNode::parse(s).map_inner(|s| NormalPostfixCall::Apply(Box::new(s))))
             .or_else(|s| ApplyDotNode::parse(s).map_inner(|s| NormalPostfixCall::ApplyDot(Box::new(s))))
-            .or_else(|s| ViewNode::parse(s).map_inner(|s| NormalPostfixCall::View(Box::new(s))))
+            .or_else(|s| SubscriptNode::parse(s).map_inner(|s| NormalPostfixCall::View(Box::new(s))))
             .or_else(|s| GenericCall::parse(s).map_inner(|s| NormalPostfixCall::Generic(Box::new(s))))
             .end_choice()
     }
@@ -192,7 +192,7 @@ impl NormalPostfixCall {
             .begin_choice()
             .or_else(|s| ApplyCallNode::parse(s).map_inner(|s| NormalPostfixCall::Apply(Box::new(s))))
             .or_else(|s| ApplyDotNode::parse(s).map_inner(|s| NormalPostfixCall::ApplyDot(Box::new(s))))
-            .or_else(|s| ViewNode::parse(s).map_inner(|s| NormalPostfixCall::View(Box::new(s))))
+            .or_else(|s| SubscriptNode::parse(s).map_inner(|s| NormalPostfixCall::View(Box::new(s))))
             .or_else(|s| GenericCall::parse(s).map_inner(|s| NormalPostfixCall::Generic(Box::new(s))))
             .or_else(|s| LambdaCallNode::parse(s).map_inner(|s| NormalPostfixCall::Lambda(Box::new(s))))
             .or_else(|s| LambdaDotNode::parse(s).map_inner(|s| NormalPostfixCall::LambdaDot(Box::new(s))))

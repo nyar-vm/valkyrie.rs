@@ -44,7 +44,7 @@ impl ValkyrieExecutor {
             ExpressionBody::LambdaDot(_) => {
                 todo!()
             }
-            ExpressionBody::View(_) => {
+            ExpressionBody::Subscript(_) => {
                 todo!()
             }
             ExpressionBody::GenericCall(_) => {

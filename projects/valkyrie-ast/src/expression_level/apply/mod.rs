@@ -10,7 +10,7 @@ pub struct ApplyDotNode {
     /// The raw string of the number.
     pub caller: IdentifierNode,
     /// The range of the number.
-    pub terms: Vec<MaybePair<IdentifierNode, ExpressionNode>>,
+    pub terms: Vec<CallTermPair<IdentifierNode, ExpressionNode>>,
     /// The range of the number.
     pub range: Range<usize>,
 }
@@ -21,7 +21,7 @@ pub struct ApplyDotNode {
 pub struct ApplyCallNode {
     pub base: ExpressionNode,
     /// The raw string of the number.
-    pub terms: Vec<MaybePair<IdentifierNode, ExpressionNode>>,
+    pub terms: Vec<CallTermPair<IdentifierNode, ExpressionNode>>,
     /// The range of the number.
     pub range: Range<usize>,
 }
@@ -29,7 +29,7 @@ pub struct ApplyCallNode {
 /// `term` or `field: term`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct MaybePair<K, V> {
+pub struct CallTermPair<K, V> {
     pub key: Option<K>,
     pub value: V,
 }

@@ -32,7 +32,7 @@ impl ThisParser for GenericArgumentNode {
 impl ThisParser for ApplyCallNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let pat = BracketPattern::new("(", ")");
-        let (state, terms) = pat.consume(input, ignore, MaybePair::parse)?;
+        let (state, terms) = pat.consume(input, ignore, CallTermPair::parse)?;
         state.finish(ApplyCallNode { base: ExpressionNode::default(), terms: terms.body, range: state.away_from(input) })
     }
 

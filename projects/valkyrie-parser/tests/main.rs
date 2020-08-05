@@ -10,7 +10,7 @@ use std::{
     io::Write,
     path::{Path, PathBuf},
 };
-use valkyrie_ast::{ExpressionBody, PrettyPrint, StatementNode, StatementType, ViewNode};
+use valkyrie_ast::{ExpressionBody, PrettyPrint, StatementNode, StatementType, SubscriptNode};
 use valkyrie_parser::{ReplRoot, ScriptRoot, ThisParser};
 
 #[test]

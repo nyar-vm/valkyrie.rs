@@ -4,12 +4,12 @@ mod display;
 /// `array⁅index0⁆` or `array[index1]`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ViewNode<E> {
+pub struct SubscriptNode {
     pub index0: bool,
     /// The raw string of the number.
-    pub base: E,
+    pub base: ExpressionNode,
     /// The raw string of the number.
-    pub terms: Vec<ViewTermNode<E>>,
+    pub terms: Vec<SubscriptTermNode>,
     /// The range of the number.
     pub range: Range<usize>,
 }
@@ -17,30 +17,30 @@ pub struct ViewNode<E> {
 /// `⁅index⁆` or `⁅start : end : step⁆`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum ViewTermNode<E> {
+pub enum SubscriptTermNode {
     /// `array[index]`, also can be a call_index `array[[1, 2, 3]]`
-    Index(E),
+    Index(ExpressionNode),
     /// `array[start:end:step]`
-    Range(ViewRangeNode<E>),
+    Slice(SubscriptSliceNode),
 }
 
 /// `⁅start : end : step⁆`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ViewRangeNode<E> {
+pub struct SubscriptSliceNode {
     /// The raw string of the number.
-    pub start: Option<E>,
+    pub start: Option<ExpressionNode>,
     /// The unit of the number, if any.
-    pub end: Option<E>,
+    pub end: Option<ExpressionNode>,
     /// The unit of the number, if any.
-    pub step: Option<E>,
+    pub step: Option<ExpressionNode>,
     /// The range of the number.
     pub range: Range<usize>,
 }
 
-impl<E> ViewNode<E> {
-    pub fn rebase(mut self: Box<Self>, base: E) -> Box<Self> {
-        self.base = base;
+impl SubscriptNode {
+    pub fn rebase(mut self: Box<Self>, base: ExpressionBody) -> Box<Self> {
+        self.base.body = base;
         self
     }
     pub fn method(&self) -> &'static str {
@@ -48,11 +48,16 @@ impl<E> ViewNode<E> {
     }
 }
 
-impl<E> ViewTermNode<E> {
-    pub fn indexed(index: E) -> Self {
+impl SubscriptTermNode {
+    pub fn indexed(index: ExpressionNode) -> Self {
         Self::Index(index)
     }
-    pub fn ranged(start: Option<E>, end: Option<E>, step: Option<E>, range: Range<usize>) -> Self {
-        Self::Range(ViewRangeNode { start, end, step, range })
+    pub fn ranged(
+        start: Option<ExpressionNode>,
+        end: Option<ExpressionNode>,
+        step: Option<ExpressionNode>,
+        range: Range<usize>,
+    ) -> Self {
+        Self::Slice(SubscriptSliceNode { start, end, step, range })
     }
 }

@@ -27,14 +27,14 @@ pub struct TableNode {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct TableTermNode {
-    pub pair: MaybePair<TableKeyKind, ExpressionNode>,
+    pub pair: CallTermPair<TableKeyType, ExpressionNode>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum TableKeyKind {
+pub enum TableKeyType {
     Identifier(Box<IdentifierNode>),
     Number(Box<NumberLiteralNode>),
     String(Box<StringLiteralNode>),
-    Table(Box<TableNode>),
+    Subscript(Box<SubscriptNode>),
 }

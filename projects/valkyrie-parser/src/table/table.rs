@@ -1,10 +1,11 @@
 use super::*;
+use valkyrie_ast::{NumberLiteralNode, StringLiteralNode, TableKeyType, TableTermNode};
 
 impl ThisParser for TableNode {
-    /// `[` ~ `]` | `[` [term](MaybePair::parse) ( ~ `,` ~ [term](MaybePair::parse))* `,`? `]`
+    /// `[` ~ `]` | `[` [term](CallTermPair::parse) ( ~ `,` ~ [term](CallTermPair::parse))* `,`? `]`
     fn parse(input: ParseState) -> ParseResult<Self> {
         let pat = BracketPattern::new("[", "]");
-        let (state, terms) = pat.consume(input, ignore, MaybePair::parse)?;
+        let (state, terms) = pat.consume(input, ignore, TableTermNode::parse)?;
         state.finish(TableNode { kind: TableKind::OffsetTable, terms: terms.body, range: state.away_from(input) })
     }
 
@@ -18,7 +19,39 @@ impl ThisParser for TableNode {
     }
 }
 
-impl<K, V> ThisParser for MaybePair<K, V>
+impl ThisParser for TableTermNode {
+    fn parse(input: ParseState) -> ParseResult<Self> {
+        let (state, pair) = CallTermPair::parse(input)?;
+        state.finish(TableTermNode { pair })
+    }
+
+    fn as_lisp(&self) -> Lisp {
+        self.pair.as_lisp()
+    }
+}
+
+impl ThisParser for TableKeyType {
+    fn parse(input: ParseState) -> ParseResult<Self> {
+        input
+            .begin_choice()
+            .or_else(|s| IdentifierNode::parse(s).map_inner(|e| TableKeyType::Identifier(Box::new(e))))
+            .or_else(|s| NumberLiteralNode::parse(s).map_inner(|e| TableKeyType::Number(Box::new(e))))
+            .or_else(|s| StringLiteralNode::parse(s).map_inner(|e| TableKeyType::String(Box::new(e))))
+            .or_else(|s| TableNode::parse(s).map_inner(|e| TableKeyType::Subscript(Box::new(e))))
+            .end_choice()
+    }
+
+    fn as_lisp(&self) -> Lisp {
+        match self {
+            TableKeyType::Identifier(e) => e.as_lisp(),
+            TableKeyType::Number(e) => e.as_lisp(),
+            TableKeyType::String(e) => e.as_lisp(),
+            TableKeyType::Subscript(e) => e.as_lisp(),
+        }
+    }
+}
+
+impl<K, V> ThisParser for CallTermPair<K, V>
 where
     K: ThisParser,
     V: ThisParser,
@@ -31,7 +64,7 @@ where
             state.finish(term)
         })?;
         let (state, value) = state.skip(ignore).match_fn(V::parse)?;
-        state.finish(MaybePair { key, value })
+        state.finish(CallTermPair { key, value })
     }
 
     fn as_lisp(&self) -> Lisp {

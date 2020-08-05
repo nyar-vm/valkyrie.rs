@@ -33,13 +33,13 @@ impl PrettyPrint for TableTermNode {
     }
 }
 
-impl PrettyPrint for TableKeyKind {
+impl PrettyPrint for TableKeyType {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         match self {
-            TableKeyKind::Identifier(node) => node.build(allocator),
-            TableKeyKind::Number(node) => node.build(allocator),
-            TableKeyKind::String(node) => node.build(allocator),
-            TableKeyKind::Table(node) => node.build(allocator),
+            TableKeyType::Identifier(node) => node.build(allocator),
+            TableKeyType::Number(node) => node.build(allocator),
+            TableKeyType::String(node) => node.build(allocator),
+            TableKeyType::Subscript(node) => node.build(allocator),
         }
     }
 }

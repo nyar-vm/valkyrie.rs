@@ -16,7 +16,7 @@ impl PrettyPrint for ApplyDotNode {
     }
 }
 
-impl<K, V> PrettyPrint for MaybePair<K, V>
+impl<K, V> PrettyPrint for CallTermPair<K, V>
 where
     K: PrettyPrint,
     V: PrettyPrint,

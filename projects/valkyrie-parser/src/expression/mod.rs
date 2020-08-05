@@ -12,7 +12,7 @@ use pratt::{Affix, PrattError, PrattParser};
 use std::fmt::Debug;
 use valkyrie_ast::{
     ApplyCallNode, ApplyDotNode, ExpressionBody, ExpressionContext, ExpressionNode, ExpressionType, GenericCall, InfixNode,
-    NamePathNode, NumberLiteralNode, PostfixNode, PrefixNode, StringLiteralNode, TableNode, ValkyrieOperator, ViewNode,
+    NamePathNode, NumberLiteralNode, PostfixNode, PrefixNode, StringLiteralNode, SubscriptNode, TableNode, ValkyrieOperator,
 };
 use valkyrie_types::third_party::pex::{ParseResult, ParseState, StopBecause};
 

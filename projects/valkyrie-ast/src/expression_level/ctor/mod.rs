@@ -22,7 +22,7 @@ use super::*;
 /// ```
 pub struct NewStructureNode {
     pub modifiers: Vec<IdentifierNode>,
-    pub arguments: Vec<MaybePair<IdentifierNode, ExpressionBody>>,
+    pub arguments: Vec<CallTermPair<IdentifierNode, ExpressionBody>>,
     pub body: Vec<ExpressionBody>,
 }
 

@@ -1,9 +1,9 @@
 use super::*;
 use valkyrie_ast::ExpressionNode;
 
-impl<E> TupleNode<E> {
+impl TupleNode {
     #[allow(clippy::wrong_self_convention)]
-    pub fn as_table(self) -> TableNode<E> {
+    pub fn as_table(self) -> TableNode {
         TableNode { kind: TableKind::Tuple, terms: self.terms, range: self.range }
     }
 }
@@ -12,11 +12,11 @@ impl<E> TupleNode<E> {
 //
 // }
 
-impl<E: ThisParser> ThisParser for TupleNode<E> {
+impl ThisParser for TupleNode {
     /// `(` ~ `)` | `(` ~ term ~ , ~ `)` | `(` ~ term ~ , ~ term ( ~ , ~ term)* ~ `)`
     fn parse(input: ParseState) -> ParseResult<Self> {
         let pat = BracketPattern::new("(", ")").with_one_tailing(true);
-        let (state, terms) = pat.consume(input, ignore, MaybePair::parse)?;
+        let (state, terms) = pat.consume(input, ignore, TableTermNode::parse)?;
         state.finish(TupleNode { terms: terms.body, range: state.away_from(input) })
     }
 

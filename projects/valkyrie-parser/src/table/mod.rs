@@ -1,16 +1,15 @@
 use crate::{helpers::ignore, traits::ThisParser};
 use lispify::{Lisp, Lispify};
 use std::ops::Range;
-use valkyrie_ast::{MaybePair, ExpressionBody, IdentifierNode, TableKind, TableNode};
+use valkyrie_ast::{CallTermPair, ExpressionBody, IdentifierNode, TableKind, TableNode, TableTermNode};
 use valkyrie_types::third_party::pex::{BracketPattern, ParseResult, ParseState};
 
 mod table;
 mod tuple;
 
-
-pub(crate) struct TupleNode<E> {
+pub(crate) struct TupleNode {
     /// The raw string of the number.
-    pub terms: Vec<MaybePair<IdentifierNode, E>>,
+    pub terms: Vec<TableTermNode>,
     /// The range of the number.
     pub range: Range<usize>,
 }

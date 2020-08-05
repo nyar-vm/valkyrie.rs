@@ -22,7 +22,7 @@ impl PrettyPrint for ExpressionBody {
             ExpressionBody::ApplyDot(node) => node.build(allocator),
             ExpressionBody::LambdaCall(node) => node.build(allocator),
             ExpressionBody::LambdaDot(node) => node.build(allocator),
-            ExpressionBody::View(node) => node.build(allocator),
+            ExpressionBody::Subscript(node) => node.build(allocator),
             ExpressionBody::GenericCall(node) => node.build(allocator),
         }
     }

@@ -1,0 +1,6 @@
+(table)
+(table 0 (table) (table (table)))
+(table (1 2) (3 4))
+(table (a 1) (z 26))
+(table (啊 1) (吧 2) (啊 3) (吧 4))
+(table ((table (key 1) (value 2)) 3))

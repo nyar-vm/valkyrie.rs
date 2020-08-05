@@ -21,12 +21,12 @@ impl ThisParser for GenericCall {
 fn qwerty_generic(input: ParseState) -> ParseResult<GenericCall> {
     let pat = BracketPattern::new("<", ">");
     let (state, _) = input.match_optional(parse_name_join)?;
-    let (state, terms) = pat.consume(state.skip(ignore), ignore, MaybePair::parse)?;
+    let (state, terms) = pat.consume(state.skip(ignore), ignore, CallTermPair::parse)?;
     state.finish(GenericCall { base: ExpressionNode::default(), terms: terms.body, range: state.away_from(input) })
 }
 
 fn unicode_generic(input: ParseState) -> ParseResult<GenericCall> {
     let pat = BracketPattern::new("⦓", "⦔");
-    let (state, terms) = pat.consume(input, ignore, MaybePair::parse)?;
+    let (state, terms) = pat.consume(input, ignore, CallTermPair::parse)?;
     state.finish(GenericCall { base: ExpressionNode::default(), terms: terms.body, range: state.away_from(input) })
 }
