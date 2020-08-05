@@ -1,5 +1,5 @@
 use super::*;
-use valkyrie_ast::{NumberLiteralNode, StringLiteralNode, TableKeyType, TableTermNode};
+use valkyrie_ast::{NumberLiteralNode, StringLiteralNode, SubscriptNode, TableKeyType, TableTermNode};
 
 impl ThisParser for TableNode {
     /// `[` ~ `]` | `[` [term](CallTermPair::parse) ( ~ `,` ~ [term](CallTermPair::parse))* `,`? `]`
@@ -37,7 +37,7 @@ impl ThisParser for TableKeyType {
             .or_else(|s| IdentifierNode::parse(s).map_inner(|e| TableKeyType::Identifier(Box::new(e))))
             .or_else(|s| NumberLiteralNode::parse(s).map_inner(|e| TableKeyType::Number(Box::new(e))))
             .or_else(|s| StringLiteralNode::parse(s).map_inner(|e| TableKeyType::String(Box::new(e))))
-            .or_else(|s| TableNode::parse(s).map_inner(|e| TableKeyType::Subscript(Box::new(e))))
+            .or_else(|s| SubscriptNode::parse(s).map_inner(|e| TableKeyType::Subscript(Box::new(e))))
             .end_choice()
     }
 

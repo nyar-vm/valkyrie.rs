@@ -1,4 +1,5 @@
 use super::*;
+use crate::{ApplyArgumentNode, TableTermNode};
 
 /// `new stack Type⦓G⦔(args) { body }`
 ///
@@ -22,8 +23,6 @@ use super::*;
 /// ```
 pub struct NewStructureNode {
     pub modifiers: Vec<IdentifierNode>,
-    pub arguments: Vec<CallTermPair<IdentifierNode, ExpressionBody>>,
-    pub body: Vec<ExpressionBody>,
+    pub arguments: ApplyArgumentNode,
+    pub collectors: TableNode,
 }
-
-pub enum NewStructureCollectNode {}

@@ -11,9 +11,9 @@ pub mod table;
 pub mod view;
 
 use crate::{
-    helper::PrettyPrint, ApplyCallNode, ApplyDotNode, CallTermPair, GenericCall, IdentifierNode, InfixNode, LambdaCallNode,
-    LambdaDotNode, NamePathNode, NumberLiteralNode, OperatorNode, PostfixNode, PrefixNode, PrettyProvider, StatementNode,
-    StringLiteralNode, SubscriptNode, TableNode,
+    helper::PrettyPrint, ApplyCallNode, ApplyDotNode, CallNode, CallTermPair, GenericNode, IdentifierNode, InfixNode,
+    LambdaCallNode, LambdaDotNode, NamePathNode, NumberLiteralNode, OperatorNode, PostfixNode, PrefixNode, PrettyProvider,
+    StatementNode, StringLiteralNode, SubscriptNode, TableNode,
 };
 use core::{
     fmt::{Display, Formatter, Write},
@@ -66,7 +66,7 @@ pub enum ExpressionBody {
     LambdaCall(Box<LambdaCallNode>),
     LambdaDot(Box<LambdaDotNode>),
     Subscript(Box<SubscriptNode>),
-    GenericCall(Box<GenericCall>),
+    GenericCall(Box<CallNode<GenericNode>>),
 }
 
 impl Default for ExpressionContext {

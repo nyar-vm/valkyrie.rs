@@ -16,6 +16,14 @@ impl PrettyPrint for ApplyDotNode {
     }
 }
 
+impl<E: PrettyPrint> PrettyPrint for CallNode<E> {
+    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+        let lhs = self.base.build(allocator);
+        let rhs = self.rest.build(allocator);
+        lhs.append(rhs)
+    }
+}
+
 impl<K, V> PrettyPrint for CallTermPair<K, V>
 where
     K: PrettyPrint,

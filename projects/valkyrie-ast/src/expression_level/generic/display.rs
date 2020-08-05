@@ -1,13 +1,18 @@
 use super::*;
 use crate::PrettyTree;
 
-impl PrettyPrint for GenericCall {
+impl PrettyPrint for GenericNode {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        let head = self.base.build(allocator);
         let lhs = allocator.text("⦓").append(allocator.softline());
         let rhs = allocator.softline().append(allocator.text("⦔"));
-        let body = self.terms.iter().map(|x| x.build(allocator).append(allocator.softline()));
-        head.append(lhs).append(allocator.concat(body)).append(rhs)
+        let body = allocator.intersperse(self.terms.iter().map(|c| c.build(allocator)), ", ");
+        lhs.append(body).append(rhs)
+    }
+}
+
+impl PrettyPrint for GenericCallTerm {
+    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+        self.pair.build(allocator)
     }
 }
 

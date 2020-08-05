@@ -1,6 +1,6 @@
 use super::*;
 use crate::{table::TupleNode, utils::parse_expression_body};
-use valkyrie_ast::{ExpressionContext, ExpressionNode, LambdaCallNode, LambdaDotNode, LambdaNode, PrettyPrint};
+use valkyrie_ast::{CallNode, ExpressionContext, ExpressionNode, LambdaCallNode, LambdaDotNode, LambdaNode, PrettyPrint};
 
 impl ThisParser for PrefixNode<ExpressionBody> {
     fn parse(_: ParseState) -> ParseResult<Self> {
@@ -142,8 +142,8 @@ fn parse_expr_value<'a>(
 pub enum NormalPostfixCall {
     Apply(Box<ApplyCallNode>),
     ApplyDot(Box<ApplyDotNode>),
-    View(Box<SubscriptNode<ExpressionBody>>),
-    Generic(Box<GenericCall>),
+    View(Box<SubscriptNode>),
+    Generic(Box<CallNode<GenericNode>>),
     Lambda(Box<LambdaCallNode>),
     LambdaDot(Box<LambdaDotNode>),
 }
@@ -183,7 +183,7 @@ impl NormalPostfixCall {
             .or_else(|s| ApplyCallNode::parse(s).map_inner(|s| NormalPostfixCall::Apply(Box::new(s))))
             .or_else(|s| ApplyDotNode::parse(s).map_inner(|s| NormalPostfixCall::ApplyDot(Box::new(s))))
             .or_else(|s| SubscriptNode::parse(s).map_inner(|s| NormalPostfixCall::View(Box::new(s))))
-            .or_else(|s| GenericCall::parse(s).map_inner(|s| NormalPostfixCall::Generic(Box::new(s))))
+            .or_else(|s| GenericNode::parse(s).map_inner(|s| NormalPostfixCall::Generic(Box::new(s))))
             .end_choice()
     }
     fn parse_allow_curly(input: ParseState) -> ParseResult<Self> {
@@ -193,7 +193,7 @@ impl NormalPostfixCall {
             .or_else(|s| ApplyCallNode::parse(s).map_inner(|s| NormalPostfixCall::Apply(Box::new(s))))
             .or_else(|s| ApplyDotNode::parse(s).map_inner(|s| NormalPostfixCall::ApplyDot(Box::new(s))))
             .or_else(|s| SubscriptNode::parse(s).map_inner(|s| NormalPostfixCall::View(Box::new(s))))
-            .or_else(|s| GenericCall::parse(s).map_inner(|s| NormalPostfixCall::Generic(Box::new(s))))
+            .or_else(|s| GenericNode::parse(s).map_inner(|s| NormalPostfixCall::Generic(Box::new(s))))
             .or_else(|s| LambdaCallNode::parse(s).map_inner(|s| NormalPostfixCall::Lambda(Box::new(s))))
             .or_else(|s| LambdaDotNode::parse(s).map_inner(|s| NormalPostfixCall::LambdaDot(Box::new(s))))
             .end_choice()

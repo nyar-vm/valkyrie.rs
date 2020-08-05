@@ -13,6 +13,7 @@ use valkyrie_types::third_party::pex::{ParseResult, ParseState};
 mod classes;
 mod lambda;
 mod normal;
+mod new;
 
 pub struct ReplRoot {
     pub statements: Vec<StatementNode>,

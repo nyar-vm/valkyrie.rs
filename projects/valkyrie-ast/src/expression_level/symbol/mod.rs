@@ -44,11 +44,14 @@ pub struct MacroPathNode {
 }
 
 impl NamePathNode {
-    pub fn new<I>(names: I, range: Range<usize>) -> Self
+    pub fn new<I>(names: I) -> Self
     where
         I: IntoIterator<Item = IdentifierNode>,
     {
-        Self { names: names.into_iter().collect(), span: range }
+        let names: Vec<IdentifierNode> = names.into_iter().collect();
+        let start = names.iter().map(|s| s.span.start).min().unwrap_or(0);
+        let end = names.iter().map(|n| n.span.end).max().unwrap_or(0);
+        Self { names, span: start..end }
     }
     pub fn join<I: IntoIterator<Item = IdentifierNode>>(mut self, other: I) -> Self {
         self.names.extend(other);

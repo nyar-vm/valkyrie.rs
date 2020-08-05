@@ -26,6 +26,14 @@ pub struct ApplyCallNode {
     pub range: Range<usize>,
 }
 
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct CallNode<E> {
+    pub base: ExpressionNode,
+    pub rest: E,
+    pub range: Range<usize>,
+}
+
 /// `term` or `field: term`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -78,6 +86,13 @@ impl<K, V, D> ArgumentTermNode<K, V, D> {
         F: FnOnce(D) -> O,
     {
         ArgumentTermNode { key: self.key, value: self.value, default: self.default.map(f) }
+    }
+}
+
+impl<E> CallNode<E> {
+    pub fn rebase(mut self: Box<Self>, base: ExpressionBody) -> Box<Self> {
+        self.base.body = base;
+        self
     }
 }
 

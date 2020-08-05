@@ -16,23 +16,21 @@ pub struct GenericArgumentNode {
 /// `A⦓T⦔` or `A::<T>` or `A(G: T)`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct GenericCall {
-    pub base: ExpressionNode,
+pub struct GenericNode {
     /// The raw string of the number.
-    pub terms: Vec<CallTermPair<IdentifierNode, ExpressionNode>>,
+    pub terms: Vec<GenericCallTerm>,
     /// The range of the number.
     pub range: Range<usize>,
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct GenericCallTerm {
+    pub pair: CallTermPair<IdentifierNode, ExpressionNode>,
 }
 
 impl Default for GenericArgumentNode {
     fn default() -> Self {
         Self { terms: Vec::new(), range: 0..0 }
-    }
-}
-
-impl GenericCall {
-    pub fn rebase(mut self: Box<Self>, base: ExpressionBody) -> Box<Self> {
-        self.base.body = base;
-        self
     }
 }
