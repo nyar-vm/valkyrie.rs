@@ -11,7 +11,7 @@ use lispify::{Lisp, Lispify};
 use pratt::{Affix, PrattError, PrattParser};
 use std::fmt::Debug;
 use valkyrie_ast::{
-    ApplyCallNode, ApplyDotNode, ExpressionBody, ExpressionContext, ExpressionNode, ExpressionType, GenericNode, InfixNode,
+    ApplyCallNode, ApplyDotNode, ExpressionBody, ExpressionContext, ExpressionNode, ExpressionType, GenericCallNode, InfixNode,
     NamePathNode, NumberLiteralNode, PostfixNode, PrefixNode, StringLiteralNode, SubscriptNode, TableNode, ValkyrieOperator,
 };
 use valkyrie_types::third_party::pex::{ParseResult, ParseState, StopBecause};

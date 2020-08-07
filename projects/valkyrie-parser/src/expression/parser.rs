@@ -143,7 +143,7 @@ pub enum NormalPostfixCall {
     Apply(Box<ApplyCallNode>),
     ApplyDot(Box<ApplyDotNode>),
     View(Box<SubscriptNode>),
-    Generic(Box<CallNode<GenericNode>>),
+    Generic(Box<GenericCallNode>),
     Lambda(Box<LambdaCallNode>),
     LambdaDot(Box<LambdaDotNode>),
 }
@@ -167,7 +167,12 @@ pub fn parse_value(input: ParseState, allow_curly: bool) -> ParseResult<Expressi
             NormalPostfixCall::Apply(v) => base = ExpressionBody::Apply(v.rebase(base)),
             NormalPostfixCall::ApplyDot(v) => base = ExpressionBody::ApplyDot(v.rebase(base)),
             NormalPostfixCall::View(v) => base = ExpressionBody::Subscript(v.rebase(base)),
-            NormalPostfixCall::Generic(v) => base = ExpressionBody::GenericCall(v.rebase(base)),
+            NormalPostfixCall::Generic(v) => {
+                base = ExpressionBody::GenericCall(CallNode::rebase(
+                    ExpressionNode { r#type: Default::default(), body: base, range: Default::default() },
+                    *v,
+                ))
+            }
             NormalPostfixCall::Lambda(v) => base = ExpressionBody::LambdaCall(v.rebase(base)),
             NormalPostfixCall::LambdaDot(v) => base = ExpressionBody::LambdaDot(v.rebase(base)),
         }
@@ -183,7 +188,7 @@ impl NormalPostfixCall {
             .or_else(|s| ApplyCallNode::parse(s).map_inner(|s| NormalPostfixCall::Apply(Box::new(s))))
             .or_else(|s| ApplyDotNode::parse(s).map_inner(|s| NormalPostfixCall::ApplyDot(Box::new(s))))
             .or_else(|s| SubscriptNode::parse(s).map_inner(|s| NormalPostfixCall::View(Box::new(s))))
-            .or_else(|s| GenericNode::parse(s).map_inner(|s| NormalPostfixCall::Generic(Box::new(s))))
+            .or_else(|s| GenericCallNode::parse(s).map_inner(|s| NormalPostfixCall::Generic(Box::new(s))))
             .end_choice()
     }
     fn parse_allow_curly(input: ParseState) -> ParseResult<Self> {
@@ -193,7 +198,7 @@ impl NormalPostfixCall {
             .or_else(|s| ApplyCallNode::parse(s).map_inner(|s| NormalPostfixCall::Apply(Box::new(s))))
             .or_else(|s| ApplyDotNode::parse(s).map_inner(|s| NormalPostfixCall::ApplyDot(Box::new(s))))
             .or_else(|s| SubscriptNode::parse(s).map_inner(|s| NormalPostfixCall::View(Box::new(s))))
-            .or_else(|s| GenericNode::parse(s).map_inner(|s| NormalPostfixCall::Generic(Box::new(s))))
+            .or_else(|s| GenericCallNode::parse(s).map_inner(|s| NormalPostfixCall::Generic(Box::new(s))))
             .or_else(|s| LambdaCallNode::parse(s).map_inner(|s| NormalPostfixCall::Lambda(Box::new(s))))
             .or_else(|s| LambdaDotNode::parse(s).map_inner(|s| NormalPostfixCall::LambdaDot(Box::new(s))))
             .end_choice()

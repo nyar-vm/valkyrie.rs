@@ -2,7 +2,7 @@ use super::*;
 use valkyrie_ast::{NumberLiteralNode, StringLiteralNode, SubscriptNode, TableKeyType, TableTermNode};
 
 impl ThisParser for TableNode {
-    /// `[` ~ `]` | `[` [term](CallTermPair::parse) ( ~ `,` ~ [term](CallTermPair::parse))* `,`? `]`
+    /// `[` ~ `]` | `[` [term](CallTermNode::parse) ( ~ `,` ~ [term](CallTermNode::parse))* `,`? `]`
     fn parse(input: ParseState) -> ParseResult<Self> {
         let pat = BracketPattern::new("[", "]");
         let (state, terms) = pat.consume(input, ignore, TableTermNode::parse)?;
@@ -21,7 +21,7 @@ impl ThisParser for TableNode {
 
 impl ThisParser for TableTermNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
-        let (state, pair) = CallTermPair::parse(input)?;
+        let (state, pair) = CallTermNode::parse(input)?;
         state.finish(TableTermNode { pair })
     }
 
@@ -51,7 +51,7 @@ impl ThisParser for TableKeyType {
     }
 }
 
-impl<K, V> ThisParser for CallTermPair<K, V>
+impl<K, V> ThisParser for CallTermNode<K, V>
 where
     K: ThisParser,
     V: ThisParser,
@@ -64,7 +64,7 @@ where
             state.finish(term)
         })?;
         let (state, value) = state.skip(ignore).match_fn(V::parse)?;
-        state.finish(CallTermPair { key, value })
+        state.finish(CallTermNode { key, value })
     }
 
     fn as_lisp(&self) -> Lisp {

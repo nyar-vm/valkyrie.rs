@@ -24,6 +24,7 @@ impl PrettyPrint for ExpressionBody {
             ExpressionBody::LambdaDot(node) => node.build(allocator),
             ExpressionBody::Subscript(node) => node.build(allocator),
             ExpressionBody::GenericCall(node) => node.build(allocator),
+            ExpressionBody::New(node) => node.build(allocator),
         }
     }
 }

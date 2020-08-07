@@ -14,7 +14,7 @@ pub enum TableKind {
 }
 
 /// `[table]` or `(tuple)`
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct TableNode {
     pub kind: TableKind,
@@ -27,7 +27,7 @@ pub struct TableNode {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct TableTermNode {
-    pub pair: CallTermPair<TableKeyType, ExpressionNode>,
+    pub pair: CallTermNode<TableKeyType, ExpressionNode>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
@@ -37,4 +37,10 @@ pub enum TableKeyType {
     Number(Box<NumberLiteralNode>),
     String(Box<StringLiteralNode>),
     Subscript(Box<SubscriptNode>),
+}
+
+impl Default for TableKind {
+    fn default() -> Self {
+        Self::Tuple
+    }
 }

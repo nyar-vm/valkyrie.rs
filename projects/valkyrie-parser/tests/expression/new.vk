@@ -1,0 +1,7 @@
+new A;
+
+new B();
+
+new C {
+
+};

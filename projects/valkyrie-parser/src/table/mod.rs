@@ -1,7 +1,7 @@
 use crate::{helpers::ignore, traits::ThisParser};
 use lispify::{Lisp, Lispify};
 use std::ops::Range;
-use valkyrie_ast::{CallTermPair, ExpressionBody, IdentifierNode, TableKind, TableNode, TableTermNode};
+use valkyrie_ast::{CallTermNode, ExpressionBody, IdentifierNode, TableKind, TableNode, TableTermNode};
 use valkyrie_types::third_party::pex::{BracketPattern, ParseResult, ParseState};
 
 mod table;

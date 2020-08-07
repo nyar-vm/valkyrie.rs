@@ -12,7 +12,9 @@ fn lex_expression() {
 }
 
 #[test]
-fn test_apply2() {}
+fn test_apply2() {
+    repl_debug(include_str!("new.vk"), "expression/new_debug.rkt").expect("new");
+}
 
 #[test]
 fn test_apply() {

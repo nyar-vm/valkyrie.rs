@@ -24,7 +24,7 @@ impl<E: PrettyPrint> PrettyPrint for CallNode<E> {
     }
 }
 
-impl<K, V> PrettyPrint for CallTermPair<K, V>
+impl<K, V> PrettyPrint for CallTermNode<K, V>
 where
     K: PrettyPrint,
     V: PrettyPrint,

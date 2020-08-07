@@ -1,9 +1,10 @@
 use super::*;
-use valkyrie_ast::{CallNode, ExpressionNode};
+use valkyrie_ast::{CallNode, ExpressionNode, GenericCallTerm};
 
-impl ThisParser for CallNode<GenericNode> {
-    fn parse(input: ParseState) -> ParseResult<Self> {
-        todo!()
+impl ThisParser for CallNode<GenericCallNode> {
+    #[track_caller]
+    fn parse(_: ParseState) -> ParseResult<Self> {
+        unreachable!()
     }
 
     fn as_lisp(&self) -> Lisp {
@@ -15,7 +16,7 @@ impl ThisParser for CallNode<GenericNode> {
     }
 }
 
-impl ThisParser for GenericNode {
+impl ThisParser for GenericCallNode {
     /// `::<T> | ⦓T⦔`
     fn parse(input: ParseState) -> ParseResult<Self> {
         input.begin_choice().or_else(qwerty_generic).or_else(unicode_generic).end_choice()
@@ -26,21 +27,32 @@ impl ThisParser for GenericNode {
         terms.push(Lisp::keyword("generic"));
         // terms.push(self.base.lispify().into());
         for term in &self.terms {
-            terms.push(term.as_lisp());
+            terms.push(term.term.as_lisp());
         }
         Lisp::Any(terms)
     }
 }
 
-fn qwerty_generic(input: ParseState) -> ParseResult<GenericNode> {
-    let pat = BracketPattern::new("<", ">");
-    let (state, _) = input.match_optional(parse_name_join)?;
-    let (state, terms) = pat.consume(state.skip(ignore), ignore, CallTermPair::parse)?;
-    state.finish(GenericNode { base: ExpressionNode::default(), terms: terms.body, range: state.away_from(input) })
+impl ThisParser for GenericCallTerm {
+    fn parse(input: ParseState) -> ParseResult<Self> {
+        let (state, name) = CallTermNode::parse(input)?;
+        state.finish(GenericCallTerm { term: name })
+    }
+
+    fn as_lisp(&self) -> Lisp {
+        self.term.as_lisp()
+    }
 }
 
-fn unicode_generic(input: ParseState) -> ParseResult<GenericNode> {
+fn qwerty_generic(input: ParseState) -> ParseResult<GenericCallNode> {
+    let pat = BracketPattern::new("<", ">");
+    let (state, _) = input.match_optional(parse_name_join)?;
+    let (state, terms) = pat.consume(state.skip(ignore), ignore, GenericCallTerm::parse)?;
+    state.finish(GenericCallNode { terms: terms.body, range: state.away_from(input) })
+}
+
+fn unicode_generic(input: ParseState) -> ParseResult<GenericCallNode> {
     let pat = BracketPattern::new("⦓", "⦔");
-    let (state, terms) = pat.consume(input, ignore, CallTermPair::parse)?;
-    state.finish(GenericNode { base: ExpressionNode::default(), terms: terms.body, range: state.away_from(input) })
+    let (state, terms) = pat.consume(input, ignore, GenericCallTerm::parse)?;
+    state.finish(GenericCallNode { terms: terms.body, range: state.away_from(input) })
 }

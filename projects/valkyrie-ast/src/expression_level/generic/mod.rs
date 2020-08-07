@@ -4,19 +4,19 @@ use super::*;
 use crate::ArgumentTermNode;
 
 /// `class A⦓T: S = K⦔` or `class A<T: S = K>`
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct GenericArgumentNode {
     /// The raw string of the number.
-    pub terms: Vec<ArgumentTermNode<IdentifierNode, ExpressionNode, ExpressionNode>>,
+    pub terms: Vec<GenericArgumentTerm>,
     /// The range of the number.
     pub range: Range<usize>,
 }
 
 /// `A⦓T⦔` or `A::<T>` or `A(G: T)`
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct GenericNode {
+pub struct GenericCallNode {
     /// The raw string of the number.
     pub terms: Vec<GenericCallTerm>,
     /// The range of the number.
@@ -25,12 +25,12 @@ pub struct GenericNode {
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct GenericCallTerm {
-    pub pair: CallTermPair<IdentifierNode, ExpressionNode>,
+pub struct GenericArgumentTerm {
+    pub term: ArgumentTermNode<IdentifierNode, ExpressionNode, ExpressionNode>,
 }
 
-impl Default for GenericArgumentNode {
-    fn default() -> Self {
-        Self { terms: Vec::new(), range: 0..0 }
-    }
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct GenericCallTerm {
+    pub term: CallTermNode<IdentifierNode, ExpressionNode>,
 }

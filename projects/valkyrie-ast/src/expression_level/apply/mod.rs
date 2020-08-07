@@ -10,7 +10,7 @@ pub struct ApplyDotNode {
     /// The raw string of the number.
     pub caller: IdentifierNode,
     /// The range of the number.
-    pub terms: Vec<CallTermPair<IdentifierNode, ExpressionNode>>,
+    pub terms: Vec<CallTermNode<IdentifierNode, ExpressionNode>>,
     /// The range of the number.
     pub range: Range<usize>,
 }
@@ -21,7 +21,7 @@ pub struct ApplyDotNode {
 pub struct ApplyCallNode {
     pub base: ExpressionNode,
     /// The raw string of the number.
-    pub terms: Vec<CallTermPair<IdentifierNode, ExpressionNode>>,
+    pub terms: Vec<CallTermNode<IdentifierNode, ExpressionNode>>,
     /// The range of the number.
     pub range: Range<usize>,
 }
@@ -37,13 +37,13 @@ pub struct CallNode<E> {
 /// `term` or `field: term`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct CallTermPair<K, V> {
+pub struct CallTermNode<K, V> {
     pub key: Option<K>,
     pub value: V,
 }
 
 /// `(mut self, a, b: int, c: T = 3, ⁑args, ⁂kwargs)`
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ApplyArgumentNode {
     /// The raw string of the number.
@@ -90,9 +90,9 @@ impl<K, V, D> ArgumentTermNode<K, V, D> {
 }
 
 impl<E> CallNode<E> {
-    pub fn rebase(mut self: Box<Self>, base: ExpressionBody) -> Box<Self> {
-        self.base.body = base;
-        self
+    pub fn rebase(base: ExpressionNode, rest: E) -> Box<Self> {
+        let range = base.range.clone();
+        Box::new(Self { base, rest, range: range.start..range.end })
     }
 }
 
