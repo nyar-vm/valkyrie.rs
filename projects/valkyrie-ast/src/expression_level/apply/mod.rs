@@ -1,5 +1,7 @@
 mod display;
+
 use super::*;
+use crate::ArgumentTermNode;
 
 /// `term.call(0, a: 1, ⁑args, ⁂kwargs)`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
@@ -19,27 +21,16 @@ pub struct ApplyDotNode {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ApplyCallNode {
-    pub base: ExpressionNode,
     /// The raw string of the number.
-    pub terms: Vec<CallTermNode<IdentifierNode, ExpressionNode>>,
+    pub terms: Vec<ApplyCallTerm>,
     /// The range of the number.
     pub range: Range<usize>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct CallNode<E> {
-    pub base: ExpressionNode,
-    pub rest: E,
-    pub range: Range<usize>,
-}
-
-/// `term` or `field: term`
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct CallTermNode<K, V> {
-    pub key: Option<K>,
-    pub value: V,
+pub struct ApplyCallTerm {
+    pub term: CallTermNode<IdentifierNode, ExpressionNode>,
 }
 
 /// `(mut self, a, b: int, c: T = 3, ⁑args, ⁂kwargs)`
@@ -50,15 +41,6 @@ pub struct ApplyArgumentNode {
     pub terms: Vec<ArgumentTermNode<ArgumentKeyNode, ExpressionNode, ExpressionNode>>,
     /// The range of the number.
     pub range: Range<usize>,
-}
-
-/// `a: Integer = 1`
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ArgumentTermNode<K, V, D> {
-    pub key: K,
-    pub value: Option<V>,
-    pub default: Option<D>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
@@ -108,13 +90,6 @@ impl<E> CallNode<E> {
     pub fn rebase(base: ExpressionNode, rest: E) -> Box<Self> {
         let range = base.range.clone();
         Box::new(Self { base, rest, range: range.start..range.end })
-    }
-}
-
-impl ApplyCallNode {
-    pub fn rebase(mut self: Box<Self>, base: ExpressionBody) -> Box<Self> {
-        self.base.body = base;
-        self
     }
 }
 

@@ -69,7 +69,7 @@ pub enum ExpressionStream {
     Prefix(ValkyriePrefix),
     Postfix(ValkyrieSuffix),
     Infix(ValkyrieInfix),
-    Term(ExpressionBody),
+    Term(ExpressionNode),
     Group(Vec<ExpressionStream>),
 }
 
@@ -89,7 +89,7 @@ where
 {
     type Error = StopBecause;
     type Input = ExpressionStream;
-    type Output = ExpressionBody;
+    type Output = ExpressionNode;
 
     // Query information about an operator (Affix, Precedence, Associativity)
     fn query(&mut self, tree: &ExpressionStream) -> Result<Affix, StopBecause> {
@@ -104,7 +104,7 @@ where
     }
 
     // Construct a primary expression, e.g. a number
-    fn primary(&mut self, tree: ExpressionStream) -> Result<ExpressionBody, StopBecause> {
+    fn primary(&mut self, tree: ExpressionStream) -> Result<ExpressionNode, StopBecause> {
         match tree {
             ExpressionStream::Term(term) => Ok(term),
             ExpressionStream::Group(group) => match self.parse(&mut group.into_iter()) {
@@ -118,18 +118,18 @@ where
     // Construct a binary infix expression, e.g. 1+1
     fn infix(
         &mut self,
-        lhs: ExpressionBody,
+        lhs: ExpressionNode,
         tree: ExpressionStream,
         rhs: ExpressionBody,
     ) -> Result<ExpressionBody, StopBecause> {
         match tree {
-            ExpressionStream::Infix(o) => Ok(ExpressionBody::binary(o.as_operator(), lhs, rhs)),
+            ExpressionStream::Infix(o) => Ok(ExpressionNode::binary(o.as_operator(), lhs, rhs)),
             _ => unreachable!(),
         }
     }
 
     // Construct a unary prefix expression, e.g. !1
-    fn prefix(&mut self, tree: ExpressionStream, rhs: ExpressionBody) -> Result<ExpressionBody, StopBecause> {
+    fn prefix(&mut self, tree: ExpressionStream, rhs: ExpressionNode) -> Result<ExpressionBody, StopBecause> {
         match tree {
             ExpressionStream::Prefix(o) => Ok(ExpressionBody::prefix(o.as_operator(), rhs)),
             _ => unreachable!(),

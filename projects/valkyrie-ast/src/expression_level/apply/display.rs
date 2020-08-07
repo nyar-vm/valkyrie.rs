@@ -14,38 +14,19 @@ impl PrettyPrint for ApplyDotNode {
     }
 }
 
-impl<E: PrettyPrint> PrettyPrint for CallNode<E> {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        let lhs = self.base.build(allocator);
-        let rhs = self.rest.build(allocator);
-        lhs.append(rhs)
-    }
-}
-
-impl<K, V> PrettyPrint for CallTermNode<K, V>
-where
-    K: PrettyPrint,
-    V: PrettyPrint,
-{
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        let mut terms = Vec::with_capacity(3);
-        if let Some(k) = &self.key {
-            terms.push(k.build(allocator));
-            terms.push(allocator.text(": "));
-        }
-        terms.push(self.value.build(allocator));
-        allocator.concat(terms)
-    }
-}
-
 impl PrettyPrint for ApplyCallNode {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         let mut terms = Vec::with_capacity(3);
-        terms.push(self.base.build(allocator));
         terms.push(allocator.text("("));
         terms.push(allocator.intersperse(self.terms.iter().map(|x| x.build(allocator)), allocator.text(", ")));
         terms.push(allocator.text(")"));
         allocator.concat(terms)
+    }
+}
+
+impl PrettyPrint for ApplyCallTerm {
+    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+        self.term.build(allocator)
     }
 }
 

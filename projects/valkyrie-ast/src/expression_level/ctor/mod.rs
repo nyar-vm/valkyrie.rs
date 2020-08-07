@@ -23,7 +23,7 @@ use crate::{ApplyArgumentNode, PrettyTree, TableTermNode};
 /// ```
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct NewStructureNode {
+pub struct NewConstructNode {
     pub modifiers: Vec<IdentifierNode>,
     pub namepath: NamePathNode,
     pub generic: GenericCallNode,
@@ -31,7 +31,7 @@ pub struct NewStructureNode {
     pub collectors: Vec<TableTermNode>,
 }
 
-impl PrettyPrint for NewStructureNode {
+impl PrettyPrint for NewConstructNode {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         let mut terms = Vec::with_capacity(5);
         terms.push(allocator.keyword("new"));

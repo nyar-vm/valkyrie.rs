@@ -1,4 +1,5 @@
 pub mod apply;
+pub mod common;
 pub mod ctor;
 mod dispatch;
 pub mod generic;
@@ -12,7 +13,7 @@ pub mod view;
 
 use crate::{
     helper::PrettyPrint, ApplyCallNode, ApplyDotNode, CallNode, CallTermNode, GenericCallNode, IdentifierNode, InfixNode,
-    LambdaCallNode, LambdaDotNode, NamePathNode, NewStructureNode, NumberLiteralNode, OperatorNode, PostfixNode, PrefixNode,
+    LambdaCallNode, LambdaDotNode, NamePathNode, NewConstructNode, NumberLiteralNode, OperatorNode, PostfixNode, PrefixNode,
     PrettyProvider, PrettyTree, StatementNode, StringLiteralNode, SubscriptNode, TableNode,
 };
 use core::{
@@ -57,12 +58,12 @@ pub enum ExpressionBody {
     Symbol(Box<NamePathNode>),
     Number(Box<NumberLiteralNode>),
     String(Box<StringLiteralNode>),
-    New(Box<NewStructureNode>),
+    New(Box<NewConstructNode>),
     Prefix(Box<PrefixNode<Self>>),
-    Binary(Box<InfixNode<Self>>),
+    Binary(Box<InfixNode<ExpressionNode>>),
     Suffix(Box<PostfixNode<Self>>),
     Table(Box<TableNode>),
-    Apply(Box<ApplyCallNode>),
+    Apply(Box<CallNode<ApplyCallNode>>),
     ApplyDot(Box<ApplyDotNode>),
     LambdaCall(Box<LambdaCallNode>),
     LambdaDot(Box<LambdaDotNode>),
@@ -92,21 +93,34 @@ impl ExpressionContext {
     }
 }
 
-impl ExpressionBody {
-    pub fn binary(o: OperatorNode, lhs: ExpressionBody, rhs: ExpressionBody) -> ExpressionBody {
+impl ExpressionNode {
+    pub fn binary(o: OperatorNode, lhs: Self, rhs: Self) -> ExpressionBody {
         let mut out = ExpressionBody::Binary(Box::new(InfixNode { operator: o, lhs, rhs, range: Default::default() }));
         out.update_range();
         out
     }
-    pub fn prefix(o: OperatorNode, rhs: ExpressionBody) -> ExpressionBody {
+    pub fn prefix(o: OperatorNode, rhs: Self) -> ExpressionBody {
         let mut out = ExpressionBody::Prefix(Box::new(PrefixNode { operator: o, base: rhs, range: Default::default() }));
         out.update_range();
         out
     }
-    pub fn suffix(o: OperatorNode, rhs: ExpressionBody) -> ExpressionBody {
+    pub fn suffix(o: OperatorNode, rhs: Self) -> ExpressionBody {
         let mut out = ExpressionBody::Suffix(Box::new(PostfixNode { operator: o, base: rhs, range: Default::default() }));
         out.update_range();
         out
+    }
+}
+
+impl ExpressionBody {
+    pub fn call_generic(base: ExpressionNode, rest: GenericCallNode) -> ExpressionBody {
+        let range = base.range.start..rest.range.end;
+        let call = CallNode { base, rest, range };
+        ExpressionBody::GenericCall(Box::new(call))
+    }
+    pub fn call_apply(base: ExpressionNode, rest: ApplyCallNode) -> ExpressionBody {
+        let range = base.range.start..rest.range.end;
+        let call = CallNode { base, rest, range };
+        ExpressionBody::Apply(Box::new(call))
     }
 }
 

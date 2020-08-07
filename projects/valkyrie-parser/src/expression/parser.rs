@@ -1,7 +1,7 @@
 use super::*;
 use crate::{table::TupleNode, utils::parse_expression_body};
 use valkyrie_ast::{
-    CallNode, ExpressionContext, ExpressionNode, LambdaCallNode, LambdaDotNode, LambdaNode, NewStructureNode, PrettyPrint,
+    CallNode, ExpressionContext, ExpressionNode, LambdaCallNode, LambdaDotNode, LambdaNode, NewConstructNode, PrettyPrint,
     StatementType::Expression,
 };
 
@@ -55,18 +55,18 @@ impl ThisParser for ExpressionBody {
             Self::Placeholder => Lisp::Keyword("placeholder".into()),
             Self::Prefix(v) => v.as_lisp(),
             Self::Binary(v) => v.as_lisp(),
-            ExpressionBody::Suffix(v) => v.as_lisp(),
-            ExpressionBody::Number(v) => v.as_lisp(),
+            Self::Suffix(v) => v.as_lisp(),
+            Self::Number(v) => v.as_lisp(),
             Self::Symbol(v) => v.as_lisp(),
-            ExpressionBody::String(v) => v.as_lisp(),
-            ExpressionBody::Table(v) => v.as_lisp(),
-            ExpressionBody::Apply(v) => v.as_lisp(),
-            ExpressionBody::ApplyDot(v) => v.as_lisp(),
-            ExpressionBody::Subscript(v) => v.as_lisp(),
-            ExpressionBody::GenericCall(v) => v.as_lisp(),
-            ExpressionBody::LambdaCall(v) => v.as_lisp(),
-            ExpressionBody::LambdaDot(v) => v.as_lisp(),
-            ExpressionBody::New(v) => v.as_lisp(),
+            Self::String(v) => v.as_lisp(),
+            Self::Table(v) => v.as_lisp(),
+            Self::Apply(v) => v.as_lisp(),
+            Self::ApplyDot(v) => v.as_lisp(),
+            Self::Subscript(v) => v.as_lisp(),
+            Self::GenericCall(v) => v.as_lisp(),
+            Self::LambdaCall(v) => v.as_lisp(),
+            Self::LambdaDot(v) => v.as_lisp(),
+            Self::New(v) => v.as_lisp(),
         }
     }
 }
@@ -144,10 +144,10 @@ fn parse_expr_value<'a>(
 }
 
 pub enum NormalPostfixCall {
-    Apply(Box<ApplyCallNode>),
+    Apply(ApplyCallNode),
     ApplyDot(Box<ApplyDotNode>),
     View(Box<SubscriptNode>),
-    Generic(Box<GenericCallNode>),
+    Generic(GenericCallNode),
     Lambda(Box<LambdaCallNode>),
     LambdaDot(Box<LambdaDotNode>),
 }
@@ -156,7 +156,7 @@ pub enum NormalPostfixCall {
 pub fn parse_value(input: ParseState, allow_curly: bool) -> ParseResult<ExpressionBody> {
     let (state, mut base) = input
         .begin_choice()
-        .or_else(|s| NewStructureNode::parse(s).map_inner(|s| ExpressionBody::New(Box::new(s))))
+        .or_else(|s| NewConstructNode::parse(s).map_inner(|s| ExpressionBody::New(Box::new(s))))
         .or_else(|s| NamePathNode::parse(s).map_inner(Into::into))
         .or_else(|s| NumberLiteralNode::parse(s).map_inner(Into::into))
         .or_else(|s| StringLiteralNode::parse(s).map_inner(Into::into))
@@ -169,15 +169,10 @@ pub fn parse_value(input: ParseState, allow_curly: bool) -> ParseResult<Expressi
     }?;
     for caller in rest {
         match caller {
-            NormalPostfixCall::Apply(v) => base = ExpressionBody::Apply(v.rebase(base)),
+            NormalPostfixCall::Apply(v) => base = ExpressionBody::call_apply(base, v),
             NormalPostfixCall::ApplyDot(v) => base = ExpressionBody::ApplyDot(v.rebase(base)),
             NormalPostfixCall::View(v) => base = ExpressionBody::Subscript(v.rebase(base)),
-            NormalPostfixCall::Generic(v) => {
-                base = ExpressionBody::GenericCall(CallNode::rebase(
-                    ExpressionNode { r#type: Default::default(), body: base, range: Default::default() },
-                    *v,
-                ))
-            }
+            NormalPostfixCall::Generic(v) => base = ExpressionBody::call_generic(base, v),
             NormalPostfixCall::Lambda(v) => base = ExpressionBody::LambdaCall(v.rebase(base)),
             NormalPostfixCall::LambdaDot(v) => base = ExpressionBody::LambdaDot(v.rebase(base)),
         }

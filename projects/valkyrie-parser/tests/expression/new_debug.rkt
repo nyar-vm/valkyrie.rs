@@ -1,0 +1,7 @@
+(new)
+(new)
+(new)
+(new)
+(new)
+(new)
+(apply (new) 10)

@@ -15,8 +15,9 @@ pub use crate::{
         looping::{ForLoopNode, PatternType, WhileLoopNode},
     },
     expression_level::{
-        apply::{ApplyArgumentNode, ApplyCallNode, ApplyDotNode, ArgumentKeyNode, ArgumentTermNode, CallNode, CallTermNode},
-        ctor::NewStructureNode,
+        apply::{ApplyArgumentNode, ApplyCallNode, ApplyCallTerm, ApplyDotNode, ArgumentKeyNode},
+        common::{ArgumentTermNode, CallNode, CallTermNode},
+        ctor::NewConstructNode,
         generic::{GenericArgumentNode, GenericArgumentTerm, GenericCallNode, GenericCallTerm},
         lambda::{LambdaArgumentNode, LambdaCallNode, LambdaDotNode, LambdaNode},
         number::NumberLiteralNode,

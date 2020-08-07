@@ -1,11 +1,12 @@
 use super::*;
 use crate::helpers::{parse_name_join, parse_name_join_dot};
 use valkyrie_ast::{
-    ApplyArgumentNode, CallTermNode, GenericCallNode, IdentifierNode, NewStructureNode, TableKind, TableNode, TableTermNode,
+    ApplyArgumentNode, ApplyCallNode, CallTermNode, GenericCallNode, IdentifierNode, NewConstructNode, TableKind, TableNode,
+    TableTermNode,
 };
 use valkyrie_types::third_party::pex::{BracketPattern, StopBecause};
 
-impl ThisParser for NewStructureNode {
+impl ThisParser for NewConstructNode {
     /// ```vk
     /// let a = new mod1 mod2 module.rest.Class<G>(args) {
     ///     [a]: 2,
@@ -31,9 +32,9 @@ impl ThisParser for NewStructureNode {
         names.extend(name_rest);
         let namepath = NamePathNode::new(names);
         let (state, generic) = state.skip(ignore).match_optional(GenericCallNode::parse)?;
-        let (state, arguments) = state.skip(ignore).match_optional(ApplyArgumentNode::parse)?;
+        let (state, arguments) = state.skip(ignore).match_optional(ApplyCallNode::parse)?;
         let (finally, collects) = state.skip(ignore).match_optional(parse_collector)?;
-        finally.finish(NewStructureNode {
+        finally.finish(NewConstructNode {
             modifiers,
             namepath,
             generic: generic.unwrap_or_default(),
