@@ -13,13 +13,13 @@ pub mod view;
 use crate::{
     helper::PrettyPrint, ApplyCallNode, ApplyDotNode, CallNode, CallTermNode, GenericCallNode, IdentifierNode, InfixNode,
     LambdaCallNode, LambdaDotNode, NamePathNode, NewStructureNode, NumberLiteralNode, OperatorNode, PostfixNode, PrefixNode,
-    PrettyProvider, StatementNode, StringLiteralNode, SubscriptNode, TableNode,
+    PrettyProvider, PrettyTree, StatementNode, StringLiteralNode, SubscriptNode, TableNode,
 };
 use core::{
     fmt::{Display, Formatter, Write},
     ops::Range,
 };
-use pretty::DocAllocator;
+use pretty::{DocAllocator, Pretty};
 use std::{
     boxed::Box,
     string::{String, ToString},

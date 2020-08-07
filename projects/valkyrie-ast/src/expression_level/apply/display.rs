@@ -1,6 +1,4 @@
 use super::*;
-use crate::PrettyTree;
-use pretty::Pretty;
 
 impl PrettyPrint for ApplyDotNode {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {

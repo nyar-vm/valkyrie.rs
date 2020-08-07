@@ -18,8 +18,7 @@ impl ThisParser for NewStructureNode {
     /// ```
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, _) = input.match_str("new")?;
-
-        let (state, mut modifiers) = state.match_repeats(IdentifierNode::parse)?;
+        let (state, mut modifiers) = state.match_repeats(|s| s.skip(ignore).match_fn(IdentifierNode::parse))?;
         let last = modifiers.pop();
         let mut names = match last {
             Some(s) => vec![s],
@@ -30,12 +29,13 @@ impl ThisParser for NewStructureNode {
             IdentifierNode::parse(state)
         })?;
         names.extend(name_rest);
-        let name = NamePathNode::new(names);
+        let namepath = NamePathNode::new(names);
         let (state, generic) = state.skip(ignore).match_optional(GenericCallNode::parse)?;
         let (state, arguments) = state.skip(ignore).match_optional(ApplyArgumentNode::parse)?;
         let (finally, collects) = state.skip(ignore).match_optional(parse_collector)?;
         finally.finish(NewStructureNode {
             modifiers,
+            namepath,
             generic: generic.unwrap_or_default(),
             arguments: arguments.unwrap_or_default(),
             collectors: collects.unwrap_or_default(),
@@ -43,7 +43,10 @@ impl ThisParser for NewStructureNode {
     }
 
     fn as_lisp(&self) -> Lisp {
-        todo!()
+        let mut terms = Vec::with_capacity(5);
+        terms.push(Lisp::keyword("new"));
+
+        Lisp::Any(terms)
     }
 }
 
@@ -57,8 +60,8 @@ impl ThisParser for NewStructureNode {
 ///     other,
 /// }
 /// ```
-fn parse_collector(input: ParseState) -> ParseResult<TableNode> {
+fn parse_collector(input: ParseState) -> ParseResult<Vec<TableTermNode>> {
     let pat = BracketPattern::new("{", "}");
     let (state, terms) = pat.consume(input, ignore, TableTermNode::parse)?;
-    state.finish(TableNode { kind: TableKind::Tuple, terms: terms.body, range: state.away_from(input) })
+    state.finish(terms.body)
 }

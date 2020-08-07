@@ -20,13 +20,13 @@ use valkyrie_types::third_party::pex::{ParseResult, ParseState, StopBecause};
 #[derive(Default)]
 pub struct ExpressionResolver {}
 
-pub(crate) struct ParseTypeExpression {
-    pub expr: ExpressionNode,
+pub(crate) struct TypingExpression {
+    pub wrapper: ExpressionNode,
 }
 
-impl ThisParser for ParseTypeExpression {
+impl ThisParser for TypingExpression {
     fn parse(input: ParseState) -> ParseResult<Self> {
-        parse_expression_node(input, ExpressionContext::in_type()).map_inner(|e| ParseTypeExpression { expr: e })
+        parse_expression_node(input, ExpressionContext::in_type()).map_inner(|e| TypingExpression { wrapper: e })
     }
 
     fn as_lisp(&self) -> Lisp {

@@ -1,18 +1,16 @@
 use super::*;
-use crate::utils::parse_expression_node;
-use valkyrie_ast::{ExpressionContext, ExpressionNode, FunctionCommonPart, GenericArgumentNode};
 
 impl ThisParser for FunctionCommonPart {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, generic) = input.match_optional(GenericArgumentNode::parse)?;
         let (state, args) = state.skip(ignore).match_fn(ApplyArgumentNode::parse)?;
         let (state, ret) = state.skip(ignore).match_optional(parse_return_type)?;
-        let (finally, body) = state.skip(ignore).match_optional(FunctionBody::parse)?;
+        let (finally, body) = state.skip(ignore).match_optional(FunctionBodyPart::parse)?;
         finally.finish(FunctionCommonPart {
             generic: generic.unwrap_or_default(),
             arguments: args,
             r#return: ret,
-            body: body.map(|s| s.body),
+            body: body.map(|s| s.body.to_vec()),
         })
     }
 

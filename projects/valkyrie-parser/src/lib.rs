@@ -8,7 +8,6 @@ mod declarations;
 pub mod expression;
 pub mod helpers;
 pub mod import;
-mod looping;
 pub mod number;
 pub mod operators;
 pub mod statements;

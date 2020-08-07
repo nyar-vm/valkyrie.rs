@@ -24,26 +24,6 @@ impl PrettyPrint for WhileLoopNode {
     }
 }
 
-impl PrettyPrint for ConditionType {
-    /// ```vk
-    /// # inline style
-    /// a || b || c
-    ///
-    /// # block style
-    ///
-    /// a
-    ///   || b && c
-    ///   && d || e
-    /// ```
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        match self {
-            ConditionType::AlwaysTrue => allocator.keyword("true"),
-            ConditionType::Case => allocator.keyword("case"),
-            ConditionType::Expression(e) => e.build(allocator),
-        }
-    }
-}
-
 impl PrettyPrint for ForLoopNode {
     // fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
     //     for i in &self.body {

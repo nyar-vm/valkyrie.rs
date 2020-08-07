@@ -68,6 +68,21 @@ pub struct ArgumentKeyNode {
     pub key: IdentifierNode,
 }
 
+impl<K, V> CallTermNode<K, V> {
+    pub fn map_key<F, O>(self, f: F) -> CallTermNode<O, V>
+    where
+        F: FnOnce(K) -> O,
+    {
+        CallTermNode { key: self.key.map(f), value: self.value }
+    }
+    pub fn map_value<F, O>(self, f: F) -> CallTermNode<K, O>
+    where
+        F: FnOnce(V) -> O,
+    {
+        CallTermNode { key: self.key, value: f(self.value) }
+    }
+}
+
 impl<K, V, D> ArgumentTermNode<K, V, D> {
     pub fn map_key<F, O>(self, f: F) -> ArgumentTermNode<O, V, D>
     where

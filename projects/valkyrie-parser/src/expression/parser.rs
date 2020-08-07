@@ -1,6 +1,9 @@
 use super::*;
 use crate::{table::TupleNode, utils::parse_expression_body};
-use valkyrie_ast::{CallNode, ExpressionContext, ExpressionNode, LambdaCallNode, LambdaDotNode, LambdaNode, PrettyPrint};
+use valkyrie_ast::{
+    CallNode, ExpressionContext, ExpressionNode, LambdaCallNode, LambdaDotNode, LambdaNode, NewStructureNode, PrettyPrint,
+    StatementType::Expression,
+};
 
 impl ThisParser for PrefixNode<ExpressionBody> {
     fn parse(_: ParseState) -> ParseResult<Self> {
@@ -49,12 +52,12 @@ impl ThisParser for ExpressionBody {
 
     fn as_lisp(&self) -> Lisp {
         match self {
-            ExpressionBody::Placeholder => Lisp::Keyword("placeholder".into()),
-            ExpressionBody::Prefix(v) => v.as_lisp(),
-            ExpressionBody::Binary(v) => v.as_lisp(),
+            Self::Placeholder => Lisp::Keyword("placeholder".into()),
+            Self::Prefix(v) => v.as_lisp(),
+            Self::Binary(v) => v.as_lisp(),
             ExpressionBody::Suffix(v) => v.as_lisp(),
             ExpressionBody::Number(v) => v.as_lisp(),
-            ExpressionBody::Symbol(v) => v.as_lisp(),
+            Self::Symbol(v) => v.as_lisp(),
             ExpressionBody::String(v) => v.as_lisp(),
             ExpressionBody::Table(v) => v.as_lisp(),
             ExpressionBody::Apply(v) => v.as_lisp(),
@@ -63,6 +66,7 @@ impl ThisParser for ExpressionBody {
             ExpressionBody::GenericCall(v) => v.as_lisp(),
             ExpressionBody::LambdaCall(v) => v.as_lisp(),
             ExpressionBody::LambdaDot(v) => v.as_lisp(),
+            ExpressionBody::New(v) => v.as_lisp(),
         }
     }
 }
@@ -152,6 +156,7 @@ pub enum NormalPostfixCall {
 pub fn parse_value(input: ParseState, allow_curly: bool) -> ParseResult<ExpressionBody> {
     let (state, mut base) = input
         .begin_choice()
+        .or_else(|s| NewStructureNode::parse(s).map_inner(|s| ExpressionBody::New(Box::new(s))))
         .or_else(|s| NamePathNode::parse(s).map_inner(Into::into))
         .or_else(|s| NumberLiteralNode::parse(s).map_inner(Into::into))
         .or_else(|s| StringLiteralNode::parse(s).map_inner(Into::into))

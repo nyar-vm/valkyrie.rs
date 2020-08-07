@@ -1,4 +1,4 @@
-use crate::{ArgumentTermNode, IdentifierNode, NamePathNode, PrettyPrint, PrettyProvider, PrettyTree, StatementNode};
+use crate::{IdentifierNode, PrettyProvider, PrettyTree};
 use pretty::{
     termcolor::{Color, ColorSpec},
     DocAllocator,

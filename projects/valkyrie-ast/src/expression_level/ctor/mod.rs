@@ -28,7 +28,7 @@ pub struct NewStructureNode {
     pub namepath: NamePathNode,
     pub generic: GenericCallNode,
     pub arguments: ApplyArgumentNode,
-    pub collectors: TableNode,
+    pub collectors: Vec<TableTermNode>,
 }
 
 impl PrettyPrint for NewStructureNode {
@@ -46,9 +46,9 @@ impl PrettyPrint for NewStructureNode {
             terms.push(self.generic.build(allocator));
         }
         terms.push(self.arguments.build(allocator));
-        if !self.collectors.terms.is_empty() {
+        if !self.collectors.is_empty() {
             let head = allocator.text("{");
-            let body = self.collectors.terms.iter().map(|x| x.build(allocator).append(allocator.text(",")));
+            let body = self.collectors.iter().map(|x| x.build(allocator).append(allocator.text(",")));
             let tail = allocator.text("}");
             let table = head.append(allocator.concat(body)).append(tail);
             terms.push(table)

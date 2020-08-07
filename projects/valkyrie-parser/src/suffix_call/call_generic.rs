@@ -1,4 +1,5 @@
 use super::*;
+use crate::{expression::TypingExpression, utils::parse_expression_body};
 use valkyrie_ast::{CallNode, ExpressionNode, GenericCallTerm};
 
 impl ThisParser for CallNode<GenericCallNode> {
@@ -35,8 +36,8 @@ impl ThisParser for GenericCallNode {
 
 impl ThisParser for GenericCallTerm {
     fn parse(input: ParseState) -> ParseResult<Self> {
-        let (state, name) = CallTermNode::parse(input)?;
-        state.finish(GenericCallTerm { term: name })
+        let (state, term) = CallTermNode::<IdentifierNode, TypingExpression>::parse(input)?;
+        state.finish(GenericCallTerm { term: term.map_value(|s| s.wrapper) })
     }
 
     fn as_lisp(&self) -> Lisp {
@@ -45,8 +46,8 @@ impl ThisParser for GenericCallTerm {
 }
 
 fn qwerty_generic(input: ParseState) -> ParseResult<GenericCallNode> {
-    let pat = BracketPattern::new("<", ">");
     let (state, _) = input.match_optional(parse_name_join)?;
+    let pat = BracketPattern::new("<", ">");
     let (state, terms) = pat.consume(state.skip(ignore), ignore, GenericCallTerm::parse)?;
     state.finish(GenericCallNode { terms: terms.body, range: state.away_from(input) })
 }

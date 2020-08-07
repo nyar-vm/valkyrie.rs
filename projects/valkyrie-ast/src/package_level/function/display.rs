@@ -1,5 +1,4 @@
 use super::*;
-use std::ops::Add;
 
 impl FunctionType {
     pub fn as_str(&self) -> &'static str {

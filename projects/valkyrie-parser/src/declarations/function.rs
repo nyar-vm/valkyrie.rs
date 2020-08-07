@@ -52,9 +52,9 @@ impl ThisParser for ApplyArgumentNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let pattern = BracketPattern::new("(", ")");
         let (state, terms) =
-            pattern.consume(input, ignore, ArgumentTermNode::<ArgumentKeyNode, ParseTypeExpression, ExpressionNode>::parse)?;
+            pattern.consume(input, ignore, ArgumentTermNode::<ArgumentKeyNode, TypingExpression, ExpressionNode>::parse)?;
         state.finish(ApplyArgumentNode {
-            terms: terms.body.into_iter().map(|s| s.map_value(|v| v.expr)).collect(),
+            terms: terms.body.into_iter().map(|s| s.map_value(|v| v.wrapper)).collect(),
             range: state.away_from(input),
         })
     }
