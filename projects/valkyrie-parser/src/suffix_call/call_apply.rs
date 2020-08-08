@@ -20,7 +20,7 @@ impl ThisParser for ApplyCallNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let pat = BracketPattern::new("(", ")");
         let (state, terms) = pat.consume(input, ignore, ApplyCallTerm::parse)?;
-        state.finish(ApplyCallNode { terms: terms.body, range: state.away_from(input) })
+        state.finish(ApplyCallNode { terms: terms.body, span: get_span(input, state) })
     }
 
     fn as_lisp(&self) -> Lisp {

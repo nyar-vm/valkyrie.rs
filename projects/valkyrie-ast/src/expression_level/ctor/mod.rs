@@ -29,6 +29,7 @@ pub struct NewConstructNode {
     pub generic: GenericCallNode,
     pub arguments: ApplyArgumentNode,
     pub collectors: Vec<TableTermNode>,
+    pub span: Range<u32>,
 }
 
 impl PrettyPrint for NewConstructNode {

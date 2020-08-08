@@ -4,8 +4,9 @@ mod display;
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct CallNode<E> {
-    pub base: ExpressionNode,
+    pub base: ExpressionBody,
     pub rest: E,
+    pub span: Range<u32>,
 }
 
 /// `term` or `field: term`

@@ -28,7 +28,7 @@ impl ThisParser for StringLiteralNode {
             .or_else(|s| quotation_pair(s, '«', '»'))
             .end_choice()?;
 
-        state.finish(StringLiteralNode { value: pair.body.as_string(), unit, span: state.away_from(input) })
+        state.finish(StringLiteralNode { value: pair.body.as_string(), unit, span: get_span(input, state) })
     }
 
     fn as_lisp(&self) -> Lisp {

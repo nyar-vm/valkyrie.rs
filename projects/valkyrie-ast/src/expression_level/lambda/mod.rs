@@ -8,7 +8,7 @@ mod display;
 pub struct LambdaNode {
     pub arguments: Option<LambdaArgumentNode>,
     pub body: Vec<StatementNode>,
-    pub range: Range<usize>,
+    pub span: Range<u32>,
 }
 
 /// `.caller() { lambda(args), ... }`
@@ -18,7 +18,7 @@ pub struct LambdaCallNode {
     pub base: ExpressionNode,
     pub arguments: Option<LambdaArgumentNode>,
     pub body: Vec<StatementNode>,
-    pub range: Range<usize>,
+    pub span: Range<u32>,
 }
 
 /// `.{ lambda(args), ... }`
@@ -28,7 +28,7 @@ pub struct LambdaDotNode {
     pub base: ExpressionNode,
     pub arguments: Option<LambdaArgumentNode>,
     pub body: Vec<StatementNode>,
-    pub range: Range<usize>,
+    pub span: Range<u32>,
 }
 
 /// `lambda(args)`
@@ -38,17 +38,17 @@ pub struct LambdaArgumentNode {
     /// The raw string of the number.
     pub terms: Vec<StatementNode>,
     /// The range of the number.
-    pub range: Range<usize>,
+    pub range: Range<u32>,
 }
 
 impl LambdaNode {
     #[allow(clippy::wrong_self_convention)]
     pub fn as_lambda_call(self) -> LambdaCallNode {
-        LambdaCallNode { base: ExpressionNode::default(), arguments: self.arguments, body: self.body, range: self.range }
+        LambdaCallNode { base: ExpressionNode::default(), arguments: self.arguments, body: self.body, span: self.span }
     }
     #[allow(clippy::wrong_self_convention)]
     pub fn as_lambda_dot(self) -> LambdaDotNode {
-        LambdaDotNode { base: ExpressionNode::default(), arguments: self.arguments, body: self.body, range: self.range }
+        LambdaDotNode { base: ExpressionNode::default(), arguments: self.arguments, body: self.body, span: self.span }
     }
 }
 

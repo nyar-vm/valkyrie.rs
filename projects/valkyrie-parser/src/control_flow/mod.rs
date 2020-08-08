@@ -22,7 +22,7 @@ impl ThisParser for ConditionNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, cond) = input.match_fn(ConditionType::parse)?;
         let (state, body) = state.skip(ignore).match_fn(FunctionBodyPart::parse)?;
-        state.finish(ConditionNode { condition: cond, body: body.body.to_vec(), range: state.away_from(input) })
+        state.finish(ConditionNode { condition: cond, body: body.body.to_vec(), range: get_span(input, state) })
     }
 
     fn as_lisp(&self) -> Lisp {
@@ -79,7 +79,7 @@ impl ThisParser for ForLoopNode {
             condition: ConditionType::AlwaysTrue,
             body: vec![],
             r#else: vec![],
-            range: state.away_from(input),
+            range: get_span(input, state),
         })
     }
 

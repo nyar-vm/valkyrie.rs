@@ -55,7 +55,7 @@ impl ThisParser for ApplyArgumentNode {
             pattern.consume(input, ignore, ArgumentTermNode::<ArgumentKeyNode, TypingExpression, ExpressionNode>::parse)?;
         state.finish(ApplyArgumentNode {
             terms: terms.body.into_iter().map(|s| s.map_value(|v| v.wrapper)).collect(),
-            range: state.away_from(input),
+            span: get_span(input, state),
         })
     }
 

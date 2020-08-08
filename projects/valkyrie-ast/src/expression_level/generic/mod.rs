@@ -10,7 +10,7 @@ pub struct GenericArgumentNode {
     /// The raw string of the number.
     pub terms: Vec<GenericArgumentTerm>,
     /// The range of the number.
-    pub range: Range<usize>,
+    pub span: Range<u32>,
 }
 
 /// `A⦓T⦔` or `A::<T>` or `A(G: T)`
@@ -20,7 +20,7 @@ pub struct GenericCallNode {
     /// The raw string of the number.
     pub terms: Vec<GenericCallTerm>,
     /// The range of the number.
-    pub range: Range<usize>,
+    pub span: Range<u32>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
@@ -32,5 +32,5 @@ pub struct GenericArgumentTerm {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct GenericCallTerm {
-    pub term: CallTermNode<IdentifierNode, ExpressionNode>,
+    pub term: CallTermNode<IdentifierNode, ExpressionBody>,
 }

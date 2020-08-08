@@ -5,12 +5,7 @@ impl ThisParser for SubscriptNode {
     /// `[` ~ `]` | `[` [term](SubscriptTermNode::parse) ( ~ `,` ~ [term](SubscriptTermNode::parse))* `,`? `]`
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, (index0, terms)) = input.begin_choice().or_else(parse_index1).or_else(parse_index0).end_choice()?;
-        state.finish(SubscriptNode {
-            index0,
-            base: ExpressionNode::default(),
-            terms: terms.body,
-            range: state.away_from(input),
-        })
+        state.finish(SubscriptNode { index0, base: ExpressionNode::default(), terms: terms.body, span: get_span(input, state) })
     }
 
     fn as_lisp(&self) -> Lisp {
@@ -86,7 +81,7 @@ pub fn parse_ranged(input: ParseState) -> ParseResult<SubscriptTermNode> {
     let (state, _) = state.skip(ignore).match_char(':')?;
     let (state, end) = state.skip(ignore).match_optional(ExpressionNode::parse)?;
     let (state, step) = state.match_optional(maybe_step)?;
-    state.finish(SubscriptTermNode::ranged(start, end, step.flatten(), state.away_from(input)))
+    state.finish(SubscriptTermNode::sliced(start, end, step.flatten(), get_span(input, state)))
 }
 /// - [term](ExpressionBody::parse)
 pub fn parse_single(input: ParseState) -> ParseResult<SubscriptTermNode> {

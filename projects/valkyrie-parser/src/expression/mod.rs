@@ -11,8 +11,8 @@ use lispify::{Lisp, Lispify};
 use pratt::{Affix, PrattError, PrattParser};
 use std::fmt::Debug;
 use valkyrie_ast::{
-    ApplyCallNode, ApplyDotNode, ExpressionBody, ExpressionContext, ExpressionNode, ExpressionType, GenericCallNode, InfixNode,
-    NamePathNode, NumberLiteralNode, PostfixNode, PrefixNode, StringLiteralNode, SubscriptNode, TableNode, ValkyrieOperator,
+    ApplyCallNode, ApplyDotNode, ExpressionBody, ExpressionContext, ExpressionNode, GenericCallNode, InfixNode, NamePathNode,
+    NumberLiteralNode, PostfixNode, PrefixNode, StringLiteralNode, SubscriptNode, TableNode, ValkyrieOperator,
 };
 use valkyrie_types::third_party::pex::{ParseResult, ParseState, StopBecause};
 
@@ -35,7 +35,7 @@ impl ThisParser for TypingExpression {
 }
 
 impl ExpressionResolver {
-    pub fn resolve(&self, stream: Vec<ExpressionStream>) -> Result<ExpressionBody, StopBecause> {
+    pub fn resolve(&self, stream: Vec<ExpressionStream>) -> Result<ExpressionNode, StopBecause> {
         // println!("stream: {stream:#?}");
         let mut effect = ExpressionResolver {};
         match effect.parse(stream.into_iter()) {

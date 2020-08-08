@@ -19,7 +19,7 @@ impl ThisParser for MacroPathNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, path) = input.match_fn(NamePathNode::parse)?;
         let (state, names) = state.match_repeats(pare_dot_id)?;
-        state.finish(MacroPathNode::new(path, names, state.away_from(input)))
+        state.finish(MacroPathNode::new(path, names, get_span(input, state)))
     }
 
     fn as_lisp(&self) -> Lisp {

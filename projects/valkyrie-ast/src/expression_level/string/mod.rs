@@ -11,12 +11,12 @@ pub struct StringLiteralNode {
     /// The unit of the number, if any.
     pub unit: Option<IdentifierNode>,
     /// The range of the number.
-    pub span: Range<usize>,
+    pub span: Range<u32>,
 }
 
 impl StringLiteralNode {
-    pub fn new<S: ToString>(value: S, range: Range<usize>) -> Self {
-        Self { value: value.to_string(), unit: None, span: range }
+    pub fn new<S: ToString>(value: S, start: u32, end: u32) -> Self {
+        Self { value: value.to_string(), unit: None, span: start..end }
     }
     pub fn with_unit(mut self, unit: IdentifierNode) -> Self {
         self.unit = Some(unit);

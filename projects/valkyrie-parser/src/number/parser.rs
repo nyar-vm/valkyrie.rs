@@ -32,7 +32,7 @@ impl ThisParser for NumberLiteralNode {
                 value.push(c);
             }
         }
-        let mut number = NumberLiteralNode::new(m.as_str(), &state.away_from(input));
+        let mut number = NumberLiteralNode::new(m.as_str(), &get_span(input, state));
         number.unit = unit;
         state.finish(number)
     }

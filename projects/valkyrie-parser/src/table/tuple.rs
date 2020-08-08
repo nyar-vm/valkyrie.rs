@@ -4,7 +4,7 @@ use valkyrie_ast::ExpressionNode;
 impl TupleNode {
     #[allow(clippy::wrong_self_convention)]
     pub fn as_table(self) -> TableNode {
-        TableNode { kind: TableKind::Tuple, terms: self.terms, range: self.range }
+        TableNode { kind: TableKind::Tuple, terms: self.terms, span: self.range }
     }
 }
 
@@ -17,7 +17,7 @@ impl ThisParser for TupleNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let pat = BracketPattern::new("(", ")").with_one_tailing(true);
         let (state, terms) = pat.consume(input, ignore, TableTermNode::parse)?;
-        state.finish(TupleNode { terms: terms.body, range: state.away_from(input) })
+        state.finish(TupleNode { terms: terms.body, range: get_span(input, state) })
     }
 
     fn as_lisp(&self) -> Lisp {

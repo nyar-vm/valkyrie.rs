@@ -2,9 +2,17 @@ use pretty::{
     termcolor::{Buffer, ColorSpec},
     Arena, DocBuilder,
 };
-use std::{ops::Deref, string::String};
+use std::{
+    ops::{Deref, Range},
+    string::String,
+};
 
 pub type PrettyTree<'a> = DocBuilder<'a, Arena<'a, ColorSpec>, ColorSpec>;
+
+pub trait ValkyrieNode {
+    fn get_range(&self) -> Range<u32>;
+    // fn mut_range(&mut self) -> &mut Range<u32>;
+}
 
 pub struct PrettyProvider<'a> {
     arena: Arena<'a, ColorSpec>,

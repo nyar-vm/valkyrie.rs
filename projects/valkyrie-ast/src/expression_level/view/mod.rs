@@ -11,7 +11,7 @@ pub struct SubscriptNode {
     /// The raw string of the number.
     pub terms: Vec<SubscriptTermNode>,
     /// The range of the number.
-    pub range: Range<usize>,
+    pub span: Range<u32>,
 }
 
 /// `⁅index⁆` or `⁅start : end : step⁆`
@@ -35,7 +35,7 @@ pub struct SubscriptSliceNode {
     /// The unit of the number, if any.
     pub step: Option<ExpressionNode>,
     /// The range of the number.
-    pub range: Range<usize>,
+    pub span: Range<u32>,
 }
 
 impl SubscriptNode {
@@ -45,19 +45,5 @@ impl SubscriptNode {
     }
     pub fn method(&self) -> &'static str {
         if self.index0 { "subscript0" } else { "subscript1" }
-    }
-}
-
-impl SubscriptTermNode {
-    pub fn indexed(index: ExpressionNode) -> Self {
-        Self::Index(index)
-    }
-    pub fn ranged(
-        start: Option<ExpressionNode>,
-        end: Option<ExpressionNode>,
-        step: Option<ExpressionNode>,
-        range: Range<usize>,
-    ) -> Self {
-        Self::Slice(SubscriptSliceNode { start, end, step, range })
     }
 }

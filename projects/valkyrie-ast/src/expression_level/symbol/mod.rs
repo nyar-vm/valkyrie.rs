@@ -6,7 +6,7 @@ mod display;
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct IdentifierNode {
     pub name: String,
-    pub span: Range<usize>,
+    pub span: Range<u32>,
 }
 
 /// `package∷module∷name`
@@ -16,7 +16,7 @@ pub struct NamePathNode {
     /// The names of the identifier.
     pub names: Vec<IdentifierNode>,
     /// The range of the identifier.
-    pub span: Range<usize>,
+    pub span: Range<u32>,
 }
 
 /// A namepath is a series of identifiers separated by dots.
@@ -40,7 +40,7 @@ pub struct MacroPathNode {
     /// The names of the identifier.
     pub names: Vec<IdentifierNode>,
     /// The range of the identifier.
-    pub span: Range<usize>,
+    pub span: Range<u32>,
 }
 
 impl NamePathNode {
@@ -60,14 +60,15 @@ impl NamePathNode {
 }
 
 impl MacroPathNode {
-    pub fn new(path: NamePathNode, names: Vec<IdentifierNode>, range: Range<usize>) -> Self {
-        Self { path, names, span: range }
+    pub fn new(path: NamePathNode, names: Vec<IdentifierNode>) -> Self {
+        let span = path.span.start..names.last().map_or(path.span.end, |n| n.span.end);
+        Self { path, names, span }
     }
 }
 
 impl IdentifierNode {
-    pub fn new<S: ToString>(s: S, range: Range<usize>) -> Self {
-        Self { name: s.to_string(), span: range }
+    pub fn new<S: ToString>(s: S, start: u32, end: u32) -> Self {
+        Self { name: s.to_string(), span: start..end }
     }
     pub fn is_normal(&self) -> bool {
         self.name.starts_with(|c: char| c.is_ascii_lowercase())

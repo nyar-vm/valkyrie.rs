@@ -15,7 +15,7 @@ impl ThisParser for GenericArgumentNode {
                 pat.consume(s, ignore, GenericArgumentTerm::parse)
             })
             .end_choice()?;
-        state.finish(GenericArgumentNode { terms: terms.body, range: state.away_from(input) })
+        state.finish(GenericArgumentNode { terms: terms.body, span: get_span(input, state) })
     }
 
     fn as_lisp(&self) -> Lisp {

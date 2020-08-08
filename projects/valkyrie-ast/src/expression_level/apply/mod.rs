@@ -14,7 +14,7 @@ pub struct ApplyDotNode {
     /// The range of the number.
     pub terms: Vec<CallTermNode<IdentifierNode, ExpressionNode>>,
     /// The range of the number.
-    pub range: Range<usize>,
+    pub span: Range<u32>,
 }
 
 /// `apply(0, a: 1, ⁑args, ⁂kwargs)`
@@ -24,7 +24,7 @@ pub struct ApplyCallNode {
     /// The raw string of the number.
     pub terms: Vec<ApplyCallTerm>,
     /// The range of the number.
-    pub range: Range<usize>,
+    pub span: Range<u32>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
@@ -40,7 +40,7 @@ pub struct ApplyArgumentNode {
     /// The raw string of the number.
     pub terms: Vec<ArgumentTermNode<ArgumentKeyNode, ExpressionNode, ExpressionNode>>,
     /// The range of the number.
-    pub range: Range<usize>,
+    pub span: Range<u32>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]

@@ -10,7 +10,7 @@ impl ThisParser for ApplyDotNode {
             Some(v) => v.terms,
             None => vec![],
         };
-        finally.finish(ApplyDotNode { base: ExpressionNode::default(), caller, terms, range: finally.away_from(input) })
+        finally.finish(ApplyDotNode { base: ExpressionNode::default(), caller, terms, span: finally.away_from(input) })
     }
 
     fn as_lisp(&self) -> Lisp {

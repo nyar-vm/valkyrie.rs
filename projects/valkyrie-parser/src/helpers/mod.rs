@@ -89,5 +89,5 @@ pub fn parse_any_name_path(input: ParseState) -> ParseResult<NamePathNode> {
     let mut names = Vec::with_capacity(rest.len() + 1);
     names.push(head);
     names.extend(rest);
-    state.finish(NamePathNode { names, span: state.away_from(input) })
+    state.finish(NamePathNode { names, span: get_span(input, state) })
 }

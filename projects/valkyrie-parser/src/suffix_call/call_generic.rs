@@ -49,11 +49,11 @@ fn qwerty_generic(input: ParseState) -> ParseResult<GenericCallNode> {
     let (state, _) = input.match_optional(parse_name_join)?;
     let pat = BracketPattern::new("<", ">");
     let (state, terms) = pat.consume(state.skip(ignore), ignore, GenericCallTerm::parse)?;
-    state.finish(GenericCallNode { terms: terms.body, range: state.away_from(input) })
+    state.finish(GenericCallNode { terms: terms.body, span: get_span(input, state) })
 }
 
 fn unicode_generic(input: ParseState) -> ParseResult<GenericCallNode> {
     let pat = BracketPattern::new("⦓", "⦔");
     let (state, terms) = pat.consume(input, ignore, GenericCallTerm::parse)?;
-    state.finish(GenericCallNode { terms: terms.body, range: state.away_from(input) })
+    state.finish(GenericCallNode { terms: terms.body, span: get_span(input, state) })
 }

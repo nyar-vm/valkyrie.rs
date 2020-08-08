@@ -4,18 +4,25 @@ use crate::{
     ThisParser,
 };
 use lispify::Lisp;
+use std::ops::Range;
 use valkyrie_ast::{
-    ClassDeclaration, ExpressionBody, ExpressionContext, ExpressionNode, ForLoopNode, FunctionCommonPart,
-    FunctionDeclaration, FunctionType, IdentifierNode, ImportStatementNode, ModifierPart, NamePathNode,
-    NamespaceDeclarationNode, StatementContext, StatementNode, StatementType, WhileLoopNode,
+    ClassDeclaration, ExpressionBody, ExpressionContext, ExpressionNode, ForLoopNode, FunctionCommonPart, FunctionDeclaration,
+    FunctionType, IdentifierNode, ImportStatementNode, ModifierPart, NamePathNode, NamespaceDeclarationNode, StatementContext,
+    StatementNode, StatementType, WhileLoopNode,
 };
 use valkyrie_types::third_party::pex::{ParseResult, ParseState};
+
+#[inline]
+pub fn get_span(input: ParseState, output: ParseState) -> Range<u32> {
+    let range = output.away_from(input);
+    (range.start as u32)..(range.end as u32)
+}
 
 pub fn parse_expression_node(input: ParseState, config: ExpressionContext) -> ParseResult<ExpressionNode> {
     let resolver = ExpressionResolver::default();
     let (state, stream) = ExpressionStream::parse(input, config)?;
     let body = resolver.resolve(stream)?;
-    state.finish(ExpressionNode { r#type: config.as_type(), body, range: state.away_from(input) })
+    state.finish(ExpressionNode { r#type: config.as_type(), body, span: get_span(input, state) })
 }
 
 pub fn parse_expression_body(input: ParseState, config: ExpressionContext) -> ParseResult<ExpressionBody> {

@@ -21,7 +21,7 @@ pub struct TableNode {
     /// The raw string of the number.
     pub terms: Vec<TableTermNode>,
     /// The range of the number.
-    pub range: Range<usize>,
+    pub span: Range<u32>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]

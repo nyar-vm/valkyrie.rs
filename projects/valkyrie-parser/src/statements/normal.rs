@@ -38,7 +38,7 @@ pub fn parse_statement_node(input: ParseState, repl: bool) -> ParseResult<Statem
     };
     let (state, expr) = input.skip(ignore).match_fn(parser)?;
     let (state, eos) = parse_eos(state)?;
-    state.finish(StatementNode { r#type: expr, end_semicolon: eos, range: state.away_from(input) })
+    state.finish(StatementNode { r#type: expr, end_semicolon: eos, range: get_span(input, state) })
 }
 
 impl ThisParser for StatementType {

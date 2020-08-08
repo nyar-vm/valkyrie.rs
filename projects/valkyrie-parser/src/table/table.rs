@@ -6,7 +6,7 @@ impl ThisParser for TableNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let pat = BracketPattern::new("[", "]");
         let (state, terms) = pat.consume(input, ignore, TableTermNode::parse)?;
-        state.finish(TableNode { kind: TableKind::OffsetTable, terms: terms.body, range: state.away_from(input) })
+        state.finish(TableNode { kind: TableKind::OffsetTable, terms: terms.body, span: get_span(input, state) })
     }
 
     fn as_lisp(&self) -> Lisp {

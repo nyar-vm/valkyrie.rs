@@ -1,4 +1,5 @@
 use super::*;
+use crate::utils::get_span;
 use valkyrie_ast::PrettyPrint;
 
 impl ThisParser for NamePathNode {
@@ -8,7 +9,7 @@ impl ThisParser for NamePathNode {
         let (state, id) = input.match_fn(IdentifierNode::parse)?;
         names.push(id);
         let (state, _) = state.match_repeats(|s| pare_colon_id(s, &mut names))?;
-        state.finish(NamePathNode { names, span: state.away_from(input) })
+        state.finish(NamePathNode { names, span: get_span(input, state) })
     }
 
     fn as_lisp(&self) -> Lisp {

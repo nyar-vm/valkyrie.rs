@@ -15,7 +15,8 @@ pub static IDENTIFIER: LazyLock<Regex> = LazyLock::new(|| {
 impl ThisParser for IdentifierNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, m) = input.match_regex(&IDENTIFIER, "IDENTIFIER")?;
-        let id = IdentifierNode::new(m.as_str(), m.range());
+        let range = m.range();
+        let id = IdentifierNode::new(m.as_str(), range.start as u32, range.end as u32);
         state.finish(id)
     }
 

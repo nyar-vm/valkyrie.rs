@@ -26,7 +26,7 @@ static PREFIX: LazyLock<Regex> = LazyLock::new(|| {
 impl ValkyriePrefix {
     pub fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, m) = input.match_regex(&PREFIX, "PREFIX")?;
-        let id = ValkyriePrefix { normalized: m.as_str().to_string(), range: state.away_from(input) };
+        let id = ValkyriePrefix { normalized: m.as_str().to_string(), range: get_span(input, state) };
         state.finish(id)
     }
 }
@@ -102,7 +102,7 @@ impl ValkyrieInfix {
             true => input.match_regex(&TYPE_INFIX, "TYPE_INFIX"),
             false => input.match_regex(&INFIX, "INFIX"),
         }?;
-        let id = ValkyrieInfix::new(m.as_str(), state.away_from(input));
+        let id = ValkyrieInfix::new(m.as_str(), get_span(input, state));
         state.finish(id)
     }
 }
@@ -125,7 +125,7 @@ static POSTFIX: LazyLock<Regex> = LazyLock::new(|| {
 impl ValkyrieSuffix {
     pub fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, m) = input.match_regex(&POSTFIX, "POSTFIX")?;
-        let id = ValkyrieSuffix { normalized: m.as_str().to_string(), range: state.away_from(input) };
+        let id = ValkyrieSuffix { normalized: m.as_str().to_string(), range: get_span(input, state) };
         state.finish(id)
     }
 }

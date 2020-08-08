@@ -140,33 +140,30 @@ impl ValkyrieOperator {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct PrefixNode {
     pub operator: OperatorNode,
-    pub base: ExpressionNode,
+    pub base: ExpressionBody,
+    pub span: Range<u32>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct InfixNode {
     pub operator: OperatorNode,
-    pub lhs: ExpressionNode,
-    pub rhs: ExpressionNode,
+    pub lhs: ExpressionBody,
+    pub rhs: ExpressionBody,
+    pub span: Range<u32>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct PostfixNode {
     pub operator: OperatorNode,
-    pub base: ExpressionNode,
+    pub base: ExpressionBody,
+    pub span: Range<u32>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct OperatorNode {
     pub kind: ValkyrieOperator,
-    pub range: Range<usize>,
-}
-
-impl OperatorNode {
-    pub fn new(kind: ValkyrieOperator, range: Range<usize>) -> Self {
-        Self { kind, range }
-    }
+    pub span: Range<u32>,
 }

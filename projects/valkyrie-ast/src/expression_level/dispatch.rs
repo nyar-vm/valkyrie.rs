@@ -1,6 +1,11 @@
 use super::*;
 use crate::PrettyTree;
 
+impl Default for ExpressionBody {
+    fn default() -> Self {
+        Self::Placeholder
+    }
+}
 impl PrettyPrint for ExpressionNode {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         self.body.build(allocator)
@@ -29,55 +34,70 @@ impl PrettyPrint for ExpressionBody {
     }
 }
 
-impl Default for ExpressionType {
-    fn default() -> Self {
-        Self::Term
+impl ExpressionBody {
+    pub fn span(&self) -> Range<u32> {
+        match self {
+            ExpressionBody::Placeholder => unreachable!(),
+            ExpressionBody::Symbol(node) => node.span.clone(),
+            ExpressionBody::Number(node) => node.span.clone(),
+            ExpressionBody::String(node) => node.span.clone(),
+            ExpressionBody::New(node) => node.span.clone(),
+            ExpressionBody::Prefix(node) => node.span.clone(),
+            ExpressionBody::Binary(node) => node.span.clone(),
+            ExpressionBody::Suffix(node) => node.span.clone(),
+            ExpressionBody::Table(node) => node.span.clone(),
+            ExpressionBody::Apply(node) => node.span.clone(),
+            ExpressionBody::ApplyDot(node) => node.span.clone(),
+            ExpressionBody::LambdaCall(node) => node.span.clone(),
+            ExpressionBody::LambdaDot(node) => node.span.clone(),
+            ExpressionBody::Subscript(node) => node.span.clone(),
+            ExpressionBody::GenericCall(node) => node.span.clone(),
+        }
     }
 }
-
-impl Default for ExpressionBody {
-    fn default() -> Self {
-        Self::Placeholder
-    }
-}
-
 impl From<PrefixNode> for ExpressionBody {
     fn from(value: PrefixNode) -> Self {
-        ExpressionBody::Prefix(Box::new(value))
+        Self::Prefix(Box::new(value))
     }
 }
 
-impl From<InfixNode> for ExpressionBody {
-    fn from(value: InfixNode) -> Self {
-        ExpressionBody::Binary(Box::new(value))
-    }
-}
-impl From<PostfixNode> for ExpressionBody {
-    fn from(value: PostfixNode) -> Self {
-        ExpressionBody::Suffix(Box::new(value))
+impl From<NewConstructNode> for ExpressionBody {
+    fn from(value: NewConstructNode) -> Self {
+        Self::New(Box::new(value))
     }
 }
 
-impl From<TableNode> for ExpressionBody {
-    fn from(value: TableNode) -> Self {
-        ExpressionBody::Table(Box::new(value))
-    }
-}
+// impl From<InfixNode> for ExpressionBody {
+//     fn from(value: InfixNode) -> Self {
+//         Self::Binary(Box::new(value))
+//     }
+// }
+// impl From<PostfixNode> for ExpressionBody {
+//     fn from(value: PostfixNode) -> Self {
+//         Self::Suffix(Box::new(value))
+//     }
+// }
+//
+// impl From<TableNode> for ExpressionBody {
+//     fn from(value: TableNode) -> Self {
+//         Self::Table(Box::new(value))
+//     }
+// }
 
 impl From<StringLiteralNode> for ExpressionBody {
     fn from(value: StringLiteralNode) -> Self {
-        ExpressionBody::String(Box::new(value))
+        Self::String(Box::new(value))
     }
 }
 
 impl From<NumberLiteralNode> for ExpressionBody {
     fn from(value: NumberLiteralNode) -> Self {
-        ExpressionBody::Number(Box::new(value))
+        Self::Number(Box::new(value))
     }
 }
 
 impl From<NamePathNode> for ExpressionBody {
     fn from(value: NamePathNode) -> Self {
-        ExpressionBody::Symbol(Box::new(value))
+        Self::Symbol(Box::new(value))
     }
 }
