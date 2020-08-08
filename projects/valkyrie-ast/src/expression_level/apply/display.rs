@@ -24,6 +24,21 @@ impl PrettyPrint for ApplyCallNode {
     }
 }
 
+impl PrettyPrint for ApplyArgumentNode {
+    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+        allocator
+            .text("(")
+            .append(allocator.intersperse(self.terms.iter().map(|x| x.build(allocator)), allocator.text(", ")))
+            .append(allocator.text(")"))
+    }
+}
+
+impl PrettyPrint for ApplyArgumentTerm {
+    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+        self.term.build(allocator)
+    }
+}
+
 impl PrettyPrint for ApplyCallTerm {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         self.term.build(allocator)

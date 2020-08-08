@@ -1,6 +1,4 @@
 use super::*;
-use crate::utils::get_span;
-use valkyrie_ast::PrettyPrint;
 
 impl ThisParser for NamePathNode {
     /// `id (~ :: ~ b)*`

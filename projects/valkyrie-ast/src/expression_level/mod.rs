@@ -12,9 +12,10 @@ pub mod table;
 pub mod view;
 
 use crate::{
-    helper::PrettyPrint, ApplyCallNode, ApplyDotNode, CallNode, CallTermNode, GenericCallNode, IdentifierNode, InfixNode,
-    LambdaCallNode, LambdaDotNode, NamePathNode, NewConstructNode, NumberLiteralNode, OperatorNode, PostfixNode, PrefixNode,
-    PrettyProvider, PrettyTree, StatementNode, StringLiteralNode, SubscriptNode, TableNode, ValkyrieNode,
+    helper::PrettyPrint, ApplyArgumentNode, ApplyCallNode, ApplyCallTerm, ApplyDotNode, ArgumentTermNode, CallNode,
+    CallTermNode, GenericCallNode, IdentifierNode, InfixNode, LambdaCallNode, LambdaDotNode, NamePathNode, NewConstructNode,
+    NumberLiteralNode, OperatorNode, PostfixNode, PrefixNode, PrettyProvider, PrettyTree, StatementNode, StringLiteralNode,
+    SubscriptNode, TableNode, TableTermNode, ValkyrieNode,
 };
 use core::{
     fmt::{Display, Formatter, Write},
@@ -56,10 +57,10 @@ pub enum ExpressionBody {
     Suffix(Box<PostfixNode>),
     Table(Box<TableNode>),
     Apply(Box<CallNode<ApplyCallNode>>),
-    ApplyDot(Box<ApplyDotNode>),
-    LambdaCall(Box<LambdaCallNode>),
-    LambdaDot(Box<LambdaDotNode>),
-    Subscript(Box<SubscriptNode>),
+    ApplyDot(Box<CallNode<ApplyDotNode>>),
+    LambdaCall(Box<CallNode<LambdaCallNode>>),
+    LambdaDot(Box<CallNode<LambdaDotNode>>),
+    Subscript(Box<CallNode<SubscriptNode>>),
     GenericCall(Box<CallNode<GenericCallNode>>),
 }
 
@@ -112,5 +113,21 @@ impl ExpressionBody {
     pub fn call_apply(base: Self, rest: ApplyCallNode) -> Self {
         let span = base.span().start..rest.span.end;
         ExpressionBody::Apply(Box::new(CallNode { base, rest, span }))
+    }
+    pub fn dot_apply(base: Self, rest: ApplyDotNode) -> Self {
+        let span = base.span().start..rest.span.end;
+        ExpressionBody::ApplyDot(Box::new(CallNode { base, rest, span }))
+    }
+    pub fn call_subscript(base: Self, rest: SubscriptNode) -> Self {
+        let span = base.span().start..rest.span.end;
+        ExpressionBody::Subscript(Box::new(CallNode { base, rest, span }))
+    }
+    pub fn call_lambda(base: Self, rest: LambdaCallNode) -> Self {
+        let span = base.span().start..rest.span.end;
+        ExpressionBody::LambdaCall(Box::new(CallNode { base, rest, span }))
+    }
+    pub fn dot_lambda(base: Self, rest: LambdaDotNode) -> Self {
+        let span = base.span().start..rest.span.end;
+        ExpressionBody::LambdaDot(Box::new(CallNode { base, rest, span }))
     }
 }

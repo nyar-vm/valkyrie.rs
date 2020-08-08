@@ -167,3 +167,9 @@ pub struct OperatorNode {
     pub kind: ValkyrieOperator,
     pub span: Range<u32>,
 }
+
+impl OperatorNode {
+    pub fn new(kind: ValkyrieOperator, span: Range<u32>) -> Self {
+        Self { kind, span }
+    }
+}

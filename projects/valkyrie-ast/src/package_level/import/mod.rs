@@ -7,7 +7,7 @@ mod display;
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ImportStatementNode {
     pub r#type: ImportStatementType,
-    pub range: Range<usize>,
+    pub span: Range<u32>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]

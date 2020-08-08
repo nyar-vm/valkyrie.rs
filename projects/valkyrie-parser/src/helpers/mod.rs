@@ -2,7 +2,7 @@ mod escaper;
 
 pub use self::escaper::StringRewrite;
 
-use crate::ThisParser;
+use crate::{utils::get_span, ThisParser};
 use std::sync::LazyLock;
 use valkyrie_ast::{IdentifierNode, NamePathNode};
 use valkyrie_types::third_party::pex::{

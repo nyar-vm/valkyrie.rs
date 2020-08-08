@@ -6,8 +6,8 @@ pub mod license;
 pub mod namespace;
 use crate::{
     package_level::{classes::ClassDeclaration, namespace::NamespaceDeclarationNode},
-    ApplyArgumentNode, ArgumentTermNode, ExpressionNode, ForLoopNode, FunctionDeclaration, GenericArgumentNode,
-    IdentifierNode, ImportStatementNode, NamePathNode, PrettyPrint, PrettyProvider, PrettyTree, WhileLoopNode,
+    ApplyArgumentNode, ArgumentTermNode, ExpressionNode, ForLoopNode, FunctionDeclaration, GenericArgumentNode, IdentifierNode,
+    ImportStatementNode, NamePathNode, PrettyPrint, PrettyProvider, PrettyTree, WhileLoopNode,
 };
 use pretty::DocAllocator;
 use std::{
@@ -23,7 +23,7 @@ use std::{
 pub struct StatementNode {
     pub r#type: StatementType,
     pub end_semicolon: bool,
-    pub range: Range<usize>,
+    pub span: Range<u32>,
 }
 
 /// The top level elements in script mode.

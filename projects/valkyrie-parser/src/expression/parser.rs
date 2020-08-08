@@ -152,7 +152,7 @@ pub fn parse_value(input: ParseState, allow_curly: bool) -> ParseResult<Expressi
         .or_else(|s| NumberLiteralNode::parse(s).map_inner(Into::into))
         .or_else(|s| StringLiteralNode::parse(s).map_inner(Into::into))
         .or_else(|s| TableNode::parse(s).map_inner(Into::into))
-        .or_else(|s| TupleNode::parse(s).map_inner(|s| ExpressionBody::Table(Box::new(s.as_table()))))
+        .or_else(|s| TupleNode::parse(s).map_inner(Into::into))
         .end_choice()?;
     let (state, rest) = match allow_curly {
         true => state.match_repeats(parse_postfix_curly),
@@ -161,11 +161,11 @@ pub fn parse_value(input: ParseState, allow_curly: bool) -> ParseResult<Expressi
     for caller in rest {
         match caller {
             PostfixCallPart::Apply(v) => base = ExpressionBody::call_apply(base, v),
-            PostfixCallPart::ApplyDot(v) => todo!(),
-            PostfixCallPart::View(v) => todo!(),
+            PostfixCallPart::ApplyDot(v) => base = ExpressionBody::dot_apply(base, v),
+            PostfixCallPart::View(v) => base = ExpressionBody::call_subscript(base, v),
             PostfixCallPart::Generic(v) => base = ExpressionBody::call_generic(base, v),
-            PostfixCallPart::Lambda(v) => todo!(),
-            PostfixCallPart::LambdaDot(v) => todo!(),
+            PostfixCallPart::Lambda(v) => base = ExpressionBody::call_lambda(base, v),
+            PostfixCallPart::LambdaDot(v) => base = ExpressionBody::dot_lambda(base, v),
         }
     }
     state.finish(base)
@@ -175,21 +175,21 @@ fn parse_postfix(input: ParseState) -> ParseResult<PostfixCallPart> {
     input
         .skip(ignore)
         .begin_choice()
-        .or_else(|s| ApplyCallNode::parse(s).map_inner(|s| PostfixCallPart::Apply(Box::new(s))))
-        .or_else(|s| ApplyDotNode::parse(s).map_inner(|s| PostfixCallPart::ApplyDot(Box::new(s))))
-        .or_else(|s| SubscriptNode::parse(s).map_inner(|s| PostfixCallPart::View(Box::new(s))))
-        .or_else(|s| GenericCallNode::parse(s).map_inner(|s| PostfixCallPart::Generic(Box::new(s))))
+        .or_else(|s| ApplyCallNode::parse(s).map_inner(PostfixCallPart::Apply))
+        .or_else(|s| ApplyDotNode::parse(s).map_inner(PostfixCallPart::ApplyDot))
+        .or_else(|s| SubscriptNode::parse(s).map_inner(PostfixCallPart::View))
+        .or_else(|s| GenericCallNode::parse(s).map_inner(PostfixCallPart::Generic))
         .end_choice()
 }
 fn parse_postfix_curly(input: ParseState) -> ParseResult<PostfixCallPart> {
     input
         .skip(ignore)
         .begin_choice()
-        .or_else(|s| ApplyCallNode::parse(s).map_inner(|s| PostfixCallPart::Apply(Box::new(s))))
-        .or_else(|s| ApplyDotNode::parse(s).map_inner(|s| PostfixCallPart::ApplyDot(Box::new(s))))
-        .or_else(|s| SubscriptNode::parse(s).map_inner(|s| PostfixCallPart::View(Box::new(s))))
-        .or_else(|s| GenericCallNode::parse(s).map_inner(|s| PostfixCallPart::Generic(Box::new(s))))
-        .or_else(|s| LambdaCallNode::parse(s).map_inner(|s| PostfixCallPart::Lambda(Box::new(s))))
-        .or_else(|s| LambdaDotNode::parse(s).map_inner(|s| PostfixCallPart::LambdaDot(Box::new(s))))
+        .or_else(|s| ApplyCallNode::parse(s).map_inner(PostfixCallPart::Apply))
+        .or_else(|s| ApplyDotNode::parse(s).map_inner(PostfixCallPart::ApplyDot))
+        .or_else(|s| SubscriptNode::parse(s).map_inner(PostfixCallPart::View))
+        .or_else(|s| GenericCallNode::parse(s).map_inner(PostfixCallPart::Generic))
+        .or_else(|s| LambdaCallNode::parse(s).map_inner(PostfixCallPart::Lambda))
+        .or_else(|s| LambdaDotNode::parse(s).map_inner(PostfixCallPart::LambdaDot))
         .end_choice()
 }

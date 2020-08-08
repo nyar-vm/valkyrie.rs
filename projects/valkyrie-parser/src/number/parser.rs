@@ -1,5 +1,5 @@
 use super::*;
-use crate::traits::ThisParser;
+use crate::{traits::ThisParser, utils::get_span};
 use lispify::Lisp;
 use valkyrie_ast::NumberLiteralNode;
 
@@ -32,7 +32,7 @@ impl ThisParser for NumberLiteralNode {
                 value.push(c);
             }
         }
-        let mut number = NumberLiteralNode::new(m.as_str(), &get_span(input, state));
+        let mut number = NumberLiteralNode::new(m.as_str(), get_span(input, state));
         number.unit = unit;
         state.finish(number)
     }

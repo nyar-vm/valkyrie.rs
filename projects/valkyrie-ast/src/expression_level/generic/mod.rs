@@ -1,7 +1,6 @@
 mod display;
 
 use super::*;
-use crate::ArgumentTermNode;
 
 /// `class A⦓T: S = K⦔` or `class A<T: S = K>`
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
@@ -32,5 +31,5 @@ pub struct GenericArgumentTerm {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct GenericCallTerm {
-    pub term: CallTermNode<IdentifierNode, ExpressionBody>,
+    pub term: CallTermNode<IdentifierNode, ExpressionNode>,
 }

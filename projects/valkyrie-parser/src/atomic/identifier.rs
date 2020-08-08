@@ -1,5 +1,4 @@
 use super::*;
-use valkyrie_ast::PrettyPrint;
 
 pub static IDENTIFIER: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(

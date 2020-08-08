@@ -9,7 +9,7 @@ pub struct WhileLoopNode {
     pub condition: ConditionType,
     pub body: Vec<StatementNode>,
     pub r#else: Vec<StatementNode>,
-    pub range: Range<usize>,
+    pub span: Range<u32>,
 }
 
 /// ```vk
@@ -27,7 +27,7 @@ pub struct ForLoopNode {
     pub condition: ConditionType,
     pub body: Vec<StatementNode>,
     pub r#else: Vec<StatementNode>,
-    pub range: Range<usize>,
+    pub span: Range<u32>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]

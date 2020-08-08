@@ -1,7 +1,6 @@
-use crate::traits::ThisParser;
+use crate::{traits::ThisParser, utils::get_span};
 use lispify::Lisp;
 use pratt::{Associativity, Precedence};
-
 use std::{
     fmt::{Debug, Formatter},
     ops::Range,
@@ -20,17 +19,17 @@ mod parser;
 #[derive(Clone)]
 pub struct ValkyrieInfix {
     normalized: String,
-    range: Range<usize>,
+    span: Range<u32>,
 }
 
 #[derive(Clone)]
 pub struct ValkyriePrefix {
     normalized: String,
-    range: Range<usize>,
+    span: Range<u32>,
 }
 
 #[derive(Clone)]
 pub struct ValkyrieSuffix {
     normalized: String,
-    range: Range<usize>,
+    span: Range<u32>,
 }

@@ -1,13 +1,4 @@
 use super::*;
-use valkyrie_types::third_party::pex::{
-    helpers::{make_from_str, quotation_pair, quotation_pair_nested, whitespace},
-    ParseResult, ParseState, StopBecause,
-};
-
-use crate::traits::ThisParser;
-use lispify::{Lisp, ListString};
-use std::str::FromStr;
-use valkyrie_ast::StringLiteralNode;
 
 impl FromStr for StringTemplateNode {
     type Err = StopBecause;

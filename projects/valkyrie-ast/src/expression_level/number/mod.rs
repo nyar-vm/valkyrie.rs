@@ -10,7 +10,7 @@ pub struct NumberLiteralNode {
 }
 
 impl NumberLiteralNode {
-    pub fn new<S: ToString>(text: S, start: u32, end: u32) -> NumberLiteralNode {
-        NumberLiteralNode { value: text.to_string(), unit: None, span: start..end }
+    pub fn new<S: ToString>(text: S, span: Range<u32>) -> NumberLiteralNode {
+        NumberLiteralNode { value: text.to_string(), unit: None, span }
     }
 }

@@ -67,6 +67,12 @@ impl From<NewConstructNode> for ExpressionBody {
     }
 }
 
+impl From<TableNode> for ExpressionBody {
+    fn from(value: TableNode) -> Self {
+        Self::Table(Box::new(value))
+    }
+}
+
 // impl From<InfixNode> for ExpressionBody {
 //     fn from(value: InfixNode) -> Self {
 //         Self::Binary(Box::new(value))

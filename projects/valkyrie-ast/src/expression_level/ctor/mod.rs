@@ -1,5 +1,5 @@
 use super::*;
-use crate::{ApplyArgumentNode, PrettyTree, TableTermNode};
+mod display;
 
 /// `new stack Type⦓G⦔(args) { body }`
 ///
@@ -27,7 +27,7 @@ pub struct NewConstructNode {
     pub modifiers: Vec<IdentifierNode>,
     pub namepath: NamePathNode,
     pub generic: GenericCallNode,
-    pub arguments: ApplyArgumentNode,
+    pub arguments: ApplyCallNode,
     pub collectors: Vec<TableTermNode>,
     pub span: Range<u32>,
 }
@@ -48,11 +48,21 @@ impl PrettyPrint for NewConstructNode {
         }
         terms.push(self.arguments.build(allocator));
         if !self.collectors.is_empty() {
-            let head = allocator.text("{");
-            let body = self.collectors.iter().map(|x| x.build(allocator).append(allocator.text(",")));
-            let tail = allocator.text("}");
-            let table = head.append(allocator.concat(body)).append(tail);
-            terms.push(table)
+            let mut inline = Vec::with_capacity(6);
+            inline.push(allocator.space());
+            inline.push(allocator.text("{"));
+            inline.push(allocator.space());
+            inline.push(allocator.join(&self.collectors, allocator.text(", ")));
+            inline.push(allocator.space());
+            inline.push(allocator.text("}"));
+            let mut block = Vec::with_capacity(6);
+            block.push(allocator.space());
+            block.push(allocator.text("{"));
+            block.push(allocator.hardline());
+            block.push(allocator.join(&self.collectors, allocator.text(",").append(allocator.hardline())).indent(4));
+            block.push(allocator.hardline());
+            block.push(allocator.text("}"));
+            terms.push(allocator.concat(block).flat_alt(allocator.concat(inline)))
         }
         allocator.concat(terms)
     }

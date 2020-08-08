@@ -1,3 +1,4 @@
+use valkyrie_ast::ApplyArgumentTerm;
 use super::*;
 
 impl ThisParser for FunctionDeclaration {
@@ -52,9 +53,9 @@ impl ThisParser for ApplyArgumentNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let pattern = BracketPattern::new("(", ")");
         let (state, terms) =
-            pattern.consume(input, ignore, ArgumentTermNode::<ArgumentKeyNode, TypingExpression, ExpressionNode>::parse)?;
+            pattern.consume(input, ignore, ApplyArgumentTerm::parse)?;
         state.finish(ApplyArgumentNode {
-            terms: terms.body.into_iter().map(|s| s.map_value(|v| v.wrapper)).collect(),
+            terms: terms.body,
             span: get_span(input, state),
         })
     }

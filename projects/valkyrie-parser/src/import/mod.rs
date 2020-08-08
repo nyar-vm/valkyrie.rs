@@ -1,6 +1,7 @@
 use crate::{
     helpers::{ignore, parse_any_name_path, parse_eos, parse_name_join_dot},
     traits::ThisParser,
+    utils::get_span,
 };
 use lispify::Lisp;
 use std::sync::LazyLock;
@@ -27,7 +28,7 @@ impl ThisParser for NamespaceDeclarationNode {
             "namespace*" => NamespaceKind::Test,
             _ => NamespaceKind::Unique,
         };
-        finally.finish(NamespaceDeclarationNode::new(names, &finally.away_from(input)).with_kind(kind))
+        finally.finish(NamespaceDeclarationNode::new(names, get_span(input, finally)).with_kind(kind))
     }
 
     fn as_lisp(&self) -> Lisp {
@@ -65,7 +66,7 @@ impl ThisParser for ImportStatementNode {
         let mut group = vec![];
         let (state, _) = state.match_fn(|s| parse_maybe_group(s, &mut group))?;
         let (finally, _) = parse_eos(state)?;
-        finally.finish(ImportStatementNode { r#type: head, range: finally.away_from(input) })
+        finally.finish(ImportStatementNode { r#type: head, span: get_span(input, finally) })
     }
 
     fn as_lisp(&self) -> Lisp {

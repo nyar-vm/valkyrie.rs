@@ -1,3 +1,4 @@
+mod display;
 use super::*;
 
 #[derive(Copy, Clone, Debug, Eq, PartialEq, Hash)]
@@ -11,6 +12,15 @@ pub enum NamespaceKind {
     Test,
 }
 
+/// `namespace std.math`
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct NamespaceDeclarationNode {
+    pub kind: NamespaceKind,
+    pub path: Vec<IdentifierNode>,
+    pub span: Range<u32>,
+}
+
 impl NamespaceKind {
     /// Get the string representation of the namespace kind
     pub fn as_str(&self) -> &'static str {
@@ -22,33 +32,8 @@ impl NamespaceKind {
     }
 }
 
-impl PrettyPrint for NamespaceDeclarationNode {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        let head = allocator.keyword(self.kind.as_str());
-        let space = allocator.space();
-        let path = allocator.intersperse(self.path.iter().map(|id| id.build(allocator)), allocator.text("."));
-        let semi = allocator.text(";");
-        head.append(space).append(path).append(semi)
-    }
-}
-
-impl Display for NamespaceDeclarationNode {
-    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        f.write_str(&self.pretty_string(9999))
-    }
-}
-
-/// `namespace std.math`
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct NamespaceDeclarationNode {
-    pub kind: NamespaceKind,
-    pub path: Vec<IdentifierNode>,
-    pub span: Range<usize>,
-}
-
 impl NamespaceDeclarationNode {
-    pub fn new<I>(names: I, range: &Range<usize>) -> Self
+    pub fn new<I>(names: I, range: Range<u32>) -> Self
     where
         I: IntoIterator<Item = IdentifierNode>,
     {

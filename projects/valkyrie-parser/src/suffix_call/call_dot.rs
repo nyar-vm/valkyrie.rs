@@ -1,5 +1,20 @@
 use super::*;
-use valkyrie_ast::ExpressionNode;
+
+
+impl ThisParser for CallNode<ApplyDotNode> {
+    #[track_caller]
+    fn parse(_: ParseState) -> ParseResult<Self> {
+        unreachable!()
+    }
+
+    fn as_lisp(&self) -> Lisp {
+        let mut terms = Vec::with_capacity(3);
+        terms.push(Lisp::keyword("call/apply"));
+        terms.push(self.base.as_lisp());
+        terms.push(self.rest.as_lisp());
+        Lisp::Any(terms)
+    }
+}
 
 impl ThisParser for ApplyDotNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
@@ -10,7 +25,7 @@ impl ThisParser for ApplyDotNode {
             Some(v) => v.terms,
             None => vec![],
         };
-        finally.finish(ApplyDotNode { base: ExpressionNode::default(), caller, terms, span: finally.away_from(input) })
+        finally.finish(ApplyDotNode { base: ExpressionNode::default(), caller, terms, span: get_span(input, finally) })
     }
 
     fn as_lisp(&self) -> Lisp {

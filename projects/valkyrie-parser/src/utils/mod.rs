@@ -22,7 +22,7 @@ pub fn parse_expression_node(input: ParseState, config: ExpressionContext) -> Pa
     let resolver = ExpressionResolver::default();
     let (state, stream) = ExpressionStream::parse(input, config)?;
     let body = resolver.resolve(stream)?;
-    state.finish(ExpressionNode { r#type: config.as_type(), body, span: get_span(input, state) })
+    state.finish(ExpressionNode { type_level: config.type_level, body, span: get_span(input, state) })
 }
 
 pub fn parse_expression_body(input: ParseState, config: ExpressionContext) -> ParseResult<ExpressionBody> {

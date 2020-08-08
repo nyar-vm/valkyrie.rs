@@ -13,7 +13,7 @@ mod display;
 pub struct IfStatementNode {
     pub branches: Vec<ConditionNode>,
     pub else_branch: Vec<StatementNode>,
-    pub range: Range<usize>,
+    pub span: Range<u32>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
@@ -21,7 +21,7 @@ pub struct IfStatementNode {
 pub struct ConditionNode {
     pub condition: ConditionType,
     pub body: Vec<StatementNode>,
-    pub range: Range<usize>,
+    pub span: Range<u32>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
@@ -35,7 +35,7 @@ pub enum ConditionType {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct CasePatternNode {
-    pub range: Range<usize>,
+    pub span: Range<u32>,
 }
 
 /// Helper function to format the body of an if statement

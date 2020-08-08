@@ -2,25 +2,25 @@ use super::*;
 
 impl Debug for ValkyrieInfix {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        write!(f, "Infix({}, {:?})", self.as_operator().kind.as_str(), self.range)
+        write!(f, "Infix({}, {:?})", self.as_operator().kind.as_str(), self.span)
     }
 }
 
 impl Debug for ValkyriePrefix {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        write!(f, "Prefix({}, {:?})", self.normalized, self.range)
+        write!(f, "Prefix({}, {:?})", self.normalized, self.span)
     }
 }
 
 impl Debug for ValkyrieSuffix {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        write!(f, "Postfix({}, {:?})", self.normalized, self.range)
+        write!(f, "Postfix({}, {:?})", self.normalized, self.span)
     }
 }
 
 impl ValkyriePrefix {
-    pub fn new<S: ToString>(s: S, range: Range<usize>) -> ValkyriePrefix {
-        ValkyriePrefix { normalized: s.to_string(), range }
+    pub fn new<S: ToString>(s: S, range: Range<u32>) -> ValkyriePrefix {
+        ValkyriePrefix { normalized: s.to_string(), span: range }
     }
     pub fn precedence(&self) -> Precedence {
         Precedence(self.as_operator().kind.precedence())
@@ -39,12 +39,12 @@ impl ValkyriePrefix {
             "∜" => ValkyrieOperator::Surd(4),
             _ => unreachable!("Unknown operator: {}", self.normalized),
         };
-        OperatorNode::new(kind, self.range.clone())
+        OperatorNode::new(kind, self.span.clone())
     }
 }
 
 impl ValkyrieInfix {
-    pub fn new<S: AsRef<str>>(infix: S, range: Range<usize>) -> ValkyrieInfix {
+    pub fn new<S: AsRef<str>>(infix: S, range: Range<u32>) -> ValkyrieInfix {
         let text = infix.as_ref();
         let mut normalized = String::with_capacity(text.len());
         for c in text.chars() {
@@ -65,7 +65,7 @@ impl ValkyrieInfix {
                 _ => normalized.push(c),
             }
         }
-        ValkyrieInfix { normalized, range }
+        ValkyrieInfix { normalized, span: range }
     }
     pub fn precedence(&self) -> Precedence {
         Precedence(self.as_operator().kind.precedence())
@@ -101,13 +101,13 @@ impl ValkyrieInfix {
             "+=" => ValkyrieOperator::PlusAssign,
             _ => unreachable!("Unknown operator: {}", self.normalized),
         };
-        OperatorNode::new(kind, self.range.clone())
+        OperatorNode::new(kind, self.span.clone())
     }
 }
 
 impl ValkyrieSuffix {
-    pub fn new<S: ToString>(s: S, range: Range<usize>) -> ValkyrieSuffix {
-        ValkyrieSuffix { normalized: s.to_string(), range }
+    pub fn new<S: ToString>(s: S, range: Range<u32>) -> ValkyrieSuffix {
+        ValkyrieSuffix { normalized: s.to_string(), span: range }
     }
     pub fn precedence(&self) -> Precedence {
         Precedence(self.as_operator().kind.precedence())
@@ -123,6 +123,6 @@ impl ValkyrieSuffix {
             "‱" => ValkyrieOperator::DivideByDecimalPower(4),
             _ => unreachable!("Unknown operator: {}", self.normalized),
         };
-        OperatorNode::new(kind, self.range.clone())
+        OperatorNode::new(kind, self.span.clone())
     }
 }

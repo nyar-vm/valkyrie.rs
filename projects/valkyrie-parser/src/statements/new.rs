@@ -1,5 +1,8 @@
 use super::*;
-use crate::helpers::{parse_name_join, parse_name_join_dot};
+use crate::{
+    helpers::{parse_name_join, parse_name_join_dot},
+    utils::get_span,
+};
 use valkyrie_ast::{
     ApplyArgumentNode, ApplyCallNode, CallTermNode, GenericCallNode, IdentifierNode, NewConstructNode, TableKind, TableNode,
     TableTermNode,
@@ -40,13 +43,18 @@ impl ThisParser for NewConstructNode {
             generic: generic.unwrap_or_default(),
             arguments: arguments.unwrap_or_default(),
             collectors: collects.unwrap_or_default(),
+            span: get_span(input, finally),
         })
     }
 
     fn as_lisp(&self) -> Lisp {
-        let mut terms = Vec::with_capacity(5);
+        let mut terms = Vec::with_capacity(self.collectors.len() + 3);
         terms.push(Lisp::keyword("new"));
-
+        terms.push(self.generic.as_lisp());
+        terms.push(self.arguments.as_lisp());
+        for term in &self.collectors {
+            terms.push(term.as_lisp())
+        }
         Lisp::Any(terms)
     }
 }

@@ -1,5 +1,25 @@
 use super::*;
-use valkyrie_ast::ExpressionNode;
+use valkyrie_ast::{CallNode, ExpressionNode};
+
+impl ThisParser for CallNode<SubscriptNode> {
+    #[track_caller]
+    fn parse(_: ParseState) -> ParseResult<Self> {
+        unreachable!()
+    }
+
+    fn as_lisp(&self) -> Lisp {
+        let mut terms = Vec::with_capacity(3);
+        if self.rest.index0 {
+            terms.push(Lisp::keyword("call/subscript0"));
+        }
+        else {
+            terms.push(Lisp::keyword("call/subscript1"));
+        }
+        terms.push(self.base.as_lisp());
+        terms.push(self.rest.as_lisp());
+        Lisp::Any(terms)
+    }
+}
 
 impl ThisParser for SubscriptNode {
     /// `[` ~ `]` | `[` [term](SubscriptTermNode::parse) ( ~ `,` ~ [term](SubscriptTermNode::parse))* `,`? `]`
@@ -81,12 +101,17 @@ pub fn parse_ranged(input: ParseState) -> ParseResult<SubscriptTermNode> {
     let (state, _) = state.skip(ignore).match_char(':')?;
     let (state, end) = state.skip(ignore).match_optional(ExpressionNode::parse)?;
     let (state, step) = state.match_optional(maybe_step)?;
-    state.finish(SubscriptTermNode::sliced(start, end, step.flatten(), get_span(input, state)))
+    state.finish(SubscriptTermNode::Slice(SubscriptSliceNode {
+        start,
+        end,
+        step: step.flatten(),
+        span: get_span(input, state),
+    }))
 }
 /// - [term](ExpressionBody::parse)
 pub fn parse_single(input: ParseState) -> ParseResult<SubscriptTermNode> {
     let (state, term) = ExpressionNode::parse(input)?;
-    state.finish(SubscriptTermNode::indexed(term))
+    state.finish(SubscriptTermNode::Index(term))
 }
 
 /// `~ : ~ step?`

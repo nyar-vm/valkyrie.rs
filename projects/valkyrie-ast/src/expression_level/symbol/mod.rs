@@ -60,8 +60,7 @@ impl NamePathNode {
 }
 
 impl MacroPathNode {
-    pub fn new(path: NamePathNode, names: Vec<IdentifierNode>) -> Self {
-        let span = path.span.start..names.last().map_or(path.span.end, |n| n.span.end);
+    pub fn new(path: NamePathNode, names: Vec<IdentifierNode>, span: Range<u32>) -> Self {
         Self { path, names, span }
     }
 }

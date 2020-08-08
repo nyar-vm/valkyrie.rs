@@ -9,12 +9,11 @@ fn lex_expression() {
     repl_debug(include_str!("apply.vk"), "expression/apply_debug.rkt").expect("apply");
     repl_debug(include_str!("slice.vk"), "expression/slice_debug.rkt").expect("slice");
     repl_debug(include_str!("generic.vk"), "expression/generic_debug.rkt").expect("generic");
+    repl_debug(include_str!("new.vk"), "expression/new_debug.rkt").expect("new");
 }
 
 #[test]
-fn test_apply2() {
-    repl_debug(include_str!("new.vk"), "expression/new_debug.rkt").expect("new");
-}
+fn test_apply2() {}
 
 #[test]
 fn test_apply() {

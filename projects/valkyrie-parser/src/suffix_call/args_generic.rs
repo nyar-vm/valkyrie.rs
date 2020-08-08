@@ -1,5 +1,4 @@
 use super::*;
-use valkyrie_ast::{ArgumentTermNode, GenericArgumentTerm};
 
 impl ThisParser for GenericArgumentNode {
     fn parse(input: ParseState) -> ParseResult<Self> {

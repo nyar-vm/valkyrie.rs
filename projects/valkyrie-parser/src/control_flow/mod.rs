@@ -1,5 +1,4 @@
-use super::*;
-use crate::{helpers::ignore, ThisParser};
+use crate::{helpers::ignore, utils::get_span, ThisParser};
 use lispify::Lisp;
 use std::{borrow::Cow, ops::Range};
 use valkyrie_ast::{
@@ -22,7 +21,7 @@ impl ThisParser for ConditionNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, cond) = input.match_fn(ConditionType::parse)?;
         let (state, body) = state.skip(ignore).match_fn(FunctionBodyPart::parse)?;
-        state.finish(ConditionNode { condition: cond, body: body.body.to_vec(), range: get_span(input, state) })
+        state.finish(ConditionNode { condition: cond, body: body.body.to_vec(), span: get_span(input, state) })
     }
 
     fn as_lisp(&self) -> Lisp {
@@ -57,7 +56,7 @@ impl ThisParser for WhileLoopNode {
             condition,
             body: stmts.body.to_vec(),
             r#else: rest.map(|v| v.body.to_vec()).unwrap_or_default(),
-            range: finally.away_from(input),
+            span: get_span(input, finally),
         })
     }
 
@@ -79,7 +78,7 @@ impl ThisParser for ForLoopNode {
             condition: ConditionType::AlwaysTrue,
             body: vec![],
             r#else: vec![],
-            range: get_span(input, state),
+            span: get_span(input, state),
         })
     }
 

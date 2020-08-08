@@ -1,7 +1,29 @@
 mod display;
 
 use super::*;
-use crate::ArgumentTermNode;
+
+/// `(mut self, a, b: int, c: T = 3, ⁑args, ⁂kwargs)`
+#[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ApplyArgumentNode {
+    /// The raw string of the number.
+    pub terms: Vec<ApplyArgumentTerm>,
+    /// The range of the number.
+    pub span: Range<u32>,
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ApplyArgumentTerm {
+    pub term: ArgumentTermNode<ArgumentKeyNode, ExpressionNode, ExpressionNode>,
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ArgumentKeyNode {
+    pub modifiers: Vec<IdentifierNode>,
+    pub key: IdentifierNode,
+}
 
 /// `term.call(0, a: 1, ⁑args, ⁂kwargs)`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
@@ -12,13 +34,13 @@ pub struct ApplyDotNode {
     /// The raw string of the number.
     pub caller: IdentifierNode,
     /// The range of the number.
-    pub terms: Vec<CallTermNode<IdentifierNode, ExpressionNode>>,
+    pub terms: Vec<ApplyCallTerm>,
     /// The range of the number.
     pub span: Range<u32>,
 }
 
 /// `apply(0, a: 1, ⁑args, ⁂kwargs)`
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ApplyCallNode {
     /// The raw string of the number.
@@ -31,23 +53,6 @@ pub struct ApplyCallNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ApplyCallTerm {
     pub term: CallTermNode<IdentifierNode, ExpressionNode>,
-}
-
-/// `(mut self, a, b: int, c: T = 3, ⁑args, ⁂kwargs)`
-#[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ApplyArgumentNode {
-    /// The raw string of the number.
-    pub terms: Vec<ArgumentTermNode<ArgumentKeyNode, ExpressionNode, ExpressionNode>>,
-    /// The range of the number.
-    pub span: Range<u32>,
-}
-
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ArgumentKeyNode {
-    pub modifiers: Vec<IdentifierNode>,
-    pub key: IdentifierNode,
 }
 
 impl<K, V> CallTermNode<K, V> {

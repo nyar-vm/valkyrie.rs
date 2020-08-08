@@ -1,5 +1,4 @@
 use super::*;
-use valkyrie_ast::{NumberLiteralNode, StringLiteralNode, SubscriptNode, TableKeyType, TableTermNode};
 
 impl ThisParser for TableNode {
     /// `[` ~ `]` | `[` [term](CallTermNode::parse) ( ~ `,` ~ [term](CallTermNode::parse))* `,`? `]`

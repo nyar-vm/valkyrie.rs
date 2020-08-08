@@ -1,29 +1,35 @@
 use super::*;
-use crate::PrettyTree;
 
+// noinspection DuplicatedCode
 impl PrettyPrint for GenericCallNode {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        let lhs = allocator.text("⦓").append(allocator.softline());
-        let rhs = allocator.softline().append(allocator.text("⦔"));
-        let body = allocator.intersperse(self.terms.iter().map(|c| c.build(allocator)), ", ");
-        lhs.append(body).append(rhs)
+        let mut terms = Vec::with_capacity(3);
+        terms.push(allocator.text("⦓"));
+        terms.push(allocator.intersperse(self.terms.iter().map(|s| s.build(allocator)), allocator.text(", ")));
+        terms.push(allocator.text("⦔"));
+        allocator.concat(terms)
     }
 }
 
 impl PrettyPrint for GenericCallTerm {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        self.term.build(allocator)
+        let mut terms = Vec::with_capacity(3);
+        if let Some(k) = &self.term.key {
+            terms.push(allocator.generic(k.name.to_owned()));
+            terms.push(allocator.text(": "));
+        }
+        terms.push(self.term.value.build(allocator));
+        allocator.concat(terms)
     }
 }
 
+// noinspection DuplicatedCode
 impl PrettyPrint for GenericArgumentNode {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         let mut terms = Vec::with_capacity(3);
-        if !self.terms.is_empty() {
-            terms.push(allocator.text("⦓"));
-            terms.push(allocator.intersperse(self.terms.iter().map(|s| s.build(allocator)), allocator.text(", ")));
-            terms.push(allocator.text("⦔"));
-        }
+        terms.push(allocator.text("⦓"));
+        terms.push(allocator.intersperse(self.terms.iter().map(|s| s.build(allocator)), allocator.text(", ")));
+        terms.push(allocator.text("⦔"));
         allocator.concat(terms)
     }
 }

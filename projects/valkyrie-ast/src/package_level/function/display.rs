@@ -1,4 +1,5 @@
 use super::*;
+use crate::expression_level::apply::ApplyArgumentTerm;
 
 impl FunctionType {
     pub fn as_str(&self) -> &'static str {
@@ -12,15 +13,6 @@ impl FunctionType {
 impl PrettyPrint for FunctionType {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         allocator.keyword(self.as_str())
-    }
-}
-
-impl PrettyPrint for ApplyArgumentNode {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        allocator
-            .text("(")
-            .append(allocator.intersperse(self.terms.iter().map(|x| x.build(allocator)), allocator.text(", ")))
-            .append(allocator.text(")"))
     }
 }
 
