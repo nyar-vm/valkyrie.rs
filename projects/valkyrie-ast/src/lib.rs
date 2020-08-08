@@ -26,7 +26,7 @@ pub use crate::{
         symbol::{IdentifierNode, MacroKind, MacroPathNode, NamePathNode},
         table::{TableKeyType, TableKind, TableNode, TableTermNode},
         view::{SubscriptNode, SubscriptSliceNode, SubscriptTermNode},
-        ExpressionBody, ExpressionContext, ExpressionNode, ExpressionType,
+        ExpressionBody, ExpressionContext, ExpressionNode,
     },
     helper::{PrettyPrint, PrettyProvider, PrettyTree},
     package_level::{

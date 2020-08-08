@@ -6,7 +6,6 @@ mod display;
 pub struct CallNode<E> {
     pub base: ExpressionNode,
     pub rest: E,
-    pub range: Range<usize>,
 }
 
 /// `term` or `field: term`

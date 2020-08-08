@@ -30,17 +30,9 @@ use std::{
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ExpressionNode {
-    pub r#type: ExpressionType,
+    pub type_level: bool,
     pub body: ExpressionBody,
     pub range: Range<usize>,
-}
-
-#[repr(u8)]
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum ExpressionType {
-    Term,
-    Type,
 }
 
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
@@ -59,9 +51,9 @@ pub enum ExpressionBody {
     Number(Box<NumberLiteralNode>),
     String(Box<StringLiteralNode>),
     New(Box<NewConstructNode>),
-    Prefix(Box<PrefixNode<Self>>),
-    Binary(Box<InfixNode<ExpressionNode>>),
-    Suffix(Box<PostfixNode<Self>>),
+    Prefix(Box<PrefixNode>),
+    Binary(Box<InfixNode>),
+    Suffix(Box<PostfixNode>),
     Table(Box<TableNode>),
     Apply(Box<CallNode<ApplyCallNode>>),
     ApplyDot(Box<ApplyDotNode>),
@@ -94,33 +86,33 @@ impl ExpressionContext {
 }
 
 impl ExpressionNode {
-    pub fn binary(o: OperatorNode, lhs: Self, rhs: Self) -> ExpressionBody {
-        let mut out = ExpressionBody::Binary(Box::new(InfixNode { operator: o, lhs, rhs, range: Default::default() }));
-        out.update_range();
-        out
+    pub fn binary(o: OperatorNode, lhs: Self, rhs: Self) -> Self {
+        let ty = lhs.r#type;
+        let range = lhs.range.start..rhs.range.end;
+        let body = ExpressionBody::Binary(Box::new(InfixNode { operator: o, lhs, rhs }));
+        Self { r#type: ty, body, range }
     }
-    pub fn prefix(o: OperatorNode, rhs: Self) -> ExpressionBody {
-        let mut out = ExpressionBody::Prefix(Box::new(PrefixNode { operator: o, base: rhs, range: Default::default() }));
-        out.update_range();
-        out
+    pub fn prefix(o: OperatorNode, rhs: Self) -> Self {
+        let ty = rhs.r#type;
+        let range = o.range.start..rhs.range.end;
+        let body = ExpressionBody::Prefix(Box::new(PrefixNode { operator: o, base: rhs }));
+        Self { r#type: ty, body, range }
     }
-    pub fn suffix(o: OperatorNode, rhs: Self) -> ExpressionBody {
-        let mut out = ExpressionBody::Suffix(Box::new(PostfixNode { operator: o, base: rhs, range: Default::default() }));
-        out.update_range();
-        out
+    pub fn suffix(o: OperatorNode, lhs: Self) -> Self {
+        let ty = lhs.r#type;
+        let range = lhs.range.start..o.range.end;
+        let body = ExpressionBody::Suffix(Box::new(PostfixNode { operator: o, base: lhs }));
+        Self { r#type: ty, body, range }
     }
-}
+    pub fn call_generic(base: Self, rest: GenericCallNode) -> Self {
+        let range = base.range.start..rest.range.end;
 
-impl ExpressionBody {
-    pub fn call_generic(base: ExpressionNode, rest: GenericCallNode) -> ExpressionBody {
-        let range = base.range.start..rest.range.end;
-        let call = CallNode { base, rest, range };
-        ExpressionBody::GenericCall(Box::new(call))
+        Self { r#type: base.r#type, body: ExpressionBody::GenericCall(Box::new(CallNode { base, rest })), range }
     }
-    pub fn call_apply(base: ExpressionNode, rest: ApplyCallNode) -> ExpressionBody {
+    pub fn call_apply(base: Self, rest: ApplyCallNode) -> Self {
         let range = base.range.start..rest.range.end;
-        let call = CallNode { base, rest, range };
-        ExpressionBody::Apply(Box::new(call))
+
+        Self { r#type: base.r#type, body: ExpressionBody::Apply(Box::new(CallNode { base, rest })), range }
     }
 }
 

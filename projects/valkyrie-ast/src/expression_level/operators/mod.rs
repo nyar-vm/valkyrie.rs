@@ -141,7 +141,6 @@ impl ValkyrieOperator {
 pub struct PrefixNode {
     pub operator: OperatorNode,
     pub base: ExpressionNode,
-    pub range: Range<usize>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
@@ -150,7 +149,6 @@ pub struct InfixNode {
     pub operator: OperatorNode,
     pub lhs: ExpressionNode,
     pub rhs: ExpressionNode,
-    pub range: Range<usize>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
@@ -158,7 +156,6 @@ pub struct InfixNode {
 pub struct PostfixNode {
     pub operator: OperatorNode,
     pub base: ExpressionNode,
-    pub range: Range<usize>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
@@ -166,13 +163,6 @@ pub struct PostfixNode {
 pub struct OperatorNode {
     pub kind: ValkyrieOperator,
     pub range: Range<usize>,
-}
-
-impl<E> PrefixNode<E> {
-    pub fn update_range(mut self, range: Range<usize>) -> Self {
-        self.range = range;
-        self
-    }
 }
 
 impl OperatorNode {

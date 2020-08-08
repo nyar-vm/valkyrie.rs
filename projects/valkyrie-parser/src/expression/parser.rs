@@ -5,7 +5,7 @@ use valkyrie_ast::{
     StatementType::Expression,
 };
 
-impl ThisParser for PrefixNode<ExpressionBody> {
+impl ThisParser for PrefixNode {
     fn parse(_: ParseState) -> ParseResult<Self> {
         unreachable!()
     }
@@ -15,7 +15,7 @@ impl ThisParser for PrefixNode<ExpressionBody> {
     }
 }
 
-impl ThisParser for InfixNode<ExpressionBody> {
+impl ThisParser for InfixNode {
     fn parse(_: ParseState) -> ParseResult<Self> {
         unreachable!()
     }
@@ -25,7 +25,7 @@ impl ThisParser for InfixNode<ExpressionBody> {
     }
 }
 
-impl ThisParser for PostfixNode<ExpressionBody> {
+impl ThisParser for PostfixNode {
     fn parse(_: ParseState) -> ParseResult<Self> {
         unreachable!()
     }
@@ -153,7 +153,7 @@ pub enum NormalPostfixCall {
 }
 
 #[inline]
-pub fn parse_value(input: ParseState, allow_curly: bool) -> ParseResult<ExpressionBody> {
+pub fn parse_value(input: ParseState, allow_curly: bool) -> ParseResult<ExpressionNode> {
     let (state, mut base) = input
         .begin_choice()
         .or_else(|s| NewConstructNode::parse(s).map_inner(|s| ExpressionBody::New(Box::new(s))))
@@ -169,10 +169,10 @@ pub fn parse_value(input: ParseState, allow_curly: bool) -> ParseResult<Expressi
     }?;
     for caller in rest {
         match caller {
-            NormalPostfixCall::Apply(v) => base = ExpressionBody::call_apply(base, v),
+            NormalPostfixCall::Apply(v) => base = ExpressionNode::call_apply(base, v),
             NormalPostfixCall::ApplyDot(v) => base = ExpressionBody::ApplyDot(v.rebase(base)),
             NormalPostfixCall::View(v) => base = ExpressionBody::Subscript(v.rebase(base)),
-            NormalPostfixCall::Generic(v) => base = ExpressionBody::call_generic(base, v),
+            NormalPostfixCall::Generic(v) => base = ExpressionNode::call_generic(base, v),
             NormalPostfixCall::Lambda(v) => base = ExpressionBody::LambdaCall(v.rebase(base)),
             NormalPostfixCall::LambdaDot(v) => base = ExpressionBody::LambdaDot(v.rebase(base)),
         }

@@ -68,13 +68,13 @@ impl PrettyPrint for OperatorNode {
     }
 }
 
-impl<E: PrettyPrint> PrettyPrint for PrefixNode<E> {
+impl PrettyPrint for PrefixNode {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         self.operator.build(allocator).append(self.base.build(allocator))
     }
 }
 
-impl<E: PrettyPrint> PrettyPrint for InfixNode<E> {
+impl PrettyPrint for InfixNode {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         let mut items = Vec::with_capacity(5);
         items.push(self.lhs.build(allocator));
@@ -86,7 +86,7 @@ impl<E: PrettyPrint> PrettyPrint for InfixNode<E> {
     }
 }
 
-impl<E: PrettyPrint> PrettyPrint for PostfixNode<E> {
+impl PrettyPrint for PostfixNode {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         self.base.build(allocator).append(self.operator.build(allocator))
     }

@@ -120,8 +120,8 @@ where
         &mut self,
         lhs: ExpressionNode,
         tree: ExpressionStream,
-        rhs: ExpressionBody,
-    ) -> Result<ExpressionBody, StopBecause> {
+        rhs: ExpressionNode,
+    ) -> Result<ExpressionNode, StopBecause> {
         match tree {
             ExpressionStream::Infix(o) => Ok(ExpressionNode::binary(o.as_operator(), lhs, rhs)),
             _ => unreachable!(),
@@ -129,17 +129,17 @@ where
     }
 
     // Construct a unary prefix expression, e.g. !1
-    fn prefix(&mut self, tree: ExpressionStream, rhs: ExpressionNode) -> Result<ExpressionBody, StopBecause> {
+    fn prefix(&mut self, tree: ExpressionStream, rhs: ExpressionNode) -> Result<ExpressionNode, StopBecause> {
         match tree {
-            ExpressionStream::Prefix(o) => Ok(ExpressionBody::prefix(o.as_operator(), rhs)),
+            ExpressionStream::Prefix(o) => Ok(ExpressionNode::prefix(o.as_operator(), rhs)),
             _ => unreachable!(),
         }
     }
 
     // Construct a unary postfix expression, e.g. 1?
-    fn postfix(&mut self, lhs: ExpressionBody, tree: ExpressionStream) -> Result<ExpressionBody, StopBecause> {
+    fn postfix(&mut self, lhs: ExpressionNode, tree: ExpressionStream) -> Result<ExpressionNode, StopBecause> {
         match tree {
-            ExpressionStream::Postfix(o) => Ok(ExpressionBody::suffix(o.as_operator(), lhs)),
+            ExpressionStream::Postfix(o) => Ok(ExpressionNode::suffix(o.as_operator(), lhs)),
             _ => unreachable!(),
         }
     }

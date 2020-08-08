@@ -41,15 +41,20 @@ impl Default for ExpressionBody {
     }
 }
 
-impl From<PrefixNode<ExpressionBody>> for ExpressionBody {
-    fn from(value: PrefixNode<ExpressionBody>) -> Self {
+impl From<PrefixNode> for ExpressionBody {
+    fn from(value: PrefixNode) -> Self {
         ExpressionBody::Prefix(Box::new(value))
     }
 }
 
-impl From<InfixNode<ExpressionBody>> for ExpressionBody {
-    fn from(value: InfixNode<ExpressionBody>) -> Self {
+impl From<InfixNode> for ExpressionBody {
+    fn from(value: InfixNode) -> Self {
         ExpressionBody::Binary(Box::new(value))
+    }
+}
+impl From<PostfixNode> for ExpressionBody {
+    fn from(value: PostfixNode) -> Self {
+        ExpressionBody::Suffix(Box::new(value))
     }
 }
 

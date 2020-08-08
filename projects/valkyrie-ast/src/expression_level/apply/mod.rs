@@ -86,13 +86,6 @@ impl<K, V, D> ArgumentTermNode<K, V, D> {
     }
 }
 
-impl<E> CallNode<E> {
-    pub fn rebase(base: ExpressionNode, rest: E) -> Box<Self> {
-        let range = base.range.clone();
-        Box::new(Self { base, rest, range: range.start..range.end })
-    }
-}
-
 impl ApplyDotNode {
     pub fn rebase(mut self: Box<Self>, base: ExpressionBody) -> Box<Self> {
         self.base.body = base;
