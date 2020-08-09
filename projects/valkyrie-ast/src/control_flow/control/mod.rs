@@ -11,12 +11,22 @@ pub struct ControlNode {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum ControlType {
+    /// `break label`
     Break,
+    /// `continue label`
     Continue,
+    /// `fallthrough`
     Fallthrough,
+    /// `return`
     Return,
+    /// `raise`
     Raise,
-    Yield,
+    /// `yield return?`
+    YieldReturn,
+    /// `yield break`
+    YieldBreak,
+    /// `yield from`
+    YieldFrom,
 }
 
 impl Display for ControlType {
@@ -27,7 +37,9 @@ impl Display for ControlType {
             ControlType::Fallthrough => f.write_str("fallthrough"),
             ControlType::Return => f.write_str("return"),
             ControlType::Raise => f.write_str("raise"),
-            ControlType::Yield => f.write_str("yield"),
+            ControlType::YieldReturn => f.write_str("yield"),
+            ControlType::YieldBreak => f.write_str("yield break"),
+            ControlType::YieldFrom => f.write_str("yield from"),
         }
     }
 }

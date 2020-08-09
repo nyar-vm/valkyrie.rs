@@ -12,15 +12,27 @@ new D<>;
 
 new E<>(){};
 
-new stack List {
+new stack List
+{
     "term"
 }
 
-new stack List(10) {
+
+new Integer<A> () {
+
+}
+
+new stack List<A> () {
+
+}
+
+new stack List(10)
+{
     0, 1, 2, 3, 4, 5, 6, 7, 8, 9
 }
 
-new stack List<T: Integer>(capacity: 10) {
+new stack List<T: Integer>(capacity: 10)
+{
     0, 1, 2, 3, 4, 5, 6, 7, 8, 9
 }
 
@@ -31,3 +43,22 @@ new stack Object {
     (key, value),
     key: value
 }
+
+
+
+new keywords BaseballTeam<T> (args) {
+	a: b,
+    ["RF"]: "Mookie Betts",
+    ["CF"]: "Mike Trout",
+    (key, value),
+    new IndexersExample {
+        name: "object one",
+        Size: Math::PI,
+        [1]: '1',
+        [2]: '4',
+        [3]: '9',
+        ['C', 4]: "Middle C"
+    },
+    [4]: "Jose Altuve",
+}
+

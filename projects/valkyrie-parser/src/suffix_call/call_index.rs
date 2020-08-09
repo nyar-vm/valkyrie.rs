@@ -25,13 +25,12 @@ impl ThisParser for SubscriptNode {
     /// `[` ~ `]` | `[` [term](SubscriptTermNode::parse) ( ~ `,` ~ [term](SubscriptTermNode::parse))* `,`? `]`
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, (index0, terms)) = input.begin_choice().or_else(parse_index1).or_else(parse_index0).end_choice()?;
-        state.finish(SubscriptNode { index0, base: ExpressionNode::default(), terms: terms.body, span: get_span(input, state) })
+        state.finish(SubscriptNode { index0, terms: terms.body, span: get_span(input, state) })
     }
 
     fn as_lisp(&self) -> Lisp {
         let mut terms = Vec::with_capacity(self.terms.len() + 2);
         terms.push(Lisp::keyword(self.method()));
-        terms.push(self.base.as_lisp());
         for term in &self.terms {
             terms.push(term.as_lisp());
         }

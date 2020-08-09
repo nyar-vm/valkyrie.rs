@@ -7,8 +7,6 @@ mod display;
 pub struct SubscriptNode {
     pub index0: bool,
     /// The raw string of the number.
-    pub base: ExpressionNode,
-    /// The raw string of the number.
     pub terms: Vec<SubscriptTermNode>,
     /// The range of the number.
     pub span: Range<u32>,
@@ -39,10 +37,6 @@ pub struct SubscriptSliceNode {
 }
 
 impl SubscriptNode {
-    pub fn rebase(mut self: Box<Self>, base: ExpressionBody) -> Box<Self> {
-        self.base.body = base;
-        self
-    }
     pub fn method(&self) -> &'static str {
         if self.index0 { "subscript0" } else { "subscript1" }
     }

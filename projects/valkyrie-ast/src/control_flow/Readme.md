@@ -3,30 +3,46 @@
 
 ## For statement
 
-```markdown
-for `pattern` in `iterator` {
+```scala
+for `pattern` in `iterator`
+{
     `[body]`
 }
-else {
+else
+{
     `[otherwise]`
 }
 ```
 
 ## Loop statement
 
-```markdown
-loop {
+```scala
+loop
+{
     `[body]`
 }
 ```
 
 ## While statement
 
-```markdown
-while `condition` {
+```scala
+while `condition`
+{
     `[body]`
 }
-else {
+else 
+{
     `[otherwise]`
+}
+```
+
+
+```while
+let a = return xx;
+let b = yield xx;
+
+new Class() 
+{
+
 }
 ```

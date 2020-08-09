@@ -5,14 +5,13 @@
 (table (+ 1 2) 3 (table 4 5))
 (table (+ 1 2) 3 (table 4 5 (table)))
 (table (table) (table (table)) (table (table) (table (table))))
-(call/subscript1 array (subscript1 placeholder))
-(call/subscript0 array (subscript0 placeholder))
-(call/subscript1 array (subscript1 placeholder 0))
-(call/subscript0 array (subscript0 placeholder 1))
+(call/subscript1 array (subscript1))
+(call/subscript0 array (subscript0))
+(call/subscript1 array (subscript1 0))
+(call/subscript0 array (subscript0 1))
 (call/subscript1
   array
   (subscript1
-    placeholder
     (range null null null)
     (range null null null)
     (range null null null)
@@ -24,7 +23,6 @@
 (call/subscript0
   array
   (subscript0
-    placeholder
     (range null null null)
     (range null null null)
     (range null null null)
