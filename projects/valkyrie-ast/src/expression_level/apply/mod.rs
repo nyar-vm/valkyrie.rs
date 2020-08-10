@@ -30,8 +30,6 @@ pub struct ArgumentKeyNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ApplyDotNode {
     /// The raw string of the number.
-    pub base: ExpressionNode,
-    /// The raw string of the number.
     pub caller: IdentifierNode,
     /// The range of the number.
     pub terms: Vec<ApplyCallTerm>,
@@ -88,12 +86,5 @@ impl<K, V, D> ArgumentTermNode<K, V, D> {
         F: FnOnce(D) -> O,
     {
         ArgumentTermNode { key: self.key, value: self.value, default: self.default.map(f) }
-    }
-}
-
-impl ApplyDotNode {
-    pub fn rebase(mut self: Box<Self>, base: ExpressionBody) -> Box<Self> {
-        self.base.body = base;
-        self
     }
 }

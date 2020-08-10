@@ -17,7 +17,14 @@ impl PrettyPrint for StatementType {
             StatementType::While(node) => node.build(allocator),
             StatementType::For(node) => node.build(allocator),
             StatementType::Expression(node) => node.build(allocator),
+            StatementType::Control(node) => node.build(allocator),
         }
+    }
+}
+
+impl From<ControlNode> for StatementType {
+    fn from(value: ControlNode) -> Self {
+        StatementType::Control(Box::new(value))
     }
 }
 

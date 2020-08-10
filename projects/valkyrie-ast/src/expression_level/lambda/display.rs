@@ -2,20 +2,27 @@ use super::*;
 
 impl PrettyPrint for LambdaCallNode {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        let head = self.base.build(allocator);
-        let lhs = allocator.text("{").append(allocator.hardline());
-        let rhs = allocator.hardline().append(allocator.text("}"));
-        let body = self.body.iter().map(|x| x.build(allocator).append(allocator.hardline()));
-        head.append(allocator.space()).append(lhs).append(allocator.concat(body)).append(rhs)
+        let mut terms = Vec::with_capacity(6);
+        terms.push(allocator.space());
+        terms.push(allocator.text("{"));
+        terms.push(allocator.hardline());
+        terms.push(allocator.intersperse(&self.body, allocator.hardline()).indent(4));
+        terms.push(allocator.hardline());
+        terms.push(allocator.text("}"));
+        allocator.concat(terms)
     }
 }
 
 impl PrettyPrint for LambdaDotNode {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        let head = self.base.build(allocator);
-        let lhs = allocator.text(".{").append(allocator.hardline());
-        let rhs = allocator.hardline().append(allocator.text("}"));
-        let body = self.body.iter().map(|x| x.build(allocator).append(allocator.hardline()));
-        head.append(lhs).append(allocator.concat(body)).append(rhs)
+        let newline = allocator.hardline();
+        let mut terms = Vec::with_capacity(6);
+        terms.push(allocator.text("."));
+        terms.push(allocator.text("{"));
+        terms.push(allocator.space());
+        terms.push(allocator.join(&self.body, ";"));
+        terms.push(allocator.space());
+        terms.push(allocator.text("}"));
+        newline.append(allocator.concat(terms).indent(4))
     }
 }

@@ -15,7 +15,6 @@ pub struct LambdaNode {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct LambdaCallNode {
-    pub base: ExpressionNode,
     pub arguments: Option<LambdaArgumentNode>,
     pub body: Vec<StatementNode>,
     pub span: Range<u32>,
@@ -25,7 +24,6 @@ pub struct LambdaCallNode {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct LambdaDotNode {
-    pub base: ExpressionNode,
     pub arguments: Option<LambdaArgumentNode>,
     pub body: Vec<StatementNode>,
     pub span: Range<u32>,
@@ -44,24 +42,10 @@ pub struct LambdaArgumentNode {
 impl LambdaNode {
     #[allow(clippy::wrong_self_convention)]
     pub fn as_lambda_call(self) -> LambdaCallNode {
-        LambdaCallNode { base: ExpressionNode::default(), arguments: self.arguments, body: self.body, span: self.span }
+        LambdaCallNode { arguments: self.arguments, body: self.body, span: self.span }
     }
     #[allow(clippy::wrong_self_convention)]
     pub fn as_lambda_dot(self) -> LambdaDotNode {
-        LambdaDotNode { base: ExpressionNode::default(), arguments: self.arguments, body: self.body, span: self.span }
-    }
-}
-
-impl LambdaCallNode {
-    pub fn rebase(mut self: Box<Self>, base: ExpressionBody) -> Box<Self> {
-        self.base.body = base;
-        self
-    }
-}
-
-impl LambdaDotNode {
-    pub fn rebase(mut self: Box<Self>, base: ExpressionBody) -> Box<Self> {
-        self.base.body = base;
-        self
+        LambdaDotNode { arguments: self.arguments, body: self.body, span: self.span }
     }
 }

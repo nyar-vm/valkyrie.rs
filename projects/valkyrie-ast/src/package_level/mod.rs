@@ -6,17 +6,10 @@ pub mod license;
 pub mod namespace;
 use crate::{
     package_level::{classes::ClassDeclaration, namespace::NamespaceDeclarationNode},
-    ApplyArgumentNode, ArgumentTermNode, ExpressionNode, ForLoopNode, FunctionDeclaration, GenericArgumentNode, IdentifierNode,
-    ImportStatementNode, NamePathNode, StringLiteralNode, WhileLoopNode,
+    ApplyArgumentNode, ArgumentTermNode, ControlNode, ExpressionNode, ForLoopNode, FunctionDeclaration, GenericArgumentNode,
+    IdentifierNode, ImportStatementNode, NamePathNode, StringLiteralNode, WhileLoopNode,
 };
-use alloc::{
-    borrow::Cow,
-    boxed::Box,
-    fmt::{Display, Formatter, Write},
-    string::String,
-    vec,
-    vec::Vec,
-};
+use alloc::{borrow::Cow, boxed::Box, string::String, vec, vec::Vec};
 use core::ops::Range;
 #[cfg(feature = "pretty-print")]
 use pretty_print::{PrettyPrint, PrettyProvider, PrettyTree};
@@ -40,6 +33,7 @@ pub enum StatementType {
     Function(Box<FunctionDeclaration>),
     While(Box<WhileLoopNode>),
     For(Box<ForLoopNode>),
+    Control(Box<ControlNode>),
     Expression(Box<ExpressionNode>),
 }
 

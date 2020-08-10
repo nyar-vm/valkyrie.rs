@@ -1,3 +1,5 @@
+mod display;
+
 use super::*;
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
@@ -5,7 +7,7 @@ use super::*;
 pub struct ControlNode {
     pub r#type: ControlType,
     pub expression: Option<ExpressionNode>,
-    pub range: Range<usize>,
+    pub span: Range<u32>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
@@ -27,19 +29,4 @@ pub enum ControlType {
     YieldBreak,
     /// `yield from`
     YieldFrom,
-}
-
-impl Display for ControlType {
-    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        match self {
-            ControlType::Break => f.write_str("break"),
-            ControlType::Continue => f.write_str("continue"),
-            ControlType::Fallthrough => f.write_str("fallthrough"),
-            ControlType::Return => f.write_str("return"),
-            ControlType::Raise => f.write_str("raise"),
-            ControlType::YieldReturn => f.write_str("yield"),
-            ControlType::YieldBreak => f.write_str("yield break"),
-            ControlType::YieldFrom => f.write_str("yield from"),
-        }
-    }
 }

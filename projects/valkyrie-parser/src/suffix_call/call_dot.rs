@@ -1,6 +1,5 @@
 use super::*;
 
-
 impl ThisParser for CallNode<ApplyDotNode> {
     #[track_caller]
     fn parse(_: ParseState) -> ParseResult<Self> {
@@ -9,7 +8,7 @@ impl ThisParser for CallNode<ApplyDotNode> {
 
     fn as_lisp(&self) -> Lisp {
         let mut terms = Vec::with_capacity(3);
-        terms.push(Lisp::keyword("call/apply"));
+        terms.push(Lisp::keyword("call/apply-dot"));
         terms.push(self.base.as_lisp());
         terms.push(self.rest.as_lisp());
         Lisp::Any(terms)
@@ -25,13 +24,11 @@ impl ThisParser for ApplyDotNode {
             Some(v) => v.terms,
             None => vec![],
         };
-        finally.finish(ApplyDotNode { base: ExpressionNode::default(), caller, terms, span: get_span(input, finally) })
+        finally.finish(ApplyDotNode { caller, terms, span: get_span(input, finally) })
     }
 
     fn as_lisp(&self) -> Lisp {
         let mut terms = Vec::with_capacity(self.terms.len() + 3);
-        terms.push(Lisp::keyword("apply-dot"));
-        terms.push(self.base.as_lisp());
         terms.push(self.caller.as_lisp());
         for term in &self.terms {
             terms.push(term.as_lisp());

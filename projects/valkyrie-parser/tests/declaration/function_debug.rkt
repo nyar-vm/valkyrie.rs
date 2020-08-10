@@ -5,5 +5,5 @@
 (macro
   outer
   (arguments ((lhs) L null))
-  (body (micro inner (arguments ((rhs) R null)) (body (loop (+= count 1) (call/apply print (apply {lhs} {rhs}))))) {count}))
+  (body (micro inner (arguments ((rhs) R null)) (body (loop (< count 10) (+= count 1) (call/apply print (apply {lhs} {rhs}))))) {count}))
 (micro main (arguments ((mut args) (table String) null)) (body (call/apply (call/apply outer (apply Hello)) (apply world)) return 0))

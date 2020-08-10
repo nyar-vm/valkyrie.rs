@@ -1,4 +1,5 @@
 use super::*;
+use valkyrie_ast::ControlNode;
 
 impl ThisParser for ReplRoot {
     fn parse(input: ParseState) -> ParseResult<Self> {
@@ -48,9 +49,10 @@ impl ThisParser for StatementType {
             .or_else(|s| NamespaceDeclarationNode::parse(s).map_inner(Into::into))
             .or_else(|s| ImportStatementNode::parse(s).map_inner(Into::into))
             .or_else(|s| ClassDeclaration::parse(s).map_inner(Into::into))
-            .or_else(function_mods)
+            .or_else(function_with_head)
             .or_else(|s| WhileLoopNode::parse(s).map_inner(Into::into))
             .or_else(|s| ForLoopNode::parse(s).map_inner(Into::into))
+            .or_else(|s| ControlNode::parse(s).map_inner(Into::into))
             .or_else(|s| parse_expression_node(s, ExpressionContext::in_free()).map_inner(Into::into))
             .end_choice()
     }
@@ -65,6 +67,7 @@ impl ThisParser for StatementType {
             StatementType::Class(v) => v.as_lisp(),
             StatementType::Expression(v) => v.as_lisp(),
             StatementType::Function(v) => v.as_lisp(),
+            StatementType::Control(v) => v.as_lisp(),
         }
     }
 }
@@ -82,7 +85,7 @@ pub fn parse_repl_statements(input: ParseState) -> ParseResult<StatementType> {
         .end_choice()
 }
 
-fn function_mods(input: ParseState) -> ParseResult<StatementType> {
+fn function_with_head(input: ParseState) -> ParseResult<StatementType> {
     let (state, mods) = parse_modifiers(input, FunctionType::parse)?;
     let (state, mut func) = state.skip(ignore).match_fn(FunctionDeclaration::parse)?;
     func.modifiers = mods.modifiers;

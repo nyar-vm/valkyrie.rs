@@ -2,15 +2,14 @@ use super::*;
 
 impl PrettyPrint for ApplyDotNode {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        let head = self.base.build(allocator);
-        let lhs = allocator
-            .text(".")
-            .append(allocator.text(self.caller.name.clone()))
-            .append(allocator.text("("))
-            .append(allocator.hardline());
-        let rhs = allocator.hardline().append(allocator.text(")"));
-        let body = self.terms.iter().map(|x| x.build(allocator).append(allocator.hardline()));
-        head.append(lhs).append(allocator.concat(body)).append(rhs)
+        let newline = allocator.hardline();
+        let mut terms = Vec::with_capacity(6);
+        terms.push(allocator.text("."));
+        terms.push(allocator.identifier(self.caller.name.clone()));
+        terms.push(allocator.text("("));
+        terms.push(allocator.join(&self.terms, ", "));
+        terms.push(allocator.text(")"));
+        newline.append(allocator.concat(terms).indent(4))
     }
 }
 

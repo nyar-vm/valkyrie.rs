@@ -15,7 +15,6 @@ impl PrettyPrint for ExpressionNode {
 
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for ExpressionBody {
-    #[track_caller]
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         match self {
             ExpressionBody::Placeholder => unreachable!(),
