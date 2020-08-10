@@ -1,6 +1,4 @@
 use super::*;
-use crate::{PrettyPrint, PrettyProvider, PrettyTree};
-use pretty::DocAllocator;
 
 impl PrettyPrint for StatementNode {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {

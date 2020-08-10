@@ -3,8 +3,8 @@ use core::{
     fmt::{Debug, Display, Formatter},
     ops::Range,
 };
-use pretty::DocAllocator;
-use std::{borrow::Cow, boxed::Box, vec::Vec};
+
+use alloc::{borrow::Cow, boxed::Box, vec::Vec};
 
 pub mod control;
 pub mod for_loop;

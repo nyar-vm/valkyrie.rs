@@ -47,17 +47,22 @@ new stack Object {
 
 
 new keywords BaseballTeam<T> (args) {
-	a: b,
+    name: "object one",
+    Size: Math::PI,
     ["RF"]: "Mookie Betts",
     ["CF"]: "Mike Trout",
+    (key),
+    (key,),
     (key, value),
+    (key, value1, value2),
     new IndexersExample {
-        name: "object one",
-        Size: Math::PI,
         [1]: '1',
         [2]: '4',
         [3]: '9',
-        ['C', 4]: "Middle C"
+        ['C', 4]: "Middle C",
+        ['A', 4]: "440 Hz",
+        ['F', 7]: "F above middle C",
+        ['C', 'A', 0]: "C above A above C above middle C",
     },
     [4]: "Jose Altuve",
 }

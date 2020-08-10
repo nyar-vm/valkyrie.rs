@@ -3,9 +3,9 @@ use crate::PrettyTree;
 
 impl PrettyPrint for SubscriptNode {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        let lhs = allocator.text(if self.index0 { "[" } else { "⁅" });
-        let terms = allocator.intersperse(self.terms.iter().map(|item| item.build(allocator)), allocator.text(", "));
-        let rhs = allocator.text(if self.index0 { "]" } else { "⁆" });
+        let lhs = allocator.text(if self.index0 { "⁅" } else { "[" });
+        let terms = allocator.join(&self.terms, ", ");
+        let rhs = allocator.text(if self.index0 { "⁆" } else { "]" });
         lhs.append(terms).append(rhs)
     }
 }

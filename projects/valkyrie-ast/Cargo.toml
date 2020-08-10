@@ -12,8 +12,14 @@ license = "MPL-2.0"
 edition = "2021"
 
 [dependencies]
-pretty = "0.12.1"
+#pretty = "0.12.1"
+
+[dependencies.pretty-print]
+version = "0.0.0"
+path = 'C:\Users\Dell\CLionProjects\pretty-print\projects\pretty-print'
+optional = true
 
 [features]
-default = []
+default = ["pretty-print"]
+std = ["pretty-print/std"]
 #serde = ["dep:serde", "url/serde"]

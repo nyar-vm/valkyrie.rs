@@ -12,20 +12,19 @@ pub mod table;
 pub mod view;
 
 use crate::{
-    helper::PrettyPrint, ApplyArgumentNode, ApplyCallNode, ApplyCallTerm, ApplyDotNode, ArgumentTermNode, CallNode,
-    CallTermNode, GenericCallNode, IdentifierNode, InfixNode, LambdaCallNode, LambdaDotNode, NamePathNode, NewConstructNode,
-    NumberLiteralNode, OperatorNode, PostfixNode, PrefixNode, PrettyProvider, PrettyTree, StatementNode, StringLiteralNode,
-    SubscriptNode, TableNode, TableTermNode, ValkyrieNode,
+    ApplyArgumentNode, ApplyCallNode, ApplyCallTerm, ApplyDotNode, ArgumentTermNode, CallNode, CallTermNode, GenericCallNode,
+    IdentifierNode, InfixNode, LambdaCallNode, LambdaDotNode, NamePathNode, NewConstructNode, NumberLiteralNode, OperatorNode,
+    PostfixNode, PrefixNode, PrettyPrint, PrettyProvider, PrettyTree, StatementNode, StringLiteralNode, SubscriptNode,
+    TableNode, TableTermNode, ValkyrieNode,
+};
+use alloc::{
+    boxed::Box,
+    string::{String, ToString},
+    vec::Vec,
 };
 use core::{
     fmt::{Display, Formatter, Write},
     ops::Range,
-};
-use pretty::{DocAllocator, Pretty};
-use std::{
-    boxed::Box,
-    string::{String, ToString},
-    vec::Vec,
 };
 
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]

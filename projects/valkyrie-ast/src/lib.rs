@@ -1,6 +1,9 @@
+#![no_std]
 #![allow(incomplete_features)]
 #![feature(adt_const_params)]
 #![feature(try_blocks)]
+
+extern crate alloc;
 
 mod control_flow;
 mod expression_level;
@@ -28,7 +31,7 @@ pub use crate::{
         view::{SubscriptNode, SubscriptSliceNode, SubscriptTermNode},
         ExpressionBody, ExpressionContext, ExpressionNode, PostfixCallPart,
     },
-    helper::{PrettyPrint, PrettyProvider, PrettyTree, ValkyrieNode},
+    helper::ValkyrieNode,
     package_level::{
         classes::{ClassDeclaration, ClassKind},
         function::{
@@ -41,3 +44,4 @@ pub use crate::{
         StatementContext, StatementNode, StatementType,
     },
 };
+pub use pretty_print::{PrettyPrint, PrettyProvider, PrettyTree};

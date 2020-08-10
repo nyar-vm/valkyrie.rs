@@ -1,6 +1,5 @@
-use crate::{IdentifierNode, NamePathNode, StringLiteralNode};
-use core::ops::Range;
 mod display;
+use super::*;
 
 /// `import namespace node`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]

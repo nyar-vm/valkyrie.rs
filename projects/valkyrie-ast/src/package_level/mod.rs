@@ -7,16 +7,17 @@ pub mod namespace;
 use crate::{
     package_level::{classes::ClassDeclaration, namespace::NamespaceDeclarationNode},
     ApplyArgumentNode, ArgumentTermNode, ExpressionNode, ForLoopNode, FunctionDeclaration, GenericArgumentNode, IdentifierNode,
-    ImportStatementNode, NamePathNode, PrettyPrint, PrettyProvider, PrettyTree, WhileLoopNode,
+    ImportStatementNode, NamePathNode, PrettyPrint, PrettyProvider, PrettyTree, StringLiteralNode, WhileLoopNode,
 };
-use pretty::DocAllocator;
-use std::{
+use alloc::{
+    borrow::Cow,
     boxed::Box,
     fmt::{Display, Formatter, Write},
-    ops::Range,
     string::String,
+    vec,
     vec::Vec,
 };
+use core::ops::Range;
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]

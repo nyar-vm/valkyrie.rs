@@ -9,7 +9,7 @@ impl PrettyPrint for IdentifierNode {
 
 impl PrettyPrint for NamePathNode {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        allocator.intersperse(self.names.iter().map(|id| id.build(allocator)), allocator.text("∷"))
+        allocator.join(&self.names, "∷")
     }
 }
 

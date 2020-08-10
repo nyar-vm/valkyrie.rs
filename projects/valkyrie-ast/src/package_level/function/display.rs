@@ -25,7 +25,7 @@ impl PrettyPrint for FunctionDeclaration {
         }
         terms.push(allocator.keyword(self.r#type.as_str()));
         terms.push(allocator.space());
-        terms.push(allocator.namepath(&self.namepath.names));
+        terms.push(self.namepath.build(allocator));
         terms.push(self.generic.build(allocator));
         terms.push(self.arguments.build(allocator));
         if let Some(ret) = &self.r#return {
@@ -60,11 +60,7 @@ impl<'i> PrettyPrint for FunctionBodyPart<'i> {
         terms.push(allocator.space());
         terms.push(allocator.text("{"));
         terms.push(allocator.hardline());
-        terms.push(
-            allocator
-                .intersperse(self.body.iter().map(|x| x.build(allocator)), allocator.text(";").append(allocator.hardline()))
-                .indent(4),
-        );
+        terms.push(allocator.intersperse(&self.body, allocator.text(";").append(allocator.hardline())).indent(4));
         if let Some(s) = self.body.last() {
             if s.end_semicolon {
                 terms.push(allocator.text(";"));

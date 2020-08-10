@@ -1,11 +1,12 @@
 use super::*;
+use alloc::borrow::ToOwned;
 
 // noinspection DuplicatedCode
 impl PrettyPrint for GenericCallNode {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         let mut terms = Vec::with_capacity(3);
         terms.push(allocator.text("⦓"));
-        terms.push(allocator.intersperse(self.terms.iter().map(|s| s.build(allocator)), allocator.text(", ")));
+        terms.push(allocator.join(&self.terms, ", "));
         terms.push(allocator.text("⦔"));
         allocator.concat(terms)
     }
@@ -28,7 +29,7 @@ impl PrettyPrint for GenericArgumentNode {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         let mut terms = Vec::with_capacity(3);
         terms.push(allocator.text("⦓"));
-        terms.push(allocator.intersperse(self.terms.iter().map(|s| s.build(allocator)), allocator.text(", ")));
+        terms.push(allocator.join(&self.terms, ", "));
         terms.push(allocator.text("⦔"));
         allocator.concat(terms)
     }
