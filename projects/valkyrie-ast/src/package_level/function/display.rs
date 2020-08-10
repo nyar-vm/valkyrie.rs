@@ -1,5 +1,4 @@
 use super::*;
-use crate::expression_level::apply::ApplyArgumentTerm;
 
 impl FunctionType {
     pub fn as_str(&self) -> &'static str {
@@ -9,13 +8,13 @@ impl FunctionType {
         }
     }
 }
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for FunctionType {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         allocator.keyword(self.as_str())
     }
 }
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for FunctionDeclaration {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         let mut terms = Vec::with_capacity(4);
@@ -39,12 +38,13 @@ impl PrettyPrint for FunctionDeclaration {
     }
 }
 
+#[cfg(feature = "pretty-print")]
 impl<'i, 'a> FunctionBodyPart<'i> {
     pub(crate) fn build_borrowed<'b>(body: &'i [StatementNode], allocator: &'b PrettyProvider<'b>) -> PrettyTree<'b> {
         FunctionBodyPart { body: Cow::Borrowed(body) }.build(allocator)
     }
 }
-
+#[cfg(feature = "pretty-print")]
 impl<'i> PrettyPrint for FunctionBodyPart<'i> {
     /// ```vk
     /// # inline style
@@ -71,7 +71,7 @@ impl<'i> PrettyPrint for FunctionBodyPart<'i> {
         allocator.concat(terms)
     }
 }
-
+#[cfg(feature = "pretty-print")]
 impl<K: PrettyPrint, V: PrettyPrint, D: PrettyPrint> PrettyPrint for ArgumentTermNode<K, V, D> {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         let mut terms = Vec::with_capacity(3);

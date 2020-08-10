@@ -1,5 +1,4 @@
 use super::*;
-use crate::FunctionBodyPart;
 
 impl PrettyPrint for WhileLoopNode {
     /// ```vk

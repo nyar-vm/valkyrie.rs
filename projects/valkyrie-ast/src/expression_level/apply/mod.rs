@@ -1,5 +1,5 @@
+#[cfg(feature = "pretty-print")]
 mod display;
-
 use super::*;
 
 /// `(mut self, a, b: int, c: T = 3, ⁑args, ⁂kwargs)`

@@ -44,4 +44,5 @@ pub use crate::{
         StatementContext, StatementNode, StatementType,
     },
 };
+#[cfg(feature = "pretty-print")]
 pub use pretty_print::{PrettyPrint, PrettyProvider, PrettyTree};

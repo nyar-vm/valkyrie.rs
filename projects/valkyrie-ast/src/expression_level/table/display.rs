@@ -1,5 +1,4 @@
 use super::*;
-use crate::PrettyTree;
 
 impl TableKind {
     fn begin_str(&self) -> &'static str {
@@ -17,7 +16,7 @@ impl TableKind {
         }
     }
 }
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for TableNode {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         let head = allocator.text(self.kind.begin_str());
@@ -26,13 +25,13 @@ impl PrettyPrint for TableNode {
         head.append(allocator.concat(body)).append(tail)
     }
 }
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for TableTermNode {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         self.pair.build(allocator)
     }
 }
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for TableKeyType {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         match self {

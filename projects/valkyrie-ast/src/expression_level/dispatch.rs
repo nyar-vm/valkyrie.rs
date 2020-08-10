@@ -1,21 +1,24 @@
 use super::*;
-use crate::PrettyTree;
 
 impl Default for ExpressionBody {
     fn default() -> Self {
         Self::Placeholder
     }
 }
+
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for ExpressionNode {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         self.body.build(allocator)
     }
 }
 
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for ExpressionBody {
+    #[track_caller]
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         match self {
-            ExpressionBody::Placeholder => allocator.text("???"),
+            ExpressionBody::Placeholder => unreachable!(),
             ExpressionBody::Symbol(node) => node.build(allocator),
             ExpressionBody::Number(node) => node.build(allocator),
             ExpressionBody::String(node) => node.build(allocator),

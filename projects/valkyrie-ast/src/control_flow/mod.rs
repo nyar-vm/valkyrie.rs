@@ -1,10 +1,12 @@
-use crate::{ConditionType, ExpressionNode, PrettyPrint, PrettyProvider, PrettyTree, StatementNode};
+#[cfg(feature = "pretty-print")]
+use pretty_print::{PrettyPrint, PrettyProvider, PrettyTree};
+
+use crate::{ConditionType, ExpressionNode, FunctionBodyPart, StatementNode};
+use alloc::{borrow::Cow, boxed::Box, vec::Vec};
 use core::{
     fmt::{Debug, Display, Formatter},
     ops::Range,
 };
-
-use alloc::{borrow::Cow, boxed::Box, vec::Vec};
 
 pub mod control;
 pub mod for_loop;

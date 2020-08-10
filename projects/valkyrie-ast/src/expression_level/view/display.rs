@@ -1,5 +1,4 @@
 use super::*;
-use crate::PrettyTree;
 
 impl PrettyPrint for SubscriptNode {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {

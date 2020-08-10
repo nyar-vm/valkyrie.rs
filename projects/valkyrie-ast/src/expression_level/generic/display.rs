@@ -1,5 +1,4 @@
 use super::*;
-use alloc::borrow::ToOwned;
 
 // noinspection DuplicatedCode
 impl PrettyPrint for GenericCallNode {

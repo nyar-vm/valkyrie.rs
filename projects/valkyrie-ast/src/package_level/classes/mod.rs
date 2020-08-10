@@ -1,7 +1,6 @@
-use super::*;
-use crate::{PrettyPrint, PrettyProvider, PrettyTree};
+#[cfg(feature = "pretty-print")]
 mod display;
-
+use super::*;
 /// `class Name(Super): Trait {}`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]

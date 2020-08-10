@@ -1,7 +1,6 @@
-use super::*;
-
+#[cfg(feature = "pretty-print")]
 mod display;
-
+use super::*;
 // if a {1}
 // if a {1} else {2}
 // if a {1} else if b {2}

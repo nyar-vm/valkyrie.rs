@@ -1,7 +1,6 @@
-use super::*;
-
+#[cfg(feature = "pretty-print")]
 mod display;
-
+use super::*;
 /// `while cond {...} else {...}`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]

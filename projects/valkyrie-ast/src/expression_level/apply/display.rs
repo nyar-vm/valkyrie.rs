@@ -45,7 +45,7 @@ impl PrettyPrint for ApplyArgumentTerm {
 impl PrettyPrint for ArgumentKeyNode {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         let mods = allocator.concat(self.modifiers.iter().map(|s| allocator.keyword(s.name.clone()).append(allocator.space())));
-        let key = allocator.argument(self.key.name.clone());
+        let key = allocator.argument(self.key.name.clone(), false);
         mods.append(key)
     }
 }

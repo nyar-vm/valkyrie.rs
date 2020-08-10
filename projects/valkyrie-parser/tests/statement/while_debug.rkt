@@ -1,2 +1,2 @@
 (loop)
-(loop (apply print Loop!) (loop (apply print Deep loop!) (loop (apply print Deeper loop!))))
+(loop (call/apply print (apply Loop!)) (loop (call/apply print (apply Deep loop!)) (loop (call/apply print (apply Deeper loop!)))))

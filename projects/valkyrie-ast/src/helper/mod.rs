@@ -1,6 +1,5 @@
-use crate::IdentifierNode;
-use alloc::{borrow::Cow, string::String};
-use core::ops::{Deref, Range};
+use alloc::string::String;
+use core::ops::Range;
 
 pub trait ValkyrieNode {
     fn get_range(&self) -> Range<u32>;

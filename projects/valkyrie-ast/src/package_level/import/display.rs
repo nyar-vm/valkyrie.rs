@@ -1,5 +1,5 @@
 use super::*;
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for ImportStatementNode {
     // fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
     //     write!(f, "import ")?;
@@ -12,7 +12,7 @@ impl PrettyPrint for ImportStatementNode {
         todo!()
     }
 }
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for ImportStatementType {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         match self {
@@ -22,7 +22,7 @@ impl PrettyPrint for ImportStatementType {
         }
     }
 }
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for ImportTermNode {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         match self {
@@ -31,7 +31,7 @@ impl PrettyPrint for ImportTermNode {
         }
     }
 }
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for ImportGroupNode {
     // fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
     //     write!(f, "{} {{ {} }}", self.path, self.group.iter().map(|x| x.to_string()).collect::<Vec<_>>().join(", "))
@@ -41,6 +41,7 @@ impl PrettyPrint for ImportGroupNode {
         todo!()
     }
 }
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for ImportAliasNode {
     // fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
     //     write!(f, "{} as {}", self.path, self.alias)

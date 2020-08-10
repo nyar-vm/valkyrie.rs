@@ -1,11 +1,11 @@
 use super::*;
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for StatementNode {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         self.r#type.build(allocator)
     }
 }
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for StatementType {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         match self {

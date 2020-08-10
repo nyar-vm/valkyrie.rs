@@ -1,3 +1,4 @@
+
 mod display;
 use super::*;
 
@@ -21,16 +22,6 @@ pub struct NamespaceDeclarationNode {
     pub span: Range<u32>,
 }
 
-impl NamespaceKind {
-    /// Get the string representation of the namespace kind
-    pub fn as_str(&self) -> &'static str {
-        match self {
-            NamespaceKind::Shared => "namespace",
-            NamespaceKind::Unique => "namespace!",
-            NamespaceKind::Test => "namespace?",
-        }
-    }
-}
 
 impl NamespaceDeclarationNode {
     pub fn new<I>(names: I, range: Range<u32>) -> Self

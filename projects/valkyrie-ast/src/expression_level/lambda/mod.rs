@@ -1,6 +1,6 @@
-use super::*;
-
+#[cfg(feature = "pretty-print")]
 mod display;
+use super::*;
 
 /// `{ lambda(args), ... }`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]

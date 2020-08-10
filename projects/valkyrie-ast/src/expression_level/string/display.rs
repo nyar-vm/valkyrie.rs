@@ -1,5 +1,4 @@
 use super::*;
-use crate::PrettyTree;
 
 impl Display for StringLiteralNode {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
@@ -21,9 +20,9 @@ impl Display for StringLiteralNode {
         f.write_char('\'')
     }
 }
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for StringLiteralNode {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        allocator.text(self.to_string()).annotate(allocator.string_style())
+        allocator.string(self.to_string())
     }
 }

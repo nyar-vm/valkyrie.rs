@@ -7,7 +7,7 @@ pub mod namespace;
 use crate::{
     package_level::{classes::ClassDeclaration, namespace::NamespaceDeclarationNode},
     ApplyArgumentNode, ArgumentTermNode, ExpressionNode, ForLoopNode, FunctionDeclaration, GenericArgumentNode, IdentifierNode,
-    ImportStatementNode, NamePathNode, PrettyPrint, PrettyProvider, PrettyTree, StringLiteralNode, WhileLoopNode,
+    ImportStatementNode, NamePathNode, StringLiteralNode, WhileLoopNode,
 };
 use alloc::{
     borrow::Cow,
@@ -18,6 +18,8 @@ use alloc::{
     vec::Vec,
 };
 use core::ops::Range;
+#[cfg(feature = "pretty-print")]
+use pretty_print::{PrettyPrint, PrettyProvider, PrettyTree};
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]

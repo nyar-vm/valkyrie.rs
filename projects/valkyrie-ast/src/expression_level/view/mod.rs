@@ -1,6 +1,6 @@
-use super::*;
+#[cfg(feature = "pretty-print")]
 mod display;
-
+use super::*;
 /// `array⁅index0⁆` or `array[index1]`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]

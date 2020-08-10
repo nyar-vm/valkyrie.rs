@@ -12,12 +12,12 @@ pub mod table;
 pub mod view;
 
 use crate::{
-    ApplyArgumentNode, ApplyCallNode, ApplyCallTerm, ApplyDotNode, ArgumentTermNode, CallNode, CallTermNode, GenericCallNode,
-    IdentifierNode, InfixNode, LambdaCallNode, LambdaDotNode, NamePathNode, NewConstructNode, NumberLiteralNode, OperatorNode,
-    PostfixNode, PrefixNode, PrettyPrint, PrettyProvider, PrettyTree, StatementNode, StringLiteralNode, SubscriptNode,
-    TableNode, TableTermNode, ValkyrieNode,
+    ApplyCallNode, ApplyDotNode, ArgumentTermNode, CallNode, CallTermNode, GenericCallNode, IdentifierNode, InfixNode,
+    LambdaCallNode, LambdaDotNode, NamePathNode, NewConstructNode, NumberLiteralNode, OperatorNode, PostfixNode, PrefixNode,
+    StatementNode, StringLiteralNode, SubscriptNode, TableNode, TableTermNode,
 };
 use alloc::{
+    borrow::ToOwned,
     boxed::Box,
     string::{String, ToString},
     vec::Vec,
@@ -26,6 +26,8 @@ use core::{
     fmt::{Display, Formatter, Write},
     ops::Range,
 };
+#[cfg(feature = "pretty-print")]
+use pretty_print::{PrettyPrint, PrettyProvider, PrettyTree};
 
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]

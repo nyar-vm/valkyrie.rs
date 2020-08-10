@@ -1,7 +1,8 @@
-use super::*;
 mod display;
+use super::*;
 
-#[derive(Copy, Clone, Debug, Eq, PartialEq, Hash)]
+#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum ValkyrieOperator {
     /// prefix operator: `!`
     Not,

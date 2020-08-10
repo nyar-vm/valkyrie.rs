@@ -1,6 +1,6 @@
-use super::*;
+#[cfg(feature = "pretty-print")]
 mod display;
-
+use super::*;
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct NumberLiteralNode {
