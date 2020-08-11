@@ -42,3 +42,12 @@ pub struct CasePatternNode {
 pub struct ElsePart<'i> {
     pub body: Cow<'i, [StatementNode]>,
 }
+
+impl ConditionType {
+    pub fn is_empty(&self) -> bool {
+        match self {
+            ConditionType::AlwaysTrue => true,
+            _ => false,
+        }
+    }
+}

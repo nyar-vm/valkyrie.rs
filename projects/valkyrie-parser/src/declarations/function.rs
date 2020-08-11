@@ -97,7 +97,7 @@ where
 }
 
 impl ThisParser for ArgumentKeyNode {
-    /// `mut mods name`
+    /// `mut mods name`, unconditionally catch all identifiers
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, mut default) = input.match_repeats(|s| s.skip(ignore).match_fn(IdentifierNode::parse))?;
         match default.pop() {

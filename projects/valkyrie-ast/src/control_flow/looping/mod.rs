@@ -39,9 +39,15 @@ pub struct WhileLoopNode {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ForLoopNode {
+    /// `for pattern`
     pub pattern: PatternType,
+    /// `in iterator`
+    pub iterator: ExpressionNode,
+    /// `if condition`
     pub condition: ConditionType,
+    /// `{ body }`
     pub body: Vec<StatementNode>,
+    /// `else { body }`
     pub r#else: Vec<StatementNode>,
     pub span: Range<u32>,
 }

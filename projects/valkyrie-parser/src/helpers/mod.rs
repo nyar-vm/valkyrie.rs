@@ -62,6 +62,24 @@ pub fn parse_name_join(input: ParseState) -> ParseResult<&str> {
     }
 }
 
+#[inline]
+pub fn parse_comma(input: ParseState) -> ParseResult<&str> {
+    input.match_str(",")
+}
+
+#[inline]
+pub fn parse_in(input: ParseState) -> ParseResult<&str> {
+    if input.residual.starts_with("in") {
+        input.advance_view("in".len())
+    }
+    else if input.residual.starts_with('∈') {
+        input.advance_view("∈".len())
+    }
+    else {
+        StopBecause::missing_character('∈', input.start_offset)?
+    }
+}
+
 /// `.` or `::` or `∷`
 #[inline]
 pub fn parse_name_join_dot(input: ParseState) -> ParseResult<&str> {

@@ -29,7 +29,7 @@ pub fn parse_expression_body(input: ParseState, config: ExpressionContext) -> Pa
     parse_expression_node(input, config).map_inner(|s| s.body)
 }
 
-pub fn parse_modifiers<F, T>(input: ParseState, negative: F) -> ParseResult<(Vec<IdentifierNode>, IdentifierNode)>
+pub fn parse_modifiers<F>(input: ParseState, negative: F) -> ParseResult<(Vec<IdentifierNode>, IdentifierNode)>
 where
     F: Fn(&str) -> bool + Copy,
 {

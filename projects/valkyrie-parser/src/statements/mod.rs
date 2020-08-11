@@ -6,8 +6,8 @@ use crate::{
 use lispify::{Lisp, ListString};
 use valkyrie_ast::{
     ClassDeclaration, ControlNode, DocumentationNode, ExpressionContext, ExpressionNode, ForLoopNode, FunctionDeclaration,
-    FunctionType, ImportStatementNode, LambdaArgumentNode, LambdaCallNode, LambdaDotNode, LambdaNode, LetBindNode,
-    NamePathNode, NamespaceDeclarationNode, StatementNode, StatementType, WhileLoopNode,
+    FunctionType, IdentifierNode, ImportStatementNode, LambdaArgumentNode, LambdaCallNode, LambdaDotNode, LambdaNode,
+    LetBindNode, NamePathNode, NamespaceDeclarationNode, StatementNode, StatementType, WhileLoopNode,
 };
 use valkyrie_types::third_party::pex::{helpers::comment_line, ParseResult, ParseState, StopBecause};
 
@@ -112,8 +112,11 @@ pub fn parse_repl_statements(input: ParseState) -> ParseResult<StatementType> {
 }
 
 fn function_with_head(input: ParseState) -> ParseResult<StatementType> {
-    let (state, mods) = parse_modifiers(input, FunctionType::parse)?;
+    let (state, mods) = input.match_repeats(|s| {
+        let (state, _) = s.skip(ignore).match_negative(FunctionDeclaration::parse, "KW_FUNCTION")?;
+        IdentifierNode::parse(state)
+    })?;
     let (state, mut func) = state.skip(ignore).match_fn(FunctionDeclaration::parse)?;
-    func.modifiers = mods.modifiers;
+    func.modifiers = mods;
     state.finish(StatementType::Function(Box::new(func)))
 }

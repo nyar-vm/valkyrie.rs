@@ -44,13 +44,7 @@ class IntegerSet {
 
 
 
-for i in ℤ⁅-1:1⁆ {
 
-};
-
-for i in ℤ⁅-1:1:2⁆ if i > 0 {
-
-};
 
 class IndexersExample {
 	_size: f64;

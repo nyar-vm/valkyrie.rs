@@ -44,6 +44,7 @@ impl<'i, 'a> FunctionBodyPart<'i> {
         FunctionBodyPart { body: Cow::Borrowed(body) }.build(allocator)
     }
 }
+
 #[cfg(feature = "pretty-print")]
 impl<'i> PrettyPrint for FunctionBodyPart<'i> {
     /// ```vk
