@@ -33,7 +33,7 @@ impl PrettyPrint for ForLoopNode {
     //     format_else_body(f, &self.r#else)
     // }
 
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+    fn build<'a>(&self, _allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         todo!()
     }
 }

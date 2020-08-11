@@ -54,8 +54,8 @@ pub struct FunctionDeclarationInline {
 ///
 /// - Auxiliary parsing function, not instantiable.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
-pub struct ModifierPart {
-    pub modifiers: Vec<IdentifierNode>,
+pub struct ModifierPart<'i> {
+    pub modifiers: Cow<'i, [IdentifierNode]>,
 }
 
 /// `{ a; b; c }`

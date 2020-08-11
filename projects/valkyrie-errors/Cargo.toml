@@ -30,7 +30,7 @@ edition = "2021"
 version = "0.0.9"
 path = "../valkyrie-ast"
 default-features = false
-features = ["serde", "std"]
+features = [ "std"]
 
 [dev-dependencies]
 

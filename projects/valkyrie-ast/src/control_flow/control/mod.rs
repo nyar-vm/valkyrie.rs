@@ -1,7 +1,7 @@
+use super::*;
 mod display;
 
-use super::*;
-
+/// always equivalent to a statement that returns `( )`, and cannot be used as an `rvalue`.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ControlNode {

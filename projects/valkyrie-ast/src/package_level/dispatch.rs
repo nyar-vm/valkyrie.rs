@@ -18,6 +18,8 @@ impl PrettyPrint for StatementType {
             StatementType::For(node) => node.build(allocator),
             StatementType::Expression(node) => node.build(allocator),
             StatementType::Control(node) => node.build(allocator),
+            StatementType::Document(node) => node.build(allocator),
+            StatementType::LetBind(node) => node.build(allocator),
         }
     }
 }

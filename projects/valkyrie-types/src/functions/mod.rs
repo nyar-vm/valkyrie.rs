@@ -6,4 +6,3 @@ pub trait ValkyrieFunction {
     fn boxed(self) -> ValkyrieValue;
     fn type_info(&self) -> Arc<ValkyrieMetaType>;
 }
-

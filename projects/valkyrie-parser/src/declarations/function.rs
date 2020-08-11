@@ -1,5 +1,5 @@
-use valkyrie_ast::ApplyArgumentTerm;
 use super::*;
+use valkyrie_ast::ApplyArgumentTerm;
 
 impl ThisParser for FunctionDeclaration {
     fn parse(input: ParseState) -> ParseResult<Self> {
@@ -52,12 +52,8 @@ impl ThisParser for FunctionType {
 impl ThisParser for ApplyArgumentNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let pattern = BracketPattern::new("(", ")");
-        let (state, terms) =
-            pattern.consume(input, ignore, ApplyArgumentTerm::parse)?;
-        state.finish(ApplyArgumentNode {
-            terms: terms.body,
-            span: get_span(input, state),
-        })
+        let (state, terms) = pattern.consume(input, ignore, ApplyArgumentTerm::parse)?;
+        state.finish(ApplyArgumentNode { terms: terms.body, span: get_span(input, state) })
     }
 
     fn as_lisp(&self) -> Lisp {

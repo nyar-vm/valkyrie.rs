@@ -35,7 +35,7 @@ impl PrettyPrint for MacroPathNode {
     //     Ok(())
     // }
 
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+    fn build<'a>(&self, _allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         todo!()
     }
 }

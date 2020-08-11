@@ -1,4 +1,3 @@
-
 mod display;
 use super::*;
 
@@ -21,7 +20,6 @@ pub struct NamespaceDeclarationNode {
     pub path: Vec<IdentifierNode>,
     pub span: Range<u32>,
 }
-
 
 impl NamespaceDeclarationNode {
     pub fn new<I>(names: I, range: Range<u32>) -> Self

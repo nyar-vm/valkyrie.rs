@@ -10,7 +10,7 @@ use valkyrie_ast::{
     FunctionType, IdentifierNode, ImportStatementNode, ModifierPart, NamePathNode, NamespaceDeclarationNode, StatementContext,
     StatementNode, StatementType, WhileLoopNode,
 };
-use valkyrie_types::third_party::pex::{ParseResult, ParseState};
+use valkyrie_types::third_party::pex::{ParseResult, ParseState, StopBecause};
 
 #[inline]
 pub fn get_span(input: ParseState, output: ParseState) -> Range<u32> {
@@ -29,13 +29,19 @@ pub fn parse_expression_body(input: ParseState, config: ExpressionContext) -> Pa
     parse_expression_node(input, config).map_inner(|s| s.body)
 }
 
-pub fn parse_modifiers<'i, F, T>(input: ParseState<'i>, negative: F) -> ParseResult<'i, ModifierPart>
+pub fn parse_modifiers<F, T>(input: ParseState, negative: F) -> ParseResult<(Vec<IdentifierNode>, IdentifierNode)>
 where
-    F: FnMut(ParseState<'i>) -> ParseResult<'i, T> + Copy,
+    F: Fn(&str) -> bool + Copy,
 {
-    let (state, out) = input.match_repeats(|s| {
-        let (state, _) = s.skip(ignore).match_negative(negative, "MODIFIER")?;
-        state.match_fn(IdentifierNode::parse)
+    let (finally, mut ids) = input.match_repeats(|s| {
+        let (state, id) = s.skip(ignore).match_fn(IdentifierNode::parse)?;
+        if negative(&id.name) {
+            StopBecause::custom_error("Unexpected modifier", state.start_offset, state.start_offset)?
+        }
+        state.finish(id)
     })?;
-    state.finish(ModifierPart { modifiers: out })
+    match ids.pop() {
+        Some(id) => finally.finish((ids, id)),
+        None => StopBecause::custom_error("Expected at least one modifier", finally.start_offset, finally.start_offset)?,
+    }
 }

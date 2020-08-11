@@ -34,3 +34,41 @@ using "../lib/mod"::{
 	e.f.{g as h}
 }
 ```
+
+
+
+```scala
+class IntegerSet {
+
+}
+
+
+
+for i in ℤ⁅-1:1⁆ {
+
+};
+
+for i in ℤ⁅-1:1:2⁆ if i > 0 {
+
+};
+
+class IndexersExample {
+	_size: f64;
+    name: String,
+}
+
+extends IndexersExample {
+	set Size(value) {
+		self._size = value as float
+	}
+	view index(i: int) {
+		return self._size
+	}
+	set view index(i: int) {
+		self._size = value as float
+	}
+	set view index(c: char, i: int) {
+		self._size = value as float
+	}
+}
+```

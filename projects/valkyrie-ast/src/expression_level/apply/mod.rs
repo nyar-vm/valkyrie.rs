@@ -18,6 +18,7 @@ pub struct ApplyArgumentTerm {
     pub term: ArgumentTermNode<ArgumentKeyNode, ExpressionNode, ExpressionNode>,
 }
 
+/// `mod1 mod2 args`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ArgumentKeyNode {

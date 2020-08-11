@@ -34,12 +34,14 @@ pub use crate::{
     helper::ValkyrieNode,
     package_level::{
         classes::{ClassDeclaration, ClassKind},
+        documentation::DocumentationNode,
         function::{
             FunctionBodyPart, FunctionCommonPart, FunctionDeclaration, FunctionDeclarationInline, FunctionType, ModifierPart,
         },
         import::{
             ImportAliasNode, ImportFlattenTerm, ImportGroupNode, ImportStatementNode, ImportStatementType, ImportTermNode,
         },
+        let_bind::LetBindNode,
         namespace::{NamespaceDeclarationNode, NamespaceKind},
         StatementContext, StatementNode, StatementType,
     },

@@ -20,5 +20,5 @@ optional = true
 
 [features]
 default = ["pretty-print"]
-std = ["pretty-print/std", "serde/std"]
+std = ["pretty-print?/std", "serde?/std"]
 serde = ["dep:serde", "serde/derive"]

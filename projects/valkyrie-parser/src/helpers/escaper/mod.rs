@@ -11,9 +11,7 @@ impl<'a> StringRewrite<'a> {
     pub fn view(s: &'a str, start: usize, end: usize) -> Self {
         debug_assert!(start <= end, "start must be less than or equal to end");
         debug_assert!(end <= s.len(), "end must be less than or equal to the length of the string");
-        unsafe {
-            Self { chars: s.get_unchecked(start..end).chars() }
-        }
+        unsafe { Self { chars: s.get_unchecked(start..end).chars() } }
     }
 }
 

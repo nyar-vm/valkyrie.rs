@@ -1,5 +1,4 @@
 use dashu::integer::IBig;
-use polars::frame::DataFrame;
 use std::sync::Arc;
 
 mod der;

@@ -9,6 +9,7 @@ use valkyrie_types::third_party::pex::{ParseResult, ParseState};
 
 mod controller;
 mod loop_while;
+mod loop_for;
 
 impl ThisParser for IfStatementNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
@@ -53,22 +54,7 @@ impl ThisParser for ConditionType {
     }
 }
 
-impl ThisParser for ForLoopNode {
-    fn parse(input: ParseState) -> ParseResult<Self> {
-        let (state, _) = input.match_str("for")?;
-        state.finish(ForLoopNode {
-            pattern: PatternType::Case,
-            condition: ConditionType::AlwaysTrue,
-            body: vec![],
-            r#else: vec![],
-            span: get_span(input, state),
-        })
-    }
 
-    fn as_lisp(&self) -> Lisp {
-        todo!()
-    }
-}
 
 impl<'i> ThisParser for FunctionBodyPart<'i> {
     fn parse(input: ParseState) -> ParseResult<Self> {
