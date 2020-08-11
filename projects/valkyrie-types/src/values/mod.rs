@@ -5,7 +5,7 @@ mod der;
 mod ser;
 
 use crate::{
-    builtin::{data_frame::ValkyrieDataFrame, figures::ValkyrieImage, ndarray::ValkyrieNDArray},
+    builtin::{data_frame::ValkyrieDataFrame, images::ValkyrieImage, ndarray::ValkyrieNDArray},
     ValkyrieClassType, ValkyrieDataTable, ValkyrieVariantType,
 };
 

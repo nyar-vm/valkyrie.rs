@@ -24,7 +24,7 @@ features = ["pretty-print", "std"]
 path = "../valkyrie-ast"
 
 [dependencies.valkyrie-types]
-version = "0.0.2"
+version = "0.0.*"
 features = ["pex"]
 path = "../valkyrie-types"
 

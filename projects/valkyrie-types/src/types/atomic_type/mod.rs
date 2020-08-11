@@ -9,7 +9,21 @@ pub struct ValkyrieAtomicType {
 
 #[derive(Clone, Debug, Default)]
 pub struct ValkyrieDocument {
+    r#type: ValkyrieDocumentType,
     input: String,
+}
+
+#[repr(u8)]
+#[derive(Clone, Debug)]
+pub enum ValkyrieDocumentType {
+    Markdown,
+    Notedown,
+}
+
+impl Default for ValkyrieDocumentType {
+    fn default() -> Self {
+        Self::Notedown
+    }
 }
 
 impl ValkyrieAtomicType {

@@ -1,6 +1,6 @@
 [package]
 name = "valkyrie-ast"
-version = "0.0.9"
+version = "0.0.10"
 authors = ["Aster <192607617@qq.com>"]
 description = "Strong typed abstract syntax tree of valkyrie language"
 repository = "https://github.com/nyar-vm/valkyrie.rs"
@@ -22,3 +22,6 @@ optional = true
 default = ["pretty-print"]
 std = ["pretty-print?/std", "serde?/std"]
 serde = ["dep:serde", "serde/derive"]
+
+[package.metadata.docs.rs]
+all-features = true

@@ -10,29 +10,29 @@ license = "MPL-2.0"
 edition = "2021"
 
 [dependencies]
+syntax-error = "0.0.2"
+serde = { version = "1.0.163", optional = true }
+serde_json = { version = "1.0.96", optional = true }
+num = { version = "0.4.0", optional = true }
+url = { version = "2.3.1", optional = true }
+pex = { version = "0.1.15", optional = true }
 
-
-#serde = { version = "1.0.152", features = ["derive"] }
 #indexmap = "1.9.2"
 #convert_case = "0.6.0"
 #itertools = "0.10.5"
 #url = "2.2.2"
-#ariadne = "0.1.5"
 ## parser
 #peginator = { version = "0.6.0", optional = true }
 #pratt = { version = "0.4.0", optional = true }
-#num = { version = "0.4.0", optional = true, features = ["serde"] }
 #dashu = { version = "0.3.1", optional = true, features = ["serde"] }
 #toml = { version = "0.7.2", optional = true}
 #json5 = { version = "0.4.1", optional = true}
-
-[dependencies.valkyrie-ast]
-version = "0.0.9"
-path = "../valkyrie-ast"
-default-features = false
-features = [ "std"]
 
 [dev-dependencies]
 
 [features]
 default = []
+serde = ["dep:serde", "num?/serde", "url?/serde"]
+
+[package.metadata.docs.rs]
+all-features = true

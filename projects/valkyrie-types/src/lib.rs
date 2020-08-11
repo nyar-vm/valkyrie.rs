@@ -1,7 +1,10 @@
 #![feature(trivial_bounds)]
 
 pub use self::{
-    builtin::result::{ValkyrieFailure, ValkyrieSuccess},
+    builtin::{
+        images::ValkyrieImage,
+        result::{ValkyrieFailure, ValkyrieSuccess},
+    },
     types::{
         atomic_type::ValkyrieAtomicType, class_type::ValkyrieClassType, literal_type::ValkyrieLiteralType,
         tuple_type::ValkyrieDataTable, union_type::ValkyrieUnionType, variant_type::ValkyrieVariantType, ValkyrieType,

@@ -1,26 +1,43 @@
 use std::{
+    error::Error,
     fmt::{Display, Formatter},
     panic::Location,
 };
 
 use ariadne::ReportKind;
 
-use crate::{errors::ValkyrieReport, FileSpan, SyntaxError, ValkyrieError, ValkyrieErrorKind};
+use crate::{
+    errors::{ValkyrieErrorBox, ValkyrieReport},
+    FileSpan, SyntaxError, ValkyrieError, ValkyrieErrorKind,
+};
 
 mod for_serde;
 
-#[derive(Clone, Debug)]
-pub struct RuntimeError {
-    message: String,
-}
+impl Error for RuntimeError {}
 
-impl From<RuntimeError> for ValkyrieError {
-    fn from(value: RuntimeError) -> Self {
-        ValkyrieError { kind: ValkyrieErrorKind::Runtime(Box::new(value)), level: ReportKind::Error }
+impl ValkyrieError for RuntimeError {
+    fn box_error(self) -> ValkyrieErrorBox {
+        todo!()
+    }
+
+    fn error_code(&self) -> usize {
+        todo!()
     }
 }
 
-impl From<()> for ValkyrieError {
+#[derive(Clone, Debug)]
+pub struct RuntimeError {
+    code: usize,
+    message: String,
+}
+
+impl From<RuntimeError> for ValkyrieErrorBox {
+    fn from(value: RuntimeError) -> Self {
+        ValkyrieErrorBox { kind: ValkyrieErrorKind::Runtime(Box::new(value)), level: ReportKind::Error }
+    }
+}
+
+impl From<()> for ValkyrieErrorBox {
     #[track_caller]
     fn from(_: ()) -> Self {
         let caller = Location::caller();
@@ -28,7 +45,7 @@ impl From<()> for ValkyrieError {
     }
 }
 
-impl From<std::io::Error> for ValkyrieError {
+impl From<std::io::Error> for ValkyrieErrorBox {
     fn from(value: std::io::Error) -> Self {
         RuntimeError { message: value.to_string() }.into()
     }
@@ -51,7 +68,7 @@ impl RuntimeError {
     }
 }
 
-impl ValkyrieError {
+impl ValkyrieErrorBox {
     pub fn syntax_error(message: impl Into<String>, position: FileSpan) -> Self {
         let this = SyntaxError { info: message.into(), span: position };
         Self { kind: ValkyrieErrorKind::Parsing(Box::new(this)), level: ReportKind::Error }

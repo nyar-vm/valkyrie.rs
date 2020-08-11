@@ -1,9 +1,9 @@
 [workspace]
 members = ["projects/*"]
 default-members = [
+    "projects/valkyrie-errors",
     "projects/valkyrie-ast",
     #    "projects/nyar-mir",
-    #    "projects/nyar-error",
     #    "projects/valkyrie-parser",
     #    "projects/valkyrie-errors",
 ]

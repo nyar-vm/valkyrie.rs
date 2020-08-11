@@ -3,6 +3,7 @@ use serde::{
     de::{EnumAccess, Error, MapAccess, SeqAccess, Visitor},
     Deserialize, Deserializer,
 };
+use std::sync::Arc;
 
 use crate::ValkyrieValue;
 
@@ -126,49 +127,49 @@ impl<'de> Visitor<'de> for ValueVisitor {
     where
         E: Error,
     {
-        todo!()
+        Ok(ValkyrieValue::UTF8String(Arc::new(v.to_string())))
     }
 
     fn visit_borrowed_str<E>(self, v: &'de str) -> Result<Self::Value, E>
     where
         E: Error,
     {
-        todo!()
+        Ok(ValkyrieValue::UTF8String(Arc::new(v.to_string())))
     }
 
     fn visit_string<E>(self, v: String) -> Result<Self::Value, E>
     where
         E: Error,
     {
-        todo!()
+        Ok(ValkyrieValue::UTF8String(Arc::new(v)))
     }
 
     fn visit_bytes<E>(self, v: &[u8]) -> Result<Self::Value, E>
     where
         E: Error,
     {
-        todo!()
+        Ok(ValkyrieValue::Bytes(Arc::new(v.to_vec())))
     }
 
     fn visit_borrowed_bytes<E>(self, v: &'de [u8]) -> Result<Self::Value, E>
     where
         E: Error,
     {
-        todo!()
+        Ok(ValkyrieValue::Bytes(Arc::new(v.to_vec())))
     }
 
     fn visit_byte_buf<E>(self, v: Vec<u8>) -> Result<Self::Value, E>
     where
         E: Error,
     {
-        todo!()
+        Ok(ValkyrieValue::Bytes(Arc::new(v)))
     }
 
     fn visit_none<E>(self) -> Result<Self::Value, E>
     where
         E: Error,
     {
-        todo!()
+        Ok(ValkyrieValue::Null)
     }
 
     fn visit_some<D>(self, deserializer: D) -> Result<Self::Value, D::Error>
@@ -209,13 +210,6 @@ impl<'de> Visitor<'de> for ValueVisitor {
     fn visit_enum<A>(self, data: A) -> Result<Self::Value, A::Error>
     where
         A: EnumAccess<'de>,
-    {
-        todo!()
-    }
-
-    fn __private_visit_untagged_option<D>(self, _: D) -> Result<Self::Value, ()>
-    where
-        D: Deserializer<'de>,
     {
         todo!()
     }

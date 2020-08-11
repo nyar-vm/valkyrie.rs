@@ -16,6 +16,12 @@ impl ValkyrieType for u8 {
     }
 }
 
+impl From<u8> for ValkyrieValue {
+    fn from(value: u8) -> Self {
+        ValkyrieValue::Integer(IBig::from(value))
+    }
+}
+
 impl ValkyrieType for u16 {
     fn boxed(self) -> ValkyrieValue {
         todo!()
@@ -41,6 +47,12 @@ impl ValkyrieType for u32 {
 
     fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
         primitive_type("std.primitive.Unsigned32")
+    }
+}
+
+impl From<u32> for ValkyrieValue {
+    fn from(value: u32) -> Self {
+        ValkyrieValue::Integer(IBig::from(value))
     }
 }
 
