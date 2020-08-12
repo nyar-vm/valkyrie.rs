@@ -98,11 +98,14 @@ pub fn parse_name_join_dot(input: ParseState) -> ParseResult<&str> {
 }
 
 #[inline]
-pub fn parse_any_name_path(input: ParseState) -> ParseResult<NamePathNode> {
-    let (state, head) = IdentifierNode::parse(input)?;
+pub fn parse_any_name_path<F>(input: ParseState, id: F) -> ParseResult<NamePathNode>
+where
+    F: Fn(ParseState) -> ParseResult<IdentifierNode> + Copy,
+{
+    let (state, head) = id(input)?;
     let (state, rest) = state.match_repeats(|s| {
         let (state, _) = s.skip(ignore).match_fn(parse_name_join_dot)?;
-        state.skip(ignore).match_fn(IdentifierNode::parse)
+        state.skip(ignore).match_fn(id)
     })?;
     let mut names = Vec::with_capacity(rest.len() + 1);
     names.push(head);

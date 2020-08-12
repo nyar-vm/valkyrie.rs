@@ -10,9 +10,9 @@ pub mod namespace;
 use crate::{
     package_level::{classes::ClassDeclaration, namespace::NamespaceDeclarationNode},
     ApplyArgumentNode, ArgumentTermNode, ControlNode, DocumentationNode, ExpressionNode, ForLoopNode, FunctionDeclaration,
-    GenericArgumentNode, IdentifierNode, ImportStatementNode, LetBindNode, NamePathNode, StringLiteralNode, WhileLoopNode,
+    GenericArgumentNode, IdentifierNode, ImportStatementNode, LetBindNode, NamePathNode,  WhileLoopNode,
 };
-use alloc::{borrow::Cow, boxed::Box, string::String, vec, vec::Vec};
+use alloc::{borrow::Cow, boxed::Box, string::String, vec::Vec};
 use core::ops::Range;
 #[cfg(feature = "pretty-print")]
 use pretty_print::{PrettyPrint, PrettyProvider, PrettyTree};

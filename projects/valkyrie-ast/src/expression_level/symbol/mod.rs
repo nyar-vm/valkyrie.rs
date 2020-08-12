@@ -66,8 +66,8 @@ impl MacroPathNode {
 }
 
 impl IdentifierNode {
-    pub fn new<S: ToString>(s: S, start: u32, end: u32) -> Self {
-        Self { name: s.to_string(), span: start..end }
+    pub fn new<S: ToString>(s: S, span: Range<u32>) -> Self {
+        Self { name: s.to_string(), span }
     }
     pub fn is_normal(&self) -> bool {
         self.name.starts_with(|c: char| c.is_ascii_lowercase())

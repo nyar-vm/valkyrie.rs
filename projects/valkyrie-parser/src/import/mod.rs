@@ -62,46 +62,18 @@ fn pare_colon_id<'i>(input: ParseState<'i>, names: &mut Vec<IdentifierNode>) -> 
 impl ThisParser for ImportStatementNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, _) = input.match_str("using")?;
-        let (state, head) = state.skip(ignore).match_fn(ImportStatementType::parse)?;
-        let mut group = vec![];
-        let (state, _) = state.match_fn(|s| parse_maybe_group(s, &mut group))?;
-        let (finally, _) = parse_eos(state)?;
-        finally.finish(ImportStatementNode { r#type: head, span: get_span(input, finally) })
+        let (state, head) = state.skip(ignore).match_fn(ImportTermNode::parse)?;
+        state.finish(ImportStatementNode { term: head, span: get_span(input, state) })
     }
 
     fn as_lisp(&self) -> Lisp {
         let mut terms = Vec::with_capacity(2);
         terms.push(Lisp::keyword("using"));
-        match &self.r#type {
-            ImportStatementType::Group(v) => terms.push(v.as_lisp()),
-            ImportStatementType::String(v) => terms.push(v.as_lisp()),
-            ImportStatementType::Alias(v) => terms.push(v.as_lisp()),
+        match &self.term {
+            ImportTermNode::Alias(v) => terms.push(v.as_lisp()),
+            ImportTermNode::Group(v) => terms.push(v.as_lisp()),
         }
         Lisp::Any(terms)
-    }
-}
-
-impl ThisParser for ImportStatementType {
-    fn parse(input: ParseState) -> ParseResult<Self> {
-        input
-            .begin_choice()
-            .or_else(|s| {
-                let (state, names) = ImportAliasNode::parse(s)?;
-                state.finish(ImportStatementType::Alias(Box::new(names)))
-            })
-            .or_else(|s| {
-                let (state, names) = ImportGroupNode::parse(s)?;
-                state.finish(ImportStatementType::Group(Box::new(names)))
-            })
-            .or_else(|s| {
-                let (state, names) = StringLiteralNode::parse(s)?;
-                state.finish(ImportStatementType::String(Box::new(names)))
-            })
-            .end_choice()
-    }
-
-    fn as_lisp(&self) -> Lisp {
-        unreachable!()
     }
 }
 
@@ -124,7 +96,7 @@ impl ThisParser for ImportTermNode {
 
 impl ThisParser for ImportAliasNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
-        let (state, path) = parse_any_name_path(input)?;
+        let (state, path) = parse_any_name_path(input, parse_name_id)?;
         let (state, _) = state.skip(ignore).match_str("as")?;
         let (state, alias) = state.skip(ignore).match_fn(IdentifierNode::parse)?;
         state.finish(ImportAliasNode::new(path, alias))
@@ -137,10 +109,9 @@ impl ThisParser for ImportAliasNode {
 
 impl ThisParser for ImportGroupNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
-        let mut group = vec![];
-        let (state, path) = parse_any_name_path(input)?;
-        let (state, _) = state.match_fn(|s| parse_maybe_group(s, &mut group))?;
-        state.finish(ImportGroupNode::new(path, group))
+        let (state, path) = parse_any_name_path(input, parse_name_id)?;
+        let (state, group) = state.match_optional(parse_maybe_group)?;
+        state.finish(ImportGroupNode::new(path, group.unwrap_or_default()))
     }
 
     fn as_lisp(&self) -> Lisp {
@@ -153,9 +124,15 @@ impl ThisParser for ImportGroupNode {
 }
 
 /// `.? { body }`
-fn parse_maybe_group<'a>(input: ParseState<'a>, items: &mut Vec<ImportTermNode>) -> ParseResult<'a, ()> {
+fn parse_maybe_group(input: ParseState) -> ParseResult<Vec<ImportTermNode>> {
     let (state, _) = input.skip(ignore).match_optional(parse_name_join_dot)?;
-    let (state, _) = state.skip(ignore).match_str("{")?;
+    let mut group = vec![];
+    let (state, _) = parse_group_body(state, &mut group)?;
+    state.finish(group)
+}
+
+fn parse_group_body<'a>(input: ParseState<'a>, items: &mut Vec<ImportTermNode>) -> ParseResult<'a, ()> {
+    let (state, _) = input.skip(ignore).match_str("{")?;
     let (state, _) = state.match_repeats(|s| {
         let (state, term) = s.skip(ignore).match_fn(ImportTermNode::parse)?;
         items.push(term);
@@ -176,4 +153,13 @@ fn parse_group_delimiter(input: ParseState) -> ParseResult<()> {
     else {
         state.finish(())
     }
+}
+
+fn parse_name_id(input: ParseState) -> ParseResult<IdentifierNode> {
+    input.begin_choice().or_else(|s| IdentifierNode::parse(s)).or_else(parse_start_as_name).end_choice()
+}
+
+fn parse_start_as_name(input: ParseState) -> ParseResult<IdentifierNode> {
+    let (state, all) = input.match_str("*")?;
+    state.finish(IdentifierNode::new(all, get_span(input, state)))
 }

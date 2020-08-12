@@ -64,8 +64,8 @@ impl Display for ValkyrieErrorKind {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         match self {
             ValkyrieErrorKind::Custom(message) => write!(f, "{}", message),
-            ValkyrieErrorKind::SyntaxError { message, range } => write!(f, "{}", message),
-            ValkyrieErrorKind::CompileError { code, message, range } => {
+            ValkyrieErrorKind::SyntaxError { message, .. } => write!(f, "{}", message),
+            ValkyrieErrorKind::CompileError { code, message, .. } => {
                 write!(f, "Compile Error: {} (code: {})", message, code)
             }
         }

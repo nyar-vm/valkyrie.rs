@@ -1,13 +1,13 @@
+use super::*;
+use alloc::sync::Arc;
 mod display;
 
-use super::*;
-use alloc::borrow::ToOwned;
-
-/// `import namespace node`
+/// `import package::module::path`
+/// `import "external"`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ImportStatementNode {
-    pub path: Option<StringLiteralNode>,
+    // pub path: Option<StringLiteralNode>,
     pub term: ImportTermNode,
     pub span: Range<u32>,
 }
@@ -15,11 +15,9 @@ pub struct ImportStatementNode {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum ImportTermNode {
-    /// `a::b::c`
-    Item(Box<NamePathNode>),
     /// `a::b::c as alias`
     Alias(Box<ImportAliasNode>),
-    /// `a::b { c::d }`
+    /// `a::b::c { d::e::f }`
     Group(Box<ImportGroupNode>),
 }
 
@@ -53,14 +51,14 @@ impl ImportAliasNode {
 
 #[derive(Clone, Default)]
 pub struct ImportResolvedItem {
-    pub external: Option<StringLiteralNode>,
+    pub annotation: Option<Arc<IdentifierNode>>,
     pub path: Vec<IdentifierNode>,
     pub alias: Option<IdentifierNode>,
 }
 
 impl ImportResolvedItem {
-    pub fn join_external(&self, name: &StringLiteralNode) -> Self {
-        Self { external: Some(name.clone()), ..self.clone() }
+    pub fn join_external(&self, name: &IdentifierNode) -> Self {
+        Self { annotation: Some(Arc::new(name.clone())), ..self.clone() }
     }
     pub fn join_name(&self, name: &IdentifierNode) -> Self {
         let mut path = self.path.clone();
@@ -79,7 +77,7 @@ impl ImportResolvedItem {
 
 impl ImportStatementNode {
     pub fn flatten(&self) -> Vec<ImportResolvedItem> {
-        let root = ImportResolvedItem { external: self.path.clone(), path: Vec::new(), alias: None };
+        let root = ImportResolvedItem::default();
         let mut all = Vec::new();
         self.term.resolve(&root, &mut all);
         all
@@ -89,7 +87,6 @@ impl ImportStatementNode {
 impl ImportTermNode {
     fn resolve(&self, parent: &ImportResolvedItem, all: &mut Vec<ImportResolvedItem>) {
         match self {
-            ImportTermNode::Item(item) => all.push(parent.join_path(&item.names)),
             ImportTermNode::Alias(alias) => {
                 all.push(parent.join_path(&alias.path.names).join_alias(&alias.alias));
             }
