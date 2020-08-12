@@ -38,9 +38,7 @@ pub use crate::{
         function::{
             FunctionBodyPart, FunctionCommonPart, FunctionDeclaration, FunctionDeclarationInline, FunctionType, ModifierPart,
         },
-        import::{
-            ImportAliasNode, ImportFlattenTerm, ImportGroupNode, ImportStatementNode, ImportStatementType, ImportTermNode,
-        },
+        import::{ImportAliasNode, ImportGroupNode, ImportResolvedItem, ImportStatementNode, ImportTermNode},
         let_bind::LetBindNode,
         namespace::{NamespaceDeclarationNode, NamespaceKind},
         StatementContext, StatementNode, StatementType,

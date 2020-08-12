@@ -6,7 +6,7 @@ use crate::{
 use lispify::Lisp;
 use std::sync::LazyLock;
 use valkyrie_ast::{
-    IdentifierNode, ImportAliasNode, ImportGroupNode, ImportStatementNode, ImportStatementType, ImportTermNode, NamePathNode,
+    IdentifierNode, ImportAliasNode, ImportGroupNode, ImportStatementNode, ImportTermNode, NamePathNode,
     NamespaceDeclarationNode, NamespaceKind, StringLiteralNode,
 };
 use valkyrie_types::third_party::pex::{ParseResult, ParseState, Regex};

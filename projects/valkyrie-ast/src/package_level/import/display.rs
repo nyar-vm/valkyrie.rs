@@ -12,25 +12,18 @@ impl PrettyPrint for ImportStatementNode {
         todo!()
     }
 }
-#[cfg(feature = "pretty-print")]
-impl PrettyPrint for ImportStatementType {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        match self {
-            Self::Alias(node) => node.build(allocator),
-            Self::Group(node) => node.build(allocator),
-            Self::String(node) => node.build(allocator),
-        }
-    }
-}
+
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for ImportTermNode {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         match self {
+            Self::Item(node) => node.build(allocator),
             Self::Alias(node) => node.build(allocator),
             Self::Group(node) => node.build(allocator),
         }
     }
 }
+
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for ImportGroupNode {
     // fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {

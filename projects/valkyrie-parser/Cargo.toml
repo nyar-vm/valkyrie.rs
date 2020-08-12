@@ -9,9 +9,6 @@ repository = "https://github.com/nyar-lang/NyarNative"
 license = "MPL-2.0"
 
 [dependencies]
-syntax-error = "0.0.2"
-url = "2.3.1"
-pratt = "0.4.0"
 bit-set = "0.5.3"
 
 [dependencies.lispify]
@@ -25,12 +22,13 @@ path = "../valkyrie-ast"
 
 [dependencies.valkyrie-types]
 version = "0.0.*"
-features = ["pex"]
+features = ["pex", "pratt"]
 path = "../valkyrie-types"
 
-#[dependencies.valkyrie-pest]
-#path = "../valkyrie-pest"
-#version = "0.2"
+#[dependencies.valkyrie-error]
+#path = "../valkyrie-errors"
+#version = "0.0.*"
+
 #
 #[dependencies.nyar-hir]
 #path = "../nyar-hir"

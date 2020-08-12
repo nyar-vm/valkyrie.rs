@@ -1,22 +1,21 @@
 [package]
-name = "valkyrie-errors"
+name = "valkyrie-error"
 version = "0.0.3"
 authors = ["Aster <192607617@qq.com>"]
 description = "Error types for valkyrie language"
 repository = "https://github.com/nyar-vm/valkyrie.rs"
-documentation = "https://docs.rs/valkyrie-errors"
+documentation = "https://docs.rs/valkyrie-error"
 readme = "Readme.md"
 license = "MPL-2.0"
 edition = "2021"
 
 [dependencies]
-syntax-error = "0.0.2"
+diagnostic = "0.5.1"
+# Parsing
+dashu = { version = "0.3.1", optional = true, features = ["serde"] }
+toml = { version = "0.7.2", optional = true}
+json5 = { version = "0.4.1", optional = true}
 serde = { version = "1.0.163", optional = true }
-serde_json = { version = "1.0.96", optional = true }
-num = { version = "0.4.0", optional = true }
-url = { version = "2.3.1", optional = true }
-pex = { version = "0.1.15", optional = true }
-
 #indexmap = "1.9.2"
 #convert_case = "0.6.0"
 #itertools = "0.10.5"
@@ -24,15 +23,14 @@ pex = { version = "0.1.15", optional = true }
 ## parser
 #peginator = { version = "0.6.0", optional = true }
 #pratt = { version = "0.4.0", optional = true }
-#dashu = { version = "0.3.1", optional = true, features = ["serde"] }
-#toml = { version = "0.7.2", optional = true}
-#json5 = { version = "0.4.1", optional = true}
+
 
 [dev-dependencies]
 
 [features]
-default = []
-serde = ["dep:serde", "num?/serde", "url?/serde"]
+#default = []
+#pex = ["dep:pex", "pex/regex", "regex"]
+serde = ["dep:serde"]
 
 [package.metadata.docs.rs]
 all-features = true

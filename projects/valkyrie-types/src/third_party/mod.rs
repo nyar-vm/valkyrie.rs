@@ -9,3 +9,6 @@ pub use pex;
 
 #[cfg(feature = "url")]
 pub use url::Url;
+
+#[cfg(feature = "pratt")]
+pub use pratt;

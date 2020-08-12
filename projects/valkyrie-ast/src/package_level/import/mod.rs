@@ -1,31 +1,25 @@
 mod display;
+
 use super::*;
+use alloc::borrow::ToOwned;
 
 /// `import namespace node`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ImportStatementNode {
-    pub r#type: ImportStatementType,
+    pub path: Option<StringLiteralNode>,
+    pub term: ImportTermNode,
     pub span: Range<u32>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum ImportStatementType {
-    /// `import root as alias`
-    Alias(Box<ImportAliasNode>),
-    /// `import root {}`
-    Group(Box<ImportGroupNode>),
-    /// `import "url" {}`
-    String(Box<StringLiteralNode>),
-}
-
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum ImportTermNode {
-    /// `path as alias`
+    /// `a::b::c`
+    Item(Box<NamePathNode>),
+    /// `a::b::c as alias`
     Alias(Box<ImportAliasNode>),
-    /// `path { group }`
+    /// `a::b { c::d }`
     Group(Box<ImportGroupNode>),
 }
 
@@ -57,30 +51,54 @@ impl ImportAliasNode {
     }
 }
 
-pub struct ImportFlattenTerm {
+#[derive(Clone, Default)]
+pub struct ImportResolvedItem {
     pub external: Option<StringLiteralNode>,
-    pub path: NamePathNode,
+    pub path: Vec<IdentifierNode>,
     pub alias: Option<IdentifierNode>,
 }
 
-impl ImportStatementNode {
-    pub fn flatten(&self) -> Vec<ImportFlattenTerm> {
-        match &self.r#type {
-            ImportStatementType::Alias(node) => {
-                vec![ImportFlattenTerm { external: None, path: node.path.clone(), alias: Some(node.alias.clone()) }]
-            }
-            ImportStatementType::Group(_node) => {
-                todo!();
-            }
-            ImportStatementType::String(_node) => {
-                todo!()
-            }
-        }
+impl ImportResolvedItem {
+    pub fn join_external(&self, name: &StringLiteralNode) -> Self {
+        Self { external: Some(name.clone()), ..self.clone() }
+    }
+    pub fn join_name(&self, name: &IdentifierNode) -> Self {
+        let mut path = self.path.clone();
+        path.push(name.clone());
+        Self { path, ..self.clone() }
+    }
+    pub fn join_path(&self, namepath: &[IdentifierNode]) -> Self {
+        let mut path = self.path.clone();
+        path.extend_from_slice(namepath);
+        Self { path, ..self.clone() }
+    }
+    pub fn join_alias(&self, alias: &IdentifierNode) -> Self {
+        Self { alias: Some(alias.clone()), ..self.clone() }
     }
 }
 
-impl ImportGroupNode {
-    fn resolve(&self, _parent: NamePathNode, _all: &mut Vec<ImportFlattenTerm>) {
-        todo!();
+impl ImportStatementNode {
+    pub fn flatten(&self) -> Vec<ImportResolvedItem> {
+        let root = ImportResolvedItem { external: self.path.clone(), path: Vec::new(), alias: None };
+        let mut all = Vec::new();
+        self.term.resolve(&root, &mut all);
+        all
+    }
+}
+
+impl ImportTermNode {
+    fn resolve(&self, parent: &ImportResolvedItem, all: &mut Vec<ImportResolvedItem>) {
+        match self {
+            ImportTermNode::Item(item) => all.push(parent.join_path(&item.names)),
+            ImportTermNode::Alias(alias) => {
+                all.push(parent.join_path(&alias.path.names).join_alias(&alias.alias));
+            }
+            ImportTermNode::Group(group) => {
+                let root = parent.join_path(&group.path.names);
+                for item in &group.group {
+                    item.resolve(&root, all);
+                }
+            }
+        }
     }
 }
