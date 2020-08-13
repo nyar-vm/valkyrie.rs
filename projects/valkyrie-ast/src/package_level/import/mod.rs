@@ -1,5 +1,5 @@
 use super::*;
-use alloc::sync::Arc;
+
 mod display;
 
 /// `import package::module::path`

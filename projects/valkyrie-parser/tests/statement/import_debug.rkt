@@ -13,8 +13,11 @@ using
     github
     (import/alias valkyrie∷nexus nexus)
     (import/group valkyrie∷nexus∷*)
-    (import/group valkyrie∷nexus∷*)
-    (import/group vampire (import/group knight) (import/group hunter (import/group hunter1) (import/group hunter2)) (import/group mage))))
+    (import/group
+      vampire
+      (import/group knight)
+      (import/group hunter (import/group hunter1) (import/group hunter2))
+      (import/group mage∷nexus∷*))))
 (using (import/group `python`∷numpy))
 (using (import/alias `python`∷numpy npy))
 (using (import/group `python` (import/alias numpy np) (import/alias torch tf)))

@@ -1,6 +1,6 @@
 [package]
 name = "valkyrie-ast"
-version = "0.0.10"
+version = "0.0.11"
 authors = ["Aster <192607617@qq.com>"]
 description = "Strong typed abstract syntax tree of valkyrie language"
 repository = "https://github.com/nyar-vm/valkyrie.rs"
@@ -15,7 +15,7 @@ edition = "2021"
 serde = { version = "1.0.163", default-features = false, optional = true }
 
 [dependencies.pretty-print]
-version = "0.1.1"
+version = "0.1.2"
 optional = true
 
 [features]

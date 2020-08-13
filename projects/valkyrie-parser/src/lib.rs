@@ -5,17 +5,16 @@ mod atomic;
 mod conditional;
 mod control_flow;
 mod declarations;
-pub mod expression;
-pub mod helpers;
-pub mod import;
-pub mod number;
-pub mod operators;
-pub mod statements;
-pub mod string;
+mod expression;
+mod helpers;
+mod number;
+mod operators;
+mod statements;
+mod string;
 mod suffix_call;
-pub mod table;
+mod table;
 mod traits;
-pub(crate) mod utils;
+mod utils;
 
 pub use crate::{
     statements::{ReplRoot, ScriptRoot},

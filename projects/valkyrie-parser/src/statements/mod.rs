@@ -1,19 +1,22 @@
 use crate::{
-    helpers::{ignore, parse_eos},
+    helpers::{ignore, parse_any_name_path, parse_eos, parse_name_join_dot},
     traits::ThisParser,
     utils::{get_span, parse_expression_node, parse_modifiers},
 };
 use lispify::{Lisp, ListString};
+use std::sync::LazyLock;
 use valkyrie_ast::{
     ClassDeclaration, ControlNode, DocumentationNode, ExpressionContext, ExpressionNode, ForLoopNode, FunctionDeclaration,
-    FunctionType, IdentifierNode, ImportStatementNode, LambdaArgumentNode, LambdaCallNode, LambdaDotNode, LambdaNode,
-    LetBindNode, NamePathNode, NamespaceDeclarationNode, StatementNode, StatementType, WhileLoopNode,
+    FunctionType, IdentifierNode, ImportAliasNode, ImportGroupNode, ImportStatementNode, ImportTermNode, LambdaArgumentNode,
+    LambdaCallNode, LambdaDotNode, LambdaNode, LetBindNode, NamePathNode, NamespaceDeclarationNode, NamespaceKind,
+    StatementNode, StatementType, StringLiteralNode, WhileLoopNode,
 };
-use valkyrie_types::third_party::pex::{helpers::comment_line, ParseResult, ParseState, StopBecause};
+use valkyrie_types::third_party::pex::{helpers::comment_line, ParseResult, ParseState, Regex, StopBecause};
 
 mod classes;
 mod def_var;
 mod documentation;
+mod import;
 mod lambda;
 mod new;
 
