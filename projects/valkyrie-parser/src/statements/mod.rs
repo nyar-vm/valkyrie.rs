@@ -4,6 +4,7 @@ use crate::{
     utils::{get_span, parse_expression_node, parse_modifiers},
 };
 use lispify::{Lisp, ListString};
+use pex::{helpers::comment_line, ParseResult, ParseState, Regex, StopBecause};
 use std::sync::LazyLock;
 use valkyrie_ast::{
     ClassDeclaration, ControlNode, DocumentationNode, ExpressionContext, ExpressionNode, ForLoopNode, FunctionDeclaration,
@@ -11,7 +12,6 @@ use valkyrie_ast::{
     LambdaCallNode, LambdaDotNode, LambdaNode, LetBindNode, NamePathNode, NamespaceDeclarationNode, NamespaceKind,
     StatementNode, StatementType, StringLiteralNode, WhileLoopNode,
 };
-use valkyrie_types::third_party::pex::{helpers::comment_line, ParseResult, ParseState, Regex, StopBecause};
 
 mod classes;
 mod def_var;

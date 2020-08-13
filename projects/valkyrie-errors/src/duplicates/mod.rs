@@ -15,8 +15,8 @@ pub enum DuplicateKind {
 pub struct DuplicateError {
     kind: DuplicateKind,
     name: String,
-    this_item: FileSpan,
-    last_item: FileSpan,
+    // this_item: FileSpan,
+    // last_item: FileSpan,
 }
 
 impl Display for DuplicateError {
@@ -24,20 +24,20 @@ impl Display for DuplicateError {
         write!(f, "Duplicate {} `{}`", self.kind, self.name)
     }
 }
-
-impl DuplicateError {
-    pub fn as_report(&self, level: ReportKind) -> ValkyrieReport {
-        let mut report = Report::build(level, self.this_item.file, 0).with_code(self.kind as u32);
-        report.set_message(self.to_string());
-        report.add_label(
-            self.this_item.as_label(format!("{:?} `{}` is defined here.", self.kind, self.name)).with_color(Color::Blue),
-        );
-        report.add_label(
-            self.last_item
-                .as_label(format!("But {} `{}` has been defined here.", self.kind, self.name))
-                .with_color(Color::Cyan),
-        );
-        report.set_help(format!("Items must have unique names, rename one of the items to have a unique name"));
-        report.finish()
-    }
-}
+//
+// impl DuplicateError {
+//     pub fn as_report(&self, level: ReportKind) -> ValkyrieReport {
+//         let mut report = Report::build(level, self.this_item.file, 0).with_code(self.kind as u32);
+//         report.set_message(self.to_string());
+//         report.add_label(
+//             self.this_item.as_label(format!("{:?} `{}` is defined here.", self.kind, self.name)).with_color(Color::Blue),
+//         );
+//         report.add_label(
+//             self.last_item
+//                 .as_label(format!("But {} `{}` has been defined here.", self.kind, self.name))
+//                 .with_color(Color::Cyan),
+//         );
+//         report.set_help(format!("Items must have unique names, rename one of the items to have a unique name"));
+//         report.finish()
+//     }
+// }

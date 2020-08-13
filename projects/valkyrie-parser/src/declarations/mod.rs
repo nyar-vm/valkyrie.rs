@@ -8,9 +8,9 @@ use crate::{
     ThisParser,
 };
 use lispify::Lisp;
+use pex::{BracketPattern, ParseResult, ParseState, StopBecause};
 use valkyrie_ast::{
     ApplyArgumentNode, ArgumentKeyNode, ArgumentTermNode, ExpressionBody, ExpressionContext, ExpressionNode, FunctionBodyPart,
     FunctionCommonPart, FunctionDeclaration, FunctionType, GenericArgumentNode, IdentifierNode, ModifierPart, NamePathNode,
     PrettyPrint, StatementNode,
 };
-use valkyrie_types::third_party::pex::{BracketPattern, ParseResult, ParseState, StopBecause};

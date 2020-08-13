@@ -1,5 +1,10 @@
 use crate::{traits::ThisParser, utils::get_span};
 use lispify::Lisp;
+use pex::{
+    helpers::{make_from_str, whitespace},
+    ParseResult, ParseState, Regex, StopBecause,
+};
+use pratt::{Associativity, Precedence};
 use std::{
     fmt::{Debug, Formatter},
     ops::Range,
@@ -7,13 +12,6 @@ use std::{
     sync::LazyLock,
 };
 use valkyrie_ast::{OperatorNode, ValkyrieOperator};
-use valkyrie_types::third_party::{
-    pex::{
-        helpers::{make_from_str, whitespace},
-        ParseResult, ParseState, Regex, StopBecause,
-    },
-    pratt::{Associativity, Precedence},
-};
 
 mod display;
 mod parser;

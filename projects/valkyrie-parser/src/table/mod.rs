@@ -3,12 +3,12 @@ mod tuple;
 
 use crate::{helpers::ignore, traits::ThisParser, utils::get_span};
 use lispify::{Lisp, Lispify};
+use pex::{BracketPattern, ParseResult, ParseState};
 use std::ops::Range;
 use valkyrie_ast::{
     CallTermNode, ExpressionBody, IdentifierNode, NumberLiteralNode, StringLiteralNode, SubscriptNode, TableKeyType, TableKind,
     TableNode, TableTermNode,
 };
-use valkyrie_types::third_party::pex::{BracketPattern, ParseResult, ParseState};
 
 pub(crate) struct TupleNode {
     /// The raw string of the number.

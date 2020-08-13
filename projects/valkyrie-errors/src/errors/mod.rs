@@ -1,6 +1,9 @@
 use crate::duplicates::DuplicateError;
 
-use std::error::{Error, Report};
+use std::{
+    error::{Error, Report},
+    fmt::{Debug, Display, Formatter},
+};
 
 pub mod display;
 
@@ -12,8 +15,34 @@ pub trait ValkyrieErrorType: Error {
     fn as_report(&self) -> Report;
 }
 
+impl Error for ValkyrieError {}
+
+impl Debug for ValkyrieError {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        match self {
+            ValkyrieError::Duplicate(v) => Debug::fmt(v, f),
+            ValkyrieError::Custom(v) => Debug::fmt(v, f),
+        }
+    }
+}
+
+impl Display for ValkyrieError {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        match self {
+            ValkyrieError::Duplicate(v) => Display::fmt(v, f),
+            ValkyrieError::Custom(v) => Display::fmt(v, f),
+        }
+    }
+}
+
 pub enum ValkyrieError {
     // Syntax(SyntaxError),
     Duplicate(Box<DuplicateError>),
-    Custom(Box<dyn Error>),
+    Custom(Box<String>),
+}
+
+impl ValkyrieError {
+    pub fn custom<S: ToString>(message: S) -> Self {
+        Self::Custom(Box::new(message.to_string()))
+    }
 }

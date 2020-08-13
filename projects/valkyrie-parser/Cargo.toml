@@ -1,6 +1,6 @@
 [package]
 name = "valkyrie-parser"
-version = "0.2.1"
+version = "0.2.2"
 authors = ["192608617@qq.com"]
 edition = "2018"
 description = "The hand write parser of valkyrie language"
@@ -9,30 +9,25 @@ repository = "https://github.com/nyar-lang/NyarNative"
 license = "MPL-2.0"
 
 [dependencies]
+pratt = "0.4.0"
 bit-set = "0.5.3"
+
+[dependencies.pex]
+version = "0.1.6"
+features = ["regex"]
 
 [dependencies.lispify]
 version = "0.0.1"
-#path = "D:\\Java\\pex-sexpr\\projects\\sexpr"
 
 [dependencies.valkyrie-ast]
-version = "0.0.*"
+version = "0.0.11"
 features = ["pretty-print", "std"]
 path = "../valkyrie-ast"
 
-[dependencies.valkyrie-types]
-version = "0.0.*"
-features = ["pex", "pratt"]
-path = "../valkyrie-types"
-
-#[dependencies.valkyrie-error]
-#path = "../valkyrie-errors"
-#version = "0.0.*"
-
-#
-#[dependencies.nyar-hir]
-#path = "../nyar-hir"
-#version = "0.2"
+[dependencies.valkyrie-error]
+path = "../valkyrie-errors"
+features = []
+version = "0.1.*"
 
 [dev-dependencies]
 

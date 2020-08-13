@@ -1,5 +1,5 @@
 use super::*;
-
+#[cfg(feature = "pretty-print")]
 mod display;
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]

@@ -4,8 +4,8 @@ use crate::{
     table::TupleNode,
     utils::{parse_expression_node, parse_modifiers},
 };
+use pex::{BracketPattern, StopBecause};
 use valkyrie_ast::{ArgumentKeyNode, ExpressionContext, IdentifierNode, ModifierPart, TableKeyType::Identifier};
-use valkyrie_types::third_party::pex::{BracketPattern, StopBecause};
 
 impl ThisParser for ForLoopNode {
     fn parse(input: ParseState) -> ParseResult<Self> {

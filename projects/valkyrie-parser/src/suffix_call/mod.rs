@@ -4,12 +4,12 @@ use crate::{
     ThisParser,
 };
 use lispify::Lisp;
+use pex::{BracketPair, BracketPattern, ParseResult, ParseState};
 use valkyrie_ast::{
     ApplyCallNode, ApplyCallTerm, ApplyDotNode, ArgumentTermNode, CallNode, CallTermNode, ExpressionBody, ExpressionNode,
     GenericArgumentNode, GenericArgumentTerm, GenericCallNode, IdentifierNode, LambdaCallNode, LambdaDotNode, LambdaNode,
     SubscriptNode, SubscriptSliceNode, SubscriptTermNode,
 };
-use valkyrie_types::third_party::pex::{BracketPair, BracketPattern, ParseResult, ParseState};
 
 mod args_apply;
 mod args_generic;

@@ -1,28 +1,22 @@
 use super::*;
+use pretty_print::KAndRBracket;
 
-impl TableKind {
-    fn begin_str(&self) -> &'static str {
-        match self {
-            TableKind::Tuple => "(",
-            TableKind::OffsetTable => "[",
-            TableKind::OrdinalTable => "[",
-        }
-    }
-    fn end_str(&self) -> &'static str {
-        match self {
-            TableKind::Tuple => ")",
-            TableKind::OffsetTable => "]",
-            TableKind::OrdinalTable => "]",
-        }
-    }
-}
-#[cfg(feature = "pretty-print")]
 impl PrettyPrint for TableNode {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        let head = allocator.text(self.kind.begin_str());
-        let body = self.terms.iter().map(|x| x.build(allocator).append(allocator.text(",")));
-        let tail = allocator.text(self.kind.end_str());
-        head.append(allocator.concat(body)).append(tail)
+        match self.kind {
+            TableKind::Tuple => {
+                let k = KAndRBracket { head_space: false, bracket_l: "(", bracket_r: ")" };
+                k.build(&self.terms, allocator, allocator.text(", "), allocator.text(",").append(allocator.hardline()))
+            }
+            TableKind::OffsetTable => {
+                let k = KAndRBracket { head_space: false, bracket_l: "[", bracket_r: "]" };
+                k.build(&self.terms, allocator, allocator.text(", "), allocator.text(",").append(allocator.hardline()))
+            }
+            TableKind::OrdinalTable => {
+                let k = KAndRBracket { head_space: false, bracket_l: "{%", bracket_r: "%}" };
+                k.build(&self.terms, allocator, allocator.text(", "), allocator.text(",").append(allocator.hardline()))
+            }
+        }
     }
 }
 #[cfg(feature = "pretty-print")]
@@ -31,6 +25,7 @@ impl PrettyPrint for TableTermNode {
         self.pair.build(allocator)
     }
 }
+
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for TableKeyType {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {

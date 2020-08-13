@@ -1,14 +1,19 @@
 use super::*;
-use crate::{traits::ThisParser, utils::get_span};
-use lispify::Lisp;
-use valkyrie_ast::NumberLiteralNode;
 
-impl FromStr for ValkyrieBytes {
-    type Err = StopBecause;
+/// A number literal.
+#[derive(Debug, Clone, Eq, Hash)]
+pub struct ValkyrieBytes {
+    /// The raw string of the number.
+    pub bytes: Vec<u8>,
+    /// The unit of the number, if any.
+    pub unit: Option<IdentifierNode>,
+    /// The range of the number.
+    pub range: Range<usize>,
+}
 
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let state = ParseState::new(s.trim_end()).skip(whitespace);
-        make_from_str(state, Self::parse)
+impl PartialEq for ValkyrieBytes {
+    fn eq(&self, other: &Self) -> bool {
+        self.bytes.eq(&other.bytes) && self.unit.eq(&other.unit)
     }
 }
 

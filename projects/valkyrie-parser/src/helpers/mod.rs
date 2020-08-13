@@ -3,13 +3,13 @@ mod escaper;
 pub use self::escaper::StringRewrite;
 
 use crate::{utils::get_span, ThisParser};
-use std::sync::LazyLock;
-use valkyrie_ast::{IdentifierNode, NamePathNode};
-use valkyrie_types::third_party::pex::{
+use pex::{
     ParseResult,
     ParseResult::{Pending, Stop},
     ParseState, Regex, StopBecause,
 };
+use std::sync::LazyLock;
+use valkyrie_ast::{IdentifierNode, NamePathNode};
 
 pub static IGNORE: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(

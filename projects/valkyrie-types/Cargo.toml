@@ -1,6 +1,6 @@
 [package]
 name = "valkyrie-types"
-version = "0.0.3"
+version = "0.0.4"
 authors = ["Aster <192607617@qq.com>"]
 description = "..."
 repository = "https://github.com/nyar-vm/valkyrie.rs"

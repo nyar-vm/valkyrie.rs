@@ -6,7 +6,7 @@ impl PrettyPrint for NewConstructNode {
         terms.push(allocator.keyword("new"));
         for m in &self.modifiers {
             terms.push(allocator.space());
-            terms.push(m.build(allocator));
+            terms.push(allocator.keyword(m.name.to_string()));
         }
         terms.push(allocator.space());
         terms.push(self.namepath.build(allocator));

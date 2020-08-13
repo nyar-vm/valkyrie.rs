@@ -3,11 +3,11 @@ use crate::{
     helpers::{parse_name_join, parse_name_join_dot},
     utils::get_span,
 };
+use pex::{BracketPattern, StopBecause};
 use valkyrie_ast::{
     ApplyArgumentNode, ApplyCallNode, CallTermNode, GenericCallNode, IdentifierNode, NewConstructNode, TableKind, TableNode,
     TableTermNode,
 };
-use valkyrie_types::third_party::pex::{BracketPattern, StopBecause};
 
 impl ThisParser for NewConstructNode {
     /// ```vk

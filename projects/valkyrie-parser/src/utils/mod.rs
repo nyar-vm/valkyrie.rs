@@ -4,9 +4,9 @@ use crate::{
     ThisParser,
 };
 
+use pex::{ParseResult, ParseState, StopBecause};
 use std::ops::Range;
 use valkyrie_ast::{ExpressionBody, ExpressionContext, ExpressionNode, IdentifierNode};
-use valkyrie_types::third_party::pex::{ParseResult, ParseState, StopBecause};
 
 #[inline]
 pub fn get_span(input: ParseState, output: ParseState) -> Range<u32> {

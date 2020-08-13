@@ -8,14 +8,12 @@ use crate::{
     utils::parse_expression_node,
 };
 use lispify::{Lisp, Lispify};
+use pex::{ParseResult, ParseState, StopBecause};
+use pratt::{Affix, PrattError, PrattParser};
 use std::fmt::Debug;
 use valkyrie_ast::{
     ApplyCallNode, ApplyDotNode, ExpressionBody, ExpressionContext, ExpressionNode, GenericCallNode, InfixNode, NamePathNode,
     NumberLiteralNode, PostfixNode, PrefixNode, StringLiteralNode, SubscriptNode, TableNode, ValkyrieOperator,
-};
-use valkyrie_types::third_party::{
-    pex::{ParseResult, ParseState, StopBecause},
-    pratt::{Affix, PrattError, PrattParser},
 };
 
 /// A resolver
