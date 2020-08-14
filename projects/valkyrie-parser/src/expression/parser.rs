@@ -143,9 +143,9 @@ pub fn parse_value(input: ParseState, allow_curly: bool) -> ParseResult<Expressi
     let (state, mut base) = input
         .begin_choice()
         .or_else(|s| NewConstructNode::parse(s).map_inner(Into::into))
-        .or_else(|s| NamePathNode::parse(s).map_inner(Into::into))
         .or_else(|s| NumberLiteralNode::parse(s).map_inner(Into::into))
         .or_else(|s| StringLiteralNode::parse(s).map_inner(Into::into))
+        .or_else(|s| NamePathNode::parse(s).map_inner(Into::into))
         .or_else(|s| TableNode::parse(s).map_inner(Into::into))
         .or_else(|s| TupleNode::parse(s).map_inner(Into::into))
         .end_choice()?;
