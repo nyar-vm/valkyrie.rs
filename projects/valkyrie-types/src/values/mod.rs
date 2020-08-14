@@ -6,7 +6,7 @@ mod ser;
 
 use crate::{
     builtin::{data_frame::ValkyrieDataFrame, images::ValkyrieImage, ndarray::ValkyrieNDArray},
-    ValkyrieClassType, ValkyrieDataTable, ValkyrieVariantType,
+    JsonValue, ValkyrieClassType, ValkyrieDataTable, ValkyrieVariantType,
 };
 
 pub enum ValkyrieValue {
@@ -28,7 +28,7 @@ pub enum ValkyrieValue {
     Bytes(Arc<Vec<u8>>),
     /// Array, Array2D
     /// ArrayView, ArrayView2D
-    Json(Arc<serde_json::Value>),
+    Json(Arc<JsonValue>),
     NDArray(Arc<ValkyrieNDArray>),
     Image(Arc<ValkyrieImage>),
     DataFrame(Arc<ValkyrieDataFrame>),

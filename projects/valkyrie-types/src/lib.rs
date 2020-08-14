@@ -16,7 +16,6 @@ pub mod third_party;
 
 mod builtin;
 mod codegen;
-mod errors;
 mod functions;
 mod modifiers;
 
@@ -25,5 +24,6 @@ mod values;
 // #[cfg(test)]
 pub mod testing;
 mod utils;
-pub use crate::errors::{ValkyrieError, ValkyrieErrorKind, ValkyrieResult};
+
 pub use valkyrie_ast::ValkyrieOperator;
+pub use valkyrie_error::{JsonValue, ValkyrieError, ValkyrieResult};

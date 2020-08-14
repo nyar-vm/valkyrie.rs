@@ -1,13 +1,11 @@
-use crate::{types::ValkyrieMetaType, ValkyrieError, ValkyrieType, ValkyrieValue};
-use serde_json::{Error, Value};
-use std::sync::Arc;
+use super::*;
 
-impl ValkyrieType for Value {
+impl ValkyrieType for JsonValue {
     fn boxed(self) -> ValkyrieValue {
         match self {
-            Value::Null => ValkyrieValue::Null,
-            Value::Bool(v) => ValkyrieValue::Boolean(v),
-            Value::Number(v) => {
+            JsonValue::Null => ValkyrieValue::Null,
+            JsonValue::Bool(v) => ValkyrieValue::Boolean(v),
+            JsonValue::Number(v) => {
                 if v.is_i64() {
                     ValkyrieValue::Integer(v.as_i64().unwrap().into())
                 }
@@ -21,11 +19,11 @@ impl ValkyrieType for Value {
                     todo!()
                 }
             }
-            Value::String(v) => ValkyrieValue::UTF8String(Arc::new(v)),
-            Value::Array(_) => {
+            JsonValue::String(v) => ValkyrieValue::UTF8String(Arc::new(v)),
+            JsonValue::Array(_) => {
                 todo!()
             }
-            Value::Object(_) => {
+            JsonValue::Object(_) => {
                 todo!()
             }
         }
@@ -33,11 +31,5 @@ impl ValkyrieType for Value {
 
     fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
         todo!()
-    }
-}
-
-impl From<Error> for ValkyrieError {
-    fn from(value: Error) -> Self {
-        ValkyrieError::custom(value.to_string())
     }
 }

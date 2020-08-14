@@ -1,5 +1,6 @@
 use crate::duplicates::DuplicateError;
 
+use crate::SyntaxError;
 use std::{
     error::{Error, Report},
     fmt::{Debug, Display, Formatter},
@@ -22,6 +23,7 @@ impl Debug for ValkyrieError {
         match self {
             ValkyrieError::Duplicate(v) => Debug::fmt(v, f),
             ValkyrieError::Custom(v) => Debug::fmt(v, f),
+            ValkyrieError::Syntax(v) => Debug::fmt(v, f),
         }
     }
 }
@@ -31,12 +33,13 @@ impl Display for ValkyrieError {
         match self {
             ValkyrieError::Duplicate(v) => Display::fmt(v, f),
             ValkyrieError::Custom(v) => Display::fmt(v, f),
+            ValkyrieError::Syntax(v) => Display::fmt(v, f),
         }
     }
 }
 
 pub enum ValkyrieError {
-    // Syntax(SyntaxError),
+    Syntax(Box<SyntaxError>),
     Duplicate(Box<DuplicateError>),
     Custom(Box<String>),
 }
