@@ -57,6 +57,7 @@ impl ValkyrieOperator {
                 4 => "‱",
                 _ => "%",
             },
+            ValkyrieOperator::Assign => "=",
         }
     }
 }

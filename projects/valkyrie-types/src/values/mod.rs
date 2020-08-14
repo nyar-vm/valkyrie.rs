@@ -9,6 +9,7 @@ use crate::{
     JsonValue, ValkyrieClassType, ValkyrieDataTable, ValkyrieVariantType,
 };
 
+#[derive(Clone)]
 pub enum ValkyrieValue {
     /// ADT = -1
     Nothing,

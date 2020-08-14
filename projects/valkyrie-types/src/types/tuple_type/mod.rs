@@ -1,22 +1,26 @@
 use super::*;
 use crate::utils::primitive_type;
+use indexmap::IndexMap;
+use std::collections::VecDeque;
 
 pub struct ValkyrieDataTable {
     tuple: bool,
-    items: Vec<ValkyrieValue>,
+    items: VecDeque<ValkyrieValue>,
+    pairs: IndexMap<ValkyrieValue, ValkyrieValue>,
 }
 
 impl ValkyrieDataTable {
     pub fn list() -> Self {
-        Self { tuple: false, items: Vec::new() }
+        Self { tuple: false, items: VecDeque::new(), pairs: Default::default() }
     }
 
     pub fn tuple() -> Self {
-        Self { tuple: true, items: Vec::new() }
+        Self { tuple: true, items: VecDeque::new(), pairs: Default::default() }
     }
 
     pub fn clear(&mut self) {
         self.items.clear();
+        self.pairs.clear();
     }
 
     pub fn extend_many<I>(&mut self, items: I)
@@ -27,7 +31,7 @@ impl ValkyrieDataTable {
     }
 
     pub fn extend_one(&mut self, item: ValkyrieValue) {
-        self.items.push(item);
+        self.items.push_back(item);
     }
 }
 

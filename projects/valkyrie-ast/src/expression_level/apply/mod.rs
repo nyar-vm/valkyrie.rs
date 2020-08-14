@@ -1,6 +1,9 @@
 #[cfg(feature = "pretty-print")]
 mod display;
+
 use super::*;
+use crate::ModifierPart;
+use alloc::borrow::Cow;
 
 /// `(mut self, a, b: int, c: T = 3, ⁑args, ⁂kwargs)`
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
@@ -25,6 +28,12 @@ pub struct ApplyArgumentTerm {
 pub struct ArgumentKeyNode {
     pub modifiers: Vec<IdentifierNode>,
     pub key: IdentifierNode,
+}
+
+impl ArgumentKeyNode {
+    pub fn get_modifiers(&self) -> ModifierPart {
+        ModifierPart { modifiers: Cow::Borrowed(&self.modifiers) }
+    }
 }
 
 /// `term.call(0, a: 1, ⁑args, ⁂kwargs)`

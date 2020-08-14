@@ -58,12 +58,19 @@ pub struct ModifierPart<'i> {
     pub modifiers: Cow<'i, [IdentifierNode]>,
 }
 
+
 /// `{ a; b; c }`
 ///
 /// - Auxiliary parsing function, not instantiable.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub struct FunctionBodyPart<'i> {
     pub body: Cow<'i, [StatementNode]>,
+}
+
+impl<'i> ModifierPart<'i> {
+    pub fn contains(&self, modifier: &str) -> bool {
+        self.modifiers.iter().any(|x| x.name.eq(modifier))
+    }
 }
 
 impl<'a> FunctionBodyPart<'a> {

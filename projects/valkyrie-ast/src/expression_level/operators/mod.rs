@@ -20,6 +20,8 @@ pub enum ValkyrieOperator {
     Inverse,
     /// prefix operator: `⅟`
     Surd(u8),
+    /// infix operator: `=`
+    Assign,
     /// binary operator: `+`
     Plus,
     /// binary operator: `+=`
@@ -80,6 +82,7 @@ impl ValkyrieOperator {
             ValkyrieOperator::Belongs(_) => 14000,
             ValkyrieOperator::IsA(_) => 14000,
 
+            ValkyrieOperator::Assign => 14000,
             // prefix - 3
             ValkyrieOperator::PlusAssign => 14100,
 

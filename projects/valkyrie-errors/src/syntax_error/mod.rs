@@ -1,3 +1,4 @@
+#[cfg(feature = "serde_json")]
 mod for_serde_json;
 mod for_std;
 
@@ -10,10 +11,10 @@ use std::{
 
 #[derive(Clone, Debug)]
 pub struct SyntaxError {
-    pub info: String,
-    pub span: FileID,
-    pub range: Range<u32>,
-    pub level: DiagnosticLevel,
+    info: String,
+    file: FileID,
+    span: Range<u32>,
+    level: DiagnosticLevel,
 }
 
 impl Error for SyntaxError {}
@@ -26,6 +27,15 @@ impl Display for SyntaxError {
 
 impl SyntaxError {
     pub fn new<T: ToString>(message: T) -> Self {
-        Self { info: message.to_string(), span: Default::default(), range: Default::default(), level: DiagnosticLevel::Error }
+        Self { info: message.to_string(), file: Default::default(), span: Default::default(), level: DiagnosticLevel::Error }
+    }
+    pub fn with_span(self, span: &Range<u32>) -> Self {
+        Self { span: span.clone(), ..self }
+    }
+    pub fn with_file(self, file: FileID) -> Self {
+        Self { file, ..self }
+    }
+    pub fn with_level(self, level: DiagnosticLevel) -> Self {
+        Self { level, ..self }
     }
 }

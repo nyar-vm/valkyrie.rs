@@ -26,4 +26,4 @@ pub mod testing;
 mod utils;
 
 pub use valkyrie_ast::ValkyrieOperator;
-pub use valkyrie_error::{JsonValue, ValkyrieError, ValkyrieResult};
+pub use valkyrie_error::{JsonValue, RuntimeError, SyntaxError, ValkyrieError, ValkyrieResult};

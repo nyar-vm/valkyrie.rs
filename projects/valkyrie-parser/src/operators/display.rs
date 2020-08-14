@@ -99,6 +99,7 @@ impl ValkyrieInfix {
             "is" => ValkyrieOperator::IsA(true),
             "isnot" => ValkyrieOperator::IsA(false),
             "+=" => ValkyrieOperator::PlusAssign,
+            "=" => ValkyrieOperator::Assign,
             _ => unreachable!("Unknown operator: {}", self.normalized),
         };
         OperatorNode::new(kind, self.span.clone())
