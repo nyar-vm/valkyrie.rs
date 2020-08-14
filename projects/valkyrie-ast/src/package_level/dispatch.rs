@@ -52,6 +52,12 @@ impl From<FunctionDeclaration> for StatementType {
         Self::Function(Box::new(value))
     }
 }
+impl From<LetBindNode> for StatementType {
+    fn from(value: LetBindNode) -> Self {
+        StatementType::LetBind(Box::new(value))
+    }
+}
+
 impl From<WhileLoopNode> for StatementType {
     fn from(value: WhileLoopNode) -> Self {
         StatementType::While(Box::new(value))

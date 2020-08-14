@@ -3,12 +3,12 @@ use crate::{
     traits::ThisParser,
     utils::get_span,
 };
-use lispify::{Lisp, LispNumber, LispSymbol, ListString};
+use lispify::{Lisp, LispNumber,  ListString};
 use pex::{
-    helpers::{make_from_str, quotation_pair, quotation_pair_nested, whitespace},
+    helpers::{ quotation_pair, quotation_pair_nested, },
     ParseResult, ParseState, Regex, StopBecause,
 };
-use std::{ops::Range, str::FromStr, sync::LazyLock};
+use std::{ops::Range, sync::LazyLock};
 use valkyrie_ast::{IdentifierNode, MacroPathNode, NamePathNode, NumberLiteralNode, PrettyPrint, StringLiteralNode};
 
 mod bytes;

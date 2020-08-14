@@ -2,6 +2,7 @@ use super::*;
 #[cfg(feature = "pretty-print")]
 mod display;
 
+/// `caller::<T>[a]::<U>(b).c(d)(e) {f}`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct CallNode<E> {

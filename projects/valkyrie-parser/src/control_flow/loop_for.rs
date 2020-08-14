@@ -1,11 +1,4 @@
 use super::*;
-use crate::{
-    helpers::{parse_comma, parse_in, parse_name_join},
-    table::TupleNode,
-    utils::{parse_expression_node, parse_modifiers},
-};
-use pex::{BracketPattern, StopBecause};
-use valkyrie_ast::{ArgumentKeyNode, ExpressionContext, IdentifierNode, ModifierPart, TableKeyType::Identifier};
 
 impl ThisParser for ForLoopNode {
     fn parse(input: ParseState) -> ParseResult<Self> {

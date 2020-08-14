@@ -1,10 +1,14 @@
-use crate::{helpers::ignore, utils::get_span, ThisParser};
+use crate::{
+    helpers::{ignore, parse_comma, parse_in},
+    utils::{get_span, parse_expression_node, parse_modifiers},
+    ThisParser,
+};
 use lispify::Lisp;
-use pex::{ParseResult, ParseState};
-use std::{borrow::Cow, ops::Range};
+use pex::{BracketPattern, ParseResult, ParseState, StopBecause};
+use std::borrow::Cow;
 use valkyrie_ast::{
-    ConditionNode, ConditionType, ControlNode, ControlType, ElsePart, ExpressionNode, ForLoopNode, FunctionBodyPart,
-    IfStatementNode, PatternType, StatementNode, WhileLoopNode,
+    ArgumentKeyNode, ConditionNode, ConditionType, ControlNode, ControlType, ElsePart, ExpressionContext, ExpressionNode,
+    ForLoopNode, FunctionBodyPart, IfStatementNode, PatternType, StatementNode, WhileLoopNode,
 };
 
 mod controller;

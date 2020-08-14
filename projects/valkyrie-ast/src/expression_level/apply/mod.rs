@@ -12,6 +12,7 @@ pub struct ApplyArgumentNode {
     pub span: Range<u32>,
 }
 
+/// `mut self: T? = null, ⁑args, ⁂kwargs`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ApplyArgumentTerm {

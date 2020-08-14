@@ -1,30 +1,6 @@
 use super::*;
 
-/// A number literal.
-#[derive(Debug, Clone, Eq, Hash)]
-pub struct StringTemplateNode {
-    /// The raw string of the number.
-    pub bytes: Vec<u8>,
-    /// The unit of the number, if any.
-    pub unit: Option<IdentifierNode>,
-    /// The range of the number.
-    pub range: Range<usize>,
-}
-
-impl PartialEq for StringTemplateNode {
-    fn eq(&self, other: &Self) -> bool {
-        self.bytes.eq(&other.bytes) && self.unit.eq(&other.unit)
-    }
-}
-
-impl FromStr for StringTemplateNode {
-    type Err = StopBecause;
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let state = ParseState::new(s.trim_end()).skip(whitespace);
-        make_from_str(state, Self::parse)
-    }
-}
+use valkyrie_ast::StringTemplateNode;
 
 impl ThisParser for StringLiteralNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
@@ -44,15 +20,12 @@ impl ThisParser for StringLiteralNode {
     }
 }
 
-// ZeroBytePattern::new(&[("⍚", 16), ("⍙", 8), ("⍜", 2)]);
-impl StringTemplateNode {
-    /// ```js
-    /// ⍚F => [15]
-    /// ⍚FF => [255]
-    /// ⍚FFF => [15, 255]
-    /// ⍚F_F_F_F => [255, 255]
-    /// ```
-    pub fn parse(input: ParseState) -> ParseResult<Self> {
+impl ThisParser for StringTemplateNode {
+    fn parse(input: ParseState) -> ParseResult<Self> {
+        todo!()
+    }
+
+    fn as_lisp(&self) -> Lisp {
         todo!()
     }
 }

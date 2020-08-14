@@ -10,6 +10,7 @@ pub mod string;
 pub mod symbol;
 pub mod table;
 pub mod view;
+pub mod string_template;
 
 use crate::{
     ApplyCallNode, ApplyDotNode, ArgumentTermNode, CallNode, CallTermNode, GenericCallNode, IdentifierNode, InfixNode,

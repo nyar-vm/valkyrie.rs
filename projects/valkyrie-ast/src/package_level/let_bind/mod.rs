@@ -1,5 +1,7 @@
 use super::*;
 
+mod display;
+
 /// `let mut pattern = expression`
 ///
 ///
@@ -14,10 +16,8 @@ use super::*;
 /// ```
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct LetBindNode {}
-
-impl PrettyPrint for LetBindNode {
-    fn build<'a>(&self, _allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        todo!()
-    }
+pub struct LetBindNode {
+    pub pattern: PatternType,
+    pub type_hint: Option<ExpressionNode>,
+    pub body: Option<ExpressionNode>,
 }

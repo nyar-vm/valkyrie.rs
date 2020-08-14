@@ -1,12 +1,11 @@
 let a;
-let mut a;
-
-
-let a: int
-let (mut a, mut b):(int,int)
-let mut a, mut b:(int,int)
-
+let a: int;
 let a = 1;
+let a: int = 1;
 
-(a,b,c) = f(x)
-a.b = c
+
+let mut a;
+let mut a, mut b;
+
+let (mut a, ): (int, ) = (1, );
+let (mut a, mut b): (int, int) = (1, 1);

@@ -9,7 +9,6 @@ mod control_flow;
 mod expression_level;
 mod helper;
 mod package_level;
-mod utils;
 
 pub use crate::{
     control_flow::{
@@ -25,7 +24,7 @@ pub use crate::{
         lambda::{LambdaArgumentNode, LambdaCallNode, LambdaDotNode, LambdaNode},
         number::NumberLiteralNode,
         operators::{InfixNode, OperatorNode, PostfixNode, PrefixNode, ValkyrieOperator},
-        string::StringLiteralNode,
+        string::{StringFormatter, StringLiteralNode, StringQuasiQuote, StringTemplateNode, StringTemplateType},
         symbol::{IdentifierNode, MacroKind, MacroPathNode, NamePathNode},
         table::{TableKeyType, TableKind, TableNode, TableTermNode},
         view::{SubscriptNode, SubscriptSliceNode, SubscriptTermNode},

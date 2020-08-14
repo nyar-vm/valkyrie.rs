@@ -9,16 +9,16 @@ using {
 }
 
 
+let mut a, mut b:(int,int)
 
-using .mod
-using ..mod as z
-using lib.*
-using mod::*
-using "./mod" as y
-using "../lib/mod"::{
-	a as b
-	c as d
-	e.f.{g as h}
+(a,b,c) = f(x)
+a.b = c
+
+@path("../lib/mod")
+using {
+    a as b
+    c as d
+    e.f.{g as h}
 }
 ```
 

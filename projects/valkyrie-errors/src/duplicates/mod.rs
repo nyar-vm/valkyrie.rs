@@ -1,6 +1,5 @@
 use std::fmt::{Debug, Display, Formatter};
 
-use crate::ValkyrieError;
 
 mod kind;
 

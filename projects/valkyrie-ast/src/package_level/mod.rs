@@ -8,9 +8,10 @@ pub mod license;
 pub mod namespace;
 
 use crate::{
+    control_flow::if_else::CasePatternNode,
     package_level::{classes::ClassDeclaration, namespace::NamespaceDeclarationNode},
     ApplyArgumentNode, ArgumentTermNode, ControlNode, DocumentationNode, ExpressionNode, ForLoopNode, FunctionDeclaration,
-    GenericArgumentNode, IdentifierNode, ImportStatementNode, LetBindNode, NamePathNode, WhileLoopNode,
+    GenericArgumentNode, IdentifierNode, ImportStatementNode, LetBindNode, NamePathNode, PatternType, WhileLoopNode,
 };
 use alloc::{borrow::Cow, boxed::Box, string::String, sync::Arc, vec::Vec};
 use core::ops::Range;
