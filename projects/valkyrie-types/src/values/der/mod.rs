@@ -106,14 +106,14 @@ impl<'de> Visitor<'de> for ValueVisitor {
     where
         E: Error,
     {
-        Ok(ValkyrieValue::Float32(v))
+        Ok(ValkyrieValue::Decimal(v as f64))
     }
 
     fn visit_f64<E>(self, v: f64) -> Result<Self::Value, E>
     where
         E: Error,
     {
-        Ok(ValkyrieValue::Float64(v))
+        Ok(ValkyrieValue::Decimal(v))
     }
 
     fn visit_char<E>(self, v: char) -> Result<Self::Value, E>

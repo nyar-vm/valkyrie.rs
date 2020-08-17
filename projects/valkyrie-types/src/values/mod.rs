@@ -22,14 +22,14 @@ pub enum ValkyrieValue {
     /// Native boolean type, 8bit
     Boolean(bool),
     Integer(IBig),
-    Float32(f32),
-    Float64(f64),
+    Decimal(f64),
     UTF8Character(char),
     UTF8String(Arc<String>),
     Bytes(Arc<Vec<u8>>),
     /// Array, Array2D
     /// ArrayView, ArrayView2D
     Json(Arc<JsonValue>),
+    Html(Arc<String>),
     NDArray(Arc<ValkyrieNDArray>),
     Image(Arc<ValkyrieImage>),
     DataFrame(Arc<ValkyrieDataFrame>),

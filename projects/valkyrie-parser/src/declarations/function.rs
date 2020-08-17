@@ -6,7 +6,7 @@ impl ThisParser for FunctionDeclaration {
         let (state, head) = FunctionType::parse(input)?;
         let (state, name) = state.skip(ignore).match_fn(NamePathNode::parse)?;
         let (state, method) = FunctionCommonPart::parse(state)?;
-        let mut f = method.as_function(head, name);
+        let f = method.as_function(head, name);
         state.finish(f)
     }
 
@@ -33,7 +33,10 @@ impl ThisParser for FunctionDeclaration {
 
 impl ThisParser for FunctionType {
     fn parse(input: ParseState) -> ParseResult<Self> {
-        if input.residual.starts_with("micro") {
+        if input.residual.starts_with("fun") {
+            input.advance("fun").finish(FunctionType::Micro)
+        }
+        else if input.residual.starts_with("micro") {
             input.advance("micro").finish(FunctionType::Micro)
         }
         else if input.residual.starts_with("macro") {

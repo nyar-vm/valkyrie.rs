@@ -14,8 +14,7 @@ impl Serialize for ValkyrieValue {
             ValkyrieValue::Unit => serializer.serialize_unit(),
             ValkyrieValue::Boolean(v) => serializer.serialize_bool(*v),
             ValkyrieValue::Integer(v) => v.serialize(serializer),
-            ValkyrieValue::Float32(v) => serializer.serialize_f32(*v),
-            ValkyrieValue::Float64(v) => serializer.serialize_f64(*v),
+            ValkyrieValue::Decimal(v) => serializer.serialize_f64(*v),
             ValkyrieValue::UTF8Character(v) => serializer.serialize_char(*v),
             ValkyrieValue::UTF8String(v) => serializer.serialize_str(v),
             ValkyrieValue::Bytes(_) => {
@@ -40,6 +39,9 @@ impl Serialize for ValkyrieValue {
                 todo!()
             }
             ValkyrieValue::DataTable(_) => {
+                todo!()
+            }
+            ValkyrieValue::Html(_) => {
                 todo!()
             }
         }

@@ -42,8 +42,7 @@ impl ValkyrieType for ValkyrieValue {
             ValkyrieValue::Unit => primitive_type("std.primitive.Unit"),
             ValkyrieValue::Boolean(v) => v.dynamic_type(),
             ValkyrieValue::Integer(v) => v.dynamic_type(),
-            ValkyrieValue::Float32(v) => v.dynamic_type(),
-            ValkyrieValue::Float64(v) => v.dynamic_type(),
+            ValkyrieValue::Decimal(v) => v.dynamic_type(),
             ValkyrieValue::UTF8Character(v) => v.dynamic_type(),
             ValkyrieValue::UTF8String(v) => v.dynamic_type(),
             ValkyrieValue::Bytes(v) => v.dynamic_type(),
@@ -54,6 +53,7 @@ impl ValkyrieType for ValkyrieValue {
             ValkyrieValue::Image(v) => v.dynamic_type(),
             ValkyrieValue::DataFrame(v) => v.dynamic_type(),
             ValkyrieValue::DataTable(v) => v.dynamic_type(),
+            ValkyrieValue::Html(_) => primitive_type("html.Html"),
         }
     }
 }

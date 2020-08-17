@@ -13,7 +13,7 @@ impl ValkyrieType for JsonValue {
                     ValkyrieValue::Integer(v.as_u64().unwrap().into())
                 }
                 else if v.is_f64() {
-                    ValkyrieValue::Float64(v.as_f64().unwrap())
+                    ValkyrieValue::Decimal(v.as_f64().unwrap())
                 }
                 else {
                     todo!()
