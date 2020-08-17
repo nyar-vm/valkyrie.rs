@@ -6,3 +6,5 @@
 (let ((mut a) (mut b)))
 (let ((mut a)) (table int) (table 1))
 (let ((mut a) (mut b)) (table int int) (table 1 1))
+(let ((a)) if)
+(call/lambda b (c))

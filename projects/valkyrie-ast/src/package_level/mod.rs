@@ -6,9 +6,9 @@ pub mod import;
 pub mod let_bind;
 pub mod license;
 pub mod namespace;
+pub mod try_catch;
 
 use crate::{
-    control_flow::if_else::CasePatternNode,
     package_level::{classes::ClassDeclaration, namespace::NamespaceDeclarationNode},
     ApplyArgumentNode, ArgumentTermNode, ControlNode, DocumentationNode, ExpressionNode, ForLoopNode, FunctionDeclaration,
     GenericArgumentNode, IdentifierNode, ImportStatementNode, LetBindNode, NamePathNode, PatternType, WhileLoopNode,

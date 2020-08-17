@@ -5,7 +5,7 @@ impl PrettyPrint for ApplyDotNode {
         let newline = allocator.hardline();
         let mut terms = Vec::with_capacity(6);
         terms.push(allocator.text("."));
-        terms.push(allocator.identifier(self.caller.name.clone()));
+        terms.push(self.caller.build(allocator));
         terms.push(allocator.text("("));
         terms.push(allocator.join(&self.terms, ", "));
         terms.push(allocator.text(")"));

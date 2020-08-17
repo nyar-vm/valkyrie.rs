@@ -52,7 +52,7 @@ impl ValkyrieType for ValkyrieValue {
             ValkyrieValue::NDArray(v) => v.dynamic_type(),
             ValkyrieValue::Image(v) => v.dynamic_type(),
             ValkyrieValue::DataFrame(v) => v.dynamic_type(),
-            ValkyrieValue::DataTable(v) => v.dynamic_type(),
+            ValkyrieValue::Table(v) => v.dynamic_type(),
             ValkyrieValue::Html(_) => primitive_type("html.Html"),
         }
     }

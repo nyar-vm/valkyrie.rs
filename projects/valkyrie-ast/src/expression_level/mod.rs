@@ -6,16 +6,17 @@ pub mod generic;
 pub mod lambda;
 pub mod number;
 pub mod operators;
+pub mod pattern_match;
 pub mod string;
+pub mod string_template;
 pub mod symbol;
 pub mod table;
 pub mod view;
-pub mod string_template;
 
 use crate::{
-    ApplyCallNode, ApplyDotNode, ArgumentTermNode, CallNode, CallTermNode, GenericCallNode, IdentifierNode, InfixNode,
-    LambdaCallNode, LambdaDotNode, NamePathNode, NewConstructNode, NumberLiteralNode, OperatorNode, PostfixNode, PrefixNode,
-    StatementNode, StringLiteralNode, SubscriptNode, TableNode, TableTermNode,
+    ApplyCallNode, ApplyDotNode, ArgumentTermNode, CallNode, CallTermNode, ControlNode, GenericCallNode, IdentifierNode,
+    IfStatementNode, InfixNode, LambdaCallNode, LambdaDotNode, NamePathNode, NewConstructNode, NumberLiteralNode, OperatorNode,
+    PostfixNode, PrefixNode, StatementNode, StringLiteralNode, SubscriptNode, TableNode, TableTermNode,
 };
 use alloc::{
     borrow::ToOwned,
@@ -64,6 +65,10 @@ pub enum ExpressionBody {
     LambdaDot(Box<CallNode<LambdaDotNode>>),
     Subscript(Box<CallNode<SubscriptNode>>),
     GenericCall(Box<CallNode<GenericCallNode>>),
+    /// - Standalone expression
+    Control(Box<ControlNode>),
+    /// - Standalone expression
+    If(Box<IfStatementNode>),
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]

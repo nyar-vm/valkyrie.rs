@@ -40,8 +40,9 @@ impl ArgumentKeyNode {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ApplyDotNode {
+    pub nullable: bool,
     /// The raw string of the number.
-    pub caller: IdentifierNode,
+    pub caller: NamePathNode,
     /// The range of the number.
     pub terms: Vec<ApplyCallTerm>,
     /// The range of the number.

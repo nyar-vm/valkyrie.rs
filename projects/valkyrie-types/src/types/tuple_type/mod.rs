@@ -3,13 +3,23 @@ use crate::utils::primitive_type;
 use indexmap::IndexMap;
 use std::collections::VecDeque;
 
-pub struct ValkyrieDataTable {
+#[derive(Clone, Debug)]
+pub struct ValkyrieTable {
     tuple: bool,
     items: VecDeque<ValkyrieValue>,
     pairs: IndexMap<ValkyrieValue, ValkyrieValue>,
 }
 
-impl ValkyrieDataTable {
+pub struct ValkyrieList {
+    typing: Arc<ValkyrieMetaType>,
+    items: VecDeque<ValkyrieValue>,
+}
+
+pub struct ValkyrieDict {
+    pairs: IndexMap<String, ValkyrieValue>,
+}
+
+impl ValkyrieTable {
     pub fn list() -> Self {
         Self { tuple: false, items: VecDeque::new(), pairs: Default::default() }
     }
@@ -35,15 +45,15 @@ impl ValkyrieDataTable {
     }
 }
 
-impl Default for ValkyrieDataTable {
+impl Default for ValkyrieTable {
     fn default() -> Self {
         todo!()
     }
 }
 
-impl ValkyrieType for ValkyrieDataTable {
+impl ValkyrieType for ValkyrieTable {
     fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::DataTable(Arc::new(self))
+        ValkyrieValue::Table(Arc::new(self))
     }
 
     fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
@@ -56,7 +66,7 @@ impl ValkyrieType for ValkyrieDataTable {
 
 impl ValkyrieType for () {
     fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::DataTable(Arc::new(ValkyrieDataTable::tuple()))
+        ValkyrieValue::Table(Arc::new(ValkyrieTable::tuple()))
     }
 
     fn static_type() -> Arc<ValkyrieMetaType> {
@@ -72,7 +82,7 @@ where
     T1: ValkyrieType,
 {
     fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::DataTable(Arc::new(ValkyrieDataTable::tuple()))
+        ValkyrieValue::Table(Arc::new(ValkyrieTable::tuple()))
     }
 
     fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
@@ -89,7 +99,7 @@ where
     T2: ValkyrieType,
 {
     fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::DataTable(Arc::new(ValkyrieDataTable::tuple()))
+        ValkyrieValue::Table(Arc::new(ValkyrieTable::tuple()))
     }
 
     fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
@@ -108,7 +118,7 @@ where
     T3: ValkyrieType,
 {
     fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::DataTable(Arc::new(ValkyrieDataTable::tuple()))
+        ValkyrieValue::Table(Arc::new(ValkyrieTable::tuple()))
     }
 
     fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
@@ -129,7 +139,7 @@ where
     T4: ValkyrieType,
 {
     fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::DataTable(Arc::new(ValkyrieDataTable::tuple()))
+        ValkyrieValue::Table(Arc::new(ValkyrieTable::tuple()))
     }
 
     fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
@@ -152,7 +162,7 @@ where
     T5: ValkyrieType,
 {
     fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::DataTable(Arc::new(ValkyrieDataTable::tuple()))
+        ValkyrieValue::Table(Arc::new(ValkyrieTable::tuple()))
     }
 
     fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {

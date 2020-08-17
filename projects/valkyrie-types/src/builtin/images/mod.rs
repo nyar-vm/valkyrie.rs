@@ -2,6 +2,7 @@ use crate::{types::ValkyrieMetaType, ValkyrieType, ValkyrieValue};
 use image::DynamicImage;
 use std::sync::Arc;
 
+#[derive(Clone, Debug)]
 pub struct ValkyrieImage {
     any_image: DynamicImage,
 }

@@ -8,3 +8,4 @@ pub mod option;
 pub mod pointer;
 pub mod primitive;
 pub mod result;
+pub mod module_name;

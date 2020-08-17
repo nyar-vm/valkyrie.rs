@@ -62,6 +62,8 @@ impl ThisParser for ExpressionBody {
             Self::LambdaCall(v) => v.as_lisp(),
             Self::LambdaDot(v) => v.as_lisp(),
             Self::New(v) => v.as_lisp(),
+            Self::Control(v) => v.as_lisp(),
+            Self::If(v) => v.as_lisp(),
         }
     }
 }

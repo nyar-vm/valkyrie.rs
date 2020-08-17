@@ -1,15 +1,15 @@
 use dashu::integer::IBig;
-use std::sync::Arc;
+use std::{fmt::Debug, sync::Arc};
 
 mod der;
 mod ser;
 
 use crate::{
     builtin::{data_frame::ValkyrieDataFrame, images::ValkyrieImage, ndarray::ValkyrieNDArray},
-    JsonValue, ValkyrieClassType, ValkyrieDataTable, ValkyrieVariantType,
+    JsonValue, ValkyrieClassType, ValkyrieTable, ValkyrieVariantType,
 };
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub enum ValkyrieValue {
     /// ADT = -1
     Nothing,
@@ -33,7 +33,7 @@ pub enum ValkyrieValue {
     NDArray(Arc<ValkyrieNDArray>),
     Image(Arc<ValkyrieImage>),
     DataFrame(Arc<ValkyrieDataFrame>),
-    DataTable(Arc<ValkyrieDataTable>),
+    Table(Arc<ValkyrieTable>),
     Class(Arc<ValkyrieClassType>),
     Variant(Arc<ValkyrieVariantType>),
 }

@@ -9,6 +9,7 @@ mod control_flow;
 mod expression_level;
 mod helper;
 mod package_level;
+mod string_like;
 
 pub use crate::{
     control_flow::{
@@ -24,7 +25,8 @@ pub use crate::{
         lambda::{LambdaArgumentNode, LambdaCallNode, LambdaDotNode, LambdaNode},
         number::NumberLiteralNode,
         operators::{InfixNode, OperatorNode, PostfixNode, PrefixNode, ValkyrieOperator},
-        string::{StringFormatter, StringLiteralNode, StringQuasiQuote, StringTemplateNode, StringTemplateType},
+        pattern_match::MatchCaseNode,
+        string::{FormatterType, StringFormatter, StringLiteralNode, StringQuasiQuote},
         symbol::{IdentifierNode, MacroKind, MacroPathNode, NamePathNode},
         table::{TableKeyType, TableKind, TableNode, TableTermNode},
         view::{SubscriptNode, SubscriptSliceNode, SubscriptTermNode},
@@ -40,8 +42,10 @@ pub use crate::{
         import::{ImportAliasNode, ImportGroupNode, ImportResolvedItem, ImportStatementNode, ImportTermNode},
         let_bind::LetBindNode,
         namespace::{NamespaceDeclarationNode, NamespaceKind},
+        try_catch::TryStatementNode,
         StatementContext, StatementNode, StatementType,
     },
+    string_like::{StringTemplateNode, TemplateCloseNode, TemplateCommentNode, TemplateInlineNode, TemplateOpenNode},
 };
 #[cfg(feature = "pretty-print")]
 pub use pretty_print::{PrettyPrint, PrettyProvider, PrettyTree};

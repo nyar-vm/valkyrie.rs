@@ -38,7 +38,7 @@ impl Serialize for ValkyrieValue {
             ValkyrieValue::DataFrame(_) => {
                 todo!()
             }
-            ValkyrieValue::DataTable(_) => {
+            ValkyrieValue::Table(_) => {
                 todo!()
             }
             ValkyrieValue::Html(_) => {

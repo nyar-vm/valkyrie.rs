@@ -32,6 +32,8 @@ impl PrettyPrint for ExpressionBody {
             ExpressionBody::Subscript(node) => node.build(allocator),
             ExpressionBody::GenericCall(node) => node.build(allocator),
             ExpressionBody::New(node) => node.build(allocator),
+            ExpressionBody::Control(node) => node.build(allocator),
+            ExpressionBody::If(node) => node.build(allocator),
         }
     }
 }
@@ -54,9 +56,12 @@ impl ExpressionBody {
             ExpressionBody::LambdaDot(node) => node.span.clone(),
             ExpressionBody::Subscript(node) => node.span.clone(),
             ExpressionBody::GenericCall(node) => node.span.clone(),
+            ExpressionBody::Control(node) => node.span.clone(),
+            ExpressionBody::If(node) => node.span.clone(),
         }
     }
 }
+
 impl From<PrefixNode> for ExpressionBody {
     fn from(value: PrefixNode) -> Self {
         Self::Prefix(Box::new(value))

@@ -131,9 +131,7 @@ impl ValkyrieType for i8 {
         ValkyrieValue::from(self)
     }
     fn static_type() -> Arc<ValkyrieMetaType> {
-        let mut this = ValkyrieMetaType::default();
-        this.set_namepath("std.primitive.Integer8");
-        Arc::new(this)
+        primitive_type("std.primitive.Integer8")
     }
     fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
         Self::static_type()
@@ -149,9 +147,7 @@ impl ValkyrieType for i16 {
         ValkyrieValue::from(self)
     }
     fn static_type() -> Arc<ValkyrieMetaType> {
-        let mut this = ValkyrieMetaType::default();
-        this.set_namepath("std.primitive.Integer16");
-        Arc::new(this)
+        primitive_type("std.primitive.Integer16")
     }
     fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
         Self::static_type()
@@ -167,9 +163,7 @@ impl ValkyrieType for i32 {
         ValkyrieValue::from(self)
     }
     fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
-        let mut this = ValkyrieMetaType::default();
-        this.set_namepath("std.primitive.Integer32");
-        Arc::new(this)
+        primitive_type("std.primitive.Integer32")
     }
 }
 impl From<i64> for ValkyrieValue {
@@ -182,9 +176,7 @@ impl ValkyrieType for i64 {
         ValkyrieValue::from(self)
     }
     fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
-        let mut this = ValkyrieMetaType::default();
-        this.set_namepath("std.primitive.Integer64");
-        Arc::new(this)
+        primitive_type("std.primitive.Integer64")
     }
 }
 impl From<i128> for ValkyrieValue {
@@ -197,9 +189,7 @@ impl ValkyrieType for i128 {
         ValkyrieValue::from(self)
     }
     fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
-        let mut this = ValkyrieMetaType::default();
-        this.set_namepath("std.primitive.Integer128");
-        Arc::new(this)
+        primitive_type("std.primitive.Integer128")
     }
 }
 impl From<isize> for ValkyrieValue {
@@ -212,9 +202,12 @@ impl ValkyrieType for isize {
         ValkyrieValue::from(self)
     }
     fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
-        let mut this = ValkyrieMetaType::default();
-        this.set_namepath("std.primitive.Integer64");
-        Arc::new(this)
+        if cfg!(target_pointer_width = "64") {
+            primitive_type("std.primitive.Integer64")
+        }
+        else {
+            primitive_type("std.primitive.Integer32")
+        }
     }
 }
 
@@ -224,9 +217,7 @@ impl ValkyrieType for IBig {
     }
 
     fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
-        let mut this = ValkyrieMetaType::default();
-        this.set_namepath("std.math.Integer");
-        Arc::new(this)
+        primitive_type("std.math.ArbitraryInteger")
     }
 }
 
@@ -276,7 +267,7 @@ impl ValkyrieType for String {
         Self: Sized,
     {
         let mut this = ValkyrieMetaType::default();
-        this.set_namepath("std.primitive.UTF8Text");
+        this.set_namepath("std.text.UTF8Text");
         Arc::new(this)
     }
 }

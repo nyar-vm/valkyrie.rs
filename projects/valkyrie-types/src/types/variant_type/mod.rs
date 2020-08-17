@@ -1,5 +1,6 @@
 use super::*;
 
+#[derive(Clone, Debug)]
 pub struct ValkyrieVariantType {
     namepath: Vec<String>,
     generics: Vec<Arc<ValkyrieMetaType>>,

@@ -2,6 +2,7 @@ use super::*;
 
 use indexmap::IndexMap;
 
+#[derive(Clone, Debug)]
 pub struct ValkyrieSymbol {
     space: Vec<String>,
     name: String,
@@ -19,6 +20,7 @@ impl ValkyrieSymbol {
     }
 }
 
+#[derive(Clone, Debug)]
 pub struct ValkyrieClassType {
     name: ValkyrieSymbol,
     items: IndexMap<String, ValkyrieValue>,

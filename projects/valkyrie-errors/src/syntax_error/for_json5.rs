@@ -1,5 +1,5 @@
 use crate::SyntaxError;
-use serde_json::Error;
+use json5::Error;
 
 impl From<Error> for SyntaxError {
     fn from(value: Error) -> Self {

@@ -7,6 +7,7 @@ impl ControlType {
             ControlType::Continue => "continue",
             ControlType::Fallthrough => "fallthrough",
             ControlType::Return => "return",
+            ControlType::Resume => "resume",
             ControlType::Raise => "raise",
             ControlType::YieldReturn => "yield",
             ControlType::YieldBreak => "yield break",

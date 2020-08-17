@@ -3,18 +3,18 @@ use std::{
     sync::Arc,
 };
 
-use crate::{types::ValkyrieMetaType, ValkyrieDataTable, ValkyrieType, ValkyrieValue};
+use crate::{types::ValkyrieMetaType, ValkyrieTable, ValkyrieType, ValkyrieValue};
 
 impl<T> ValkyrieType for Vec<T>
 where
     T: ValkyrieType,
 {
     fn boxed(self) -> ValkyrieValue {
-        let mut out = ValkyrieDataTable::list();
+        let mut out = ValkyrieTable::list();
         for item in self {
             out.extend_one(item.boxed());
         }
-        ValkyrieValue::DataTable(Arc::new(out))
+        ValkyrieValue::Table(Arc::new(out))
     }
 
     fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
@@ -30,11 +30,11 @@ where
     T: ValkyrieType,
 {
     fn boxed(self) -> ValkyrieValue {
-        let mut out = ValkyrieDataTable::list();
+        let mut out = ValkyrieTable::list();
         for item in self {
             out.extend_one(item.boxed());
         }
-        ValkyrieValue::DataTable(Arc::new(out))
+        ValkyrieValue::Table(Arc::new(out))
     }
 
     fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
@@ -51,11 +51,11 @@ where
     V: ValkyrieType,
 {
     fn boxed(self) -> ValkyrieValue {
-        let mut out = ValkyrieDataTable::list();
+        let mut out = ValkyrieTable::list();
         for item in self {
             out.extend_one(item.boxed());
         }
-        ValkyrieValue::DataTable(Arc::new(out))
+        ValkyrieValue::Table(Arc::new(out))
     }
 
     fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {

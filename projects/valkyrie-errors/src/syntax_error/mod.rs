@@ -1,5 +1,10 @@
+#[cfg(feature = "json5")]
+mod for_json5;
+#[cfg(feature = "pex")]
+mod for_pex;
 #[cfg(feature = "serde_json")]
 mod for_serde_json;
+
 mod for_std;
 
 use diagnostic::{DiagnosticLevel, FileID};
