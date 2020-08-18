@@ -1,12 +1,12 @@
 use super::*;
 
-impl ThisParser for WhileLoopNode {
+impl ThisParser for WhileLoop {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, _) = input.match_str("while")?;
         let (state, condition) = state.skip(ignore).match_fn(ConditionType::parse)?;
-        let (state, stmts) = state.skip(ignore).match_fn(FunctionBodyPart::parse)?;
+        let (state, stmts) = state.skip(ignore).match_fn(FunctionBody::parse)?;
         let (finally, rest) = state.skip(ignore).match_optional(ElsePart::parse)?;
-        finally.finish(WhileLoopNode {
+        finally.finish(WhileLoop {
             condition,
             body: stmts.body.to_vec(),
             r#else: rest.map(|v| v.body.to_vec()).unwrap_or_default(),

@@ -5,7 +5,7 @@ impl ThisParser for FunctionCommonPart {
         let (state, generic) = input.match_optional(GenericArgumentNode::parse)?;
         let (state, args) = state.skip(ignore).match_fn(ApplyArgumentNode::parse)?;
         let (state, ret) = state.skip(ignore).match_optional(parse_return_type)?;
-        let (finally, body) = state.skip(ignore).match_optional(FunctionBodyPart::parse)?;
+        let (finally, body) = state.skip(ignore).match_optional(FunctionBody::parse)?;
         finally.finish(FunctionCommonPart {
             generic: generic.unwrap_or_default(),
             arguments: args,

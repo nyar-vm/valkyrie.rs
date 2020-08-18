@@ -15,7 +15,7 @@ pub use crate::{
     control_flow::{
         control::{ControlNode, ControlType},
         if_else::{ConditionNode, ConditionType, ElsePart, IfStatementNode},
-        looping::{ForLoopNode, PatternType, WhileLoopNode},
+        looping::{ForLoop, PatternType, WhileLoop},
     },
     expression_level::{
         apply::{ApplyArgumentNode, ApplyArgumentTerm, ApplyCallNode, ApplyCallTerm, ApplyDotNode, ArgumentKeyNode},
@@ -26,7 +26,6 @@ pub use crate::{
         number::NumberLiteralNode,
         operators::{InfixNode, OperatorNode, PostfixNode, PrefixNode, ValkyrieOperator},
         pattern_match::MatchCaseNode,
-        string::{FormatterType, StringFormatter, StringLiteralNode, StringQuasiQuote},
         symbol::{IdentifierNode, MacroKind, MacroPathNode, NamePathNode},
         table::{TableKeyType, TableKind, TableNode, TableTermNode},
         view::{SubscriptNode, SubscriptSliceNode, SubscriptTermNode},
@@ -37,7 +36,7 @@ pub use crate::{
         classes::{ClassDeclaration, ClassKind},
         documentation::DocumentationNode,
         function::{
-            FunctionBodyPart, FunctionCommonPart, FunctionDeclaration, FunctionDeclarationInline, FunctionType, ModifierPart,
+            FunctionBody, FunctionCommonPart, FunctionDeclaration, FunctionDeclarationInline, FunctionType, ModifierPart,
         },
         import::{ImportAliasNode, ImportGroupNode, ImportResolvedItem, ImportStatementNode, ImportTermNode},
         let_bind::LetBindNode,
@@ -45,7 +44,11 @@ pub use crate::{
         try_catch::TryStatementNode,
         StatementContext, StatementNode, StatementType,
     },
-    string_like::{StringTemplateNode, TemplateCloseNode, TemplateCommentNode, TemplateInlineNode, TemplateOpenNode},
+    string_like::{
+        string_formatter::StringFormatter,
+        string_literal::StringLiteralNode,
+        string_template::{StringTemplateNode, TemplateCloseNode, TemplateCommentNode, TemplateInlineNode, TemplateOpenNode},
+    },
 };
 #[cfg(feature = "pretty-print")]
 pub use pretty_print::{PrettyPrint, PrettyProvider, PrettyTree};

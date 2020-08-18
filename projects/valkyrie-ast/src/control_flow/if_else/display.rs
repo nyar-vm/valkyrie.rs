@@ -33,13 +33,7 @@ impl PrettyPrint for ConditionType {
 }
 
 #[cfg(feature = "pretty-print")]
-impl<'i, 'a> ElsePart<'i> {
-    pub(crate) fn build_borrowed<'b>(body: &'i [StatementNode], allocator: &'b PrettyProvider<'b>) -> PrettyTree<'b> {
-        ElsePart { body: Cow::Borrowed(body) }.build(allocator)
-    }
-}
-#[cfg(feature = "pretty-print")]
-impl<'i> PrettyPrint for ElsePart<'i> {
+impl PrettyPrint for ElsePart {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         let mut terms = Vec::with_capacity(10);
         terms.push(allocator.hardline());
@@ -47,7 +41,7 @@ impl<'i> PrettyPrint for ElsePart<'i> {
         terms.push(allocator.space());
         terms.push(allocator.text("{"));
         terms.push(allocator.hardline());
-        terms.push(allocator.intersperse(&self.body, allocator.hardline()).indent(4));
+        terms.push(allocator.intersperse(&self.statements, allocator.hardline()).indent(4));
         terms.push(allocator.hardline());
         terms.push(allocator.text("}"));
         allocator.concat(terms)

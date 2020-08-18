@@ -8,7 +8,7 @@ use pex::{BracketPattern, ParseResult, ParseState, StopBecause};
 use std::borrow::Cow;
 use valkyrie_ast::{
     ArgumentKeyNode, ConditionNode, ConditionType, ControlNode, ControlType, ElsePart, ExpressionContext, ExpressionNode,
-    ForLoopNode, FunctionBodyPart, IfStatementNode, PatternType, StatementNode, WhileLoopNode,
+    ForLoop, FunctionBody, IfStatementNode, PatternType, StatementNode, WhileLoop,
 };
 
 mod controller;
@@ -28,8 +28,8 @@ impl ThisParser for IfStatementNode {
 impl ThisParser for ConditionNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, cond) = input.match_fn(ConditionType::parse)?;
-        let (state, body) = state.skip(ignore).match_fn(FunctionBodyPart::parse)?;
-        state.finish(ConditionNode { condition: cond, body: body.body.to_vec(), span: get_span(input, state) })
+        let (state, body) = state.skip(ignore).match_fn(FunctionBody::parse)?;
+        state.finish(ConditionNode { condition: cond, body, span: get_span(input, state) })
     }
 
     fn as_lisp(&self) -> Lisp {
@@ -58,12 +58,12 @@ impl ThisParser for ConditionType {
     }
 }
 
-impl<'i> ThisParser for FunctionBodyPart<'i> {
+impl ThisParser for FunctionBody {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, _) = input.match_str("{")?;
         let (state, stmts) = state.match_repeats(StatementNode::parse)?;
         let (finally, _) = state.skip(ignore).match_str("}")?;
-        finally.finish(FunctionBodyPart { body: Cow::Owned(stmts) })
+        finally.finish(FunctionBody { statements: Some(stmts), span: get_span(input, state) })
     }
 
     fn as_lisp(&self) -> Lisp {
@@ -71,11 +71,11 @@ impl<'i> ThisParser for FunctionBodyPart<'i> {
     }
 }
 
-impl<'i> ThisParser for ElsePart<'i> {
+impl ThisParser for ElsePart {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, _) = input.match_str("else")?;
-        let (state, func) = state.skip(ignore).match_fn(FunctionBodyPart::parse)?;
-        state.finish(ElsePart { body: func.body })
+        let (state, func) = state.skip(ignore).match_fn(FunctionBody::parse)?;
+        state.finish(ElsePart { statements: func.statements, span: get_span(input, state) })
     }
 
     fn as_lisp(&self) -> Lisp {

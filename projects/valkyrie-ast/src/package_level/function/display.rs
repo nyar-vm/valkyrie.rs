@@ -14,6 +14,7 @@ impl PrettyPrint for FunctionType {
         allocator.keyword(self.as_str())
     }
 }
+
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for FunctionDeclaration {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
@@ -31,22 +32,13 @@ impl PrettyPrint for FunctionDeclaration {
             terms.push(allocator.text(": "));
             terms.push(ret.build(allocator));
         }
-        if let Some(s) = &self.body {
-            terms.push(FunctionBodyPart::build_borrowed(s, allocator))
-        }
+        terms.push(self.body.build(allocator));
         allocator.concat(terms)
     }
 }
 
 #[cfg(feature = "pretty-print")]
-impl<'i, 'a> FunctionBodyPart<'i> {
-    pub(crate) fn build_borrowed<'b>(body: &'i [StatementNode], allocator: &'b PrettyProvider<'b>) -> PrettyTree<'b> {
-        FunctionBodyPart { body: Cow::Borrowed(body) }.build(allocator)
-    }
-}
-
-#[cfg(feature = "pretty-print")]
-impl<'i> PrettyPrint for FunctionBodyPart<'i> {
+impl PrettyPrint for FunctionBody {
     /// ```vk
     /// # inline style
     /// { ... }
@@ -57,12 +49,19 @@ impl<'i> PrettyPrint for FunctionBodyPart<'i> {
     /// }
     /// ```
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+        let statements = match &self.statements {
+            Some(s) => s.as_slice(),
+            None => {
+                return allocator.nil();
+            }
+        };
+
         let mut terms = Vec::with_capacity(9);
         terms.push(allocator.space());
         terms.push(allocator.text("{"));
         terms.push(allocator.hardline());
-        terms.push(allocator.intersperse(&self.body, allocator.text(";").append(allocator.hardline())).indent(4));
-        if let Some(s) = self.body.last() {
+        terms.push(allocator.intersperse(statements, allocator.hardline()).indent(4));
+        if let Some(s) = self.last() {
             if s.end_semicolon {
                 terms.push(allocator.text(";"));
             }

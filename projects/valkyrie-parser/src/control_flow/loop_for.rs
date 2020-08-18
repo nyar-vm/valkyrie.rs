@@ -1,6 +1,6 @@
 use super::*;
 
-impl ThisParser for ForLoopNode {
+impl ThisParser for ForLoop {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, _) = input.match_str("for")?;
         let (state, pattern) = state.skip(ignore).match_fn(PatternType::parse)?;
@@ -9,13 +9,13 @@ impl ThisParser for ForLoopNode {
             parse_expression_node(s, ExpressionContext { type_level: false, allow_newline: true, allow_curly: false })
         })?;
         let (state, cond) = state.skip(ignore).match_optional(parse_condition)?;
-        let (state, body) = state.skip(ignore).match_fn(FunctionBodyPart::parse)?;
+        let (state, body) = state.skip(ignore).match_fn(FunctionBody::parse)?;
         let (state, other) = state.skip(ignore).match_optional(ElsePart::parse)?;
-        state.finish(ForLoopNode {
+        state.finish(ForLoop {
             pattern,
             iterator: expr,
             condition: cond.unwrap_or(ConditionType::AlwaysTrue),
-            body: body.body.to_vec(),
+            body,
             r#else: other.map(|s| s.body.to_vec()).unwrap_or_default(),
             span: get_span(input, state),
         })

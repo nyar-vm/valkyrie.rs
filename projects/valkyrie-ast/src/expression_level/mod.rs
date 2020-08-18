@@ -7,7 +7,6 @@ pub mod lambda;
 pub mod number;
 pub mod operators;
 pub mod pattern_match;
-pub mod string;
 pub mod string_template;
 pub mod symbol;
 pub mod table;
@@ -24,10 +23,7 @@ use alloc::{
     string::{String, ToString},
     vec::Vec,
 };
-use core::{
-    fmt::{Display, Formatter, Write},
-    ops::Range,
-};
+use core::{fmt::Formatter, ops::Range};
 #[cfg(feature = "pretty-print")]
 use pretty_print::{PrettyPrint, PrettyProvider, PrettyTree};
 

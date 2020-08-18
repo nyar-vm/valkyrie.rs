@@ -1,14 +1,14 @@
 use super::*;
-use crate::ArgumentKeyNode;
+use crate::{ArgumentKeyNode, ElsePart};
 #[cfg(feature = "pretty-print")]
 mod display;
 
 /// `while cond {...} else {...}`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct WhileLoopNode {
+pub struct WhileLoop {
     pub condition: ConditionType,
-    pub body: Vec<StatementNode>,
+    pub body: FunctionBody,
     pub r#else: Vec<StatementNode>,
     pub span: Range<u32>,
 }
@@ -38,7 +38,7 @@ pub struct WhileLoopNode {
 /// ```
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ForLoopNode {
+pub struct ForLoop {
     /// `for pattern`
     pub pattern: PatternType,
     /// `in iterator`
@@ -46,9 +46,9 @@ pub struct ForLoopNode {
     /// `if condition`
     pub condition: ConditionType,
     /// `{ body }`
-    pub body: Vec<StatementNode>,
+    pub body: FunctionBody,
     /// `else { body }`
-    pub r#else: Vec<StatementNode>,
+    pub r#else: Option<ElsePart>,
     pub span: Range<u32>,
 }
 

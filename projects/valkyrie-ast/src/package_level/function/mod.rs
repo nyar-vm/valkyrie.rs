@@ -24,7 +24,7 @@ pub struct FunctionDeclaration {
     pub generic: GenericArgumentNode,
     pub arguments: ApplyArgumentNode,
     pub r#return: Option<ExpressionNode>,
-    pub body: Option<Vec<StatementNode>>,
+    pub body: FunctionBody,
 }
 
 /// `::<G>(args) -> return { body }`
@@ -36,7 +36,7 @@ pub struct FunctionCommonPart {
     /// The range of the number.
     pub arguments: ApplyArgumentNode,
     pub r#return: Option<ExpressionNode>,
-    pub body: Option<Vec<StatementNode>>,
+    pub body: FunctionBody,
 }
 
 /// `function(args) -> type := body`
@@ -47,7 +47,7 @@ pub struct FunctionDeclarationInline {
     /// The range of the number.
     pub arguments: ApplyArgumentNode,
     pub r#return: Option<ExpressionNode>,
-    pub body: Vec<StatementNode>,
+    pub body: FunctionBody,
 }
 
 /// `public static final synchronized class A {}`
@@ -58,13 +58,13 @@ pub struct ModifierPart<'i> {
     pub modifiers: Cow<'i, [IdentifierNode]>,
 }
 
-
 /// `{ a; b; c }`
 ///
 /// - Auxiliary parsing function, not instantiable.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
-pub struct FunctionBodyPart<'i> {
-    pub body: Cow<'i, [StatementNode]>,
+pub struct FunctionBody {
+    pub statements: Vec<StatementNode>,
+    pub span: Range<u32>,
 }
 
 impl<'i> ModifierPart<'i> {
@@ -73,15 +73,34 @@ impl<'i> ModifierPart<'i> {
     }
 }
 
-impl<'a> FunctionBodyPart<'a> {
-    pub fn new(items: Vec<StatementNode>) -> Self {
-        Self { body: Cow::Owned(items) }
+impl FunctionBody {
+    pub fn is_empty(&self) -> bool {
+        match &self.statements {
+            Some(x) => x.is_empty(),
+            None => true,
+        }
+    }
+    pub fn last(&self) -> Option<&StatementNode> {
+        match &self.statements {
+            Some(x) => x.last(),
+            None => None,
+        }
+    }
+    pub fn fill_semicolon(&mut self) {
+        match &mut self.statements {
+            Some(x) => {
+                for i in x.iter_mut().rev().skip(1) {
+                    i.end_semicolon = true;
+                }
+            }
+            None => {}
+        }
     }
 }
 
 impl FunctionDeclaration {
     pub fn has_body(&self) -> bool {
-        self.body.is_some()
+        !self.body.is_empty()
     }
     /// Does the function has a return type
     pub fn has_return_type(&self) -> bool {
@@ -91,8 +110,10 @@ impl FunctionDeclaration {
     ///
     /// Omit return always returns `( )`
     pub fn omit_return(&self) -> bool {
-        let eos: Option<bool> = try { !self.body.as_ref()?.last()?.end_semicolon };
-        eos.unwrap_or(true)
+        match self.body.last() {
+            Some(s) => s.end_semicolon,
+            None => true,
+        }
     }
 }
 

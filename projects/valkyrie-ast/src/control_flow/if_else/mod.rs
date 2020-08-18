@@ -19,7 +19,7 @@ pub struct IfStatementNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ConditionNode {
     pub condition: ConditionType,
-    pub body: Vec<StatementNode>,
+    pub body: FunctionBody,
     pub span: Range<u32>,
 }
 
@@ -39,8 +39,9 @@ pub struct CasePatternNode {
 
 /// Helper function to format the body of an if statement
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
-pub struct ElsePart<'i> {
-    pub body: Cow<'i, [StatementNode]>,
+pub struct ElsePart {
+    pub statements: Vec<StatementNode>,
+    pub span: Range<u32>,
 }
 
 impl ConditionType {

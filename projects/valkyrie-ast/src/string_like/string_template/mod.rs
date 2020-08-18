@@ -5,7 +5,7 @@ use super::*;
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct StringTemplateNode {
     /// The raw string of the number.
-    pub items: Vec<FormatterType>,
+    pub items: Vec<u32>,
     /// The range of the number.
     pub span: Range<u32>,
 }

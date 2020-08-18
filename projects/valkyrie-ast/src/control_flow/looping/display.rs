@@ -1,7 +1,7 @@
 use super::*;
 use crate::ElsePart;
 
-impl PrettyPrint for WhileLoopNode {
+impl PrettyPrint for WhileLoop {
     /// ```vk
     /// # inline style
     /// while a || b || c { ... }
@@ -19,12 +19,12 @@ impl PrettyPrint for WhileLoopNode {
         terms.push(allocator.keyword("while"));
         terms.push(allocator.space());
         terms.push(self.condition.build(allocator));
-        terms.push(FunctionBodyPart::build_borrowed(&self.body, allocator));
+        terms.push(self.body.build(allocator));
         allocator.concat(terms)
     }
 }
 
-impl PrettyPrint for ForLoopNode {
+impl PrettyPrint for ForLoop {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         let mut terms = Vec::with_capacity(4);
         terms.push(allocator.keyword("for"));
@@ -40,9 +40,9 @@ impl PrettyPrint for ForLoopNode {
             terms.push(allocator.space());
             terms.push(self.condition.build(allocator));
         }
-        terms.push(FunctionBodyPart::build_borrowed(&self.body, allocator));
-        if !self.r#else.is_empty() {
-            terms.push(ElsePart::build_borrowed(&self.body, allocator));
+        terms.push(self.body.build(allocator));
+        if let Some(s) = &self.r#else {
+            terms.push(s.build(allocator));
         }
         allocator.concat(terms)
     }

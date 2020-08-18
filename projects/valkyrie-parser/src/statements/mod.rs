@@ -7,10 +7,10 @@ use lispify::{Lisp, ListString};
 use pex::{helpers::comment_line, ParseResult, ParseState, Regex, StopBecause};
 use std::sync::LazyLock;
 use valkyrie_ast::{
-    ClassDeclaration, ControlNode, DocumentationNode, ExpressionContext, ExpressionNode, ForLoopNode, FunctionDeclaration,
+    ClassDeclaration, ControlNode, DocumentationNode, ExpressionContext, ExpressionNode, ForLoop, FunctionDeclaration,
     FunctionType, IdentifierNode, ImportAliasNode, ImportGroupNode, ImportStatementNode, ImportTermNode, LambdaArgumentNode,
     LambdaCallNode, LambdaDotNode, LambdaNode, LetBindNode, NamePathNode, NamespaceDeclarationNode, NamespaceKind,
-    StatementNode, StatementType, StringLiteralNode, WhileLoopNode,
+    StatementNode, StatementType, StringLiteralNode, WhileLoop,
 };
 
 mod classes;
@@ -78,8 +78,8 @@ impl ThisParser for StatementType {
             .or_else(|s| ClassDeclaration::parse(s).map_inner(Into::into))
             .or_else(function_with_head)
             .or_else(|s| LetBindNode::parse(s).map_inner(Into::into))
-            .or_else(|s| WhileLoopNode::parse(s).map_inner(Into::into))
-            .or_else(|s| ForLoopNode::parse(s).map_inner(Into::into))
+            .or_else(|s| WhileLoop::parse(s).map_inner(Into::into))
+            .or_else(|s| ForLoop::parse(s).map_inner(Into::into))
             .or_else(|s| ControlNode::parse(s).map_inner(Into::into))
             .or_else(|s| parse_expression_node(s, ExpressionContext::in_free()).map_inner(Into::into))
             .end_choice()
@@ -110,8 +110,8 @@ pub fn parse_repl_statements(input: ParseState) -> ParseResult<StatementType> {
         .or_else(|s| ClassDeclaration::parse(s).map_inner(Into::into))
         .or_else(|s| LetBindNode::parse(s).map_inner(Into::into))
         .or_else(|s| FunctionDeclaration::parse(s).map_inner(Into::into))
-        .or_else(|s| WhileLoopNode::parse(s).map_inner(Into::into))
-        .or_else(|s| ForLoopNode::parse(s).map_inner(Into::into))
+        .or_else(|s| WhileLoop::parse(s).map_inner(Into::into))
+        .or_else(|s| ForLoop::parse(s).map_inner(Into::into))
         .or_else(|s| parse_expression_node(s, ExpressionContext::in_free()).map_inner(Into::into))
         .end_choice()
 }

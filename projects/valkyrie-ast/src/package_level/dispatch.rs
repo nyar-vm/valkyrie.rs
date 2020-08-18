@@ -58,14 +58,14 @@ impl From<LetBindNode> for StatementType {
     }
 }
 
-impl From<WhileLoopNode> for StatementType {
-    fn from(value: WhileLoopNode) -> Self {
+impl From<WhileLoop> for StatementType {
+    fn from(value: WhileLoop) -> Self {
         StatementType::While(Box::new(value))
     }
 }
 
-impl From<ForLoopNode> for StatementType {
-    fn from(value: ForLoopNode) -> Self {
+impl From<ForLoop> for StatementType {
+    fn from(value: ForLoop) -> Self {
         StatementType::For(Box::new(value))
     }
 }
