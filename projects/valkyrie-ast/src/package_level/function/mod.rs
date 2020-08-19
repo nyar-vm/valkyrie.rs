@@ -74,34 +74,20 @@ impl<'i> ModifierPart<'i> {
 }
 
 impl FunctionBody {
-    pub fn is_empty(&self) -> bool {
-        match &self.statements {
-            Some(x) => x.is_empty(),
+    pub fn last_semicolon(&self) -> bool {
+        match self.statements.last() {
+            Some(s) => s.end_semicolon,
             None => true,
         }
     }
-    pub fn last(&self) -> Option<&StatementNode> {
-        match &self.statements {
-            Some(x) => x.last(),
-            None => None,
-        }
-    }
     pub fn fill_semicolon(&mut self) {
-        match &mut self.statements {
-            Some(x) => {
-                for i in x.iter_mut().rev().skip(1) {
-                    i.end_semicolon = true;
-                }
-            }
-            None => {}
+        for x in self.statements.iter_mut().rev().skip(1) {
+            x.end_semicolon = true;
         }
     }
 }
 
 impl FunctionDeclaration {
-    pub fn has_body(&self) -> bool {
-        !self.body.is_empty()
-    }
     /// Does the function has a return type
     pub fn has_return_type(&self) -> bool {
         self.r#return.is_some()
@@ -110,10 +96,7 @@ impl FunctionDeclaration {
     ///
     /// Omit return always returns `( )`
     pub fn omit_return(&self) -> bool {
-        match self.body.last() {
-            Some(s) => s.end_semicolon,
-            None => true,
-        }
+        !self.body.last_semicolon()
     }
 }
 

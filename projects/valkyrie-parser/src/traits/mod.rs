@@ -4,8 +4,7 @@ use pex::{
     helpers::{make_from_str, whitespace},
     ParseResult, ParseState, StopBecause,
 };
-use valkyrie_error::ValkyrieResult;
-use valkyrie_error::ValkyrieError;
+use valkyrie_error::{ValkyrieError, ValkyrieResult};
 
 pub trait ThisParser
 where

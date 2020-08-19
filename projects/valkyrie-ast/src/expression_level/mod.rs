@@ -23,7 +23,7 @@ use alloc::{
     string::{String, ToString},
     vec::Vec,
 };
-use core::{fmt::Formatter, ops::Range};
+use core::ops::Range;
 #[cfg(feature = "pretty-print")]
 use pretty_print::{PrettyPrint, PrettyProvider, PrettyTree};
 

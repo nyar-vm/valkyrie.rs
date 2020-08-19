@@ -49,23 +49,11 @@ impl PrettyPrint for FunctionBody {
     /// }
     /// ```
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        let statements = match &self.statements {
-            Some(s) => s.as_slice(),
-            None => {
-                return allocator.nil();
-            }
-        };
-
         let mut terms = Vec::with_capacity(9);
         terms.push(allocator.space());
         terms.push(allocator.text("{"));
         terms.push(allocator.hardline());
-        terms.push(allocator.intersperse(statements, allocator.hardline()).indent(4));
-        if let Some(s) = self.last() {
-            if s.end_semicolon {
-                terms.push(allocator.text(";"));
-            }
-        }
+        terms.push(allocator.intersperse(&self.statements, allocator.hardline()).indent(4));
         terms.push(allocator.hardline());
         terms.push(allocator.text("}"));
         allocator.concat(terms)

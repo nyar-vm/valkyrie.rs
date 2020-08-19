@@ -2,7 +2,7 @@
 use pretty_print::{PrettyPrint, PrettyProvider, PrettyTree};
 
 use crate::{ConditionType, ExpressionNode, FunctionBody, StatementNode};
-use alloc::{borrow::Cow, boxed::Box, vec::Vec};
+use alloc::{boxed::Box, vec::Vec};
 use core::{
     fmt::{Debug, Display, Formatter},
     ops::Range,

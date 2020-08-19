@@ -1,6 +1,5 @@
 use std::fmt::{Debug, Display, Formatter};
 
-
 mod kind;
 
 #[derive(Copy, Clone)]

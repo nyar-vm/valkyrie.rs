@@ -3,9 +3,9 @@ use crate::{
     traits::ThisParser,
     utils::get_span,
 };
-use lispify::{Lisp, LispNumber,  ListString};
+use lispify::{Lisp, LispNumber, ListString};
 use pex::{
-    helpers::{ quotation_pair, quotation_pair_nested, },
+    helpers::{quotation_pair, quotation_pair_nested},
     ParseResult, ParseState, Regex, StopBecause,
 };
 use std::{ops::Range, sync::LazyLock};

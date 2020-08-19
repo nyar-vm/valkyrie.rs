@@ -1,5 +1,4 @@
 use super::*;
-use crate::ElsePart;
 
 impl PrettyPrint for WhileLoop {
     /// ```vk

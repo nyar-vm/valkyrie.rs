@@ -63,11 +63,11 @@ impl ThisParser for FunctionBody {
         let (state, _) = input.match_str("{")?;
         let (state, stmts) = state.match_repeats(StatementNode::parse)?;
         let (finally, _) = state.skip(ignore).match_str("}")?;
-        finally.finish(FunctionBody { statements: Some(stmts), span: get_span(input, state) })
+        finally.finish(FunctionBody { statements: stmts, span: get_span(input, state) })
     }
 
     fn as_lisp(&self) -> Lisp {
-        unreachable!()
+        Lisp::Any(vec![Lisp::keyword("body"), Lisp::Any(self.statements.iter().map(|s| s.as_lisp()).collect())])
     }
 }
 
@@ -79,6 +79,6 @@ impl ThisParser for ElsePart {
     }
 
     fn as_lisp(&self) -> Lisp {
-        todo!()
+        Lisp::Any(vec![Lisp::keyword("else"), Lisp::Any(self.statements.iter().map(|s| s.as_lisp()).collect())])
     }
 }

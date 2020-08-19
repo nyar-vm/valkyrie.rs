@@ -16,7 +16,7 @@ impl ThisParser for ForLoop {
             iterator: expr,
             condition: cond.unwrap_or(ConditionType::AlwaysTrue),
             body,
-            r#else: other.map(|s| s.body.to_vec()).unwrap_or_default(),
+            r#else: other,
             span: get_span(input, state),
         })
     }
@@ -29,7 +29,7 @@ impl ThisParser for ForLoop {
         terms.push(self.iterator.as_lisp());
         terms.push(Lisp::keyword("if"));
         terms.push(self.condition.as_lisp());
-        terms.push(Lisp::Any(self.body.iter().map(|s| s.as_lisp()).collect()));
+        terms.push(Lisp::Any(self.body.statements.iter().map(|s| s.as_lisp()).collect()));
         terms.push(Lisp::keyword("else"));
         terms.push(Lisp::Any(self.r#else.iter().map(|s| s.as_lisp()).collect()));
         Lisp::Any(terms)

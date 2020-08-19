@@ -1,7 +1,5 @@
 use super::*;
 
-use super::*;
-
 impl Display for StringLiteralNode {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         if let Some(unit) = &self.unit {
