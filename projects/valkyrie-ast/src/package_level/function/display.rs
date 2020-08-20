@@ -26,11 +26,13 @@ impl PrettyPrint for FunctionDeclaration {
         terms.push(allocator.keyword(self.r#type.as_str()));
         terms.push(allocator.space());
         terms.push(self.namepath.build(allocator));
-        terms.push(self.generic.build(allocator));
+        if let Some(gen) = &self.generic {
+            terms.push(gen.build(allocator));
+        }
         terms.push(self.arguments.build(allocator));
         if let Some(ret) = &self.r#return {
             terms.push(allocator.text(": "));
-            terms.push(ret.build(allocator));
+            terms.push(ret.types.build(allocator));
         }
         terms.push(self.body.build(allocator));
         allocator.concat(terms)

@@ -1,13 +1,24 @@
 use super::*;
-use valkyrie_ast::ApplyArgumentTerm;
+use valkyrie_ast::{ApplyArgumentTerm, FunctionReturnNode};
 
 impl ThisParser for FunctionDeclaration {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, head) = FunctionType::parse(input)?;
         let (state, name) = state.skip(ignore).match_fn(NamePathNode::parse)?;
-        let (state, method) = FunctionCommonPart::parse(state)?;
-        let f = method.as_function(head, name);
-        state.finish(f)
+        let (state, generic) = state.match_optional(GenericArgumentNode::parse)?;
+        let (state, args) = state.skip(ignore).match_fn(ApplyArgumentNode::parse)?;
+        let (state, ret) = state.skip(ignore).match_optional(FunctionReturnNode::parse)?;
+        let (finally, body) = state.skip(ignore).match_fn(FunctionBody::parse)?;
+        finally.finish(FunctionDeclaration {
+            r#type: head,
+            namepath: name,
+            modifiers: vec![],
+            attributes: None,
+            generic,
+            arguments: args,
+            r#return: ret,
+            body,
+        })
     }
 
     fn as_lisp(&self) -> Lisp {
@@ -47,6 +58,18 @@ impl ThisParser for FunctionType {
 
     fn as_lisp(&self) -> Lisp {
         unreachable!()
+    }
+}
+
+impl ThisParser for FunctionReturnNode {
+    fn parse(input: ParseState) -> ParseResult<Self> {
+        let (state, _) = input.begin_choice().or_else(|s| s.match_str("->")).or_else(|s| s.match_str(":")).end_choice()?;
+        let (state, typing) = parse_expression_node(state.skip(ignore), ExpressionContext::in_type())?;
+        state.finish(FunctionReturnNode { types: typing, span: get_span(input, state) })
+    }
+
+    fn as_lisp(&self) -> Lisp {
+        todo!()
     }
 }
 

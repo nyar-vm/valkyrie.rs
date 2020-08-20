@@ -36,7 +36,7 @@ pub use crate::{
         classes::{ClassDeclaration, ClassKind},
         documentation::DocumentationNode,
         function::{
-            FunctionBody, FunctionCommonPart, FunctionDeclaration, FunctionDeclarationInline, FunctionType, ModifierPart,
+            FunctionBody, FunctionDeclaration, FunctionDeclarationInline, FunctionReturnNode, FunctionType, ModifierPart,
         },
         import::{ImportAliasNode, ImportGroupNode, ImportResolvedItem, ImportStatementNode, ImportTermNode},
         let_bind::LetBindNode,

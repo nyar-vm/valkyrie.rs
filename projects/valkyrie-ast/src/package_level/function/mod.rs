@@ -21,21 +21,9 @@ pub struct FunctionDeclaration {
     pub namepath: NamePathNode,
     pub modifiers: Vec<IdentifierNode>,
     pub attributes: Option<String>,
-    pub generic: GenericArgumentNode,
+    pub generic: Option<GenericArgumentNode>,
     pub arguments: ApplyArgumentNode,
-    pub r#return: Option<ExpressionNode>,
-    pub body: FunctionBody,
-}
-
-/// `::<G>(args) -> return { body }`
-///
-/// - Auxiliary parsing function, not instantiable.
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
-pub struct FunctionCommonPart {
-    pub generic: GenericArgumentNode,
-    /// The range of the number.
-    pub arguments: ApplyArgumentNode,
-    pub r#return: Option<ExpressionNode>,
+    pub r#return: Option<FunctionReturnNode>,
     pub body: FunctionBody,
 }
 
@@ -64,6 +52,14 @@ pub struct ModifierPart<'i> {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub struct FunctionBody {
     pub statements: Vec<StatementNode>,
+    pub span: Range<u32>,
+}
+
+/// `name(): ReturnType / [EffectType]`
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct FunctionReturnNode {
+    pub types: ExpressionNode,
     pub span: Range<u32>,
 }
 
@@ -97,23 +93,6 @@ impl FunctionDeclaration {
     /// Omit return always returns `( )`
     pub fn omit_return(&self) -> bool {
         !self.body.last_semicolon()
-    }
-}
-
-impl FunctionCommonPart {
-    /// Create a new complete function body
-    #[allow(clippy::wrong_self_convention)]
-    pub fn as_function(self, r#type: FunctionType, name: NamePathNode) -> FunctionDeclaration {
-        FunctionDeclaration {
-            r#type,
-            namepath: name,
-            modifiers: Vec::new(),
-            attributes: None,
-            generic: self.generic,
-            arguments: self.arguments,
-            r#return: self.r#return,
-            body: self.body,
-        }
     }
 }
 
