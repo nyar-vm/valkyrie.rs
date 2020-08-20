@@ -19,6 +19,23 @@ pub struct NamePathNode {
     pub span: Range<u32>,
 }
 
+/// `$, $1, $x`
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct SlotNode {
+    pub name: String,
+    pub span: Range<u32>,
+}
+
+impl SlotNode {
+    pub fn new<S>(name: S, span: Range<u32>) -> Self
+    where
+        S: ToString,
+    {
+        Self { name: name.to_string(), span }
+    }
+}
+
 /// A namepath is a series of identifiers separated by dots.
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]

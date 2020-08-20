@@ -17,6 +17,14 @@ impl PrettyPrint for IdentifierNode {
         allocator.text(self.name.to_string())
     }
 }
+
+#[cfg(feature = "pretty-print")]
+impl PrettyPrint for SlotNode {
+    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+        allocator.text(self.name.to_string())
+    }
+}
+
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for NamePathNode {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {

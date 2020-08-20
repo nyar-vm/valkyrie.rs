@@ -26,7 +26,7 @@ pub use crate::{
         number::NumberLiteralNode,
         operators::{InfixNode, OperatorNode, PostfixNode, PrefixNode, ValkyrieOperator},
         pattern_match::MatchCaseNode,
-        symbol::{IdentifierNode, MacroKind, MacroPathNode, NamePathNode},
+        symbol::{IdentifierNode, MacroKind, MacroPathNode, NamePathNode, SlotNode},
         table::{TableKeyType, TableKind, TableNode, TableTermNode},
         view::{SubscriptNode, SubscriptSliceNode, SubscriptTermNode},
         ExpressionBody, ExpressionContext, ExpressionNode, PostfixCallPart,

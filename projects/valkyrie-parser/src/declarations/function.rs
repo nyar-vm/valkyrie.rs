@@ -65,7 +65,7 @@ impl ThisParser for FunctionReturnNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, _) = input.begin_choice().or_else(|s| s.match_str("->")).or_else(|s| s.match_str(":")).end_choice()?;
         let (state, typing) = parse_expression_node(state.skip(ignore), ExpressionContext::in_type())?;
-        state.finish(FunctionReturnNode { types: typing, span: get_span(input, state) })
+        state.finish(FunctionReturnNode { returns: typing, span: get_span(input, state) })
     }
 
     fn as_lisp(&self) -> Lisp {

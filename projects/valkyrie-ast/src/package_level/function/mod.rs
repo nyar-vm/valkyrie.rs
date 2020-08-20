@@ -55,11 +55,19 @@ pub struct FunctionBody {
     pub span: Range<u32>,
 }
 
-/// `name(): ReturnType / [EffectType]`
+/// `fun name(): ReturnType`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct FunctionReturnNode {
-    pub types: ExpressionNode,
+    pub returns: ExpressionNode,
+    pub span: Range<u32>,
+}
+
+/// `fun name() / [EffectType]`
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct FunctionEffectNode {
+    pub effects: Vec<ExpressionNode>,
     pub span: Range<u32>,
 }
 

@@ -1,4 +1,5 @@
 use super::*;
+use valkyrie_ast::SlotNode;
 
 pub static IDENTIFIER: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(
@@ -22,5 +23,17 @@ impl ThisParser for IdentifierNode {
 
     fn as_lisp(&self) -> Lisp {
         Lisp::Function(self.pretty_string(144))
+    }
+}
+
+impl ThisParser for SlotNode {
+    fn parse(input: ParseState) -> ParseResult<Self> {
+        let (state, _) = input.match_char('$')?;
+        let (state, id) = state.match_fn(IdentifierNode::parse)?;
+        state.finish(SlotNode::new(id.name, get_span(input, state)))
+    }
+
+    fn as_lisp(&self) -> Lisp {
+        Lisp::keyword(self.name.as_str())
     }
 }

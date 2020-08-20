@@ -32,7 +32,7 @@ impl PrettyPrint for FunctionDeclaration {
         terms.push(self.arguments.build(allocator));
         if let Some(ret) = &self.r#return {
             terms.push(allocator.text(": "));
-            terms.push(ret.types.build(allocator));
+            terms.push(ret.returns.build(allocator));
         }
         terms.push(self.body.build(allocator));
         allocator.concat(terms)

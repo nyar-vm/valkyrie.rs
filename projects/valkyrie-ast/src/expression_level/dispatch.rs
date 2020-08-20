@@ -18,6 +18,7 @@ impl PrettyPrint for ExpressionBody {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         match self {
             ExpressionBody::Placeholder => unreachable!(),
+            ExpressionBody::Slot(node) => node.build(allocator),
             ExpressionBody::Symbol(node) => node.build(allocator),
             ExpressionBody::Number(node) => node.build(allocator),
             ExpressionBody::String(node) => node.build(allocator),
@@ -42,6 +43,7 @@ impl ExpressionBody {
     pub fn span(&self) -> Range<u32> {
         match self {
             ExpressionBody::Placeholder => unreachable!(),
+            ExpressionBody::Slot(node) => node.span.clone(),
             ExpressionBody::Symbol(node) => node.span.clone(),
             ExpressionBody::Number(node) => node.span.clone(),
             ExpressionBody::String(node) => node.span.clone(),
@@ -80,23 +82,6 @@ impl From<TableNode> for ExpressionBody {
     }
 }
 
-// impl From<InfixNode> for ExpressionBody {
-//     fn from(value: InfixNode) -> Self {
-//         Self::Binary(Box::new(value))
-//     }
-// }
-// impl From<PostfixNode> for ExpressionBody {
-//     fn from(value: PostfixNode) -> Self {
-//         Self::Suffix(Box::new(value))
-//     }
-// }
-//
-// impl From<TableNode> for ExpressionBody {
-//     fn from(value: TableNode) -> Self {
-//         Self::Table(Box::new(value))
-//     }
-// }
-
 impl From<StringLiteralNode> for ExpressionBody {
     fn from(value: StringLiteralNode) -> Self {
         Self::String(Box::new(value))
@@ -106,6 +91,12 @@ impl From<StringLiteralNode> for ExpressionBody {
 impl From<NumberLiteralNode> for ExpressionBody {
     fn from(value: NumberLiteralNode) -> Self {
         Self::Number(Box::new(value))
+    }
+}
+
+impl From<SlotNode> for ExpressionBody {
+    fn from(value: SlotNode) -> Self {
+        Self::Slot(Box::new(value))
     }
 }
 

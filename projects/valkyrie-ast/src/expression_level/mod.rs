@@ -15,7 +15,7 @@ pub mod view;
 use crate::{
     ApplyCallNode, ApplyDotNode, ArgumentTermNode, CallNode, CallTermNode, ControlNode, GenericCallNode, IdentifierNode,
     IfStatementNode, InfixNode, LambdaCallNode, LambdaDotNode, NamePathNode, NewConstructNode, NumberLiteralNode, OperatorNode,
-    PostfixNode, PrefixNode, StatementNode, StringLiteralNode, SubscriptNode, TableNode, TableTermNode,
+    PostfixNode, PrefixNode, SlotNode, StatementNode, StringLiteralNode, SubscriptNode, TableNode, TableTermNode,
 };
 use alloc::{
     borrow::ToOwned,
@@ -47,6 +47,7 @@ pub struct ExpressionContext {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum ExpressionBody {
     Placeholder,
+    Slot(Box<SlotNode>),
     Symbol(Box<NamePathNode>),
     Number(Box<NumberLiteralNode>),
     String(Box<StringLiteralNode>),
