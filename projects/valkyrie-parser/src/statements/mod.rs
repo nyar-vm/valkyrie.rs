@@ -8,15 +8,17 @@ use pex::{helpers::comment_line, BracketPattern, ParseResult, ParseState, Regex,
 use std::sync::LazyLock;
 use valkyrie_ast::{
     ApplyArgumentNode, ApplyCallNode, CallTermNode, ClassDeclaration, ControlNode, DocumentationNode, ExpressionContext,
-    ExpressionNode, ForLoop, FunctionDeclaration, FunctionType, GenericCallNode, IdentifierNode, ImportAliasNode,
-    ImportGroupNode, ImportStatementNode, ImportTermNode, LambdaArgumentNode, LambdaCallNode, LambdaDotNode, LambdaNode,
-    LetBindNode, ModifierPart, NamePathNode, NamespaceDeclarationNode, NamespaceKind, NewConstructNode, PatternType,
-    StatementNode, StatementType, StringLiteralNode, TableKind, TableNode, TableTermNode, TypingExpression, WhileLoop,
+    ExpressionNode, ForLoop, FunctionBody, FunctionDeclaration, FunctionType, GenericCallNode, GuardStatement, GuardType,
+    IdentifierNode, ImportAliasNode, ImportGroupNode, ImportStatementNode, ImportTermNode, LambdaArgumentNode, LambdaCallNode,
+    LambdaDotNode, LambdaNode, LetBindNode, ModifierPart, NamePathNode, NamespaceDeclarationNode, NamespaceKind,
+    NewConstructNode, PatternType, StatementBody, StatementNode, StringLiteralNode, TableKind, TableNode, TableTermNode,
+    TypingExpression, WhileLoop,
 };
 
 mod classes;
 mod def_var;
 mod documentation;
+mod guard;
 mod import;
 mod lambda;
 mod new;
@@ -63,14 +65,14 @@ impl ThisParser for StatementNode {
 pub fn parse_statement_node(input: ParseState, repl: bool) -> ParseResult<StatementNode> {
     let parser = match repl {
         true => parse_repl_statements,
-        false => StatementType::parse,
+        false => StatementBody::parse,
     };
     let (state, expr) = input.skip(ignore).match_fn(parser)?;
     let (state, eos) = parse_eos(state)?;
     state.finish(StatementNode { r#type: expr, end_semicolon: eos, span: get_span(input, state) })
 }
 
-impl ThisParser for StatementType {
+impl ThisParser for StatementBody {
     fn parse(input: ParseState) -> ParseResult<Self> {
         input
             .begin_choice()
@@ -79,6 +81,7 @@ impl ThisParser for StatementType {
             .or_else(|s| ClassDeclaration::parse(s).map_inner(Into::into))
             .or_else(function_with_head)
             .or_else(|s| LetBindNode::parse(s).map_inner(Into::into))
+            .or_else(|s| GuardStatement::parse(s).map_inner(Into::into))
             .or_else(|s| WhileLoop::parse(s).map_inner(Into::into))
             .or_else(|s| ForLoop::parse(s).map_inner(Into::into))
             .or_else(|s| ControlNode::parse(s).map_inner(Into::into))
@@ -88,22 +91,23 @@ impl ThisParser for StatementType {
 
     fn as_lisp(&self) -> Lisp {
         match self {
-            StatementType::Nothing => Lisp::Any(vec![]),
-            StatementType::Namespace(v) => v.as_lisp(),
-            StatementType::Import(v) => v.as_lisp(),
-            StatementType::While(v) => v.as_lisp(),
-            StatementType::For(v) => v.as_lisp(),
-            StatementType::Class(v) => v.as_lisp(),
-            StatementType::Expression(v) => v.as_lisp(),
-            StatementType::Function(v) => v.as_lisp(),
-            StatementType::Control(v) => v.as_lisp(),
-            StatementType::Document(v) => v.as_lisp(),
-            StatementType::LetBind(v) => v.as_lisp(),
+            StatementBody::Nothing => Lisp::Any(vec![]),
+            StatementBody::Namespace(v) => v.as_lisp(),
+            StatementBody::Import(v) => v.as_lisp(),
+            StatementBody::While(v) => v.as_lisp(),
+            StatementBody::For(v) => v.as_lisp(),
+            StatementBody::Class(v) => v.as_lisp(),
+            StatementBody::Expression(v) => v.as_lisp(),
+            StatementBody::Function(v) => v.as_lisp(),
+            StatementBody::Control(v) => v.as_lisp(),
+            StatementBody::Document(v) => v.as_lisp(),
+            StatementBody::LetBind(v) => v.as_lisp(),
+            StatementBody::Guard(v) => v.as_lisp(),
         }
     }
 }
 
-pub fn parse_repl_statements(input: ParseState) -> ParseResult<StatementType> {
+pub fn parse_repl_statements(input: ParseState) -> ParseResult<StatementBody> {
     input
         .begin_choice()
         .or_else(|s| NamespaceDeclarationNode::parse(s).map_inner(Into::into))
@@ -117,12 +121,12 @@ pub fn parse_repl_statements(input: ParseState) -> ParseResult<StatementType> {
         .end_choice()
 }
 
-fn function_with_head(input: ParseState) -> ParseResult<StatementType> {
+fn function_with_head(input: ParseState) -> ParseResult<StatementBody> {
     let (state, mods) = input.match_repeats(|s| {
         let (state, _) = s.skip(ignore).match_negative(FunctionDeclaration::parse, "KW_FUNCTION")?;
         IdentifierNode::parse(state)
     })?;
     let (state, mut func) = state.skip(ignore).match_fn(FunctionDeclaration::parse)?;
     func.modifiers = mods;
-    state.finish(StatementType::Function(Box::new(func)))
+    state.finish(StatementBody::Function(Box::new(func)))
 }

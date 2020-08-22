@@ -6,72 +6,79 @@ impl PrettyPrint for StatementNode {
     }
 }
 #[cfg(feature = "pretty-print")]
-impl PrettyPrint for StatementType {
+impl PrettyPrint for StatementBody {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         match self {
-            StatementType::Nothing => allocator.text(";;"),
-            StatementType::Namespace(node) => node.build(allocator),
-            StatementType::Import(node) => node.build(allocator),
-            StatementType::Class(node) => node.build(allocator),
-            StatementType::Function(node) => node.build(allocator),
-            StatementType::While(node) => node.build(allocator),
-            StatementType::For(node) => node.build(allocator),
-            StatementType::Expression(node) => node.build(allocator),
-            StatementType::Control(node) => node.build(allocator),
-            StatementType::Document(node) => node.build(allocator),
-            StatementType::LetBind(node) => node.build(allocator),
+            StatementBody::Nothing => allocator.text(";;"),
+            StatementBody::Namespace(node) => node.build(allocator),
+            StatementBody::Import(node) => node.build(allocator),
+            StatementBody::Class(node) => node.build(allocator),
+            StatementBody::Function(node) => node.build(allocator),
+            StatementBody::While(node) => node.build(allocator),
+            StatementBody::For(node) => node.build(allocator),
+            StatementBody::Expression(node) => node.build(allocator),
+            StatementBody::Control(node) => node.build(allocator),
+            StatementBody::Document(node) => node.build(allocator),
+            StatementBody::LetBind(node) => node.build(allocator),
+            StatementBody::Guard(node) => node.build(allocator),
         }
     }
 }
 
-impl From<ControlNode> for StatementType {
+impl From<ControlNode> for StatementBody {
     fn from(value: ControlNode) -> Self {
-        StatementType::Control(Box::new(value))
+        StatementBody::Control(Box::new(value))
     }
 }
 
-impl From<NamespaceDeclarationNode> for StatementType {
+impl From<NamespaceDeclarationNode> for StatementBody {
     fn from(value: NamespaceDeclarationNode) -> Self {
         Self::Namespace(Box::new(value))
     }
 }
 
-impl From<ImportStatementNode> for StatementType {
+impl From<GuardStatement> for StatementBody {
+    fn from(value: GuardStatement) -> Self {
+        Self::Guard(Box::new(value))
+    }
+}
+
+impl From<ImportStatementNode> for StatementBody {
     fn from(value: ImportStatementNode) -> Self {
         Self::Import(Box::new(value))
     }
 }
 
-impl From<ClassDeclaration> for StatementType {
+impl From<ClassDeclaration> for StatementBody {
     fn from(value: ClassDeclaration) -> Self {
-        StatementType::Class(Box::new(value))
+        StatementBody::Class(Box::new(value))
     }
 }
-impl From<FunctionDeclaration> for StatementType {
+impl From<FunctionDeclaration> for StatementBody {
     fn from(value: FunctionDeclaration) -> Self {
         Self::Function(Box::new(value))
     }
 }
-impl From<LetBindNode> for StatementType {
+impl From<LetBindNode> for StatementBody {
     fn from(value: LetBindNode) -> Self {
-        StatementType::LetBind(Box::new(value))
+        StatementBody::LetBind(Box::new(value))
     }
 }
 
-impl From<WhileLoop> for StatementType {
+impl From<WhileLoop> for StatementBody {
     fn from(value: WhileLoop) -> Self {
-        StatementType::While(Box::new(value))
+        StatementBody::While(Box::new(value))
     }
 }
 
-impl From<ForLoop> for StatementType {
+impl From<ForLoop> for StatementBody {
     fn from(value: ForLoop) -> Self {
-        StatementType::For(Box::new(value))
+        StatementBody::For(Box::new(value))
     }
 }
 
-impl From<ExpressionNode> for StatementType {
+impl From<ExpressionNode> for StatementBody {
     fn from(value: ExpressionNode) -> Self {
-        StatementType::Expression(Box::new(value))
+        StatementBody::Expression(Box::new(value))
     }
 }

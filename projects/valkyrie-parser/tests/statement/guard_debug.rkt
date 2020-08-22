@@ -1,7 +1,3 @@
-guard
-true
-(call/lambda else ())
+(guard true else (body ()))
 (return 0)
-guard
-false
-(call/lambda else ((return (- 1))))
+(guard false else (body ((return (- 1)))))

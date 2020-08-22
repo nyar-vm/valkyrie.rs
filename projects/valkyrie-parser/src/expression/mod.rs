@@ -14,7 +14,7 @@ use std::fmt::Debug;
 use valkyrie_ast::{
     ApplyCallNode, ApplyDotNode, CallNode, ExpressionBody, ExpressionContext, ExpressionNode, GenericCallNode, InfixNode,
     LambdaCallNode, LambdaDotNode, LambdaNode, NamePathNode, NewConstructNode, NumberLiteralNode, PostfixCallPart, PostfixNode,
-    PrefixNode, PrettyPrint, StatementType::Expression, StringLiteralNode, SubscriptNode, TableNode, TypingExpression,
+    PrefixNode, PrettyPrint, StatementBody::Expression, StringLiteralNode, SubscriptNode, TableNode, TypingExpression,
     ValkyrieOperator,
 };
 

@@ -44,7 +44,7 @@ pub use crate::{
         let_bind::LetBindNode,
         namespace::{NamespaceDeclarationNode, NamespaceKind},
         try_catch::TryStatementNode,
-        StatementContext, StatementNode, StatementType,
+        StatementBody, StatementContext, StatementNode,
     },
     string_like::{
         string_formatter::StringFormatter,

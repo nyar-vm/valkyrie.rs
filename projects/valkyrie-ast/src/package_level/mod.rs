@@ -12,7 +12,8 @@ pub mod try_catch;
 use crate::{
     package_level::{classes::ClassDeclaration, namespace::NamespaceDeclarationNode},
     ApplyArgumentNode, ArgumentTermNode, ControlNode, DocumentationNode, ExpressionNode, ForLoop, FunctionDeclaration,
-    GenericArgumentNode, IdentifierNode, ImportStatementNode, LetBindNode, NamePathNode, PatternType, WhileLoop,
+    GenericArgumentNode, GuardStatement, IdentifierNode, ImportStatementNode, LetBindNode, NamePathNode, PatternType,
+    WhileLoop,
 };
 use alloc::{borrow::Cow, boxed::Box, string::String, sync::Arc, vec::Vec};
 use core::ops::Range;
@@ -23,7 +24,7 @@ use pretty_print::{PrettyPrint, PrettyProvider, PrettyTree};
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct StatementNode {
-    pub r#type: StatementType,
+    pub r#type: StatementBody,
     pub end_semicolon: bool,
     pub span: Range<u32>,
 }
@@ -31,7 +32,7 @@ pub struct StatementNode {
 /// The top level elements in script mode.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum StatementType {
+pub enum StatementBody {
     Nothing,
     Document(Box<DocumentationNode>),
     Namespace(Box<NamespaceDeclarationNode>),
@@ -41,6 +42,7 @@ pub enum StatementType {
     For(Box<ForLoop>),
     LetBind(Box<LetBindNode>),
     Function(Box<FunctionDeclaration>),
+    Guard(Box<GuardStatement>),
     Control(Box<ControlNode>),
     Expression(Box<ExpressionNode>),
 }
