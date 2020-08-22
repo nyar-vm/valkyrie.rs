@@ -14,12 +14,14 @@ pub mod view;
 
 use crate::{
     ApplyCallNode, ApplyDotNode, ArgumentTermNode, CallNode, CallTermNode, ControlNode, GenericCallNode, IdentifierNode,
-    IfStatementNode, InfixNode, LambdaCallNode, LambdaDotNode, NamePathNode, NewConstructNode, NumberLiteralNode, OperatorNode,
-    PostfixNode, PrefixNode, SlotNode, StatementNode, StringLiteralNode, SubscriptNode, TableNode, TableTermNode,
+    IfStatementNode, InfixNode, LambdaCallNode, LambdaDotNode, LambdaSlotNode, NamePathNode, NewConstructNode,
+    NumberLiteralNode, OperatorNode, PostfixNode, PrefixNode, StatementNode, StringLiteralNode, SubscriptNode, TableNode,
+    TableTermNode,
 };
 use alloc::{
     borrow::ToOwned,
     boxed::Box,
+    format,
     string::{String, ToString},
     vec::Vec,
 };
@@ -31,6 +33,12 @@ use pretty_print::{PrettyPrint, PrettyProvider, PrettyTree};
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ExpressionNode {
     pub type_level: bool,
+    pub body: ExpressionBody,
+    pub span: Range<u32>,
+}
+/// Temporary node for use in the parser
+#[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
+pub struct TypingExpression {
     pub body: ExpressionBody,
     pub span: Range<u32>,
 }
@@ -47,7 +55,7 @@ pub struct ExpressionContext {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum ExpressionBody {
     Placeholder,
-    Slot(Box<SlotNode>),
+    Slot(Box<LambdaSlotNode>),
     Symbol(Box<NamePathNode>),
     Number(Box<NumberLiteralNode>),
     String(Box<StringLiteralNode>),
@@ -94,6 +102,14 @@ impl ExpressionContext {
     /// In a repl statement
     pub fn in_repl() -> Self {
         ExpressionContext { type_level: false, allow_newline: false, allow_curly: true }
+    }
+}
+
+impl TypingExpression {
+    /// Convert this node into a full expression node
+    #[allow(clippy::wrong_self_convention)]
+    pub fn as_normal(self) -> ExpressionNode {
+        ExpressionNode { type_level: true, body: self.body, span: self.span }
     }
 }
 

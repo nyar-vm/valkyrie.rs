@@ -1,6 +1,4 @@
 use super::*;
-use crate::expression::TypingExpression;
-use valkyrie_ast::{ModifierPart, PatternType};
 
 impl ThisParser for LetBindNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
@@ -28,7 +26,7 @@ impl ThisParser for LetBindNode {
 fn parse_type_hint(input: ParseState) -> ParseResult<ExpressionNode> {
     let (state, _) = input.skip(ignore).match_str(":")?;
     let (state, expr) = state.skip(ignore).match_fn(TypingExpression::parse)?;
-    state.finish(expr.wrapper)
+    state.finish(expr.as_normal())
 }
 
 fn parse_expr(input: ParseState) -> ParseResult<ExpressionNode> {

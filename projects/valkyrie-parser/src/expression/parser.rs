@@ -1,5 +1,5 @@
 use super::*;
-use valkyrie_ast::SlotNode;
+use valkyrie_ast::LambdaSlotNode;
 
 impl ThisParser for PrefixNode {
     fn parse(_: ParseState) -> ParseResult<Self> {
@@ -149,7 +149,7 @@ pub fn parse_value(input: ParseState, allow_curly: bool) -> ParseResult<Expressi
         .or_else(|s| NewConstructNode::parse(s).map_inner(Into::into))
         .or_else(|s| NumberLiteralNode::parse(s).map_inner(Into::into))
         .or_else(|s| StringLiteralNode::parse(s).map_inner(Into::into))
-        .or_else(|s| SlotNode::parse(s).map_inner(Into::into))
+        .or_else(|s| LambdaSlotNode::parse(s).map_inner(Into::into))
         .or_else(|s| NamePathNode::parse(s).map_inner(Into::into))
         .or_else(|s| TableNode::parse(s).map_inner(Into::into))
         .or_else(|s| TupleNode::parse(s).map_inner(Into::into))

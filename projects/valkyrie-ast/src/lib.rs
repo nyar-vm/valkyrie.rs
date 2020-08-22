@@ -26,10 +26,10 @@ pub use crate::{
         number::NumberLiteralNode,
         operators::{InfixNode, OperatorNode, PostfixNode, PrefixNode, ValkyrieOperator},
         pattern_match::MatchCaseNode,
-        symbol::{IdentifierNode, MacroKind, MacroPathNode, NamePathNode, SlotNode},
+        symbol::{IdentifierNode, LambdaSlotNode, MacroKind, MacroPathNode, NamePathNode},
         table::{TableKeyType, TableKind, TableNode, TableTermNode},
         view::{SubscriptNode, SubscriptSliceNode, SubscriptTermNode},
-        ExpressionBody, ExpressionContext, ExpressionNode, PostfixCallPart,
+        ExpressionBody, ExpressionContext, ExpressionNode, PostfixCallPart, TypingExpression,
     },
     helper::ValkyrieNode,
     package_level::{

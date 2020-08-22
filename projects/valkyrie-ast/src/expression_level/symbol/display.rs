@@ -19,9 +19,9 @@ impl PrettyPrint for IdentifierNode {
 }
 
 #[cfg(feature = "pretty-print")]
-impl PrettyPrint for SlotNode {
+impl PrettyPrint for LambdaSlotNode {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        allocator.text(self.name.to_string())
+        allocator.keyword(format!("${}", self.name))
     }
 }
 

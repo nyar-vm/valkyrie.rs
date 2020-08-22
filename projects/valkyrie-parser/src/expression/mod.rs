@@ -1,4 +1,3 @@
-mod display;
 mod parser;
 
 use crate::{
@@ -6,7 +5,7 @@ use crate::{
     operators::{ValkyrieInfix, ValkyriePrefix, ValkyrieSuffix},
     table::TupleNode,
     traits::ThisParser,
-    utils::{parse_expression_body, parse_expression_node},
+    utils::{get_span, parse_expression_body, parse_expression_node},
 };
 use lispify::{Lisp, Lispify};
 use pex::{ParseResult, ParseState, StopBecause};
@@ -15,20 +14,18 @@ use std::fmt::Debug;
 use valkyrie_ast::{
     ApplyCallNode, ApplyDotNode, CallNode, ExpressionBody, ExpressionContext, ExpressionNode, GenericCallNode, InfixNode,
     LambdaCallNode, LambdaDotNode, LambdaNode, NamePathNode, NewConstructNode, NumberLiteralNode, PostfixCallPart, PostfixNode,
-    PrefixNode, PrettyPrint, StatementType::Expression, StringLiteralNode, SubscriptNode, TableNode, ValkyrieOperator,
+    PrefixNode, PrettyPrint, StatementType::Expression, StringLiteralNode, SubscriptNode, TableNode, TypingExpression,
+    ValkyrieOperator,
 };
 
 /// A resolver
 #[derive(Default)]
 pub struct ExpressionResolver {}
 
-pub(crate) struct TypingExpression {
-    pub wrapper: ExpressionNode,
-}
-
 impl ThisParser for TypingExpression {
     fn parse(input: ParseState) -> ParseResult<Self> {
-        parse_expression_node(input, ExpressionContext::in_type()).map_inner(|e| TypingExpression { wrapper: e })
+        let (state, out) = parse_expression_node(input, ExpressionContext::in_type())?;
+        state.finish(TypingExpression { body: out.body, span: get_span(input, state) })
     }
 
     fn as_lisp(&self) -> Lisp {

@@ -1,5 +1,4 @@
 use super::*;
-use valkyrie_ast::NamePathNode;
 
 impl ThisParser for CallNode<ApplyDotNode> {
     #[track_caller]

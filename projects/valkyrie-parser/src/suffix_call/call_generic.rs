@@ -1,6 +1,4 @@
 use super::*;
-use crate::{expression::TypingExpression, utils::parse_expression_body};
-use valkyrie_ast::{CallNode, ExpressionNode, GenericCallTerm};
 
 impl ThisParser for CallNode<GenericCallNode> {
     #[track_caller]
@@ -37,7 +35,7 @@ impl ThisParser for GenericCallNode {
 impl ThisParser for GenericCallTerm {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, term) = CallTermNode::<IdentifierNode, TypingExpression>::parse(input)?;
-        state.finish(GenericCallTerm { term: term.map_value(|s| s.wrapper) })
+        state.finish(GenericCallTerm { term: term.map_value(|s| s.as_normal()) })
     }
 
     fn as_lisp(&self) -> Lisp {

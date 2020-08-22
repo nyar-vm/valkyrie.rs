@@ -22,12 +22,12 @@ pub struct NamePathNode {
 /// `$, $1, $x`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct SlotNode {
+pub struct LambdaSlotNode {
     pub name: String,
     pub span: Range<u32>,
 }
 
-impl SlotNode {
+impl LambdaSlotNode {
     pub fn new<S>(name: S, span: Range<u32>) -> Self
     where
         S: ToString,

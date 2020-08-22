@@ -1,13 +1,4 @@
 use super::*;
-use crate::{
-    helpers::{parse_name_join, parse_name_join_dot},
-    utils::get_span,
-};
-use pex::{BracketPattern, StopBecause};
-use valkyrie_ast::{
-    ApplyArgumentNode, ApplyCallNode, CallTermNode, GenericCallNode, IdentifierNode, NewConstructNode, TableKind, TableNode,
-    TableTermNode,
-};
 
 impl ThisParser for NewConstructNode {
     /// ```vk

@@ -1,11 +1,9 @@
 use super::*;
-use crate::expression::TypingExpression;
-use valkyrie_ast::{ApplyArgumentNode, ApplyArgumentTerm, ArgumentKeyNode, ExpressionNode};
 
 impl ThisParser for ApplyArgumentTerm {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, term) = ArgumentTermNode::<ArgumentKeyNode, TypingExpression, ExpressionNode>::parse(input)?;
-        state.finish(ApplyArgumentTerm { term: term.map_value(|v| v.wrapper) })
+        state.finish(ApplyArgumentTerm { term: term.map_value(|v| v.as_normal()) })
     }
 
     fn as_lisp(&self) -> Lisp {

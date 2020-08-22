@@ -94,8 +94,8 @@ impl From<NumberLiteralNode> for ExpressionBody {
     }
 }
 
-impl From<SlotNode> for ExpressionBody {
-    fn from(value: SlotNode) -> Self {
+impl From<LambdaSlotNode> for ExpressionBody {
+    fn from(value: LambdaSlotNode) -> Self {
         Self::Slot(Box::new(value))
     }
 }
