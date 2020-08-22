@@ -14,9 +14,8 @@ pub mod view;
 
 use crate::{
     ApplyCallNode, ApplyDotNode, ArgumentTermNode, CallNode, CallTermNode, ControlNode, GenericCallNode, IdentifierNode,
-    IfStatementNode, InfixNode, LambdaCallNode, LambdaDotNode, LambdaSlotNode, NamePathNode, NewConstructNode,
-    NumberLiteralNode, OperatorNode, PostfixNode, PrefixNode, StatementNode, StringLiteralNode, SubscriptNode, TableNode,
-    TableTermNode,
+    IfStatement, InfixNode, LambdaCallNode, LambdaDotNode, LambdaSlotNode, NamePathNode, NewConstructNode, NumberLiteralNode,
+    OperatorNode, PostfixNode, PrefixNode, StatementNode, StringLiteralNode, SubscriptNode, TableNode, TableTermNode,
 };
 use alloc::{
     borrow::ToOwned,
@@ -73,7 +72,7 @@ pub enum ExpressionBody {
     /// - Standalone expression
     Control(Box<ControlNode>),
     /// - Standalone expression
-    If(Box<IfStatementNode>),
+    If(Box<IfStatement>),
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]

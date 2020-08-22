@@ -14,7 +14,8 @@ mod string_like;
 pub use crate::{
     control_flow::{
         control::{ControlNode, ControlType},
-        if_else::{ConditionNode, ConditionType, ElsePart, IfStatementNode},
+        guard_statement::{GuardStatement, GuardType},
+        if_else::{ConditionNode, ConditionType, ElsePart, IfStatement},
         looping::{ForLoop, PatternType, WhileLoop},
     },
     expression_level::{
@@ -38,6 +39,7 @@ pub use crate::{
         function::{
             FunctionBody, FunctionDeclaration, FunctionDeclarationInline, FunctionReturnNode, FunctionType, ModifierPart,
         },
+        guarantee::{EffectTypeNode, GuaranteeNode},
         import::{ImportAliasNode, ImportGroupNode, ImportResolvedItem, ImportStatementNode, ImportTermNode},
         let_bind::LetBindNode,
         namespace::{NamespaceDeclarationNode, NamespaceKind},

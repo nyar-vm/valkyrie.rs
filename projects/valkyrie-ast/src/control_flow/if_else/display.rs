@@ -1,6 +1,6 @@
 use super::*;
 
-impl PrettyPrint for IfStatementNode {
+impl PrettyPrint for IfStatement {
     fn build<'a>(&self, _allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         todo!()
     }

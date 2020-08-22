@@ -8,14 +8,14 @@ use pex::{BracketPattern, ParseResult, ParseState, StopBecause};
 use std::borrow::Cow;
 use valkyrie_ast::{
     ArgumentKeyNode, ConditionNode, ConditionType, ControlNode, ControlType, ElsePart, ExpressionContext, ExpressionNode,
-    ForLoop, FunctionBody, IfStatementNode, PatternType, StatementNode, WhileLoop,
+    ForLoop, FunctionBody, IfStatement, PatternType, StatementNode, WhileLoop,
 };
 
 mod controller;
 mod loop_for;
 mod loop_while;
 
-impl ThisParser for IfStatementNode {
+impl ThisParser for IfStatement {
     fn parse(input: ParseState) -> ParseResult<Self> {
         todo!()
     }

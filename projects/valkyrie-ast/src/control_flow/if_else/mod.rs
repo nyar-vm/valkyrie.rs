@@ -9,7 +9,7 @@ use super::*;
 // if a {1} else if b {2} else if c {3} else {4}
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct IfStatementNode {
+pub struct IfStatement {
     pub branches: Vec<ConditionNode>,
     pub else_branch: Vec<StatementNode>,
     pub span: Range<u32>,

@@ -7,9 +7,10 @@ fn lex_statements() {
     top_debug(include_str!("loop_while.vk"), "statement/loop_while_debug.rkt").expect("while");
     top_debug(include_str!("lambda.vk"), "statement/lambda_debug.rkt").expect("lambda");
     top_debug(include_str!("control.vk"), "statement/control_debug.rkt").expect("control");
+    top_debug(include_str!("let_bind.vk"), "statement/let_bind_debug.rkt").expect("let");
 }
 
 #[test]
 fn debug_lex() {
-    top_debug(include_str!("let_bind.vk"), "statement/let_bind_debug.rkt").expect("let");
+    top_debug(include_str!("guard.vk"), "statement/guard_debug.rkt").expect("guard");
 }
