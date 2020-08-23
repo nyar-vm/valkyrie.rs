@@ -10,6 +10,7 @@ pub struct WhileLoop {
     pub condition: ConditionType,
     pub body: FunctionBody,
     pub r#else: Option<ElsePart>,
+    /// The range of the node
     pub span: Range<u32>,
 }
 
@@ -49,6 +50,7 @@ pub struct ForLoop {
     pub body: FunctionBody,
     /// `else { body }`
     pub r#else: Option<ElsePart>,
+    /// The range of the node
     pub span: Range<u32>,
 }
 

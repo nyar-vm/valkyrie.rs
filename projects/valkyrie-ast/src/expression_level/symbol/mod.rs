@@ -6,6 +6,7 @@ mod display;
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct IdentifierNode {
     pub name: String,
+    /// The range of the node
     pub span: Range<u32>,
 }
 

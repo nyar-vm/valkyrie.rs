@@ -10,7 +10,7 @@ pub struct StringLiteralNode {
     pub value: String,
     /// The unit of the number, if any.
     pub unit: Option<IdentifierNode>,
-    /// The range of the number.
+    /// The range of the node
     pub span: Range<u32>,
 }
 

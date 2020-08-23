@@ -1,10 +1,11 @@
 use super::*;
 
-/// `f"string %d %s %f"`
+/// `when a > 0 && a < 10`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct StringFormatter {
-    pub items: Vec<u32>,
+pub struct PatternCondition {
+    /// The post condition of the pattern
+    pub condition: ExpressionNode,
     /// The range of the node
     pub span: Range<u32>,
 }

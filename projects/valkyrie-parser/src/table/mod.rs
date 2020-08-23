@@ -13,7 +13,7 @@ use valkyrie_ast::{
 pub(crate) struct TupleNode {
     /// The raw string of the number.
     pub terms: Vec<TableTermNode>,
-    /// The range of the number.
+    /// The range of the node
     pub span: Range<u32>,
 }
 

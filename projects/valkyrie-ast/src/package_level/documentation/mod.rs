@@ -6,6 +6,7 @@ use pretty_print::{PrettyPrint, PrettyProvider, PrettyTree};
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct DocumentationNode {
     pub documentation: String,
+    /// The range of the node
     pub span: Range<u32>,
 }
 

@@ -14,9 +14,10 @@ mod string_like;
 pub use crate::{
     control_flow::{
         control::{ControlNode, ControlType},
-        guard_statement::{GuardStatement, GuardType},
+        guard_statement::{GuardPattern, GuardStatement},
         if_else::{ConditionNode, ConditionType, ElsePart, IfStatement},
         looping::{ForLoop, PatternType, WhileLoop},
+        pattern::PatternCondition,
     },
     expression_level::{
         apply::{ApplyArgumentNode, ApplyArgumentTerm, ApplyCallNode, ApplyCallTerm, ApplyDotNode, ArgumentKeyNode},
@@ -49,7 +50,9 @@ pub use crate::{
     string_like::{
         string_formatter::StringFormatter,
         string_literal::StringLiteralNode,
-        string_template::{StringTemplateNode, TemplateCloseNode, TemplateCommentNode, TemplateInlineNode, TemplateOpenNode},
+        string_template::{
+            StringTemplateNode, TemplateCloseNode, TemplateCommentNode, TemplateInlineNode, TemplateLineType, TemplateOpenNode,
+        },
     },
 };
 #[cfg(feature = "pretty-print")]

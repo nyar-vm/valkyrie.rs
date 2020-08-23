@@ -15,6 +15,9 @@ pub struct WhichBranch {
 // if a {}
 // if case A() := b {}
 
+/// `when a > 0 { }`
+
+/// which a > 0
 impl WhichCase {
     pub fn get_branch(&self) -> Iter<'_, WhichBranch> {
         self.branch.iter()

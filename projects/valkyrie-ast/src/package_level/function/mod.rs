@@ -52,6 +52,7 @@ pub struct ModifierPart<'i> {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub struct FunctionBody {
     pub statements: Vec<StatementNode>,
+    /// The range of the node
     pub span: Range<u32>,
 }
 
@@ -60,6 +61,7 @@ pub struct FunctionBody {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct FunctionReturnNode {
     pub returns: ExpressionNode,
+    /// The range of the node
     pub span: Range<u32>,
 }
 
@@ -68,6 +70,7 @@ pub struct FunctionReturnNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct FunctionEffectNode {
     pub effects: Vec<ExpressionNode>,
+    /// The range of the node
     pub span: Range<u32>,
 }
 

@@ -12,3 +12,4 @@ pub mod control;
 pub mod guard_statement;
 pub mod if_else;
 pub mod looping;
+pub mod pattern;

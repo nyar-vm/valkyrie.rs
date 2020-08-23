@@ -8,6 +8,7 @@ mod display;
 pub struct CallNode<E> {
     pub base: ExpressionBody,
     pub rest: E,
+    /// The range of the node
     pub span: Range<u32>,
 }
 

@@ -12,6 +12,7 @@ use super::*;
 pub struct IfStatement {
     pub branches: Vec<ConditionNode>,
     pub else_branch: Vec<StatementNode>,
+    /// The range of the node
     pub span: Range<u32>,
 }
 
@@ -20,6 +21,7 @@ pub struct IfStatement {
 pub struct ConditionNode {
     pub condition: ConditionType,
     pub body: FunctionBody,
+    /// The range of the node
     pub span: Range<u32>,
 }
 
@@ -34,6 +36,7 @@ pub enum ConditionType {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct CasePatternNode {
+    /// The range of the node
     pub span: Range<u32>,
 }
 
@@ -41,6 +44,7 @@ pub struct CasePatternNode {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub struct ElsePart {
     pub statements: Vec<StatementNode>,
+    /// The range of the node
     pub span: Range<u32>,
 }
 

@@ -6,7 +6,7 @@ use super::*;
 pub struct StringTemplateNode {
     /// The raw string of the number.
     pub items: Vec<u32>,
-    /// The range of the number.
+    /// The range of the node
     pub span: Range<u32>,
 }
 

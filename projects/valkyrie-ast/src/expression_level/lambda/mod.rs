@@ -8,6 +8,7 @@ use super::*;
 pub struct LambdaNode {
     pub arguments: Option<LambdaArgumentNode>,
     pub body: Vec<StatementNode>,
+    /// The range of the node
     pub span: Range<u32>,
 }
 
@@ -17,6 +18,7 @@ pub struct LambdaNode {
 pub struct LambdaCallNode {
     pub arguments: Option<LambdaArgumentNode>,
     pub body: Vec<StatementNode>,
+    /// The range of the node
     pub span: Range<u32>,
 }
 

@@ -3,7 +3,7 @@ use super::*;
 impl ThisParser for GuardStatement {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, _) = input.match_str("guard")?;
-        let (state, cond) = state.skip(ignore).match_fn(GuardType::parse)?;
+        let (state, cond) = state.skip(ignore).match_fn(GuardPattern::parse)?;
         let (state, _) = state.skip(ignore).match_str("else")?;
         let (finally, body) = state.skip(ignore).match_fn(FunctionBody::parse)?;
         finally.finish(GuardStatement { condition: cond, body, span: get_span(input, finally) })
@@ -19,19 +19,19 @@ impl ThisParser for GuardStatement {
     }
 }
 
-impl ThisParser for GuardType {
+impl ThisParser for GuardPattern {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, node) = parse_expression_node(
             input.skip(ignore),
             ExpressionContext { type_level: false, allow_newline: true, allow_curly: false },
         )?;
-        state.finish(GuardType::Inline(Box::new(node)))
+        state.finish(GuardPattern::Inline(Box::new(node)))
     }
 
     fn as_lisp(&self) -> Lisp {
         match self {
-            GuardType::Case => Lisp::keyword("case"),
-            GuardType::Inline(s) => s.as_lisp(),
+            GuardPattern::Case => Lisp::keyword("case"),
+            GuardPattern::Inline(s) => s.as_lisp(),
             // GuardType::Block(s) => s.as_lisp(),
         }
     }

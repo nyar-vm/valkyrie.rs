@@ -18,6 +18,7 @@ pub enum NamespaceKind {
 pub struct NamespaceDeclarationNode {
     pub kind: NamespaceKind,
     pub path: Vec<IdentifierNode>,
+    /// The range of the node
     pub span: Range<u32>,
 }
 

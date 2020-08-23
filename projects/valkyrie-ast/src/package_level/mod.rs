@@ -26,6 +26,7 @@ use pretty_print::{PrettyPrint, PrettyProvider, PrettyTree};
 pub struct StatementNode {
     pub r#type: StatementBody,
     pub end_semicolon: bool,
+    /// The range of the node
     pub span: Range<u32>,
 }
 

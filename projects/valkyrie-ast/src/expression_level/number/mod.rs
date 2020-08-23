@@ -6,6 +6,7 @@ use super::*;
 pub struct NumberLiteralNode {
     pub value: String,
     pub unit: Option<IdentifierNode>,
+    /// The range of the node
     pub span: Range<u32>,
 }
 

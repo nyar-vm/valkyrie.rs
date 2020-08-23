@@ -7,6 +7,7 @@ mod display;
 pub struct ControlNode {
     pub r#type: ControlType,
     pub expression: Option<ExpressionNode>,
+    /// The range of the node
     pub span: Range<u32>,
 }
 

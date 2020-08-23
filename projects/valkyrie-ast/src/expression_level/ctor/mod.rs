@@ -30,5 +30,6 @@ pub struct NewConstructNode {
     pub generic: GenericCallNode,
     pub arguments: ApplyCallNode,
     pub collectors: Vec<TableTermNode>,
+    /// The range of the node
     pub span: Range<u32>,
 }

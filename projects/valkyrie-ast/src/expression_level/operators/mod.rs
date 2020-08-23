@@ -154,6 +154,7 @@ pub struct InfixNode {
     pub operator: OperatorNode,
     pub lhs: ExpressionBody,
     pub rhs: ExpressionBody,
+    /// The range of the node
     pub span: Range<u32>,
 }
 
@@ -162,6 +163,7 @@ pub struct InfixNode {
 pub struct PostfixNode {
     pub operator: OperatorNode,
     pub base: ExpressionBody,
+    /// The range of the node
     pub span: Range<u32>,
 }
 
@@ -169,6 +171,7 @@ pub struct PostfixNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct OperatorNode {
     pub kind: ValkyrieOperator,
+    /// The range of the node
     pub span: Range<u32>,
 }
 

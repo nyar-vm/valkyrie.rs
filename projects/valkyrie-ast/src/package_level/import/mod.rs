@@ -9,6 +9,7 @@ mod display;
 pub struct ImportStatementNode {
     // pub path: Option<StringLiteralNode>,
     pub term: ImportTermNode,
+    /// The range of the node
     pub span: Range<u32>,
 }
 

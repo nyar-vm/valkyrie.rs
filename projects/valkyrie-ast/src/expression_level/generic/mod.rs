@@ -9,7 +9,7 @@ use super::*;
 pub struct GenericArgumentNode {
     /// The raw string of the number.
     pub terms: Vec<GenericArgumentTerm>,
-    /// The range of the number.
+    /// The range of the node
     pub span: Range<u32>,
 }
 
@@ -19,7 +19,7 @@ pub struct GenericArgumentNode {
 pub struct GenericCallNode {
     /// The raw string of the number.
     pub terms: Vec<GenericCallTerm>,
-    /// The range of the number.
+    /// The range of the node
     pub span: Range<u32>,
 }
 
