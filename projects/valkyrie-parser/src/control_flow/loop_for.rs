@@ -1,4 +1,6 @@
 use super::*;
+use crate::helpers::parse_when;
+use valkyrie_ast::PatternCondition;
 
 impl ThisParser for ForLoop {
     fn parse(input: ParseState) -> ParseResult<Self> {
@@ -8,17 +10,10 @@ impl ThisParser for ForLoop {
         let (state, expr) = state.skip(ignore).match_fn(|s| {
             parse_expression_node(s, ExpressionContext { type_level: false, allow_newline: true, allow_curly: false })
         })?;
-        let (state, cond) = state.skip(ignore).match_optional(parse_condition)?;
+        let (state, cond) = state.skip(ignore).match_optional(PatternCondition::parse)?;
         let (state, body) = state.skip(ignore).match_fn(FunctionBody::parse)?;
         let (state, other) = state.skip(ignore).match_optional(ElsePart::parse)?;
-        state.finish(ForLoop {
-            pattern,
-            iterator: expr,
-            condition: cond.unwrap_or(ConditionType::AlwaysTrue),
-            body,
-            r#else: other,
-            span: get_span(input, state),
-        })
+        state.finish(ForLoop { pattern, iterator: expr, condition: cond, body, r#else: other, span: get_span(input, state) })
     }
 
     fn as_lisp(&self) -> Lisp {
@@ -27,8 +22,10 @@ impl ThisParser for ForLoop {
         terms.push(self.pattern.as_lisp());
         terms.push(Lisp::keyword("in"));
         terms.push(self.iterator.as_lisp());
-        terms.push(Lisp::keyword("if"));
-        terms.push(self.condition.as_lisp());
+        if let Some(cond) = &self.condition {
+            terms.push(Lisp::keyword("if"));
+            terms.push(cond.as_lisp());
+        }
         terms.push(Lisp::Any(self.body.statements.iter().map(|s| s.as_lisp()).collect()));
         terms.push(Lisp::keyword("else"));
         terms.push(Lisp::Any(self.r#else.iter().map(|s| s.as_lisp()).collect()));
@@ -36,10 +33,19 @@ impl ThisParser for ForLoop {
     }
 }
 
-fn parse_condition(input: ParseState) -> ParseResult<ConditionType> {
-    let (state, _) = input.match_str("if")?;
-    let (state, cond) = state.skip(ignore).match_fn(ConditionType::parse)?;
-    state.finish(cond)
+impl ThisParser for PatternCondition {
+    fn parse(input: ParseState) -> ParseResult<Self> {
+        let (state, _) = parse_when(input)?;
+        let (state, cond) = parse_expression_node(
+            state.skip(ignore),
+            ExpressionContext { type_level: false, allow_newline: true, allow_curly: false },
+        )?;
+        state.finish(Self { condition: cond, span: get_span(input, state) })
+    }
+
+    fn as_lisp(&self) -> Lisp {
+        Lisp::Any(vec![Lisp::keyword("if"), self.condition.as_lisp()])
+    }
 }
 
 impl ThisParser for PatternType {

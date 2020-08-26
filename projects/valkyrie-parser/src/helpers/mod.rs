@@ -48,6 +48,20 @@ pub fn parse_eos(input: ParseState) -> ParseResult<bool> {
     }
 }
 
+/// `when`
+#[inline]
+pub fn parse_when(input: ParseState) -> ParseResult<&str> {
+    if input.residual.starts_with("if") {
+        input.advance_view("if".len())
+    }
+    else if input.residual.starts_with("when") {
+        input.advance_view("when".len())
+    }
+    else {
+        StopBecause::missing_string("when", input.start_offset)?
+    }
+}
+
 /// `::` or `∷`
 #[inline]
 pub fn parse_name_join(input: ParseState) -> ParseResult<&str> {

@@ -9,3 +9,9 @@ pub struct PatternCondition {
     /// The range of the node
     pub span: Range<u32>,
 }
+
+impl PrettyPrint for PatternCondition {
+    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+        allocator.keyword("when").append(allocator.space()).append(self.condition.build(allocator))
+    }
+}

@@ -14,9 +14,10 @@ mod string_like;
 pub use crate::{
     control_flow::{
         control::{ControlNode, ControlType},
+        for_loop::ForLoop,
         guard_statement::{GuardPattern, GuardStatement},
         if_else::{ConditionNode, ConditionType, ElsePart, IfStatement},
-        looping::{ForLoop, PatternType, WhileLoop},
+        looping::{PatternType, WhileLoop},
         pattern::PatternCondition,
     },
     expression_level::{

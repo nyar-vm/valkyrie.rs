@@ -10,8 +10,9 @@ pub mod namespace;
 pub mod try_catch;
 
 use crate::{
+    control_flow::for_loop::ForLoop,
     package_level::{classes::ClassDeclaration, namespace::NamespaceDeclarationNode},
-    ApplyArgumentNode, ArgumentTermNode, ControlNode, DocumentationNode, ExpressionNode, ForLoop, FunctionDeclaration,
+    ApplyArgumentNode, ArgumentTermNode, ControlNode, DocumentationNode, ExpressionNode, FunctionDeclaration,
     GenericArgumentNode, GuardStatement, IdentifierNode, ImportStatementNode, LetBindNode, NamePathNode, PatternType,
     WhileLoop,
 };
