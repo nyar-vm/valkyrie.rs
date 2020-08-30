@@ -1,21 +1,20 @@
 mod parser;
 
 use crate::{
-    helpers::{ignore, parse_eos, parse_name_join},
+    helpers::ignore,
     operators::{ValkyrieInfix, ValkyriePrefix, ValkyrieSuffix},
     table::TupleNode,
     traits::ThisParser,
     utils::{get_span, parse_expression_body, parse_expression_node},
 };
-use lispify::{Lisp, Lispify};
+use lispify::Lisp;
 use pex::{ParseResult, ParseState, StopBecause};
 use pratt::{Affix, PrattError, PrattParser};
 use std::fmt::Debug;
 use valkyrie_ast::{
-    ApplyCallNode, ApplyDotNode, CallNode, ExpressionBody, ExpressionContext, ExpressionNode, GenericCallNode, InfixNode,
-    LambdaCallNode, LambdaDotNode, LambdaNode, NamePathNode, NewConstructNode, NumberLiteralNode, PostfixCallPart, PostfixNode,
-    PrefixNode, PrettyPrint, StatementBody::Expression, StringLiteralNode, SubscriptNode, TableNode, TypingExpression,
-    ValkyrieOperator,
+    ApplyCallNode, ApplyDotNode, ExpressionBody, ExpressionContext, ExpressionNode, GenericCallNode, InfixNode, LambdaCallNode,
+    LambdaDotNode, NamePathNode, NewConstructNode, NumberLiteralNode, PostfixCallPart, PostfixNode, PrefixNode,
+    StringLiteralNode, SubscriptNode, TableNode, TypingExpression, ValkyrieOperator,
 };
 
 /// A resolver

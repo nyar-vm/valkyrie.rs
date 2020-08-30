@@ -1,6 +1,6 @@
 use crate::{
     expression::{ExpressionResolver, ExpressionStream},
-    helpers::{ignore, parse_eos},
+    helpers::ignore,
     ThisParser,
 };
 

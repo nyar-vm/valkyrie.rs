@@ -2,7 +2,7 @@ mod escaper;
 
 pub use self::escaper::StringRewrite;
 
-use crate::{utils::get_span, ThisParser};
+use crate::utils::get_span;
 use pex::{
     ParseResult,
     ParseResult::{Pending, Stop},
@@ -42,6 +42,21 @@ pub fn parse_eos(input: ParseState) -> ParseResult<bool> {
     }
     else if state.residual.starts_with(";") {
         state.advance(";").finish(true)
+    }
+    else {
+        state.finish(false)
+    }
+}
+
+/// `,` or `;`
+#[inline]
+pub fn parse_colon(input: ParseState) -> ParseResult<bool> {
+    let state = input.skip(ignore);
+    if state.residual.starts_with(";") {
+        state.advance(";").finish(false)
+    }
+    else if state.residual.starts_with(",") {
+        state.advance(",").finish(true)
     }
     else {
         state.finish(false)

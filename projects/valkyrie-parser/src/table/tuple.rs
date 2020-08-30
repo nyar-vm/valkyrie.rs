@@ -1,5 +1,4 @@
 use super::*;
-use valkyrie_ast::ExpressionNode;
 
 impl TupleNode {
     #[allow(clippy::wrong_self_convention)]
@@ -7,10 +6,6 @@ impl TupleNode {
         TableNode { kind: TableKind::Tuple, terms: self.terms, span: self.span }
     }
 }
-
-// impl From<TupleNode<E>> for ExpressionNode<> {
-//
-// }
 
 impl ThisParser for TupleNode {
     /// `(` ~ `)` | `(` ~ term ~ , ~ `)` | `(` ~ term ~ , ~ term ( ~ , ~ term)* ~ `)`
@@ -21,11 +16,6 @@ impl ThisParser for TupleNode {
     }
 
     fn as_lisp(&self) -> Lisp {
-        let mut terms = Vec::with_capacity(self.terms.len() + 2);
-        terms.push(Lisp::function("table"));
-        for term in &self.terms {
-            terms.push(term.as_lisp());
-        }
-        Lisp::Any(terms)
+        unreachable!()
     }
 }

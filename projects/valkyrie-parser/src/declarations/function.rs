@@ -1,5 +1,4 @@
 use super::*;
-use valkyrie_ast::{ApplyArgumentTerm, FunctionReturnNode};
 
 impl ThisParser for FunctionDeclaration {
     fn parse(input: ParseState) -> ParseResult<Self> {

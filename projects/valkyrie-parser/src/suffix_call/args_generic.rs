@@ -20,7 +20,6 @@ impl ThisParser for GenericArgumentNode {
     fn as_lisp(&self) -> Lisp {
         let mut terms = Vec::with_capacity(self.terms.len() + 2);
         terms.push(Lisp::keyword("define/generic"));
-        // terms.push(self.base.lispify().into());
         for term in &self.terms {
             terms.push(term.as_lisp());
         }

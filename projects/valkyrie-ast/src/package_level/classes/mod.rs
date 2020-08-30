@@ -1,6 +1,7 @@
 #[cfg(feature = "pretty-print")]
 mod display;
 use super::*;
+
 /// `class Name(Super): Trait {}`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -12,8 +13,18 @@ pub struct ClassDeclaration {
     pub modifiers: Vec<IdentifierNode>,
     pub extends: Option<String>,
     pub implements: Vec<String>,
-    pub statements: Vec<IdentifierNode>,
+    pub statements: Vec<StatementNode>,
 }
+
+/// `field: Type = default`
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ClassFieldDeclaration {}
+
+/// `method()`
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ClassMethodDeclaration {}
 
 ///
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]

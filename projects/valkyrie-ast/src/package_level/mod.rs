@@ -1,6 +1,7 @@
 pub mod classes;
 mod dispatch;
 pub mod documentation;
+pub mod flags;
 pub mod function;
 pub mod guarantee;
 pub mod import;
@@ -8,6 +9,7 @@ pub mod let_bind;
 pub mod license;
 pub mod namespace;
 pub mod try_catch;
+pub mod unions;
 
 use crate::{
     control_flow::for_loop::ForLoop,

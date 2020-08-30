@@ -2,7 +2,7 @@ use alloc::{borrow::ToOwned, string::String, vec::Vec};
 use core::ops::Range;
 use pretty_print::{PrettyPrint, PrettyProvider, PrettyTree};
 
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct DocumentationNode {
     pub documentation: String,

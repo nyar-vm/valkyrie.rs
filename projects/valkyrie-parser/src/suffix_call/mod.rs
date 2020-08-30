@@ -1,15 +1,14 @@
 use crate::{
     helpers::{ignore, parse_name_join},
-    utils::{get_span, parse_expression_body},
+    utils::get_span,
     ThisParser,
 };
 use lispify::Lisp;
 use pex::{BracketPair, BracketPattern, ParseResult, ParseState};
 use valkyrie_ast::{
-    ApplyArgumentNode, ApplyArgumentTerm, ApplyCallNode, ApplyCallTerm, ApplyDotNode, ArgumentKeyNode, ArgumentTermNode,
-    CallNode, CallTermNode, ExpressionBody, ExpressionNode, GenericArgumentNode, GenericArgumentTerm, GenericCallNode,
-    GenericCallTerm, IdentifierNode, LambdaCallNode, LambdaDotNode, LambdaNode, NamePathNode, SubscriptNode,
-    SubscriptSliceNode, SubscriptTermNode, TypingExpression,
+    ApplyArgumentTerm, ApplyCallNode, ApplyCallTerm, ApplyDotNode, ArgumentKeyNode, ArgumentTermNode, CallNode, CallTermNode,
+    ExpressionNode, GenericArgumentNode, GenericArgumentTerm, GenericCallNode, GenericCallTerm, IdentifierNode, LambdaCallNode,
+    LambdaDotNode, LambdaNode, NamePathNode, SubscriptNode, SubscriptSliceNode, SubscriptTermNode, TypingExpression,
 };
 
 mod args_apply;

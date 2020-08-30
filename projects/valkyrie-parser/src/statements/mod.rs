@@ -1,18 +1,16 @@
 use crate::{
-    helpers::{ignore, parse_any_name_path, parse_eos, parse_name_join, parse_name_join_dot},
+    helpers::{ignore, parse_any_name_path, parse_eos, parse_name_join_dot},
     traits::ThisParser,
-    utils::{get_span, parse_expression_node, parse_modifiers},
+    utils::{get_span, parse_expression_node},
 };
 use lispify::{Lisp, ListString};
 use pex::{helpers::comment_line, BracketPattern, ParseResult, ParseState, Regex, StopBecause};
 use std::sync::LazyLock;
 use valkyrie_ast::{
-    ApplyArgumentNode, ApplyCallNode, CallTermNode, ClassDeclaration, ControlNode, DocumentationNode, ExpressionContext,
-    ExpressionNode, ForLoop, FunctionBody, FunctionDeclaration, FunctionType, GenericCallNode, GuardPattern, GuardStatement,
-    IdentifierNode, ImportAliasNode, ImportGroupNode, ImportStatementNode, ImportTermNode, LambdaArgumentNode, LambdaCallNode,
-    LambdaDotNode, LambdaNode, LetBindNode, ModifierPart, NamePathNode, NamespaceDeclarationNode, NamespaceKind,
-    NewConstructNode, PatternType, StatementBody, StatementNode, StringLiteralNode, TableKind, TableNode, TableTermNode,
-    TypingExpression, WhileLoop,
+    ApplyCallNode, ClassDeclaration, ControlNode, DocumentationNode, ExpressionContext, ExpressionNode, ForLoop, FunctionBody,
+    FunctionDeclaration, GenericCallNode, GuardPattern, GuardStatement, IdentifierNode, ImportAliasNode, ImportGroupNode,
+    ImportStatementNode, ImportTermNode, LambdaArgumentNode, LambdaNode, LetBindNode, NamePathNode, NamespaceDeclarationNode,
+    NamespaceKind, NewConstructNode, PatternType, StatementBody, StatementNode, TableTermNode, TypingExpression, WhileLoop,
 };
 
 mod classes;

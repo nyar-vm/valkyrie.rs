@@ -1,15 +1,11 @@
 use super::*;
 
 impl PrettyPrint for ClassDeclaration {
-    // fn indent_fmt(&self, f: &mut IndentFormatter) -> core::fmt::Result {
-    //     f.write_str("class")?;
-    //
-    //     f.write_char('}')
-    // }
-
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        let head = allocator.keyword("class");
-        let name = self.namepath.build(allocator);
-        head.append(name)
+        let mut terms = Vec::with_capacity(4);
+        terms.push(allocator.keyword("class"));
+        terms.push(allocator.space());
+        terms.push(self.namepath.build(allocator));
+        allocator.concat(terms)
     }
 }

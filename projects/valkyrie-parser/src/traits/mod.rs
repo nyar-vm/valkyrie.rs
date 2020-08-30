@@ -1,9 +1,6 @@
 use crate::helpers::ignore;
 use lispify::Lisp;
-use pex::{
-    helpers::{make_from_str, whitespace},
-    ParseResult, ParseState, StopBecause,
-};
+use pex::{ParseResult, ParseState};
 use valkyrie_error::{ValkyrieError, ValkyrieResult};
 
 pub trait ThisParser
