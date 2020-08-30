@@ -7,10 +7,11 @@ use lispify::{Lisp, ListString};
 use pex::{helpers::comment_line, BracketPattern, ParseResult, ParseState, Regex, StopBecause};
 use std::sync::LazyLock;
 use valkyrie_ast::{
-    ApplyCallNode, ClassDeclaration, ControlNode, DocumentationNode, ExpressionContext, ExpressionNode, ForLoop, FunctionBody,
-    FunctionDeclaration, GenericCallNode, GuardPattern, GuardStatement, IdentifierNode, ImportAliasNode, ImportGroupNode,
-    ImportStatementNode, ImportTermNode, LambdaArgumentNode, LambdaNode, LetBindNode, NamePathNode, NamespaceDeclarationNode,
-    NamespaceKind, NewConstructNode, PatternType, StatementBody, StatementNode, TableTermNode, TypingExpression, WhileLoop,
+    ApplyCallNode, ClassDeclaration, ControlNode, DocumentationNode, ExpressionContext, ExpressionNode, FlagsDeclaration,
+    ForLoop, FunctionBody, FunctionDeclaration, GenericCallNode, GuardPattern, GuardStatement, IdentifierNode, ImportAliasNode,
+    ImportGroupNode, ImportStatementNode, ImportTermNode, LambdaArgumentNode, LambdaNode, LetBindNode, NamePathNode,
+    NamespaceDeclarationNode, NamespaceKind, NewConstructNode, PatternType, StatementBody, StatementNode, TableTermNode,
+    TypingExpression, WhileLoop,
 };
 
 mod classes;
@@ -77,6 +78,7 @@ impl ThisParser for StatementBody {
             .or_else(|s| NamespaceDeclarationNode::parse(s).map_inner(Into::into))
             .or_else(|s| ImportStatementNode::parse(s).map_inner(Into::into))
             .or_else(|s| ClassDeclaration::parse(s).map_inner(Into::into))
+            .or_else(|s| FlagsDeclaration::parse(s).map_inner(Into::into))
             .or_else(function_with_head)
             .or_else(|s| LetBindNode::parse(s).map_inner(Into::into))
             .or_else(|s| GuardStatement::parse(s).map_inner(Into::into))
@@ -101,6 +103,8 @@ impl ThisParser for StatementBody {
             StatementBody::Document(v) => v.as_lisp(),
             StatementBody::LetBind(v) => v.as_lisp(),
             StatementBody::Guard(v) => v.as_lisp(),
+            StatementBody::Flags(v) => v.as_lisp(),
+            StatementBody::FlagsField(v) => v.as_lisp(),
         }
     }
 }

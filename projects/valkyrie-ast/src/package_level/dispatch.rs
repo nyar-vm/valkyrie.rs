@@ -21,6 +21,8 @@ impl PrettyPrint for StatementBody {
             StatementBody::Document(node) => node.build(allocator),
             StatementBody::LetBind(node) => node.build(allocator),
             StatementBody::Guard(node) => node.build(allocator),
+            StatementBody::Flags(node) => node.build(allocator),
+            StatementBody::FlagsField(node) => node.build(allocator),
         }
     }
 }
@@ -40,6 +42,16 @@ impl From<NamespaceDeclarationNode> for StatementBody {
 impl From<GuardStatement> for StatementBody {
     fn from(value: GuardStatement) -> Self {
         Self::Guard(Box::new(value))
+    }
+}
+impl From<FlagsDeclaration> for StatementBody {
+    fn from(value: FlagsDeclaration) -> Self {
+        Self::Flags(Box::new(value))
+    }
+}
+impl From<FlagFieldDeclaration> for StatementBody {
+    fn from(value: FlagFieldDeclaration) -> Self {
+        Self::FlagsField(Box::new(value))
     }
 }
 

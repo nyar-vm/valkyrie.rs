@@ -1,0 +1,2 @@
+(flags Modifier)
+(flags AA (BB))

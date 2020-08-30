@@ -20,6 +20,7 @@ use crate::{
 };
 use alloc::{borrow::Cow, boxed::Box, string::String, sync::Arc, vec::Vec};
 use core::ops::Range;
+use flags::{FlagFieldDeclaration, FlagsDeclaration};
 use pretty_print::KAndRBracket;
 #[cfg(feature = "pretty-print")]
 use pretty_print::{PrettyPrint, PrettyProvider, PrettyTree};
@@ -42,6 +43,8 @@ pub enum StatementBody {
     Namespace(Box<NamespaceDeclarationNode>),
     Import(Box<ImportStatementNode>),
     Class(Box<ClassDeclaration>),
+    Flags(Box<FlagsDeclaration>),
+    FlagsField(Box<FlagFieldDeclaration>),
     While(Box<WhileLoop>),
     For(Box<ForLoop>),
     LetBind(Box<LetBindNode>),
