@@ -1,6 +1,6 @@
 use crate::{
     helpers::{ignore, parse_comma, parse_in},
-    utils::{get_span, parse_expression_node, parse_modifiers},
+    utils::{get_span, parse_expression_node, parse_modifiers_lookahead},
     ThisParser,
 };
 use lispify::Lisp;

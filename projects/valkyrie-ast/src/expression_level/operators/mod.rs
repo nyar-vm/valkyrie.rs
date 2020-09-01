@@ -1,5 +1,6 @@
-mod display;
 use super::*;
+#[cfg(feature = "pretty-print")]
+mod display;
 
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -48,7 +49,6 @@ pub enum ValkyrieOperator {
     Belongs(bool),
     /// binary operator: `⊑, ⋢, is, is not`
     IsA(bool),
-
     /// binary operator: `-`
     Minus,
     /// binary operator: `*`
@@ -57,6 +57,10 @@ pub enum ValkyrieOperator {
     Divide,
     /// binary operator: `^`
     Power,
+    /// suffix operator: `|`
+    BitOr,
+    /// suffix operator: `&`
+    BitAnd,
     /// suffix operator: `!`
     Unwrap,
     /// suffix operator: `?`
@@ -78,63 +82,126 @@ impl ValkyrieOperator {
     pub fn precedence(&self) -> u32 {
         match self {
             //
-            ValkyrieOperator::Concat => 14000,
-            ValkyrieOperator::Belongs(_) => 14000,
-            ValkyrieOperator::IsA(_) => 14000,
+            Self::Concat => 14000,
+            Self::Belongs(_) => 14000,
+            Self::IsA(_) => 14000,
 
-            ValkyrieOperator::Assign => 14000,
+            Self::Assign => 14000,
             // prefix - 3
-            ValkyrieOperator::PlusAssign => 14100,
+            Self::PlusAssign => 14100,
 
             // infix - 3
-            ValkyrieOperator::Equal(_) => 14700,
-            ValkyrieOperator::StrictlyEqual(_) => 14700,
+            Self::BitOr => 14700,
+            Self::BitAnd => 14700,
+            Self::Equal(_) => 14700,
+            Self::StrictlyEqual(_) => 14700,
             // infix - 2
-            ValkyrieOperator::Greater => 14800,
-            ValkyrieOperator::Less => 14800,
+            Self::Greater => 14800,
+            Self::Less => 14800,
             // infix - 1
-            ValkyrieOperator::MuchLess => 14900,
-            ValkyrieOperator::MuchGreater => 14900,
-            ValkyrieOperator::VeryMuchGreater => 14950,
-            ValkyrieOperator::VeryMuchLess => 14950,
+            Self::MuchLess => 14900,
+            Self::MuchGreater => 14900,
+            Self::VeryMuchGreater => 14950,
+            Self::VeryMuchLess => 14950,
             // infix + 0
-            ValkyrieOperator::Plus => 15000,
-            ValkyrieOperator::Minus => 15000,
+            Self::Plus => 15000,
+            Self::Minus => 15000,
             // infix + 1
-            ValkyrieOperator::Multiply => 15100,
-            ValkyrieOperator::Divide => 15100,
+            Self::Multiply => 15100,
+            Self::Divide => 15100,
             // infix + 2
-            ValkyrieOperator::Power => 15200,
+            Self::Power => 15200,
             // prefix + 0
-            ValkyrieOperator::Not => 25000,
-            ValkyrieOperator::Positive => 25000,
-            ValkyrieOperator::Negative => 25000,
-            ValkyrieOperator::Unbox => 25000,
-            ValkyrieOperator::Unpack => 25000,
-            ValkyrieOperator::UnpackAll => 25000,
-            ValkyrieOperator::Inverse => 25000,
-            ValkyrieOperator::Surd(_) => 25000,
+            Self::Not => 25000,
+            Self::Positive => 25000,
+            Self::Negative => 25000,
+            Self::Unbox => 25000,
+            Self::Unpack => 25000,
+            Self::UnpackAll => 25000,
+            Self::Inverse => 25000,
+            Self::Surd(_) => 25000,
             // postfix + 0
-            ValkyrieOperator::Unwrap => 45000,
-            ValkyrieOperator::Raise => 45000,
-            ValkyrieOperator::Celsius => 45000,
-            ValkyrieOperator::Fahrenheit => 45000,
-            ValkyrieOperator::Transpose => 45000,
-            ValkyrieOperator::Transjugate => 45000,
-            ValkyrieOperator::Hermitian => 45000,
-            ValkyrieOperator::DivideByDecimalPower(_) => 45000,
+            Self::Unwrap => 45000,
+            Self::Raise => 45000,
+            Self::Celsius => 45000,
+            Self::Fahrenheit => 45000,
+            Self::Transpose => 45000,
+            Self::Transjugate => 45000,
+            Self::Hermitian => 45000,
+            Self::DivideByDecimalPower(_) => 45000,
+        }
+    }
+    /// Get the normalised string representation of the operator.
+    pub fn as_str(&self) -> &'static str {
+        match self {
+            Self::Not => "!",
+            Self::Concat => "++",
+            Self::Positive => "+",
+            Self::Negative => "-",
+            Self::Plus => "+",
+            Self::PlusAssign => "+=",
+            Self::Minus => "-",
+            Self::Multiply => "*",
+            Self::Divide => "/",
+            Self::Power => "^",
+            Self::Unwrap => "!",
+            Self::Raise => "?",
+            Self::Celsius => "℃",
+            Self::Fahrenheit => "℉",
+            Self::Transpose => "ᵀ",
+            Self::Transjugate => "ᴴ",
+            Self::Hermitian => "Hermitian",
+            Self::Unbox => "*",
+            Self::Unpack => "⁑",
+            Self::UnpackAll => "⁂",
+            Self::Greater => ">",
+            Self::MuchGreater => "≫",
+            Self::VeryMuchGreater => "⋙",
+            Self::Less => "<",
+            Self::MuchLess => "≪",
+            Self::VeryMuchLess => "⋘",
+            Self::Belongs(v) => match v {
+                true => "∈",
+                false => "∉",
+            },
+            Self::IsA(v) => match v {
+                true => "⊑",
+                false => "⋢",
+            },
+            Self::Equal(v) => match v {
+                true => "≖",
+                false => "≠",
+            },
+            Self::StrictlyEqual(v) => match v {
+                true => "≡",
+                false => "≢",
+            },
+            Self::Inverse => "i",
+            Self::Surd(v) => match v {
+                3 => "∛",
+                4 => "∜",
+                _ => "√",
+            },
+            Self::DivideByDecimalPower(v) => match v {
+                3 => "‰",
+                4 => "‱",
+                _ => "%",
+            },
+            Self::Assign => "=",
+            Self::BitOr => "|",
+            Self::BitAnd => "&",
         }
     }
     pub fn accept_arguments(&self) -> usize {
         match self {
-            ValkyrieOperator::Plus | ValkyrieOperator::Multiply => 0,
+            Self::Plus | Self::Multiply => 0,
             _ => 1,
         }
     }
     pub fn overrideable(&self) -> bool {
         match self {
-            ValkyrieOperator::Equal(false) => false,
-            ValkyrieOperator::StrictlyEqual(false) => false,
+            Self::Equal(false) => false,
+            Self::StrictlyEqual(false) => false,
             _ => true,
         }
     }

@@ -78,7 +78,7 @@ fn no_parentheses_tuple(input: ParseState) -> ParseResult<PatternType> {
 }
 
 fn no_parentheses_tuple_term(input: ParseState) -> ParseResult<ArgumentKeyNode> {
-    let (state, (mods, id)) = parse_modifiers(input, |s| s.eq("in"))?;
+    let (state, (mods, id)) = parse_modifiers_lookahead(input, |s| s.eq("in"))?;
     let (state, _) = state.skip(ignore).match_optional(parse_comma)?;
     state.finish(ArgumentKeyNode { modifiers: mods, key: id })
 }

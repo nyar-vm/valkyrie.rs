@@ -1,4 +1,5 @@
 use super::*;
+use crate::utils::parse_modifiers;
 
 impl ThisParser for FunctionDeclaration {
     fn parse(input: ParseState) -> ParseResult<Self> {
@@ -122,16 +123,13 @@ where
 impl ThisParser for ArgumentKeyNode {
     /// `mut mods name`, unconditionally catch all identifiers
     fn parse(input: ParseState) -> ParseResult<Self> {
-        let (state, mut default) = input.match_repeats(|s| s.skip(ignore).match_fn(IdentifierNode::parse))?;
-        match default.pop() {
-            Some(v) => state.finish(ArgumentKeyNode { modifiers: default, key: v }),
-            None => StopBecause::must_be("identifier", input.start_offset)?,
-        }
+        let (state, (mods, id)) = parse_modifiers(input)?;
+        state.finish(ArgumentKeyNode { modifiers: mods, key: id })
     }
 
     fn as_lisp(&self) -> Lisp {
-        let mut items = Vec::with_capacity(self.modifiers.len() + 1);
-        for modifier in self.modifiers.iter() {
+        let mut items = Vec::with_capacity(self.modifiers.terms.len() + 1);
+        for modifier in self.modifiers.terms.iter() {
             items.push(modifier.as_lisp());
         }
         items.push(self.key.as_lisp());

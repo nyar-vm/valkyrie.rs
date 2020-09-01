@@ -39,15 +39,13 @@ pub use crate::{
         classes::{ClassDeclaration, ClassKind},
         documentation::DocumentationNode,
         flags::{FlagFieldDeclaration, FlagsDeclaration},
-        function::{
-            FunctionDeclaration, FunctionDeclarationInline, FunctionReturnNode, FunctionType, ModifierPart, StatementBlock,
-        },
+        function::{FunctionDeclaration, FunctionDeclarationInline, FunctionReturnNode, FunctionType, StatementBlock},
         guarantee::{EffectTypeNode, GuaranteeNode},
         import::{ImportAliasNode, ImportGroupNode, ImportResolvedItem, ImportStatementNode, ImportTermNode},
         let_bind::LetBindNode,
         namespace::{NamespaceDeclarationNode, NamespaceKind},
         try_catch::TryStatementNode,
-        unions::{UnionDeclaration, VariantDeclaration},
+        unions::{FieldDeclaration, ModifiersNode, UnionDeclaration, VariantDeclaration},
         StatementBody, StatementContext, StatementNode,
     },
     string_like::{

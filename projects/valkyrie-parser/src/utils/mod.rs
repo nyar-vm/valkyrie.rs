@@ -6,7 +6,9 @@ use crate::{
 
 use pex::{ParseResult, ParseState, StopBecause};
 use std::ops::Range;
-use valkyrie_ast::{ExpressionBody, ExpressionContext, ExpressionNode, IdentifierNode, StatementBlock, StatementNode};
+use valkyrie_ast::{
+    ExpressionBody, ExpressionContext, ExpressionNode, IdentifierNode, ModifiersNode, StatementBlock, StatementNode,
+};
 
 #[inline]
 pub fn get_span(input: ParseState, output: ParseState) -> Range<u32> {
@@ -35,7 +37,11 @@ pub fn parse_expression_body(input: ParseState, config: ExpressionContext) -> Pa
     parse_expression_node(input, config).map_inner(|s| s.body)
 }
 
-pub fn parse_modifiers<F>(input: ParseState, negative: F) -> ParseResult<(Vec<IdentifierNode>, IdentifierNode)>
+pub fn parse_modifiers(input: ParseState) -> ParseResult<(ModifiersNode, IdentifierNode)> {
+    parse_modifiers_lookahead(input, |_| false)
+}
+
+pub fn parse_modifiers_lookahead<F>(input: ParseState, negative: F) -> ParseResult<(ModifiersNode, IdentifierNode)>
 where
     F: Fn(&str) -> bool + Copy,
 {
@@ -47,7 +53,7 @@ where
         state.finish(id)
     })?;
     match ids.pop() {
-        Some(id) => finally.finish((ids, id)),
+        Some(id) => finally.finish((ModifiersNode::new(ids), id)),
         None => StopBecause::custom_error("Expected at least one modifier", finally.start_offset, finally.start_offset)?,
     }
 }

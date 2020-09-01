@@ -84,6 +84,8 @@ impl ValkyrieInfix {
             "*" => ValkyrieOperator::Multiply,
             "/" => ValkyrieOperator::Divide,
             "^" => ValkyrieOperator::Power,
+            "|" => ValkyrieOperator::BitOr,
+            "&" => ValkyrieOperator::BitAnd,
             ">" => ValkyrieOperator::Greater,
             ">>" => ValkyrieOperator::MuchGreater,
             ">>>" => ValkyrieOperator::VeryMuchGreater,

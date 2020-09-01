@@ -25,6 +25,7 @@ use alloc::{
     vec::Vec,
 };
 use core::ops::Range;
+use deriver::From;
 #[cfg(feature = "pretty-print")]
 use pretty_print::{PrettyPrint, PrettyProvider, PrettyTree};
 
@@ -50,7 +51,7 @@ pub struct ExpressionContext {
     pub allow_curly: bool,
 }
 
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Clone, Debug, PartialEq, Eq, Hash, From)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum ExpressionBody {
     Placeholder,

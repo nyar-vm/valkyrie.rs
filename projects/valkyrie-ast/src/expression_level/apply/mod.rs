@@ -2,7 +2,7 @@
 mod display;
 
 use super::*;
-use crate::ModifierPart;
+use crate::ModifiersNode;
 use alloc::borrow::Cow;
 
 /// `(mut self, a, b: int, c: T = 3, ⁑args, ⁂kwargs)`
@@ -26,14 +26,8 @@ pub struct ApplyArgumentTerm {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ArgumentKeyNode {
-    pub modifiers: Vec<IdentifierNode>,
+    pub modifiers: ModifiersNode,
     pub key: IdentifierNode,
-}
-
-impl ArgumentKeyNode {
-    pub fn get_modifiers(&self) -> ModifierPart {
-        ModifierPart { modifiers: Cow::Borrowed(&self.modifiers) }
-    }
 }
 
 /// `term.call(0, a: 1, ⁑args, ⁂kwargs)`

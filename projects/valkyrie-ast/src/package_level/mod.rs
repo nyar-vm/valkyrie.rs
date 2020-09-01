@@ -20,6 +20,7 @@ use crate::{
 };
 use alloc::{borrow::Cow, boxed::Box, string::String, sync::Arc, vec::Vec};
 use core::ops::Range;
+use deriver::From;
 use flags::{FlagFieldDeclaration, FlagsDeclaration};
 use pretty_print::KAndRBracket;
 #[cfg(feature = "pretty-print")]
@@ -35,7 +36,7 @@ pub struct StatementNode {
 }
 
 /// The top level elements in script mode.
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Clone, Debug, PartialEq, Eq, Hash, From)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum StatementBody {
     Nothing,

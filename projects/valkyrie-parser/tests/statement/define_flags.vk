@@ -9,4 +9,6 @@ flags OneFlag {
 flags TwoFlags {
     A = 1;
     B = 2 >> 0,
+    C = Base.A & Base.B,
+    C = flip[Self::A] | flip[Self::B];
 }

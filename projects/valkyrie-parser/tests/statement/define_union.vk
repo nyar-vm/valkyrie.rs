@@ -1,0 +1,13 @@
+union Empty {}
+
+
+union UnionA {
+    Variant
+}
+
+
+union UnionB {
+    Variant {
+        field: u32
+    }
+}
