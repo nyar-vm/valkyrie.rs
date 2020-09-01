@@ -6,12 +6,22 @@ use crate::{
 
 use pex::{ParseResult, ParseState, StopBecause};
 use std::ops::Range;
-use valkyrie_ast::{ExpressionBody, ExpressionContext, ExpressionNode, IdentifierNode};
+use valkyrie_ast::{ExpressionBody, ExpressionContext, ExpressionNode, IdentifierNode, StatementBlock, StatementNode};
 
 #[inline]
 pub fn get_span(input: ParseState, output: ParseState) -> Range<u32> {
     let range = output.away_from(input);
     (range.start as u32)..(range.end as u32)
+}
+
+pub fn parse_statement_block<F>(input: ParseState, parser: F) -> ParseResult<StatementBlock>
+where
+    F: Fn(ParseState) -> ParseResult<StatementNode>,
+{
+    let (state, _) = input.match_str("{")?;
+    let (state, stmts) = state.match_repeats(parser)?;
+    let (finally, _) = state.skip(ignore).match_str("}")?;
+    finally.finish(StatementBlock { statements: stmts, span: get_span(input, state) })
 }
 
 pub fn parse_expression_node(input: ParseState, config: ExpressionContext) -> ParseResult<ExpressionNode> {

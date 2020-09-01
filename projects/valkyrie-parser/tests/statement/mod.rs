@@ -1,5 +1,5 @@
 use super::*;
-use valkyrie_ast::FlagFieldDeclaration;
+use valkyrie_ast::{FlagFieldDeclaration, FlagsDeclaration};
 
 #[test]
 fn lex_statements() {
@@ -13,13 +13,13 @@ fn lex_statements() {
 }
 
 #[test]
-fn debug_lex() {
+fn debug_statement() {
     top_debug(include_str!("define_flags.vk"), "statement/define_flags_debug.rkt").expect("flags");
 }
 
 #[test]
 fn test_statement() {
-    let raw = "A = 2 >> 0";
-    let apply = FlagFieldDeclaration::parse_text(raw).unwrap();
+    let raw = "flags A {A = 2 >> 0}";
+    let apply = FlagsDeclaration::parse_text(raw).unwrap();
     apply.pretty_print(42)
 }

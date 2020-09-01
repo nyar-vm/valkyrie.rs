@@ -9,7 +9,7 @@ use pex::{
     ParseState, Regex, StopBecause,
 };
 use std::sync::LazyLock;
-use valkyrie_ast::{IdentifierNode, NamePathNode};
+use valkyrie_ast::{IdentifierNode, NamePathNode, StatementNode};
 
 pub static IGNORE: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(

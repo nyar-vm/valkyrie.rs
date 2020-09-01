@@ -12,7 +12,7 @@ where
         let input = ParseState::new(input);
         let (state, repl) = match Self::parse(input.skip(ignore)) {
             ParseResult::Pending(s, v) => (s.skip(ignore), v),
-            ParseResult::Stop(e) => Err(ValkyrieError::custom(format!("Failed to parse REPL: {:?}", e)))?,
+            ParseResult::Stop(e) => Err(ValkyrieError::custom(format!("Failed to parse text: {:?}", e)))?,
         };
         if !state.residual.is_empty() {
             Err(ValkyrieError::custom(format!("Expect EOF, found:\n{}", state.residual)))?

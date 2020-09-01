@@ -1,13 +1,10 @@
 use super::*;
-use valkyrie_ast::DocumentationNode;
 
 impl ThisParser for FlagsDeclaration {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, _) = str("flags")(input)?;
         let (state, id) = state.skip(ignore).match_fn(NamePathNode::parse)?;
-        let pat = BracketPattern::new("{", "}");
-        let (state, terms) = pat.consume(state.skip(ignore), ignore, flags_statement)?;
-        let stmt = StatementBlock { statements: terms.body, span: get_span(input, state) };
+        let (state, stmt) = parse_statement_block(state.skip(ignore), flags_statement)?;
 
         state.finish(FlagsDeclaration {
             documentation: Default::default(),
@@ -36,7 +33,7 @@ impl ThisParser for FlagsDeclaration {
 
 impl ThisParser for FlagFieldDeclaration {
     fn parse(input: ParseState) -> ParseResult<Self> {
-        let (state, name) = input.match_fn(IdentifierNode::parse)?;
+        let (state, name) = IdentifierNode::parse(input)?;
         let (state, value) = state.skip(ignore).match_optional(|s| {
             let (state, _) = str("=")(s)?;
             let (state, expr) = parse_expression_node(
@@ -62,6 +59,7 @@ impl ThisParser for FlagFieldDeclaration {
 
 fn flags_statement(input: ParseState) -> ParseResult<StatementNode> {
     let (state, ty) = input
+        .skip(ignore)
         .begin_choice()
         .or_else(|s| DocumentationNode::parse(s).map_inner(Into::into))
         .or_else(|s| FlagFieldDeclaration::parse(s).map_inner(Into::into))

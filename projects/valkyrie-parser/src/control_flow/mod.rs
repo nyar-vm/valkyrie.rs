@@ -6,7 +6,7 @@ use crate::{
 use lispify::Lisp;
 use pex::{BracketPattern, ParseResult, ParseState, StopBecause};
 
-use crate::helpers::parse_when;
+use crate::{helpers::parse_when, utils::parse_statement_block};
 use valkyrie_ast::{
     ArgumentKeyNode, ConditionNode, ConditionType, ControlNode, ControlType, ElsePart, ExpressionContext, ExpressionNode,
     ForLoop, IfStatement, PatternType, StatementBlock, StatementNode, WhileLoop,
@@ -62,10 +62,7 @@ impl ThisParser for ConditionType {
 
 impl ThisParser for StatementBlock {
     fn parse(input: ParseState) -> ParseResult<Self> {
-        let (state, _) = input.match_str("{")?;
-        let (state, stmts) = state.match_repeats(StatementNode::parse)?;
-        let (finally, _) = state.skip(ignore).match_str("}")?;
-        finally.finish(StatementBlock { statements: stmts, span: get_span(input, state) })
+        parse_statement_block(input, StatementNode::parse)
     }
 
     fn as_lisp(&self) -> Lisp {
