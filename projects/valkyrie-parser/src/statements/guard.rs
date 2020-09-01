@@ -5,7 +5,7 @@ impl ThisParser for GuardStatement {
         let (state, _) = input.match_str("guard")?;
         let (state, cond) = state.skip(ignore).match_fn(GuardPattern::parse)?;
         let (state, _) = state.skip(ignore).match_str("else")?;
-        let (finally, body) = state.skip(ignore).match_fn(FunctionBody::parse)?;
+        let (finally, body) = state.skip(ignore).match_fn(StatementBlock::parse)?;
         finally.finish(GuardStatement { condition: cond, body, span: get_span(input, finally) })
     }
 

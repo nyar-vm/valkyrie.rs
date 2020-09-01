@@ -40,7 +40,7 @@ pub use crate::{
         documentation::DocumentationNode,
         flags::{FlagFieldDeclaration, FlagsDeclaration},
         function::{
-            FunctionBody, FunctionDeclaration, FunctionDeclarationInline, FunctionReturnNode, FunctionType, ModifierPart,
+            FunctionDeclaration, FunctionDeclarationInline, FunctionReturnNode, FunctionType, ModifierPart, StatementBlock,
         },
         guarantee::{EffectTypeNode, GuaranteeNode},
         import::{ImportAliasNode, ImportGroupNode, ImportResolvedItem, ImportStatementNode, ImportTermNode},

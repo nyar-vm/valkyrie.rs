@@ -4,7 +4,7 @@ impl ThisParser for WhileLoop {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, _) = input.match_str("while")?;
         let (state, condition) = state.skip(ignore).match_fn(ConditionType::parse)?;
-        let (state, stmts) = state.skip(ignore).match_fn(FunctionBody::parse)?;
+        let (state, stmts) = state.skip(ignore).match_fn(StatementBlock::parse)?;
         let (finally, rest) = state.skip(ignore).match_optional(ElsePart::parse)?;
         finally.finish(WhileLoop { condition, body: stmts, r#else: rest, span: get_span(input, finally) })
     }

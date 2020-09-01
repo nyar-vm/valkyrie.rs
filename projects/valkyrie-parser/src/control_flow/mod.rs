@@ -9,7 +9,7 @@ use pex::{BracketPattern, ParseResult, ParseState, StopBecause};
 use crate::helpers::parse_when;
 use valkyrie_ast::{
     ArgumentKeyNode, ConditionNode, ConditionType, ControlNode, ControlType, ElsePart, ExpressionContext, ExpressionNode,
-    ForLoop, FunctionBody, IfStatement, PatternType, StatementNode, WhileLoop,
+    ForLoop, IfStatement, PatternType, StatementBlock, StatementNode, WhileLoop,
 };
 
 mod controller;
@@ -30,7 +30,7 @@ impl ThisParser for IfStatement {
 impl ThisParser for ConditionNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, cond) = input.match_fn(ConditionType::parse)?;
-        let (state, body) = state.skip(ignore).match_fn(FunctionBody::parse)?;
+        let (state, body) = state.skip(ignore).match_fn(StatementBlock::parse)?;
         state.finish(ConditionNode { condition: cond, body, span: get_span(input, state) })
     }
 
@@ -60,12 +60,12 @@ impl ThisParser for ConditionType {
     }
 }
 
-impl ThisParser for FunctionBody {
+impl ThisParser for StatementBlock {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, _) = input.match_str("{")?;
         let (state, stmts) = state.match_repeats(StatementNode::parse)?;
         let (finally, _) = state.skip(ignore).match_str("}")?;
-        finally.finish(FunctionBody { statements: stmts, span: get_span(input, state) })
+        finally.finish(StatementBlock { statements: stmts, span: get_span(input, state) })
     }
 
     fn as_lisp(&self) -> Lisp {
@@ -76,7 +76,7 @@ impl ThisParser for FunctionBody {
 impl ThisParser for ElsePart {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, _) = input.match_str("else")?;
-        let (state, func) = state.skip(ignore).match_fn(FunctionBody::parse)?;
+        let (state, func) = state.skip(ignore).match_fn(StatementBlock::parse)?;
         state.finish(ElsePart { statements: func.statements, span: get_span(input, state) })
     }
 

@@ -1,6 +1,12 @@
-flags Modifier {}
+flags Empty {}
 
 
-flags AA {
-    BB
+flags OneFlag {
+    A
+}
+
+
+flags TwoFlags {
+    A = 1;
+    B = 2 >> 0,
 }

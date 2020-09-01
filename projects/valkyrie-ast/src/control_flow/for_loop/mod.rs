@@ -36,7 +36,7 @@ pub struct ForLoop {
     /// `if condition`
     pub condition: Option<PatternCondition>,
     /// `{ body }`
-    pub body: FunctionBody,
+    pub body: StatementBlock,
     /// `else { body }`
     pub r#else: Option<ElsePart>,
     /// The range of the node

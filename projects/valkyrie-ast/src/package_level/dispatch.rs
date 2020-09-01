@@ -27,6 +27,12 @@ impl PrettyPrint for StatementBody {
     }
 }
 
+impl From<DocumentationNode> for StatementBody {
+    fn from(value: DocumentationNode) -> Self {
+        StatementBody::Document(Box::new(value))
+    }
+}
+
 impl From<ControlNode> for StatementBody {
     fn from(value: ControlNode) -> Self {
         StatementBody::Control(Box::new(value))

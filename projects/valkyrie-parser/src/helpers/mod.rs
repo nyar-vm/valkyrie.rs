@@ -50,16 +50,15 @@ pub fn parse_eos(input: ParseState) -> ParseResult<bool> {
 
 /// `,` or `;`
 #[inline]
-pub fn parse_colon(input: ParseState) -> ParseResult<bool> {
-    let state = input.skip(ignore);
-    if state.residual.starts_with(";") {
-        state.advance(";").finish(false)
+pub fn parse_semi(input: ParseState) -> ParseResult<&str> {
+    if input.residual.starts_with(";") {
+        input.advance_view(";".len())
     }
-    else if state.residual.starts_with(",") {
-        state.advance(",").finish(true)
+    else if input.residual.starts_with(",") {
+        input.advance_view(",".len())
     }
     else {
-        state.finish(false)
+        StopBecause::missing_character(';', input.start_offset)?
     }
 }
 

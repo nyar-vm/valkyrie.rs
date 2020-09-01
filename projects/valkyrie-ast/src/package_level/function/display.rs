@@ -40,7 +40,7 @@ impl PrettyPrint for FunctionDeclaration {
 }
 
 #[cfg(feature = "pretty-print")]
-impl PrettyPrint for FunctionBody {
+impl PrettyPrint for StatementBlock {
     /// ```vk
     /// # inline style
     /// { ... }

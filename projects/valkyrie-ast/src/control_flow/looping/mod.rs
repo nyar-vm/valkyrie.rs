@@ -8,7 +8,7 @@ mod display;
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct WhileLoop {
     pub condition: ConditionType,
-    pub body: FunctionBody,
+    pub body: StatementBlock,
     pub r#else: Option<ElsePart>,
     /// The range of the node
     pub span: Range<u32>,

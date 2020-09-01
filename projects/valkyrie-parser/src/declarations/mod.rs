@@ -2,7 +2,7 @@ mod flags;
 mod function;
 mod methods;
 use crate::{
-    helpers::{ignore, parse_when},
+    helpers::{ignore, parse_semi, parse_when},
     utils::{get_span, parse_expression_node},
     ThisParser,
 };
@@ -13,6 +13,6 @@ use pex::{
 };
 use valkyrie_ast::{
     ApplyArgumentNode, ApplyArgumentTerm, ArgumentKeyNode, ArgumentTermNode, ExpressionContext, FlagFieldDeclaration,
-    FlagsDeclaration, FunctionBody, FunctionDeclaration, FunctionReturnNode, FunctionType, GenericArgumentNode, IdentifierNode,
-    NamePathNode, PrettyPrint,
+    FlagsDeclaration, FunctionDeclaration, FunctionReturnNode, FunctionType, GenericArgumentNode, IdentifierNode, NamePathNode,
+    PrettyPrint, StatementBlock, StatementNode,
 };

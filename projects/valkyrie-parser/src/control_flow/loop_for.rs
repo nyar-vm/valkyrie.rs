@@ -11,7 +11,7 @@ impl ThisParser for ForLoop {
             parse_expression_node(s, ExpressionContext { type_level: false, allow_newline: true, allow_curly: false })
         })?;
         let (state, cond) = state.skip(ignore).match_optional(PatternCondition::parse)?;
-        let (state, body) = state.skip(ignore).match_fn(FunctionBody::parse)?;
+        let (state, body) = state.skip(ignore).match_fn(StatementBlock::parse)?;
         let (state, other) = state.skip(ignore).match_optional(ElsePart::parse)?;
         state.finish(ForLoop { pattern, iterator: expr, condition: cond, body, r#else: other, span: get_span(input, state) })
     }

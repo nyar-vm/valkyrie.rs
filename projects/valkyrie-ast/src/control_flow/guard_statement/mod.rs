@@ -9,7 +9,7 @@ mod display;
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct GuardStatement {
     pub condition: GuardPattern,
-    pub body: FunctionBody,
+    pub body: StatementBlock,
     /// The range of the node
     pub span: Range<u32>,
 }

@@ -7,7 +7,7 @@ impl ThisParser for FunctionDeclaration {
         let (state, generic) = state.match_optional(GenericArgumentNode::parse)?;
         let (state, args) = state.skip(ignore).match_fn(ApplyArgumentNode::parse)?;
         let (state, ret) = state.skip(ignore).match_optional(FunctionReturnNode::parse)?;
-        let (finally, body) = state.skip(ignore).match_fn(FunctionBody::parse)?;
+        let (finally, body) = state.skip(ignore).match_fn(StatementBlock::parse)?;
         finally.finish(FunctionDeclaration {
             r#type: head,
             namepath: name,

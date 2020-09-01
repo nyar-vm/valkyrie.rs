@@ -1,4 +1,5 @@
 use super::*;
+use crate::StatementBlock;
 
 /// `flags Bit(8bits): Trait { FlagA, FlagB }`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
@@ -15,7 +16,7 @@ pub struct FlagsDeclaration {
     /// `: Trait`
     pub implements: Vec<String>,
     /// `{ FlagA, FlagB }`
-    pub statements: Vec<StatementNode>,
+    pub body: StatementBlock,
     /// The range of the node.
     pub span: Range<u32>,
 }
@@ -40,6 +41,7 @@ impl PrettyPrint for FlagsDeclaration {
         terms.push(allocator.keyword("flags"));
         terms.push(allocator.space());
         terms.push(self.namepath.build(allocator));
+        terms.push(self.body.build(allocator));
         allocator.concat(terms)
     }
 }

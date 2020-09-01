@@ -24,7 +24,7 @@ pub struct FunctionDeclaration {
     pub generic: Option<GenericArgumentNode>,
     pub arguments: ApplyArgumentNode,
     pub r#return: Option<FunctionReturnNode>,
-    pub body: FunctionBody,
+    pub body: StatementBlock,
 }
 
 /// `function(args) -> type := body`
@@ -35,7 +35,7 @@ pub struct FunctionDeclarationInline {
     /// The range of the number.
     pub arguments: ApplyArgumentNode,
     pub r#return: Option<ExpressionNode>,
-    pub body: FunctionBody,
+    pub body: StatementBlock,
 }
 
 /// `public static final synchronized class A {}`
@@ -50,7 +50,7 @@ pub struct ModifierPart<'i> {
 ///
 /// - Auxiliary parsing function, not instantiable.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
-pub struct FunctionBody {
+pub struct StatementBlock {
     pub statements: Vec<StatementNode>,
     /// The range of the node
     pub span: Range<u32>,
@@ -80,7 +80,7 @@ impl<'i> ModifierPart<'i> {
     }
 }
 
-impl FunctionBody {
+impl StatementBlock {
     pub fn last_semicolon(&self) -> bool {
         match self.statements.last() {
             Some(s) => s.end_semicolon,

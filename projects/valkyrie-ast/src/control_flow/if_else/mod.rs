@@ -20,7 +20,7 @@ pub struct IfStatement {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ConditionNode {
     pub condition: ConditionType,
-    pub body: FunctionBody,
+    pub body: StatementBlock,
     /// The range of the node
     pub span: Range<u32>,
 }
