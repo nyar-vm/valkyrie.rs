@@ -23,7 +23,7 @@ where
     let (state, _) = input.match_str("{")?;
     let (state, stmts) = state.match_repeats(parser)?;
     let (finally, _) = state.skip(ignore).match_str("}")?;
-    finally.finish(StatementBlock { statements: stmts, span: get_span(input, state) })
+    finally.finish(StatementBlock { terms: stmts, span: get_span(input, state) })
 }
 
 pub fn parse_expression_node(input: ParseState, config: ExpressionContext) -> ParseResult<ExpressionNode> {

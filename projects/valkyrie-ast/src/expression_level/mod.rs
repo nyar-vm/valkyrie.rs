@@ -14,8 +14,9 @@ pub mod view;
 
 use crate::{
     ApplyCallNode, ApplyDotNode, ArgumentTermNode, CallNode, CallTermNode, ControlNode, GenericCallNode, IdentifierNode,
-    IfStatement, InfixNode, LambdaCallNode, LambdaDotNode, LambdaSlotNode, NamePathNode, NewConstructNode, NumberLiteralNode,
-    OperatorNode, PostfixNode, PrefixNode, StatementNode, StringLiteralNode, SubscriptNode, TableNode, TableTermNode,
+    IfStatement, InfixNode, LambdaCallNode, LambdaDotNode, LambdaSlotNode, ModifiersNode, NamePathNode, NewConstructNode,
+    NumberLiteralNode, OperatorNode, PostfixNode, PrefixNode, StatementNode, StringLiteralNode, SubscriptNode, TableNode,
+    TableTermNode,
 };
 use alloc::{
     borrow::ToOwned,
@@ -76,7 +77,8 @@ pub enum ExpressionBody {
     If(Box<IfStatement>),
 }
 
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+/// Temporary node for use in the parser
+#[derive(Clone, Debug, PartialEq, Eq, Hash, From)]
 pub enum PostfixCallPart {
     Apply(ApplyCallNode),
     ApplyDot(ApplyDotNode),

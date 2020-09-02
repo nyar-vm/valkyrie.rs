@@ -13,6 +13,7 @@ impl PrettyPrint for StatementBody {
             StatementBody::Namespace(node) => node.build(allocator),
             StatementBody::Import(node) => node.build(allocator),
             StatementBody::Class(node) => node.build(allocator),
+            StatementBody::ClassField(node) => node.build(allocator),
             StatementBody::Function(node) => node.build(allocator),
             StatementBody::While(node) => node.build(allocator),
             StatementBody::For(node) => node.build(allocator),
@@ -23,6 +24,8 @@ impl PrettyPrint for StatementBody {
             StatementBody::Guard(node) => node.build(allocator),
             StatementBody::Flags(node) => node.build(allocator),
             StatementBody::FlagsField(node) => node.build(allocator),
+            StatementBody::Union(node) => node.build(allocator),
+            StatementBody::Variant(node) => node.build(allocator),
         }
     }
 }

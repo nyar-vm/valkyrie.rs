@@ -1,5 +1,5 @@
 use super::*;
-use valkyrie_ast::{FlagFieldDeclaration, FlagsDeclaration};
+use valkyrie_ast::{FlagsDeclaration, FlagsFieldDeclaration};
 
 #[test]
 fn lex_statements() {

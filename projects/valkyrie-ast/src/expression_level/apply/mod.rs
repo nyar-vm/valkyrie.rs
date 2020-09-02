@@ -1,9 +1,6 @@
+use super::*;
 #[cfg(feature = "pretty-print")]
 mod display;
-
-use super::*;
-use crate::ModifiersNode;
-use alloc::borrow::Cow;
 
 /// `(mut self, a, b: int, c: T = 3, ⁑args, ⁂kwargs)`
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]

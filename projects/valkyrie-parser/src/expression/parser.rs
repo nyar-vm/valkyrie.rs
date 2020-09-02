@@ -175,21 +175,22 @@ fn parse_postfix(input: ParseState) -> ParseResult<PostfixCallPart> {
     input
         .skip(ignore)
         .begin_choice()
-        .or_else(|s| ApplyCallNode::parse(s).map_inner(PostfixCallPart::Apply))
-        .or_else(|s| ApplyDotNode::parse(s).map_inner(PostfixCallPart::ApplyDot))
-        .or_else(|s| SubscriptNode::parse(s).map_inner(PostfixCallPart::View))
-        .or_else(|s| GenericCallNode::parse(s).map_inner(PostfixCallPart::Generic))
+        .or_else(|s| ApplyCallNode::parse(s).map_inner(Into::into))
+        .or_else(|s| ApplyDotNode::parse(s).map_inner(Into::into))
+        .or_else(|s| SubscriptNode::parse(s).map_inner(Into::into))
+        .or_else(|s| GenericCallNode::parse(s).map_inner(Into::into))
         .end_choice()
 }
+
 fn parse_postfix_curly(input: ParseState) -> ParseResult<PostfixCallPart> {
     input
         .skip(ignore)
         .begin_choice()
-        .or_else(|s| ApplyCallNode::parse(s).map_inner(PostfixCallPart::Apply))
-        .or_else(|s| ApplyDotNode::parse(s).map_inner(PostfixCallPart::ApplyDot))
-        .or_else(|s| SubscriptNode::parse(s).map_inner(PostfixCallPart::View))
-        .or_else(|s| GenericCallNode::parse(s).map_inner(PostfixCallPart::Generic))
-        .or_else(|s| LambdaCallNode::parse(s).map_inner(PostfixCallPart::Lambda))
-        .or_else(|s| LambdaDotNode::parse(s).map_inner(PostfixCallPart::LambdaDot))
+        .or_else(|s| ApplyCallNode::parse(s).map_inner(Into::into))
+        .or_else(|s| ApplyDotNode::parse(s).map_inner(Into::into))
+        .or_else(|s| SubscriptNode::parse(s).map_inner(Into::into))
+        .or_else(|s| GenericCallNode::parse(s).map_inner(Into::into))
+        .or_else(|s| LambdaCallNode::parse(s).map_inner(Into::into))
+        .or_else(|s| LambdaDotNode::parse(s).map_inner(Into::into))
         .end_choice()
 }

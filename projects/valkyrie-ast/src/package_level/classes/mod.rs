@@ -1,6 +1,6 @@
+use super::*;
 #[cfg(feature = "pretty-print")]
 mod display;
-use super::*;
 
 /// `class Name(Super): Trait {}`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
@@ -19,7 +19,16 @@ pub struct ClassDeclaration {
 /// `field: Type = default`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ClassFieldDeclaration {}
+pub struct ClassFieldDeclaration {
+    /// The documentation of the node.
+    pub document: DocumentationNode,
+    pub modifiers: ModifiersNode,
+    pub name: IdentifierNode,
+    pub r#type: Option<ExpressionNode>,
+    pub default: Option<ExpressionNode>,
+    /// The range of the node
+    pub span: Range<u32>,
+}
 
 /// `method()`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]

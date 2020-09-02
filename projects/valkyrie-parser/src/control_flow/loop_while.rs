@@ -10,10 +10,10 @@ impl ThisParser for WhileLoop {
     }
 
     fn as_lisp(&self) -> Lisp {
-        let mut terms = Vec::with_capacity(self.body.statements.len() + 1);
+        let mut terms = Vec::with_capacity(self.body.terms.len() + 1);
         terms.push(Lisp::keyword("loop"));
         terms.push(self.condition.as_lisp());
-        for term in &self.body.statements {
+        for term in &self.body.terms {
             terms.push(term.as_lisp());
         }
         Lisp::Any(terms)

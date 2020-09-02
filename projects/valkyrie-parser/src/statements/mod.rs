@@ -10,8 +10,8 @@ use valkyrie_ast::{
     ApplyCallNode, ClassDeclaration, ControlNode, DocumentationNode, ExpressionContext, ExpressionNode, FlagsDeclaration,
     ForLoop, FunctionDeclaration, GenericCallNode, GuardPattern, GuardStatement, IdentifierNode, ImportAliasNode,
     ImportGroupNode, ImportStatementNode, ImportTermNode, LambdaArgumentNode, LambdaNode, LetBindNode, NamePathNode,
-    NamespaceDeclarationNode, NamespaceKind, NewConstructNode, PatternType, StatementBlock, StatementBody, StatementNode,
-    TableTermNode, TypingExpression, WhileLoop,
+    NamespaceDeclaration, NamespaceKind, NewConstructNode, PatternType, StatementBlock, StatementBody, StatementNode,
+    TableTermNode, TypingExpression, UnionDeclaration, WhileLoop,
 };
 
 mod classes;
@@ -75,9 +75,10 @@ impl ThisParser for StatementBody {
     fn parse(input: ParseState) -> ParseResult<Self> {
         input
             .begin_choice()
-            .or_else(|s| NamespaceDeclarationNode::parse(s).map_inner(Into::into))
+            .or_else(|s| NamespaceDeclaration::parse(s).map_inner(Into::into))
             .or_else(|s| ImportStatementNode::parse(s).map_inner(Into::into))
             .or_else(|s| ClassDeclaration::parse(s).map_inner(Into::into))
+            .or_else(|s| UnionDeclaration::parse(s).map_inner(Into::into))
             .or_else(|s| FlagsDeclaration::parse(s).map_inner(Into::into))
             .or_else(function_with_head)
             .or_else(|s| LetBindNode::parse(s).map_inner(Into::into))
@@ -97,6 +98,7 @@ impl ThisParser for StatementBody {
             StatementBody::While(v) => v.as_lisp(),
             StatementBody::For(v) => v.as_lisp(),
             StatementBody::Class(v) => v.as_lisp(),
+            StatementBody::ClassField(v) => v.as_lisp(),
             StatementBody::Expression(v) => v.as_lisp(),
             StatementBody::Function(v) => v.as_lisp(),
             StatementBody::Control(v) => v.as_lisp(),
@@ -105,6 +107,8 @@ impl ThisParser for StatementBody {
             StatementBody::Guard(v) => v.as_lisp(),
             StatementBody::Flags(v) => v.as_lisp(),
             StatementBody::FlagsField(v) => v.as_lisp(),
+            StatementBody::Union(v) => v.as_lisp(),
+            StatementBody::Variant(v) => v.as_lisp(),
         }
     }
 }
@@ -112,7 +116,7 @@ impl ThisParser for StatementBody {
 pub fn parse_repl_statements(input: ParseState) -> ParseResult<StatementBody> {
     input
         .begin_choice()
-        .or_else(|s| NamespaceDeclarationNode::parse(s).map_inner(Into::into))
+        .or_else(|s| NamespaceDeclaration::parse(s).map_inner(Into::into))
         .or_else(|s| ImportStatementNode::parse(s).map_inner(Into::into))
         .or_else(|s| ClassDeclaration::parse(s).map_inner(Into::into))
         .or_else(|s| LetBindNode::parse(s).map_inner(Into::into))

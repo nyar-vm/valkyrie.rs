@@ -18,20 +18,20 @@ impl ThisParser for FlagsDeclaration {
     }
 
     fn as_lisp(&self) -> Lisp {
-        let mut terms = Vec::with_capacity(3 + self.body.statements.len());
+        let mut terms = Vec::with_capacity(3 + self.body.terms.len());
         terms.push(Lisp::keyword("flags"));
         terms.push(self.namepath.as_lisp());
         if let Some(s) = &self.layout {
             terms.push(Lisp::Any(vec![Lisp::keyword("layout"), s.as_lisp()]))
         }
-        for term in &self.body.statements {
+        for term in &self.body.terms {
             terms.push(term.as_lisp());
         }
         Lisp::Any(terms)
     }
 }
 
-impl ThisParser for FlagFieldDeclaration {
+impl ThisParser for FlagsFieldDeclaration {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, name) = IdentifierNode::parse(input)?;
         let (state, value) = state.skip(ignore).match_optional(|s| {
@@ -43,7 +43,7 @@ impl ThisParser for FlagFieldDeclaration {
             let (state, _) = state.skip(ignore).match_optional(parse_semi)?;
             state.finish(expr)
         })?;
-        state.finish(FlagFieldDeclaration { documentation: Default::default(), name, value, span: get_span(input, state) })
+        state.finish(FlagsFieldDeclaration { documentation: Default::default(), name, value, span: get_span(input, state) })
     }
 
     fn as_lisp(&self) -> Lisp {
@@ -62,7 +62,7 @@ fn flags_statement(input: ParseState) -> ParseResult<StatementNode> {
         .skip(ignore)
         .begin_choice()
         .or_else(|s| DocumentationNode::parse(s).map_inner(Into::into))
-        .or_else(|s| FlagFieldDeclaration::parse(s).map_inner(Into::into))
+        .or_else(|s| FlagsFieldDeclaration::parse(s).map_inner(Into::into))
         .end_choice()?;
     state.finish(StatementNode { r#type: ty, end_semicolon: true, span: get_span(input, state) })
 }

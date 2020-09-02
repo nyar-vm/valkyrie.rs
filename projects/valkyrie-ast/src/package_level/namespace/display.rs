@@ -1,7 +1,7 @@
 use super::*;
 
 #[cfg(feature = "pretty-print")]
-impl PrettyPrint for NamespaceDeclarationNode {
+impl PrettyPrint for NamespaceDeclaration {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         let head = allocator.keyword(self.kind.as_str());
         let space = allocator.space();

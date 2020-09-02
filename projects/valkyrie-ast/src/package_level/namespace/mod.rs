@@ -15,14 +15,14 @@ pub enum NamespaceKind {
 /// `namespace std.math`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct NamespaceDeclarationNode {
+pub struct NamespaceDeclaration {
     pub kind: NamespaceKind,
     pub path: Vec<IdentifierNode>,
     /// The range of the node
     pub span: Range<u32>,
 }
 
-impl NamespaceDeclarationNode {
+impl NamespaceDeclaration {
     pub fn new<I>(names: I, range: Range<u32>) -> Self
     where
         I: IntoIterator<Item = IdentifierNode>,

@@ -26,7 +26,7 @@ impl ThisParser for ForLoop {
             terms.push(Lisp::keyword("if"));
             terms.push(cond.as_lisp());
         }
-        terms.push(Lisp::Any(self.body.statements.iter().map(|s| s.as_lisp()).collect()));
+        terms.push(Lisp::Any(self.body.terms.iter().map(|s| s.as_lisp()).collect()));
         terms.push(Lisp::keyword("else"));
         terms.push(Lisp::Any(self.r#else.iter().map(|s| s.as_lisp()).collect()));
         Lisp::Any(terms)

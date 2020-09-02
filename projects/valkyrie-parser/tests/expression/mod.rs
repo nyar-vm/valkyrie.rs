@@ -1,5 +1,5 @@
 use super::*;
-use valkyrie_ast::{ImportStatementNode, NamespaceDeclarationNode, NumberLiteralNode, PrettyPrint};
+use valkyrie_ast::{ImportStatementNode, NamespaceDeclaration, NumberLiteralNode, PrettyPrint};
 
 #[test]
 fn lex_expression() {

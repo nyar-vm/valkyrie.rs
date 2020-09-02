@@ -31,7 +31,7 @@ impl ThisParser for FunctionDeclaration {
         items.push(Lisp::Any(args));
         //
         let mut body = vec![Lisp::keyword("body")];
-        for term in self.body.statements.iter() {
+        for term in self.body.terms.iter() {
             body.push(term.as_lisp());
         }
         items.push(Lisp::Any(body));

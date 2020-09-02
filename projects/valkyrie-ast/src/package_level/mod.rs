@@ -13,16 +13,22 @@ pub mod unions;
 
 use crate::{
     control_flow::for_loop::ForLoop,
-    package_level::{classes::ClassDeclaration, namespace::NamespaceDeclarationNode},
-    ApplyArgumentNode, ArgumentTermNode, ControlNode, DocumentationNode, ExpressionNode, FunctionDeclaration,
-    GenericArgumentNode, GuardStatement, IdentifierNode, ImportStatementNode, LetBindNode, NamePathNode, PatternType,
-    WhileLoop,
+    package_level::{classes::ClassDeclaration, namespace::NamespaceDeclaration},
+    ApplyArgumentNode, ArgumentTermNode, ClassFieldDeclaration, ControlNode, DocumentationNode, ExpressionNode,
+    FunctionDeclaration, GenericArgumentNode, GuardStatement, IdentifierNode, ImportStatementNode, LetBindNode, ModifiersNode,
+    NamePathNode, PatternType, StatementBlock, UnionDeclaration, VariantDeclaration, WhileLoop,
 };
-use alloc::{borrow::Cow, boxed::Box, string::String, sync::Arc, vec::Vec};
+use alloc::{
+    boxed::Box,
+    string::{String, ToString},
+    sync::Arc,
+    vec::Vec,
+};
 use core::ops::Range;
 use deriver::From;
-use flags::{FlagFieldDeclaration, FlagsDeclaration};
+use flags::{FlagsDeclaration, FlagsFieldDeclaration};
 use pretty_print::KAndRBracket;
+
 #[cfg(feature = "pretty-print")]
 use pretty_print::{PrettyPrint, PrettyProvider, PrettyTree};
 
@@ -39,13 +45,19 @@ pub struct StatementNode {
 #[derive(Clone, Debug, PartialEq, Eq, Hash, From)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum StatementBody {
+    /// Placeholder for when the parser fails to parse a statement.
     Nothing,
+    /// The documentation node, must have acceptor underneath.
     Document(Box<DocumentationNode>),
-    Namespace(Box<NamespaceDeclarationNode>),
+    /// The namespace declaration node.
+    Namespace(Box<NamespaceDeclaration>),
     Import(Box<ImportStatementNode>),
     Class(Box<ClassDeclaration>),
+    ClassField(Box<ClassFieldDeclaration>),
     Flags(Box<FlagsDeclaration>),
-    FlagsField(Box<FlagFieldDeclaration>),
+    FlagsField(Box<FlagsFieldDeclaration>),
+    Union(Box<UnionDeclaration>),
+    Variant(Box<VariantDeclaration>),
     While(Box<WhileLoop>),
     For(Box<ForLoop>),
     LetBind(Box<LetBindNode>),

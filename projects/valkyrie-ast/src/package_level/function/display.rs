@@ -55,7 +55,7 @@ impl PrettyPrint for StatementBlock {
         terms.push(allocator.space());
         terms.push(allocator.text("{"));
         terms.push(allocator.hardline());
-        terms.push(allocator.intersperse(&self.statements, allocator.hardline()).indent(4));
+        terms.push(allocator.intersperse(&self.terms, allocator.hardline()).indent(4));
         terms.push(allocator.hardline());
         terms.push(allocator.text("}"));
         allocator.concat(terms)

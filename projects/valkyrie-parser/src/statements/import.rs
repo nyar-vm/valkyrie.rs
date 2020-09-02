@@ -9,7 +9,7 @@ pub static NAMESPACE: LazyLock<Regex> = LazyLock::new(|| {
     .unwrap()
 });
 
-impl ThisParser for NamespaceDeclarationNode {
+impl ThisParser for NamespaceDeclaration {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, ns) = input.match_regex(&NAMESPACE, "NAMESPACE")?;
         let (finally, names) = state.skip(ignore).match_fn(parse)?;
@@ -17,7 +17,7 @@ impl ThisParser for NamespaceDeclarationNode {
             "namespace*" => NamespaceKind::Test,
             _ => NamespaceKind::Unique,
         };
-        finally.finish(NamespaceDeclarationNode::new(names, get_span(input, finally)).with_kind(kind))
+        finally.finish(NamespaceDeclaration::new(names, get_span(input, finally)).with_kind(kind))
     }
 
     fn as_lisp(&self) -> Lisp {

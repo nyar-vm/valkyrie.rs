@@ -43,7 +43,7 @@ pub struct FunctionDeclarationInline {
 /// - Auxiliary parsing function, not instantiable.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub struct StatementBlock {
-    pub statements: Vec<StatementNode>,
+    pub terms: Vec<StatementNode>,
     /// The range of the node
     pub span: Range<u32>,
 }
@@ -68,13 +68,13 @@ pub struct FunctionEffectNode {
 
 impl StatementBlock {
     pub fn last_semicolon(&self) -> bool {
-        match self.statements.last() {
+        match self.terms.last() {
             Some(s) => s.end_semicolon,
             None => true,
         }
     }
     pub fn fill_semicolon(&mut self) {
-        for x in self.statements.iter_mut().rev().skip(1) {
+        for x in self.terms.iter_mut().rev().skip(1) {
             x.end_semicolon = true;
         }
     }

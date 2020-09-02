@@ -66,7 +66,7 @@ impl ThisParser for StatementBlock {
     }
 
     fn as_lisp(&self) -> Lisp {
-        Lisp::Any(vec![Lisp::keyword("body"), Lisp::Any(self.statements.iter().map(|s| s.as_lisp()).collect())])
+        Lisp::Any(vec![Lisp::keyword("body"), Lisp::Any(self.terms.iter().map(|s| s.as_lisp()).collect())])
     }
 }
 
@@ -74,7 +74,7 @@ impl ThisParser for ElsePart {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, _) = input.match_str("else")?;
         let (state, func) = state.skip(ignore).match_fn(StatementBlock::parse)?;
-        state.finish(ElsePart { statements: func.statements, span: get_span(input, state) })
+        state.finish(ElsePart { statements: func.terms, span: get_span(input, state) })
     }
 
     fn as_lisp(&self) -> Lisp {
