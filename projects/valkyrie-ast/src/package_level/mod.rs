@@ -1,6 +1,7 @@
 pub mod classes;
 mod dispatch;
 pub mod documentation;
+pub mod enumerates;
 pub mod flags;
 pub mod function;
 pub mod guarantee;
@@ -9,14 +10,13 @@ pub mod let_bind;
 pub mod license;
 pub mod namespace;
 pub mod try_catch;
-pub mod unions;
 
 use crate::{
     control_flow::for_loop::ForLoop,
     package_level::{classes::ClassDeclaration, namespace::NamespaceDeclaration},
-    ApplyArgumentNode, ArgumentTermNode, ClassFieldDeclaration, ControlNode, DocumentationNode, ExpressionNode,
-    FunctionDeclaration, GenericArgumentNode, GuardStatement, IdentifierNode, ImportStatementNode, LetBindNode, ModifiersNode,
-    NamePathNode, PatternType, StatementBlock, UnionDeclaration, VariantDeclaration, WhileLoop,
+    ApplyArgumentNode, ArgumentTermNode, ClassFieldDeclaration, ControlNode, DocumentationNode, EnumerateDeclaration,
+    ExpressionNode, FunctionDeclaration, GenericArgumentNode, GuardStatement, IdentifierNode, ImportStatementNode, LetBindNode,
+    ModifiersNode, NamePathNode, PatternType, StatementBlock, VariantDeclaration, WhileLoop,
 };
 use alloc::{
     boxed::Box,
@@ -56,7 +56,7 @@ pub enum StatementBody {
     ClassField(Box<ClassFieldDeclaration>),
     Flags(Box<FlagsDeclaration>),
     FlagsField(Box<FlagsFieldDeclaration>),
-    Union(Box<UnionDeclaration>),
+    Union(Box<EnumerateDeclaration>),
     Variant(Box<VariantDeclaration>),
     While(Box<WhileLoop>),
     For(Box<ForLoop>),

@@ -38,6 +38,7 @@ pub use crate::{
     package_level::{
         classes::{ClassDeclaration, ClassFieldDeclaration, ClassKind},
         documentation::DocumentationNode,
+        enumerates::{EnumerateDeclaration, ModifiersNode, VariantDeclaration},
         flags::{FlagsDeclaration, FlagsFieldDeclaration},
         function::{FunctionDeclaration, FunctionDeclarationInline, FunctionReturnNode, FunctionType, StatementBlock},
         guarantee::{EffectTypeNode, GuaranteeNode},
@@ -45,7 +46,6 @@ pub use crate::{
         let_bind::LetBindNode,
         namespace::{NamespaceDeclaration, NamespaceKind},
         try_catch::TryStatementNode,
-        unions::{ModifiersNode, UnionDeclaration, VariantDeclaration},
         StatementBody, StatementContext, StatementNode,
     },
     string_like::{

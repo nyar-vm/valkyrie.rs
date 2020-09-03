@@ -11,11 +11,11 @@ impl PrettyPrint for ModifiersNode {
     }
 }
 
-impl PrettyPrint for UnionDeclaration {
+impl PrettyPrint for EnumerateDeclaration {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         let mut terms = Vec::with_capacity(8);
         terms.push(self.modifiers.build(allocator));
-        terms.push(allocator.keyword("union"));
+        terms.push(allocator.keyword("enumerate"));
         terms.push(allocator.space());
         terms.push(self.namepath.build(allocator));
         terms.push(self.statements.build(allocator));
