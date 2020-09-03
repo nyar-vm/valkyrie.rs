@@ -40,7 +40,7 @@ impl ThisParser for FlagsFieldDeclaration {
                 state.skip(ignore),
                 ExpressionContext { type_level: false, allow_newline: true, allow_curly: false },
             )?;
-            let (state, _) = state.skip(ignore).match_optional(parse_semi)?;
+            let state = state.skip(ignore).skip(parse_semi);
             state.finish(expr)
         })?;
         state.finish(FlagsFieldDeclaration { documentation: Default::default(), name, value, span: get_span(input, state) })

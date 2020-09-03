@@ -29,23 +29,22 @@ impl ThisParser for UnionDeclaration {
 
 impl ThisParser for VariantDeclaration {
     fn parse(input: ParseState) -> ParseResult<Self> {
-        let (state, name) = NamePathNode::parse(input)?;
-        let (state, stmt) = parse_statement_block(state.skip(ignore), variant_statement)?;
-
-        state.finish(VariantDeclaration {
+        let (state, name) = IdentifierNode::parse(input)?;
+        let (state, stmt) = state.skip(ignore).match_optional(|s| parse_statement_block(s, variant_statement))?;
+        let finally = state.skip(ignore).skip(parse_semi);
+        finally.finish(VariantDeclaration {
             document: Default::default(),
-            namepath: name,
-            modifiers: ModifiersNode { terms: vec![] },
+            variant: name,
             extends: None,
             implements: vec![],
-            statements: stmt,
+            statements: stmt.unwrap_or_default(),
             span: get_span(input, state),
         })
     }
 
     fn as_lisp(&self) -> Lisp {
         let mut terms = vec![];
-        terms.push(self.namepath.as_lisp());
+        terms.push(self.variant.as_lisp());
         for stmt in &self.statements.terms {
             terms.push(stmt.as_lisp());
         }

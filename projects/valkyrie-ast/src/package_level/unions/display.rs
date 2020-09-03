@@ -26,8 +26,8 @@ impl PrettyPrint for UnionDeclaration {
 impl PrettyPrint for VariantDeclaration {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         let mut terms = Vec::with_capacity(8);
-        terms.push(self.modifiers.build(allocator));
-        terms.push(self.namepath.build(allocator));
+        // terms.push(self.modifiers.build(allocator));
+        terms.push(allocator.argument(self.variant.name.to_string(), false));
         terms.push(self.statements.build(allocator));
         allocator.concat(terms)
     }

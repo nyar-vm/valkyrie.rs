@@ -16,6 +16,7 @@ pub fn get_span(input: ParseState, output: ParseState) -> Range<u32> {
     (range.start as u32)..(range.end as u32)
 }
 
+/// **Warning**: you need to handle the head ignore yourself
 pub fn parse_statement_block<F>(input: ParseState, parser: F) -> ParseResult<StatementBlock>
 where
     F: Fn(ParseState) -> ParseResult<StatementNode>,

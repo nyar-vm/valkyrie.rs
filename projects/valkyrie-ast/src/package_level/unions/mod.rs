@@ -27,8 +27,8 @@ pub struct VariantDeclaration {
     /// The documentation of the node.
     pub document: DocumentationNode,
     /// The range of the number.
-    pub namepath: NamePathNode,
-    pub modifiers: ModifiersNode,
+    pub variant: IdentifierNode,
+    // pub modifiers: ModifiersNode,
     pub extends: Option<String>,
     pub implements: Vec<String>,
     pub statements: StatementBlock,

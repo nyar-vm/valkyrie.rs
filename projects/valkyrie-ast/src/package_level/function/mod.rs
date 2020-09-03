@@ -41,7 +41,7 @@ pub struct FunctionDeclarationInline {
 /// `{ a; b; c }`
 ///
 /// - Auxiliary parsing function, not instantiable.
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 pub struct StatementBlock {
     pub terms: Vec<StatementNode>,
     /// The range of the node
