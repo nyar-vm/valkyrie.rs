@@ -7,11 +7,11 @@ use lispify::{Lisp, ListString};
 use pex::{helpers::comment_line, BracketPattern, ParseResult, ParseState, Regex, StopBecause};
 use std::sync::LazyLock;
 use valkyrie_ast::{
-    ApplyCallNode, ClassDeclaration, ControlNode, DocumentationNode, EnumerateDeclaration, ExpressionContext, ExpressionNode,
-    FlagsDeclaration, ForLoop, FunctionDeclaration, GenericCallNode, GuardPattern, GuardStatement, IdentifierNode,
-    ImportAliasNode, ImportGroupNode, ImportStatementNode, ImportTermNode, LambdaArgumentNode, LambdaNode, LetBindNode,
-    NamePathNode, NamespaceDeclaration, NamespaceKind, NewConstructNode, PatternType, StatementBlock, StatementBody,
-    StatementNode, TableTermNode, TypingExpression, WhileLoop,
+    ApplyCallNode, ClassDeclaration, ControlNode, DocumentationNode, ExpressionContext, ExpressionNode, FlagsDeclaration,
+    ForLoop, FunctionDeclaration, GenericCallNode, GuardPattern, GuardStatement, IdentifierNode, ImportAliasNode,
+    ImportGroupNode, ImportStatementNode, ImportTermNode, LambdaArgumentNode, LambdaNode, LetBindNode, NamePathNode,
+    NamespaceDeclaration, NamespaceKind, NewConstructNode, PatternType, StatementBlock, StatementBody, StatementNode,
+    TableTermNode, TaggedDeclaration, TypingExpression, WhileLoop,
 };
 
 mod classes;
@@ -78,7 +78,7 @@ impl ThisParser for StatementBody {
             .or_else(|s| NamespaceDeclaration::parse(s).map_inner(Into::into))
             .or_else(|s| ImportStatementNode::parse(s).map_inner(Into::into))
             .or_else(|s| ClassDeclaration::parse(s).map_inner(Into::into))
-            .or_else(|s| EnumerateDeclaration::parse(s).map_inner(Into::into))
+            .or_else(|s| TaggedDeclaration::parse(s).map_inner(Into::into))
             .or_else(|s| FlagsDeclaration::parse(s).map_inner(Into::into))
             .or_else(function_with_head)
             .or_else(|s| LetBindNode::parse(s).map_inner(Into::into))

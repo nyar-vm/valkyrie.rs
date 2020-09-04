@@ -53,3 +53,36 @@ extends IndexersExample {
 	}
 }
 ```
+
+
+```scala
+tagged UnionB {
+     VariantA
+     VariantB,
+     VariantC;
+     VariantD {
+         fieldA,
+         fieldB: Type,
+     }
+}
+
+@hidden
+enumerate UnionBTag {
+    VariantA = 1,
+    VariantB = 2,
+    VariantC = 3,
+    VariantD = 4,
+}
+
+@hidden
+union UnionBData {
+    variant_a: VariantA,
+    variant_b: VariantB,
+    variant_c: VariantC,
+    variant_d: VariantD,
+}
+
+violate {
+    x.variant_a
+}
+```

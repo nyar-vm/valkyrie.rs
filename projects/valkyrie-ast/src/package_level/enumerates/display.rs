@@ -1,34 +1,27 @@
 use super::*;
 
-impl PrettyPrint for ModifiersNode {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        let mut items = Vec::with_capacity(2 * self.terms.len());
-        for x in &self.terms {
-            items.push(allocator.keyword(x.name.to_string()));
-            items.push(allocator.space());
-        }
-        allocator.concat(items)
-    }
-}
-
 impl PrettyPrint for EnumerateDeclaration {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        let mut terms = Vec::with_capacity(8);
-        terms.push(self.modifiers.build(allocator));
-        terms.push(allocator.keyword("enumerate"));
+        let mut terms = Vec::with_capacity(4);
+        terms.push(allocator.keyword("flags"));
         terms.push(allocator.space());
         terms.push(self.namepath.build(allocator));
-        terms.push(self.statements.build(allocator));
+        terms.push(self.body.build(allocator));
         allocator.concat(terms)
     }
 }
 
-impl PrettyPrint for VariantDeclaration {
+impl PrettyPrint for EnumerateFieldDeclaration {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        let mut terms = Vec::with_capacity(8);
-        // terms.push(self.modifiers.build(allocator));
-        terms.push(allocator.argument(self.variant.name.to_string(), false));
-        terms.push(self.statements.build(allocator));
+        let mut terms = Vec::with_capacity(3);
+        terms.push(self.name.build(allocator));
+        if let Some(value) = &self.value {
+            terms.push(allocator.space());
+            terms.push(allocator.operator("="));
+            terms.push(allocator.space());
+            terms.push(value.build(allocator));
+            terms.push(allocator.text(","));
+        }
         allocator.concat(terms)
     }
 }

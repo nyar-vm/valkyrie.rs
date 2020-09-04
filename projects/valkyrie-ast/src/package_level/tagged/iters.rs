@@ -1,21 +1,21 @@
 use super::*;
 
-impl<'a> IntoIterator for &'a EnumerateDeclaration {
-    type Item = EnumerateTerm;
-    type IntoIter = EnumerateIterator<'a>;
+impl<'a> IntoIterator for &'a TaggedDeclaration {
+    type Item = TaggedTerm;
+    type IntoIter = TaggedIterator<'a>;
 
     fn into_iter(self) -> Self::IntoIter {
-        EnumerateIterator { iter: self.statements.terms.iter() }
+        TaggedIterator { iter: self.statements.terms.iter() }
     }
 }
 
-impl<'a> Iterator for EnumerateIterator<'a> {
-    type Item = EnumerateTerm;
+impl<'a> Iterator for TaggedIterator<'a> {
+    type Item = TaggedTerm;
 
     fn next(&mut self) -> Option<Self::Item> {
         let term = self.iter.next()?;
         match &term.r#type {
-            StatementBody::Variant(variant) => Some(EnumerateTerm::Variant((**variant).clone())),
+            StatementBody::Variant(variant) => Some(TaggedTerm::Variant((**variant).clone())),
             _ => None,
         }
     }

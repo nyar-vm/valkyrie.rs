@@ -12,7 +12,7 @@ use lispify::Lisp;
 use pex::{helpers::str, BracketPattern, ParseResult, ParseState, StopBecause};
 use valkyrie_ast::{
     ApplyArgumentNode, ApplyArgumentTerm, ArgumentKeyNode, ArgumentTermNode, ClassFieldDeclaration, DocumentationNode,
-    EnumerateDeclaration, ExpressionContext, ExpressionNode, FlagsDeclaration, FlagsFieldDeclaration, FunctionDeclaration,
-    FunctionReturnNode, FunctionType, GenericArgumentNode, IdentifierNode, ModifiersNode, NamePathNode, PrettyPrint,
-    StatementBlock, StatementNode, TypingExpression, VariantDeclaration,
+    ExpressionContext, ExpressionNode, FlagsDeclaration, FlagsFieldDeclaration, FunctionDeclaration, FunctionReturnNode,
+    FunctionType, GenericArgumentNode, IdentifierNode, ModifiersNode, NamePathNode, PrettyPrint, StatementBlock, StatementNode,
+    TaggedDeclaration, TypingExpression, VariantDeclaration,
 };

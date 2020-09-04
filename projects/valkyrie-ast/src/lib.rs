@@ -38,14 +38,16 @@ pub use crate::{
     package_level::{
         classes::{ClassDeclaration, ClassFieldDeclaration, ClassKind},
         documentation::DocumentationNode,
-        enumerates::{EnumerateDeclaration, ModifiersNode, VariantDeclaration},
+        enumerates::{EnumerateDeclaration, EnumerateFieldDeclaration},
         flags::{FlagsDeclaration, FlagsFieldDeclaration},
         function::{FunctionDeclaration, FunctionDeclarationInline, FunctionReturnNode, FunctionType, StatementBlock},
         guarantee::{EffectTypeNode, GuaranteeNode},
         import::{ImportAliasNode, ImportGroupNode, ImportResolvedItem, ImportStatementNode, ImportTermNode},
         let_bind::LetBindNode,
         namespace::{NamespaceDeclaration, NamespaceKind},
+        tagged::{ModifiersNode, TaggedDeclaration, VariantDeclaration},
         try_catch::TryStatementNode,
+        unions::{UnionDeclaration, UnionFieldDeclaration},
         StatementBody, StatementContext, StatementNode,
     },
     string_like::{
