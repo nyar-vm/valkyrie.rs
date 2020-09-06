@@ -15,7 +15,7 @@ pub struct ClassDeclaration {
     pub modifiers: Vec<IdentifierNode>,
     pub extends: Option<String>,
     pub implements: Vec<String>,
-    pub statements: Vec<StatementNode>,
+    pub body: StatementBlock,
 }
 
 /// The valid terms in a class body.

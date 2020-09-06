@@ -13,7 +13,6 @@ use valkyrie_ast::{AnnotationPathNode, IdentifierNode, NamePathNode, NumberLiter
 
 mod bytes;
 mod identifier;
-mod macro_name;
 mod namepath;
 mod number;
 mod string;

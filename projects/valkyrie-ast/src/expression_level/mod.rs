@@ -24,10 +24,11 @@ use alloc::{
     boxed::Box,
     format,
     string::{String, ToString},
+    vec,
     vec::Vec,
 };
 use core::{
-    fmt::{Display, Formatter},
+    fmt::{Display, Formatter, Write},
     ops::Range,
 };
 use deriver::From;

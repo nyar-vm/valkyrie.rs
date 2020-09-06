@@ -16,7 +16,6 @@ use valkyrie_ast::{
 };
 
 mod annotation;
-mod classes;
 mod def_var;
 mod documentation;
 mod guard;

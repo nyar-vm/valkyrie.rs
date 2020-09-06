@@ -69,6 +69,12 @@ pub struct ModifiersNode {
     pub terms: Vec<IdentifierNode>,
 }
 
+impl From<AnnotationNode> for AnnotationList {
+    fn from(value: AnnotationNode) -> Self {
+        Self { kind: value.kind, terms: vec![value.term], span: value.span }
+    }
+}
+
 impl AnnotationKind {
     /// Returns the string representation of the macro kind.
     pub fn as_str(&self) -> &'static str {

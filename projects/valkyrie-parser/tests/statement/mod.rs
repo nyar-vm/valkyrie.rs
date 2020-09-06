@@ -21,7 +21,7 @@ fn debug_statement() {
 
 #[test]
 fn test_statement() {
-    let raw = "flags A {A = 2 >> 0}";
-    let apply = FlagsDeclaration::parse_text(raw).unwrap();
+    let raw = ParseState::new("class A {a : Type = 1,}");
+    let apply = ClassDeclaration::parse(raw).unwrap();
     apply.pretty_print(42)
 }

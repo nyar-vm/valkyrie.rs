@@ -11,7 +11,7 @@ impl ThisParser for NamePathNode {
     }
 
     fn as_lisp(&self) -> Lisp {
-        Lisp::Function(self.pretty_string(144))
+        Lisp::Function(self.to_string())
     }
 }
 

@@ -1,0 +1,7 @@
+(annotation/list (space))
+(annotation/list (decorator))
+(class Empty)
+(annotation/list (decorator))
+(union Empty)
+(class ClassA)
+(union UnionA)

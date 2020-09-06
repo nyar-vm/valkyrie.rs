@@ -1,5 +1,5 @@
 use super::*;
-use valkyrie_ast::{AnnotationKind, AnnotationList, AnnotationNode};
+use valkyrie_ast::{AnnotationKind, AnnotationList, AnnotationNode, AnnotationPathNode, AnnotationTerm};
 
 impl ThisParser for AnnotationKind {
     fn parse(input: ParseState) -> ParseResult<Self> {
@@ -19,23 +19,63 @@ impl ThisParser for AnnotationKind {
 impl ThisParser for AnnotationNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, kind) = AnnotationKind::parse(input)?;
-        let (state, name) = Identifier::parse(state)?;
+        let (state, term) = AnnotationTerm::parse(state.skip(ignore))?;
 
-        todo!()
+        state.finish(AnnotationNode { kind, term, span: get_span(input, state) })
     }
 
     fn as_lisp(&self) -> Lisp {
-        todo!()
+        AnnotationList::from(self.clone()).as_lisp()
     }
+}
+
+impl ThisParser for AnnotationTerm {
+    fn parse(input: ParseState) -> ParseResult<Self> {
+        let (state, name) = AnnotationPathNode::parse(input)?;
+
+        state.finish(AnnotationTerm { path: name, arguments: Default::default(), collects: Default::default() })
+    }
+
+    fn as_lisp(&self) -> Lisp {
+        let terms = vec![self.path.as_lisp()];
+        Lisp::Any(terms)
+    }
+}
+
+impl ThisParser for AnnotationPathNode {
+    /// `a::b::c.d.e.f`
+    fn parse(input: ParseState) -> ParseResult<Self> {
+        let (state, path) = input.match_fn(NamePathNode::parse)?;
+        let (state, names) = state.match_repeats(pare_dot_id)?;
+        state.finish(AnnotationPathNode::new(path, names, get_span(input, state)))
+    }
+
+    fn as_lisp(&self) -> Lisp {
+        Lisp::Function(self.to_string())
+    }
+}
+
+/// ~ . ~ id
+fn pare_dot_id(input: ParseState) -> ParseResult<IdentifierNode> {
+    let (state, _) = input.skip(ignore).match_char('.')?;
+    let (state, id) = state.skip(ignore).match_fn(IdentifierNode::parse)?;
+    state.finish(id)
 }
 
 impl ThisParser for AnnotationList {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, kind) = AnnotationKind::parse(input)?;
-        todo!()
+        let pattern = BracketPattern::new("[", "]");
+        let (state, terms) = pattern.consume(state.skip(ignore), ignore, AnnotationTerm::parse)?;
+        state.finish(AnnotationList { kind, terms: terms.body, span: get_span(input, state) })
     }
 
     fn as_lisp(&self) -> Lisp {
-        todo!()
+        let mut terms = Vec::with_capacity(10);
+        terms.push(Lisp::keyword("annotation/list"));
+        for term in &self.terms {
+            terms.push(term.as_lisp());
+        }
+        Lisp::Any(terms)
     }
 }

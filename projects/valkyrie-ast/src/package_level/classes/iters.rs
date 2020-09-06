@@ -5,7 +5,7 @@ impl<'a> IntoIterator for &'a ClassDeclaration {
     type IntoIter = ClassIterator<'a>;
 
     fn into_iter(self) -> Self::IntoIter {
-        ClassIterator { inner: self.statements.iter() }
+        ClassIterator { inner: self.body.terms.iter() }
     }
 }
 
