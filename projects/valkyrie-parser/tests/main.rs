@@ -11,7 +11,7 @@ use std::{
     path::{Path, PathBuf},
 };
 use valkyrie_ast::*;
-use valkyrie_parser::{ReplRoot, ScriptRoot, ThisParser};
+use valkyrie_parser::{ReplRoot, ThisParser};
 
 #[test]
 fn ready() {
@@ -24,7 +24,7 @@ fn here() -> PathBuf {
 
 fn top_debug(text: &str, output: &str) -> std::io::Result<()> {
     let mut file = File::create(here().join(output))?;
-    let apply = ScriptRoot::parse_text(text).unwrap();
+    let apply = ProgramRoot::parse_text(text).unwrap();
     for expr in &apply.statements {
         expr.pretty_print(80);
         writeln!(file, "{}", display_lisp(expr.as_lisp(), 144).unwrap())?;

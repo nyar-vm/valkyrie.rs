@@ -21,7 +21,7 @@ pub use crate::{
         pattern::PatternCondition,
     },
     expression_level::{
-        annotations::{AnnotationKind, AnnotationList, AnnotationNode, MacroPathNode, ModifiersNode},
+        annotations::{AnnotationKind, AnnotationList, AnnotationNode, AnnotationPathNode, AnnotationTerm, ModifiersNode},
         apply::{ApplyArgumentNode, ApplyArgumentTerm, ApplyCallNode, ApplyCallTerm, ApplyDotNode, ArgumentKeyNode},
         common::{ArgumentTermNode, CallNode, CallTermNode},
         ctor::{CollectsNode, NewConstructNode},
@@ -46,10 +46,11 @@ pub use crate::{
         import::{ImportAliasNode, ImportGroupNode, ImportResolvedItem, ImportStatement, ImportTermNode},
         let_bind::LetBindNode,
         namespace::{NamespaceDeclaration, NamespaceKind},
+        program::ProgramRoot,
+        statements::{StatementBody, StatementContext, StatementNode},
         tagged::{TaggedDeclaration, VariantDeclaration},
         try_catch::TryStatementNode,
         unions::{UnionDeclaration, UnionFieldDeclaration},
-        StatementBody, StatementContext, StatementNode,
     },
     string_like::{
         string_formatter::StringFormatter,

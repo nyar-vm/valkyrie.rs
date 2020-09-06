@@ -20,7 +20,7 @@ features = ["regex"]
 version = "0.0.1"
 
 [dependencies.valkyrie-ast]
-version = "0.0.*"
+version = "0.1.*"
 features = ["pretty-print", "std"]
 path = "../valkyrie-ast"
 

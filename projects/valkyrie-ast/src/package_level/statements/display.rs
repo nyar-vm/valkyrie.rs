@@ -1,4 +1,5 @@
 use super::*;
+
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for StatementNode {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
@@ -10,6 +11,7 @@ impl PrettyPrint for StatementBody {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         match self {
             Self::Nothing => allocator.text(";;"),
+            Self::Annotation(node) => node.build(allocator),
             Self::Namespace(node) => node.build(allocator),
             Self::Import(node) => node.build(allocator),
             Self::Class(node) => node.build(allocator),

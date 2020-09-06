@@ -14,7 +14,5 @@ mod table;
 mod traits;
 mod utils;
 
-pub use crate::{
-    statements::{ReplRoot, ScriptRoot},
-    traits::ThisParser,
-};
+pub use crate::{statements::ReplRoot, traits::ThisParser};
+pub use valkyrie_ast::ProgramRoot;

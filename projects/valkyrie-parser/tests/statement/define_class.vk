@@ -1,12 +1,17 @@
+@@space
+
+@decorator
 class Empty {}
+
+@decorator
 union Empty {}
 
-
 class ClassA {
+    @decorator
     field;
     public static field: A;
 }
-# union must type
+# union must have type
 union UnionA {
-    field
+    field: Type
 }

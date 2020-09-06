@@ -1,5 +1,5 @@
 use super::*;
-
+#[cfg(feature = "pretty-print")]
 mod display;
 
 /// A namepath is a series of identifiers separated by dots.
@@ -14,25 +14,12 @@ pub enum AnnotationKind {
     NonCapture,
 }
 
-/// `@module∷name.function`
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct MacroPathNode {
-    /// The names of the identifier.
-    pub path: NamePathNode,
-    /// The names of the identifier.
-    pub names: Vec<IdentifierNode>,
-    /// The range of the identifier.
-    pub span: Range<u32>,
-}
-
 /// `@module∷name.variant(args) <CAPTURE>`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct AnnotationNode {
-    pub path: MacroPathNode,
-    pub arguments: ApplyCallNode,
-    pub collects: CollectsNode,
+    pub kind: AnnotationKind,
+    pub term: AnnotationTerm,
     pub span: Range<u32>,
 }
 
@@ -41,7 +28,17 @@ pub struct AnnotationNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct AnnotationList {
     pub kind: AnnotationKind,
-    pub terms: Vec<AnnotationNode>,
+    pub terms: Vec<AnnotationTerm>,
+    pub span: Range<u32>,
+}
+
+/// `module∷name.variant(args) <CAPTURE>`
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct AnnotationTerm {
+    pub path: AnnotationPathNode,
+    pub arguments: ApplyCallNode,
+    pub collects: CollectsNode,
 }
 
 /// `@{ module∷name.function(args) <CAPTURE>, module∷name.function2(args) <CAPTURE> }`
@@ -49,7 +46,19 @@ pub struct AnnotationList {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct AnnotationStatements {
     pub kind: AnnotationKind,
-    pub terms: Vec<MacroPathNode>,
+    pub terms: Vec<AnnotationPathNode>,
+}
+
+/// `@module∷name.function`
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct AnnotationPathNode {
+    /// The names of the identifier.
+    pub path: NamePathNode,
+    /// The names of the identifier.
+    pub names: Vec<IdentifierNode>,
+    /// The range of the identifier.
+    pub span: Range<u32>,
 }
 
 /// `public static final synchronized class Main {}`
@@ -71,13 +80,13 @@ impl AnnotationKind {
     }
 }
 
-impl MacroPathNode {
+impl AnnotationPathNode {
     pub fn new(path: NamePathNode, names: Vec<IdentifierNode>, span: Range<u32>) -> Self {
         Self { path, names, span }
     }
 }
 
-impl AnnotationNode {
+impl AnnotationTerm {
     /// Expand to the standard annotation form.
     pub fn expand(self) -> AnnotationStatements {
         todo!()

@@ -9,7 +9,7 @@ use pex::{
     ParseResult, ParseState, Regex, StopBecause,
 };
 use std::{ops::Range, sync::LazyLock};
-use valkyrie_ast::{IdentifierNode, MacroPathNode, NamePathNode, NumberLiteralNode, PrettyPrint, StringLiteralNode};
+use valkyrie_ast::{AnnotationPathNode, IdentifierNode, NamePathNode, NumberLiteralNode, PrettyPrint, StringLiteralNode};
 
 mod bytes;
 mod identifier;

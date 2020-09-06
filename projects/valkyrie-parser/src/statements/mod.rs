@@ -7,13 +7,15 @@ use lispify::{Lisp, ListString};
 use pex::{helpers::comment_line, BracketPattern, ParseResult, ParseState, Regex, StopBecause};
 use std::sync::LazyLock;
 use valkyrie_ast::{
-    ApplyCallNode, ClassDeclaration, ControlNode, DocumentationNode, EnumerateDeclaration, ExpressionContext, ExpressionNode,
-    FlagsDeclaration, ForLoop, FunctionDeclaration, GenericCallNode, GuardPattern, GuardStatement, IdentifierNode,
-    ImportAliasNode, ImportGroupNode, ImportStatement, ImportTermNode, LambdaArgumentNode, LambdaNode, LetBindNode,
-    NamePathNode, NamespaceDeclaration, NamespaceKind, NewConstructNode, PatternType, StatementBlock, StatementBody,
-    StatementNode, TableTermNode, TaggedDeclaration, TypingExpression, UnionDeclaration, WhileLoop,
+    AnnotationList, AnnotationNode, ApplyCallNode, ClassDeclaration, ControlNode, DocumentationNode, EnumerateDeclaration,
+    ExpressionContext, ExpressionNode, FlagsDeclaration, ForLoop, FunctionDeclaration, GenericCallNode, GuardPattern,
+    GuardStatement, IdentifierNode, ImportAliasNode, ImportGroupNode, ImportStatement, ImportTermNode, LambdaArgumentNode,
+    LambdaNode, LetBindNode, NamePathNode, NamespaceDeclaration, NamespaceKind, NewConstructNode, PatternType, ProgramRoot,
+    StatementBlock, StatementBody, StatementNode, TableTermNode, TaggedDeclaration, TypingExpression, UnionDeclaration,
+    WhileLoop,
 };
 
+mod annotation;
 mod classes;
 mod def_var;
 mod documentation;
@@ -23,10 +25,6 @@ mod lambda;
 mod new;
 
 pub struct ReplRoot {
-    pub statements: Vec<StatementNode>,
-}
-
-pub struct ScriptRoot {
     pub statements: Vec<StatementNode>,
 }
 
@@ -40,9 +38,9 @@ impl ThisParser for ReplRoot {
     }
 }
 
-impl ThisParser for ScriptRoot {
+impl ThisParser for ProgramRoot {
     fn parse(input: ParseState) -> ParseResult<Self> {
-        input.match_repeats(|s| parse_statement_node(s, false)).map_inner(|s| ScriptRoot { statements: s })
+        input.match_repeats(|s| parse_statement_node(s, false)).map_inner(|s| ProgramRoot { statements: s })
     }
 
     fn as_lisp(&self) -> Lisp {
@@ -75,6 +73,9 @@ impl ThisParser for StatementBody {
     fn parse(input: ParseState) -> ParseResult<Self> {
         input
             .begin_choice()
+            .or_else(|s| DocumentationNode::parse(s).map_inner(Into::into))
+            .or_else(|s| AnnotationNode::parse(s).map_inner(Into::into))
+            .or_else(|s| AnnotationList::parse(s).map_inner(Into::into))
             .or_else(|s| NamespaceDeclaration::parse(s).map_inner(Into::into))
             .or_else(|s| ImportStatement::parse(s).map_inner(Into::into))
             .or_else(|s| ClassDeclaration::parse(s).map_inner(Into::into))
@@ -115,6 +116,7 @@ impl ThisParser for StatementBody {
             StatementBody::Union(v) => v.as_lisp(),
             StatementBody::Enumerate(v) => v.as_lisp(),
             StatementBody::UnionField(v) => v.as_lisp(),
+            StatementBody::Annotation(v) => v.as_lisp(),
         }
     }
 }
