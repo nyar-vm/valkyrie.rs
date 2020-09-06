@@ -1,5 +1,5 @@
 use super::*;
-use valkyrie_ast::{ImportStatementNode, NamespaceDeclaration, NumberLiteralNode, PrettyPrint};
+use valkyrie_ast::{ImportStatement, NamespaceDeclaration, NumberLiteralNode, PrettyPrint};
 
 #[test]
 fn lex_expression() {
@@ -18,7 +18,7 @@ fn test_apply2() {}
 #[test]
 fn test_apply() {
     let raw = "using `python`.numpy";
-    let apply = ImportStatementNode::parse_text(raw).unwrap();
+    let apply = ImportStatement::parse_text(raw).unwrap();
     apply.pretty_print(42)
 }
 

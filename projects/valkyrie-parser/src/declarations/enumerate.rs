@@ -1,6 +1,6 @@
 use super::*;
 
-impl ThisParser for UnionDeclaration {
+impl ThisParser for EnumerateDeclaration {
     fn parse(input: ParseState) -> ParseResult<Self> {
         todo!()
     }

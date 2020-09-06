@@ -2,6 +2,8 @@ use super::*;
 #[cfg(feature = "pretty-print")]
 mod display;
 
+mod iters;
+
 /// `class Name(Super): Trait {}`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -16,6 +18,19 @@ pub struct ClassDeclaration {
     pub statements: Vec<StatementNode>,
 }
 
+/// The valid terms in a class body.
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum ClassTerm {
+    Field(ClassFieldDeclaration),
+    Method(ClassMethodDeclaration),
+}
+
+#[derive(Clone, Debug)]
+pub struct ClassIterator<'a> {
+    inner: core::slice::Iter<'a, StatementNode>,
+}
+
 /// `field: Type = default`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -23,7 +38,7 @@ pub struct ClassFieldDeclaration {
     /// The documentation of the node.
     pub document: DocumentationNode,
     pub modifiers: ModifiersNode,
-    pub name: IdentifierNode,
+    pub field_name: IdentifierNode,
     pub r#type: Option<ExpressionNode>,
     pub default: Option<ExpressionNode>,
     /// The range of the node
@@ -33,7 +48,9 @@ pub struct ClassFieldDeclaration {
 /// `method()`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ClassMethodDeclaration {}
+pub struct ClassMethodDeclaration {
+    pub method_name: IdentifierNode,
+}
 
 ///
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]

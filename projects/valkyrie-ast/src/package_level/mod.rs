@@ -17,7 +17,7 @@ use crate::{
     control_flow::for_loop::ForLoop,
     package_level::{classes::ClassDeclaration, namespace::NamespaceDeclaration},
     ApplyArgumentNode, ArgumentTermNode, ClassFieldDeclaration, ControlNode, DocumentationNode, ExpressionNode,
-    FunctionDeclaration, GenericArgumentNode, GuardStatement, IdentifierNode, ImportStatementNode, LetBindNode, ModifiersNode,
+    FunctionDeclaration, GenericArgumentNode, GuardStatement, IdentifierNode, ImportStatement, LetBindNode, ModifiersNode,
     NamePathNode, PatternType, StatementBlock, TaggedDeclaration, VariantDeclaration, WhileLoop,
 };
 use alloc::{
@@ -31,6 +31,7 @@ use deriver::From;
 use flags::{FlagsDeclaration, FlagsFieldDeclaration};
 use pretty_print::KAndRBracket;
 
+use crate::package_level::classes::ClassMethodDeclaration;
 #[cfg(feature = "pretty-print")]
 use pretty_print::{PrettyPrint, PrettyProvider, PrettyTree};
 
@@ -53,19 +54,35 @@ pub enum StatementBody {
     Document(Box<DocumentationNode>),
     /// The namespace declaration node.
     Namespace(Box<NamespaceDeclaration>),
-    Import(Box<ImportStatementNode>),
+    /// The import statement node.
+    Import(Box<ImportStatement>),
+    /// The class declaration node.
     Class(Box<ClassDeclaration>),
+    /// The class's declaration node.
     ClassField(Box<ClassFieldDeclaration>),
+    /// The class's method declaration node.
+    ClassMethod(Box<ClassMethodDeclaration>),
+    /// The flags declaration node.
     Flags(Box<FlagsDeclaration>),
+    /// The flags' field declaration node.
     FlagsField(Box<FlagsFieldDeclaration>),
-    Union(Box<TaggedDeclaration>),
+    /// The tagged union declaration node.
+    Tagged(Box<TaggedDeclaration>),
+    /// The tagged union's variant declaration node.
     Variant(Box<VariantDeclaration>),
-    While(Box<WhileLoop>),
-    For(Box<ForLoop>),
-    LetBind(Box<LetBindNode>),
+    /// The function declaration node.
     Function(Box<FunctionDeclaration>),
+    /// The while loop statement node.
+    While(Box<WhileLoop>),
+    /// The for loop statement node.
+    For(Box<ForLoop>),
+    /// The let bind statement node.
+    LetBind(Box<LetBindNode>),
+    /// The guard statement node.
     Guard(Box<GuardStatement>),
+    /// The apply argument node.
     Control(Box<ControlNode>),
+    /// The apply argument node.
     Expression(Box<ExpressionNode>),
 }
 

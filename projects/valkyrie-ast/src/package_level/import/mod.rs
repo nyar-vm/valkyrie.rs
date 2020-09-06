@@ -6,7 +6,7 @@ mod display;
 /// `import "external"`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ImportStatementNode {
+pub struct ImportStatement {
     // pub path: Option<StringLiteralNode>,
     pub term: ImportTermNode,
     /// The range of the node
@@ -76,7 +76,7 @@ impl ImportResolvedItem {
     }
 }
 
-impl ImportStatementNode {
+impl ImportStatement {
     pub fn flatten(&self) -> Vec<ImportResolvedItem> {
         let root = ImportResolvedItem::default();
         let mut all = Vec::new();

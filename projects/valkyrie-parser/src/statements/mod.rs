@@ -9,7 +9,7 @@ use std::sync::LazyLock;
 use valkyrie_ast::{
     ApplyCallNode, ClassDeclaration, ControlNode, DocumentationNode, ExpressionContext, ExpressionNode, FlagsDeclaration,
     ForLoop, FunctionDeclaration, GenericCallNode, GuardPattern, GuardStatement, IdentifierNode, ImportAliasNode,
-    ImportGroupNode, ImportStatementNode, ImportTermNode, LambdaArgumentNode, LambdaNode, LetBindNode, NamePathNode,
+    ImportGroupNode, ImportStatement, ImportTermNode, LambdaArgumentNode, LambdaNode, LetBindNode, NamePathNode,
     NamespaceDeclaration, NamespaceKind, NewConstructNode, PatternType, StatementBlock, StatementBody, StatementNode,
     TableTermNode, TaggedDeclaration, TypingExpression, WhileLoop,
 };
@@ -76,7 +76,7 @@ impl ThisParser for StatementBody {
         input
             .begin_choice()
             .or_else(|s| NamespaceDeclaration::parse(s).map_inner(Into::into))
-            .or_else(|s| ImportStatementNode::parse(s).map_inner(Into::into))
+            .or_else(|s| ImportStatement::parse(s).map_inner(Into::into))
             .or_else(|s| ClassDeclaration::parse(s).map_inner(Into::into))
             .or_else(|s| TaggedDeclaration::parse(s).map_inner(Into::into))
             .or_else(|s| FlagsDeclaration::parse(s).map_inner(Into::into))
@@ -99,6 +99,7 @@ impl ThisParser for StatementBody {
             StatementBody::For(v) => v.as_lisp(),
             StatementBody::Class(v) => v.as_lisp(),
             StatementBody::ClassField(v) => v.as_lisp(),
+            StatementBody::ClassMethod(v) => v.as_lisp(),
             StatementBody::Expression(v) => v.as_lisp(),
             StatementBody::Function(v) => v.as_lisp(),
             StatementBody::Control(v) => v.as_lisp(),
@@ -107,7 +108,7 @@ impl ThisParser for StatementBody {
             StatementBody::Guard(v) => v.as_lisp(),
             StatementBody::Flags(v) => v.as_lisp(),
             StatementBody::FlagsField(v) => v.as_lisp(),
-            StatementBody::Union(v) => v.as_lisp(),
+            StatementBody::Tagged(v) => v.as_lisp(),
             StatementBody::Variant(v) => v.as_lisp(),
         }
     }
@@ -117,7 +118,7 @@ pub fn parse_repl_statements(input: ParseState) -> ParseResult<StatementBody> {
     input
         .begin_choice()
         .or_else(|s| NamespaceDeclaration::parse(s).map_inner(Into::into))
-        .or_else(|s| ImportStatementNode::parse(s).map_inner(Into::into))
+        .or_else(|s| ImportStatement::parse(s).map_inner(Into::into))
         .or_else(|s| ClassDeclaration::parse(s).map_inner(Into::into))
         .or_else(|s| LetBindNode::parse(s).map_inner(Into::into))
         .or_else(|s| FunctionDeclaration::parse(s).map_inner(Into::into))

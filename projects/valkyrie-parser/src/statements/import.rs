@@ -48,11 +48,11 @@ fn pare_colon_id<'i>(input: ParseState<'i>, names: &mut Vec<IdentifierNode>) -> 
     state.finish(())
 }
 
-impl ThisParser for ImportStatementNode {
+impl ThisParser for ImportStatement {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, _) = input.match_str("using")?;
         let (state, head) = state.skip(ignore).match_fn(ImportTermNode::parse)?;
-        state.finish(ImportStatementNode { term: head, span: get_span(input, state) })
+        state.finish(ImportStatement { term: head, span: get_span(input, state) })
     }
 
     fn as_lisp(&self) -> Lisp {

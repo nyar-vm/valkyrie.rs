@@ -1,7 +1,7 @@
 use super::*;
 
 #[cfg(feature = "pretty-print")]
-impl PrettyPrint for ImportStatementNode {
+impl PrettyPrint for ImportStatement {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         let mut items = Vec::with_capacity(3);
         items.push(allocator.keyword("using"));

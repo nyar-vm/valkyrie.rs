@@ -33,7 +33,7 @@ pub struct UnionFieldDeclaration {
 /// `method()`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ClassMethodDeclaration {}
+pub struct UnionMethodDeclaration {}
 
 ///
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
