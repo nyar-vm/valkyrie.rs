@@ -14,11 +14,11 @@ pub mod try_catch;
 pub mod unions;
 
 use crate::{
-    control_flow::for_loop::ForLoop,
-    package_level::{classes::ClassDeclaration, namespace::NamespaceDeclaration},
-    ApplyArgumentNode, ArgumentTermNode, ClassFieldDeclaration, ControlNode, DocumentationNode, ExpressionNode,
+    ApplyArgumentNode, ArgumentTermNode, ClassDeclaration, ClassFieldDeclaration, ClassMethodDeclaration, ControlNode,
+    DocumentationNode, EnumerateDeclaration, EnumerateFieldDeclaration, ExpressionNode, FlagsDeclaration, ForLoop,
     FunctionDeclaration, GenericArgumentNode, GuardStatement, IdentifierNode, ImportStatement, LetBindNode, ModifiersNode,
-    NamePathNode, PatternType, StatementBlock, TaggedDeclaration, VariantDeclaration, WhileLoop,
+    NamePathNode, NamespaceDeclaration, PatternType, StatementBlock, TaggedDeclaration, UnionDeclaration,
+    UnionFieldDeclaration, VariantDeclaration, WhileLoop,
 };
 use alloc::{
     boxed::Box,
@@ -28,10 +28,8 @@ use alloc::{
 };
 use core::ops::Range;
 use deriver::From;
-use flags::{FlagsDeclaration, FlagsFieldDeclaration};
 use pretty_print::KAndRBracket;
 
-use crate::package_level::classes::ClassMethodDeclaration;
 #[cfg(feature = "pretty-print")]
 use pretty_print::{PrettyPrint, PrettyProvider, PrettyTree};
 
@@ -62,10 +60,16 @@ pub enum StatementBody {
     ClassField(Box<ClassFieldDeclaration>),
     /// The class's method declaration node.
     ClassMethod(Box<ClassMethodDeclaration>),
+    /// The union declaration node.
+    Union(Box<UnionDeclaration>),
+    /// The union's field declaration node.
+    UnionField(Box<UnionFieldDeclaration>),
+    /// The enumerate declaration node.
+    Enumerate(Box<EnumerateDeclaration>),
+    /// The enumerates field declaration node.
+    EnumerateField(Box<EnumerateFieldDeclaration>),
     /// The flags declaration node.
     Flags(Box<FlagsDeclaration>),
-    /// The flags' field declaration node.
-    FlagsField(Box<FlagsFieldDeclaration>),
     /// The tagged union declaration node.
     Tagged(Box<TaggedDeclaration>),
     /// The tagged union's variant declaration node.

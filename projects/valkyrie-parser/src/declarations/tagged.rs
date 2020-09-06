@@ -2,7 +2,7 @@ use super::*;
 
 impl ThisParser for TaggedDeclaration {
     fn parse(input: ParseState) -> ParseResult<Self> {
-        let (state, _) = str("union")(input)?;
+        let (state, _) = str("tagged")(input)?;
         let (state, name) = NamePathNode::parse(state.skip(ignore))?;
         let (state, stmt) = parse_statement_block(state.skip(ignore), union_statement)?;
         state.finish(TaggedDeclaration {
@@ -18,7 +18,7 @@ impl ThisParser for TaggedDeclaration {
 
     fn as_lisp(&self) -> Lisp {
         let mut terms = vec![];
-        terms.push(Lisp::keyword("union"));
+        terms.push(Lisp::keyword("tagged"));
         terms.push(self.namepath.as_lisp());
         for stmt in &self.statements.terms {
             terms.push(stmt.as_lisp());

@@ -1,4 +1,5 @@
 use super::*;
+use valkyrie_ast::CollectsNode;
 
 impl ThisParser for NewConstructNode {
     /// ```vk
@@ -27,41 +28,47 @@ impl ThisParser for NewConstructNode {
         let namepath = NamePathNode::new(names);
         let (state, generic) = state.skip(ignore).match_optional(GenericCallNode::parse)?;
         let (state, arguments) = state.skip(ignore).match_optional(ApplyCallNode::parse)?;
-        let (finally, collects) = state.skip(ignore).match_optional(parse_collector)?;
+        let (finally, collects) = state.skip(ignore).match_optional(CollectsNode::parse)?;
         finally.finish(NewConstructNode {
             modifiers,
             namepath,
             generic: generic.unwrap_or_default(),
             arguments: arguments.unwrap_or_default(),
-            collectors: collects.unwrap_or_default(),
+            body: collects.unwrap_or_default(),
             span: get_span(input, finally),
         })
     }
 
     fn as_lisp(&self) -> Lisp {
-        let mut terms = Vec::with_capacity(self.collectors.len() + 3);
+        let mut terms = Vec::with_capacity(self.body.terms.len() + 3);
         terms.push(Lisp::keyword("new"));
         terms.push(self.generic.as_lisp());
         terms.push(self.arguments.as_lisp());
-        for term in &self.collectors {
+        for term in &self.body.terms {
             terms.push(term.as_lisp())
         }
         Lisp::Any(terms)
     }
 }
 
-/// ```vk
-/// {
-///     [a]: 2,
-///     Size: Math.PI,
-///     ['C',4]: "Middle C",
-///     Pair(0, 2),
-///     term,
-///     other,
-/// }
-/// ```
-fn parse_collector(input: ParseState) -> ParseResult<Vec<TableTermNode>> {
-    let pat = BracketPattern::new("{", "}");
-    let (state, terms) = pat.consume(input, ignore, TableTermNode::parse)?;
-    state.finish(terms.body)
+impl ThisParser for CollectsNode {
+    /// ```vk
+    /// {
+    ///     [a]: 2,
+    ///     Size: Math.PI,
+    ///     ['C',4]: "Middle C",
+    ///     Pair(0, 2),
+    ///     term,
+    ///     other,
+    /// }
+    /// ```
+    fn parse(input: ParseState) -> ParseResult<Self> {
+        let pat = BracketPattern::new("{", "}");
+        let (state, terms) = pat.consume(input, ignore, TableTermNode::parse)?;
+        state.finish(CollectsNode { terms: terms.body, span: get_span(input, state) })
+    }
+
+    fn as_lisp(&self) -> Lisp {
+        unreachable!()
+    }
 }

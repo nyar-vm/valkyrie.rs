@@ -15,8 +15,18 @@ use lispify::Lisp;
 use pex::{helpers::str, BracketPattern, ParseResult, ParseState, StopBecause};
 use valkyrie_ast::{
     ApplyArgumentNode, ApplyArgumentTerm, ArgumentKeyNode, ArgumentTermNode, ClassFieldDeclaration, ClassMethodDeclaration,
-    DocumentationNode, EnumerateDeclaration, ExpressionContext, ExpressionNode, FlagsDeclaration, FlagsFieldDeclaration,
-    FunctionDeclaration, FunctionReturnNode, FunctionType, GenericArgumentNode, IdentifierNode, MacroPathNode, ModifiersNode,
+    DocumentationNode, EnumerateDeclaration, EnumerateFieldDeclaration, ExpressionContext, ExpressionNode, FlagsDeclaration,
+    FunctionDeclaration, FunctionReturnNode, FunctionType, GenericArgumentNode, IdentifierNode,  ModifiersNode,
     NamePathNode, PrettyPrint, StatementBlock, StatementNode, TaggedDeclaration, TypingExpression, UnionDeclaration,
     VariantDeclaration,
 };
+
+fn enum_statements(input: ParseState) -> ParseResult<StatementNode> {
+    let (state, ty) = input
+        .skip(ignore)
+        .begin_choice()
+        .or_else(|s| DocumentationNode::parse(s).map_inner(Into::into))
+        .or_else(|s| EnumerateFieldDeclaration::parse(s).map_inner(Into::into))
+        .end_choice()?;
+    state.finish(StatementNode { r#type: ty, end_semicolon: true, span: get_span(input, state) })
+}

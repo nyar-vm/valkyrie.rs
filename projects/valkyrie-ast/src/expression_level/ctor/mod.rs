@@ -29,7 +29,14 @@ pub struct NewConstructNode {
     pub namepath: NamePathNode,
     pub generic: GenericCallNode,
     pub arguments: ApplyCallNode,
-    pub collectors: Vec<TableTermNode>,
+    pub body: CollectsNode,
     /// The range of the node
+    pub span: Range<u32>,
+}
+
+#[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct CollectsNode {
+    pub terms: Vec<TableTermNode>,
     pub span: Range<u32>,
 }

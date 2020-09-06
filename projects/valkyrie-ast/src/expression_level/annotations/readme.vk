@@ -1,0 +1,15 @@
+
+
+
+
+
+```scala
+
+class A {
+    @@derive(Builder)
+    @!builder()
+    @derive(Builder)
+    @[get, set]
+    public field: Type = 1;
+}
+```

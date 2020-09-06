@@ -1,6 +1,7 @@
 use super::*;
-mod display;
 
+mod display;
+mod iters;
 
 /// `flags Bit(8bits): Trait { FlagA, FlagB }`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
@@ -22,16 +23,13 @@ pub struct FlagsDeclaration {
     pub span: Range<u32>,
 }
 
-/// `Name = 0x00`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct FlagsFieldDeclaration {
-    /// The documentation for this field.
-    pub documentation: DocumentationNode,
-    /// The identifier of the field.
-    pub name: IdentifierNode,
-    /// The value of the field if exists.
-    pub value: Option<ExpressionNode>,
-    /// The range of the node.
-    pub span: Range<u32>,
+pub enum FlagsTerm {
+    Field(EnumerateFieldDeclaration),
+}
+
+#[derive(Clone, Debug)]
+pub struct FlagsIterator<'a> {
+    inner: core::slice::Iter<'a, StatementNode>,
 }

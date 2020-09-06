@@ -3,7 +3,7 @@ use super::*;
 impl PrettyPrint for EnumerateDeclaration {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         let mut terms = Vec::with_capacity(4);
-        terms.push(allocator.keyword("flags"));
+        terms.push(allocator.keyword("enumerate"));
         terms.push(allocator.space());
         terms.push(self.namepath.build(allocator));
         terms.push(self.body.build(allocator));
@@ -20,8 +20,8 @@ impl PrettyPrint for EnumerateFieldDeclaration {
             terms.push(allocator.operator("="));
             terms.push(allocator.space());
             terms.push(value.build(allocator));
-            terms.push(allocator.text(","));
         }
+        terms.push(allocator.text(","));
         allocator.concat(terms)
     }
 }

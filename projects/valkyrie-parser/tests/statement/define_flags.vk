@@ -1,14 +1,23 @@
+enumerate Empty {}
 flags Empty {}
 
-
+enumerate OneEnum {
+    A
+}
 flags OneFlag {
     A
 }
 
 
-flags TwoFlags {
+enumerate ManyEnums {
     A = 1;
     B = 2 >> 0,
     C = Base.A & Base.B,
-    C = flip[Self::A] | flip[Self::B];
+    D = flip[Self::A] | flip[Self::B];
+}
+flags ManyFlags {
+    A = 1;
+    B = 2 >> 0,
+    C = Base.A & Base.B,
+    D = flip[Self::A] | flip[Self::B];
 }

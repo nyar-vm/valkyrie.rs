@@ -7,11 +7,11 @@ use lispify::{Lisp, ListString};
 use pex::{helpers::comment_line, BracketPattern, ParseResult, ParseState, Regex, StopBecause};
 use std::sync::LazyLock;
 use valkyrie_ast::{
-    ApplyCallNode, ClassDeclaration, ControlNode, DocumentationNode, ExpressionContext, ExpressionNode, FlagsDeclaration,
-    ForLoop, FunctionDeclaration, GenericCallNode, GuardPattern, GuardStatement, IdentifierNode, ImportAliasNode,
-    ImportGroupNode, ImportStatement, ImportTermNode, LambdaArgumentNode, LambdaNode, LetBindNode, NamePathNode,
-    NamespaceDeclaration, NamespaceKind, NewConstructNode, PatternType, StatementBlock, StatementBody, StatementNode,
-    TableTermNode, TaggedDeclaration, TypingExpression, WhileLoop,
+    ApplyCallNode, ClassDeclaration, ControlNode, DocumentationNode, EnumerateDeclaration, ExpressionContext, ExpressionNode,
+    FlagsDeclaration, ForLoop, FunctionDeclaration, GenericCallNode, GuardPattern, GuardStatement, IdentifierNode,
+    ImportAliasNode, ImportGroupNode, ImportStatement, ImportTermNode, LambdaArgumentNode, LambdaNode, LetBindNode,
+    NamePathNode, NamespaceDeclaration, NamespaceKind, NewConstructNode, PatternType, StatementBlock, StatementBody,
+    StatementNode, TableTermNode, TaggedDeclaration, TypingExpression, UnionDeclaration, WhileLoop,
 };
 
 mod classes;
@@ -78,7 +78,9 @@ impl ThisParser for StatementBody {
             .or_else(|s| NamespaceDeclaration::parse(s).map_inner(Into::into))
             .or_else(|s| ImportStatement::parse(s).map_inner(Into::into))
             .or_else(|s| ClassDeclaration::parse(s).map_inner(Into::into))
+            .or_else(|s| UnionDeclaration::parse(s).map_inner(Into::into))
             .or_else(|s| TaggedDeclaration::parse(s).map_inner(Into::into))
+            .or_else(|s| EnumerateDeclaration::parse(s).map_inner(Into::into))
             .or_else(|s| FlagsDeclaration::parse(s).map_inner(Into::into))
             .or_else(function_with_head)
             .or_else(|s| LetBindNode::parse(s).map_inner(Into::into))
@@ -107,9 +109,12 @@ impl ThisParser for StatementBody {
             StatementBody::LetBind(v) => v.as_lisp(),
             StatementBody::Guard(v) => v.as_lisp(),
             StatementBody::Flags(v) => v.as_lisp(),
-            StatementBody::FlagsField(v) => v.as_lisp(),
+            StatementBody::EnumerateField(v) => v.as_lisp(),
             StatementBody::Tagged(v) => v.as_lisp(),
             StatementBody::Variant(v) => v.as_lisp(),
+            StatementBody::Union(v) => v.as_lisp(),
+            StatementBody::Enumerate(v) => v.as_lisp(),
+            StatementBody::UnionField(v) => v.as_lisp(),
         }
     }
 }

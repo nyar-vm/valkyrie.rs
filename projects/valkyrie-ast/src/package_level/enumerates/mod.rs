@@ -1,5 +1,6 @@
 use super::*;
 mod display;
+mod iters;
 
 /// `flags Bit(8bits): Trait { FlagA, FlagB }`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
@@ -33,4 +34,15 @@ pub struct EnumerateFieldDeclaration {
     pub value: Option<ExpressionNode>,
     /// The range of the node.
     pub span: Range<u32>,
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum EnumerateTerm {
+    Field(EnumerateFieldDeclaration),
+}
+
+#[derive(Clone, Debug)]
+pub struct EnumerateIterator<'a> {
+    inner: core::slice::Iter<'a, StatementNode>,
 }

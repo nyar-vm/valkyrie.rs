@@ -1,0 +1,12 @@
+class Empty {}
+union Empty {}
+
+
+class ClassA {
+    field;
+    public static field: A;
+}
+# union must type
+union UnionA {
+    field
+}
