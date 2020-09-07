@@ -1,14 +1,22 @@
 use super::*;
 
 impl PrettyPrint for IfStatement {
-    fn build<'a>(&self, _allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        todo!()
+    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+        let mut terms = Vec::with_capacity(10);
+        terms.push(allocator.keyword("if"));
+        terms.push(allocator.space());
+        terms.push(allocator.intersperse(&self.branches, allocator.hardline()));
+        terms.push(self.else_branch.build(allocator));
+        allocator.concat(terms)
     }
 }
 
 impl PrettyPrint for ConditionNode {
-    fn build<'a>(&self, _allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        todo!()
+    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+        let mut terms = Vec::with_capacity(10);
+        terms.push(self.condition.build(allocator));
+        terms.push(self.body.build(allocator));
+        allocator.concat(terms)
     }
 }
 
@@ -33,7 +41,7 @@ impl PrettyPrint for ConditionType {
 }
 
 #[cfg(feature = "pretty-print")]
-impl PrettyPrint for ElsePart {
+impl PrettyPrint for ElseStatement {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         let mut terms = Vec::with_capacity(10);
         terms.push(allocator.hardline());

@@ -6,6 +6,8 @@ impl PrettyPrint for ClassDeclaration {
         terms.push(allocator.keyword("class"));
         terms.push(allocator.space());
         terms.push(self.namepath.build(allocator));
+        // terms.push(allocator.space());
+        terms.push(self.body.build(allocator));
         allocator.concat(terms)
     }
 }

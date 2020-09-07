@@ -15,8 +15,7 @@ fn lex_statements() {
 
 #[test]
 fn debug_statement() {
-    top_debug(include_str!("define_flags.vk"), "statement/define_flags_debug.rkt").expect("flags");
-    top_debug(include_str!("define_class.vk"), "statement/define_class_debug.rkt").expect("union");
+    top_debug(include_str!("if_nests.vk"), "statement/if_nests_debug.rkt").expect("if_nests");
 }
 
 #[test]

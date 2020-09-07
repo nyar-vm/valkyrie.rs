@@ -25,7 +25,10 @@ impl PrettyPrint for AnnotationKind {
 
 impl PrettyPrint for AnnotationNode {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        todo!()
+        let mut terms = Vec::with_capacity(2);
+        terms.push(self.kind.build(allocator));
+        terms.push(self.term.build(allocator));
+        allocator.concat(terms)
     }
 }
 
@@ -54,12 +57,6 @@ impl PrettyPrint for AnnotationTerm {
 
 impl PrettyPrint for AnnotationPathNode {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        let mut terms = Vec::with_capacity(self.names.len() + 1);
-        terms.push(self.path.build(allocator));
-        for item in &self.names {
-            terms.push(allocator.metadata("."));
-            terms.push(item.build(allocator));
-        }
-        allocator.concat(terms)
+        allocator.metadata(self.to_string())
     }
 }

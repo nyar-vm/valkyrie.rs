@@ -1,5 +1,5 @@
 use super::*;
-use valkyrie_ast::LambdaSlotNode;
+use valkyrie_ast::{IfStatement, LambdaSlotNode};
 
 impl ThisParser for PrefixNode {
     fn parse(_: ParseState) -> ParseResult<Self> {
@@ -135,21 +135,21 @@ fn parse_expr_value<'a>(
         .skip(ignore)
         .begin_choice()
         .or_else(|s| parse_group(s, ctx).map_inner(ExpressionStream::Group))
-        .or_else(|s| parse_value(s, ctx.allow_curly).map_inner(ExpressionStream::Term))
+        .or_else(|s| parse_expression(s, ctx.allow_curly).map_inner(ExpressionStream::Term))
         .end_choice()?;
 
     stream.push(term);
     state.finish(())
 }
 
-#[inline]
-pub fn parse_value(input: ParseState, allow_curly: bool) -> ParseResult<ExpressionBody> {
+pub fn parse_expression(input: ParseState, allow_curly: bool) -> ParseResult<ExpressionBody> {
     let (state, mut base) = input
         .begin_choice()
         .or_else(|s| NewConstructNode::parse(s).map_inner(Into::into))
         .or_else(|s| NumberLiteralNode::parse(s).map_inner(Into::into))
         .or_else(|s| StringLiteralNode::parse(s).map_inner(Into::into))
         .or_else(|s| LambdaSlotNode::parse(s).map_inner(Into::into))
+        .or_else(|s| IfStatement::parse(s).map_inner(Into::into))
         .or_else(|s| NamePathNode::parse(s).map_inner(Into::into))
         .or_else(|s| TableNode::parse(s).map_inner(Into::into))
         .or_else(|s| TupleNode::parse(s).map_inner(Into::into))

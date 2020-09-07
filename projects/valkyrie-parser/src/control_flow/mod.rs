@@ -4,11 +4,11 @@ use crate::{
     ThisParser,
 };
 use lispify::Lisp;
-use pex::{BracketPattern, ParseResult, ParseState, StopBecause};
+use pex::{helpers::str, BracketPattern, ParseResult, ParseState, StopBecause};
 
 use crate::{helpers::parse_when, utils::parse_statement_block};
 use valkyrie_ast::{
-    ArgumentKeyNode, ConditionNode, ConditionType, ControlNode, ControlType, ElsePart, ExpressionContext, ExpressionNode,
+    ArgumentKeyNode, ConditionNode, ConditionType, ControlNode, ControlType, ElseStatement, ExpressionContext, ExpressionNode,
     ForLoop, IfStatement, PatternType, StatementBlock, StatementNode, WhileLoop,
 };
 
@@ -19,12 +19,30 @@ mod loop_while;
 impl ThisParser for IfStatement {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, _) = parse_when(input)?;
-        todo!()
+        let (state, cond) = state.skip(ignore).match_fn(ConditionNode::parse)?;
+        let (state, body) = state.match_repeats(parse_else_if)?;
+        let (finally, else_body) = state.skip(ignore).match_fn(ElseStatement::parse)?;
+        let mut branches = vec![cond];
+        branches.extend(body);
+        finally.finish(IfStatement { branches, else_branch: else_body, span: get_span(input, finally) })
     }
 
     fn as_lisp(&self) -> Lisp {
-        todo!()
+        let mut terms = Vec::with_capacity(10);
+        terms.push(Lisp::keyword("branches"));
+        for branch in &self.branches {
+            terms.push(branch.as_lisp());
+        }
+        terms.push(self.else_branch.as_lisp());
+        Lisp::Any(terms)
     }
+}
+
+fn parse_else_if(input: ParseState) -> ParseResult<ConditionNode> {
+    let (state, _) = str("else")(input.skip(ignore))?;
+    let (state, _) = str("if")(state.skip(ignore))?;
+    let (state, cond) = state.skip(ignore).match_fn(ConditionNode::parse)?;
+    state.finish(cond)
 }
 
 impl ThisParser for ConditionNode {
@@ -35,7 +53,10 @@ impl ThisParser for ConditionNode {
     }
 
     fn as_lisp(&self) -> Lisp {
-        todo!()
+        let mut terms = Vec::with_capacity(10);
+        terms.push(self.condition.as_lisp());
+        terms.push(self.body.as_lisp());
+        Lisp::Any(terms)
     }
 }
 
@@ -70,11 +91,11 @@ impl ThisParser for StatementBlock {
     }
 }
 
-impl ThisParser for ElsePart {
+impl ThisParser for ElseStatement {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, _) = input.match_str("else")?;
         let (state, func) = state.skip(ignore).match_fn(StatementBlock::parse)?;
-        state.finish(ElsePart { statements: func.terms, span: get_span(input, state) })
+        state.finish(ElseStatement { statements: func.terms, span: get_span(input, state) })
     }
 
     fn as_lisp(&self) -> Lisp {

@@ -11,7 +11,7 @@ use super::*;
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct IfStatement {
     pub branches: Vec<ConditionNode>,
-    pub else_branch: Vec<StatementNode>,
+    pub else_branch: ElseStatement,
     /// The range of the node
     pub span: Range<u32>,
 }
@@ -42,7 +42,7 @@ pub struct CasePatternNode {
 
 /// Helper function to format the body of an if statement
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
-pub struct ElsePart {
+pub struct ElseStatement {
     pub statements: Vec<StatementNode>,
     /// The range of the node
     pub span: Range<u32>,

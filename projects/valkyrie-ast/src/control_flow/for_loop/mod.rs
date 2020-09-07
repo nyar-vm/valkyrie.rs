@@ -38,7 +38,7 @@ pub struct ForLoop {
     /// `{ body }`
     pub body: StatementBlock,
     /// `else { body }`
-    pub r#else: Option<ElsePart>,
+    pub r#else: Option<ElseStatement>,
     /// The range of the node
     pub span: Range<u32>,
 }

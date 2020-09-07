@@ -12,7 +12,7 @@ impl ThisParser for ForLoop {
         })?;
         let (state, cond) = state.skip(ignore).match_optional(PatternCondition::parse)?;
         let (state, body) = state.skip(ignore).match_fn(StatementBlock::parse)?;
-        let (state, other) = state.skip(ignore).match_optional(ElsePart::parse)?;
+        let (state, other) = state.skip(ignore).match_optional(ElseStatement::parse)?;
         state.finish(ForLoop { pattern, iterator: expr, condition: cond, body, r#else: other, span: get_span(input, state) })
     }
 

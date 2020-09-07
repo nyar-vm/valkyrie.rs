@@ -2,7 +2,7 @@
 use pretty_print::{PrettyPrint, PrettyProvider, PrettyTree};
 
 use crate::{
-    ArgumentKeyNode, ConditionType, ElsePart, ExpressionNode, PatternCondition, PatternType, StatementBlock, StatementNode,
+    ArgumentKeyNode, ConditionType, ElseStatement, ExpressionNode, PatternCondition, PatternType, StatementBlock, StatementNode,
 };
 use alloc::{boxed::Box, vec::Vec};
 use core::{

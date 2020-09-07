@@ -16,7 +16,7 @@ pub use crate::{
         control::{ControlNode, ControlType},
         for_loop::ForLoop,
         guard_statement::{GuardPattern, GuardStatement},
-        if_else::{ConditionNode, ConditionType, ElsePart, IfStatement},
+        if_else::{ConditionNode, ConditionType, ElseStatement, IfStatement},
         looping::{PatternType, WhileLoop},
         pattern::PatternCondition,
     },

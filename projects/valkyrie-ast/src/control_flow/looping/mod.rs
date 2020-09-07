@@ -9,7 +9,7 @@ mod display;
 pub struct WhileLoop {
     pub condition: ConditionType,
     pub body: StatementBlock,
-    pub r#else: Option<ElsePart>,
+    pub r#else: Option<ElseStatement>,
     /// The range of the node
     pub span: Range<u32>,
 }
