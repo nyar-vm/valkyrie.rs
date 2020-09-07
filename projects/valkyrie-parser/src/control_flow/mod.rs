@@ -8,8 +8,8 @@ use pex::{helpers::str, BracketPattern, ParseResult, ParseState, StopBecause};
 
 use crate::{helpers::parse_when, utils::parse_statement_block};
 use valkyrie_ast::{
-    ArgumentKeyNode, ConditionNode, ConditionType, ControlNode, ControlType, ElseStatement, ExpressionContext, ExpressionNode,
-    ForLoop, IfStatement, PatternType, StatementBlock, StatementNode, WhileLoop,
+    ArgumentKeyNode, ConditionType, ControlNode, ControlType, ElseStatement, ExpressionContext, ExpressionNode, ForLoop,
+    IfConditionNode, IfStatement, PatternType, StatementBlock, StatementNode, WhileLoop,
 };
 
 mod controller;
@@ -19,12 +19,12 @@ mod loop_while;
 impl ThisParser for IfStatement {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, _) = parse_when(input)?;
-        let (state, cond) = state.skip(ignore).match_fn(ConditionNode::parse)?;
+        let (state, cond) = state.skip(ignore).match_fn(IfConditionNode::parse)?;
         let (state, body) = state.match_repeats(parse_else_if)?;
-        let (finally, else_body) = state.skip(ignore).match_fn(ElseStatement::parse)?;
+        let (finally, else_body) = state.skip(ignore).match_optional(ElseStatement::parse)?;
         let mut branches = vec![cond];
         branches.extend(body);
-        finally.finish(IfStatement { branches, else_branch: else_body, span: get_span(input, finally) })
+        finally.finish(IfStatement { branches, else_branch: else_body.unwrap_or_default(), span: get_span(input, finally) })
     }
 
     fn as_lisp(&self) -> Lisp {
@@ -38,18 +38,18 @@ impl ThisParser for IfStatement {
     }
 }
 
-fn parse_else_if(input: ParseState) -> ParseResult<ConditionNode> {
+fn parse_else_if(input: ParseState) -> ParseResult<IfConditionNode> {
     let (state, _) = str("else")(input.skip(ignore))?;
     let (state, _) = str("if")(state.skip(ignore))?;
-    let (state, cond) = state.skip(ignore).match_fn(ConditionNode::parse)?;
+    let (state, cond) = state.skip(ignore).match_fn(IfConditionNode::parse)?;
     state.finish(cond)
 }
 
-impl ThisParser for ConditionNode {
+impl ThisParser for IfConditionNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, cond) = input.match_fn(ConditionType::parse)?;
         let (state, body) = state.skip(ignore).match_fn(StatementBlock::parse)?;
-        state.finish(ConditionNode { condition: cond, body, span: get_span(input, state) })
+        state.finish(IfConditionNode { condition: cond, body, span: get_span(input, state) })
     }
 
     fn as_lisp(&self) -> Lisp {

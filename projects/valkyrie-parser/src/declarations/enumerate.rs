@@ -36,10 +36,7 @@ impl ThisParser for EnumerateFieldDeclaration {
         let (state, name) = IdentifierNode::parse(input)?;
         let (state, value) = state.skip(ignore).match_optional(|s| {
             let (state, _) = str("=")(s)?;
-            let (state, expr) = parse_expression_node(
-                state.skip(ignore),
-                ExpressionContext { type_level: false, allow_newline: true, allow_curly: false },
-            )?;
+            let (state, expr) = parse_expression_node(state.skip(ignore), ExpressionContext::default())?;
             let state = state.skip(ignore).skip(parse_semi);
             state.finish(expr)
         })?;

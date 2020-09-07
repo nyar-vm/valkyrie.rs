@@ -21,10 +21,7 @@ impl ThisParser for GuardStatement {
 
 impl ThisParser for GuardPattern {
     fn parse(input: ParseState) -> ParseResult<Self> {
-        let (state, node) = parse_expression_node(
-            input.skip(ignore),
-            ExpressionContext { type_level: false, allow_newline: true, allow_curly: false },
-        )?;
+        let (state, node) = parse_expression_node(input.skip(ignore), ExpressionContext::default())?;
         state.finish(GuardPattern::Inline(Box::new(node)))
     }
 

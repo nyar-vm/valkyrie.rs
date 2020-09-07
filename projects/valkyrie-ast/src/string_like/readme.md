@@ -58,10 +58,6 @@ trait ShowHtml {
 
 
 
-
-
-
-
 ```
 vouch T {
 }
@@ -83,3 +79,30 @@ fun sleep(d: duration): () / async {
 }
 
 ```
+
+
+if { a > 0 { a }; _ { 0 } }
+match { 
+    case Case(a) | Case(b)
+    when a > 0:
+
+    case var is Type:
+    case Variant
+    case Class(unapply)
+    case "3" { }
+}
+
+
+if let Some(a) = b {
+
+}
+
+match n {
+    type Integer:
+        print("n is integer")
+    when n > 0:
+        print("n is > 0")
+    case a if a > 5:
+        print("n is > 5")
+    else:
+        print("n is unknown")

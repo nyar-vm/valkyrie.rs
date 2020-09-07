@@ -16,9 +16,9 @@ pub use crate::{
         control::{ControlNode, ControlType},
         for_loop::ForLoop,
         guard_statement::{GuardPattern, GuardStatement},
-        if_else::{ConditionNode, ConditionType, ElseStatement, IfStatement},
+        if_else::{ConditionType, ElseStatement, IfConditionNode, IfStatement},
         looping::{PatternType, WhileLoop},
-        pattern::PatternCondition,
+        pattern::{PatternBranch, PatternGuard, PatternTypeNode, PatternWhenNode, PatternElseNode, PatternCaseNode},
     },
     expression_level::{
         annotations::{AnnotationKind, AnnotationList, AnnotationNode, AnnotationPathNode, AnnotationTerm, ModifiersNode},

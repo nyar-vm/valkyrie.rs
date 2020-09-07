@@ -12,15 +12,13 @@ edition = "2021"
 [dependencies]
 serde = "1.0.163"
 patricia_tree = "0.5.7"
-pex = { version = "0.1.6", optional = true }
-pratt = { version = "0.4.0", optional = true}
 dashu = { version = "0.3.1", features = ["serde"] }
 num-traits = "0.2.15"
 indexmap = "1.9.2"
 inwelling = "0.5.0"
 itertools = "0.10.5"
-image = { version = "0.24.6", features = []}
-ndarray = { version = "0.15.6", features = []}
+image = { version = "0.24.6", features = [] }
+ndarray = { version = "0.15.6", features = [] }
 polars = { version = "0.30.0", features = ["lazy"]}
 
 [dependencies.valkyrie-error]
@@ -36,4 +34,3 @@ path = "../valkyrie-ast"
 
 [features]
 default = []
-pex = ["dep:pex", "pex/regex"]

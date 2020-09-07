@@ -34,7 +34,7 @@ pub struct ForLoop {
     /// `in iterator`
     pub iterator: ExpressionNode,
     /// `if condition`
-    pub condition: Option<PatternCondition>,
+    pub condition: Option<PatternGuard>,
     /// `{ body }`
     pub body: StatementBlock,
     /// `else { body }`

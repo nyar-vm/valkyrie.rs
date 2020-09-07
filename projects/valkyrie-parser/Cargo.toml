@@ -1,11 +1,11 @@
 [package]
 name = "valkyrie-parser"
-version = "0.2.2"
+version = "0.2.3"
 authors = ["192608617@qq.com"]
 edition = "2018"
 description = "The hand write parser of valkyrie language"
-documentation = "https://github.com/nyar-vm/valkyrie.rs"
 repository = "https://github.com/nyar-lang/NyarNative"
+documentation = "https://docs.rs/valkyrie-parser"
 license = "MPL-2.0"
 
 [dependencies]
