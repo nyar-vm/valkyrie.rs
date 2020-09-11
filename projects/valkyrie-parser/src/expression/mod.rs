@@ -1,20 +1,22 @@
-mod parser;
+mod expression_kind;
+mod pattern_match;
 
 use crate::{
-    helpers::ignore,
+    helpers::{ignore, parse_comma, parse_when},
     operators::{ValkyrieInfix, ValkyriePrefix, ValkyrieSuffix},
     table::TupleNode,
     traits::ThisParser,
-    utils::{get_span, parse_expression_body, parse_expression_node},
+    utils::{get_span, parse_expression_body, parse_expression_node, parse_modifiers_lookahead},
 };
 use lispify::Lisp;
-use pex::{ParseResult, ParseState, StopBecause};
+use pex::{BracketPattern, ParseResult, ParseState, StopBecause};
 use pratt::{Affix, PrattError, PrattParser};
 use std::fmt::Debug;
 use valkyrie_ast::{
-    ApplyCallNode, ApplyDotNode, ExpressionBody, ExpressionContext, ExpressionNode, GenericCallNode, InfixNode, LambdaCallNode,
-    LambdaDotNode, NamePathNode, NewConstructNode, NumberLiteralNode, PostfixCallPart, PostfixNode, PrefixNode,
-    StringLiteralNode, SubscriptNode, TableNode, TypingExpression, ValkyrieOperator,
+    ApplyCallNode, ApplyDotNode, ArgumentKeyNode, ExpressionBody, ExpressionContext, ExpressionNode, GenericCallNode,
+    InfixNode, LambdaCallNode, LambdaDotNode, NamePathNode, NewConstructNode, NumberLiteralNode, PatternCondition,
+    PatternExpression, PatternGuard, PostfixCallPart, PostfixNode, PrefixNode, StringLiteralNode, SubscriptNode, TableNode,
+    TypingExpression, ValkyrieOperator,
 };
 
 /// A resolver

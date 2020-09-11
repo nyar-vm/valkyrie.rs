@@ -5,7 +5,7 @@ impl PrettyPrint for IfStatement {
         let mut terms = Vec::with_capacity(self.branches.len() * 4 + 3);
         for (idx, term) in self.branches.iter().enumerate() {
             if idx == 0 {
-                terms.push(allocator.keyword("when "));
+                terms.push(allocator.keyword("if "));
                 terms.push(term.condition.build(allocator));
             }
             else {
@@ -29,7 +29,7 @@ impl PrettyPrint for IfConditionNode {
     }
 }
 
-impl PrettyPrint for ConditionType {
+impl PrettyPrint for WhileConditionNode {
     /// ```vk
     /// # inline style
     /// a || b || c
@@ -42,9 +42,9 @@ impl PrettyPrint for ConditionType {
     /// ```
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         match self {
-            ConditionType::AlwaysTrue => allocator.keyword("true"),
-            ConditionType::Case => allocator.keyword("case"),
-            ConditionType::Expression(e) => e.build(allocator),
+            WhileConditionNode::AlwaysTrue => allocator.keyword("true"),
+            WhileConditionNode::Case => allocator.keyword("case"),
+            WhileConditionNode::Expression(e) => e.build(allocator),
         }
     }
 }

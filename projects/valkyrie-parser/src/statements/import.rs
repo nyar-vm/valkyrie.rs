@@ -70,8 +70,8 @@ impl ThisParser for ImportTermNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
         input
             .begin_choice()
-            .or_else(|s| ImportAliasNode::parse(s).map_inner(Into::into))
-            .or_else(|s| ImportGroupNode::parse(s).map_inner(Into::into))
+            .or_else(|s| ImportAliasNode::parse(s).map_into())
+            .or_else(|s| ImportGroupNode::parse(s).map_into())
             .end_choice()
     }
 

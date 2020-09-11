@@ -25,8 +25,8 @@ fn enum_statements(input: ParseState) -> ParseResult<StatementNode> {
     let (state, ty) = input
         .skip(ignore)
         .begin_choice()
-        .or_else(|s| DocumentationNode::parse(s).map_inner(Into::into))
-        .or_else(|s| EnumerateFieldDeclaration::parse(s).map_inner(Into::into))
+        .or_else(|s| DocumentationNode::parse(s).map_into())
+        .or_else(|s| EnumerateFieldDeclaration::parse(s).map_into())
         .end_choice()?;
     state.finish(StatementNode { r#type: ty, end_semicolon: true, span: get_span(input, state) })
 }

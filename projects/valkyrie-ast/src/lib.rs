@@ -14,11 +14,12 @@ mod string_like;
 pub use crate::{
     control_flow::{
         control::{ControlNode, ControlType},
-        for_loop::ForLoop,
         guard_statement::{GuardPattern, GuardStatement},
-        if_else::{ConditionType, ElseStatement, IfConditionNode, IfStatement},
-        looping::{PatternType, WhileLoop},
-        pattern::{PatternBranch, PatternGuard, PatternTypeNode, PatternWhenNode, PatternElseNode, PatternCaseNode},
+        jmp_if::{ElseStatement, IfConditionNode, IfStatement},
+        jmp_switch::SwitchStatement,
+        loop_for::ForLoop,
+        loop_while::{PatternExpression, WhileConditionNode, WhileLoop},
+        pattern::{PatternCaseNode, PatternCondition, PatternElseNode, PatternGuard, PatternTypeNode, PatternWhenNode},
     },
     expression_level::{
         annotations::{AnnotationKind, AnnotationList, AnnotationNode, AnnotationPathNode, AnnotationTerm, ModifiersNode},

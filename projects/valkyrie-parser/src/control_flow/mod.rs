@@ -1,15 +1,13 @@
 use crate::{
-    helpers::{ignore, parse_comma, parse_in},
-    utils::{get_span, parse_expression_node, parse_modifiers_lookahead},
+    helpers::{ignore, parse_in, parse_when},
+    utils::{get_span, parse_expression_node, parse_statement_block},
     ThisParser,
 };
 use lispify::Lisp;
-use pex::{helpers::str, BracketPattern, ParseResult, ParseState, StopBecause};
-
-use crate::{helpers::parse_when, utils::parse_statement_block};
+use pex::{helpers::str, ParseResult, ParseState};
 use valkyrie_ast::{
-    ArgumentKeyNode, ConditionType, ControlNode, ControlType, ElseStatement, ExpressionContext, ExpressionNode, ForLoop,
-    IfConditionNode, IfStatement, PatternType, StatementBlock, StatementNode, WhileLoop,
+    ControlNode, ControlType, ElseStatement, ExpressionContext, ExpressionNode, ForLoop, IfConditionNode, IfStatement,
+    PatternExpression, PatternGuard, StatementBlock, StatementNode, WhileConditionNode, WhileLoop,
 };
 
 mod controller;
@@ -47,7 +45,7 @@ fn parse_else_if(input: ParseState) -> ParseResult<IfConditionNode> {
 
 impl ThisParser for IfConditionNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
-        let (state, cond) = input.match_fn(ConditionType::parse)?;
+        let (state, cond) = input.match_fn(ExpressionNode::parse)?;
         let (state, body) = state.skip(ignore).match_fn(StatementBlock::parse)?;
         state.finish(IfConditionNode { condition: cond, body, span: get_span(input, state) })
     }
@@ -60,23 +58,23 @@ impl ThisParser for IfConditionNode {
     }
 }
 
-impl ThisParser for ConditionType {
+impl ThisParser for WhileConditionNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
         input
             .begin_choice()
             .or_else(|s| {
                 let (state, e) = ExpressionNode::parse(s)?;
-                state.finish(ConditionType::Expression(Box::new(e)))
+                state.finish(WhileConditionNode::Expression(Box::new(e)))
             })
-            .or_else(|s| s.finish(ConditionType::AlwaysTrue))
+            .or_else(|s| s.finish(WhileConditionNode::AlwaysTrue))
             .end_choice()
     }
 
     fn as_lisp(&self) -> Lisp {
         match self {
-            ConditionType::AlwaysTrue => Lisp::keyword("true"),
-            ConditionType::Case => Lisp::keyword("case"),
-            ConditionType::Expression(v) => v.as_lisp(),
+            WhileConditionNode::AlwaysTrue => Lisp::keyword("true"),
+            WhileConditionNode::Case => Lisp::keyword("case"),
+            WhileConditionNode::Expression(v) => v.as_lisp(),
         }
     }
 }

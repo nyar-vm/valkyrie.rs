@@ -1,11 +1,23 @@
 use super::*;
 
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct PatternBranch {
+    /// The condition of the branch
+    pub condition: PatternCondition,
+    /// The continuation of the branch
+    pub statements: Vec<StatementNode>,
+    /// The range of the node
+    pub span: Range<u32>,
+}
+
 /// All valid branches of a pattern match statement
 ///
 /// ```vk
 /// expr
 /// .match {
-///     case Some(a) | Success { value: a } when a > 0:
+///     case Some(a) | Success { value: a }
+///     when a > 0:
 ///         print("a is positive")
 ///     when a < 0:
 ///         print("a is negative")
@@ -21,9 +33,9 @@ use super::*;
 ///         print("Unknown error")
 /// }
 /// ```
-// #[derive(Clone, Debug, PartialEq, Eq, Hash, From)]
+#[derive(Clone, Debug, PartialEq, Eq, Hash, From)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum PatternBranch {
+pub enum PatternCondition {
     /// `case Some(a) | Success { value :a }:`
     Case(PatternCaseNode),
     /// `when a > 0:`
@@ -34,7 +46,7 @@ pub enum PatternBranch {
     Else(PatternElseNode),
 }
 
-/// `case Some(a) | Success { value :a } when a > 0:`
+/// `case Some(a) | Success { value :a } if a > 0:`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct PatternCaseNode {
@@ -73,6 +85,7 @@ pub struct PatternTypeNode {
     /// The range of the node
     pub span: Range<u32>,
 }
+
 /// `else:`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]

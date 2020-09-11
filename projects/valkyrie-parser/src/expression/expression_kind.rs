@@ -145,14 +145,14 @@ fn parse_expr_value<'a>(
 pub fn parse_expression(input: ParseState, allow_curly: bool) -> ParseResult<ExpressionBody> {
     let (state, mut base) = input
         .begin_choice()
-        .or_else(|s| NewConstructNode::parse(s).map_inner(Into::into))
-        .or_else(|s| NumberLiteralNode::parse(s).map_inner(Into::into))
-        .or_else(|s| StringLiteralNode::parse(s).map_inner(Into::into))
-        .or_else(|s| LambdaSlotNode::parse(s).map_inner(Into::into))
-        .or_else(|s| IfStatement::parse(s).map_inner(Into::into))
-        .or_else(|s| NamePathNode::parse(s).map_inner(Into::into))
-        .or_else(|s| TableNode::parse(s).map_inner(Into::into))
-        .or_else(|s| TupleNode::parse(s).map_inner(Into::into))
+        .or_else(|s| NewConstructNode::parse(s).map_into())
+        .or_else(|s| NumberLiteralNode::parse(s).map_into())
+        .or_else(|s| StringLiteralNode::parse(s).map_into())
+        .or_else(|s| LambdaSlotNode::parse(s).map_into())
+        .or_else(|s| IfStatement::parse(s).map_into())
+        .or_else(|s| NamePathNode::parse(s).map_into())
+        .or_else(|s| TableNode::parse(s).map_into())
+        .or_else(|s| TupleNode::parse(s).map_into())
         .end_choice()?;
     let (state, rest) = match allow_curly {
         true => state.match_repeats(parse_postfix_curly),
@@ -175,10 +175,10 @@ fn parse_postfix(input: ParseState) -> ParseResult<PostfixCallPart> {
     input
         .skip(ignore)
         .begin_choice()
-        .or_else(|s| ApplyCallNode::parse(s).map_inner(Into::into))
-        .or_else(|s| ApplyDotNode::parse(s).map_inner(Into::into))
-        .or_else(|s| SubscriptNode::parse(s).map_inner(Into::into))
-        .or_else(|s| GenericCallNode::parse(s).map_inner(Into::into))
+        .or_else(|s| ApplyCallNode::parse(s).map_into())
+        .or_else(|s| ApplyDotNode::parse(s).map_into())
+        .or_else(|s| SubscriptNode::parse(s).map_into())
+        .or_else(|s| GenericCallNode::parse(s).map_into())
         .end_choice()
 }
 
@@ -186,11 +186,11 @@ fn parse_postfix_curly(input: ParseState) -> ParseResult<PostfixCallPart> {
     input
         .skip(ignore)
         .begin_choice()
-        .or_else(|s| ApplyCallNode::parse(s).map_inner(Into::into))
-        .or_else(|s| ApplyDotNode::parse(s).map_inner(Into::into))
-        .or_else(|s| SubscriptNode::parse(s).map_inner(Into::into))
-        .or_else(|s| GenericCallNode::parse(s).map_inner(Into::into))
-        .or_else(|s| LambdaCallNode::parse(s).map_inner(Into::into))
-        .or_else(|s| LambdaDotNode::parse(s).map_inner(Into::into))
+        .or_else(|s| ApplyCallNode::parse(s).map_into())
+        .or_else(|s| ApplyDotNode::parse(s).map_into())
+        .or_else(|s| SubscriptNode::parse(s).map_into())
+        .or_else(|s| GenericCallNode::parse(s).map_into())
+        .or_else(|s| LambdaCallNode::parse(s).map_into())
+        .or_else(|s| LambdaDotNode::parse(s).map_into())
         .end_choice()
 }

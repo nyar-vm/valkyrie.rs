@@ -7,7 +7,7 @@ mod display;
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct WhileLoop {
-    pub condition: ConditionType,
+    pub condition: WhileConditionNode,
     pub body: StatementBlock,
     pub r#else: Option<ElseStatement>,
     /// The range of the node
@@ -16,7 +16,15 @@ pub struct WhileLoop {
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum PatternType {
+pub enum WhileConditionNode {
+    AlwaysTrue,
+    Case,
+    Expression(Box<ExpressionNode>),
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum PatternExpression {
     Tuple(Vec<ArgumentKeyNode>),
     Case,
 }

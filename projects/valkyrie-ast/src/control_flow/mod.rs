@@ -1,9 +1,6 @@
-#[cfg(feature = "pretty-print")]
-use pretty_print::{PrettyPrint, PrettyProvider, PrettyTree};
-use deriver::From;
 use crate::{
-    ArgumentKeyNode, ConditionType, ElseStatement, ExpressionNode, PatternGuard, PatternType, StatementBlock,
-    StatementNode,
+    ArgumentKeyNode, ElseStatement, ExpressionNode, IfConditionNode, PatternExpression, PatternGuard, StatementBlock,
+    StatementNode, SwitchStatement, WhileConditionNode,
 };
 use alloc::{boxed::Box, vec::Vec};
 use core::{
@@ -11,9 +8,14 @@ use core::{
     ops::Range,
 };
 
+use deriver::From;
+#[cfg(feature = "pretty-print")]
+use pretty_print::{PrettyPrint, PrettyProvider, PrettyTree};
+
 pub mod control;
-pub mod for_loop;
 pub mod guard_statement;
-pub mod if_else;
-pub mod looping;
+pub mod jmp_if;
+pub mod jmp_switch;
+pub mod loop_for;
+pub mod loop_while;
 pub mod pattern;

@@ -30,7 +30,7 @@ mod display;
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ForLoop {
     /// `for pattern`
-    pub pattern: PatternType,
+    pub pattern: PatternExpression,
     /// `in iterator`
     pub iterator: ExpressionNode,
     /// `if condition`

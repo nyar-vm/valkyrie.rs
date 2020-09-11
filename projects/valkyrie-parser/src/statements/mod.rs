@@ -10,9 +10,9 @@ use valkyrie_ast::{
     AnnotationList, AnnotationNode, ApplyCallNode, ClassDeclaration, ControlNode, DocumentationNode, EnumerateDeclaration,
     ExpressionContext, ExpressionNode, FlagsDeclaration, ForLoop, FunctionDeclaration, GenericCallNode, GuardPattern,
     GuardStatement, IdentifierNode, ImportAliasNode, ImportGroupNode, ImportStatement, ImportTermNode, LambdaArgumentNode,
-    LambdaNode, LetBindNode, NamePathNode, NamespaceDeclaration, NamespaceKind, NewConstructNode, PatternType, ProgramRoot,
-    StatementBlock, StatementBody, StatementNode, TableTermNode, TaggedDeclaration, TypingExpression, UnionDeclaration,
-    WhileLoop,
+    LambdaNode, LetBindNode, NamePathNode, NamespaceDeclaration, NamespaceKind, NewConstructNode, PatternExpression,
+    ProgramRoot, StatementBlock, StatementBody, StatementNode, TableTermNode, TaggedDeclaration, TypingExpression,
+    UnionDeclaration, WhileLoop,
 };
 
 mod annotation;
@@ -72,23 +72,23 @@ impl ThisParser for StatementBody {
     fn parse(input: ParseState) -> ParseResult<Self> {
         input
             .begin_choice()
-            .or_else(|s| DocumentationNode::parse(s).map_inner(Into::into))
-            .or_else(|s| AnnotationNode::parse(s).map_inner(Into::into))
-            .or_else(|s| AnnotationList::parse(s).map_inner(Into::into))
-            .or_else(|s| NamespaceDeclaration::parse(s).map_inner(Into::into))
-            .or_else(|s| ImportStatement::parse(s).map_inner(Into::into))
-            .or_else(|s| ClassDeclaration::parse(s).map_inner(Into::into))
-            .or_else(|s| UnionDeclaration::parse(s).map_inner(Into::into))
-            .or_else(|s| TaggedDeclaration::parse(s).map_inner(Into::into))
-            .or_else(|s| EnumerateDeclaration::parse(s).map_inner(Into::into))
-            .or_else(|s| FlagsDeclaration::parse(s).map_inner(Into::into))
+            .or_else(|s| DocumentationNode::parse(s).map_into())
+            .or_else(|s| AnnotationNode::parse(s).map_into())
+            .or_else(|s| AnnotationList::parse(s).map_into())
+            .or_else(|s| NamespaceDeclaration::parse(s).map_into())
+            .or_else(|s| ImportStatement::parse(s).map_into())
+            .or_else(|s| ClassDeclaration::parse(s).map_into())
+            .or_else(|s| UnionDeclaration::parse(s).map_into())
+            .or_else(|s| TaggedDeclaration::parse(s).map_into())
+            .or_else(|s| EnumerateDeclaration::parse(s).map_into())
+            .or_else(|s| FlagsDeclaration::parse(s).map_into())
             .or_else(function_with_head)
-            .or_else(|s| LetBindNode::parse(s).map_inner(Into::into))
-            .or_else(|s| GuardStatement::parse(s).map_inner(Into::into))
-            .or_else(|s| WhileLoop::parse(s).map_inner(Into::into))
-            .or_else(|s| ForLoop::parse(s).map_inner(Into::into))
-            .or_else(|s| ControlNode::parse(s).map_inner(Into::into))
-            .or_else(|s| parse_expression_node(s, ExpressionContext::in_free()).map_inner(Into::into))
+            .or_else(|s| LetBindNode::parse(s).map_into())
+            .or_else(|s| GuardStatement::parse(s).map_into())
+            .or_else(|s| WhileLoop::parse(s).map_into())
+            .or_else(|s| ForLoop::parse(s).map_into())
+            .or_else(|s| ControlNode::parse(s).map_into())
+            .or_else(|s| parse_expression_node(s, ExpressionContext::in_free()).map_into())
             .end_choice()
     }
 
@@ -123,14 +123,14 @@ impl ThisParser for StatementBody {
 pub fn parse_repl_statements(input: ParseState) -> ParseResult<StatementBody> {
     input
         .begin_choice()
-        .or_else(|s| NamespaceDeclaration::parse(s).map_inner(Into::into))
-        .or_else(|s| ImportStatement::parse(s).map_inner(Into::into))
-        .or_else(|s| ClassDeclaration::parse(s).map_inner(Into::into))
-        .or_else(|s| LetBindNode::parse(s).map_inner(Into::into))
-        .or_else(|s| FunctionDeclaration::parse(s).map_inner(Into::into))
-        .or_else(|s| WhileLoop::parse(s).map_inner(Into::into))
-        .or_else(|s| ForLoop::parse(s).map_inner(Into::into))
-        .or_else(|s| parse_expression_node(s, ExpressionContext::in_free()).map_inner(Into::into))
+        .or_else(|s| NamespaceDeclaration::parse(s).map_into())
+        .or_else(|s| ImportStatement::parse(s).map_into())
+        .or_else(|s| ClassDeclaration::parse(s).map_into())
+        .or_else(|s| LetBindNode::parse(s).map_into())
+        .or_else(|s| FunctionDeclaration::parse(s).map_into())
+        .or_else(|s| WhileLoop::parse(s).map_into())
+        .or_else(|s| ForLoop::parse(s).map_into())
+        .or_else(|s| parse_expression_node(s, ExpressionContext::in_free()).map_into())
         .end_choice()
 }
 
