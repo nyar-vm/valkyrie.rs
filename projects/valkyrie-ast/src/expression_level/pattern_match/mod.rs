@@ -1,18 +1,29 @@
 use super::*;
 
-/// `case a is B:`
+/// `.match {}.catch {}`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct MatchCaseNode {
-    pub body: Vec<ExpressionBody>,
+pub enum MatchKind {
+    Typing,
+    Effect,
 }
 
-/// `case a if a > 0:`
+/// `.match { when Some(a): a, else: 0}.catch { when IoError: (a), else: 0}`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct MatchElseNode {}
+pub struct MatchStatement {
+    pub kind: MatchKind,
+    pub branches: Vec<PatternBranch>,
+    /// The range of the node
+    pub span: Range<u32>,
+}
 
-/// `case a is B:`
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct MatchTypeNode {}
+impl MatchKind {
+    /// Get the string representation of the match kind
+    pub fn as_str(&self) -> &'static str {
+        match self {
+            MatchKind::Typing => "match",
+            MatchKind::Effect => "catch",
+        }
+    }
+}

@@ -1,12 +1,65 @@
 use super::*;
+use valkyrie_ast::{PatternElseNode, PatternTypeNode, PatternWhenNode};
 
 impl ThisParser for PatternCondition {
     fn parse(input: ParseState) -> ParseResult<Self> {
-        todo!()
+        let (state, head) = input
+            .begin_choice()
+            .or_else(|s| PatternCaseNode::parse(s).map_into())
+            .or_else(|s| PatternTypeNode::parse(s).map_into())
+            .or_else(|s| PatternWhenNode::parse(s).map_into())
+            .or_else(|s| PatternElseNode::parse(s).map_into())
+            .end_choice()?;
+        let (state, _) = state.skip(ignore).match_str(":")?;
+        state.finish(head)
     }
 
     fn as_lisp(&self) -> Lisp {
-        todo!()
+        unreachable!()
+    }
+}
+
+impl ThisParser for PatternCaseNode {
+    fn parse(input: ParseState) -> ParseResult<Self> {
+        let (state, _) = str("case")(input)?;
+        let (state, pat) = state.skip(ignore).match_fn(ExpressionNode::parse)?;
+        state.finish(Self { pattern: pat, guard: None, span: get_span(input, state) })
+    }
+
+    fn as_lisp(&self) -> Lisp {
+        unreachable!()
+    }
+}
+impl ThisParser for PatternTypeNode {
+    fn parse(input: ParseState) -> ParseResult<Self> {
+        let (state, _) = str("type")(input)?;
+        let (state, expr) = parse_expression_node(state.skip(ignore), ExpressionContext::in_type())?;
+        state.finish(Self { pattern: expr, guard: None, span: get_span(input, state) })
+    }
+
+    fn as_lisp(&self) -> Lisp {
+        unreachable!()
+    }
+}
+impl ThisParser for PatternWhenNode {
+    fn parse(input: ParseState) -> ParseResult<Self> {
+        let (state, _) = str("when")(input)?;
+        let (state, expr) = parse_expression_node(state.skip(ignore), ExpressionContext::default())?;
+        state.finish(Self { guard: expr, span: get_span(input, state) })
+    }
+
+    fn as_lisp(&self) -> Lisp {
+        unreachable!()
+    }
+}
+impl ThisParser for PatternElseNode {
+    fn parse(input: ParseState) -> ParseResult<Self> {
+        let (state, _) = str("else")(input)?;
+        state.finish(Self { span: get_span(input, state) })
+    }
+
+    fn as_lisp(&self) -> Lisp {
+        unreachable!()
     }
 }
 

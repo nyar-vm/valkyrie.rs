@@ -26,6 +26,7 @@ pub enum ClassTerm {
     Method(ClassMethodDeclaration),
 }
 
+/// Iterate over all legal elements in the class
 #[derive(Clone, Debug)]
 pub struct ClassIterator<'a> {
     inner: core::slice::Iter<'a, StatementNode>,

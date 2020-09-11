@@ -12,12 +12,11 @@ pub mod string_template;
 pub mod symbol;
 pub mod table;
 pub mod view;
-
 use crate::{
     ApplyCallNode, ApplyDotNode, ArgumentTermNode, CallNode, CallTermNode, CollectsNode, ControlNode, GenericCallNode,
     IdentifierNode, IfStatement, InfixNode, LambdaCallNode, LambdaDotNode, LambdaSlotNode, NamePathNode, NewConstructNode,
-    NumberLiteralNode, OperatorNode, PostfixNode, PrefixNode, StatementNode, StringLiteralNode, SubscriptNode, TableNode,
-    TableTermNode,
+    NumberLiteralNode, OperatorNode, PatternBranch, PatternElseNode, PostfixNode, PrefixNode, StatementNode, StringLiteralNode,
+    SubscriptNode, TableNode, TableTermNode,
 };
 use alloc::{
     borrow::ToOwned,

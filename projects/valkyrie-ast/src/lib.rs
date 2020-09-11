@@ -19,7 +19,9 @@ pub use crate::{
         jmp_switch::SwitchStatement,
         loop_for::ForLoop,
         loop_while::{PatternExpression, WhileConditionNode, WhileLoop},
-        pattern::{PatternCaseNode, PatternCondition, PatternElseNode, PatternGuard, PatternTypeNode, PatternWhenNode},
+        pattern::{
+            PatternBranch, PatternCaseNode, PatternCondition, PatternElseNode, PatternGuard, PatternTypeNode, PatternWhenNode,
+        },
     },
     expression_level::{
         annotations::{AnnotationKind, AnnotationList, AnnotationNode, AnnotationPathNode, AnnotationTerm, ModifiersNode},
@@ -30,7 +32,7 @@ pub use crate::{
         lambda::{LambdaArgumentNode, LambdaCallNode, LambdaDotNode, LambdaNode},
         number::NumberLiteralNode,
         operators::{InfixNode, OperatorNode, PostfixNode, PrefixNode, ValkyrieOperator},
-        pattern_match::MatchCaseNode,
+        pattern_match::{MatchKind, MatchStatement},
         symbol::{IdentifierNode, LambdaSlotNode, NamePathNode},
         table::{TableKeyType, TableKind, TableNode, TableTermNode},
         view::{SubscriptNode, SubscriptSliceNode, SubscriptTermNode},

@@ -20,7 +20,7 @@ fn debug_statement() {
 
 #[test]
 fn test_statement() {
-    let raw = ParseState::new("class A {a : Type = 1,}");
-    let apply = ClassDeclaration::parse(raw).unwrap();
+    let raw = ParseState::new("else:");
+    let apply = PatternCondition::parse(raw).unwrap();
     apply.pretty_print(42)
 }
