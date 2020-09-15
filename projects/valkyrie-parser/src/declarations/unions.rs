@@ -12,7 +12,7 @@ impl ThisParser for UnionDeclaration {
             modifiers: vec![],
             extends: None,
             implements: vec![],
-            body: Default::default(),
+            body: stmt,
         })
     }
 

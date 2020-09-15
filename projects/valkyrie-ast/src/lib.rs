@@ -20,7 +20,8 @@ pub use crate::{
         loop_for::ForLoop,
         loop_while::{PatternExpression, WhileConditionNode, WhileLoop},
         pattern::{
-            PatternBranch, PatternCaseNode, PatternCondition, PatternElseNode, PatternGuard, PatternTypeNode, PatternWhenNode,
+            PatternBranch, PatternCaseNode, PatternCondition, PatternElseNode, PatternGuard, PatternStatements,
+            PatternTypeNode, PatternWhenNode,
         },
     },
     expression_level::{

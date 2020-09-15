@@ -5,7 +5,6 @@ impl ThisParser for ClassDeclaration {
         let (state, _) = input.match_str("class")?;
         let (state, namepath) = state.skip(ignore).match_fn(NamePathNode::parse)?;
         let (state, stmt) = parse_statement_block(state.skip(ignore), class_statements)?;
-
         state.finish(ClassDeclaration {
             kind: ClassKind::Class,
             namepath,
@@ -48,10 +47,9 @@ impl ThisParser for ClassFieldDeclaration {
 
     fn as_lisp(&self) -> Lisp {
         let mut terms = vec![];
-        for modi in &self.modifiers.terms {
-            terms.push(modi.as_lisp());
-        }
+        terms.push(Lisp::keyword("class/field"));
         terms.push(self.field_name.as_lisp());
+        terms.push(self.modifiers.as_lisp());
         if let Some(typing) = &self.r#type {
             terms.push(Lisp::keyword(":"));
             terms.push(typing.as_lisp());
@@ -66,11 +64,16 @@ impl ThisParser for ClassFieldDeclaration {
 
 impl ThisParser for ClassMethodDeclaration {
     fn parse(input: ParseState) -> ParseResult<Self> {
-        todo!()
+        let (state, (mods, id)) = parse_modifiers(input)?;
+        state.finish(Self { modifiers: mods, method_name: id })
     }
 
     fn as_lisp(&self) -> Lisp {
-        todo!()
+        let mut terms = vec![];
+        terms.push(Lisp::keyword("class/method"));
+        terms.push(self.method_name.as_lisp());
+        terms.push(self.modifiers.as_lisp());
+        Lisp::Any(terms)
     }
 }
 

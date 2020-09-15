@@ -1,5 +1,35 @@
 use super::*;
-use valkyrie_ast::{PatternElseNode, PatternTypeNode, PatternWhenNode};
+use pex::Regex;
+use std::sync::LazyLock;
+use valkyrie_ast::{AnnotationList, AnnotationNode, DocumentationNode, PatternBranch, PatternStatements, StatementNode};
+
+impl ThisParser for PatternBranch {
+    fn parse(input: ParseState) -> ParseResult<Self> {
+        let (state, cond) = PatternCondition::parse(input)?;
+        let (state, stmts) = state.match_repeats(pattern_statements)?;
+        state.finish(Self { condition: cond, statements: PatternStatements { terms: stmts }, span: get_span(input, state) })
+    }
+
+    fn as_lisp(&self) -> Lisp {
+        todo!()
+    }
+}
+
+static PREFIX: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(
+        r#"^(?x)(
+    \b(case | when | type | else)\b
+)"#,
+    )
+    .unwrap()
+});
+
+fn pattern_statements(input: ParseState) -> ParseResult<StatementNode> {
+    if let ParseResult::Pending(_, _) = input.match_regex(&PREFIX, "PatternPrefix") {
+        Err(StopBecause::ShouldNotBe { message: "PatternGuard", position: input.start_offset })?
+    }
+    StatementNode::parse(input)
+}
 
 impl ThisParser for PatternCondition {
     fn parse(input: ParseState) -> ParseResult<Self> {

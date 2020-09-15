@@ -16,8 +16,9 @@ use valkyrie_ast::{
     ApplyCallNode, ApplyDotNode, ArgumentKeyNode, ExpressionBody, ExpressionContext, ExpressionNode, GenericCallNode,
     InfixNode, LambdaCallNode, LambdaDotNode, NamePathNode, NewConstructNode, NumberLiteralNode, PatternCaseNode,
     PatternCondition, PatternExpression, PatternGuard, PostfixCallPart, PostfixNode, PrefixNode, StringLiteralNode,
-    SubscriptNode, TableNode, TypingExpression, ValkyrieOperator,
+    SubscriptNode, TableNode, TypingExpression,
 };
+use valkyrie_ast::{PatternElseNode, PatternTypeNode, PatternWhenNode};
 
 /// A resolver
 #[derive(Default)]
@@ -71,16 +72,6 @@ pub enum ExpressionStream {
     Infix(ValkyrieInfix),
     Term(ExpressionBody),
     Group(Vec<ExpressionStream>),
-}
-
-impl ThisParser for ValkyrieOperator {
-    fn parse(input: ParseState) -> ParseResult<Self> {
-        todo!()
-    }
-
-    fn as_lisp(&self) -> Lisp {
-        todo!()
-    }
 }
 
 impl<I> PrattParser<I> for ExpressionResolver

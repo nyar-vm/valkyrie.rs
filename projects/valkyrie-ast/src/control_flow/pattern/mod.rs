@@ -8,9 +8,15 @@ pub struct PatternBranch {
     /// The condition of the branch
     pub condition: PatternCondition,
     /// The continuation of the branch
-    pub statements: Vec<StatementNode>,
+    pub statements: PatternStatements,
     /// The range of the node
     pub span: Range<u32>,
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct PatternStatements {
+    pub terms: Vec<StatementNode>,
 }
 
 /// All valid branches of a pattern match statement

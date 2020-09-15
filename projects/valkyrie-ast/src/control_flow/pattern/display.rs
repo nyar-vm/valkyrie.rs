@@ -1,6 +1,10 @@
-use crate::{PatternCaseNode, PatternCondition, PatternElseNode, PatternTypeNode, PatternWhenNode};
-use alloc::{vec, vec::Vec};
-use pretty_print::{PrettyPrint, PrettyProvider, PrettyTree};
+use super::*;
+
+impl PrettyPrint for PatternBranch {
+    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+        allocator.concat(vec![self.condition.build(allocator), self.statements.build(allocator)])
+    }
+}
 
 impl PrettyPrint for PatternCondition {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
@@ -11,6 +15,17 @@ impl PrettyPrint for PatternCondition {
             Self::Else(v) => v.build(allocator),
         };
         item.append(allocator.text(":")).append(allocator.hardline())
+    }
+}
+
+impl PrettyPrint for PatternStatements {
+    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+        let mut terms = Vec::with_capacity(self.terms.len() * 2);
+        for term in &self.terms {
+            terms.push(term.build(allocator));
+            terms.push(allocator.hardline());
+        }
+        allocator.concat(terms).indent(4)
     }
 }
 

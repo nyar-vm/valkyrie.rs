@@ -1,15 +1,5 @@
 use super::*;
 
-impl ThisParser for OperatorNode {
-    fn parse(input: ParseState) -> ParseResult<Self> {
-        todo!()
-    }
-
-    fn as_lisp(&self) -> Lisp {
-        todo!()
-    }
-}
-
 static PREFIX: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(
         r#"^(?x)(

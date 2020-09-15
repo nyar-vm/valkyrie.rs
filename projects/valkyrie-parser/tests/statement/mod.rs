@@ -20,7 +20,14 @@ fn debug_statement() {
 
 #[test]
 fn test_statement() {
-    let raw = ParseState::new("else:");
-    let apply = PatternCondition::parse(raw).unwrap();
+    let raw = ParseState::new("else: A + b; case Some(a): C");
+    let apply = PatternBranch::parse(raw).unwrap();
+    apply.pretty_print(42)
+}
+
+#[test]
+fn test_statement2() {
+    let raw = ParseState::new("switch { case Some(a): C, else: A + b }");
+    let apply = SwitchStatement::parse(raw).unwrap();
     apply.pretty_print(42)
 }

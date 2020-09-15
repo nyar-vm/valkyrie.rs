@@ -15,8 +15,8 @@ pub mod view;
 use crate::{
     ApplyCallNode, ApplyDotNode, ArgumentTermNode, CallNode, CallTermNode, CollectsNode, ControlNode, GenericCallNode,
     IdentifierNode, IfStatement, InfixNode, LambdaCallNode, LambdaDotNode, LambdaSlotNode, NamePathNode, NewConstructNode,
-    NumberLiteralNode, OperatorNode, PatternBranch, PatternElseNode, PostfixNode, PrefixNode, StatementNode, StringLiteralNode,
-    SubscriptNode, TableNode, TableTermNode,
+    NumberLiteralNode, OperatorNode, PatternBranch, PostfixNode, PrefixNode, StatementNode, StringLiteralNode, SubscriptNode,
+    TableNode, TableTermNode,
 };
 use alloc::{
     borrow::ToOwned,
