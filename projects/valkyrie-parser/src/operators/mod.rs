@@ -1,5 +1,4 @@
-use crate::{traits::ThisParser, utils::get_span};
-use lispify::Lisp;
+use crate::utils::get_span;
 use pex::{ParseResult, ParseState, Regex};
 use pratt::{Associativity, Precedence};
 use std::{

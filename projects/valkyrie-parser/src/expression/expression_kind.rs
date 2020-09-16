@@ -162,12 +162,12 @@ pub fn parse_expression(input: ParseState, allow_curly: bool) -> ParseResult<Exp
     }?;
     for caller in rest {
         match caller {
-            PostfixCallPart::Apply(v) => base = ExpressionBody::call_apply(base, v),
-            PostfixCallPart::ApplyDot(v) => base = ExpressionBody::dot_apply(base, v),
-            PostfixCallPart::View(v) => base = ExpressionBody::call_subscript(base, v),
-            PostfixCallPart::Generic(v) => base = ExpressionBody::call_generic(base, v),
-            PostfixCallPart::Lambda(v) => base = ExpressionBody::call_lambda(base, v),
-            PostfixCallPart::LambdaDot(v) => base = ExpressionBody::dot_lambda(base, v),
+            PostfixCallPart::Apply(v) => base = ExpressionBody::call_apply(base, v, false),
+            PostfixCallPart::ApplyDot(v) => base = ExpressionBody::dot_apply(base, v, false),
+            PostfixCallPart::View(v) => base = ExpressionBody::call_subscript(base, v, false),
+            PostfixCallPart::Generic(v) => base = ExpressionBody::call_generic(base, v, false),
+            PostfixCallPart::Lambda(v) => base = ExpressionBody::call_lambda(base, v, false),
+            PostfixCallPart::LambdaDot(v) => base = ExpressionBody::dot_lambda(base, v, false),
         }
     }
     state.finish(base)

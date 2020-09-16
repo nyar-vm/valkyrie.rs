@@ -13,11 +13,11 @@ use pex::{helpers::str, BracketPattern, ParseResult, ParseState, Regex, StopBeca
 use pratt::{Affix, PrattError, PrattParser};
 use std::{fmt::Debug, sync::LazyLock};
 use valkyrie_ast::{
-    AnnotationList, AnnotationNode, ApplyCallNode, ApplyDotNode, ArgumentKeyNode, DocumentationNode, ExpressionBody,
-    ExpressionContext, ExpressionNode, GenericCallNode, InfixNode, LambdaCallNode, LambdaDotNode, NamePathNode,
-    NewConstructNode, NumberLiteralNode, PatternBranch, PatternCaseNode, PatternCondition, PatternElseNode, PatternExpression,
-    PatternGuard, PatternStatements, PatternTypeNode, PatternWhenNode, PostfixCallPart, PostfixNode, PrefixNode, StatementNode,
-    StringLiteralNode, SubscriptNode, TableNode, TypingExpression,
+    ApplyCallNode, ApplyDotNode, ArgumentKeyNode, ExpressionBody, ExpressionContext, ExpressionNode, GenericCallNode,
+    InfixNode, LambdaCallNode, LambdaDotNode, NamePathNode, NewConstructNode, NumberLiteralNode, PatternBranch,
+    PatternCaseNode, PatternCondition, PatternElseNode, PatternExpression, PatternGuard, PatternStatements, PatternTypeNode,
+    PatternWhenNode, PostfixCallPart, PostfixNode, PrefixNode, StatementNode, StringLiteralNode, SubscriptNode, TableNode,
+    TypingExpression,
 };
 
 /// A resolver

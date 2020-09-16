@@ -2,11 +2,15 @@ use super::*;
 #[cfg(feature = "pretty-print")]
 mod display;
 
-/// `caller::<T>[a]::<U>(b).c(d)(e) {f}`
+/// `caller::<T>[a]::<U>(b)?.c(d)(e) {f}`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct CallNode<E> {
+    /// if this is a `?.` call
+    pub monadic: bool,
+    /// The last expression in the call chain
     pub base: ExpressionBody,
+    /// The rest of the call chain
     pub rest: E,
     /// The range of the node
     pub span: Range<u32>,

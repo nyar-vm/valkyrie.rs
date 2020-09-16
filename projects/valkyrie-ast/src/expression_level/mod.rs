@@ -133,28 +133,28 @@ impl ExpressionBody {
         let span = lhs.span().start..o.span.end;
         Self::Suffix(Box::new(PostfixNode { operator: o, base: lhs, span }))
     }
-    pub fn call_generic(base: Self, rest: GenericCallNode) -> Self {
+    pub fn call_generic(base: Self, rest: GenericCallNode, nullable: bool) -> Self {
         let span = base.span().start..rest.span.end;
-        ExpressionBody::GenericCall(Box::new(CallNode { base, rest, span }))
+        ExpressionBody::GenericCall(Box::new(CallNode { monadic: nullable, base, rest, span }))
     }
-    pub fn call_apply(base: Self, rest: ApplyCallNode) -> Self {
+    pub fn call_apply(base: Self, rest: ApplyCallNode, nullable: bool) -> Self {
         let span = base.span().start..rest.span.end;
-        ExpressionBody::Apply(Box::new(CallNode { base, rest, span }))
+        ExpressionBody::Apply(Box::new(CallNode { monadic: nullable, base, rest, span }))
     }
-    pub fn dot_apply(base: Self, rest: ApplyDotNode) -> Self {
+    pub fn dot_apply(base: Self, rest: ApplyDotNode, nullable: bool) -> Self {
         let span = base.span().start..rest.span.end;
-        ExpressionBody::ApplyDot(Box::new(CallNode { base, rest, span }))
+        ExpressionBody::ApplyDot(Box::new(CallNode { monadic: nullable, base, rest, span }))
     }
-    pub fn call_subscript(base: Self, rest: SubscriptNode) -> Self {
+    pub fn call_subscript(base: Self, rest: SubscriptNode, nullable: bool) -> Self {
         let span = base.span().start..rest.span.end;
-        ExpressionBody::Subscript(Box::new(CallNode { base, rest, span }))
+        ExpressionBody::Subscript(Box::new(CallNode { monadic: nullable, base, rest, span }))
     }
-    pub fn call_lambda(base: Self, rest: LambdaCallNode) -> Self {
+    pub fn call_lambda(base: Self, rest: LambdaCallNode, nullable: bool) -> Self {
         let span = base.span().start..rest.span.end;
-        ExpressionBody::LambdaCall(Box::new(CallNode { base, rest, span }))
+        ExpressionBody::LambdaCall(Box::new(CallNode { monadic: nullable, base, rest, span }))
     }
-    pub fn dot_lambda(base: Self, rest: LambdaDotNode) -> Self {
+    pub fn dot_lambda(base: Self, rest: LambdaDotNode, nullable: bool) -> Self {
         let span = base.span().start..rest.span.end;
-        ExpressionBody::LambdaDot(Box::new(CallNode { base, rest, span }))
+        ExpressionBody::LambdaDot(Box::new(CallNode { monadic: nullable, base, rest, span }))
     }
 }
