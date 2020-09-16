@@ -1,7 +1,4 @@
 use super::*;
-use pex::Regex;
-use std::sync::LazyLock;
-use valkyrie_ast::{AnnotationList, AnnotationNode, DocumentationNode, PatternBranch, PatternStatements, StatementNode};
 
 impl ThisParser for PatternBranch {
     fn parse(input: ParseState) -> ParseResult<Self> {
@@ -11,7 +8,12 @@ impl ThisParser for PatternBranch {
     }
 
     fn as_lisp(&self) -> Lisp {
-        todo!()
+        let mut terms = Vec::with_capacity(10);
+        terms.push(self.condition.as_lisp());
+        for stmt in &self.statements.terms {
+            terms.push(stmt.as_lisp());
+        }
+        Lisp::Any(terms)
     }
 }
 
@@ -45,7 +47,12 @@ impl ThisParser for PatternCondition {
     }
 
     fn as_lisp(&self) -> Lisp {
-        unreachable!()
+        match self {
+            Self::Case(v) => v.as_lisp(),
+            Self::When(v) => v.as_lisp(),
+            Self::Type(v) => v.as_lisp(),
+            Self::Else(v) => v.as_lisp(),
+        }
     }
 }
 
@@ -57,7 +64,7 @@ impl ThisParser for PatternCaseNode {
     }
 
     fn as_lisp(&self) -> Lisp {
-        unreachable!()
+        Lisp::Any(vec![Lisp::keyword("match/case"), self.pattern.as_lisp()])
     }
 }
 impl ThisParser for PatternTypeNode {
@@ -68,7 +75,7 @@ impl ThisParser for PatternTypeNode {
     }
 
     fn as_lisp(&self) -> Lisp {
-        unreachable!()
+        Lisp::Any(vec![Lisp::keyword("match/type"), self.pattern.as_lisp()])
     }
 }
 impl ThisParser for PatternWhenNode {
@@ -79,7 +86,7 @@ impl ThisParser for PatternWhenNode {
     }
 
     fn as_lisp(&self) -> Lisp {
-        unreachable!()
+        Lisp::Any(vec![Lisp::keyword("match/when"), self.guard.as_lisp()])
     }
 }
 impl ThisParser for PatternElseNode {
@@ -89,7 +96,7 @@ impl ThisParser for PatternElseNode {
     }
 
     fn as_lisp(&self) -> Lisp {
-        unreachable!()
+        Lisp::Any(vec![Lisp::keyword("match/else")])
     }
 }
 

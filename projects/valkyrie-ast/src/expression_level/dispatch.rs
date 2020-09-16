@@ -35,6 +35,7 @@ impl PrettyPrint for ExpressionBody {
             ExpressionBody::New(node) => node.build(allocator),
             ExpressionBody::Control(node) => node.build(allocator),
             ExpressionBody::If(node) => node.build(allocator),
+            ExpressionBody::Switch(node) => node.build(allocator),
         }
     }
 }
@@ -60,6 +61,7 @@ impl ExpressionBody {
             ExpressionBody::GenericCall(node) => node.span.clone(),
             ExpressionBody::Control(node) => node.span.clone(),
             ExpressionBody::If(node) => node.span.clone(),
+            ExpressionBody::Switch(node) => node.span.clone(),
         }
     }
 }

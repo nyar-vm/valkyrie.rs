@@ -16,7 +16,7 @@ use crate::{
     ApplyCallNode, ApplyDotNode, ArgumentTermNode, CallNode, CallTermNode, CollectsNode, ControlNode, GenericCallNode,
     IdentifierNode, IfStatement, InfixNode, LambdaCallNode, LambdaDotNode, LambdaSlotNode, NamePathNode, NewConstructNode,
     NumberLiteralNode, OperatorNode, PatternBranch, PostfixNode, PrefixNode, StatementNode, StringLiteralNode, SubscriptNode,
-    TableNode, TableTermNode,
+    SwitchStatement, TableNode, TableTermNode,
 };
 use alloc::{
     borrow::ToOwned,
@@ -79,6 +79,7 @@ pub enum ExpressionBody {
     Control(Box<ControlNode>),
     /// - Standalone expression
     If(Box<IfStatement>),
+    Switch(Box<SwitchStatement>),
 }
 
 /// Temporary node for use in the parser

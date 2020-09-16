@@ -15,19 +15,19 @@ fn lex_statements() {
 
 #[test]
 fn debug_statement() {
-    top_debug(include_str!("if_nests.vk"), "statement/if_nests_debug.rkt").expect("if_nests");
+    top_debug(include_str!("jmp_switch.vk"), "statement/jmp_switch_debug.rkt").expect("switch");
 }
 
 #[test]
 fn test_statement() {
-    let raw = ParseState::new("else: A + b; case Some(a): C");
+    let raw = ParseState::new("else: A + b, case Some(a): C");
     let apply = PatternBranch::parse(raw).unwrap();
     apply.pretty_print(42)
 }
 
 #[test]
 fn test_statement2() {
-    let raw = ParseState::new("switch { case Some(a): C, else: A + b }");
+    let raw = ParseState::new("switch {  }");
     let apply = SwitchStatement::parse(raw).unwrap();
     apply.pretty_print(42)
 }

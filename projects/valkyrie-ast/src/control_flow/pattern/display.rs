@@ -21,9 +21,12 @@ impl PrettyPrint for PatternCondition {
 impl PrettyPrint for PatternStatements {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         let mut terms = Vec::with_capacity(self.terms.len() * 2);
-        for term in &self.terms {
+        let len = self.terms.len();
+        for (idx, term) in self.terms.iter().enumerate() {
             terms.push(term.build(allocator));
-            terms.push(allocator.hardline());
+            if idx == len.saturating_sub(1) {
+                terms.push(allocator.text(","));
+            }
         }
         allocator.concat(terms).indent(4)
     }

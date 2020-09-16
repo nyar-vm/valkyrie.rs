@@ -1,0 +1,15 @@
+switch {
+
+}
+
+
+switch {
+    case A:
+        a,
+    type B:
+        b,
+    when c > 0:
+        c,
+    else:
+        d,
+}

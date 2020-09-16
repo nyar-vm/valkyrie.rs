@@ -9,16 +9,16 @@ use crate::{
     utils::{get_span, parse_expression_body, parse_expression_node, parse_modifiers_lookahead},
 };
 use lispify::Lisp;
-use pex::{helpers::str, BracketPattern, ParseResult, ParseState, StopBecause};
+use pex::{helpers::str, BracketPattern, ParseResult, ParseState, Regex, StopBecause};
 use pratt::{Affix, PrattError, PrattParser};
-use std::fmt::Debug;
+use std::{fmt::Debug, sync::LazyLock};
 use valkyrie_ast::{
-    ApplyCallNode, ApplyDotNode, ArgumentKeyNode, ExpressionBody, ExpressionContext, ExpressionNode, GenericCallNode,
-    InfixNode, LambdaCallNode, LambdaDotNode, NamePathNode, NewConstructNode, NumberLiteralNode, PatternCaseNode,
-    PatternCondition, PatternExpression, PatternGuard, PostfixCallPart, PostfixNode, PrefixNode, StringLiteralNode,
-    SubscriptNode, TableNode, TypingExpression,
+    AnnotationList, AnnotationNode, ApplyCallNode, ApplyDotNode, ArgumentKeyNode, DocumentationNode, ExpressionBody,
+    ExpressionContext, ExpressionNode, GenericCallNode, InfixNode, LambdaCallNode, LambdaDotNode, NamePathNode,
+    NewConstructNode, NumberLiteralNode, PatternBranch, PatternCaseNode, PatternCondition, PatternElseNode, PatternExpression,
+    PatternGuard, PatternStatements, PatternTypeNode, PatternWhenNode, PostfixCallPart, PostfixNode, PrefixNode, StatementNode,
+    StringLiteralNode, SubscriptNode, TableNode, TypingExpression,
 };
-use valkyrie_ast::{PatternElseNode, PatternTypeNode, PatternWhenNode};
 
 /// A resolver
 #[derive(Default)]
