@@ -54,8 +54,8 @@ pub struct ClassMethodDeclaration {
     pub method_name: IdentifierNode,
 }
 
-///
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+/// `class A { }, structure V { }`
+#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum ClassKind {
     /// A function that lazy evaluate the arguments

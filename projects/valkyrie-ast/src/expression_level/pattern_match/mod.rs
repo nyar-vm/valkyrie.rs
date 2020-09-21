@@ -1,7 +1,7 @@
 use super::*;
 
 /// `.match {}.catch {}`
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum MatchKind {
     Typing,

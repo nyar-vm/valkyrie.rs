@@ -2,7 +2,7 @@ use super::*;
 #[cfg(feature = "pretty-print")]
 mod display;
 
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum TableKind {
     /// `(a, b, c)`

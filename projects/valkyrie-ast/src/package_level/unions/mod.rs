@@ -37,8 +37,8 @@ pub struct UnionFieldDeclaration {
     pub span: Range<u32>,
 }
 
-/// `method()`
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+/// `union()`
+#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct UnionMethodDeclaration {}
 

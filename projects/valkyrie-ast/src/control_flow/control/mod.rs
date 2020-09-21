@@ -11,7 +11,7 @@ pub struct ControlNode {
     pub span: Range<u32>,
 }
 
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum ControlType {
     /// `break label`

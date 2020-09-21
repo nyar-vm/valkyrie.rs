@@ -60,11 +60,10 @@ pub enum StatementBody {
     Expression(Box<ExpressionNode>),
 }
 
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+/// The valid terms in a class body.
+#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct StatementContext {}
-
-
 
 impl From<AnnotationNode> for StatementBody {
     fn from(value: AnnotationNode) -> Self {

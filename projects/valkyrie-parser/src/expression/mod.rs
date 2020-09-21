@@ -1,5 +1,8 @@
 mod expression_kind;
+mod infix;
 mod pattern_match;
+mod prefix;
+mod suffix;
 
 use crate::{
     helpers::{ignore, parse_comma, parse_when},
@@ -10,19 +13,180 @@ use crate::{
 };
 use lispify::Lisp;
 use pex::{helpers::str, BracketPattern, ParseResult, ParseState, Regex, StopBecause};
-use pratt::{Affix, PrattError, PrattParser};
-use std::{fmt::Debug, sync::LazyLock};
+use pratt::{Affix, Associativity, PrattError, PrattParser, Precedence};
+use std::{
+    fmt::{Debug, Formatter},
+    ops::Range,
+    sync::LazyLock,
+};
 use valkyrie_ast::{
     ApplyCallNode, ApplyDotNode, ArgumentKeyNode, ExpressionBody, ExpressionContext, ExpressionNode, GenericCallNode,
-    InfixNode, LambdaCallNode, LambdaDotNode, NamePathNode, NewConstructNode, NumberLiteralNode, PatternBranch,
+    InfixNode, LambdaCallNode, LambdaDotNode, NamePathNode, NewConstructNode, NumberLiteralNode, OperatorNode, PatternBranch,
     PatternCaseNode, PatternCondition, PatternElseNode, PatternExpression, PatternGuard, PatternStatements, PatternTypeNode,
     PatternWhenNode, PostfixCallPart, PostfixNode, PrefixNode, StatementNode, StringLiteralNode, SubscriptNode, TableNode,
-    TypingExpression,
+    TypingExpression, ValkyrieOperator,
 };
 
 /// A resolver
 #[derive(Default)]
 pub struct ExpressionResolver {}
+
+#[derive(Clone, Debug)]
+pub enum ExpressionStream {
+    Prefix(ValkyriePrefix),
+    Postfix(ValkyrieSuffix),
+    Infix(ValkyrieInfix),
+    Term(ExpressionBody),
+    Group(Vec<ExpressionStream>),
+}
+
+#[derive(Clone)]
+pub struct ValkyrieInfix {
+    pub normalized: String,
+    pub span: Range<u32>,
+}
+
+#[derive(Clone)]
+pub struct ValkyriePrefix {
+    pub normalized: String,
+    pub span: Range<u32>,
+}
+
+#[derive(Clone)]
+pub struct ValkyrieSuffix {
+    pub normalized: String,
+    pub span: Range<u32>,
+}
+
+impl Debug for ValkyrieInfix {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        write!(f, "Infix({}, {:?})", self.as_operator().kind.as_str(), self.span)
+    }
+}
+
+impl Debug for ValkyriePrefix {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        write!(f, "Prefix({}, {:?})", self.normalized, self.span)
+    }
+}
+
+impl Debug for ValkyrieSuffix {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        write!(f, "Postfix({}, {:?})", self.normalized, self.span)
+    }
+}
+
+impl ValkyriePrefix {
+    pub fn new<S: ToString>(s: S, range: Range<u32>) -> ValkyriePrefix {
+        ValkyriePrefix { normalized: s.to_string(), span: range }
+    }
+    pub fn precedence(&self) -> Precedence {
+        Precedence(self.as_operator().kind.precedence())
+    }
+    pub fn as_operator(&self) -> OperatorNode {
+        let kind = match self.normalized.as_str() {
+            "+" => ValkyrieOperator::Positive,
+            "-" => ValkyrieOperator::Negative,
+            "*" => ValkyrieOperator::Unbox,
+            "⁑" | "**" => ValkyrieOperator::Unpack,
+            "⁂" | "***" => ValkyrieOperator::UnpackAll,
+            "!" => ValkyrieOperator::Not,
+            "⅟" => ValkyrieOperator::Minus,
+            "√" => ValkyrieOperator::Surd(2),
+            "∛" => ValkyrieOperator::Surd(3),
+            "∜" => ValkyrieOperator::Surd(4),
+            _ => unreachable!("Unknown operator: {}", self.normalized),
+        };
+        OperatorNode::new(kind, self.span.clone())
+    }
+}
+
+impl ValkyrieInfix {
+    pub fn new<S: AsRef<str>>(infix: S, range: Range<u32>) -> ValkyrieInfix {
+        let text = infix.as_ref();
+        let mut normalized = String::with_capacity(text.len());
+        for c in text.chars() {
+            match c {
+                ' ' => continue,
+                '∈' | '∊' => normalized.push_str("in"),
+                '∉' => normalized.push_str("notin"),
+                '⊑' => normalized.push_str("is"),
+                '⋢' => normalized.push_str("isnot"),
+                '≖' => normalized.push_str("=="),
+                '≠' => normalized.push_str("!="),
+                '≡' => normalized.push_str("==="),
+                '≢' => normalized.push_str("=!="),
+                '≫' => normalized.push_str(">>"),
+                '≪' => normalized.push_str("<<"),
+                '⋙' => normalized.push_str(">>>"),
+                '⋘' => normalized.push_str("<<<"),
+                _ => normalized.push(c),
+            }
+        }
+        ValkyrieInfix { normalized, span: range }
+    }
+    pub fn precedence(&self) -> Precedence {
+        Precedence(self.as_operator().kind.precedence())
+    }
+    pub fn associativity(&self) -> Associativity {
+        match self.normalized.as_str() {
+            "^" => Associativity::Right,
+            _ => Associativity::Left,
+        }
+    }
+    pub fn as_operator(&self) -> OperatorNode {
+        let kind = match self.normalized.as_str() {
+            "++" => ValkyrieOperator::Concat,
+            "+" => ValkyrieOperator::Plus,
+            "-" => ValkyrieOperator::Minus,
+            "*" => ValkyrieOperator::Multiply,
+            "/" => ValkyrieOperator::Divide,
+            "^" => ValkyrieOperator::Power,
+            "|" => ValkyrieOperator::BitOr,
+            "&" => ValkyrieOperator::BitAnd,
+            ">" => ValkyrieOperator::Greater,
+            ">>" => ValkyrieOperator::MuchGreater,
+            ">>>" => ValkyrieOperator::VeryMuchGreater,
+            "<" => ValkyrieOperator::Less,
+            "<<" => ValkyrieOperator::MuchLess,
+            "<<<" => ValkyrieOperator::VeryMuchLess,
+            "==" => ValkyrieOperator::Equal(true),
+            "!=" => ValkyrieOperator::Equal(false),
+            "===" => ValkyrieOperator::StrictlyEqual(true),
+            "!==" | "=!=" => ValkyrieOperator::StrictlyEqual(false),
+            "in" => ValkyrieOperator::Belongs(true),
+            "notin" => ValkyrieOperator::Belongs(false),
+            "is" => ValkyrieOperator::IsA(true),
+            "isnot" => ValkyrieOperator::IsA(false),
+            "+=" => ValkyrieOperator::PlusAssign,
+            "=" => ValkyrieOperator::Assign,
+            _ => unreachable!("Unknown operator: {}", self.normalized),
+        };
+        OperatorNode::new(kind, self.span.clone())
+    }
+}
+
+impl ValkyrieSuffix {
+    pub fn new<S: ToString>(s: S, range: Range<u32>) -> ValkyrieSuffix {
+        ValkyrieSuffix { normalized: s.to_string(), span: range }
+    }
+    pub fn precedence(&self) -> Precedence {
+        Precedence(self.as_operator().kind.precedence())
+    }
+    pub fn as_operator(&self) -> OperatorNode {
+        let kind = match self.normalized.as_str() {
+            "!" => ValkyrieOperator::QuickRaise,
+            // "?" => ValkyrieOperator::Raise,
+            "℃" => ValkyrieOperator::Celsius,
+            "℉" => ValkyrieOperator::Fahrenheit,
+            "%" => ValkyrieOperator::DivideByDecimalPower(2),
+            "‰" => ValkyrieOperator::DivideByDecimalPower(3),
+            "‱" => ValkyrieOperator::DivideByDecimalPower(4),
+            _ => unreachable!("Unknown operator: {}", self.normalized),
+        };
+        OperatorNode::new(kind, self.span.clone())
+    }
+}
 
 impl ThisParser for TypingExpression {
     fn parse(input: ParseState) -> ParseResult<Self> {
@@ -55,23 +219,6 @@ fn say_stop_reason<T>(e: PrattError<ExpressionStream, StopBecause>) -> Result<T,
         PrattError::UnexpectedInfix(_) => unreachable!(),
         PrattError::UnexpectedPostfix(_) => unreachable!(),
     }
-}
-
-// a..b
-// a..<b
-// a..=b
-// ..=b
-// ..<a
-// ..a
-// ...
-// From this
-#[derive(Clone, Debug)]
-pub enum ExpressionStream {
-    Prefix(ValkyriePrefix),
-    Postfix(ValkyrieSuffix),
-    Infix(ValkyrieInfix),
-    Term(ExpressionBody),
-    Group(Vec<ExpressionStream>),
 }
 
 impl<I> PrattParser<I> for ExpressionResolver

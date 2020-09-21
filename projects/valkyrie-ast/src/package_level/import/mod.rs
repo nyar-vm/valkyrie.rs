@@ -50,7 +50,8 @@ impl ImportAliasNode {
     }
 }
 
-#[derive(Clone, Default)]
+#[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ImportResolvedItem {
     pub annotation: Option<Arc<IdentifierNode>>,
     pub path: Vec<IdentifierNode>,

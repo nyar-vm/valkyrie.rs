@@ -10,7 +10,8 @@ pub struct StringTemplateNode {
     pub span: Range<u32>,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq, Hash)]
+/// `{%=-_ ... _-=%}`
+#[derive(Copy, Clone, Debug, Eq, PartialEq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum TemplateLineType {
     /// `{% a %}`
@@ -18,7 +19,7 @@ pub enum TemplateLineType {
 }
 
 /// `{% ... %}`
-#[derive(Clone, Debug, Eq, PartialEq, Hash)]
+#[derive(Copy, Clone, Debug, Eq, PartialEq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct TemplateOpenNode {}
 

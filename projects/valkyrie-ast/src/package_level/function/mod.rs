@@ -2,8 +2,8 @@ use super::*;
 
 mod display;
 
-/// The function type
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+/// `micro function(args), macro procedure(args)`
+#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum FunctionType {
     /// A function that lazy evaluate the arguments
