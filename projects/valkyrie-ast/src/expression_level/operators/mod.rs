@@ -119,7 +119,6 @@ impl ValkyrieOperator {
             Self::Inverse => 25000,
             Self::Surd(_) => 25000,
             // postfix + 0
-            Self::Unwrap => 45000,
             Self::QuickRaise => 45000,
             Self::Celsius => 45000,
             Self::Fahrenheit => 45000,
@@ -142,8 +141,7 @@ impl ValkyrieOperator {
             Self::Multiply => "*",
             Self::Divide => "/",
             Self::Power => "^",
-            Self::Unwrap => "!",
-            Self::QuickRaise => "?",
+            Self::QuickRaise => "!",
             Self::Celsius => "℃",
             Self::Fahrenheit => "℉",
             Self::Transpose => "ᵀ",

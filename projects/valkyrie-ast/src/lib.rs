@@ -11,6 +11,7 @@ mod control_flow;
 mod expression_level;
 mod helper;
 mod package_level;
+pub mod patterns;
 mod string_like;
 
 pub use crate::{
@@ -20,11 +21,7 @@ pub use crate::{
         jmp_if::{ElseStatement, IfConditionNode, IfStatement},
         jmp_switch::SwitchStatement,
         loop_for::ForLoop,
-        loop_while::{PatternExpression, WhileConditionNode, WhileLoop},
-        pattern::{
-            PatternBranch, PatternCaseNode, PatternCondition, PatternElseNode, PatternGuard, PatternStatements,
-            PatternTypeNode, PatternWhenNode,
-        },
+        loop_while::{WhileConditionNode, WhileLoop},
     },
     expression_level::{
         annotations::{AnnotationKind, AnnotationList, AnnotationNode, AnnotationPathNode, AnnotationTerm, ModifiersNode},
@@ -57,6 +54,10 @@ pub use crate::{
         tagged::{TaggedDeclaration, VariantDeclaration},
         try_catch::TryStatementNode,
         unions::{UnionDeclaration, UnionFieldDeclaration},
+    },
+    patterns::{
+        ImplicitCaseNode, PatternBranch, PatternCaseNode, PatternCondition, PatternElseNode, PatternExpressionNode,
+        PatternGuard, PatternStatements, PatternTypeNode, PatternWhenNode,
     },
     string_like::{
         string_formatter::StringFormatter,

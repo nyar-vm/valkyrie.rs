@@ -7,7 +7,6 @@ mod control_flow;
 mod declarations;
 mod expression;
 mod helpers;
-mod operators;
 mod statements;
 mod suffix_call;
 mod table;

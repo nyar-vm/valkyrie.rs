@@ -3,7 +3,7 @@ use super::*;
 impl ThisParser for ForLoop {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, _) = input.match_str("for")?;
-        let (state, pattern) = state.skip(ignore).match_fn(PatternExpression::parse)?;
+        let (state, pattern) = state.skip(ignore).match_fn(PatternExpressionNode::parse)?;
         let (state, _) = state.skip(ignore).match_fn(parse_in)?;
         let (state, expr) = state.skip(ignore).match_fn(|s| parse_expression_node(s, ExpressionContext::default()))?;
         let (state, cond) = state.skip(ignore).match_optional(PatternGuard::parse)?;

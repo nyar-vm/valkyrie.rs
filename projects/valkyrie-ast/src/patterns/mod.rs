@@ -1,4 +1,8 @@
-use super::*;
+use crate::{ArgumentKeyNode, ExpressionNode, StatementNode};
+use alloc::{vec, vec::Vec};
+use core::ops::Range;
+use deriver::From;
+use pretty_print::{PrettyPrint, PrettyProvider, PrettyTree};
 
 mod display;
 
@@ -60,6 +64,31 @@ pub enum PatternCondition {
 pub struct PatternCaseNode {
     pub pattern: ExpressionNode,
     pub guard: Option<PatternGuard>,
+    /// The range of the node
+    pub span: Range<u32>,
+}
+
+/// ```vk
+/// let a, b = expr
+/// let (a, b) = expr
+/// let [a, b, **args] = expr
+/// let Named(a, b) = expr
+/// let Named {a, b, ***kws} = expr
+/// let Named(Struct {a: b, b}, b, **args) = expr
+/// ```
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum PatternExpressionNode {
+    Tuple(Vec<ArgumentKeyNode>),
+    Case,
+}
+
+/// `Soma(a) | Success { value :a } := expr`
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ImplicitCaseNode {
+    pub pattern: PatternExpressionNode,
+    pub body: ExpressionNode,
     /// The range of the node
     pub span: Range<u32>,
 }

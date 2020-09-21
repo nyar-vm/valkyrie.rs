@@ -1,4 +1,5 @@
 use super::*;
+use valkyrie_ast::{ImplicitCaseNode, PatternCaseNode};
 
 impl ThisParser for GuardStatement {
     fn parse(input: ParseState) -> ParseResult<Self> {
@@ -21,15 +22,17 @@ impl ThisParser for GuardStatement {
 
 impl ThisParser for GuardPattern {
     fn parse(input: ParseState) -> ParseResult<Self> {
-        let (state, node) = parse_expression_node(input.skip(ignore), ExpressionContext::default())?;
-        state.finish(GuardPattern::Inline(Box::new(node)))
+        input
+            .begin_choice()
+            .or_else(|s| ImplicitCaseNode::parse(s).map_into())
+            .or_else(|s| ExpressionNode::parse(s).map_into())
+            .end_choice()
     }
 
     fn as_lisp(&self) -> Lisp {
         match self {
-            GuardPattern::Case => Lisp::keyword("case"),
+            GuardPattern::Case(s) => s.as_lisp(),
             GuardPattern::Inline(s) => s.as_lisp(),
-            // GuardType::Block(s) => s.as_lisp(),
         }
     }
 }

@@ -32,6 +32,16 @@ impl PrettyPrint for PatternStatements {
     }
 }
 
+impl PrettyPrint for ImplicitCaseNode {
+    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+        let mut terms = Vec::with_capacity(10);
+        terms.push(self.pattern.build(allocator));
+        terms.push(allocator.keyword(":="));
+        terms.push(self.body.build(allocator));
+        allocator.concat(terms)
+    }
+}
+
 impl PrettyPrint for PatternCaseNode {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         let mut terms = Vec::with_capacity(5);

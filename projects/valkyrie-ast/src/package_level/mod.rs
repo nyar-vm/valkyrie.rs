@@ -18,8 +18,8 @@ use crate::{
     AnnotationList, AnnotationNode, ApplyArgumentNode, ArgumentTermNode, ClassDeclaration, ClassFieldDeclaration,
     ClassMethodDeclaration, ControlNode, DocumentationNode, EnumerateDeclaration, EnumerateFieldDeclaration, ExpressionNode,
     FlagsDeclaration, ForLoop, FunctionDeclaration, GenericArgumentNode, GuardStatement, IdentifierNode, ImportStatement,
-    LetBindNode, ModifiersNode, NamePathNode, NamespaceDeclaration, PatternExpression, StatementBlock, StatementBody, StatementNode,
-    TaggedDeclaration, UnionDeclaration, UnionFieldDeclaration, VariantDeclaration, WhileLoop,
+    LetBindNode, ModifiersNode, NamePathNode, NamespaceDeclaration, PatternExpressionNode, StatementBlock, StatementBody,
+    StatementNode, TaggedDeclaration, UnionDeclaration, UnionFieldDeclaration, VariantDeclaration, WhileLoop,
 };
 use alloc::{
     boxed::Box,

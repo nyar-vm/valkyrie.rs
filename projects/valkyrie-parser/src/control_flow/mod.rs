@@ -7,7 +7,7 @@ use lispify::Lisp;
 use pex::{helpers::str, ParseResult, ParseState};
 use valkyrie_ast::{
     ControlNode, ControlType, ElseStatement, ExpressionContext, ExpressionNode, ForLoop, IfConditionNode, IfStatement,
-    PatternExpression, PatternGuard, StatementBlock, StatementNode, WhileConditionNode, WhileLoop,
+    PatternExpressionNode, PatternGuard, StatementBlock, StatementNode, WhileConditionNode, WhileLoop,
 };
 
 mod controller;

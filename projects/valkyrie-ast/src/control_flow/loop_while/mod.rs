@@ -21,10 +21,3 @@ pub enum WhileConditionNode {
     Case,
     Expression(Box<ExpressionNode>),
 }
-
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum PatternExpression {
-    Tuple(Vec<ArgumentKeyNode>),
-    Case,
-}

@@ -26,11 +26,11 @@ static INFIX: LazyLock<Regex> = LazyLock::new(|| {
     # start with :
     | :> | := | ≔
     # start with -
-    | -= | -> | ⟶ | -{1,2}
+    | -> | ⟶ | -{1,2}=?
     # start with ~
     | ~> | ~
     # start with +
-    | [+]= | [+]> | [+]{1,2}
+    | [+]> | [+]{1,2}=?
     # start with *
     | [*]=?
     # start with / or % or ÷
@@ -41,8 +41,6 @@ static INFIX: LazyLock<Regex> = LazyLock::new(|| {
     | &> | &{1,2} | ≻
     | [|]> | [|]{1,2} | ⊁
     | ⊻=? | ⊼=? | ⊽=? | [⩕⩖]
-    # start with ?
-    | [?]{3}
     # start with =
     | => | ⇒
     | =

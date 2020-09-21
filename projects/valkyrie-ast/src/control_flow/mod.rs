@@ -1,8 +1,8 @@
 use crate::{
-    ArgumentKeyNode, ElseStatement, ExpressionNode, PatternBranch, PatternExpression, PatternGuard, StatementBlock,
+    ElseStatement, ExpressionNode, ImplicitCaseNode, PatternBranch, PatternExpressionNode, PatternGuard, StatementBlock,
     StatementNode, SwitchStatement, WhileConditionNode,
 };
-use alloc::{boxed::Box, vec, vec::Vec};
+use alloc::{boxed::Box, vec::Vec};
 use core::{
     fmt::{Debug, Display, Formatter},
     ops::Range,
@@ -18,4 +18,3 @@ pub mod jmp_if;
 pub mod jmp_switch;
 pub mod loop_for;
 pub mod loop_while;
-pub mod pattern;

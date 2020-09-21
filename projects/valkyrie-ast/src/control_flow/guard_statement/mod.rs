@@ -14,11 +14,10 @@ pub struct GuardStatement {
     pub span: Range<u32>,
 }
 
-/// `guard let ...`
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+/// `guard case ...`
+#[derive(Clone, Debug, PartialEq, Eq, Hash, From)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum GuardPattern {
-    Case,
+    Case(Box<ImplicitCaseNode>),
     Inline(Box<ExpressionNode>),
-    // Block(Box<FunctionBody>),
 }

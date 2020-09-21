@@ -23,19 +23,17 @@ impl PrettyPrint for WhileLoop {
     }
 }
 
-
-
-impl PrettyPrint for PatternExpression {
+impl PrettyPrint for PatternExpressionNode {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         match self {
-            PatternExpression::Tuple(v) => {
+            Self::Tuple(v) => {
                 let mut terms = Vec::with_capacity(4);
                 terms.push(allocator.text("("));
                 terms.push(allocator.join(v, ", "));
                 terms.push(allocator.text(")"));
                 allocator.concat(terms)
             }
-            PatternExpression::Case => allocator.keyword("case"),
+            Self::Case => allocator.keyword("case"),
         }
     }
 }

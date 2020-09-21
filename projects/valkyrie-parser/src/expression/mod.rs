@@ -6,7 +6,6 @@ mod suffix;
 
 use crate::{
     helpers::{ignore, parse_comma, parse_when},
-    operators::{ValkyrieInfix, ValkyriePrefix, ValkyrieSuffix},
     table::TupleNode,
     traits::ThisParser,
     utils::{get_span, parse_expression_body, parse_expression_node, parse_modifiers_lookahead},
@@ -22,9 +21,9 @@ use std::{
 use valkyrie_ast::{
     ApplyCallNode, ApplyDotNode, ArgumentKeyNode, ExpressionBody, ExpressionContext, ExpressionNode, GenericCallNode,
     InfixNode, LambdaCallNode, LambdaDotNode, NamePathNode, NewConstructNode, NumberLiteralNode, OperatorNode, PatternBranch,
-    PatternCaseNode, PatternCondition, PatternElseNode, PatternExpression, PatternGuard, PatternStatements, PatternTypeNode,
-    PatternWhenNode, PostfixCallPart, PostfixNode, PrefixNode, StatementNode, StringLiteralNode, SubscriptNode, TableNode,
-    TypingExpression, ValkyrieOperator,
+    PatternCaseNode, PatternCondition, PatternElseNode, PatternExpressionNode, PatternGuard, PatternStatements,
+    PatternTypeNode, PatternWhenNode, PostfixCallPart, PostfixNode, PrefixNode, StatementNode, StringLiteralNode,
+    SubscriptNode, TableNode, TypingExpression, ValkyrieOperator,
 };
 
 /// A resolver
@@ -61,43 +60,6 @@ pub struct ValkyrieSuffix {
 impl Debug for ValkyrieInfix {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         write!(f, "Infix({}, {:?})", self.as_operator().kind.as_str(), self.span)
-    }
-}
-
-impl Debug for ValkyriePrefix {
-    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        write!(f, "Prefix({}, {:?})", self.normalized, self.span)
-    }
-}
-
-impl Debug for ValkyrieSuffix {
-    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        write!(f, "Postfix({}, {:?})", self.normalized, self.span)
-    }
-}
-
-impl ValkyriePrefix {
-    pub fn new<S: ToString>(s: S, range: Range<u32>) -> ValkyriePrefix {
-        ValkyriePrefix { normalized: s.to_string(), span: range }
-    }
-    pub fn precedence(&self) -> Precedence {
-        Precedence(self.as_operator().kind.precedence())
-    }
-    pub fn as_operator(&self) -> OperatorNode {
-        let kind = match self.normalized.as_str() {
-            "+" => ValkyrieOperator::Positive,
-            "-" => ValkyrieOperator::Negative,
-            "*" => ValkyrieOperator::Unbox,
-            "⁑" | "**" => ValkyrieOperator::Unpack,
-            "⁂" | "***" => ValkyrieOperator::UnpackAll,
-            "!" => ValkyrieOperator::Not,
-            "⅟" => ValkyrieOperator::Minus,
-            "√" => ValkyrieOperator::Surd(2),
-            "∛" => ValkyrieOperator::Surd(3),
-            "∜" => ValkyrieOperator::Surd(4),
-            _ => unreachable!("Unknown operator: {}", self.normalized),
-        };
-        OperatorNode::new(kind, self.span.clone())
     }
 }
 
@@ -165,29 +127,6 @@ impl ValkyrieInfix {
         OperatorNode::new(kind, self.span.clone())
     }
 }
-
-impl ValkyrieSuffix {
-    pub fn new<S: ToString>(s: S, range: Range<u32>) -> ValkyrieSuffix {
-        ValkyrieSuffix { normalized: s.to_string(), span: range }
-    }
-    pub fn precedence(&self) -> Precedence {
-        Precedence(self.as_operator().kind.precedence())
-    }
-    pub fn as_operator(&self) -> OperatorNode {
-        let kind = match self.normalized.as_str() {
-            "!" => ValkyrieOperator::QuickRaise,
-            // "?" => ValkyrieOperator::Raise,
-            "℃" => ValkyrieOperator::Celsius,
-            "℉" => ValkyrieOperator::Fahrenheit,
-            "%" => ValkyrieOperator::DivideByDecimalPower(2),
-            "‰" => ValkyrieOperator::DivideByDecimalPower(3),
-            "‱" => ValkyrieOperator::DivideByDecimalPower(4),
-            _ => unreachable!("Unknown operator: {}", self.normalized),
-        };
-        OperatorNode::new(kind, self.span.clone())
-    }
-}
-
 impl ThisParser for TypingExpression {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, out) = parse_expression_node(input, ExpressionContext::in_type())?;

@@ -5,18 +5,19 @@ impl PrettyPrint for GuardStatement {
         let mut terms = Vec::with_capacity(10);
         terms.push(allocator.keyword("guard"));
         terms.push(allocator.space());
-        match &self.condition {
-            GuardPattern::Inline(e) => {
-                terms.push(e.build(allocator));
-                terms.push(allocator.space());
-            }
-            // GuardType::Block(s) => terms.push(s.build(allocator)),
-            GuardPattern::Case => {
-                todo!()
-            }
-        }
+        terms.push(self.condition.build(allocator));
+        terms.push(allocator.space());
         terms.push(allocator.keyword("else"));
         terms.push(self.body.build(allocator));
         allocator.concat(terms)
+    }
+}
+
+impl PrettyPrint for GuardPattern {
+    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+        match self {
+            GuardPattern::Case(e) => e.build(allocator),
+            GuardPattern::Inline(e) => e.build(allocator),
+        }
     }
 }
