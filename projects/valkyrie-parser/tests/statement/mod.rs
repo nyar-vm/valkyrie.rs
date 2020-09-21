@@ -10,12 +10,12 @@ fn lex_statements() {
     top_debug(include_str!("lambda.vk"), "statement/lambda_debug.rkt").expect("lambda");
     top_debug(include_str!("control.vk"), "statement/control_debug.rkt").expect("control");
     top_debug(include_str!("let_bind.vk"), "statement/let_bind_debug.rkt").expect("let");
-    top_debug(include_str!("guard.vk"), "statement/guard_debug.rkt").expect("guard");
+    top_debug(include_str!("jmp_switch.vk"), "statement/jmp_switch_debug.rkt").expect("switch");
 }
 
 #[test]
 fn debug_statement() {
-    top_debug(include_str!("jmp_switch.vk"), "statement/jmp_switch_debug.rkt").expect("switch");
+    top_debug(include_str!("guard.vk"), "statement/guard_debug.rkt").expect("guard");
 }
 
 #[test]

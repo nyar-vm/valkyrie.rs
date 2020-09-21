@@ -27,7 +27,7 @@ pub static IGNORE: LazyLock<Regex> = LazyLock::new(|| {
 #[inline]
 pub fn ignore<'i>(input: ParseState<'i>) -> ParseResult<&'i str> {
     match input.match_regex(&IGNORE, "IGNORE") {
-        Pending(state, a) => input.advance_view(a.len()),
+        Pending(_, a) => input.advance_view(a.len()),
         Stop(_) => input.finish(""),
     }
 }
@@ -45,6 +45,19 @@ pub fn parse_eos(input: ParseState) -> ParseResult<bool> {
     }
     else {
         state.finish(false)
+    }
+}
+
+#[inline]
+pub fn parse_bind(input: ParseState) -> ParseResult<&str> {
+    if input.residual.starts_with(":=") {
+        input.advance_view(":=".len())
+    }
+    else if input.residual.starts_with("≔") {
+        input.advance_view("≔".len())
+    }
+    else {
+        StopBecause::missing_character('≔', input.start_offset)?
     }
 }
 

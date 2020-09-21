@@ -1,4 +1,5 @@
 use super::*;
+use valkyrie_ast::RaiseNode;
 
 impl ThisParser for ControlNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
@@ -17,6 +18,18 @@ impl ThisParser for ControlNode {
     }
 }
 
+impl ThisParser for RaiseNode {
+    fn parse(input: ParseState) -> ParseResult<Self> {
+        let (state, _) = str("resume")(input)?;
+        let (state, expr) = state.skip(ignore).match_fn(ExpressionNode::parse)?;
+        state.finish(Self { expression: expr, span: get_span(input, state) })
+    }
+
+    fn as_lisp(&self) -> Lisp {
+        Lisp::Any(vec![Lisp::keyword("resume"), self.expression.as_lisp()])
+    }
+}
+
 impl ThisParser for ControlType {
     fn parse(input: ParseState) -> ParseResult<Self> {
         input
@@ -25,7 +38,7 @@ impl ThisParser for ControlType {
             .or_else(|s| s.match_str("continue").map_inner(|_| ControlType::Continue))
             .or_else(|s| s.match_str("fallthrough").map_inner(|_| ControlType::Fallthrough))
             .or_else(|s| s.match_str("return").map_inner(|_| ControlType::Return))
-            .or_else(|s| s.match_str("raise").map_inner(|_| ControlType::Raise))
+            .or_else(|s| s.match_str("resume").map_inner(|_| ControlType::Resume))
             .or_else(|s| {
                 let (state, _) = s.match_str("yield")?;
                 state.match_optional(parse_yield).map_inner(|s| s.unwrap_or(ControlType::YieldReturn))

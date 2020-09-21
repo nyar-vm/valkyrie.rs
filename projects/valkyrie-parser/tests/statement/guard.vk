@@ -11,6 +11,6 @@ guard false else {
 }
 
 
-guard case Some(a) = b {
+guard Some(a) := b {
     return a
 }

@@ -13,9 +13,9 @@ pub mod symbol;
 pub mod table;
 pub mod view;
 use crate::{
-    ApplyCallNode, ApplyDotNode, ArgumentTermNode, CallNode, CallTermNode, CollectsNode, ControlNode, GenericCallNode,
-    IdentifierNode, IfStatement, InfixNode, LambdaCallNode, LambdaDotNode, LambdaSlotNode, NamePathNode, NewConstructNode,
-    NumberLiteralNode, OperatorNode, PatternBranch, PostfixNode, PrefixNode, StatementNode, StringLiteralNode, SubscriptNode,
+    ApplyCallNode, ApplyDotNode, ArgumentTermNode, CallNode, CallTermNode, CollectsNode, GenericCallNode, IdentifierNode,
+    IfStatement, InfixNode, LambdaCallNode, LambdaDotNode, LambdaSlotNode, NamePathNode, NewConstructNode, NumberLiteralNode,
+    OperatorNode, PatternBranch, PostfixNode, PrefixNode, RaiseNode, StatementNode, StringLiteralNode, SubscriptNode,
     SwitchStatement, TableNode, TableTermNode,
 };
 use alloc::{
@@ -59,7 +59,9 @@ pub struct ExpressionContext {
 #[derive(Clone, Debug, PartialEq, Eq, Hash, From)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum ExpressionBody {
+    /// - Placeholder expression
     Placeholder,
+    /// - Atomic expression
     Slot(Box<LambdaSlotNode>),
     Symbol(Box<NamePathNode>),
     Number(Box<NumberLiteralNode>),
@@ -69,17 +71,19 @@ pub enum ExpressionBody {
     Binary(Box<InfixNode>),
     Suffix(Box<PostfixNode>),
     Table(Box<TableNode>),
+    /// - Standalone expression
+    Resume(Box<RaiseNode>),
+    /// - Standalone expression
+    If(Box<IfStatement>),
+    /// - Standalone expression
+    Switch(Box<SwitchStatement>),
+    /// - Postfix expression
     Apply(Box<CallNode<ApplyCallNode>>),
     ApplyDot(Box<CallNode<ApplyDotNode>>),
     LambdaCall(Box<CallNode<LambdaCallNode>>),
     LambdaDot(Box<CallNode<LambdaDotNode>>),
     Subscript(Box<CallNode<SubscriptNode>>),
     GenericCall(Box<CallNode<GenericCallNode>>),
-    /// - Standalone expression
-    Control(Box<ControlNode>),
-    /// - Standalone expression
-    If(Box<IfStatement>),
-    Switch(Box<SwitchStatement>),
 }
 
 /// Temporary node for use in the parser

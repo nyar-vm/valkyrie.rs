@@ -6,8 +6,9 @@
 (fallthrough label)
 (return)
 (return expression)
-(raise)
-(raise expression)
+raise
+raise
+expression
 (yield)
 (yield expression)
 (yield expression)

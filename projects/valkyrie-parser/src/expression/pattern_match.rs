@@ -1,4 +1,5 @@
 use super::*;
+use crate::helpers::parse_bind;
 use valkyrie_ast::ImplicitCaseNode;
 
 impl ThisParser for PatternBranch {
@@ -60,7 +61,7 @@ impl ThisParser for PatternCondition {
 impl ThisParser for ImplicitCaseNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, lhs) = PatternExpressionNode::parse(input)?;
-        let (state, _) = state.skip(ignore).match_str(":=")?;
+        let (state, _) = state.skip(ignore).match_fn(parse_bind)?;
         let (state, rhs) = parse_expression_node(state.skip(ignore), ExpressionContext::default())?;
         state.finish(Self { pattern: lhs, body: rhs, span: get_span(input, state) })
     }

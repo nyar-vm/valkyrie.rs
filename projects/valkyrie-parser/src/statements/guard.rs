@@ -1,5 +1,4 @@
 use super::*;
-use valkyrie_ast::{ImplicitCaseNode, PatternCaseNode};
 
 impl ThisParser for GuardStatement {
     fn parse(input: ParseState) -> ParseResult<Self> {
