@@ -1,4 +1,5 @@
 use super::*;
+use crate::StatementBody;
 #[cfg(feature = "pretty-print")]
 mod display;
 
@@ -20,4 +21,11 @@ pub struct GuardStatement {
 pub enum GuardPattern {
     Case(Box<ImplicitCaseNode>),
     Inline(Box<ExpressionNode>),
+}
+
+impl GuardStatement {
+    /// Get the last statement in the block
+    pub fn last(&self) -> Option<&StatementBody> {
+        Some(&self.body.terms.last()?.r#type)
+    }
 }

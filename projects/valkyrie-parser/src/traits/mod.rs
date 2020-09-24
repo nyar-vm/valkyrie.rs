@@ -1,6 +1,7 @@
 use crate::helpers::ignore;
 use lispify::Lisp;
 use pex::{ParseResult, ParseState};
+use std::ops::Range;
 use valkyrie_error::{ValkyrieError, ValkyrieResult};
 
 pub trait ThisParser
@@ -18,6 +19,10 @@ where
             Err(ValkyrieError::custom(format!("Expect EOF, found:\n{}", state.residual)))?
         }
         Ok(repl)
+    }
+    #[track_caller]
+    fn get_range(&self) -> Range<u32> {
+        unreachable!()
     }
     fn as_lisp(&self) -> Lisp;
 }

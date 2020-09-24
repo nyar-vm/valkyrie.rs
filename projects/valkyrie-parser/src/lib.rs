@@ -12,6 +12,7 @@ mod suffix_call;
 mod table;
 mod traits;
 mod utils;
+mod validation;
 
 pub use crate::{statements::ReplRoot, traits::ThisParser};
 pub use valkyrie_ast::ProgramRoot;

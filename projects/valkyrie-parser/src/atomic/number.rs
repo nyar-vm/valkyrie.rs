@@ -58,15 +58,14 @@ pub static BYTES: LazyLock<Regex> = LazyLock::new(|| {
     .unwrap()
 });
 
-// ZeroBytePattern::new(&[("⍚", 16), ("⍙", 8), ("⍜", 2)]);
-impl ValkyrieBytes {
+impl ThisParser for ValkyrieBytes {
     /// ```js
     /// ⍚F => [15]
     /// ⍚FF => [255]
     /// ⍚FFF => [15, 255]
     /// ⍚F_F_F_F => [255, 255]
     /// ```
-    pub fn parse(input: ParseState) -> ParseResult<Self> {
+    fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, s) = input.match_regex(&BYTES, "BYTES").map_inner(|m| m.as_str())?;
         let (state, unit) = state.match_optional(parse_unit)?;
         let mut chars = s.chars();
@@ -84,6 +83,10 @@ impl ValkyrieBytes {
             None => value = vec![],
         }
         state.finish(ValkyrieBytes { bytes: value, unit, range: Default::default() })
+    }
+
+    fn as_lisp(&self) -> Lisp {
+        todo!()
     }
 }
 

@@ -15,7 +15,7 @@ fn lex_statements() {
 
 #[test]
 fn debug_statement() {
-    top_debug(include_str!("guard.vk"), "statement/guard_debug.rkt").expect("guard");
+    // top_debug(include_str!("guard.vk"), "statement/guard_debug.rkt").expect("guard");
 }
 
 #[test]
