@@ -1,4 +1,5 @@
 use super::*;
+use crate::utils::parse_expression_body;
 use valkyrie_ast::RaiseNode;
 
 impl ThisParser for ControlNode {
@@ -20,13 +21,18 @@ impl ThisParser for ControlNode {
 
 impl ThisParser for RaiseNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
-        let (state, _) = str("resume")(input)?;
-        let (state, expr) = state.skip(ignore).match_fn(ExpressionNode::parse)?;
+        let (state, _) = str("raise")(input)?;
+        let (state, expr) = state.skip(ignore).match_optional(|s| {
+            parse_expression_body(s, ExpressionContext { type_level: false, allow_newline: true, allow_curly: true })
+        })?;
         state.finish(Self { expression: expr, span: get_span(input, state) })
     }
 
     fn as_lisp(&self) -> Lisp {
-        Lisp::Any(vec![Lisp::keyword("resume"), self.expression.as_lisp()])
+        match &self.expression {
+            Some(s) => Lisp::Any(vec![Lisp::keyword("raise"), s.as_lisp()]),
+            None => Lisp::keyword("raise"),
+        }
     }
 }
 

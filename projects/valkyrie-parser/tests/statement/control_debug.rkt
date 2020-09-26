@@ -7,8 +7,7 @@
 (return)
 (return expression)
 raise
-raise
-expression
+(raise expression)
 (yield)
 (yield expression)
 (yield expression)

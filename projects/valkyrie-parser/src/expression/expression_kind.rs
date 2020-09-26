@@ -1,5 +1,5 @@
 use super::*;
-use valkyrie_ast::{IfStatement, LambdaSlotNode, SwitchStatement};
+use valkyrie_ast::{IfStatement, LambdaSlotNode, RaiseNode, SwitchStatement};
 
 impl ThisParser for PrefixNode {
     fn parse(_: ParseState) -> ParseResult<Self> {
@@ -152,6 +152,7 @@ pub fn parse_expression(input: ParseState, allow_curly: bool) -> ParseResult<Exp
         .or_else(|s| LambdaSlotNode::parse(s).map_into())
         .or_else(|s| IfStatement::parse(s).map_into())
         .or_else(|s| SwitchStatement::parse(s).map_into())
+        .or_else(|s| RaiseNode::parse(s).map_into())
         .or_else(|s| NamePathNode::parse(s).map_into())
         .or_else(|s| TableNode::parse(s).map_into())
         .or_else(|s| TupleNode::parse(s).map_into())

@@ -11,6 +11,7 @@ fn lex_statements() {
     top_debug(include_str!("control.vk"), "statement/control_debug.rkt").expect("control");
     top_debug(include_str!("let_bind.vk"), "statement/let_bind_debug.rkt").expect("let");
     top_debug(include_str!("jmp_switch.vk"), "statement/jmp_switch_debug.rkt").expect("switch");
+    top_debug(include_str!("jmp_if.vk"), "statement/jmp_if_debug.rkt").expect("if");
 }
 
 #[test]

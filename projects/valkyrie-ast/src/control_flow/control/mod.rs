@@ -1,4 +1,5 @@
 use super::*;
+use crate::ExpressionBody;
 mod display;
 
 /// always equivalent to a statement that returns `( )`, and cannot be used as an `rvalue`.
@@ -15,7 +16,7 @@ pub struct ControlNode {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct RaiseNode {
-    pub expression: ExpressionNode,
+    pub expression: Option<ExpressionBody>,
     /// The range of the node
     pub span: Range<u32>,
 }

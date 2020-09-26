@@ -9,8 +9,11 @@ impl Display for ControlType {
 impl PrettyPrint for RaiseNode {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         let mut terms = Vec::with_capacity(2);
-        terms.push(allocator.keyword("resume"));
-        terms.push(self.expression.build(allocator));
+        terms.push(allocator.keyword("raise"));
+        terms.push(allocator.space());
+        if let Some(s) = &self.expression {
+            terms.push(s.build(allocator));
+        }
         allocator.concat(terms)
     }
 }
