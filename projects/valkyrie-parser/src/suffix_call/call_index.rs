@@ -58,7 +58,11 @@ fn parse_index0(input: ParseState) -> ParseResult<(bool, BracketPair<SubscriptTe
 impl ThisParser for SubscriptTermNode {
     /// [range](SubscriptTermNode::parse_ranged) | [index](SubscriptTermNode::parse_single)
     fn parse(input: ParseState) -> ParseResult<Self> {
-        input.begin_choice().or_else(parse_ranged).or_else(parse_single).end_choice()
+        input
+            .begin_choice()
+            .or_else(|s| SubscriptSliceNode::parse(s).map_into())
+            .or_else(|s| ExpressionNode::parse(s).map_into())
+            .end_choice()
     }
 
     fn as_lisp(&self) -> Lisp {
@@ -70,8 +74,13 @@ impl ThisParser for SubscriptTermNode {
 }
 
 impl ThisParser for SubscriptSliceNode {
+    /// [start](ExpressionBody::parse)? ~ `:` ~ [end](ExpressionBody::parse)? (~ `:` ~ [step](ExpressionBody::parse)?)?
     fn parse(input: ParseState) -> ParseResult<Self> {
-        todo!()
+        let (state, start) = input.match_optional(ExpressionNode::parse)?;
+        let (state, _) = state.skip(ignore).match_char(':')?;
+        let (state, end) = state.skip(ignore).match_optional(ExpressionNode::parse)?;
+        let (state, step) = state.match_optional(maybe_step)?;
+        state.finish(Self { start, end, step: step.flatten(), span: get_span(input, state) })
     }
 
     fn as_lisp(&self) -> Lisp {
@@ -91,25 +100,6 @@ impl ThisParser for SubscriptSliceNode {
         }
         Lisp::Any(terms)
     }
-}
-
-/// [start](ExpressionBody::parse)? ~ `:` ~ [end](ExpressionBody::parse)? (~ `:` ~ [step](ExpressionBody::parse)?)?
-pub fn parse_ranged(input: ParseState) -> ParseResult<SubscriptTermNode> {
-    let (state, start) = input.match_optional(ExpressionNode::parse)?;
-    let (state, _) = state.skip(ignore).match_char(':')?;
-    let (state, end) = state.skip(ignore).match_optional(ExpressionNode::parse)?;
-    let (state, step) = state.match_optional(maybe_step)?;
-    state.finish(SubscriptTermNode::Slice(SubscriptSliceNode {
-        start,
-        end,
-        step: step.flatten(),
-        span: get_span(input, state),
-    }))
-}
-/// - [term](ExpressionBody::parse)
-pub fn parse_single(input: ParseState) -> ParseResult<SubscriptTermNode> {
-    let (state, term) = ExpressionNode::parse(input)?;
-    state.finish(SubscriptTermNode::Index(term))
 }
 
 /// `~ : ~ step?`

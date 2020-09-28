@@ -13,7 +13,7 @@ pub struct SubscriptNode {
 }
 
 /// `⁅index⁆` or `⁅start : end : step⁆`
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Clone, Debug, PartialEq, Eq, Hash, From)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum SubscriptTermNode {
     /// `array[index]`, also can be a call_index `array[[1, 2, 3]]`

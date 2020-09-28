@@ -1,6 +1,5 @@
 use crate::{ExpressionBody, IdentifierNode};
 use alloc::{
-    borrow::ToOwned,
     string::{String, ToString},
     vec::Vec,
 };

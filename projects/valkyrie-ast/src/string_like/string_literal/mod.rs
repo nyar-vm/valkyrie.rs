@@ -1,5 +1,5 @@
 use super::*;
-
+#[cfg(feature = "pretty-print")]
 mod display;
 
 /// Pure text of a string literal.

@@ -1,4 +1,5 @@
 use super::*;
+use lispify::ListString;
 use valkyrie_ast::{IfStatement, LambdaSlotNode, RaiseNode, SwitchStatement};
 
 impl ThisParser for PrefixNode {
@@ -67,6 +68,7 @@ impl ThisParser for ExpressionBody {
             Self::If(v) => v.as_lisp(),
             Self::Slot(v) => v.as_lisp(),
             Self::Switch(v) => v.as_lisp(),
+            Self::Text(v) => ListString { text: v.text.to_owned(), unit: "".to_string() }.into(),
         }
     }
 }

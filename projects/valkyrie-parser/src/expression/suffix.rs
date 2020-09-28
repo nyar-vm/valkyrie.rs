@@ -1,5 +1,5 @@
 use super::*;
-
+use fancy_regex::Regex;
 impl Debug for ValkyrieSuffix {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         write!(f, "Postfix({}, {:?})", self.normalized, self.span)
@@ -10,8 +10,8 @@ static POSTFIX: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(
         r#"^(?x)(
       ↑
-    # Factorial
-    # | [!]
+    # Quick raise
+    | !(?!=)
     # Temperature
     | [℃℉]
     # Percents
@@ -25,9 +25,12 @@ static POSTFIX: LazyLock<Regex> = LazyLock::new(|| {
 
 impl ThisParser for ValkyrieSuffix {
     fn parse(input: ParseState) -> ParseResult<Self> {
-        let (state, m) = input.match_regex(&POSTFIX, "POSTFIX")?;
-        let id = ValkyrieSuffix { normalized: m.as_str().to_string(), span: get_span(input, state) };
-        state.finish(id)
+        let result = match POSTFIX.find_from_pos(&input.residual, 0) {
+            Ok(Some(s)) => s,
+            _ => StopBecause::missing_string("PREFIX", input.start_offset)?,
+        };
+        let state = input.advance(result.end());
+        state.finish(ValkyrieSuffix { normalized: result.as_str().to_string(), span: get_span(input, state) })
     }
 
     fn as_lisp(&self) -> Lisp {
@@ -36,9 +39,9 @@ impl ThisParser for ValkyrieSuffix {
 }
 
 impl ValkyrieSuffix {
-    pub fn new<S: ToString>(s: S, range: Range<u32>) -> ValkyrieSuffix {
-        ValkyrieSuffix { normalized: s.to_string(), span: range }
-    }
+    // pub fn new<S: ToString>(s: S, range: Range<u32>) -> ValkyrieSuffix {
+    //     ValkyrieSuffix { normalized: s.to_string(), span: range }
+    // }
     pub fn precedence(&self) -> Precedence {
         Precedence(self.as_operator().kind.precedence())
     }

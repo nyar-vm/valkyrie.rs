@@ -15,8 +15,8 @@ pub mod view;
 use crate::{
     ApplyCallNode, ApplyDotNode, ArgumentTermNode, CallNode, CallTermNode, CollectsNode, GenericCallNode, IdentifierNode,
     IfStatement, InfixNode, LambdaCallNode, LambdaDotNode, LambdaSlotNode, NamePathNode, NewConstructNode, NumberLiteralNode,
-    OperatorNode, PatternBranch, PostfixNode, PrefixNode, RaiseNode, StatementNode, StringLiteralNode, SubscriptNode,
-    SwitchStatement, TableNode, TableTermNode,
+    OperatorNode, PatternBranch, PostfixNode, PrefixNode, RaiseNode, StatementNode, StringLiteralNode, StringTextNode,
+    SubscriptNode, SwitchStatement, TableNode, TableTermNode,
 };
 use alloc::{
     borrow::ToOwned,
@@ -65,6 +65,7 @@ pub enum ExpressionBody {
     Slot(Box<LambdaSlotNode>),
     Symbol(Box<NamePathNode>),
     Number(Box<NumberLiteralNode>),
+    Text(Box<StringTextNode>),
     String(Box<StringLiteralNode>),
     New(Box<NewConstructNode>),
     Prefix(Box<PrefixNode>),

@@ -28,9 +28,9 @@ impl ValkyriePrefix {
 }
 
 impl ValkyriePrefix {
-    pub fn new<S: ToString>(s: S, range: Range<u32>) -> ValkyriePrefix {
-        ValkyriePrefix { normalized: s.to_string(), span: range }
-    }
+    // pub fn new<S: ToString>(s: S, range: Range<u32>) -> ValkyriePrefix {
+    //     ValkyriePrefix { normalized: s.to_string(), span: range }
+    // }
     pub fn precedence(&self) -> Precedence {
         Precedence(self.as_operator().kind.precedence())
     }

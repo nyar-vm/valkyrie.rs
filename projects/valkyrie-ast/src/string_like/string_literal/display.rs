@@ -1,13 +1,9 @@
 use super::*;
 
-impl Display for StringLiteralNode {
+impl Display for StringTextNode {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        if let Some(unit) = &self.unit {
-            f.write_str(&unit.name)?;
-        }
         f.write_char('\'')?;
-
-        for c in self.raw.chars() {
+        for c in self.text.chars() {
             match c {
                 '\n' => f.write_str("\\n")?,
                 '\r' => f.write_str("\\r")?,
@@ -21,8 +17,22 @@ impl Display for StringLiteralNode {
     }
 }
 
-#[cfg(feature = "pretty-print")]
+impl Display for StringLiteralNode {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        if let Some(unit) = &self.unit {
+            f.write_str(&unit.name)?;
+        }
+        Display::fmt(&self.as_raw(), f)
+    }
+}
+
 impl PrettyPrint for StringLiteralNode {
+    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+        allocator.string(self.to_string())
+    }
+}
+
+impl PrettyPrint for StringTextNode {
     fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
         allocator.string(self.to_string())
     }

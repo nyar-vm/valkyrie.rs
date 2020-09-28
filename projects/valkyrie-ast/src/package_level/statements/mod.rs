@@ -1,4 +1,5 @@
 use super::*;
+use crate::{ExpressionBody, StringLiteralNode, StringTextNode};
 mod display;
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
@@ -70,5 +71,23 @@ impl From<AnnotationNode> for StatementBody {
         let list = AnnotationList { kind: value.kind, terms: vec![value.term], span: value.span };
 
         StatementBody::Annotation(Box::new(list))
+    }
+}
+
+impl StatementNode {
+    pub fn expression(body: ExpressionBody, span: Range<u32>) -> Self {
+        Self {
+            r#type: StatementBody::Expression(Box::new(ExpressionNode { type_level: false, body, span: span.clone() })),
+            end_semicolon: false,
+            span: span.clone(),
+        }
+    }
+    pub fn text<S: ToString>(s: S, span: Range<u32>) -> Self {
+        let literal = StringTextNode { text: s.to_string(), span: span.clone() };
+        Self::expression(ExpressionBody::Text(Box::new(literal)), span)
+    }
+    pub fn string<S: ToString>(s: S, span: Range<u32>) -> Self {
+        let literal = StringLiteralNode { raw: s.to_string(), unit: None, span: span.clone() };
+        Self::expression(ExpressionBody::String(Box::new(literal)), span)
     }
 }
