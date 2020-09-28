@@ -2,12 +2,12 @@
 #![feature(const_trait_impl)]
 
 mod atomic;
-mod conditional;
 mod control_flow;
 mod declarations;
 mod expression;
 mod helpers;
 mod statements;
+mod string_like;
 mod suffix_call;
 mod table;
 mod traits;

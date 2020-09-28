@@ -61,7 +61,7 @@ pub use crate::{
     },
     string_like::{
         string_formatter::StringFormatter,
-        string_literal::StringLiteralNode,
+        string_literal::{StringLiteralNode, StringTextNode},
         string_template::{
             StringTemplateNode, TemplateCloseNode, TemplateCommentNode, TemplateInlineNode, TemplateLineType, TemplateOpenNode,
         },

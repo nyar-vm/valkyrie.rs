@@ -7,7 +7,7 @@ impl Display for StringLiteralNode {
         }
         f.write_char('\'')?;
 
-        for c in self.value.chars() {
+        for c in self.raw.chars() {
             match c {
                 '\n' => f.write_str("\\n")?,
                 '\r' => f.write_str("\\r")?,

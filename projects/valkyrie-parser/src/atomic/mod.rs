@@ -11,5 +11,3 @@ mod bytes;
 mod identifier;
 mod namepath;
 mod number;
-mod string;
-mod string_template;

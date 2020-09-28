@@ -10,10 +10,10 @@ impl ThisParser for StringLiteralNode {
             .or_else(|s| quotation_pair(s, '«', '»'))
             .end_choice()?;
 
-        state.finish(StringLiteralNode { value: pair.body.as_string(), unit, span: get_span(input, state) })
+        state.finish(StringLiteralNode { raw: pair.body.as_string(), unit, span: get_span(input, state) })
     }
 
     fn as_lisp(&self) -> Lisp {
-        ListString { text: self.value.to_owned(), unit: self.unit.clone().map(|u| u.name).unwrap_or_default() }.into()
+        ListString { text: self.raw.to_owned(), unit: self.unit.clone().map(|u| u.name).unwrap_or_default() }.into()
     }
 }

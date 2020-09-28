@@ -1,6 +1,13 @@
 use super::*;
 
-use valkyrie_ast::StringTemplateNode;
+pub static TEMPLATE_TEXT: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(
+        r"^(?x)(
+      (?!)(\{[{%#]).
+)",
+    )
+    .unwrap()
+});
 
 impl ThisParser for StringTemplateNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
