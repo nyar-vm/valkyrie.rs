@@ -12,7 +12,7 @@ impl ThisParser for DocumentationNode {
 
 /// `#? ...`
 pub fn parse_one_line(input: ParseState) -> ParseResult<DocumentationNode> {
-    let (state, line) = comment_line(input, "#?")?;
+    let (state, line) = CommentLine::new("#?")(input)?;
     let start = line.head.start_offset() as u32;
     let end = line.body.end_offset() as u32;
     state.finish(DocumentationNode { documentation: line.body.as_string(), span: start..end })

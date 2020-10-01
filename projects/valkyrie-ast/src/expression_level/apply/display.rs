@@ -1,50 +1,50 @@
 use super::*;
 
 impl PrettyPrint for ApplyDotNode {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        let newline = allocator.hardline();
-        let mut terms = Vec::with_capacity(6);
-        terms.push(allocator.text("."));
-        terms.push(self.caller.build(allocator));
-        terms.push(allocator.text("("));
-        terms.push(allocator.join(&self.terms, ", "));
-        terms.push(allocator.text(")"));
-        newline.append(allocator.concat(terms).indent(4))
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        let newline = theme.hardline();
+        let mut terms = PrettySequence::new(6);
+        terms.push(theme.text("."));
+        terms.push(self.caller.build(theme));
+        terms.push(theme.text("("));
+        terms.push(theme.join(&self.terms, ", "));
+        terms.push(theme.text(")"));
+        newline.append(theme.concat(terms).indent(4))
     }
 }
 
 impl PrettyPrint for ApplyCallNode {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        let mut terms = Vec::with_capacity(3);
-        terms.push(allocator.text("("));
-        terms.push(allocator.join(&self.terms, ", "));
-        terms.push(allocator.text(")"));
-        allocator.concat(terms)
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        let mut terms = PrettySequence::new(3);
+        terms.push(theme.text("("));
+        terms.push(theme.join(&self.terms, ", "));
+        terms.push(theme.text(")"));
+        theme.concat(terms)
     }
 }
 
 impl PrettyPrint for ApplyCallTerm {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        self.term.build(allocator)
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        self.term.build(theme)
     }
 }
 
 impl PrettyPrint for ApplyArgumentNode {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        allocator.text("(").append(allocator.join(&self.terms, ", ")).append(allocator.text(")"))
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        theme.text("(").append(theme.join(&self.terms, ", ")).append(theme.text(")"))
     }
 }
 
 impl PrettyPrint for ApplyArgumentTerm {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        self.term.build(allocator)
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        self.term.build(theme)
     }
 }
 
 impl PrettyPrint for ArgumentKeyNode {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        let mods = self.modifiers.build(allocator);
-        let key = allocator.argument(self.key.name.clone(), false);
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        let mods = self.modifiers.build(theme);
+        let key = theme.argument(self.key.name.clone(), false);
         mods.append(key)
     }
 }

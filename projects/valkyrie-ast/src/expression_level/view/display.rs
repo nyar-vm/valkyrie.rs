@@ -1,35 +1,35 @@
 use super::*;
 
 impl PrettyPrint for SubscriptNode {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        let lhs = allocator.text(if self.index0 { "⁅" } else { "[" });
-        let terms = allocator.join(&self.terms, ", ");
-        let rhs = allocator.text(if self.index0 { "⁆" } else { "]" });
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        let lhs = theme.text(if self.index0 { "⁅" } else { "[" });
+        let terms = theme.join(&self.terms, ", ");
+        let rhs = theme.text(if self.index0 { "⁆" } else { "]" });
         lhs.append(terms).append(rhs)
     }
 }
 
 impl PrettyPrint for SubscriptTermNode {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         match self {
-            SubscriptTermNode::Index(v) => v.build(allocator),
-            SubscriptTermNode::Slice(v) => v.build(allocator),
+            SubscriptTermNode::Index(v) => v.build(theme),
+            SubscriptTermNode::Slice(v) => v.build(theme),
         }
     }
 }
 
 impl PrettyPrint for SubscriptSliceNode {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let lhs = match &self.start {
-            Some(s) => s.build(allocator).append(allocator.text(":")),
-            None => allocator.text(":"),
+            Some(s) => s.build(theme).append(theme.text(":")),
+            None => theme.text(":"),
         };
         let middle = match &self.end {
-            Some(e) => allocator.text(":").append(e.build(allocator)),
-            None => allocator.text(" :"),
+            Some(e) => theme.text(":").append(e.build(theme)),
+            None => theme.text(" :"),
         };
         match &self.step {
-            Some(s) => lhs.append(middle).append(s.build(allocator)),
+            Some(s) => lhs.append(middle).append(s.build(theme)),
             None => lhs.append(middle),
         }
     }

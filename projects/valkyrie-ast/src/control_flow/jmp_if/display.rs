@@ -1,31 +1,31 @@
 use super::*;
 
 impl PrettyPrint for IfStatement {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        let mut terms = Vec::with_capacity(self.branches.len() * 4 + 3);
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        let mut terms = PrettySequence::new(self.branches.len() * 4 + 3);
         for (idx, term) in self.branches.iter().enumerate() {
             if idx == 0 {
-                terms.push(allocator.keyword("if "));
-                terms.push(term.condition.build(allocator));
+                terms.push(theme.keyword("if "));
+                terms.push(term.condition.build(theme));
             }
             else {
-                terms.push(allocator.hardline());
-                terms.push(allocator.keyword("else if "));
-                terms.push(term.condition.build(allocator));
+                terms.push(theme.hardline());
+                terms.push(theme.keyword("else if "));
+                terms.push(term.condition.build(theme));
             }
-            terms.push(term.body.build(allocator));
+            terms.push(term.body.build(theme));
         }
-        terms.push(self.else_branch.build(allocator));
-        allocator.concat(terms)
+        terms.push(self.else_branch.build(theme));
+        theme.concat(terms)
     }
 }
 
 impl PrettyPrint for IfConditionNode {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        let mut terms = Vec::with_capacity(10);
-        terms.push(self.condition.build(allocator));
-        terms.push(self.body.build(allocator));
-        allocator.concat(terms)
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        let mut terms = PrettySequence::new(10);
+        terms.push(self.condition.build(theme));
+        terms.push(self.body.build(theme));
+        theme.concat(terms)
     }
 }
 
@@ -40,27 +40,27 @@ impl PrettyPrint for WhileConditionNode {
     ///   || b && c
     ///   && d || e
     /// ```
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         match self {
-            WhileConditionNode::AlwaysTrue => allocator.keyword("true"),
-            WhileConditionNode::Case => allocator.keyword("case"),
-            WhileConditionNode::Expression(e) => e.build(allocator),
+            WhileConditionNode::AlwaysTrue => theme.keyword("true"),
+            WhileConditionNode::Case => theme.keyword("case"),
+            WhileConditionNode::Expression(e) => e.build(theme),
         }
     }
 }
 
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for ElseStatement {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        let mut terms = Vec::with_capacity(10);
-        terms.push(allocator.hardline());
-        terms.push(allocator.keyword("else"));
-        terms.push(allocator.space());
-        terms.push(allocator.text("{"));
-        terms.push(allocator.hardline());
-        terms.push(allocator.intersperse(&self.statements, allocator.hardline()).indent(4));
-        terms.push(allocator.hardline());
-        terms.push(allocator.text("}"));
-        allocator.concat(terms)
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        let mut terms = PrettySequence::new(10);
+        terms.push(theme.hardline());
+        terms.push(theme.keyword("else"));
+        terms.push(theme.space());
+        terms.push(theme.text("{"));
+        terms.push(theme.hardline());
+        terms.push(theme.intersperse(&self.statements, theme.hardline()).indent(4));
+        terms.push(theme.hardline());
+        terms.push(theme.text("}"));
+        theme.concat(terms)
     }
 }

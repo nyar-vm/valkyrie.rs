@@ -2,11 +2,11 @@ use super::*;
 
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for NamespaceDeclaration {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        let head = allocator.keyword(self.kind.as_str());
-        let space = allocator.space();
-        let path = allocator.join(&self.path, ".");
-        let semi = allocator.text(";");
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        let head = theme.keyword(self.kind.as_str());
+        let space = theme.space();
+        let path = theme.join(&self.path, ".");
+        let semi = theme.text(";");
         head.append(space).append(path).append(semi)
     }
 }

@@ -2,56 +2,56 @@ use super::*;
 
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for ImportStatement {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut items = Vec::with_capacity(3);
-        items.push(allocator.keyword("using"));
+        items.push(theme.keyword("using"));
         match &self.term {
             ImportTermNode::Alias(v) => {
-                items.push(allocator.space());
-                items.push(v.build(allocator));
+                items.push(theme.space());
+                items.push(v.build(theme));
             }
             ImportTermNode::Group(v) => {
-                items.push(allocator.space());
-                items.push(v.build(allocator));
+                items.push(theme.space());
+                items.push(v.build(theme));
             }
         }
-        allocator.concat(items)
+        theme.concat(items)
     }
 }
 
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for ImportTermNode {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         match self {
-            Self::Alias(node) => node.build(allocator),
-            Self::Group(node) => node.build(allocator),
+            Self::Alias(node) => node.build(theme),
+            Self::Group(node) => node.build(theme),
         }
     }
 }
 
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for ImportGroupNode {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut items = Vec::with_capacity(5);
-        items.push(self.path.build(allocator));
+        items.push(self.path.build(theme));
         if !self.group.is_empty() {
             let bracket = KAndRBracket::curly_braces();
-            items.push(bracket.build(&self.group, allocator, allocator.text(", "), allocator.hardline()))
+            items.push(bracket.build(&self.group, theme, theme.text(", "), theme.hardline()))
         }
-        allocator.concat(items)
+        theme.concat(items)
     }
 }
 
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for ImportAliasNode {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut items = Vec::with_capacity(5);
-        items.push(self.path.build(allocator));
-        items.push(allocator.space());
-        items.push(allocator.keyword("as"));
-        items.push(allocator.space());
-        items.push(self.alias.build(allocator));
-        allocator.concat(items)
+        items.push(self.path.build(theme));
+        items.push(theme.space());
+        items.push(theme.keyword("as"));
+        items.push(theme.space());
+        items.push(self.alias.build(theme));
+        theme.concat(items)
     }
 }
 impl From<ImportAliasNode> for ImportTermNode {

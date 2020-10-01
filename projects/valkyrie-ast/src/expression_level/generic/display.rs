@@ -2,50 +2,50 @@ use super::*;
 
 // noinspection DuplicatedCode
 impl PrettyPrint for GenericCallNode {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        let mut terms = Vec::with_capacity(3);
-        terms.push(allocator.text("⦓"));
-        terms.push(allocator.join(&self.terms, ", "));
-        terms.push(allocator.text("⦔"));
-        allocator.concat(terms)
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        let mut terms = PrettySequence::new(3);
+        terms.push(theme.text("⦓"));
+        terms.push(theme.join(&self.terms, ", "));
+        terms.push(theme.text("⦔"));
+        theme.concat(terms)
     }
 }
 
 impl PrettyPrint for GenericCallTerm {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        let mut terms = Vec::with_capacity(3);
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        let mut terms = PrettySequence::new(3);
         if let Some(k) = &self.term.key {
-            terms.push(allocator.generic(k.name.to_owned()));
-            terms.push(allocator.text(": "));
+            terms.push(theme.generic(k.name.to_owned()));
+            terms.push(theme.text(": "));
         }
-        terms.push(self.term.value.build(allocator));
-        allocator.concat(terms)
+        terms.push(self.term.value.build(theme));
+        theme.concat(terms)
     }
 }
 
 // noinspection DuplicatedCode
 impl PrettyPrint for GenericArgumentNode {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        let mut terms = Vec::with_capacity(3);
-        terms.push(allocator.text("⦓"));
-        terms.push(allocator.join(&self.terms, ", "));
-        terms.push(allocator.text("⦔"));
-        allocator.concat(terms)
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        let mut terms = PrettySequence::new(3);
+        terms.push(theme.text("⦓"));
+        terms.push(theme.join(&self.terms, ", "));
+        terms.push(theme.text("⦔"));
+        theme.concat(terms)
     }
 }
 
 impl PrettyPrint for GenericArgumentTerm {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        let mut terms = Vec::with_capacity(5);
-        terms.push(allocator.generic(self.term.key.name.to_owned()));
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        let mut terms = PrettySequence::new(5);
+        terms.push(theme.generic(self.term.key.name.to_owned()));
         if let Some(k) = &self.term.value {
-            terms.push(allocator.text(": "));
-            terms.push(k.build(allocator));
+            terms.push(theme.text(": "));
+            terms.push(k.build(theme));
         }
         if let Some(k) = &self.term.default {
-            terms.push(allocator.text(" = "));
-            terms.push(k.build(allocator));
+            terms.push(theme.text(" = "));
+            terms.push(k.build(theme));
         }
-        allocator.concat(terms)
+        theme.concat(terms)
     }
 }

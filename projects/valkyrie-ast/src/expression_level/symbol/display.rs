@@ -20,19 +20,19 @@ impl Display for NamePathNode {
 }
 
 impl PrettyPrint for IdentifierNode {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        allocator.text(self.name.to_string())
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        theme.text(self.name.to_string())
     }
 }
 
 impl PrettyPrint for LambdaSlotNode {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        allocator.keyword(format!("${}", self.name))
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        theme.keyword(format!("${}", self.name))
     }
 }
 
 impl PrettyPrint for NamePathNode {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        allocator.join(&self.names, "∷")
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        theme.join(&self.names, "∷")
     }
 }

@@ -27,13 +27,13 @@ impl Display for StringLiteralNode {
 }
 
 impl PrettyPrint for StringLiteralNode {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        allocator.string(self.to_string())
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        theme.string(self.to_string())
     }
 }
 
 impl PrettyPrint for StringTextNode {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        allocator.string(self.to_string())
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        theme.string(self.to_string())
     }
 }

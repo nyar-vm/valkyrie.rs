@@ -68,7 +68,6 @@ static TYPE_INFIX: LazyLock<Regex> = LazyLock::new(|| {
     )
     .unwrap()
 });
-
 impl ValkyrieInfix {
     pub fn parse(input: ParseState, type_level: bool) -> ParseResult<Self> {
         let (state, m) = match type_level {

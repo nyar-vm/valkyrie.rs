@@ -1,23 +1,23 @@
 use super::*;
 
 impl PrettyPrint for GuardStatement {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        let mut terms = Vec::with_capacity(10);
-        terms.push(allocator.keyword("guard"));
-        terms.push(allocator.space());
-        terms.push(self.condition.build(allocator));
-        terms.push(allocator.space());
-        terms.push(allocator.keyword("else"));
-        terms.push(self.body.build(allocator));
-        allocator.concat(terms)
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        let mut terms = PrettySequence::new(10);
+        terms.push(theme.keyword("guard"));
+        terms.push(theme.space());
+        terms.push(self.condition.build(theme));
+        terms.push(theme.space());
+        terms.push(theme.keyword("else"));
+        terms.push(self.body.build(theme));
+        terms.into()
     }
 }
 
 impl PrettyPrint for GuardPattern {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         match self {
-            GuardPattern::Case(e) => e.build(allocator),
-            GuardPattern::Inline(e) => e.build(allocator),
+            Self::Case(e) => e.pretty(theme),
+            Self::Inline(e) => e.pretty(theme),
         }
     }
 }

@@ -2,36 +2,36 @@ use super::*;
 
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for StatementNode {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        self.r#type.build(allocator)
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        self.r#type.build(theme)
     }
 }
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for StatementBody {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         match self {
-            Self::Nothing => allocator.text(";;"),
-            Self::Annotation(node) => node.build(allocator),
-            Self::Namespace(node) => node.build(allocator),
-            Self::Import(node) => node.build(allocator),
-            Self::Class(node) => node.build(allocator),
-            Self::ClassField(node) => node.build(allocator),
-            Self::ClassMethod(node) => node.build(allocator),
-            Self::Tagged(node) => node.build(allocator),
-            Self::Variant(node) => node.build(allocator),
-            Self::Union(node) => node.build(allocator),
-            Self::UnionField(node) => node.build(allocator),
-            Self::Enumerate(node) => node.build(allocator),
-            Self::EnumerateField(node) => node.build(allocator),
-            Self::Function(node) => node.build(allocator),
-            Self::While(node) => node.build(allocator),
-            Self::For(node) => node.build(allocator),
-            Self::Expression(node) => node.build(allocator),
-            Self::Control(node) => node.build(allocator),
-            Self::Document(node) => node.build(allocator),
-            Self::LetBind(node) => node.build(allocator),
-            Self::Guard(node) => node.build(allocator),
-            Self::Flags(node) => node.build(allocator),
+            Self::Nothing => theme.text(";;"),
+            Self::Annotation(node) => node.build(theme),
+            Self::Namespace(node) => node.build(theme),
+            Self::Import(node) => node.build(theme),
+            Self::Class(node) => node.build(theme),
+            Self::ClassField(node) => node.build(theme),
+            Self::ClassMethod(node) => node.build(theme),
+            Self::Tagged(node) => node.build(theme),
+            Self::Variant(node) => node.build(theme),
+            Self::Union(node) => node.build(theme),
+            Self::UnionField(node) => node.build(theme),
+            Self::Enumerate(node) => node.build(theme),
+            Self::EnumerateField(node) => node.build(theme),
+            Self::Function(node) => node.build(theme),
+            Self::While(node) => node.build(theme),
+            Self::For(node) => node.build(theme),
+            Self::Expression(node) => node.build(theme),
+            Self::Control(node) => node.build(theme),
+            Self::Document(node) => node.build(theme),
+            Self::LetBind(node) => node.build(theme),
+            Self::Guard(node) => node.build(theme),
+            Self::Flags(node) => node.build(theme),
         }
     }
 }

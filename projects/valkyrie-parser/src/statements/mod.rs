@@ -4,7 +4,7 @@ use crate::{
     utils::{get_span, parse_expression_node},
 };
 use lispify::{Lisp, ListString};
-use pex::{helpers::comment_line, BracketPattern, ParseResult, ParseState, Regex, StopBecause};
+use pex::{helpers::CommentLine, BracketPattern, ParseResult, ParseState, Regex, StopBecause};
 use std::sync::LazyLock;
 use valkyrie_ast::{
     AnnotationList, AnnotationNode, ApplyCallNode, ClassDeclaration, ControlNode, DocumentationNode, EnumerateDeclaration,

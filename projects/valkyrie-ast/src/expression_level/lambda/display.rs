@@ -1,28 +1,28 @@
 use super::*;
 
 impl PrettyPrint for LambdaCallNode {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        let mut terms = Vec::with_capacity(6);
-        terms.push(allocator.space());
-        terms.push(allocator.text("{"));
-        terms.push(allocator.hardline());
-        terms.push(allocator.intersperse(&self.body, allocator.hardline()).indent(4));
-        terms.push(allocator.hardline());
-        terms.push(allocator.text("}"));
-        allocator.concat(terms)
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        let mut terms = PrettySequence::new(6);
+        terms.push(theme.space());
+        terms.push(theme.text("{"));
+        terms.push(theme.hardline());
+        terms.push(theme.intersperse(&self.body, theme.hardline()).indent(4));
+        terms.push(theme.hardline());
+        terms.push(theme.text("}"));
+        theme.concat(terms)
     }
 }
 
 impl PrettyPrint for LambdaDotNode {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        let newline = allocator.hardline();
-        let mut terms = Vec::with_capacity(6);
-        terms.push(allocator.text("."));
-        terms.push(allocator.text("{"));
-        terms.push(allocator.space());
-        terms.push(allocator.join(&self.body, ";"));
-        terms.push(allocator.space());
-        terms.push(allocator.text("}"));
-        newline.append(allocator.concat(terms).indent(4))
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        let newline = theme.hardline();
+        let mut terms = PrettySequence::new(6);
+        terms.push(theme.text("."));
+        terms.push(theme.text("{"));
+        terms.push(theme.space());
+        terms.push(theme.join(&self.body, ";"));
+        terms.push(theme.space());
+        terms.push(theme.text("}"));
+        newline.append(theme.concat(terms).indent(4))
     }
 }

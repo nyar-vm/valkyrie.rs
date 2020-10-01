@@ -142,7 +142,7 @@ pub struct PatternGuard {
 }
 
 impl PrettyPrint for PatternGuard {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        allocator.keyword("when").append(allocator.space()).append(self.condition.build(allocator))
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        theme.keyword("when").append(theme.space()).append(self.condition.build(theme))
     }
 }

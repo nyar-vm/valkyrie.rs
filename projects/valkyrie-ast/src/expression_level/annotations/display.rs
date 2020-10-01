@@ -18,45 +18,45 @@ impl Display for AnnotationPathNode {
 }
 
 impl PrettyPrint for AnnotationKind {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        allocator.metadata(self.as_str())
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        theme.metadata(self.as_str())
     }
 }
 
 impl PrettyPrint for AnnotationNode {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        let mut terms = Vec::with_capacity(2);
-        terms.push(self.kind.build(allocator));
-        terms.push(self.term.build(allocator));
-        allocator.concat(terms)
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        let mut terms = PrettySequence::new(2);
+        terms.push(self.kind.build(theme));
+        terms.push(self.term.build(theme));
+        theme.concat(terms)
     }
 }
 
 impl PrettyPrint for AnnotationList {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        let mut terms = Vec::with_capacity(self.terms.len());
-        terms.push(self.kind.build(allocator));
-        terms.push(allocator.metadata("["));
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        let mut terms = PrettySequence::new(self.terms.len());
+        terms.push(self.kind.build(theme));
+        terms.push(theme.metadata("["));
         for term in &self.terms {
-            terms.push(term.build(allocator));
+            terms.push(term.build(theme));
         }
-        terms.push(allocator.metadata("]"));
-        allocator.concat(terms)
+        terms.push(theme.metadata("]"));
+        theme.concat(terms)
     }
 }
 
 impl PrettyPrint for AnnotationTerm {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        let mut terms = Vec::with_capacity(3);
-        terms.push(self.path.build(allocator));
-        terms.push(self.arguments.build(allocator));
-        terms.push(self.collects.build(allocator));
-        allocator.concat(terms)
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        let mut terms = PrettySequence::new(3);
+        terms.push(self.path.build(theme));
+        terms.push(self.arguments.build(theme));
+        terms.push(self.collects.build(theme));
+        theme.concat(terms)
     }
 }
 
 impl PrettyPrint for AnnotationPathNode {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        allocator.metadata(self.to_string())
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        theme.metadata(self.to_string())
     }
 }

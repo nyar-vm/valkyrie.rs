@@ -8,35 +8,35 @@ impl Default for ExpressionBody {
 
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for ExpressionNode {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        self.body.build(allocator)
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        self.body.build(theme)
     }
 }
 
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for ExpressionBody {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         match self {
             ExpressionBody::Placeholder => unreachable!(),
-            ExpressionBody::Slot(node) => node.build(allocator),
-            ExpressionBody::Symbol(node) => node.build(allocator),
-            ExpressionBody::Number(node) => node.build(allocator),
-            ExpressionBody::Text(node) => node.build(allocator),
-            ExpressionBody::String(node) => node.build(allocator),
-            ExpressionBody::Prefix(node) => node.build(allocator),
-            ExpressionBody::Binary(node) => node.build(allocator),
-            ExpressionBody::Suffix(node) => node.build(allocator),
-            ExpressionBody::Table(node) => node.build(allocator),
-            ExpressionBody::Apply(node) => node.build(allocator),
-            ExpressionBody::ApplyDot(node) => node.build(allocator),
-            ExpressionBody::LambdaCall(node) => node.build(allocator),
-            ExpressionBody::LambdaDot(node) => node.build(allocator),
-            ExpressionBody::Subscript(node) => node.build(allocator),
-            ExpressionBody::GenericCall(node) => node.build(allocator),
-            ExpressionBody::New(node) => node.build(allocator),
-            ExpressionBody::Resume(node) => node.build(allocator),
-            ExpressionBody::If(node) => node.build(allocator),
-            ExpressionBody::Switch(node) => node.build(allocator),
+            ExpressionBody::Slot(node) => node.build(theme),
+            ExpressionBody::Symbol(node) => node.build(theme),
+            ExpressionBody::Number(node) => node.build(theme),
+            ExpressionBody::Text(node) => node.build(theme),
+            ExpressionBody::String(node) => node.build(theme),
+            ExpressionBody::Prefix(node) => node.build(theme),
+            ExpressionBody::Binary(node) => node.build(theme),
+            ExpressionBody::Suffix(node) => node.build(theme),
+            ExpressionBody::Table(node) => node.build(theme),
+            ExpressionBody::Apply(node) => node.build(theme),
+            ExpressionBody::ApplyDot(node) => node.build(theme),
+            ExpressionBody::LambdaCall(node) => node.build(theme),
+            ExpressionBody::LambdaDot(node) => node.build(theme),
+            ExpressionBody::Subscript(node) => node.build(theme),
+            ExpressionBody::GenericCall(node) => node.build(theme),
+            ExpressionBody::New(node) => node.build(theme),
+            ExpressionBody::Resume(node) => node.build(theme),
+            ExpressionBody::If(node) => node.build(theme),
+            ExpressionBody::Switch(node) => node.build(theme),
         }
     }
 }

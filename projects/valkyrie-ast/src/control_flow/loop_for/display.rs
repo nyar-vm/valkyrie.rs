@@ -1,25 +1,25 @@
 use super::*;
 
 impl PrettyPrint for ForLoop {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        let mut terms = Vec::with_capacity(4);
-        terms.push(allocator.keyword("for"));
-        terms.push(allocator.space());
-        terms.push(self.pattern.build(allocator));
-        terms.push(allocator.space());
-        terms.push(allocator.keyword("∈"));
-        terms.push(allocator.space());
-        terms.push(self.iterator.build(allocator));
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        let mut terms = PrettySequence::new(4);
+        terms.push(theme.keyword("for"));
+        terms.push(theme.space());
+        terms.push(self.pattern.build(theme));
+        terms.push(theme.space());
+        terms.push(theme.keyword("∈"));
+        terms.push(theme.space());
+        terms.push(self.iterator.build(theme));
         if let Some(s) = &self.condition {
-            terms.push(allocator.space());
-            terms.push(allocator.keyword("if"));
-            terms.push(allocator.space());
-            terms.push(s.build(allocator));
+            terms.push(theme.space());
+            terms.push(theme.keyword("if"));
+            terms.push(theme.space());
+            terms.push(s.build(theme));
         }
-        terms.push(self.body.build(allocator));
+        terms.push(self.body.build(theme));
         if let Some(s) = &self.r#else {
-            terms.push(s.build(allocator));
+            terms.push(s.build(theme));
         }
-        allocator.concat(terms)
+        theme.concat(terms)
     }
 }

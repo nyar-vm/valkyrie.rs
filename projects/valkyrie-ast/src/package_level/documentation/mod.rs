@@ -11,15 +11,15 @@ pub struct DocumentationNode {
 }
 
 impl PrettyPrint for DocumentationNode {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = Vec::new();
         for (index, line) in self.documentation.lines().enumerate() {
             if index != 0 {
-                terms.push(allocator.hardline())
+                terms.push(theme.hardline())
             }
-            terms.push(allocator.text("#? "));
-            terms.push(allocator.text(line.to_owned()));
+            terms.push(theme.text("#? "));
+            terms.push(theme.text(line.to_owned()));
         }
-        allocator.concat(terms)
+        theme.concat(terms)
     }
 }

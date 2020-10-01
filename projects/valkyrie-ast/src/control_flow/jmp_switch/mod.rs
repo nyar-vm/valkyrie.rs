@@ -10,25 +10,25 @@ pub struct SwitchStatement {
 }
 
 impl PrettyPrint for SwitchStatement {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        let mut terms = Vec::with_capacity(10);
-        terms.push(allocator.keyword("switch"));
-        terms.push(allocator.space());
-        terms.push(allocator.text("{"));
-        terms.push(allocator.hardline());
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        let mut terms = PrettySequence::new(10);
+        terms.push(theme.keyword("switch"));
+        terms.push(theme.space());
+        terms.push(theme.text("{"));
+        terms.push(theme.hardline());
         let mut inner = Vec::with_capacity(10);
         let len = self.branches.len();
         for (idx, branch) in self.branches.iter().enumerate() {
-            inner.push(branch.build(allocator));
+            inner.push(branch.build(theme));
             if idx == len.saturating_sub(1) {
             }
             else {
-                inner.push(allocator.hardline());
+                inner.push(theme.hardline());
             }
         }
-        terms.push(allocator.concat(inner).group().indent(4));
-        terms.push(allocator.hardline());
-        terms.push(allocator.text("}"));
-        allocator.concat(terms)
+        terms.push(theme.concat(inner).group().indent(4));
+        terms.push(theme.hardline());
+        terms.push(theme.text("}"));
+        theme.concat(terms)
     }
 }

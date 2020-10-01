@@ -1,4 +1,5 @@
 use super::*;
+use pretty_print::helpers::PrettySequence;
 
 impl Display for ControlType {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
@@ -7,31 +8,31 @@ impl Display for ControlType {
 }
 
 impl PrettyPrint for RaiseNode {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        let mut terms = Vec::with_capacity(2);
-        terms.push(allocator.keyword("raise"));
-        terms.push(allocator.space());
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        let mut terms = PrettySequence::new(2);
+        terms += theme.keyword("raise");
+        terms += " ";
         if let Some(s) = &self.expression {
-            terms.push(s.build(allocator));
+            terms.push(s.build(theme));
         }
-        allocator.concat(terms)
+        theme.concat(terms)
     }
 }
 
 impl PrettyPrint for ControlNode {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        let mut terms = Vec::with_capacity(3);
-        terms.push(self.r#type.build(allocator));
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        let mut terms = PrettySequence::new(3);
+        terms.push(self.r#type.build(theme));
         if let Some(s) = &self.expression {
-            terms.push(allocator.space());
-            terms.push(s.build(allocator));
+            terms += " ";
+            terms += s.pretty(theme);
         }
-        allocator.concat(terms)
+        terms.into()
     }
 }
 
 impl PrettyPrint for ControlType {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        allocator.keyword(self.as_str())
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        theme.keyword(self.as_str())
     }
 }

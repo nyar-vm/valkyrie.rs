@@ -13,27 +13,27 @@ impl PrettyPrint for WhileLoop {
     ///    ...
     /// }
     /// ```
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        let mut terms = Vec::with_capacity(4);
-        terms.push(allocator.keyword("while"));
-        terms.push(allocator.space());
-        terms.push(self.condition.build(allocator));
-        terms.push(self.body.build(allocator));
-        allocator.concat(terms)
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        let mut terms = PrettySequence::new(4);
+        terms.push(theme.keyword("while"));
+        terms.push(theme.space());
+        terms.push(self.condition.build(theme));
+        terms.push(self.body.build(theme));
+        theme.concat(terms)
     }
 }
 
 impl PrettyPrint for PatternExpressionNode {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         match self {
             Self::Tuple(v) => {
-                let mut terms = Vec::with_capacity(4);
-                terms.push(allocator.text("("));
-                terms.push(allocator.join(v, ", "));
-                terms.push(allocator.text(")"));
-                allocator.concat(terms)
+                let mut terms = PrettySequence::new(4);
+                terms.push(theme.text("("));
+                terms.push(theme.join(v, ", "));
+                terms.push(theme.text(")"));
+                theme.concat(terms)
             }
-            Self::Case => allocator.keyword("case"),
+            Self::Case => theme.keyword("case"),
         }
     }
 }

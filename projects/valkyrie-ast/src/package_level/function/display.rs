@@ -10,32 +10,32 @@ impl FunctionType {
 }
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for FunctionType {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        allocator.keyword(self.as_str())
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        theme.keyword(self.as_str())
     }
 }
 
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for FunctionDeclaration {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        let mut terms = Vec::with_capacity(4);
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        let mut terms = PrettySequence::new(4);
         for m in &self.modifiers {
-            terms.push(allocator.keyword(m.name.clone()));
-            terms.push(allocator.space());
+            terms.push(theme.keyword(m.name.clone()));
+            terms.push(theme.space());
         }
-        terms.push(allocator.keyword(self.r#type.as_str()));
-        terms.push(allocator.space());
-        terms.push(self.namepath.build(allocator));
+        terms.push(theme.keyword(self.r#type.as_str()));
+        terms.push(theme.space());
+        terms.push(self.namepath.build(theme));
         if let Some(gen) = &self.generic {
-            terms.push(gen.build(allocator));
+            terms.push(gen.build(theme));
         }
-        terms.push(self.arguments.build(allocator));
+        terms.push(self.arguments.build(theme));
         if let Some(ret) = &self.r#return {
-            terms.push(allocator.text(": "));
-            terms.push(ret.returns.build(allocator));
+            terms.push(theme.text(": "));
+            terms.push(ret.returns.build(theme));
         }
-        terms.push(self.body.build(allocator));
-        allocator.concat(terms)
+        terms.push(self.body.build(theme));
+        theme.concat(terms)
     }
 }
 
@@ -50,30 +50,30 @@ impl PrettyPrint for StatementBlock {
     ///    ...
     /// }
     /// ```
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        let mut terms = Vec::with_capacity(9);
-        terms.push(allocator.space());
-        terms.push(allocator.text("{"));
-        terms.push(allocator.hardline());
-        terms.push(allocator.intersperse(&self.terms, allocator.hardline()).indent(4));
-        terms.push(allocator.hardline());
-        terms.push(allocator.text("}"));
-        allocator.concat(terms)
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        let mut terms = PrettySequence::new(9);
+        terms.push(theme.space());
+        terms.push(theme.text("{"));
+        terms.push(theme.hardline());
+        terms.push(theme.intersperse(&self.terms, theme.hardline()).indent(4));
+        terms.push(theme.hardline());
+        terms.push(theme.text("}"));
+        theme.concat(terms)
     }
 }
 #[cfg(feature = "pretty-print")]
 impl<K: PrettyPrint, V: PrettyPrint, D: PrettyPrint> PrettyPrint for ArgumentTermNode<K, V, D> {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        let mut terms = Vec::with_capacity(3);
-        terms.push(self.key.build(allocator));
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        let mut terms = PrettySequence::new(3);
+        terms.push(self.key.build(theme));
         if let Some(value) = &self.value {
-            terms.push(allocator.text(": "));
-            terms.push(value.build(allocator));
+            terms.push(theme.text(": "));
+            terms.push(value.build(theme));
         }
         if let Some(default) = &self.default {
-            terms.push(allocator.text(" = "));
-            terms.push(default.build(allocator));
+            terms.push(theme.text(" = "));
+            terms.push(default.build(theme));
         }
-        allocator.concat(terms)
+        theme.concat(terms)
     }
 }

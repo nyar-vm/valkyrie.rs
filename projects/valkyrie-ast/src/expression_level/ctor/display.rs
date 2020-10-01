@@ -1,43 +1,43 @@
 use super::*;
 
 impl PrettyPrint for NewConstructNode {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
-        let mut terms = Vec::with_capacity(5);
-        terms.push(allocator.keyword("new"));
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        let mut terms = PrettySequence::new(5);
+        terms.push(theme.keyword("new"));
         for m in &self.modifiers {
-            terms.push(allocator.space());
-            terms.push(allocator.keyword(m.name.to_string()));
+            terms.push(theme.space());
+            terms.push(theme.keyword(m.name.to_string()));
         }
-        terms.push(allocator.space());
-        terms.push(self.namepath.build(allocator));
+        terms.push(theme.space());
+        terms.push(self.namepath.build(theme));
 
         if !self.generic.terms.is_empty() {
-            terms.push(self.generic.build(allocator));
+            terms.push(self.generic.build(theme));
         }
-        terms.push(self.arguments.build(allocator));
-        terms.push(self.body.build(allocator));
-        allocator.concat(terms)
+        terms.push(self.arguments.build(theme));
+        terms.push(self.body.build(theme));
+        theme.concat(terms)
     }
 }
 
 impl PrettyPrint for CollectsNode {
-    fn build<'a>(&self, allocator: &'a PrettyProvider<'a>) -> PrettyTree<'a> {
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut inline = Vec::with_capacity(6);
-        inline.push(allocator.space());
-        inline.push(allocator.text("{"));
-        inline.push(allocator.space());
-        inline.push(allocator.join(&self.terms, ", "));
-        inline.push(allocator.space());
-        inline.push(allocator.text("}"));
-        let inline = allocator.concat(inline);
+        inline.push(theme.space());
+        inline.push(theme.text("{"));
+        inline.push(theme.space());
+        inline.push(theme.join(&self.terms, ", "));
+        inline.push(theme.space());
+        inline.push(theme.text("}"));
+        let inline = theme.concat(inline);
         let mut block = Vec::with_capacity(6);
-        block.push(allocator.space());
-        block.push(allocator.text("{"));
-        block.push(allocator.hardline());
-        block.push(allocator.intersperse(&self.terms, allocator.text(",").append(allocator.hardline())).indent(4));
-        block.push(allocator.hardline());
-        block.push(allocator.text("}"));
-        let block = allocator.concat(block);
+        block.push(theme.space());
+        block.push(theme.text("{"));
+        block.push(theme.hardline());
+        block.push(theme.intersperse(&self.terms, theme.text(",").append(theme.hardline())).indent(4));
+        block.push(theme.hardline());
+        block.push(theme.text("}"));
+        let block = theme.concat(block);
         inline.flat_alt(block)
     }
 }
