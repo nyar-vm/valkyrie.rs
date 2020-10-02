@@ -15,11 +15,11 @@ impl PrettyPrint for WhileLoop {
     /// ```
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(4);
-        terms.push(theme.keyword("while"));
-        terms.push(theme.space());
-        terms.push(self.condition.build(theme));
-        terms.push(self.body.build(theme));
-        theme.concat(terms)
+        terms += theme.keyword("while");
+        terms += " ";
+        terms += self.condition.pretty(theme);
+        terms += self.body.pretty(theme);
+        terms.into()
     }
 }
 
@@ -28,10 +28,10 @@ impl PrettyPrint for PatternExpressionNode {
         match self {
             Self::Tuple(v) => {
                 let mut terms = PrettySequence::new(4);
-                terms.push(theme.text("("));
-                terms.push(theme.join(v, ", "));
-                terms.push(theme.text(")"));
-                theme.concat(terms)
+                terms += "(";
+                terms += theme.join(v, ", ");
+                terms += ")";
+                terms.into()
             }
             Self::Case => theme.keyword("case"),
         }

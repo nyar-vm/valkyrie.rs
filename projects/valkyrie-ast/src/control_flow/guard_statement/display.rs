@@ -3,12 +3,12 @@ use super::*;
 impl PrettyPrint for GuardStatement {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(10);
-        terms.push(theme.keyword("guard"));
-        terms.push(theme.space());
-        terms.push(self.condition.build(theme));
-        terms.push(theme.space());
-        terms.push(theme.keyword("else"));
-        terms.push(self.body.build(theme));
+        terms += theme.keyword("guard");
+        terms += " ";
+        terms += self.condition.pretty(theme);
+        terms += " ";
+        terms += theme.keyword("else");
+        terms += self.body.pretty(theme);
         terms.into()
     }
 }

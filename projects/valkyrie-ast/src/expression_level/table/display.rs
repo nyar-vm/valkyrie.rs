@@ -6,15 +6,15 @@ impl PrettyPrint for TableNode {
         match self.kind {
             TableKind::Tuple => {
                 let k = KAndRBracket { head_space: false, bracket_l: "(", bracket_r: ")" };
-                k.build(&self.terms, theme, theme.text(", "), theme.text(",").append(theme.hardline()))
+                k.build(&self.terms, theme, ", ", PrettyTree::text(",").append(PrettyTree::Hardline))
             }
             TableKind::OffsetTable => {
                 let k = KAndRBracket { head_space: false, bracket_l: "[", bracket_r: "]" };
-                k.build(&self.terms, theme, theme.text(", "), theme.text(",").append(theme.hardline()))
+                k.build(&self.terms, theme, ", ", PrettyTree::text(",").append(PrettyTree::Hardline))
             }
             TableKind::OrdinalTable => {
                 let k = KAndRBracket { head_space: false, bracket_l: "{%", bracket_r: "%}" };
-                k.build(&self.terms, theme, theme.text(", "), theme.text(",").append(theme.hardline()))
+                k.build(&self.terms, theme, ", ", PrettyTree::text(",").append(PrettyTree::Hardline))
             }
         }
     }
@@ -22,7 +22,7 @@ impl PrettyPrint for TableNode {
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for TableTermNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
-        self.pair.build(theme)
+        self.pair.pretty(theme)
     }
 }
 
@@ -30,10 +30,10 @@ impl PrettyPrint for TableTermNode {
 impl PrettyPrint for TableKeyType {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         match self {
-            TableKeyType::Identifier(node) => node.build(theme),
-            TableKeyType::Number(node) => node.build(theme),
-            TableKeyType::String(node) => node.build(theme),
-            TableKeyType::Subscript(node) => node.build(theme),
+            TableKeyType::Identifier(node) => node.pretty(theme),
+            TableKeyType::Number(node) => node.pretty(theme),
+            TableKeyType::String(node) => node.pretty(theme),
+            TableKeyType::Subscript(node) => node.pretty(theme),
         }
     }
 }

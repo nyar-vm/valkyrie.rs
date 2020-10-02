@@ -13,16 +13,16 @@ impl PrettyPrint for RaiseNode {
         terms += theme.keyword("raise");
         terms += " ";
         if let Some(s) = &self.expression {
-            terms.push(s.build(theme));
+            terms += s.pretty(theme);
         }
-        theme.concat(terms)
+        terms.into()
     }
 }
 
 impl PrettyPrint for ControlNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(3);
-        terms.push(self.r#type.build(theme));
+        terms += self.r#type.pretty(theme);
         if let Some(s) = &self.expression {
             terms += " ";
             terms += s.pretty(theme);

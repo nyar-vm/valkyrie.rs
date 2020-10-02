@@ -19,44 +19,44 @@ impl Display for AnnotationPathNode {
 
 impl PrettyPrint for AnnotationKind {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
-        theme.metadata(self.as_str())
+        theme.annotation(self.as_str())
     }
 }
 
 impl PrettyPrint for AnnotationNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(2);
-        terms.push(self.kind.build(theme));
-        terms.push(self.term.build(theme));
-        theme.concat(terms)
+        terms += self.kind.pretty(theme);
+        terms += self.term.pretty(theme);
+        terms.into()
     }
 }
 
 impl PrettyPrint for AnnotationList {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(self.terms.len());
-        terms.push(self.kind.build(theme));
-        terms.push(theme.metadata("["));
+        terms += self.kind.pretty(theme);
+        terms += theme.annotation("[");
         for term in &self.terms {
-            terms.push(term.build(theme));
+            terms += term.pretty(theme);
         }
-        terms.push(theme.metadata("]"));
-        theme.concat(terms)
+        terms += theme.annotation("]");
+        terms.into()
     }
 }
 
 impl PrettyPrint for AnnotationTerm {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(3);
-        terms.push(self.path.build(theme));
-        terms.push(self.arguments.build(theme));
-        terms.push(self.collects.build(theme));
-        theme.concat(terms)
+        terms += self.path.pretty(theme);
+        terms += self.arguments.pretty(theme);
+        terms += self.collects.pretty(theme);
+        terms.into()
     }
 }
 
 impl PrettyPrint for AnnotationPathNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
-        theme.metadata(self.to_string())
+        theme.annotation(self.to_string())
     }
 }

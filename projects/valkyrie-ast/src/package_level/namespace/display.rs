@@ -4,9 +4,9 @@ use super::*;
 impl PrettyPrint for NamespaceDeclaration {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let head = theme.keyword(self.kind.as_str());
-        let space = theme.space();
+        let space = " ";
         let path = theme.join(&self.path, ".");
-        let semi = theme.text(";");
+        let semi = ";";
         head.append(space).append(path).append(semi)
     }
 }

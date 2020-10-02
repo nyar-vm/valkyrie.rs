@@ -1,43 +1,42 @@
 use super::*;
+use pretty_print::PrettyBuilder;
 
 impl PrettyPrint for NewConstructNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(5);
-        terms.push(theme.keyword("new"));
+        terms += theme.keyword("new");
         for m in &self.modifiers {
-            terms.push(theme.space());
-            terms.push(theme.keyword(m.name.to_string()));
+            terms += " ";
+            terms += theme.keyword(m.name.to_string());
         }
-        terms.push(theme.space());
-        terms.push(self.namepath.build(theme));
+        terms += " ";
+        terms += self.namepath.pretty(theme);
 
         if !self.generic.terms.is_empty() {
-            terms.push(self.generic.build(theme));
+            terms += self.generic.pretty(theme);
         }
-        terms.push(self.arguments.build(theme));
-        terms.push(self.body.build(theme));
-        theme.concat(terms)
+        terms += self.arguments.pretty(theme);
+        terms += self.body.pretty(theme);
+        terms.into()
     }
 }
 
 impl PrettyPrint for CollectsNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
-        let mut inline = Vec::with_capacity(6);
-        inline.push(theme.space());
-        inline.push(theme.text("{"));
-        inline.push(theme.space());
-        inline.push(theme.join(&self.terms, ", "));
-        inline.push(theme.space());
-        inline.push(theme.text("}"));
-        let inline = theme.concat(inline);
-        let mut block = Vec::with_capacity(6);
-        block.push(theme.space());
-        block.push(theme.text("{"));
-        block.push(theme.hardline());
-        block.push(theme.intersperse(&self.terms, theme.text(",").append(theme.hardline())).indent(4));
-        block.push(theme.hardline());
-        block.push(theme.text("}"));
-        let block = theme.concat(block);
+        let mut inline = PrettySequence::new(6);
+        inline += " ";
+        inline += "{";
+        inline += " ";
+        inline += theme.join(&self.terms, ", ");
+        inline += " ";
+        inline += "}";
+        let mut block = PrettySequence::new(6);
+        block += " ";
+        block += "{";
+        block += PrettyTree::Hardline;
+        block += theme.join(&self.terms, ",").append(PrettyTree::Hardline).indent(4);
+        block += PrettyTree::Hardline;
+        block += "}";
         inline.flat_alt(block)
     }
 }

@@ -2,7 +2,8 @@ use crate::{ArgumentKeyNode, ExpressionNode, StatementNode};
 use alloc::{vec, vec::Vec};
 use core::ops::Range;
 use deriver::From;
-use pretty_print::{PrettyPrint, PrettyProvider, PrettyTree};
+#[cfg(feature = "pretty-print")]
+use pretty_print::{helpers::PrettySequence, PrettyPrint, PrettyProvider, PrettyTree};
 
 mod display;
 
@@ -143,6 +144,6 @@ pub struct PatternGuard {
 
 impl PrettyPrint for PatternGuard {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
-        theme.keyword("when").append(theme.space()).append(self.condition.build(theme))
+        theme.keyword("when").append(" ").append(self.condition.pretty(theme))
     }
 }

@@ -32,7 +32,7 @@ use core::{
 };
 use deriver::From;
 #[cfg(feature = "pretty-print")]
-use pretty_print::{PrettyPrint, PrettyProvider, PrettyTree};
+use pretty_print::{helpers::PrettySequence, PrettyPrint, PrettyProvider, PrettyTree};
 
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]

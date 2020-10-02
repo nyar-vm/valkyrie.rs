@@ -2,8 +2,8 @@ use super::*;
 
 impl<E: PrettyPrint> PrettyPrint for CallNode<E> {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
-        let lhs = self.base.build(theme);
-        let rhs = self.rest.build(theme);
+        let lhs = self.base.pretty(theme);
+        let rhs = self.rest.pretty(theme);
         lhs.append(rhs)
     }
 }
@@ -16,10 +16,10 @@ where
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(3);
         if let Some(k) = &self.key {
-            terms.push(k.build(theme));
-            terms.push(theme.text(": "));
+            terms += k.pretty(theme);
+            terms += ": ";
         }
-        terms.push(self.value.build(theme));
-        theme.concat(terms)
+        terms += self.value.pretty(theme);
+        terms.into()
     }
 }

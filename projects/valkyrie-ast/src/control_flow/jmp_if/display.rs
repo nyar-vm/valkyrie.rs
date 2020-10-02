@@ -5,27 +5,27 @@ impl PrettyPrint for IfStatement {
         let mut terms = PrettySequence::new(self.branches.len() * 4 + 3);
         for (idx, term) in self.branches.iter().enumerate() {
             if idx == 0 {
-                terms.push(theme.keyword("if "));
-                terms.push(term.condition.build(theme));
+                terms += theme.keyword("if ");
+                terms += term.condition.pretty(theme);
             }
             else {
-                terms.push(theme.hardline());
-                terms.push(theme.keyword("else if "));
-                terms.push(term.condition.build(theme));
+                terms += PrettyTree::Hardline;
+                terms += theme.keyword("else if ");
+                terms += term.condition.pretty(theme);
             }
-            terms.push(term.body.build(theme));
+            terms += term.body.pretty(theme);
         }
-        terms.push(self.else_branch.build(theme));
-        theme.concat(terms)
+        terms += self.else_branch.pretty(theme);
+        terms.into()
     }
 }
 
 impl PrettyPrint for IfConditionNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(10);
-        terms.push(self.condition.build(theme));
-        terms.push(self.body.build(theme));
-        theme.concat(terms)
+        terms += self.condition.pretty(theme);
+        terms += self.body.pretty(theme);
+        terms.into()
     }
 }
 
@@ -44,7 +44,7 @@ impl PrettyPrint for WhileConditionNode {
         match self {
             WhileConditionNode::AlwaysTrue => theme.keyword("true"),
             WhileConditionNode::Case => theme.keyword("case"),
-            WhileConditionNode::Expression(e) => e.build(theme),
+            WhileConditionNode::Expression(e) => e.pretty(theme),
         }
     }
 }
@@ -53,14 +53,14 @@ impl PrettyPrint for WhileConditionNode {
 impl PrettyPrint for ElseStatement {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(10);
-        terms.push(theme.hardline());
-        terms.push(theme.keyword("else"));
-        terms.push(theme.space());
-        terms.push(theme.text("{"));
-        terms.push(theme.hardline());
-        terms.push(theme.intersperse(&self.statements, theme.hardline()).indent(4));
-        terms.push(theme.hardline());
-        terms.push(theme.text("}"));
-        theme.concat(terms)
+        terms += PrettyTree::Hardline;
+        terms += theme.keyword("else");
+        terms += " ";
+        terms += "{";
+        terms += PrettyTree::Hardline;
+        terms += theme.join(&self.statements, PrettyTree::Hardline).indent(4);
+        terms += PrettyTree::Hardline;
+        terms += "}";
+        terms.into()
     }
 }

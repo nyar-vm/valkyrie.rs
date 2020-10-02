@@ -11,15 +11,15 @@ pub struct DocumentationNode {
 }
 
 impl PrettyPrint for DocumentationNode {
-    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+    fn pretty(&self, _: &PrettyProvider) -> PrettyTree {
         let mut terms = Vec::new();
         for (index, line) in self.documentation.lines().enumerate() {
             if index != 0 {
-                terms.push(theme.hardline())
+                terms += PrettyTree::Hardline
             }
-            terms.push(theme.text("#? "));
-            terms.push(theme.text(line.to_owned()));
+            terms += "#? ";
+            terms += line.to_owned();
         }
-        theme.concat(terms)
+        terms.into()
     }
 }

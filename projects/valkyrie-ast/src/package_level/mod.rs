@@ -30,7 +30,8 @@ use alloc::{
 };
 use core::ops::Range;
 use deriver::From;
-use pretty_print::helpers::KAndRBracket;
-
 #[cfg(feature = "pretty-print")]
-use pretty_print::{PrettyPrint, PrettyProvider, PrettyTree};
+use pretty_print::{
+    helpers::{KAndRBracket, PrettySequence},
+    PrettyPrint, PrettyProvider, PrettyTree,
+};

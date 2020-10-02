@@ -8,9 +8,9 @@ use core::{
     ops::Range,
 };
 use deriver::From;
-
+use pretty_print::PrettyBuilder;
 #[cfg(feature = "pretty-print")]
-use pretty_print::{PrettyPrint, PrettyProvider, PrettyTree};
+use pretty_print::{helpers::PrettySequence, PrettyPrint, PrettyProvider, PrettyTree};
 
 pub mod control;
 pub mod guard_statement;

@@ -20,22 +20,22 @@ impl PrettyPrint for FunctionDeclaration {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(4);
         for m in &self.modifiers {
-            terms.push(theme.keyword(m.name.clone()));
-            terms.push(theme.space());
+            terms += theme.keyword(m.name.clone());
+            terms += " ";
         }
-        terms.push(theme.keyword(self.r#type.as_str()));
-        terms.push(theme.space());
-        terms.push(self.namepath.build(theme));
+        terms += theme.keyword(self.r#type.as_str());
+        terms += " ";
+        terms += self.namepath.pretty(theme);
         if let Some(gen) = &self.generic {
-            terms.push(gen.build(theme));
+            terms += gen.pretty(theme);
         }
-        terms.push(self.arguments.build(theme));
+        terms += self.arguments.pretty(theme);
         if let Some(ret) = &self.r#return {
-            terms.push(theme.text(": "));
-            terms.push(ret.returns.build(theme));
+            terms += ": ";
+            terms += ret.returns.pretty(theme);
         }
-        terms.push(self.body.build(theme));
-        theme.concat(terms)
+        terms += self.body.pretty(theme);
+        terms.into()
     }
 }
 
@@ -52,28 +52,28 @@ impl PrettyPrint for StatementBlock {
     /// ```
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(9);
-        terms.push(theme.space());
-        terms.push(theme.text("{"));
-        terms.push(theme.hardline());
-        terms.push(theme.intersperse(&self.terms, theme.hardline()).indent(4));
-        terms.push(theme.hardline());
-        terms.push(theme.text("}"));
-        theme.concat(terms)
+        terms += " ";
+        terms += "{";
+        terms += PrettyTree::Hardline;
+        terms += theme.intersperse(&self.terms, PrettyTree::Hardline.indent(4));
+        terms += PrettyTree::Hardline;
+        terms += "}";
+        terms.into()
     }
 }
 #[cfg(feature = "pretty-print")]
 impl<K: PrettyPrint, V: PrettyPrint, D: PrettyPrint> PrettyPrint for ArgumentTermNode<K, V, D> {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(3);
-        terms.push(self.key.build(theme));
+        terms += self.key.pretty(theme);
         if let Some(value) = &self.value {
-            terms.push(theme.text(": "));
-            terms.push(value.build(theme));
+            terms += ": ";
+            terms += value.pretty(theme);
         }
         if let Some(default) = &self.default {
-            terms.push(theme.text(" = "));
-            terms.push(default.build(theme));
+            terms += " = ";
+            terms += default.pretty(theme);
         }
-        theme.concat(terms)
+        terms.into()
     }
 }
