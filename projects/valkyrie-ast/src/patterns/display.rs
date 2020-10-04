@@ -1,4 +1,5 @@
 use super::*;
+use pretty_print::PrettyBuilder;
 
 impl PrettyPrint for PatternBranch {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
@@ -28,7 +29,7 @@ impl PrettyPrint for PatternStatements {
                 terms += ",";
             }
         }
-        terms.into().indent(4)
+        terms.indent(4)
     }
 }
 
@@ -58,13 +59,13 @@ impl PrettyPrint for PatternCaseNode {
 
 impl PrettyPrint for PatternWhenNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
-        theme.concat(vec![theme.keyword("when"), " ", self.guard.pretty(theme)])
+        theme.concat(&[theme.keyword("when"), " ".into(), self.guard.pretty(theme)])
     }
 }
 
 impl PrettyPrint for PatternTypeNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
-        theme.concat(vec![theme.keyword("type"), " ", self.pattern.pretty(theme)])
+        theme.concat(&[theme.keyword("type"), " ".into(), self.pattern.pretty(theme)])
     }
 }
 

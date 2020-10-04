@@ -12,11 +12,14 @@ fn lex_literal() {
 }
 
 #[test]
-fn test_table() {}
+fn test_table() {
+    repl_debug(include_str!("symbol.vk"), "literal/symbol_debug.rkt").expect("symbol");
+}
 
 #[test]
 fn test_problems() {
-    let raw = "t'a\n'";
-    let apply = StringLiteralNode::parse_text(raw).unwrap();
-    apply.pretty_print(42)
+    let raw = "a::b";
+    let apply = NamePathNode::parse(ParseState::new(raw)).unwrap();
+    let arena = PrettyProvider::new(42);
+    println!("{}", apply.pretty_colorful(&arena));
 }

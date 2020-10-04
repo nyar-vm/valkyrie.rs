@@ -5,7 +5,7 @@ impl PrettyPrint for SubscriptNode {
         let lhs = if self.index0 { "⁅" } else { "[" };
         let terms = theme.join(&self.terms, ", ");
         let rhs = if self.index0 { "⁆" } else { "]" };
-        lhs.append(terms).append(rhs)
+        PrettyTree::StaticText(lhs).append(terms).append(rhs)
     }
 }
 

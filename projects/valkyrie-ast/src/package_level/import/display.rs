@@ -3,7 +3,7 @@ use super::*;
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for ImportStatement {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
-        let mut items = Vec::with_capacity(3);
+        let mut items = PrettySequence::new(3);
         items.push(theme.keyword("using"));
         match &self.term {
             ImportTermNode::Alias(v) => {
@@ -15,7 +15,7 @@ impl PrettyPrint for ImportStatement {
                 items.push(v.pretty(theme));
             }
         }
-        theme.concat(items)
+        items.into()
     }
 }
 

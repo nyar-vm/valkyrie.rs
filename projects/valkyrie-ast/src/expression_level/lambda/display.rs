@@ -1,4 +1,5 @@
 use super::*;
+use pretty_print::PrettyBuilder;
 
 impl PrettyPrint for LambdaCallNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
@@ -23,6 +24,6 @@ impl PrettyPrint for LambdaDotNode {
         terms += theme.join(&self.body, ";");
         terms += " ";
         terms += "}";
-        newline.append(terms.into().indent(4))
+        newline.append(terms.indent(4))
     }
 }

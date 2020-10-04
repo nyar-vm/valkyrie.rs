@@ -20,7 +20,7 @@ impl PrettyPrint for InfixNode {
         items.push(self.operator.pretty(theme));
         items.push(" ");
         items.push(self.rhs.pretty(theme));
-        theme.concat(items)
+        items.into()
     }
 }
 

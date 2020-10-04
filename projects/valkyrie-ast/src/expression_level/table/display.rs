@@ -6,15 +6,15 @@ impl PrettyPrint for TableNode {
         match self.kind {
             TableKind::Tuple => {
                 let k = KAndRBracket { head_space: false, bracket_l: "(", bracket_r: ")" };
-                k.build(&self.terms, theme, ", ", PrettyTree::text(",").append(PrettyTree::Hardline))
+                k.build(&self.terms, theme, ", ".into(), PrettyTree::text(",").append(PrettyTree::Hardline))
             }
             TableKind::OffsetTable => {
                 let k = KAndRBracket { head_space: false, bracket_l: "[", bracket_r: "]" };
-                k.build(&self.terms, theme, ", ", PrettyTree::text(",").append(PrettyTree::Hardline))
+                k.build(&self.terms, theme, ", ".into(), PrettyTree::text(",").append(PrettyTree::Hardline))
             }
             TableKind::OrdinalTable => {
                 let k = KAndRBracket { head_space: false, bracket_l: "{%", bracket_r: "%}" };
-                k.build(&self.terms, theme, ", ", PrettyTree::text(",").append(PrettyTree::Hardline))
+                k.build(&self.terms, theme, ", ".into(), PrettyTree::text(",").append(PrettyTree::Hardline))
             }
         }
     }

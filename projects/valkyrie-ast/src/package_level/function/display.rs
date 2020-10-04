@@ -1,4 +1,5 @@
 use super::*;
+use pretty_print::PrettyBuilder;
 
 impl FunctionType {
     pub fn as_str(&self) -> &'static str {
@@ -55,7 +56,7 @@ impl PrettyPrint for StatementBlock {
         terms += " ";
         terms += "{";
         terms += PrettyTree::Hardline;
-        terms += theme.intersperse(&self.terms, PrettyTree::Hardline.indent(4));
+        terms += theme.join(&self.terms, PrettyTree::Hardline.indent(4));
         terms += PrettyTree::Hardline;
         terms += "}";
         terms.into()

@@ -20,7 +20,7 @@ impl Display for NamePathNode {
 }
 
 impl PrettyPrint for IdentifierNode {
-    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+    fn pretty(&self, _: &PrettyProvider) -> PrettyTree {
         PrettyTree::text(self.name.to_string())
     }
 }
