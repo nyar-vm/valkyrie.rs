@@ -37,7 +37,18 @@ else
 ```
 
 
-```while
+```scala
+
+for a in b {
+}
+.tap {
+    $x.run == 0
+}
+.map {
+    T
+}
+
+
 let a = return xx;
 let b = yield xx;
 

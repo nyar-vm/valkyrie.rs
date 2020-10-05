@@ -20,6 +20,5 @@ fn test_table() {
 fn test_problems() {
     let raw = "a::b";
     let apply = NamePathNode::parse(ParseState::new(raw)).unwrap();
-    let arena = PrettyProvider::new(42);
-    println!("{}", apply.pretty_colorful(&arena));
+    pretty_print(&apply)
 }

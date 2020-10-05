@@ -8,7 +8,7 @@ impl ThisParser for IfStatement {
         let (finally, else_body) = state.skip(ignore).match_optional(ElseStatement::parse)?;
         let mut branches = vec![cond];
         branches.extend(body);
-        finally.finish(IfStatement { branches, else_branch: else_body.unwrap_or_default(), span: get_span(input, finally) })
+        finally.finish(IfStatement { branches, else_body, span: get_span(input, finally) })
     }
 
     fn as_lisp(&self) -> Lisp {
@@ -17,7 +17,9 @@ impl ThisParser for IfStatement {
         for branch in &self.branches {
             terms.push(branch.as_lisp());
         }
-        terms.push(self.else_branch.as_lisp());
+        if let Some(else_body) = &self.else_body {
+            terms.push(else_body.as_lisp());
+        }
         Lisp::Any(terms)
     }
 }

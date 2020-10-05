@@ -21,12 +21,13 @@ pub struct RaiseNode {
     pub span: Range<u32>,
 }
 
+/// The control flow keywords
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum ControlType {
-    /// `break label`
+    /// `break label`, equivalent to `call/cc`
     Break,
-    /// `continue label`
+    /// `continue label`, equivalent to `goto`
     Continue,
     /// `fallthrough`
     Fallthrough,

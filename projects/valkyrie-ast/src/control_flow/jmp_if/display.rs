@@ -15,7 +15,10 @@ impl PrettyPrint for IfStatement {
             }
             terms += term.body.pretty(theme);
         }
-        terms += self.else_branch.pretty(theme);
+        terms += match &self.else_body {
+            Some(s) => s.pretty(theme),
+            None => ElseStatement::default().pretty(theme),
+        };
         terms.into()
     }
 }
@@ -42,7 +45,7 @@ impl PrettyPrint for WhileConditionNode {
     /// ```
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         match self {
-            WhileConditionNode::AlwaysTrue => theme.keyword("true"),
+            WhileConditionNode::Unconditional => theme.keyword("true"),
             WhileConditionNode::Case => theme.keyword("case"),
             WhileConditionNode::Expression(e) => e.pretty(theme),
         }

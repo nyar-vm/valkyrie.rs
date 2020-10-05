@@ -2,6 +2,12 @@ switch {
 
 }
 
+switch {
+    when true:
+        1,
+    else:
+        2,
+}
 
 switch {
     case A:

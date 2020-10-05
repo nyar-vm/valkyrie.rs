@@ -18,7 +18,7 @@ impl PrettyPrint for WhileLoop {
         terms += theme.keyword("while");
         terms += " ";
         terms += self.condition.pretty(theme);
-        terms += self.body.pretty(theme);
+        terms += self.then_body.pretty(theme);
         terms.into()
     }
 }

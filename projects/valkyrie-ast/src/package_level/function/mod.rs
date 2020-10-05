@@ -66,6 +66,14 @@ pub struct FunctionEffectNode {
     pub span: Range<u32>,
 }
 
+impl FunctionType {
+    pub fn as_str(&self) -> &'static str {
+        match self {
+            FunctionType::Macro => "macro",
+            FunctionType::Micro => "micro",
+        }
+    }
+}
 impl StatementBlock {
     pub fn last_semicolon(&self) -> bool {
         match self.terms.last() {

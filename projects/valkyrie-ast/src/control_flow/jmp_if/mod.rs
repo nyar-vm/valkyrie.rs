@@ -1,4 +1,5 @@
 use super::*;
+use crate::LetBindNode;
 #[cfg(feature = "pretty-print")]
 mod display;
 
@@ -7,7 +8,24 @@ mod display;
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct IfStatement {
     pub branches: Vec<IfConditionNode>,
-    pub else_branch: ElseStatement,
+    pub else_body: Option<ElseStatement>,
+    /// The range of the node
+    pub span: Range<u32>,
+}
+
+/// `if let Some(a) = b then {}`
+///
+///
+/// ```vk
+/// if let Some(a) = b then {
+///
+/// }
+/// ```
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct IfLetStatement {
+    pub pattern: LetBindNode,
+    pub then_body: Option<ThenStatement>,
     /// The range of the node
     pub span: Range<u32>,
 }
@@ -24,7 +42,17 @@ pub struct IfConditionNode {
 
 /// Helper function to format the body of an if statement
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ElseStatement {
+    pub statements: Vec<StatementNode>,
+    /// The range of the node
+    pub span: Range<u32>,
+}
+
+/// Helper function to format the body of an if statement
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ThenStatement {
     pub statements: Vec<StatementNode>,
     /// The range of the node
     pub span: Range<u32>,
@@ -40,7 +68,7 @@ impl IfStatement {
 impl WhileConditionNode {
     pub fn is_empty(&self) -> bool {
         match self {
-            WhileConditionNode::AlwaysTrue => true,
+            WhileConditionNode::Unconditional => true,
             _ => false,
         }
     }

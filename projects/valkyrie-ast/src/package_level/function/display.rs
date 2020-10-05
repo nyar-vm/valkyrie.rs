@@ -1,14 +1,6 @@
 use super::*;
-use pretty_print::PrettyBuilder;
 
-impl FunctionType {
-    pub fn as_str(&self) -> &'static str {
-        match self {
-            FunctionType::Macro => "macro",
-            FunctionType::Micro => "micro",
-        }
-    }
-}
+
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for FunctionType {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
@@ -56,12 +48,13 @@ impl PrettyPrint for StatementBlock {
         terms += " ";
         terms += "{";
         terms += PrettyTree::Hardline;
-        terms += theme.join(&self.terms, PrettyTree::Hardline.indent(4));
+        terms += theme.join(&self.terms, PrettyTree::Hardline).indent(4);
         terms += PrettyTree::Hardline;
         terms += "}";
         terms.into()
     }
 }
+
 #[cfg(feature = "pretty-print")]
 impl<K: PrettyPrint, V: PrettyPrint, D: PrettyPrint> PrettyPrint for ArgumentTermNode<K, V, D> {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {

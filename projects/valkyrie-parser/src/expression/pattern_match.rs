@@ -129,7 +129,7 @@ impl ThisParser for PatternGuard {
 
 impl ThisParser for PatternExpressionNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
-        input.begin_choice().or_else(no_parentheses_tuple).or_else(parentheses_tuple).end_choice()
+        input.begin_choice().or_else(parentheses_tuple).end_choice()
     }
 
     fn as_lisp(&self) -> Lisp {
@@ -144,20 +144,4 @@ fn parentheses_tuple(input: ParseState) -> ParseResult<PatternExpressionNode> {
     let pat = BracketPattern::new("(", ")").with_one_tailing(true);
     let (state, terms) = pat.consume(input, ignore, ArgumentKeyNode::parse)?;
     state.finish(PatternExpressionNode::Tuple(terms.body))
-}
-
-/// term
-/// term,
-fn no_parentheses_tuple(input: ParseState) -> ParseResult<PatternExpressionNode> {
-    let (state, parts) = input.match_repeats(no_parentheses_tuple_term)?;
-    if parts.is_empty() {
-        StopBecause::missing_string("IDENTIFIER", input.start_offset)?
-    }
-    state.finish(PatternExpressionNode::Tuple(parts))
-}
-
-fn no_parentheses_tuple_term(input: ParseState) -> ParseResult<ArgumentKeyNode> {
-    let (state, (mods, id)) = parse_modifiers_lookahead(input, |s| s.eq("in"))?;
-    let (state, _) = state.skip(ignore).match_optional(parse_comma)?;
-    state.finish(ArgumentKeyNode { modifiers: mods, key: id })
 }

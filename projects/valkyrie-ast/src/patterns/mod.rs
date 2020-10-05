@@ -1,5 +1,5 @@
 use crate::{ArgumentKeyNode, ExpressionNode, StatementNode};
-use alloc::{vec, vec::Vec};
+use alloc::vec::Vec;
 use core::ops::Range;
 use deriver::From;
 #[cfg(feature = "pretty-print")]
@@ -76,6 +76,28 @@ pub struct PatternCaseNode {
 /// let Named(a, b) = expr
 /// let Named {a, b, ***kws} = expr
 /// let Named(Struct {a: b, b}, b, **args) = expr
+///
+/// for i in 0..10 if condition {
+///     ...
+/// }
+/// else {
+///     ...
+/// }
+/// ```
+///
+/// ```vk
+/// let i = 1;
+/// let j = 1;
+/// let mut i, mut j;
+/// let [a, b]
+/// let (a, b)
+/// ```
+///
+/// ```vk
+/// for i in range;
+/// for i, j in range;
+/// for mut i, mut j in range
+/// for [table] in
 /// ```
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]

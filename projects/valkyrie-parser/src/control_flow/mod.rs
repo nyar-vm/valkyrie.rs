@@ -24,13 +24,13 @@ impl ThisParser for WhileConditionNode {
                 let (state, e) = ExpressionNode::parse(s)?;
                 state.finish(WhileConditionNode::Expression(Box::new(e)))
             })
-            .or_else(|s| s.finish(WhileConditionNode::AlwaysTrue))
+            .or_else(|s| s.finish(WhileConditionNode::Unconditional))
             .end_choice()
     }
 
     fn as_lisp(&self) -> Lisp {
         match self {
-            WhileConditionNode::AlwaysTrue => Lisp::keyword("true"),
+            WhileConditionNode::Unconditional => Lisp::keyword("true"),
             WhileConditionNode::Case => Lisp::keyword("case"),
             WhileConditionNode::Expression(v) => v.as_lisp(),
         }

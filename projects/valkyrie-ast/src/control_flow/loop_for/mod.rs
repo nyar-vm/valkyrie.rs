@@ -1,30 +1,32 @@
 use super::*;
+use crate::{ArgumentKeyNode, ArgumentTermNode};
 mod display;
 
 /// `for ... in ... if ... {...} else {...}`
 ///
-/// ```vk
-/// for i in 0..10 if condition {
-///     ...
-/// }
-/// else {
-///     ...
-/// }
-/// ```
 ///
 /// ```vk
-/// let i = 1;
-/// let j = 1;
-/// let mut i, mut j;
-/// let [a, b]
-/// let (a, b)
-/// ```
+/// let $loop_else = false;
+/// let mut iterator = iter.into_iterator();
+/// @!label(loop.1.start)
+/// loop {
+///     let $next = iterator.next();
+///     if $next.is_none() {
+///         goto loop.1.end;
+///     }
+///     let $pattern = @unchecked $next!;
+///     if !condition {
+///        goto loop.1.start;
+///     }
 ///
-/// ```vk
-/// for i in range;
-/// for i, j in range;
-/// for mut i, mut j in range
-/// for [table] in
+///     $loop_else = true;
+///     "run main body"
+/// }
+/// @!label(loop.1.end)
+///
+/// if !$loop_else {
+///     "run else body"
+/// }
 /// ```
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -38,7 +40,21 @@ pub struct ForLoop {
     /// `{ body }`
     pub body: StatementBlock,
     /// `else { body }`
-    pub r#else: Option<ElseStatement>,
+    pub no_run: Option<ElseStatement>,
     /// The range of the node
     pub span: Range<u32>,
+}
+
+/// `for ref a, mut b in {...}`
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+pub struct BareForPattern {
+    pub pattern: Vec<ArgumentKeyNode>,
+    pub span: Range<u32>,
+}
+
+impl BareForPattern {
+    #[allow(clippy::wrong_self_convention)]
+    pub fn as_pattern_expression(self) -> PatternExpressionNode {
+        PatternExpressionNode::Tuple(self.pattern)
+    }
 }
