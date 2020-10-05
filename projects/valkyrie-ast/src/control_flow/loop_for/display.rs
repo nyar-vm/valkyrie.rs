@@ -16,8 +16,8 @@ impl PrettyPrint for ForLoop {
             terms += " ";
             terms += s.pretty(theme);
         }
-        terms += self.body.pretty(theme);
-        if let Some(s) = &self.no_run {
+        terms += self.then_body.pretty(theme);
+        if let Some(s) = &self.else_body {
             terms += s.pretty(theme);
         }
         terms.into()

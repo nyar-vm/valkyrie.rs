@@ -16,10 +16,10 @@ impl ThisParser for ClassDeclaration {
     }
 
     fn as_lisp(&self) -> Lisp {
-        let mut items = Vec::with_capacity(4);
-        items.push(Lisp::keyword("class"));
-        items.push(self.namepath.as_lisp());
-        Lisp::Any(items)
+        let mut lisp = Lisp::new(4);
+        lisp += Lisp::keyword("class");
+        lisp += self.namepath.as_lisp();
+        lisp
     }
 }
 
@@ -46,19 +46,19 @@ impl ThisParser for ClassFieldDeclaration {
     }
 
     fn as_lisp(&self) -> Lisp {
-        let mut terms = vec![];
-        terms.push(Lisp::keyword("class/field"));
-        terms.push(self.field_name.as_lisp());
-        terms.push(self.modifiers.as_lisp());
+        let mut lisp = Lisp::new(10);
+        lisp += Lisp::keyword("class/field");
+        lisp += self.field_name.as_lisp();
+        lisp += self.modifiers.as_lisp();
         if let Some(typing) = &self.r#type {
-            terms.push(Lisp::keyword(":"));
-            terms.push(typing.as_lisp());
+            lisp += Lisp::keyword(":");
+            lisp += typing.as_lisp();
         }
         if let Some(value) = &self.default {
-            terms.push(Lisp::keyword("="));
-            terms.push(value.as_lisp());
+            lisp += Lisp::keyword("=");
+            lisp += value.as_lisp();
         }
-        Lisp::Any(terms)
+        lisp
     }
 }
 
@@ -69,11 +69,11 @@ impl ThisParser for ClassMethodDeclaration {
     }
 
     fn as_lisp(&self) -> Lisp {
-        let mut terms = vec![];
-        terms.push(Lisp::keyword("class/method"));
-        terms.push(self.method_name.as_lisp());
-        terms.push(self.modifiers.as_lisp());
-        Lisp::Any(terms)
+        let mut lisp = Lisp::new(4);
+        lisp += Lisp::keyword("class/method");
+        lisp += self.method_name.as_lisp();
+        lisp += self.modifiers.as_lisp();
+        lisp
     }
 }
 

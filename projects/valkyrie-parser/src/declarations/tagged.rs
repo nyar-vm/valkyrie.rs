@@ -17,13 +17,13 @@ impl ThisParser for TaggedDeclaration {
     }
 
     fn as_lisp(&self) -> Lisp {
-        let mut terms = vec![];
-        terms.push(Lisp::keyword("tagged"));
-        terms.push(self.namepath.as_lisp());
+        let mut lisp = Lisp::new(10);
+        lisp +=Lisp::keyword("tagged");
+        lisp +=self.namepath.as_lisp();
         for stmt in &self.statements.terms {
-            terms.push(stmt.as_lisp());
+            lisp +=stmt.as_lisp();
         }
-        Lisp::Any(terms)
+        lisp
     }
 }
 
@@ -43,12 +43,12 @@ impl ThisParser for VariantDeclaration {
     }
 
     fn as_lisp(&self) -> Lisp {
-        let mut terms = vec![];
-        terms.push(self.variant.as_lisp());
+        let mut lisp = Lisp::new(self.statements.terms.len() + 2);
+        lisp += self.variant.as_lisp();
         for stmt in &self.statements.terms {
-            terms.push(stmt.as_lisp());
+            lisp += stmt.as_lisp();
         }
-        Lisp::Any(terms)
+        lisp
     }
 }
 

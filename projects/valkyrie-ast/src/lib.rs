@@ -20,8 +20,8 @@ pub use crate::{
         guard_statement::{GuardLetStatement, GuardPattern, GuardStatement},
         jmp_if::{ElseStatement, IfConditionNode, IfLetStatement, IfStatement},
         jmp_switch::SwitchStatement,
-        loop_for::{BareForPattern, ForLoop},
-        loop_while::{WhileConditionNode, WhileLoop, WhileLoopKind},
+        loop_for::{ForBarePattern, ForLoop},
+        loop_while::{OtherwiseStatement, WhileConditionNode, WhileLoop, WhileLoopKind},
     },
     expression_level::{
         annotations::{AnnotationKind, AnnotationList, AnnotationNode, AnnotationPathNode, AnnotationTerm, ModifiersNode},

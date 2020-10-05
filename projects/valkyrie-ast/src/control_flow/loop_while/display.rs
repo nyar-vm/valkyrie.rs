@@ -37,3 +37,18 @@ impl PrettyPrint for PatternExpressionNode {
         }
     }
 }
+
+impl PrettyPrint for OtherwiseStatement {
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        let mut terms = PrettySequence::new(10);
+        terms += PrettyTree::Hardline;
+        terms += theme.keyword("otherwise");
+        terms += " ";
+        terms += "{";
+        terms += PrettyTree::Hardline;
+        terms += theme.join(&self.terms, PrettyTree::Hardline).indent(4);
+        terms += PrettyTree::Hardline;
+        terms += "}";
+        terms.into()
+    }
+}

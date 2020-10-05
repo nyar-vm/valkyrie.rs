@@ -18,15 +18,15 @@ impl ThisParser for FlagsDeclaration {
     }
 
     fn as_lisp(&self) -> Lisp {
-        let mut terms = Vec::with_capacity(3 + self.body.terms.len());
-        terms.push(Lisp::keyword("flags"));
-        terms.push(self.namepath.as_lisp());
+        let mut terms = Lisp::new(3 + self.body.terms.len());
+        terms += Lisp::keyword("flags");
+        terms += self.namepath.as_lisp();
         if let Some(s) = &self.layout {
-            terms.push(Lisp::Any(vec![Lisp::keyword("layout"), s.as_lisp()]))
+            terms += (Lisp::keyword("layout") + s.as_lisp());
         }
         for term in &self.body.terms {
-            terms.push(term.as_lisp());
+            terms += term.as_lisp();
         }
-        Lisp::Any(terms)
+        terms
     }
 }

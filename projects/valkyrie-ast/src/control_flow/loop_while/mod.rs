@@ -54,3 +54,12 @@ pub enum WhileConditionNode {
     Case,
     Expression(Box<ExpressionNode>),
 }
+
+/// `otherwise { ... }`
+#[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct OtherwiseStatement {
+    pub terms: Vec<StatementNode>,
+    /// The range of the node
+    pub span: Range<u32>,
+}

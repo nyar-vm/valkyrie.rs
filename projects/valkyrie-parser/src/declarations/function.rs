@@ -22,21 +22,22 @@ impl ThisParser for FunctionDeclaration {
     }
 
     fn as_lisp(&self) -> Lisp {
-        let mut items = vec![Lisp::keyword(self.r#type.pretty_string(144)), self.namepath.as_lisp()];
-        //
-        let mut args = vec![Lisp::keyword("arguments")];
-        for arg in self.arguments.terms.iter() {
-            args.push(arg.as_lisp());
-        }
-        items.push(Lisp::Any(args));
-        //
-        let mut body = vec![Lisp::keyword("body")];
-        for term in self.body.terms.iter() {
-            body.push(term.as_lisp());
-        }
-        items.push(Lisp::Any(body));
-        //
-        Lisp::Any(items)
+        todo!()
+        // let mut items = vec![Lisp::keyword(self.r#type.pretty_string(144)), self.namepath.as_lisp()];
+        // //
+        // let mut args = vec![Lisp::keyword("arguments")];
+        // for arg in self.arguments.terms.iter() {
+        //     args.push(arg.as_lisp());
+        // }
+        // items.push(Lisp::Any(args));
+        // //
+        // let mut body = vec![Lisp::keyword("body")];
+        // for term in self.body.terms.iter() {
+        //     body.push(term.as_lisp());
+        // }
+        // items.push(Lisp::Any(body));
+        // //
+        // Lisp::Any(items)
     }
 }
 
@@ -106,17 +107,17 @@ where
     }
 
     fn as_lisp(&self) -> Lisp {
-        let mut items = Vec::with_capacity(3);
-        items.push(self.key.as_lisp());
-        match &self.value {
-            Some(v) => items.push(v.as_lisp()),
-            None => items.push(Lisp::function("Any")),
-        }
-        match &self.default {
-            Some(v) => items.push(v.as_lisp()),
-            None => items.push(Lisp::function("null")),
-        }
-        Lisp::Any(items)
+        let mut lisp = Lisp::new(3);
+        lisp += self.key.as_lisp();
+        lisp +=match &self.value {
+            Some(v) => v.as_lisp(),
+            None => Lisp::symbol("Any"),
+        };
+        lisp += match &self.default {
+            Some(v) => v.as_lisp(),
+            None => Lisp::keyword("null"),
+        };
+        lisp
     }
 }
 
@@ -128,11 +129,11 @@ impl ThisParser for ArgumentKeyNode {
     }
 
     fn as_lisp(&self) -> Lisp {
-        let mut items = Vec::with_capacity(self.modifiers.terms.len() + 1);
+        let mut lisp = Lisp::new(self.modifiers.terms.len() + 1);
         for modifier in self.modifiers.terms.iter() {
-            items.push(modifier.as_lisp());
+            lisp += modifier.as_lisp();
         }
-        items.push(self.key.as_lisp());
-        Lisp::Any(items)
+        lisp += self.key.as_lisp();
+        lisp
     }
 }

@@ -1,5 +1,5 @@
 use super::*;
-use crate::{ArgumentKeyNode, ArgumentTermNode};
+use crate::{ArgumentKeyNode, OtherwiseStatement};
 mod display;
 
 /// `for ... in ... if ... {...} else {...}`
@@ -38,21 +38,24 @@ pub struct ForLoop {
     /// `if condition`
     pub condition: Option<PatternGuard>,
     /// `{ body }`
-    pub body: StatementBlock,
-    /// `else { body }`
-    pub no_run: Option<ElseStatement>,
+    pub then_body: StatementBlock,
+    /// `otherwise { body }`
+    pub else_body: Option<OtherwiseStatement>,
     /// The range of the node
     pub span: Range<u32>,
 }
 
 /// `for ref a, mut b in {...}`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
-pub struct BareForPattern {
+pub struct ForBarePattern {
+    /// The bare tuple pattern
     pub pattern: Vec<ArgumentKeyNode>,
+    /// The range of the node
     pub span: Range<u32>,
 }
 
-impl BareForPattern {
+impl ForBarePattern {
+    /// Convert this bare pattern into tuple pattern
     #[allow(clippy::wrong_self_convention)]
     pub fn as_pattern_expression(self) -> PatternExpressionNode {
         PatternExpressionNode::Tuple(self.pattern)

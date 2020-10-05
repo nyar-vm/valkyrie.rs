@@ -17,10 +17,10 @@ impl ThisParser for UnionDeclaration {
     }
 
     fn as_lisp(&self) -> Lisp {
-        let mut items = Vec::with_capacity(4);
-        items.push(Lisp::keyword("union"));
-        items.push(self.namepath.as_lisp());
-        Lisp::Any(items)
+        let mut lisp = Lisp::new(4);
+        lisp += Lisp::keyword("union");
+        lisp += self.namepath.as_lisp();
+        lisp
     }
 }
 

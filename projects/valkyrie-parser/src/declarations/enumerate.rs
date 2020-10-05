@@ -18,16 +18,16 @@ impl ThisParser for EnumerateDeclaration {
     }
 
     fn as_lisp(&self) -> Lisp {
-        let mut terms = Vec::with_capacity(3 + self.body.terms.len());
-        terms.push(Lisp::keyword("enumerate"));
-        terms.push(self.namepath.as_lisp());
+        let mut lisp = Lisp::new(3 + self.body.terms.len());
+        lisp += Lisp::keyword("enumerate");
+        lisp += self.namepath.as_lisp();
         if let Some(s) = &self.layout {
-            terms.push(Lisp::Any(vec![Lisp::keyword("layout"), s.as_lisp()]))
+            lisp += Lisp::keyword("layout") + s.as_lisp();
         }
         for term in &self.body.terms {
-            terms.push(term.as_lisp());
+            lisp += term.as_lisp();
         }
-        Lisp::Any(terms)
+        lisp
     }
 }
 
@@ -44,12 +44,12 @@ impl ThisParser for EnumerateFieldDeclaration {
     }
 
     fn as_lisp(&self) -> Lisp {
-        let mut terms = Vec::with_capacity(3);
-        terms.push(Lisp::keyword("flag"));
-        terms.push(self.name.as_lisp());
+        let mut lisp = Lisp::new(3);
+        lisp += Lisp::keyword("flag");
+        lisp += self.name.as_lisp();
         if let Some(value) = &self.value {
-            terms.push(value.as_lisp());
+            lisp += value.as_lisp();
         }
-        Lisp::Any(terms)
+        lisp
     }
 }
