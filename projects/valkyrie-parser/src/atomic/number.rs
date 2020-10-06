@@ -43,7 +43,11 @@ impl ThisParser for NumberLiteralNode {
     }
 
     fn as_lisp(&self) -> Lisp {
-        LispNumber { number: self.value.clone(), unit: self.unit.clone().map(|s| s.name).unwrap_or_default() }.into()
+        let number = Lisp::number(self.value.clone());
+        match &self.unit {
+            Some(s) => number & Lisp::unit(s.name.clone()),
+            None => number,
+        }
     }
 }
 

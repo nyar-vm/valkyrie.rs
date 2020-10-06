@@ -8,7 +8,7 @@ impl PrettyPrint for ApplyDotNode {
         terms += ".";
         terms += self.caller.pretty(theme);
         terms += "(";
-        terms += theme.join(&self.terms, ", ");
+        terms += theme.join(self.terms.clone(), ", ");
         terms += ")";
         newline.append(terms.indent(4))
     }
@@ -18,7 +18,7 @@ impl PrettyPrint for ApplyCallNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(3);
         terms += "(";
-        terms += theme.join(&self.terms, ", ");
+        terms += theme.join(self.terms.clone(), ", ");
         terms += ")";
         terms.into()
     }
@@ -32,7 +32,7 @@ impl PrettyPrint for ApplyCallTerm {
 
 impl PrettyPrint for ApplyArgumentNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
-        PrettyTree::text("(").append(theme.join(&self.terms, ", ")).append(")")
+        PrettyTree::text("(").append(theme.join(self.terms.clone(), ", ")).append(")")
     }
 }
 

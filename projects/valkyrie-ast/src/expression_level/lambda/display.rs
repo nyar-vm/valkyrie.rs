@@ -7,7 +7,7 @@ impl PrettyPrint for LambdaCallNode {
         terms += " ";
         terms += "{";
         terms += PrettyTree::Hardline;
-        terms += theme.join(&self.body, PrettyTree::Hardline.indent(4));
+        terms += theme.join(self.body.clone(), PrettyTree::Hardline.indent(4));
         terms += PrettyTree::Hardline;
         terms += "}";
         terms.into()
@@ -21,7 +21,7 @@ impl PrettyPrint for LambdaDotNode {
         terms += ".";
         terms += "{";
         terms += " ";
-        terms += theme.join(&self.body, ";");
+        terms += theme.join(self.body.clone(), ";");
         terms += " ";
         terms += "}";
         newline.append(terms.indent(4))

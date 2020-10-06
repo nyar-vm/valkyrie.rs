@@ -29,7 +29,7 @@ impl PrettyPrint for PatternExpressionNode {
             Self::Tuple(v) => {
                 let mut terms = PrettySequence::new(4);
                 terms += "(";
-                terms += theme.join(v, ", ");
+                terms += theme.join(v.clone(), ", ");
                 terms += ")";
                 terms.into()
             }
@@ -46,7 +46,7 @@ impl PrettyPrint for OtherwiseStatement {
         terms += " ";
         terms += "{";
         terms += PrettyTree::Hardline;
-        terms += theme.join(&self.terms, PrettyTree::Hardline).indent(4);
+        terms += theme.join(self.terms.clone(), PrettyTree::Hardline).indent(4);
         terms += PrettyTree::Hardline;
         terms += "}";
         terms.into()

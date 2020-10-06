@@ -27,14 +27,14 @@ impl PrettyPrint for CollectsNode {
         inline += " ";
         inline += "{";
         inline += " ";
-        inline += theme.join(&self.terms, ", ");
+        inline += theme.join(self.terms.clone(), ", ");
         inline += " ";
         inline += "}";
         let mut block = PrettySequence::new(6);
         block += " ";
         block += "{";
         block += PrettyTree::Hardline;
-        block += theme.join(&self.terms, ",").append(PrettyTree::Hardline).indent(4);
+        block += theme.join(self.terms.clone(), ",").append(PrettyTree::Hardline).indent(4);
         block += PrettyTree::Hardline;
         block += "}";
         inline.flat_alt(block)

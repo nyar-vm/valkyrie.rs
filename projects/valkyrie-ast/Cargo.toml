@@ -16,7 +16,7 @@ deriver = "0.0.0"
 serde = { version = "1.0.163", default-features = false, optional = true }
 
 [dependencies.pretty-print]
-version = "0.1.5"
+version = "0.1.7"
 optional = true
 #path = 'C:\Users\Dell\CLionProjects\pretty-print\projects\pretty-print'
 

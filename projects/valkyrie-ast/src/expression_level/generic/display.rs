@@ -5,7 +5,7 @@ impl PrettyPrint for GenericCallNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(3);
         terms += "⦓";
-        terms += theme.join(&self.terms, ", ");
+        terms += theme.join(self.terms.clone(), ", ");
         terms += "⦔";
         terms.into()
     }
@@ -28,7 +28,7 @@ impl PrettyPrint for GenericArgumentNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(3);
         terms += "⦓";
-        terms += theme.join(&self.terms, ", ");
+        terms += theme.join(self.terms.clone(), ", ");
         terms += "⦔";
         terms.into()
     }

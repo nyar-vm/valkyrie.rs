@@ -3,7 +3,7 @@ use super::*;
 impl PrettyPrint for SubscriptNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let lhs = if self.index0 { "⁅" } else { "[" };
-        let terms = theme.join(&self.terms, ", ");
+        let terms = theme.join(self.terms.clone(), ", ");
         let rhs = if self.index0 { "⁆" } else { "]" };
         PrettyTree::StaticText(lhs).append(terms).append(rhs)
     }

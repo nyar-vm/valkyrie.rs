@@ -1,6 +1,5 @@
 use super::*;
 
-
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for FunctionType {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
@@ -48,7 +47,7 @@ impl PrettyPrint for StatementBlock {
         terms += " ";
         terms += "{";
         terms += PrettyTree::Hardline;
-        terms += theme.join(&self.terms, PrettyTree::Hardline).indent(4);
+        terms += theme.join(self.terms.clone(), PrettyTree::Hardline).indent(4);
         terms += PrettyTree::Hardline;
         terms += "}";
         terms.into()

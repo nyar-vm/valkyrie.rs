@@ -33,6 +33,6 @@ impl PrettyPrint for LambdaSlotNode {
 
 impl PrettyPrint for NamePathNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
-        theme.join(&self.names, "∷")
+        theme.join(self.names.clone(), "∷")
     }
 }

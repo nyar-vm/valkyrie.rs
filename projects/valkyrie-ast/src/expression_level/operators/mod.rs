@@ -51,6 +51,8 @@ pub enum ValkyrieOperator {
     IsA(bool),
     /// binary operator: `-`
     Minus,
+    /// binary operator: `-=`
+    MinusAssign,
     /// binary operator: `*`
     Multiply,
     /// binary operator: `/`
@@ -87,6 +89,7 @@ impl ValkyrieOperator {
             Self::Assign => 14000,
             // prefix - 3
             Self::PlusAssign => 14100,
+            Self::MinusAssign => 14100,
 
             // infix - 3
             Self::BitOr => 14700,
@@ -138,6 +141,7 @@ impl ValkyrieOperator {
             Self::Plus => "+",
             Self::PlusAssign => "+=",
             Self::Minus => "-",
+            Self::MinusAssign => "-=",
             Self::Multiply => "*",
             Self::Divide => "/",
             Self::Power => "^",

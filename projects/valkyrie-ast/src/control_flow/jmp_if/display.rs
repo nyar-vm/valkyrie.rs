@@ -61,7 +61,7 @@ impl PrettyPrint for ElseStatement {
         terms += " ";
         terms += "{";
         terms += PrettyTree::Hardline;
-        terms += theme.join(&self.statements, PrettyTree::Hardline).indent(4);
+        terms += theme.join(self.statements.clone(), PrettyTree::Hardline).indent(4);
         terms += PrettyTree::Hardline;
         terms += "}";
         terms.into()

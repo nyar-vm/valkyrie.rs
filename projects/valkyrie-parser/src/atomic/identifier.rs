@@ -22,7 +22,7 @@ impl ThisParser for IdentifierNode {
     }
 
     fn as_lisp(&self) -> Lisp {
-        Lisp::Function(self.pretty_string(144))
+        Lisp::symbol(self.to_string())
     }
 }
 
@@ -34,6 +34,6 @@ impl ThisParser for LambdaSlotNode {
     }
 
     fn as_lisp(&self) -> Lisp {
-        Lisp::keyword(self.name.as_str())
+        Lisp::keyword(self.name.to_string())
     }
 }
