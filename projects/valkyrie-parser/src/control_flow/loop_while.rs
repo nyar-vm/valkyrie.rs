@@ -1,6 +1,6 @@
 use super::*;
 use pex::StopBecause;
-use valkyrie_ast::WhileLoopKind;
+use valkyrie_ast::{OtherwiseStatement, WhileLoopKind};
 
 impl ThisParser for WhileLoop {
     fn parse(input: ParseState) -> ParseResult<Self> {
@@ -12,13 +12,13 @@ impl ThisParser for WhileLoop {
     }
 
     fn as_lisp(&self) -> Lisp {
-        let mut terms = Vec::with_capacity(self.then_body.terms.len() + 1);
-        terms.push(Lisp::keyword("loop"));
-        terms.push(self.condition.as_lisp());
+        let mut lisp = Lisp::new(self.then_body.terms.len() + 1);
+        lisp += self.kind.as_lisp();
+        lisp += self.condition.as_lisp();
         for term in &self.then_body.terms {
-            terms.push(term.as_lisp());
+            lisp += term.as_lisp();
         }
-        Lisp::Any(terms)
+        lisp
     }
 }
 
@@ -40,5 +40,17 @@ impl ThisParser for WhileLoopKind {
             Self::While => Lisp::keyword("while"),
             Self::Until => Lisp::keyword("until"),
         }
+    }
+}
+
+impl ThisParser for OtherwiseStatement {
+    fn parse(input: ParseState) -> ParseResult<Self> {
+        let (state, _) = input.match_str("otherwise")?;
+        let (state, func) = state.skip(ignore).match_fn(StatementBlock::parse)?;
+        state.finish(Self { terms: func.terms, span: get_span(input, state) })
+    }
+
+    fn as_lisp(&self) -> Lisp {
+        Lisp::keyword("otherwise") + self.terms.iter().map(|s| s.as_lisp()).collect::<Lisp>()
     }
 }

@@ -40,14 +40,16 @@ impl ThisParser for NewConstructNode {
     }
 
     fn as_lisp(&self) -> Lisp {
-        let mut terms = Vec::with_capacity(self.body.terms.len() + 3);
-        terms.push(Lisp::keyword("new"));
-        terms.push(self.generic.as_lisp());
-        terms.push(self.arguments.as_lisp());
+        let mut lisp = Lisp::new(self.body.terms.len() + 3);
+
+        lisp += Lisp::keyword("new");
+        lisp += self.namepath.as_lisp();
+        lisp += self.generic.as_lisp();
+        lisp += self.arguments.as_lisp();
         for term in &self.body.terms {
-            terms.push(term.as_lisp())
+            lisp += term.as_lisp();
         }
-        Lisp::Any(terms)
+        lisp
     }
 }
 

@@ -1,6 +1,4 @@
 use super::*;
-use lispify::ListString;
-use valkyrie_ast::{IfStatement, LambdaSlotNode, RaiseNode, SwitchStatement};
 
 impl ThisParser for PrefixNode {
     fn parse(_: ParseState) -> ParseResult<Self> {
@@ -8,7 +6,7 @@ impl ThisParser for PrefixNode {
     }
 
     fn as_lisp(&self) -> Lisp {
-        Lisp::operator(self.operator.kind.as_str(), &[self.base.as_lisp()])
+        Lisp::operator(self.operator.kind.as_str(), vec![self.base.as_lisp()])
     }
 }
 
@@ -18,7 +16,7 @@ impl ThisParser for InfixNode {
     }
 
     fn as_lisp(&self) -> Lisp {
-        Lisp::operator(self.operator.kind.as_str(), &[self.lhs.as_lisp(), self.rhs.as_lisp()])
+        Lisp::operator(self.operator.kind.as_str(), vec![self.lhs.as_lisp(), self.rhs.as_lisp()])
     }
 }
 
@@ -28,7 +26,7 @@ impl ThisParser for PostfixNode {
     }
 
     fn as_lisp(&self) -> Lisp {
-        Lisp::operator(self.operator.kind.as_str(), &[self.base.as_lisp()])
+        Lisp::operator(self.operator.kind.as_str(), vec![self.base.as_lisp()])
     }
 }
 
@@ -49,7 +47,7 @@ impl ThisParser for ExpressionBody {
 
     fn as_lisp(&self) -> Lisp {
         match self {
-            Self::Placeholder => Lisp::Keyword("placeholder".into()),
+            Self::Placeholder => Lisp::keyword("placeholder"),
             Self::Prefix(v) => v.as_lisp(),
             Self::Binary(v) => v.as_lisp(),
             Self::Suffix(v) => v.as_lisp(),
@@ -68,7 +66,7 @@ impl ThisParser for ExpressionBody {
             Self::If(v) => v.as_lisp(),
             Self::Slot(v) => v.as_lisp(),
             Self::Switch(v) => v.as_lisp(),
-            Self::Text(v) => ListString { text: v.text.to_owned(), unit: "".to_string() }.into(),
+            Self::Text(v) => Lisp::string(v.text.clone()),
         }
     }
 }

@@ -7,11 +7,7 @@ impl ThisParser for CallNode<LambdaCallNode> {
     }
 
     fn as_lisp(&self) -> Lisp {
-        let mut terms = Vec::with_capacity(3);
-        terms.push(Lisp::keyword("call/lambda"));
-        terms.push(self.base.as_lisp());
-        terms.push(self.rest.as_lisp());
-        Lisp::Any(terms)
+        Lisp::keyword("call/lambda") + self.base.as_lisp() + self.rest.as_lisp()
     }
 }
 
@@ -21,9 +17,11 @@ impl ThisParser for LambdaCallNode {
     }
 
     fn as_lisp(&self) -> Lisp {
-        let mut terms = Vec::with_capacity(self.body.len() + 2);
-        terms.extend(self.body.iter().map(ThisParser::as_lisp));
-        Lisp::Any(terms)
+        let mut lisp = Lisp::new(self.body.len() + 2);
+        for term in &self.body {
+            lisp += term.as_lisp();
+        }
+        lisp
     }
 }
 
@@ -34,11 +32,7 @@ impl ThisParser for CallNode<LambdaDotNode> {
     }
 
     fn as_lisp(&self) -> Lisp {
-        let mut terms = Vec::with_capacity(3);
-        terms.push(Lisp::keyword("call/lambda-dot"));
-        terms.push(self.base.as_lisp());
-        terms.push(self.rest.as_lisp());
-        Lisp::Any(terms)
+        Lisp::keyword("call/lambda-dot") + self.base.as_lisp() + self.rest.as_lisp()
     }
 }
 
@@ -49,8 +43,10 @@ impl ThisParser for LambdaDotNode {
     }
 
     fn as_lisp(&self) -> Lisp {
-        let mut terms = Vec::with_capacity(self.body.len() + 2);
-        terms.extend(self.body.iter().map(ThisParser::as_lisp));
-        Lisp::Any(terms)
+        let mut lisp = Lisp::new(self.body.len() + 2);
+        for term in &self.body {
+            lisp += term.as_lisp();
+        }
+        lisp
     }
 }

@@ -9,12 +9,12 @@ impl ThisParser for TableNode {
     }
 
     fn as_lisp(&self) -> Lisp {
-        let mut terms = Vec::with_capacity(self.terms.len() + 2);
-        terms.push(Lisp::function("table"));
+        let mut lisp = Lisp::new(self.terms.len() + 2);
+        lisp += Lisp::keyword("table");
         for term in &self.terms {
-            terms.push(term.as_lisp());
+            lisp += term.as_lisp();
         }
-        Lisp::Any(terms)
+        lisp
     }
 }
 
@@ -67,9 +67,10 @@ where
     }
 
     fn as_lisp(&self) -> Lisp {
+        let value = self.value.as_lisp();
         match &self.key {
-            Some(key) => Lisp::Any(vec![key.as_lisp(), self.value.as_lisp()]),
-            None => self.value.as_lisp(),
+            Some(key) => key.as_lisp() + value,
+            None => value,
         }
     }
 }

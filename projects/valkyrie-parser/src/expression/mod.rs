@@ -20,10 +20,10 @@ use std::{
 };
 use valkyrie_ast::{
     ApplyCallNode, ApplyDotNode, ArgumentKeyNode, ExpressionBody, ExpressionContext, ExpressionNode, GenericCallNode,
-    InfixNode, LambdaCallNode, LambdaDotNode, NamePathNode, NewConstructNode, NumberLiteralNode, OperatorNode, PatternBranch,
-    PatternCaseNode, PatternCondition, PatternElseNode, PatternExpressionNode, PatternGuard, PatternStatements,
-    PatternTypeNode, PatternWhenNode, PostfixCallPart, PostfixNode, PrefixNode, StatementNode, StringLiteralNode,
-    SubscriptNode, TableNode, TypingExpression, ValkyrieOperator,
+    IfStatement, InfixNode, LambdaCallNode, LambdaDotNode, LambdaSlotNode, NamePathNode, NewConstructNode, NumberLiteralNode,
+    OperatorNode, PatternBranch, PatternCaseNode, PatternCondition, PatternElseNode, PatternExpressionNode, PatternGuard,
+    PatternStatements, PatternTypeNode, PatternWhenNode, PostfixCallPart, PostfixNode, PrefixNode, RaiseNode, StatementNode,
+    StringLiteralNode, SubscriptNode, SwitchStatement, TableNode, TypingExpression, ValkyrieOperator,
 };
 
 /// A resolver

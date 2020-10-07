@@ -7,16 +7,16 @@ impl ThisParser for CallNode<SubscriptNode> {
     }
 
     fn as_lisp(&self) -> Lisp {
-        let mut terms = Vec::with_capacity(3);
+        let mut lisp = Lisp::new(3);
         if self.rest.index0 {
-            terms.push(Lisp::keyword("call/subscript0"));
+            lisp += Lisp::keyword("call/subscript0");
         }
         else {
-            terms.push(Lisp::keyword("call/subscript1"));
+            lisp += Lisp::keyword("call/subscript1");
         }
-        terms.push(self.base.as_lisp());
-        terms.push(self.rest.as_lisp());
-        Lisp::Any(terms)
+        lisp += self.base.as_lisp();
+        lisp += self.rest.as_lisp();
+        lisp
     }
 }
 
@@ -28,12 +28,12 @@ impl ThisParser for SubscriptNode {
     }
 
     fn as_lisp(&self) -> Lisp {
-        let mut terms = Vec::with_capacity(self.terms.len() + 2);
-        terms.push(Lisp::keyword(self.method()));
+        let mut lisp = Lisp::new(self.terms.len() + 2);
+        lisp += Lisp::keyword(self.method());
         for term in &self.terms {
-            terms.push(term.as_lisp());
+            lisp += term.as_lisp();
         }
-        Lisp::Any(terms)
+        lisp
     }
 }
 
@@ -84,21 +84,21 @@ impl ThisParser for SubscriptSliceNode {
     }
 
     fn as_lisp(&self) -> Lisp {
-        let mut terms = Vec::with_capacity(4);
-        terms.push(Lisp::function("range").into());
+        let mut lisp = Lisp::new(4);
+        lisp += Lisp::symbol("range");
         match &self.start {
-            None => terms.push(Lisp::keyword("null")),
-            Some(s) => terms.push(s.as_lisp()),
+            None => lisp += Lisp::keyword("null"),
+            Some(s) => lisp += s.as_lisp(),
         }
         match &self.end {
-            None => terms.push(Lisp::keyword("null")),
-            Some(s) => terms.push(s.as_lisp()),
+            None => lisp += Lisp::keyword("null"),
+            Some(s) => lisp += s.as_lisp(),
         }
         match &self.step {
-            None => terms.push(Lisp::keyword("null")),
-            Some(s) => terms.push(s.as_lisp()),
+            None => lisp += Lisp::keyword("null"),
+            Some(s) => lisp += s.as_lisp(),
         }
-        Lisp::Any(terms)
+        lisp
     }
 }
 

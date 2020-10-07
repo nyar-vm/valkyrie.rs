@@ -18,7 +18,8 @@ version = "0.2.1"
 features = ["regex"]
 
 [dependencies.lispify]
-version = "0.0.1"
+version = "0.0.2"
+path = 'C:\Users\Dell\CLionProjects\pex-lisp\projects\lispify'
 
 [dependencies.valkyrie-ast]
 version = "0.1.*"

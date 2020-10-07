@@ -10,16 +10,16 @@ impl ThisParser for LetBindNode {
     }
 
     fn as_lisp(&self) -> Lisp {
-        let mut terms = Vec::with_capacity(5);
-        terms.push(Lisp::keyword("let"));
-        terms.push(self.pattern.as_lisp());
+        let mut lisp = Lisp::new(5);
+        lisp += Lisp::keyword("let");
+        lisp += self.pattern.as_lisp();
         if let Some(type_hint) = &self.type_hint {
-            terms.push(type_hint.as_lisp());
+            lisp += type_hint.as_lisp();
         }
         if let Some(body) = &self.body {
-            terms.push(body.as_lisp());
+            lisp += body.as_lisp();
         }
-        Lisp::Any(terms)
+        lisp
     }
 }
 

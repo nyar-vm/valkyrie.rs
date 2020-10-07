@@ -21,15 +21,17 @@ impl ThisParser for NamespaceDeclaration {
     }
 
     fn as_lisp(&self) -> Lisp {
-        let mut terms = Vec::with_capacity(self.path.len() + 1);
+        let mut lisp = Lisp::new(self.path.len() + 1);
         let kind = match self.kind {
             NamespaceKind::Shared => "namespace/shared",
             NamespaceKind::Unique => "namespace/unique",
             NamespaceKind::Test => "namespace/test",
         };
-        terms.push(Lisp::keyword(kind));
-        terms.extend(self.path.iter().map(|id| id.as_lisp()));
-        Lisp::Any(terms)
+        lisp += Lisp::keyword(kind);
+        for id in &self.path {
+            lisp += id.as_lisp();
+        }
+        lisp
     }
 }
 
@@ -56,13 +58,13 @@ impl ThisParser for ImportStatement {
     }
 
     fn as_lisp(&self) -> Lisp {
-        let mut terms = Vec::with_capacity(2);
-        terms.push(Lisp::keyword("using"));
-        match &self.term {
-            ImportTermNode::Alias(v) => terms.push(v.as_lisp()),
-            ImportTermNode::Group(v) => terms.push(v.as_lisp()),
-        }
-        Lisp::Any(terms)
+        let mut lisp = Lisp::new(2);
+        lisp += Lisp::keyword("using");
+        lisp += match &self.term {
+            ImportTermNode::Alias(v) => v.as_lisp(),
+            ImportTermNode::Group(v) => v.as_lisp(),
+        };
+        lisp
     }
 }
 
@@ -92,7 +94,7 @@ impl ThisParser for ImportAliasNode {
     }
 
     fn as_lisp(&self) -> Lisp {
-        Lisp::Any(vec![Lisp::keyword("import/alias"), self.path.as_lisp(), self.alias.as_lisp()])
+        Lisp::keyword("import/alias") + self.path.as_lisp() + self.alias.as_lisp()
     }
 }
 
@@ -104,11 +106,13 @@ impl ThisParser for ImportGroupNode {
     }
 
     fn as_lisp(&self) -> Lisp {
-        let mut items = Vec::with_capacity(self.group.len() + 2);
-        items.push(Lisp::keyword("import/group"));
-        items.push(self.path.as_lisp());
-        items.extend(self.group.iter().map(|term| term.as_lisp()));
-        Lisp::Any(items)
+        let mut lisp = Lisp::new(self.group.len() + 2);
+        lisp += Lisp::keyword("import/group");
+        lisp += self.path.as_lisp();
+        for i in self.group.iter() {
+            lisp += i.as_lisp();
+        }
+        lisp
     }
 }
 

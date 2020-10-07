@@ -3,7 +3,7 @@ use crate::{
     traits::ThisParser,
     utils::{get_span, parse_expression_node},
 };
-use lispify::{Lisp, ListString};
+use lispify::Lisp;
 use pex::{helpers::CommentLine, BracketPattern, ParseResult, ParseState, Regex, StopBecause};
 use std::sync::LazyLock;
 use valkyrie_ast::{
@@ -94,7 +94,7 @@ impl ThisParser for StatementBody {
 
     fn as_lisp(&self) -> Lisp {
         match self {
-            StatementBody::Nothing => Lisp::Any(vec![]),
+            StatementBody::Nothing => Lisp::default(),
             StatementBody::Namespace(v) => v.as_lisp(),
             StatementBody::Import(v) => v.as_lisp(),
             StatementBody::While(v) => v.as_lisp(),

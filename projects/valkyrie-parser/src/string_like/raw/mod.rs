@@ -14,6 +14,10 @@ impl ThisParser for StringLiteralNode {
     }
 
     fn as_lisp(&self) -> Lisp {
-        ListString { text: self.raw.to_owned(), unit: self.unit.clone().map(|u| u.name).unwrap_or_default() }.into()
+        let literal = Lisp::string(self.raw.to_string());
+        match &self.unit {
+            Some(s) => Lisp::unit(s.name.clone()) & literal,
+            None => literal,
+        }
     }
 }

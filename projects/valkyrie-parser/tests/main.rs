@@ -4,7 +4,7 @@ mod expression;
 mod literal;
 mod statement;
 
-use lispify::helpers::{colored_lisp, display_lisp};
+use lispify::PrettyPrint as _;
 use pex::ParseState;
 use std::{
     fs::File,
@@ -31,9 +31,14 @@ pub fn pretty_print<T: PrettyPrint>(value: &T) {
 fn top_debug(text: &str, output: &str) -> std::io::Result<()> {
     let mut file = File::create(here().join(output))?;
     let apply = ProgramRoot::parse_text(text).unwrap();
+    let mut theme = PrettyProvider::new(128);
     for expr in &apply.statements {
         pretty_print(expr);
-        writeln!(file, "{}", display_lisp(expr.as_lisp(), 144).unwrap())?;
+        let text = expr.pretty_colorful(&theme);
+        let lisp = expr.as_lisp();
+        writeln!(file, "{}", lisp.pretty_string(&theme))?;
+        println!("=================================================================");
+        println!("{}", lisp.pretty_colorful(&theme));
     }
     Ok(())
 }
@@ -41,10 +46,14 @@ fn top_debug(text: &str, output: &str) -> std::io::Result<()> {
 fn repl_debug(text: &str, output: &str) -> std::io::Result<()> {
     let mut file = File::create(here().join(output))?;
     let apply = ReplRoot::parse_text(text).unwrap();
+    let mut theme = PrettyProvider::new(128);
     for expr in &apply.statements {
         pretty_print(expr);
-        writeln!(file, "{}", display_lisp(expr.as_lisp(), 144).unwrap())?;
-        println!("{}", colored_lisp(expr.as_lisp(), 144).unwrap());
+        let text = expr.pretty_colorful(&theme);
+        let lisp = expr.as_lisp().pretty_colorful(&theme);
+        writeln!(file, "{}", text)?;
+        println!("=================================================================");
+        println!("{}", lisp);
     }
     Ok(())
 }

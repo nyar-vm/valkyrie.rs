@@ -6,7 +6,9 @@ impl ThisParser for DocumentationNode {
     }
 
     fn as_lisp(&self) -> Lisp {
-        Lisp::String(Box::new(ListString { text: "#?".to_string(), unit: self.documentation.clone() }))
+        todo!()
+
+        // Lisp::String(Box::new(ListString { text: "#?".to_string(), unit: self.documentation.clone() }))
     }
 }
 

@@ -43,6 +43,10 @@ impl ThisParser for StatementBlock {
     }
 
     fn as_lisp(&self) -> Lisp {
-        Lisp::Any(vec![Lisp::keyword("body"), Lisp::Any(self.terms.iter().map(|s| s.as_lisp()).collect())])
+        let mut lisp = Lisp::new(self.terms.len());
+        for term in self.terms.iter() {
+            lisp += term.as_lisp();
+        }
+        lisp
     }
 }

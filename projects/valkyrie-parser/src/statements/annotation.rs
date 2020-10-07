@@ -37,8 +37,7 @@ impl ThisParser for AnnotationTerm {
     }
 
     fn as_lisp(&self) -> Lisp {
-        let terms = vec![self.path.as_lisp()];
-        Lisp::Any(terms)
+        self.path.as_lisp()
     }
 }
 
@@ -51,7 +50,7 @@ impl ThisParser for AnnotationPathNode {
     }
 
     fn as_lisp(&self) -> Lisp {
-        Lisp::Function(self.to_string())
+        Lisp::symbol(self.to_string())
     }
 }
 
@@ -71,11 +70,11 @@ impl ThisParser for AnnotationList {
     }
 
     fn as_lisp(&self) -> Lisp {
-        let mut terms = Vec::with_capacity(10);
-        terms.push(Lisp::keyword("annotation/list"));
+        let mut lisp = Lisp::new(10);
+        lisp += Lisp::keyword("annotation/list");
         for term in &self.terms {
-            terms.push(term.as_lisp());
+            lisp += term.as_lisp();
         }
-        Lisp::Any(terms)
+        lisp
     }
 }

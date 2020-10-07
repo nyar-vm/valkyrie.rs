@@ -22,22 +22,18 @@ impl ThisParser for FunctionDeclaration {
     }
 
     fn as_lisp(&self) -> Lisp {
-        todo!()
-        // let mut items = vec![Lisp::keyword(self.r#type.pretty_string(144)), self.namepath.as_lisp()];
-        // //
-        // let mut args = vec![Lisp::keyword("arguments")];
-        // for arg in self.arguments.terms.iter() {
-        //     args.push(arg.as_lisp());
-        // }
-        // items.push(Lisp::Any(args));
-        // //
-        // let mut body = vec![Lisp::keyword("body")];
-        // for term in self.body.terms.iter() {
-        //     body.push(term.as_lisp());
-        // }
-        // items.push(Lisp::Any(body));
-        // //
-        // Lisp::Any(items)
+        let mut lisp = Lisp::new(6);
+        lisp += self.r#type.as_lisp();
+        lisp += self.namepath.as_lisp();
+        if let Some(generic) = &self.generic {
+            lisp += generic.as_lisp();
+        }
+        lisp += self.arguments.as_lisp();
+        if let Some(r#return) = &self.r#return {
+            lisp += r#return.as_lisp();
+        }
+        lisp += self.body.as_lisp();
+        lisp
     }
 }
 
@@ -58,7 +54,7 @@ impl ThisParser for FunctionType {
     }
 
     fn as_lisp(&self) -> Lisp {
-        unreachable!()
+        Lisp::keyword(self.as_str())
     }
 }
 
@@ -70,7 +66,7 @@ impl ThisParser for FunctionReturnNode {
     }
 
     fn as_lisp(&self) -> Lisp {
-        todo!()
+        self.returns.as_lisp()
     }
 }
 
@@ -82,7 +78,11 @@ impl ThisParser for ApplyArgumentNode {
     }
 
     fn as_lisp(&self) -> Lisp {
-        todo!()
+        let mut lisp = Lisp::new(self.terms.len());
+        for term in self.terms.iter() {
+            lisp += term.as_lisp();
+        }
+        lisp
     }
 }
 
@@ -109,7 +109,7 @@ where
     fn as_lisp(&self) -> Lisp {
         let mut lisp = Lisp::new(3);
         lisp += self.key.as_lisp();
-        lisp +=match &self.value {
+        lisp += match &self.value {
             Some(v) => v.as_lisp(),
             None => Lisp::symbol("Any"),
         };

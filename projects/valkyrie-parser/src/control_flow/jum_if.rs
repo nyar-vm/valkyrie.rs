@@ -12,15 +12,16 @@ impl ThisParser for IfStatement {
     }
 
     fn as_lisp(&self) -> Lisp {
-        let mut terms = Vec::with_capacity(10);
-        terms.push(Lisp::keyword("branches"));
-        for branch in &self.branches {
-            terms.push(branch.as_lisp());
-        }
-        if let Some(else_body) = &self.else_body {
-            terms.push(else_body.as_lisp());
-        }
-        Lisp::Any(terms)
+        todo!()
+        // let mut terms = Vec::with_capacity(10);
+        // terms.push(Lisp::keyword("branches"));
+        // for branch in &self.branches {
+        //     terms.push(branch.as_lisp());
+        // }
+        // if let Some(else_body) = &self.else_body {
+        //     terms.push(else_body.as_lisp());
+        // }
+        // lisp
     }
 }
 
@@ -39,10 +40,11 @@ impl ThisParser for IfConditionNode {
     }
 
     fn as_lisp(&self) -> Lisp {
-        let mut terms = Vec::with_capacity(10);
-        terms.push(self.condition.as_lisp());
-        terms.push(self.body.as_lisp());
-        Lisp::Any(terms)
+        todo!()
+        // let mut terms = Vec::with_capacity(10);
+        // terms.push(self.condition.as_lisp());
+        // terms.push(self.body.as_lisp());
+        // lisp
     }
 }
 
@@ -54,6 +56,7 @@ impl ThisParser for ElseStatement {
     }
 
     fn as_lisp(&self) -> Lisp {
-        Lisp::Any(vec![Lisp::keyword("else"), Lisp::Any(self.statements.iter().map(|s| s.as_lisp()).collect())])
+        todo!()
+        // Lisp::Any(vec![Lisp::keyword("else"), Lisp::Any(self.statements.iter().map(|s| s.as_lisp()).collect())])
     }
 }

@@ -10,12 +10,12 @@ impl ThisParser for ControlNode {
     }
 
     fn as_lisp(&self) -> Lisp {
-        let mut terms = Vec::with_capacity(2);
-        terms.push(self.r#type.as_lisp());
+        let mut lisp = Lisp::default();
+        lisp += self.r#type.as_lisp();
         if let Some(s) = &self.expression {
-            terms.push(s.as_lisp());
+            lisp += s.as_lisp();
         }
-        Lisp::Any(terms)
+        lisp
     }
 }
 
@@ -29,9 +29,10 @@ impl ThisParser for RaiseNode {
     }
 
     fn as_lisp(&self) -> Lisp {
+        let kw = Lisp::keyword("raise");
         match &self.expression {
-            Some(s) => Lisp::Any(vec![Lisp::keyword("raise"), s.as_lisp()]),
-            None => Lisp::keyword("raise"),
+            Some(s) => kw + s.as_lisp(),
+            None => kw,
         }
     }
 }

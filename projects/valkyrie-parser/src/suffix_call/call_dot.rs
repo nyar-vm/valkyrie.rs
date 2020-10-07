@@ -7,11 +7,11 @@ impl ThisParser for CallNode<ApplyDotNode> {
     }
 
     fn as_lisp(&self) -> Lisp {
-        let mut terms = Vec::with_capacity(3);
-        terms.push(Lisp::keyword("call/apply-dot"));
-        terms.push(self.base.as_lisp());
-        terms.push(self.rest.as_lisp());
-        Lisp::Any(terms)
+        let mut lisp = Lisp::new(3);
+        lisp += Lisp::keyword("call/apply-dot");
+        lisp += self.base.as_lisp();
+        lisp += self.rest.as_lisp();
+        lisp
     }
 }
 
@@ -28,11 +28,11 @@ impl ThisParser for ApplyDotNode {
     }
 
     fn as_lisp(&self) -> Lisp {
-        let mut terms = Vec::with_capacity(self.terms.len() + 3);
-        terms.push(self.caller.as_lisp());
+        let mut lisp = Lisp::new(self.terms.len() + 3);
+        lisp += self.caller.as_lisp();
         for term in &self.terms {
-            terms.push(term.as_lisp());
+            lisp += term.as_lisp();
         }
-        Lisp::Any(terms)
+        lisp
     }
 }

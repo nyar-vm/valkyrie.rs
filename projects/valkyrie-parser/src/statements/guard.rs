@@ -10,12 +10,13 @@ impl ThisParser for GuardStatement {
     }
 
     fn as_lisp(&self) -> Lisp {
-        let mut terms = Vec::with_capacity(5);
-        terms.push(Lisp::keyword("guard"));
-        terms.push(self.condition.as_lisp());
-        terms.push(Lisp::keyword("else"));
-        terms.push(self.body.as_lisp());
-        Lisp::Any(terms)
+        todo!()
+        // let mut terms = Vec::with_capacity(5);
+        // terms.push(Lisp::keyword("guard"));
+        // terms.push(self.condition.as_lisp());
+        // terms.push(Lisp::keyword("else"));
+        // terms.push(self.body.as_lisp());
+        // lisp
     }
 }
 

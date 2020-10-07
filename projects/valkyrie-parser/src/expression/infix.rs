@@ -138,6 +138,7 @@ impl ValkyrieInfix {
             "isnot" => ValkyrieOperator::IsA(false),
             "+=" => ValkyrieOperator::PlusAssign,
             "=" => ValkyrieOperator::Assign,
+            "-=" => ValkyrieOperator::MinusAssign,
             _ => unreachable!("Unknown operator: {}", self.normalized),
         };
         OperatorNode::new(kind, self.span.clone())

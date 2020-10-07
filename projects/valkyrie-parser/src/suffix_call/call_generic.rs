@@ -7,11 +7,11 @@ impl ThisParser for CallNode<GenericCallNode> {
     }
 
     fn as_lisp(&self) -> Lisp {
-        let mut terms = Vec::with_capacity(3);
-        terms.push(Lisp::keyword("call/generic"));
-        terms.push(self.base.as_lisp());
-        terms.push(self.rest.as_lisp());
-        Lisp::Any(terms)
+        let mut lisp = Lisp::new(3);
+        lisp += Lisp::keyword("call/generic");
+        lisp += self.base.as_lisp();
+        lisp += self.rest.as_lisp();
+        lisp
     }
 }
 
@@ -22,13 +22,13 @@ impl ThisParser for GenericCallNode {
     }
 
     fn as_lisp(&self) -> Lisp {
-        let mut terms = Vec::with_capacity(self.terms.len() + 2);
-        terms.push(Lisp::keyword("generic"));
+        let mut lisp = Lisp::new(self.terms.len() + 2);
+        lisp += Lisp::keyword("generic");
         // terms.push(self.base.lispify().into());
         for term in &self.terms {
-            terms.push(term.term.as_lisp());
+            lisp += term.term.as_lisp();
         }
-        Lisp::Any(terms)
+        lisp
     }
 }
 

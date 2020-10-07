@@ -10,12 +10,12 @@ impl ThisParser for PatternBranch {
     }
 
     fn as_lisp(&self) -> Lisp {
-        let mut terms = Vec::with_capacity(10);
-        terms.push(self.condition.as_lisp());
+        let mut lisp = Lisp::new(10);
+        lisp += self.condition.as_lisp();
         for stmt in &self.statements.terms {
-            terms.push(stmt.as_lisp());
+            lisp += stmt.as_lisp();
         }
-        Lisp::Any(terms)
+        lisp
     }
 }
 
@@ -79,7 +79,7 @@ impl ThisParser for PatternCaseNode {
     }
 
     fn as_lisp(&self) -> Lisp {
-        Lisp::Any(vec![Lisp::keyword("match/case"), self.pattern.as_lisp()])
+        Lisp::keyword("match/case") + self.pattern.as_lisp()
     }
 }
 impl ThisParser for PatternTypeNode {
@@ -90,7 +90,7 @@ impl ThisParser for PatternTypeNode {
     }
 
     fn as_lisp(&self) -> Lisp {
-        Lisp::Any(vec![Lisp::keyword("match/type"), self.pattern.as_lisp()])
+        Lisp::keyword("match/type") + self.pattern.as_lisp()
     }
 }
 impl ThisParser for PatternWhenNode {
@@ -101,7 +101,7 @@ impl ThisParser for PatternWhenNode {
     }
 
     fn as_lisp(&self) -> Lisp {
-        Lisp::Any(vec![Lisp::keyword("match/when"), self.guard.as_lisp()])
+        Lisp::keyword("match/when") + self.guard.as_lisp()
     }
 }
 impl ThisParser for PatternElseNode {
@@ -111,7 +111,7 @@ impl ThisParser for PatternElseNode {
     }
 
     fn as_lisp(&self) -> Lisp {
-        Lisp::Any(vec![Lisp::keyword("match/else")])
+        Lisp::keyword("match/else")
     }
 }
 
@@ -123,7 +123,7 @@ impl ThisParser for PatternGuard {
     }
 
     fn as_lisp(&self) -> Lisp {
-        Lisp::Any(vec![Lisp::keyword("if"), self.condition.as_lisp()])
+        Lisp::keyword("if") + self.condition.as_lisp()
     }
 }
 
@@ -134,7 +134,7 @@ impl ThisParser for PatternExpressionNode {
 
     fn as_lisp(&self) -> Lisp {
         match self {
-            PatternExpressionNode::Tuple(s) => Lisp::Any(s.iter().map(|s| s.as_lisp()).collect()),
+            PatternExpressionNode::Tuple(s) => s.iter().map(|s| s.as_lisp()).collect(),
             PatternExpressionNode::Case => Lisp::keyword("case"),
         }
     }
