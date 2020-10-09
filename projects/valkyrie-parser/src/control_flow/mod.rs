@@ -11,8 +11,9 @@ use valkyrie_ast::{
 };
 
 mod controller;
+mod jmp_guard;
+mod jmp_if;
 mod jmp_switch;
-mod jum_if;
 mod loop_for;
 mod loop_while;
 

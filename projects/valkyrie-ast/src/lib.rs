@@ -17,7 +17,7 @@ mod string_like;
 pub use crate::{
     control_flow::{
         control::{ControlNode, ControlType, RaiseNode},
-        guard_statement::{GuardLetStatement, GuardPattern, GuardStatement},
+        guard_statement::{GuardLetStatement, GuardStatement, GuardStatementBody},
         jmp_if::{ElseStatement, IfConditionNode, IfLetStatement, IfStatement},
         jmp_switch::SwitchStatement,
         loop_for::{ForBarePattern, ForLoop},
@@ -38,7 +38,7 @@ pub use crate::{
         view::{SubscriptNode, SubscriptSliceNode, SubscriptTermNode},
         ExpressionBody, ExpressionContext, ExpressionNode, PostfixCallPart, TypingExpression,
     },
-    helper::ValkyrieNode,
+    helper::{SoftBlock, ValkyrieNode},
     package_level::{
         classes::{ClassDeclaration, ClassFieldDeclaration, ClassIterator, ClassKind, ClassMethodDeclaration, ClassTerm},
         documentation::DocumentationNode,

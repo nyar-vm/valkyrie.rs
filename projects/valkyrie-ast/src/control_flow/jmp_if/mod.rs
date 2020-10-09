@@ -13,19 +13,28 @@ pub struct IfStatement {
     pub span: Range<u32>,
 }
 
-/// `if let Some(a) = b then {}`
+/// `if let Some(a) = b then {...} else {...}`
 ///
 ///
 /// ```vk
-/// if let Some(a) = b then {
+/// if let
+///     Some(a) = b
+/// then {
+///
+/// }
+/// else {
 ///
 /// }
 /// ```
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct IfLetStatement {
+    /// The range of the node
     pub pattern: LetBindNode,
-    pub then_body: Option<ThenStatement>,
+    /// The range of the node
+    pub then_body: StatementBlock,
+    /// The range of the node
+    pub else_body: Option<ElseStatement>,
     /// The range of the node
     pub span: Range<u32>,
 }

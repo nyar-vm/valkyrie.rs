@@ -1,4 +1,5 @@
 use super::*;
+use crate::SoftBlock;
 
 impl PrettyPrint for IfStatement {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
@@ -31,28 +32,6 @@ impl PrettyPrint for IfConditionNode {
         terms.into()
     }
 }
-
-impl PrettyPrint for WhileConditionNode {
-    /// ```vk
-    /// # inline style
-    /// a || b || c
-    ///
-    /// # block style
-    ///
-    /// a
-    ///   || b && c
-    ///   && d || e
-    /// ```
-    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
-        match self {
-            WhileConditionNode::Unconditional => theme.keyword("true"),
-            WhileConditionNode::Case => theme.keyword("case"),
-            WhileConditionNode::Expression(e) => e.pretty(theme),
-        }
-    }
-}
-
-#[cfg(feature = "pretty-print")]
 impl PrettyPrint for ElseStatement {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(10);
@@ -64,6 +43,30 @@ impl PrettyPrint for ElseStatement {
         terms += theme.join(self.statements.clone(), PrettyTree::Hardline).indent(4);
         terms += PrettyTree::Hardline;
         terms += "}";
+        terms.into()
+    }
+}
+
+impl PrettyPrint for ThenStatement {
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        let mut terms = PrettySequence::new(10);
+        terms += PrettyTree::Hardline;
+        terms += theme.keyword("then");
+        terms += " ";
+        terms += SoftBlock::curly_braces().join_slice(&self.statements, theme);
+        terms.into()
+    }
+}
+
+impl PrettyPrint for IfLetStatement {
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        let mut terms = PrettySequence::new(10);
+        terms += theme.keyword("if let ");
+        terms += self.pattern.pretty(theme);
+        terms += self.then_body.pretty(theme);
+        if let Some(else_body) = &self.else_body {
+            terms += else_body.pretty(theme);
+        }
         terms.into()
     }
 }

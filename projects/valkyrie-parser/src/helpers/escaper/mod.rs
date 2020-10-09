@@ -5,9 +5,11 @@ pub struct StringRewrite<'a> {
 }
 
 impl<'a> StringRewrite<'a> {
+    /// Creates a new `StringRewrite` from a string slice.
     pub fn new(s: &'a str) -> Self {
         Self { chars: s.chars() }
     }
+    /// Creates a new `StringRewrite` from a string slice.
     pub fn view(s: &'a str, start: usize, end: usize) -> Self {
         debug_assert!(start <= end, "start must be less than or equal to end");
         debug_assert!(end <= s.len(), "end must be less than or equal to the length of the string");

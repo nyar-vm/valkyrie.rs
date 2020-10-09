@@ -37,6 +37,25 @@ impl PrettyPrint for PatternExpressionNode {
         }
     }
 }
+impl PrettyPrint for WhileConditionNode {
+    /// ```vk
+    /// # inline style
+    /// a || b || c
+    ///
+    /// # block style
+    ///
+    /// a
+    ///   || b && c
+    ///   && d || e
+    /// ```
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        match self {
+            WhileConditionNode::Unconditional => theme.keyword("true"),
+            WhileConditionNode::Case => theme.keyword("case"),
+            WhileConditionNode::Expression(e) => e.pretty(theme),
+        }
+    }
+}
 
 impl PrettyPrint for OtherwiseStatement {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {

@@ -1,4 +1,5 @@
 use super::*;
+use valkyrie_ast::IfLetStatement;
 
 impl ThisParser for IfStatement {
     fn parse(input: ParseState) -> ParseResult<Self> {
@@ -22,6 +23,16 @@ impl ThisParser for IfStatement {
         //     terms.push(else_body.as_lisp());
         // }
         // lisp
+    }
+}
+
+impl ThisParser for IfLetStatement {
+    fn parse(input: ParseState) -> ParseResult<Self> {
+        todo!()
+    }
+
+    fn as_lisp(&self) -> Lisp {
+        todo!()
     }
 }
 

@@ -17,75 +17,84 @@ impl Validation for ProgramRoot {
 
 impl Validation for StatementNode {
     fn validate(&mut self, errors: &mut Vec<SyntaxError>) -> Result<(), ValkyrieError> {
-        match &mut self.r#type {
-            StatementBody::Nothing => {
+        self.r#type.validate(errors)
+    }
+}
+
+impl Validation for StatementBody {
+    fn validate(&mut self, errors: &mut Vec<SyntaxError>) -> Result<(), ValkyrieError> {
+        match self {
+            Self::Nothing => {
                 todo!()
             }
-            StatementBody::Document(_) => {
+            Self::Document(_) => {
                 todo!()
             }
-            StatementBody::Annotation(_) => {
+            Self::Annotation(_) => {
                 todo!()
             }
-            StatementBody::Namespace(_) => {
+            Self::Namespace(_) => {
                 todo!()
             }
-            StatementBody::Import(_) => {
+            Self::Import(_) => {
                 todo!()
             }
-            StatementBody::Class(_) => {
+            Self::Class(_) => {
                 todo!()
             }
-            StatementBody::ClassField(_) => {
+            Self::ClassField(_) => {
                 todo!()
             }
-            StatementBody::ClassMethod(_) => {
+            Self::ClassMethod(_) => {
                 todo!()
             }
-            StatementBody::Union(_) => {
+            Self::Union(_) => {
                 todo!()
             }
-            StatementBody::UnionField(_) => {
+            Self::UnionField(_) => {
                 todo!()
             }
-            StatementBody::Enumerate(_) => {
+            Self::Enumerate(_) => {
                 todo!()
             }
-            StatementBody::EnumerateField(_) => {
+            Self::EnumerateField(_) => {
                 todo!()
             }
-            StatementBody::Flags(_) => {
+            Self::Flags(_) => {
                 todo!()
             }
-            StatementBody::Tagged(_) => {
+            Self::Tagged(_) => {
                 todo!()
             }
-            StatementBody::Variant(_) => {
+            Self::Variant(_) => {
                 todo!()
             }
-            StatementBody::Function(_) => {
+            Self::Function(_) => {
                 todo!()
             }
-            StatementBody::While(_) => {
+            Self::While(_) => {
                 todo!()
             }
-            StatementBody::For(_) => {
+            Self::For(_) => {
                 todo!()
             }
-            StatementBody::LetBind(_) => {
+            Self::LetBind(_) => {
                 todo!()
             }
-            StatementBody::Guard(e) => {
-                e.validate(errors)?;
-            }
-            StatementBody::Control(_) => {
+            Self::Guard(e) => e.validate(errors),
+            Self::Control(_) => {
                 todo!()
             }
-            StatementBody::Expression(_) => {
+            Self::Expression(_) => {
+                todo!()
+            }
+            Self::IfLet(_) => {
+                todo!()
+            }
+            Self::GuardLet(_) => {
                 todo!()
             }
         }
-        Ok(())
     }
 }
 
@@ -95,7 +104,7 @@ impl Validation for GuardStatement {
         match self.last() {
             Some(StatementBody::Control(_)) => {}
             Some(other) => errors.push(SyntaxError::new(MSG).with_span(&other.get_range())),
-            None => errors.push(SyntaxError::new(MSG).with_span(&self.body.span)),
+            None => errors.push(SyntaxError::new(MSG).with_span(&self.main_body.get_range())),
         }
         Ok(())
     }

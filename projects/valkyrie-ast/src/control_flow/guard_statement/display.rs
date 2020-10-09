@@ -8,16 +8,21 @@ impl PrettyPrint for GuardStatement {
         terms += self.condition.pretty(theme);
         terms += " ";
         terms += theme.keyword("else");
-        terms += self.body.pretty(theme);
         terms.into()
     }
 }
 
-impl PrettyPrint for GuardPattern {
+impl PrettyPrint for GuardStatementBody {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         match self {
-            Self::Case(e) => e.pretty(theme),
-            Self::Inline(e) => e.pretty(theme),
+            Self::Positive(node) => node.pretty(theme),
+            Self::Negative(node) => node.pretty(theme),
         }
+    }
+}
+
+impl PrettyPrint for GuardLetStatement {
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        todo!()
     }
 }

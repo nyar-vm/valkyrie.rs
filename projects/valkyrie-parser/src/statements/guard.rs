@@ -1,12 +1,12 @@
 use super::*;
+use valkyrie_ast::GuardStatementBody;
 
 impl ThisParser for GuardStatement {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, _) = input.match_str("guard")?;
-        let (state, cond) = state.skip(ignore).match_fn(GuardPattern::parse)?;
-        let (state, _) = state.skip(ignore).match_str("else")?;
-        let (finally, body) = state.skip(ignore).match_fn(StatementBlock::parse)?;
-        finally.finish(GuardStatement { condition: cond, body, span: get_span(input, finally) })
+        let (state, cond) = state.skip(ignore).match_fn(ExpressionNode::parse)?;
+        let (finally, body) = state.skip(ignore).match_fn(GuardStatementBody::parse)?;
+        finally.finish(GuardStatement { condition: cond, main_body: body, span: get_span(input, finally) })
     }
 
     fn as_lisp(&self) -> Lisp {
@@ -20,19 +20,12 @@ impl ThisParser for GuardStatement {
     }
 }
 
-impl ThisParser for GuardPattern {
+impl ThisParser for GuardStatementBody {
     fn parse(input: ParseState) -> ParseResult<Self> {
-        input
-            .begin_choice()
-            .or_else(|s| ImplicitCaseNode::parse(s).map_into())
-            .or_else(|s| ExpressionNode::parse(s).map_into())
-            .end_choice()
+        todo!()
     }
 
     fn as_lisp(&self) -> Lisp {
-        match self {
-            GuardPattern::Case(s) => s.as_lisp(),
-            GuardPattern::Inline(s) => s.as_lisp(),
-        }
+        todo!()
     }
 }

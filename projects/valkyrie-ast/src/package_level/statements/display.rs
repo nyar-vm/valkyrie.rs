@@ -32,6 +32,8 @@ impl PrettyPrint for StatementBody {
             Self::LetBind(node) => node.pretty(theme),
             Self::Guard(node) => node.pretty(theme),
             Self::Flags(node) => node.pretty(theme),
+            Self::IfLet(node) => node.pretty(theme),
+            Self::GuardLet(node) => node.pretty(theme),
         }
     }
 }

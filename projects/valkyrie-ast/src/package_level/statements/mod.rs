@@ -1,5 +1,5 @@
 use super::*;
-use crate::{ExpressionBody, StringLiteralNode, StringTextNode};
+use crate::control_flow::jmp_if::IfLetStatement;
 mod display;
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
@@ -53,8 +53,12 @@ pub enum StatementBody {
     For(Box<ForLoop>),
     /// The let bind statement node.
     LetBind(Box<LetBindNode>),
+    /// The try catch statement node.
+    IfLet(Box<IfLetStatement>),
     /// The guard statement node.
     Guard(Box<GuardStatement>),
+    /// The guard let statement node.
+    GuardLet(Box<GuardLetStatement>),
     /// The apply argument node.
     Control(Box<ControlNode>),
     /// The apply argument node.

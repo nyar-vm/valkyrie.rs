@@ -25,6 +25,8 @@ pub struct RaiseNode {
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum ControlType {
+    /// `goto label`, can't construct from frontend
+    Goto,
     /// `break label`, equivalent to `call/cc`
     Break,
     /// `continue label`, equivalent to `goto`
@@ -46,14 +48,15 @@ pub enum ControlType {
 impl ControlType {
     pub fn as_str(&self) -> &'static str {
         match self {
-            ControlType::Break => "break",
-            ControlType::Continue => "continue",
-            ControlType::Fallthrough => "fallthrough",
-            ControlType::Return => "return",
-            ControlType::Resume => "resume",
-            ControlType::YieldReturn => "yield",
-            ControlType::YieldBreak => "yield break",
-            ControlType::YieldFrom => "yield from",
+            Self::Goto => "goto",
+            Self::Break => "break",
+            Self::Continue => "continue",
+            Self::Fallthrough => "fallthrough",
+            Self::Return => "return",
+            Self::Resume => "resume",
+            Self::YieldReturn => "yield",
+            Self::YieldBreak => "yield break",
+            Self::YieldFrom => "yield from",
         }
     }
 }
