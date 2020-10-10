@@ -73,8 +73,8 @@ impl GuardStatement {
     /// Get the last statement in the block
     pub fn last(&self) -> Option<&StatementBody> {
         let node = match &self.main_body {
-            GuardStatementBody::Positive(node) => node.statements.last(),
-            GuardStatementBody::Negative(node) => node.statements.last(),
+            GuardStatementBody::Positive(node) => node.body.terms.last(),
+            GuardStatementBody::Negative(node) => node.body.terms.last(),
         }?;
         Some(&node.r#type)
     }

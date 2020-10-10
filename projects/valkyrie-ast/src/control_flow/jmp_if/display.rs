@@ -35,14 +35,9 @@ impl PrettyPrint for IfConditionNode {
 impl PrettyPrint for ElseStatement {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(10);
-        terms += PrettyTree::Hardline;
         terms += theme.keyword("else");
         terms += " ";
-        terms += "{";
-        terms += PrettyTree::Hardline;
-        terms += theme.join(self.statements.clone(), PrettyTree::Hardline).indent(4);
-        terms += PrettyTree::Hardline;
-        terms += "}";
+        terms += self.body.pretty(theme);
         terms.into()
     }
 }
@@ -50,10 +45,9 @@ impl PrettyPrint for ElseStatement {
 impl PrettyPrint for ThenStatement {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(10);
-        terms += PrettyTree::Hardline;
         terms += theme.keyword("then");
         terms += " ";
-        terms += SoftBlock::curly_braces().join_slice(&self.statements, theme);
+        terms += SoftBlock::curly_braces().join_slice(&self.body.terms, theme);
         terms.into()
     }
 }

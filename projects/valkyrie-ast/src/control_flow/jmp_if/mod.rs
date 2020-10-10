@@ -53,7 +53,8 @@ pub struct IfConditionNode {
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ElseStatement {
-    pub statements: Vec<StatementNode>,
+    /// The main body of the statement
+    pub body: StatementBlock,
     /// The range of the node
     pub span: Range<u32>,
 }
@@ -62,7 +63,10 @@ pub struct ElseStatement {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ThenStatement {
-    pub statements: Vec<StatementNode>,
+    /// Should show the `then` keyword
+    pub show: bool,
+    /// The main body of the statement
+    pub body: StatementBlock,
     /// The range of the node
     pub span: Range<u32>,
 }

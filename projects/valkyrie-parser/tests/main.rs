@@ -33,11 +33,11 @@ fn top_debug(text: &str, output: &str) -> std::io::Result<()> {
     let apply = ProgramRoot::parse_text(text).unwrap();
     let mut theme = PrettyProvider::new(128);
     for expr in &apply.statements {
+        println!("=================================================================");
         pretty_print(expr);
         let text = expr.pretty_colorful(&theme);
         let lisp = expr.as_lisp();
         writeln!(file, "{}", lisp.pretty_string(&theme))?;
-        println!("=================================================================");
         println!("{}", lisp.pretty_colorful(&theme));
     }
     Ok(())
@@ -48,12 +48,12 @@ fn repl_debug(text: &str, output: &str) -> std::io::Result<()> {
     let apply = ReplRoot::parse_text(text).unwrap();
     let mut theme = PrettyProvider::new(128);
     for expr in &apply.statements {
+        println!("=================================================================");
         pretty_print(expr);
         let text = expr.pretty_colorful(&theme);
-        let lisp = expr.as_lisp().pretty_colorful(&theme);
-        writeln!(file, "{}", text)?;
-        println!("=================================================================");
-        println!("{}", lisp);
+        let lisp = expr.as_lisp();
+        writeln!(file, "{}", lisp.pretty_string(&theme))?;
+        println!("{}", lisp.pretty_colorful(&theme));
     }
     Ok(())
 }

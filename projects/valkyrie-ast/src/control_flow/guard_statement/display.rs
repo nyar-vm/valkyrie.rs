@@ -7,7 +7,7 @@ impl PrettyPrint for GuardStatement {
         terms += " ";
         terms += self.condition.pretty(theme);
         terms += " ";
-        terms += theme.keyword("else");
+        terms += self.main_body.pretty(theme);
         terms.into()
     }
 }

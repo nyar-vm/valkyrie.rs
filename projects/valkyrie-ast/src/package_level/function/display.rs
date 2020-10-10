@@ -1,4 +1,5 @@
 use super::*;
+use crate::SoftBlock;
 
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for FunctionType {
@@ -43,14 +44,8 @@ impl PrettyPrint for StatementBlock {
     /// }
     /// ```
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
-        let mut terms = PrettySequence::new(9);
-        terms += " ";
-        terms += "{";
-        terms += PrettyTree::Hardline;
-        terms += theme.join(self.terms.clone(), PrettyTree::Hardline).indent(4);
-        terms += PrettyTree::Hardline;
-        terms += "}";
-        terms.into()
+        let block = SoftBlock::curly_braces();
+        block.join_slice(&self.terms, theme)
     }
 }
 

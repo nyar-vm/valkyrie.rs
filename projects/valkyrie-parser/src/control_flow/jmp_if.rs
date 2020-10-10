@@ -1,5 +1,5 @@
 use super::*;
-use valkyrie_ast::IfLetStatement;
+use valkyrie_ast::{IfLetStatement, ThenStatement};
 
 impl ThisParser for IfStatement {
     fn parse(input: ParseState) -> ParseResult<Self> {
@@ -58,16 +58,26 @@ impl ThisParser for IfConditionNode {
         // lisp
     }
 }
+impl ThisParser for ThenStatement {
+    fn parse(input: ParseState) -> ParseResult<Self> {
+        let (state, _) = input.match_str("then")?;
+        let (state, func) = state.skip(ignore).match_fn(StatementBlock::parse)?;
+        state.finish(ThenStatement { show: true, body: func, span: get_span(input, state) })
+    }
+
+    fn as_lisp(&self) -> Lisp {
+        Lisp::keyword("then") + self.body.as_lisp()
+    }
+}
 
 impl ThisParser for ElseStatement {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, _) = input.match_str("else")?;
         let (state, func) = state.skip(ignore).match_fn(StatementBlock::parse)?;
-        state.finish(ElseStatement { statements: func.terms, span: get_span(input, state) })
+        state.finish(ElseStatement { body: func, span: get_span(input, state) })
     }
 
     fn as_lisp(&self) -> Lisp {
-        todo!()
-        // Lisp::Any(vec![Lisp::keyword("else"), Lisp::Any(self.statements.iter().map(|s| s.as_lisp()).collect())])
+        Lisp::keyword("else") + self.body.as_lisp()
     }
 }
