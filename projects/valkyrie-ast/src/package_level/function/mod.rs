@@ -42,6 +42,7 @@ pub struct FunctionDeclarationInline {
 ///
 /// - Auxiliary parsing function, not instantiable.
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct StatementBlock {
     pub terms: Vec<StatementNode>,
     /// The range of the node

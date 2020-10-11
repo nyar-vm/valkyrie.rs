@@ -36,5 +36,5 @@ use deriver::From;
 #[cfg(feature = "pretty-print")]
 use pretty_print::{
     helpers::{KAndRBracket, PrettySequence},
-    PrettyBuilder, PrettyPrint, PrettyProvider, PrettyTree,
+    PrettyPrint, PrettyProvider, PrettyTree,
 };
