@@ -6,4 +6,6 @@
 (call/apply-dot a (b))
 (call/apply-dot a (b))
 (call/apply-dot (call/apply-dot a (b)) (c))
-(call/apply (call/apply (call/apply-dot (call/apply (call/apply-dot (call/apply a (apply 1)) (b 1)) (apply 2)) (b 1)) (apply 2)) (apply 3))
+(call/apply
+  (call/apply (call/apply-dot (call/apply (call/apply-dot (call/apply a (apply 1)) (b 1)) (apply 2)) (b 1)) (apply 2))
+  (apply 3))

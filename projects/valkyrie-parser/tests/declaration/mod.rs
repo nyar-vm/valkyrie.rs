@@ -15,5 +15,5 @@ fn lex_function() {}
 fn test_apply() {
     let raw = "::<B>";
     let apply = GenericArgumentNode::parse_text(raw).unwrap();
-    println!("{}", colored_lisp(apply.as_lisp(), 144).unwrap());
+    pretty_print(&apply)
 }

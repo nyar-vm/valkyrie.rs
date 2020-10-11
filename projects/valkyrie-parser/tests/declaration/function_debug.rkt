@@ -1,9 +1,21 @@
-(micro function (arguments) (body))
-(macro module∷function (arguments) (body))
-(micro function (arguments ((a) Any null) ((k) T null) ((p) U 1)) (body (call/apply print (apply Hello, world!))))
-(micro function (arguments ((g) G null)) (body (+ 1 1) (∈ a b) (call/apply print (apply Hello, world!))))
+(micro function () ())
+(macro module∷function () R ())
+(micro function (((a) Any null) ((k) T null) ((p) U 1)) R ((call/apply print (apply Hello, world!))))
+(micro
+  function
+  (define/generic (G Any null) (R Any null))
+  (((g) G null))
+  R
+  ((+ 1 1) (∈ a b) (call/apply print (apply Hello, world!))))
 (macro
   outer
-  (arguments ((lhs) L null))
-  (body (micro inner (arguments ((rhs) R null)) (body (loop (< count 10) (+= count 1) (call/apply print (apply {lhs} {rhs}))))) {count}))
-(micro main (arguments ((mut args) (table String) null)) (body (call/apply (call/apply outer (apply Hello)) (apply world)) (return 0)))
+  (define/generic (L Any null))
+  (((lhs) L null))
+  String
+  ((micro
+      inner
+      (define/generic (R Any null))
+      (((rhs) R null))
+      (while (< count (call/lambda 10 ((+= count 1) (call/apply print (apply {lhs} {rhs})))))))
+    {count}))
+(micro main (((mut args) (table String) null)) Int ((call/apply (call/apply outer (apply Hello)) (apply world)) (return 0)))
