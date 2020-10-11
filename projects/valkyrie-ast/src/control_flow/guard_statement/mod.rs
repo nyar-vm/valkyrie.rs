@@ -45,7 +45,7 @@ pub enum GuardStatementBody {
     Negative(ElseStatement),
 }
 
-/// `guard let Failure(error) = e then { ... }`
+/// `guard let Failure(error) = e if xxx then { ... }`
 ///
 /// The else block must use control.
 ///

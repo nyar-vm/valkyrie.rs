@@ -8,17 +8,16 @@ use pex::{helpers::CommentLine, BracketPattern, ParseResult, ParseState, Regex, 
 use std::sync::LazyLock;
 use valkyrie_ast::{
     AnnotationList, AnnotationNode, ApplyCallNode, ClassDeclaration, ControlNode, DocumentationNode, EnumerateDeclaration,
-    ExpressionContext, ExpressionNode, FlagsDeclaration, ForLoop, FunctionDeclaration, GenericCallNode, GuardStatement,
-    IdentifierNode, ImplicitCaseNode, ImportAliasNode, ImportGroupNode, ImportStatement, ImportTermNode, LambdaArgumentNode,
-    LambdaNode, LetBindNode, NamePathNode, NamespaceDeclaration, NamespaceKind, NewConstructNode, PatternExpressionNode,
-    ProgramRoot, StatementBlock, StatementBody, StatementNode, TableTermNode, TaggedDeclaration, TypingExpression,
-    UnionDeclaration, WhileLoop,
+    ExpressionContext, ExpressionNode, FlagsDeclaration, ForLoop, FunctionDeclaration, GenericCallNode, GuardLetStatement,
+    GuardStatement, IdentifierNode, ImplicitCaseNode, ImportAliasNode, ImportGroupNode, ImportStatement, ImportTermNode,
+    LambdaArgumentNode, LambdaNode, LetBindNode, NamePathNode, NamespaceDeclaration, NamespaceKind, NewConstructNode,
+    PatternExpressionNode, ProgramRoot, StatementBlock, StatementBody, StatementNode, TableTermNode, TaggedDeclaration,
+    TypingExpression, UnionDeclaration, WhileLoop,
 };
 
 mod annotation;
 mod def_var;
 mod documentation;
-mod guard;
 mod import;
 mod lambda;
 mod new;
@@ -84,6 +83,7 @@ impl ThisParser for StatementBody {
             .or_else(|s| FlagsDeclaration::parse(s).map_into())
             .or_else(function_with_head)
             .or_else(|s| LetBindNode::parse(s).map_into())
+            .or_else(|s| GuardLetStatement::parse(s).map_into())
             .or_else(|s| GuardStatement::parse(s).map_into())
             .or_else(|s| WhileLoop::parse(s).map_into())
             .or_else(|s| ForLoop::parse(s).map_into())

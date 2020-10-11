@@ -23,6 +23,14 @@ impl PrettyPrint for GuardStatementBody {
 
 impl PrettyPrint for GuardLetStatement {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
-        todo!()
+        let mut terms = PrettySequence::new(10);
+        terms += theme.keyword("guard let");
+        terms += " ";
+        terms += self.pattern.pretty(theme);
+        terms += " ";
+        terms += self.condition.pretty(theme);
+        terms += " ";
+        terms += self.then_body.pretty(theme);
+        terms.into()
     }
 }
