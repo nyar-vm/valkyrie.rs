@@ -11,12 +11,20 @@ mod iters;
 pub struct ClassDeclaration {
     /// The kind of class
     pub kind: ClassKind,
-    /// The range of the number.
-    pub namepath: NamePathNode,
+    /// The modifiers of the class.
     pub modifiers: ModifiersNode,
-    pub extends: Option<String>,
-    pub implements: Vec<String>,
+    /// The name of the class.
+    pub namepath: NamePathNode,
+    /// The generic arguments of the class.
+    pub generic: Option<GenericArgument>,
+    /// The super class of the class.
+    pub base_classes: Option<String>,
+    /// The traits that the class implements.
+    pub auto_traits: Vec<String>,
+    /// The main body of the class, can't be empty.
     pub body: StatementBlock,
+    /// The range of the number.
+    pub span: Range<u32>,
 }
 
 /// The valid terms in a class body.
@@ -77,6 +85,15 @@ pub enum ClassKind {
     Class,
     /// A function that eager evaluate the arguments
     Structure,
+}
+
+impl ClassKind {
+    pub fn as_str(&self) -> &'static str {
+        match self {
+            ClassKind::Class => "class",
+            ClassKind::Structure => "structure",
+        }
+    }
 }
 
 // impl ClassDeclare {

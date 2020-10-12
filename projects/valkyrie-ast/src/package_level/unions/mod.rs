@@ -1,4 +1,5 @@
 use super::*;
+use crate::NumberLiteralNode;
 #[cfg(feature = "pretty-print")]
 mod display;
 
@@ -12,8 +13,8 @@ pub struct UnionDeclaration {
     /// The range of the number.
     pub namepath: NamePathNode,
     pub modifiers: Vec<IdentifierNode>,
-    pub extends: Option<String>,
-    pub implements: Vec<String>,
+    pub base_unions: Option<String>,
+    pub derive_traits: Vec<String>,
     pub body: StatementBlock,
 }
 

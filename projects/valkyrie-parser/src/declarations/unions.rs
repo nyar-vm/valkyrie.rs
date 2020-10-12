@@ -10,8 +10,8 @@ impl ThisParser for UnionDeclaration {
             document: Default::default(),
             namepath: name,
             modifiers: vec![],
-            extends: None,
-            implements: vec![],
+            base_unions: None,
+            derive_traits: vec![],
             body: stmt,
         })
     }

@@ -35,7 +35,7 @@ impl PrettyPrint for FunctionDeclaration {
 impl PrettyPrint for FunctionReturnNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(4);
-        terms += theme.keyword(":");
+        terms += theme.operator(":");
         terms += " ";
         terms += self.returns.pretty(theme);
         terms.into()
@@ -44,7 +44,11 @@ impl PrettyPrint for FunctionReturnNode {
 
 impl PrettyPrint for FunctionEffectNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
-        SoftBlock::new("[", "]").join_slice(&self.effects, theme)
+        let mut terms = PrettySequence::new(4);
+        terms += theme.operator("/");
+        terms += " ";
+        terms += SoftBlock::new("[", "]").join_slice(&self.effects, theme);
+        terms.into()
     }
 }
 

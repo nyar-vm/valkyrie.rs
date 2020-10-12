@@ -4,14 +4,17 @@ impl ThisParser for ClassDeclaration {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, _) = input.match_str("class")?;
         let (state, namepath) = state.skip(ignore).match_fn(NamePathNode::parse)?;
-        let (state, stmt) = parse_statement_block(state.skip(ignore), class_statements)?;
-        state.finish(ClassDeclaration {
+        let (state, generic) = state.match_optional(GenericArgument::parse)?;
+        let (finally, stmt) = parse_statement_block(state.skip(ignore), class_statements)?;
+        finally.finish(ClassDeclaration {
             kind: ClassKind::Class,
             namepath,
+            generic,
             modifiers: ModifiersNode::default(),
-            extends: None,
-            implements: vec![],
+            auto_traits: vec![],
             body: stmt,
+            base_classes: None,
+            span: get_span(input, finally),
         })
     }
 
@@ -24,6 +27,28 @@ impl ThisParser for ClassDeclaration {
             lisp += item.as_lisp();
         }
         lisp
+    }
+}
+
+impl ThisParser for ClassKind {
+    fn parse(input: ParseState) -> ParseResult<Self> {
+        if input.residual.starts_with("class") {
+            input.advance("class").finish(ClassKind::Class)
+        }
+        else if input.residual.starts_with("structure") {
+            input.advance("structure").finish(ClassKind::Structure)
+        }
+        else {
+            StopBecause::must_be("KW_CLASS", input.start_offset)?
+        }
+    }
+
+    fn as_lisp(&self) -> Lisp {
+        let define = match self {
+            Self::Class => "define/class",
+            Self::Structure => "define/structure",
+        };
+        Lisp::keyword(define)
     }
 }
 
@@ -91,6 +116,31 @@ impl ThisParser for ClassMethodDeclaration {
         lisp += Lisp::keyword("class/method");
         lisp += self.method_name.as_lisp();
         lisp += self.modifiers.as_lisp();
+        if let Some(generic) = &self.generic {
+            if !generic.terms.is_empty() {
+                lisp += generic.as_lisp();
+            }
+        }
+        lisp += self.arguments.as_lisp();
+        match &self.return_type {
+            Some(ty) => {
+                lisp += Lisp::keyword("return/type") + ty.as_lisp();
+            }
+            None => {
+                lisp += Lisp::keyword("return/type") + Lisp::symbol("Unit");
+            }
+        }
+        match &self.effect_type {
+            Some(ty) => lisp += ty.as_lisp(),
+            None => {
+                lisp += Lisp::keyword("return/type") + Lisp::symbol("Pure");
+            }
+        }
+        if let Some(body) = &self.body {
+            for item in &body.terms {
+                lisp += item.as_lisp();
+            }
+        }
         lisp
     }
 }

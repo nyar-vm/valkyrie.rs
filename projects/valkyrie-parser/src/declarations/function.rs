@@ -80,7 +80,12 @@ impl ThisParser for FunctionEffectNode {
     }
 
     fn as_lisp(&self) -> Lisp {
-        Lisp::from_iter(self.effects.iter().map(|s| s.as_lisp()))
+        let mut lisp = Lisp::new(self.effects.len());
+        lisp += Lisp::keyword("return/effect");
+        for effect in &self.effects {
+            lisp += effect.as_lisp();
+        }
+        lisp
     }
 }
 
