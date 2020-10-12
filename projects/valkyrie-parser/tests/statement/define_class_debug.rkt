@@ -1,7 +1,16 @@
 (annotation/list space)
 (annotation/list decorator)
-(class Empty)
+(define/class Empty (modifiers))
 (annotation/list decorator)
 (union Empty)
-(class ClassA)
+(define/class
+  ClassA
+  (modifiers)
+  (annotation/list decorator)
+  (class/field field (modifiers))
+  (class/field field (modifiers public static) : A)
+  (class/method method (modifiers))
+  (class/method `/` (modifiers infix))
+  (annotation/list inline)
+  (class/method join (modifiers)))
 (union UnionA)

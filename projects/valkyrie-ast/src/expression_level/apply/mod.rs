@@ -6,7 +6,7 @@ mod display;
 /// `(mut self, a, b: int, c: T = 3, ⁑args, ⁂kwargs)`
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ApplyArgumentNode {
+pub struct ApplyArgument {
     /// The raw string of the number.
     pub terms: Vec<ApplyArgumentTerm>,
     /// The range of the number.

@@ -14,13 +14,13 @@ use crate::{
 use lispify::Lisp;
 use pex::{helpers::str, BracketPattern, ParseResult, ParseState, StopBecause};
 use valkyrie_ast::{
-    AnnotationList, AnnotationNode, ApplyArgumentNode, ApplyArgumentTerm, ArgumentKeyNode, ArgumentTermNode, ClassDeclaration,
+    AnnotationList, AnnotationNode, ApplyArgument, ApplyArgumentTerm, ArgumentKeyNode, ArgumentTermNode, ClassDeclaration,
     ClassFieldDeclaration, ClassKind, ClassMethodDeclaration, DocumentationNode, EnumerateDeclaration,
-    EnumerateFieldDeclaration, ExpressionContext, ExpressionNode, FlagsDeclaration, FunctionDeclaration, FunctionReturnNode,
-    FunctionType, GenericArgumentNode, IdentifierNode, ModifiersNode, NamePathNode, PrettyPrint, StatementBlock, StatementNode,
-    TaggedDeclaration, TypingExpression, UnionDeclaration, UnionFieldDeclaration, VariantDeclaration,
+    EnumerateFieldDeclaration, ExpressionContext, ExpressionNode, FlagsDeclaration, FunctionDeclaration, FunctionEffectNode,
+    FunctionReturnNode, FunctionType, GenericArgument, IdentifierNode, ModifiersNode, NamePathNode, PrettyPrint,
+    StatementBlock, StatementNode, TaggedDeclaration, TypingExpression, UnionDeclaration, UnionFieldDeclaration,
+    VariantDeclaration,
 };
-
 fn enum_statements(input: ParseState) -> ParseResult<StatementNode> {
     let (state, ty) = input
         .skip(ignore)

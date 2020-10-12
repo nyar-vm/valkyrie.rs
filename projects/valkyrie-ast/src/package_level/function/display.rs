@@ -32,7 +32,22 @@ impl PrettyPrint for FunctionDeclaration {
     }
 }
 
-#[cfg(feature = "pretty-print")]
+impl PrettyPrint for FunctionReturnNode {
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        let mut terms = PrettySequence::new(4);
+        terms += theme.keyword(":");
+        terms += " ";
+        terms += self.returns.pretty(theme);
+        terms.into()
+    }
+}
+
+impl PrettyPrint for FunctionEffectNode {
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        SoftBlock::new("[", "]").join_slice(&self.effects, theme)
+    }
+}
+
 impl PrettyPrint for StatementBlock {
     /// ```vk
     /// # inline style
@@ -49,7 +64,6 @@ impl PrettyPrint for StatementBlock {
     }
 }
 
-#[cfg(feature = "pretty-print")]
 impl<K: PrettyPrint, V: PrettyPrint, D: PrettyPrint> PrettyPrint for ArgumentTermNode<K, V, D> {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(3);

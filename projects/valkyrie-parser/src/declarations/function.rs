@@ -1,12 +1,14 @@
 use super::*;
 use crate::utils::parse_modifiers;
+use std::iter::FromIterator;
+use valkyrie_ast::FunctionEffectNode;
 
 impl ThisParser for FunctionDeclaration {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, head) = FunctionType::parse(input)?;
         let (state, name) = state.skip(ignore).match_fn(NamePathNode::parse)?;
-        let (state, generic) = state.match_optional(GenericArgumentNode::parse)?;
-        let (state, args) = state.skip(ignore).match_fn(ApplyArgumentNode::parse)?;
+        let (state, generic) = state.match_optional(GenericArgument::parse)?;
+        let (state, args) = state.skip(ignore).match_fn(ApplyArgument::parse)?;
         let (state, ret) = state.skip(ignore).match_optional(FunctionReturnNode::parse)?;
         let (finally, body) = state.skip(ignore).match_fn(StatementBlock::parse)?;
         finally.finish(FunctionDeclaration {
@@ -70,11 +72,23 @@ impl ThisParser for FunctionReturnNode {
     }
 }
 
-impl ThisParser for ApplyArgumentNode {
+impl ThisParser for FunctionEffectNode {
+    fn parse(input: ParseState) -> ParseResult<Self> {
+        let (state, _) = input.match_str("/")?;
+        let (state, typing) = parse_expression_node(state.skip(ignore), ExpressionContext::in_type())?;
+        state.finish(FunctionEffectNode { effects: vec![typing], span: get_span(input, state) })
+    }
+
+    fn as_lisp(&self) -> Lisp {
+        Lisp::from_iter(self.effects.iter().map(|s| s.as_lisp()))
+    }
+}
+
+impl ThisParser for ApplyArgument {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let pattern = BracketPattern::new("(", ")");
         let (state, terms) = pattern.consume(input, ignore, ApplyArgumentTerm::parse)?;
-        state.finish(ApplyArgumentNode { terms: terms.body, span: get_span(input, state) })
+        state.finish(ApplyArgument { terms: terms.body, span: get_span(input, state) })
     }
 
     fn as_lisp(&self) -> Lisp {

@@ -49,8 +49,8 @@ impl ThisParser for GuardLetStatement {
         let (state, pat) = state.skip(ignore).match_fn(PatternExpressionNode::parse)?;
         let (state, _) = state.skip(ignore).match_str("=")?;
         let (state, expr) = state.skip(ignore).match_fn(ExpressionNode::parse)?;
-        let (finally, body) = state.skip(ignore).match_fn(hidden_then_visible)?;
-        finally.finish(GuardLetStatement { pattern: pat, condition: expr, then_body: body, span: get_span(input, finally) })
+        let (finally, body) = state.skip(ignore).match_fn(GuardStatementBody::parse)?;
+        finally.finish(GuardLetStatement { pattern: pat, condition: expr, main_body: body, span: get_span(input, finally) })
     }
 
     fn as_lisp(&self) -> Lisp {
@@ -58,7 +58,7 @@ impl ThisParser for GuardLetStatement {
         lisp += Lisp::keyword("guard/cases");
         lisp += self.pattern.as_lisp();
         lisp += self.condition.as_lisp();
-        lisp.extend(self.then_body.body.terms.iter().map(|s| s.as_lisp()));
+        lisp += self.main_body.as_lisp();
         lisp
     }
 }

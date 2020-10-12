@@ -24,7 +24,7 @@ impl PrettyPrint for GenericCallTerm {
 }
 
 // noinspection DuplicatedCode
-impl PrettyPrint for GenericArgumentNode {
+impl PrettyPrint for GenericArgument {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(3);
         terms += "⦓";

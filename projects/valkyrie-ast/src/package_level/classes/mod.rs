@@ -1,4 +1,5 @@
 use super::*;
+use crate::{FunctionEffectNode, FunctionReturnNode};
 #[cfg(feature = "pretty-print")]
 mod display;
 
@@ -12,7 +13,7 @@ pub struct ClassDeclaration {
     pub kind: ClassKind,
     /// The range of the number.
     pub namepath: NamePathNode,
-    pub modifiers: Vec<IdentifierNode>,
+    pub modifiers: ModifiersNode,
     pub extends: Option<String>,
     pub implements: Vec<String>,
     pub body: StatementBlock,
@@ -50,8 +51,22 @@ pub struct ClassFieldDeclaration {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ClassMethodDeclaration {
+    /// The documentation of the node.
+    pub document: DocumentationNode,
+    /// The modifiers of the node.
     pub modifiers: ModifiersNode,
+    /// `method_name()`
     pub method_name: IdentifierNode,
+    /// `method_name<T>()`
+    pub generic: Option<GenericArgument>,
+    /// `method_name(arguments)`
+    pub arguments: ApplyArgument,
+    /// `: ReturnType`
+    pub return_type: Option<FunctionReturnNode>,
+    /// `/ EffectType`
+    pub effect_type: Option<FunctionEffectNode>,
+    /// `{ body }`
+    pub body: Option<StatementBlock>,
 }
 
 /// `class A { }, structure V { }`

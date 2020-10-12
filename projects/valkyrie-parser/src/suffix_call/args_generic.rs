@@ -1,6 +1,6 @@
 use super::*;
 
-impl ThisParser for GenericArgumentNode {
+impl ThisParser for GenericArgument {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, terms) = input
             .begin_choice()
@@ -14,7 +14,7 @@ impl ThisParser for GenericArgumentNode {
                 pat.consume(s, ignore, GenericArgumentTerm::parse)
             })
             .end_choice()?;
-        state.finish(GenericArgumentNode { terms: terms.body, span: get_span(input, state) })
+        state.finish(GenericArgument { terms: terms.body, span: get_span(input, state) })
     }
 
     fn as_lisp(&self) -> Lisp {

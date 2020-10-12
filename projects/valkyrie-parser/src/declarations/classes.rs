@@ -8,7 +8,7 @@ impl ThisParser for ClassDeclaration {
         state.finish(ClassDeclaration {
             kind: ClassKind::Class,
             namepath,
-            modifiers: vec![],
+            modifiers: ModifiersNode::default(),
             extends: None,
             implements: vec![],
             body: stmt,
@@ -17,8 +17,12 @@ impl ThisParser for ClassDeclaration {
 
     fn as_lisp(&self) -> Lisp {
         let mut lisp = Lisp::new(4);
-        lisp += Lisp::keyword("class");
+        lisp += Lisp::keyword("define/class");
         lisp += self.namepath.as_lisp();
+        lisp += self.modifiers.as_lisp();
+        for item in &self.body.terms {
+            lisp += item.as_lisp();
+        }
         lisp
     }
 }
@@ -65,7 +69,21 @@ impl ThisParser for ClassFieldDeclaration {
 impl ThisParser for ClassMethodDeclaration {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, (mods, id)) = parse_modifiers(input)?;
-        state.finish(Self { modifiers: mods, method_name: id })
+        let (state, generic) = state.match_optional(GenericArgument::parse)?;
+        let (state, params) = state.skip(ignore).match_fn(ApplyArgument::parse)?;
+        let (state, return_type) = state.skip(ignore).match_optional(FunctionReturnNode::parse)?;
+        let (state, effect_type) = state.skip(ignore).match_optional(FunctionEffectNode::parse)?;
+        let (finally, body) = state.skip(ignore).match_optional(StatementBlock::parse)?;
+        finally.finish(Self {
+            document: Default::default(),
+            modifiers: mods,
+            method_name: id,
+            generic,
+            arguments: params,
+            return_type,
+            effect_type,
+            body,
+        })
     }
 
     fn as_lisp(&self) -> Lisp {
@@ -83,7 +101,12 @@ impl ThisParser for ModifiersNode {
     }
 
     fn as_lisp(&self) -> Lisp {
-        unreachable!()
+        let mut lisp = Lisp::new(4);
+        lisp += Lisp::keyword("modifiers");
+        for modifier in &self.terms {
+            lisp += modifier.as_lisp();
+        }
+        lisp
     }
 }
 
@@ -92,9 +115,18 @@ fn class_statements(input: ParseState) -> ParseResult<StatementNode> {
         .skip(ignore)
         .begin_choice()
         .or_else(|s| DocumentationNode::parse(s).map_into())
+        .or_else(|s| ClassMethodDeclaration::parse(s).map_into())
         .or_else(|s| ClassFieldDeclaration::parse(s).map_into())
         .or_else(|s| AnnotationList::parse(s).map_into())
         .or_else(|s| AnnotationNode::parse(s).map_into())
         .end_choice()?;
-    state.finish(StatementNode { r#type: ty, end_semicolon: true, span: get_span(input, state) })
+    let finally = state.skip(ignore).skip(parse_semi);
+    finally.finish(StatementNode { r#type: ty, end_semicolon: true, span: get_span(input, finally) })
+}
+
+#[test]
+fn test_statement() {
+    let raw = ParseState::new("method()");
+    let apply = class_statements(raw).unwrap();
+    println!("{:#?}", apply);
 }

@@ -6,7 +6,7 @@ use super::*;
 /// `class A⦓T: S = K⦔` or `class A<T: S = K>`
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct GenericArgumentNode {
+pub struct GenericArgument {
     /// The raw string of the number.
     pub terms: Vec<GenericArgumentTerm>,
     /// The range of the node

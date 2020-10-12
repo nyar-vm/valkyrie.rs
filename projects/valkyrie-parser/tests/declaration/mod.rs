@@ -1,5 +1,5 @@
 use super::*;
-use valkyrie_ast::GenericArgumentNode;
+use valkyrie_ast::GenericArgument;
 
 #[test]
 fn lex_declarations() {
@@ -14,6 +14,6 @@ fn lex_function() {}
 #[test]
 fn test_apply() {
     let raw = "::<B>";
-    let apply = GenericArgumentNode::parse_text(raw).unwrap();
+    let apply = GenericArgument::parse_text(raw).unwrap();
     pretty_print(&apply)
 }

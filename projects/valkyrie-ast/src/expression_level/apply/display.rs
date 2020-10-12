@@ -30,7 +30,7 @@ impl PrettyPrint for ApplyCallTerm {
     }
 }
 
-impl PrettyPrint for ApplyArgumentNode {
+impl PrettyPrint for ApplyArgument {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         PrettyTree::text("(").append(theme.join(self.terms.clone(), ", ")).append(")")
     }

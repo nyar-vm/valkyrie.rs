@@ -30,7 +30,7 @@ impl PrettyPrint for GuardLetStatement {
         terms += " ";
         terms += self.condition.pretty(theme);
         terms += " ";
-        terms += self.then_body.pretty(theme);
+        terms += self.main_body.pretty(theme);
         terms.into()
     }
 }

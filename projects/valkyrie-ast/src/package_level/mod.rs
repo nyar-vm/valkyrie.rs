@@ -17,9 +17,9 @@ pub mod unions;
 use crate::{ExpressionBody, GuardLetStatement, StringLiteralNode, StringTextNode};
 
 use crate::{
-    AnnotationList, AnnotationNode, ApplyArgumentNode, ArgumentTermNode, ClassDeclaration, ClassFieldDeclaration,
+    AnnotationList, AnnotationNode, ApplyArgument, ArgumentTermNode, ClassDeclaration, ClassFieldDeclaration,
     ClassMethodDeclaration, ControlNode, DocumentationNode, EnumerateDeclaration, EnumerateFieldDeclaration, ExpressionNode,
-    FlagsDeclaration, ForLoop, FunctionDeclaration, GenericArgumentNode, GuardStatement, IdentifierNode, ImportStatement,
+    FlagsDeclaration, ForLoop, FunctionDeclaration, GenericArgument, GuardStatement, IdentifierNode, ImportStatement,
     LetBindNode, ModifiersNode, NamePathNode, NamespaceDeclaration, PatternExpressionNode, StatementBlock, StatementBody,
     StatementNode, TaggedDeclaration, UnionDeclaration, UnionFieldDeclaration, VariantDeclaration, WhileLoop,
 };

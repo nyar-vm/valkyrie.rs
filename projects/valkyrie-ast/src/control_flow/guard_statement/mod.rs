@@ -64,7 +64,7 @@ pub struct GuardLetStatement {
     /// The condition to check
     pub condition: ExpressionNode,
     /// same as if let condition
-    pub then_body: ThenStatement,
+    pub main_body: GuardStatementBody,
     /// The range of the node
     pub span: Range<u32>,
 }
