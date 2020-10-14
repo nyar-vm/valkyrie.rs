@@ -1,7 +1,5 @@
 use super::*;
-use crate::utils::parse_modifiers;
-use std::iter::FromIterator;
-use valkyrie_ast::FunctionEffectNode;
+
 
 impl ThisParser for FunctionDeclaration {
     fn parse(input: ParseState) -> ParseResult<Self> {

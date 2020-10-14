@@ -5,10 +5,10 @@ mod prefix;
 mod suffix;
 
 use crate::{
-    helpers::{ignore, parse_comma, parse_when},
+    helpers::{ignore,  parse_when},
     table::TupleNode,
     traits::ThisParser,
-    utils::{get_span, parse_expression_body, parse_expression_node, parse_modifiers_lookahead},
+    utils::{get_span, parse_expression_body, parse_expression_node, },
 };
 use lispify::Lisp;
 use pex::{helpers::str, BracketPattern, ParseResult, ParseState, Regex, StopBecause};

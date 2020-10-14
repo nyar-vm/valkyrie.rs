@@ -17,7 +17,7 @@ use valkyrie_ast::{
     AnnotationList, AnnotationNode, ApplyArgument, ApplyArgumentTerm, ArgumentKeyNode, ArgumentTermNode, ClassDeclaration,
     ClassFieldDeclaration, ClassKind, ClassMethodDeclaration, DocumentationNode, EnumerateDeclaration,
     EnumerateFieldDeclaration, ExpressionContext, ExpressionNode, FlagsDeclaration, FunctionDeclaration, FunctionEffectNode,
-    FunctionReturnNode, FunctionType, GenericArgument, IdentifierNode, ModifiersNode, NamePathNode, PrettyPrint,
+    FunctionReturnNode, FunctionType, GenericArgument, IdentifierNode, ModifiersNode, NamePathNode, 
     StatementBlock, StatementNode, TaggedDeclaration, TypingExpression, UnionDeclaration, UnionFieldDeclaration,
     VariantDeclaration,
 };

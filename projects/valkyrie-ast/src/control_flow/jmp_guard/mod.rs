@@ -62,7 +62,7 @@ pub struct GuardLetStatement {
     /// The pattern to match
     pub pattern: PatternExpressionNode,
     /// The condition to check
-    pub condition: ExpressionNode,
+    pub expression: ExpressionNode,
     /// same as if let condition
     pub main_body: GuardStatementBody,
     /// The range of the node

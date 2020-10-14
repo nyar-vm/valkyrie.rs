@@ -5,10 +5,7 @@ use crate::{
 };
 use lispify::Lisp;
 use pex::{helpers::str, ParseResult, ParseState};
-use valkyrie_ast::{
-    ControlNode, ControlType, ElseStatement, ExpressionContext, ExpressionNode, ForLoop, IfConditionNode, IfStatement,
-    PatternExpressionNode, PatternGuard, StatementBlock, StatementNode, WhileConditionNode, WhileLoop,
-};
+use valkyrie_ast::{ControlNode, ControlType, ElseStatement, ExpressionContext, ExpressionNode, ForLoop, IfConditionNode, IfStatement, PatternExpressionNode, PatternGuard, StatementBlock, StatementNode, ThenStatement, WhileConditionNode, WhileLoop};
 
 mod controller;
 mod jmp_guard;
@@ -50,4 +47,9 @@ impl ThisParser for StatementBlock {
         }
         lisp
     }
+}
+pub fn parse_maybe_then(input: ParseState) -> ParseResult<ThenStatement> {
+    let (state, _) = input.match_optional(|s| s.match_str("then"))?;
+    let (state, body) = state.skip(ignore).match_fn(StatementBlock::parse)?;
+    state.finish(ThenStatement { show: true, body, span: get_span(input, state) })
 }

@@ -9,9 +9,9 @@ use std::sync::LazyLock;
 use valkyrie_ast::{
     AnnotationList, AnnotationNode, ApplyCallNode, ClassDeclaration, ControlNode, DocumentationNode, EnumerateDeclaration,
     ExpressionContext, ExpressionNode, FlagsDeclaration, ForLoop, FunctionDeclaration, GenericCallNode, GuardLetStatement,
-    GuardStatement, IdentifierNode, ImplicitCaseNode, ImportAliasNode, ImportGroupNode, ImportStatement, ImportTermNode,
+    GuardStatement, IdentifierNode,  ImportAliasNode, ImportGroupNode, ImportStatement, ImportTermNode,
     LambdaArgumentNode, LambdaNode, LetBindNode, NamePathNode, NamespaceDeclaration, NamespaceKind, NewConstructNode,
-    PatternExpressionNode, ProgramRoot, StatementBlock, StatementBody, StatementNode, TableTermNode, TaggedDeclaration,
+    PatternExpressionNode, ProgramRoot,  StatementBody, StatementNode, TableTermNode, TaggedDeclaration,
     TypingExpression, UnionDeclaration, WhileLoop,
 };
 

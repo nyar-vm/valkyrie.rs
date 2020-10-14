@@ -1,5 +1,5 @@
 use super::*;
-use valkyrie_ast::{IfLetStatement, ThenStatement};
+use valkyrie_ast::{GuardStatementBody, IfLetStatement, ThenStatement};
 
 impl ThisParser for IfStatement {
     fn parse(input: ParseState) -> ParseResult<Self> {
@@ -28,7 +28,15 @@ impl ThisParser for IfStatement {
 
 impl ThisParser for IfLetStatement {
     fn parse(input: ParseState) -> ParseResult<Self> {
-        todo!()
+        let (state, _) = input.match_str("if")?;
+        let (state, _) = state.skip(ignore).match_str("let")?;
+        let (state, pat) = state.skip(ignore).match_fn(PatternExpressionNode::parse)?;
+        let (state, _) = state.skip(ignore).match_str("=")?;
+        let (state, expr) = state.skip(ignore).match_fn(ExpressionNode::parse)?;
+        let (finally, mut then_body) = state.skip(ignore).match_fn(parse_maybe_then)?;
+        then_body.show = false;
+        let (finally, else_body) = finally.skip(ignore).match_optional(ElseStatement::parse)?;
+        finally.finish(Self { pattern: pat, expression: expr, then_body, else_body, span: get_span(input, finally) })
     }
 
     fn as_lisp(&self) -> Lisp {

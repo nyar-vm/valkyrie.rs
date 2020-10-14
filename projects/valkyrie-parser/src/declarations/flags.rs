@@ -22,7 +22,7 @@ impl ThisParser for FlagsDeclaration {
         terms += Lisp::keyword("flags");
         terms += self.namepath.as_lisp();
         if let Some(s) = &self.layout {
-            terms += (Lisp::keyword("layout") + s.as_lisp());
+            terms += Lisp::keyword("layout") + s.as_lisp();
         }
         for term in &self.body.terms {
             terms += term.as_lisp();

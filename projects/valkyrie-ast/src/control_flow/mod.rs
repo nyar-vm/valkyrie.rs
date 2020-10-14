@@ -12,7 +12,7 @@ use pretty_print::PrettyBuilder;
 use pretty_print::{helpers::PrettySequence, PrettyPrint, PrettyProvider, PrettyTree};
 
 pub mod control;
-pub mod guard_statement;
+pub mod jmp_guard;
 pub mod jmp_if;
 pub mod jmp_switch;
 pub mod loop_for;

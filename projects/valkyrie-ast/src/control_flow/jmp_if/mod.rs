@@ -29,10 +29,12 @@ pub struct IfStatement {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct IfLetStatement {
+    /// The pattern to match
+    pub pattern: PatternExpressionNode,
+    /// The condition to check
+    pub expression: ExpressionNode,
     /// The range of the node
-    pub pattern: LetBindNode,
-    /// The range of the node
-    pub then_body: StatementBlock,
+    pub then_body: ThenStatement,
     /// The range of the node
     pub else_body: Option<ElseStatement>,
     /// The range of the node
