@@ -16,10 +16,10 @@ use std::{
 
 #[derive(Clone, Debug)]
 pub struct SyntaxError {
-    info: String,
-    file: FileID,
-    span: Range<u32>,
-    level: DiagnosticLevel,
+    pub info: String,
+    pub file: FileID,
+    pub span: Range<u32>,
+    pub level: DiagnosticLevel,
 }
 
 impl Error for SyntaxError {}

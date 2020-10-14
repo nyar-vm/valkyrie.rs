@@ -16,8 +16,8 @@ fn lex_statements() {
 
 #[test]
 fn debug_statement() {
-    // top_debug(include_str!("let_bind.vk"), "statement/let_bind_debug.rkt").expect("let");
-    top_debug(include_str!("define_class.vk"), "statement/define_class_debug.rkt").expect("class");
+    top_debug(include_str!("jmp_if.vk"), "statement/jmp_if_debug.rkt").expect("if");
+    top_debug(include_str!("jmp_guard.vk"), "statement/jmp_guard_debug.rkt").expect("guard");
 }
 
 #[test]

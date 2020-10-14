@@ -14,14 +14,13 @@ pub mod tagged;
 pub mod try_catch;
 pub mod unions;
 
-use crate::{ExpressionBody, GuardLetStatement, StringLiteralNode, StringTextNode};
-
 use crate::{
     AnnotationList, AnnotationNode, ApplyArgument, ArgumentTermNode, ClassDeclaration, ClassFieldDeclaration,
-    ClassMethodDeclaration, ControlNode, DocumentationNode, EnumerateDeclaration, EnumerateFieldDeclaration, ExpressionNode,
-    FlagsDeclaration, ForLoop, FunctionDeclaration, GenericArgument, GuardStatement, IdentifierNode, ImportStatement,
-    LetBindNode, ModifiersNode, NamePathNode, NamespaceDeclaration, PatternExpressionNode, StatementBlock, StatementBody,
-    StatementNode, TaggedDeclaration, UnionDeclaration, UnionFieldDeclaration, VariantDeclaration, WhileLoop,
+    ClassMethodDeclaration, ControlNode, DocumentationNode, EnumerateDeclaration, EnumerateFieldDeclaration, ExpressionBody,
+    ExpressionNode, FlagsDeclaration, ForLoop, FunctionDeclaration, FunctionEffectNode, FunctionReturnNode, GenericArgument,
+    GuardLetStatement, GuardStatement, IdentifierNode, ImportStatement, LetBindNode, ModifiersNode, NamePathNode,
+    NamespaceDeclaration, PatternExpression, StatementBlock, StatementBody, StatementNode, StringLiteralNode, StringTextNode,
+    TaggedDeclaration, UnionDeclaration, UnionFieldDeclaration, VariantDeclaration, WhileLoop,
 };
 use alloc::{
     boxed::Box,
@@ -32,6 +31,7 @@ use alloc::{
 };
 use core::ops::Range;
 use deriver::From;
+use pretty_print::helpers::SoftBlock;
 
 #[cfg(feature = "pretty-print")]
 use pretty_print::{

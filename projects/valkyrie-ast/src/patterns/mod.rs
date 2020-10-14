@@ -1,5 +1,5 @@
-use crate::{ArgumentKeyNode, ExpressionNode, StatementNode};
-use alloc::{vec, vec::Vec};
+use crate::{ArgumentKeyNode, ExpressionNode, IdentifierNode, NamePathNode, StatementNode};
+use alloc::{boxed::Box, vec, vec::Vec};
 use core::ops::Range;
 use deriver::From;
 use pretty_print::PrettyBuilder;
@@ -100,18 +100,40 @@ pub struct PatternCaseNode {
 /// for mut i, mut j in range
 /// for [table] in
 /// ```
+#[derive(Clone, Debug, PartialEq, Eq, Hash, From)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum PatternExpression {
+    Symbol(Box<ArgumentKeyNode>),
+    /// `(mut a, mut b)`
+    Tuple(Box<TuplePatternNode>),
+}
+
+/// `case a <- Named(ref a, mut b, c)`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum PatternExpressionNode {
-    Tuple(Vec<ArgumentKeyNode>),
-    Case,
+pub struct TuplePatternNode {
+    /// `bind <- ...`
+    pub bind: Option<IdentifierNode>,
+    /// `case namespace::Name()`
+    pub name: Option<NamePathNode>,
+    /// `case (ref a, mut b)`
+    pub terms: Vec<PatternExpression>,
+    /// The range of the node
+    pub span: Range<u32>,
+}
+
+/// `ref mut x`
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct AtomPatternNode {
+    pub terms: Vec<PatternExpression>,
 }
 
 /// `Soma(a) | Success { value :a } := expr`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ImplicitCaseNode {
-    pub pattern: PatternExpressionNode,
+    pub pattern: PatternExpression,
     pub body: ExpressionNode,
     /// The range of the node
     pub span: Range<u32>,

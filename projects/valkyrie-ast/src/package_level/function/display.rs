@@ -1,5 +1,4 @@
 use super::*;
-use crate::SoftBlock;
 
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for FunctionType {
@@ -47,7 +46,7 @@ impl PrettyPrint for FunctionEffectNode {
         let mut terms = PrettySequence::new(4);
         terms += theme.operator("/");
         terms += " ";
-        terms += SoftBlock::new("[", "]").join_slice(&self.effects, theme);
+        terms += SoftBlock::brackets().join_slice(&self.effects, theme);
         terms.into()
     }
 }

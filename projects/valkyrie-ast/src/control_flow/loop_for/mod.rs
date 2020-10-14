@@ -1,5 +1,5 @@
 use super::*;
-use crate::{ArgumentKeyNode, OtherwiseStatement};
+use crate::{ArgumentKeyNode, OtherwiseStatement, TuplePatternNode};
 mod display;
 
 /// `for ... in ... if ... {...} else {...}`
@@ -32,7 +32,7 @@ mod display;
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ForLoop {
     /// `for pattern`
-    pub pattern: PatternExpressionNode,
+    pub pattern: PatternExpression,
     /// `in iterator`
     pub iterator: ExpressionNode,
     /// `if condition`
@@ -57,7 +57,13 @@ pub struct ForBarePattern {
 impl ForBarePattern {
     /// Convert this bare pattern into tuple pattern
     #[allow(clippy::wrong_self_convention)]
-    pub fn as_pattern_expression(self) -> PatternExpressionNode {
-        PatternExpressionNode::Tuple(self.pattern)
+    pub fn as_pattern_expression(self) -> PatternExpression {
+        TuplePatternNode {
+            bind: None,
+            name: None,
+            terms: self.pattern.into_iter().map(PatternExpression::from).collect(),
+            span: self.span,
+        }
+        .into()
     }
 }

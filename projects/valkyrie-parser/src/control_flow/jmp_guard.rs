@@ -1,5 +1,4 @@
 use super::*;
-use valkyrie_ast::{ElseStatement, GuardLetStatement, GuardStatement, GuardStatementBody, ThenStatement};
 
 impl ThisParser for GuardStatement {
     fn parse(input: ParseState) -> ParseResult<Self> {
@@ -38,7 +37,10 @@ impl ThisParser for GuardStatementBody {
     }
 
     fn as_lisp(&self) -> Lisp {
-        unreachable!()
+        match self {
+            GuardStatementBody::Positive(v) => v.as_lisp(),
+            GuardStatementBody::Negative(v) => v.as_lisp(),
+        }
     }
 }
 
@@ -46,7 +48,7 @@ impl ThisParser for GuardLetStatement {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, _) = input.match_str("guard")?;
         let (state, _) = state.skip(ignore).match_str("let")?;
-        let (state, pat) = state.skip(ignore).match_fn(PatternExpressionNode::parse)?;
+        let (state, pat) = state.skip(ignore).match_fn(PatternExpression::parse)?;
         let (state, _) = state.skip(ignore).match_str("=")?;
         let (state, expr) = state.skip(ignore).match_fn(ExpressionNode::parse)?;
         let (finally, body) = state.skip(ignore).match_fn(GuardStatementBody::parse)?;

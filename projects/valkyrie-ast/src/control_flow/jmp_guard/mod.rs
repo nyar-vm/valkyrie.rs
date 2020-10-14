@@ -60,7 +60,7 @@ pub enum GuardStatementBody {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct GuardLetStatement {
     /// The pattern to match
-    pub pattern: PatternExpressionNode,
+    pub pattern: PatternExpression,
     /// The condition to check
     pub expression: ExpressionNode,
     /// same as if let condition

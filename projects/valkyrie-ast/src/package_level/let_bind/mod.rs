@@ -17,7 +17,7 @@ mod display;
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct LetBindNode {
-    pub pattern: PatternExpressionNode,
+    pub pattern: PatternExpression,
     pub type_hint: Option<ExpressionNode>,
     pub body: Option<ExpressionNode>,
 }

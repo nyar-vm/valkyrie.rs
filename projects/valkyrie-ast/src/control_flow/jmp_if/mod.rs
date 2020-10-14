@@ -1,5 +1,4 @@
 use super::*;
-use crate::LetBindNode;
 #[cfg(feature = "pretty-print")]
 mod display;
 
@@ -30,7 +29,7 @@ pub struct IfStatement {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct IfLetStatement {
     /// The pattern to match
-    pub pattern: PatternExpressionNode,
+    pub pattern: PatternExpression,
     /// The condition to check
     pub expression: ExpressionNode,
     /// The range of the node

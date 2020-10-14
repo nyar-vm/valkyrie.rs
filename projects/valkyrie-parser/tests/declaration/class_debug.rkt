@@ -1,2 +1,2 @@
-(class A)
-(class module∷B)
+(define/class A (modifiers))
+(define/class module∷B (modifiers))

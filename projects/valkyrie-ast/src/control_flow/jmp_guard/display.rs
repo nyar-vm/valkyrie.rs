@@ -27,7 +27,7 @@ impl PrettyPrint for GuardLetStatement {
         terms += theme.keyword("guard let");
         terms += " ";
         terms += self.pattern.pretty(theme);
-        terms += " ";
+        terms += " = ";
         terms += self.expression.pretty(theme);
         terms += " ";
         terms += self.main_body.pretty(theme);

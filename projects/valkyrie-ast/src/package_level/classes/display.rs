@@ -1,5 +1,5 @@
 use super::*;
-use crate::SoftBlock;
+use pretty_print::helpers::SoftBlock;
 
 impl PrettyPrint for ClassDeclaration {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
@@ -11,8 +11,7 @@ impl PrettyPrint for ClassDeclaration {
             terms += gen.pretty(theme);
         }
         terms += " ";
-        let mut block = SoftBlock::curly_braces();
-        block.joint = PrettyTree::text(";").append(PrettyTree::Hardline);
+        let block = SoftBlock::curly_braces().with_joint(PrettyTree::text(";").append(PrettyTree::Hardline));
         terms += block.join_slice(&self.body.terms, theme);
         terms.into()
     }

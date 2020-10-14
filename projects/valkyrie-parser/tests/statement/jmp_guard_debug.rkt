@@ -4,10 +4,6 @@
   (guard/negative condition3 (return failure))
   (return success))
 (guard/cases
-  ((x) (y))
+  (pattern/tuple (x) (y))
   point
-  guard
-  let
-  (= (call/apply Failure (apply error)) x)
-  (call/lambda then ((return error)))
-  (return some {x}, {y}))
+  (then (guard (let (Failure)) (= error x) (call/lambda then ((return error))) (return some {x}, {y}))))

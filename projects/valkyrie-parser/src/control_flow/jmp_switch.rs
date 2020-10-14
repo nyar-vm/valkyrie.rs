@@ -11,12 +11,11 @@ impl ThisParser for SwitchStatement {
     }
 
     fn as_lisp(&self) -> Lisp {
-        todo!()
-        // let mut terms = Vec::with_capacity(10);
-        // terms.push(Lisp::keyword("branches"));
-        // for branch in &self.branches {
-        //     terms.push(branch.as_lisp());
-        // }
-        // lisp
+        let mut lisp = Lisp::new(10);
+        lisp += Lisp::keyword("branches");
+        for branch in &self.branches {
+            lisp += branch.as_lisp();
+        }
+        lisp
     }
 }

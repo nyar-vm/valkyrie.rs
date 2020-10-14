@@ -38,7 +38,7 @@ pub use crate::{
         view::{SubscriptNode, SubscriptSliceNode, SubscriptTermNode},
         ExpressionBody, ExpressionContext, ExpressionNode, PostfixCallPart, TypingExpression,
     },
-    helper::{SoftBlock, ValkyrieNode},
+    helper::ValkyrieNode,
     package_level::{
         classes::{ClassDeclaration, ClassFieldDeclaration, ClassIterator, ClassKind, ClassMethodDeclaration, ClassTerm},
         documentation::DocumentationNode,
@@ -59,8 +59,8 @@ pub use crate::{
         unions::{UnionDeclaration, UnionFieldDeclaration},
     },
     patterns::{
-        ImplicitCaseNode, PatternBranch, PatternCaseNode, PatternCondition, PatternElseNode, PatternExpressionNode,
-        PatternGuard, PatternStatements, PatternTypeNode, PatternWhenNode,
+        ImplicitCaseNode, PatternBranch, PatternCaseNode, PatternCondition, PatternElseNode, PatternExpression, PatternGuard,
+        PatternStatements, PatternTypeNode, PatternWhenNode, TuplePatternNode,
     },
     string_like::{
         string_formatter::StringFormatter,

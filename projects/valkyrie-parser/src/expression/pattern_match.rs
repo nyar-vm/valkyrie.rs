@@ -1,6 +1,6 @@
 use super::*;
 use crate::helpers::parse_bind;
-use valkyrie_ast::ImplicitCaseNode;
+use valkyrie_ast::{ImplicitCaseNode, TuplePatternNode};
 
 impl ThisParser for PatternBranch {
     fn parse(input: ParseState) -> ParseResult<Self> {
@@ -60,7 +60,7 @@ impl ThisParser for PatternCondition {
 
 impl ThisParser for ImplicitCaseNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
-        let (state, lhs) = PatternExpressionNode::parse(input)?;
+        let (state, lhs) = PatternExpression::parse(input)?;
         let (state, _) = state.skip(ignore).match_fn(parse_bind)?;
         let (state, rhs) = parse_expression_node(state.skip(ignore), ExpressionContext::default())?;
         state.finish(Self { pattern: lhs, body: rhs, span: get_span(input, state) })
@@ -127,21 +127,40 @@ impl ThisParser for PatternGuard {
     }
 }
 
-impl ThisParser for PatternExpressionNode {
+impl ThisParser for PatternExpression {
     fn parse(input: ParseState) -> ParseResult<Self> {
-        input.begin_choice().or_else(parentheses_tuple).end_choice()
+        input
+            .begin_choice()
+            .or_else(|s| TuplePatternNode::parse(s).map_into())
+            .or_else(|s| ArgumentKeyNode::parse(s).map_into())
+            .end_choice()
     }
 
     fn as_lisp(&self) -> Lisp {
         match self {
-            PatternExpressionNode::Tuple(s) => s.iter().map(|s| s.as_lisp()).collect(),
-            PatternExpressionNode::Case => Lisp::keyword("case"),
+            PatternExpression::Tuple(s) => s.as_lisp(),
+            PatternExpression::Symbol(s) => s.as_lisp(),
         }
     }
 }
 
-fn parentheses_tuple(input: ParseState) -> ParseResult<PatternExpressionNode> {
-    let pat = BracketPattern::new("(", ")").with_one_tailing(true);
-    let (state, terms) = pat.consume(input, ignore, ArgumentKeyNode::parse)?;
-    state.finish(PatternExpressionNode::Tuple(terms.body))
+impl ThisParser for TuplePatternNode {
+    fn parse(input: ParseState) -> ParseResult<Self> {
+        let (state, name) = input.match_optional(NamePathNode::parse)?;
+        let pat = BracketPattern::new("(", ")").with_one_tailing(true);
+        let (state, terms) = pat.consume(state.skip(ignore), ignore, PatternExpression::parse)?;
+        state.finish(Self { bind: None, name, terms: terms.body, span: get_span(input, state) })
+    }
+
+    fn as_lisp(&self) -> Lisp {
+        let mut lisp = Lisp::new(10);
+        lisp += Lisp::keyword("pattern/tuple");
+        if let Some(name) = &self.name {
+            lisp += name.as_lisp();
+        }
+        for term in &self.terms {
+            lisp += term.as_lisp();
+        }
+        lisp
+    }
 }

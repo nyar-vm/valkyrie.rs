@@ -5,10 +5,10 @@ mod prefix;
 mod suffix;
 
 use crate::{
-    helpers::{ignore,  parse_when},
+    helpers::{ignore, parse_when},
     table::TupleNode,
     traits::ThisParser,
-    utils::{get_span, parse_expression_body, parse_expression_node, },
+    utils::{get_span, parse_expression_body, parse_expression_node},
 };
 use lispify::Lisp;
 use pex::{helpers::str, BracketPattern, ParseResult, ParseState, Regex, StopBecause};
@@ -21,7 +21,7 @@ use std::{
 use valkyrie_ast::{
     ApplyCallNode, ApplyDotNode, ArgumentKeyNode, ExpressionBody, ExpressionContext, ExpressionNode, GenericCallNode,
     IfStatement, InfixNode, LambdaCallNode, LambdaDotNode, LambdaSlotNode, NamePathNode, NewConstructNode, NumberLiteralNode,
-    OperatorNode, PatternBranch, PatternCaseNode, PatternCondition, PatternElseNode, PatternExpressionNode, PatternGuard,
+    OperatorNode, PatternBranch, PatternCaseNode, PatternCondition, PatternElseNode, PatternExpression, PatternGuard,
     PatternStatements, PatternTypeNode, PatternWhenNode, PostfixCallPart, PostfixNode, PrefixNode, RaiseNode, StatementNode,
     StringLiteralNode, SubscriptNode, SwitchStatement, TableNode, TypingExpression, ValkyrieOperator,
 };

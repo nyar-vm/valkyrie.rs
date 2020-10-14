@@ -1,5 +1,4 @@
 use super::*;
-use valkyrie_ast::{GuardStatementBody, IfLetStatement, ThenStatement};
 
 impl ThisParser for IfStatement {
     fn parse(input: ParseState) -> ParseResult<Self> {
@@ -13,16 +12,15 @@ impl ThisParser for IfStatement {
     }
 
     fn as_lisp(&self) -> Lisp {
-        todo!()
-        // let mut terms = Vec::with_capacity(10);
-        // terms.push(Lisp::keyword("branches"));
-        // for branch in &self.branches {
-        //     terms.push(branch.as_lisp());
-        // }
-        // if let Some(else_body) = &self.else_body {
-        //     terms.push(else_body.as_lisp());
-        // }
-        // lisp
+        let mut lisp = Lisp::new(10);
+        lisp += Lisp::keyword("branches");
+        for branch in &self.branches {
+            lisp += branch.as_lisp();
+        }
+        if let Some(else_body) = &self.else_body {
+            lisp += else_body.as_lisp();
+        }
+        lisp
     }
 }
 
@@ -30,7 +28,7 @@ impl ThisParser for IfLetStatement {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, _) = input.match_str("if")?;
         let (state, _) = state.skip(ignore).match_str("let")?;
-        let (state, pat) = state.skip(ignore).match_fn(PatternExpressionNode::parse)?;
+        let (state, pat) = state.skip(ignore).match_fn(PatternExpression::parse)?;
         let (state, _) = state.skip(ignore).match_str("=")?;
         let (state, expr) = state.skip(ignore).match_fn(ExpressionNode::parse)?;
         let (finally, mut then_body) = state.skip(ignore).match_fn(parse_maybe_then)?;
@@ -59,11 +57,7 @@ impl ThisParser for IfConditionNode {
     }
 
     fn as_lisp(&self) -> Lisp {
-        todo!()
-        // let mut terms = Vec::with_capacity(10);
-        // terms.push(self.condition.as_lisp());
-        // terms.push(self.body.as_lisp());
-        // lisp
+        self.condition.as_lisp() + self.body.as_lisp()
     }
 }
 impl ThisParser for ThenStatement {
