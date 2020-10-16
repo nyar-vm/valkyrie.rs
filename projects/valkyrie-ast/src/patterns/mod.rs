@@ -106,12 +106,38 @@ pub enum PatternExpression {
     Symbol(Box<ArgumentKeyNode>),
     /// `(mut a, mut b)`
     Tuple(Box<TuplePatternNode>),
+    /// `{ mut a: b, mut c: d }`
+    Class(Box<ClassPatternNode>),
+    /// `Some(a) | Success { value: a }`
+    Union(Box<UnionPatternNode>),
+}
+
+/// `case Some(a) | Success { value: a }:`
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct UnionPatternNode {
+    pub terms: Vec<PatternExpression>,
+    pub span: Range<u32>,
 }
 
 /// `case a <- Named(ref a, mut b, c)`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct TuplePatternNode {
+    /// `bind <- ...`
+    pub bind: Option<IdentifierNode>,
+    /// `case namespace::Name()`
+    pub name: Option<NamePathNode>,
+    /// `case (ref a, mut b)`
+    pub terms: Vec<PatternExpression>,
+    /// The range of the node
+    pub span: Range<u32>,
+}
+
+/// `case a <- Named { a: b, c: d }`
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ClassPatternNode {
     /// `bind <- ...`
     pub bind: Option<IdentifierNode>,
     /// `case namespace::Name()`

@@ -5,9 +5,9 @@ impl ThisParser for AnnotationKind {
     fn parse(input: ParseState) -> ParseResult<Self> {
         input
             .begin_choice()
-            .or_else(|s| s.match_str("@@").map_inner(|_| AnnotationKind::Environment))
-            .or_else(|s| s.match_str("@!").map_inner(|_| AnnotationKind::NonCapture))
-            .or_else(|s| s.match_str("@").map_inner(|_| AnnotationKind::Normal))
+            .choose(|s| s.match_str("@@").map_inner(|_| AnnotationKind::Environment))
+            .choose(|s| s.match_str("@!").map_inner(|_| AnnotationKind::NonCapture))
+            .choose(|s| s.match_str("@").map_inner(|_| AnnotationKind::Normal))
             .end_choice()
     }
 

@@ -31,8 +31,8 @@ impl ThisParser for GuardStatementBody {
     fn parse(input: ParseState) -> ParseResult<Self> {
         input
             .begin_choice()
-            .or_else(|s| parse_maybe_then(s).map_inner(GuardStatementBody::Positive))
-            .or_else(|s| ElseStatement::parse(s).map_inner(GuardStatementBody::Negative))
+            .choose(|s| parse_maybe_then(s).map_inner(GuardStatementBody::Positive))
+            .choose(|s| ElseStatement::parse(s).map_inner(GuardStatementBody::Negative))
             .end_choice()
     }
 

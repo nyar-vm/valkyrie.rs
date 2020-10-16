@@ -33,10 +33,10 @@ impl ThisParser for TableKeyType {
     fn parse(input: ParseState) -> ParseResult<Self> {
         input
             .begin_choice()
-            .or_else(|s| IdentifierNode::parse(s).map_inner(|e| TableKeyType::Identifier(Box::new(e))))
-            .or_else(|s| NumberLiteralNode::parse(s).map_inner(|e| TableKeyType::Number(Box::new(e))))
-            .or_else(|s| StringLiteralNode::parse(s).map_inner(|e| TableKeyType::String(Box::new(e))))
-            .or_else(|s| SubscriptNode::parse(s).map_inner(|e| TableKeyType::Subscript(Box::new(e))))
+            .choose(|s| IdentifierNode::parse(s).map_inner(|e| TableKeyType::Identifier(Box::new(e))))
+            .choose(|s| NumberLiteralNode::parse(s).map_inner(|e| TableKeyType::Number(Box::new(e))))
+            .choose(|s| StringLiteralNode::parse(s).map_inner(|e| TableKeyType::String(Box::new(e))))
+            .choose(|s| SubscriptNode::parse(s).map_inner(|e| TableKeyType::Subscript(Box::new(e))))
             .end_choice()
     }
 

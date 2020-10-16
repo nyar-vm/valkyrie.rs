@@ -2,7 +2,7 @@ use super::*;
 
 impl ThisParser for DocumentationNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
-        input.begin_choice().or_else(parse_one_line).or_else(parse_multi_line).end_choice()
+        input.begin_choice().choose(parse_one_line).choose(parse_multi_line).end_choice()
     }
 
     fn as_lisp(&self) -> Lisp {

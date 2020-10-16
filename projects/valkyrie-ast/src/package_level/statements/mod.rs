@@ -53,8 +53,6 @@ pub enum StatementBody {
     For(Box<ForLoop>),
     /// The let bind statement node.
     LetBind(Box<LetBindNode>),
-    /// The try catch statement node.
-    IfLet(Box<IfLetStatement>),
     /// The guard statement node.
     Guard(Box<GuardStatement>),
     /// The guard let statement node.
@@ -79,7 +77,7 @@ impl From<AnnotationNode> for StatementBody {
 }
 
 impl StatementNode {
-    pub fn expression(body: ExpressionBody, span: Range<u32>) -> Self {
+    pub fn expression(body: ExpressionType, span: Range<u32>) -> Self {
         Self {
             r#type: StatementBody::Expression(Box::new(ExpressionNode { type_level: false, body, span: span.clone() })),
             end_semicolon: false,
@@ -88,10 +86,10 @@ impl StatementNode {
     }
     pub fn text<S: ToString>(s: S, span: Range<u32>) -> Self {
         let literal = StringTextNode { text: s.to_string(), span: span.clone() };
-        Self::expression(ExpressionBody::Text(Box::new(literal)), span)
+        Self::expression(ExpressionType::Text(Box::new(literal)), span)
     }
     pub fn string<S: ToString>(s: S, span: Range<u32>) -> Self {
         let literal = StringLiteralNode { raw: s.to_string(), unit: None, span: span.clone() };
-        Self::expression(ExpressionBody::String(Box::new(literal)), span)
+        Self::expression(ExpressionType::String(Box::new(literal)), span)
     }
 }

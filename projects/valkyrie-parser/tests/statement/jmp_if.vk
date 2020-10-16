@@ -9,3 +9,7 @@ if a {1} else if b {2} else if c {3} else {4}
 if let (x, y) = point {
     print("({x}, {y})");
 }
+
+if let Failure(error) = x {
+    print(error);
+}

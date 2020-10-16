@@ -164,11 +164,11 @@ fn class_statements(input: ParseState) -> ParseResult<StatementNode> {
     let (state, ty) = input
         .skip(ignore)
         .begin_choice()
-        .or_else(|s| DocumentationNode::parse(s).map_into())
-        .or_else(|s| ClassMethodDeclaration::parse(s).map_into())
-        .or_else(|s| ClassFieldDeclaration::parse(s).map_into())
-        .or_else(|s| AnnotationList::parse(s).map_into())
-        .or_else(|s| AnnotationNode::parse(s).map_into())
+        .choose(|s| DocumentationNode::parse(s).map_into())
+        .choose(|s| ClassMethodDeclaration::parse(s).map_into())
+        .choose(|s| ClassFieldDeclaration::parse(s).map_into())
+        .choose(|s| AnnotationList::parse(s).map_into())
+        .choose(|s| AnnotationNode::parse(s).map_into())
         .end_choice()?;
     let finally = state.skip(ignore).skip(parse_semi);
     finally.finish(StatementNode { r#type: ty, end_semicolon: true, span: get_span(input, finally) })

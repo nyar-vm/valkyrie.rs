@@ -9,7 +9,7 @@ pub struct CallNode<E> {
     /// if this is a `?.` call
     pub monadic: bool,
     /// The last expression in the call chain
-    pub base: ExpressionBody,
+    pub base: ExpressionType,
     /// The rest of the call chain
     pub rest: E,
     /// The range of the node

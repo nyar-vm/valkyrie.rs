@@ -14,9 +14,9 @@ pub mod table;
 pub mod view;
 use crate::{
     ApplyCallNode, ApplyDotNode, ArgumentTermNode, CallNode, CallTermNode, CollectsNode, GenericCallNode, IdentifierNode,
-    IfStatement, InfixNode, LambdaCallNode, LambdaDotNode, LambdaSlotNode, NamePathNode, NewConstructNode, NumberLiteralNode,
-    OperatorNode, PatternBranch, PostfixNode, PrefixNode, RaiseNode, StatementNode, StringLiteralNode, StringTextNode,
-    SubscriptNode, SwitchStatement, TableNode, TableTermNode,
+    IfLetStatement, IfStatement, InfixNode, LambdaCallNode, LambdaDotNode, LambdaSlotNode, NamePathNode, NewConstructNode,
+    NumberLiteralNode, OperatorNode, PatternBranch, PostfixNode, PrefixNode, RaiseNode, StatementNode, StringLiteralNode,
+    StringTextNode, SubscriptNode, SwitchStatement, TableNode, TableTermNode,
 };
 use alloc::{
     borrow::ToOwned,
@@ -38,13 +38,13 @@ use pretty_print::{helpers::PrettySequence, PrettyPrint, PrettyProvider, PrettyT
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ExpressionNode {
     pub type_level: bool,
-    pub body: ExpressionBody,
+    pub body: ExpressionType,
     pub span: Range<u32>,
 }
 /// Temporary node for use in the parser
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 pub struct TypingExpression {
-    pub body: ExpressionBody,
+    pub body: ExpressionType,
     pub span: Range<u32>,
 }
 
@@ -55,10 +55,10 @@ pub struct ExpressionContext {
     pub allow_newline: bool,
     pub allow_curly: bool,
 }
-
+/// The base expression type
 #[derive(Clone, Debug, PartialEq, Eq, Hash, From)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum ExpressionBody {
+pub enum ExpressionType {
     /// - Placeholder expression
     Placeholder,
     /// - Atomic expression
@@ -76,6 +76,8 @@ pub enum ExpressionBody {
     Resume(Box<RaiseNode>),
     /// - Standalone expression
     If(Box<IfStatement>),
+    /// - Standalone expression
+    IfLet(Box<IfLetStatement>),
     /// - Standalone expression
     Switch(Box<SwitchStatement>),
     /// - Postfix expression
@@ -125,7 +127,7 @@ impl TypingExpression {
     }
 }
 
-impl ExpressionBody {
+impl ExpressionType {
     pub fn binary(o: OperatorNode, lhs: Self, rhs: Self) -> Self {
         let span = lhs.span().start..rhs.span().end;
         Self::Binary(Box::new(InfixNode { operator: o, lhs, rhs, span }))
@@ -140,26 +142,26 @@ impl ExpressionBody {
     }
     pub fn call_generic(base: Self, rest: GenericCallNode, nullable: bool) -> Self {
         let span = base.span().start..rest.span.end;
-        ExpressionBody::GenericCall(Box::new(CallNode { monadic: nullable, base, rest, span }))
+        ExpressionType::GenericCall(Box::new(CallNode { monadic: nullable, base, rest, span }))
     }
     pub fn call_apply(base: Self, rest: ApplyCallNode, nullable: bool) -> Self {
         let span = base.span().start..rest.span.end;
-        ExpressionBody::Apply(Box::new(CallNode { monadic: nullable, base, rest, span }))
+        ExpressionType::Apply(Box::new(CallNode { monadic: nullable, base, rest, span }))
     }
     pub fn dot_apply(base: Self, rest: ApplyDotNode, nullable: bool) -> Self {
         let span = base.span().start..rest.span.end;
-        ExpressionBody::ApplyDot(Box::new(CallNode { monadic: nullable, base, rest, span }))
+        ExpressionType::ApplyDot(Box::new(CallNode { monadic: nullable, base, rest, span }))
     }
     pub fn call_subscript(base: Self, rest: SubscriptNode, nullable: bool) -> Self {
         let span = base.span().start..rest.span.end;
-        ExpressionBody::Subscript(Box::new(CallNode { monadic: nullable, base, rest, span }))
+        ExpressionType::Subscript(Box::new(CallNode { monadic: nullable, base, rest, span }))
     }
     pub fn call_lambda(base: Self, rest: LambdaCallNode, nullable: bool) -> Self {
         let span = base.span().start..rest.span.end;
-        ExpressionBody::LambdaCall(Box::new(CallNode { monadic: nullable, base, rest, span }))
+        ExpressionType::LambdaCall(Box::new(CallNode { monadic: nullable, base, rest, span }))
     }
     pub fn dot_lambda(base: Self, rest: LambdaDotNode, nullable: bool) -> Self {
         let span = base.span().start..rest.span.end;
-        ExpressionBody::LambdaDot(Box::new(CallNode { monadic: nullable, base, rest, span }))
+        ExpressionType::LambdaDot(Box::new(CallNode { monadic: nullable, base, rest, span }))
     }
 }

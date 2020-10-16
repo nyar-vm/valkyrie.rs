@@ -16,6 +16,7 @@ bit-set = "0.5.3"
 [dependencies.pex]
 version = "0.2.3"
 features = ["regex"]
+path = 'C:\Users\Dell\CLionProjects\pex\projects\pex-core'
 
 [dependencies.lispify]
 version = "0.1.0"

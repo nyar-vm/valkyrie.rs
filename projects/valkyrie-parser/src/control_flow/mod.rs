@@ -22,11 +22,11 @@ impl ThisParser for WhileConditionNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
         input
             .begin_choice()
-            .or_else(|s| {
+            .choose(|s| {
                 let (state, e) = ExpressionNode::parse(s)?;
                 state.finish(WhileConditionNode::Expression(Box::new(e)))
             })
-            .or_else(|s| s.finish(WhileConditionNode::Unconditional))
+            .choose(|s| s.finish(WhileConditionNode::Unconditional))
             .end_choice()
     }
 

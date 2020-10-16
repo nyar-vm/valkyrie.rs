@@ -72,8 +72,8 @@ impl ThisParser for ImportTermNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
         input
             .begin_choice()
-            .or_else(|s| ImportAliasNode::parse(s).map_into())
-            .or_else(|s| ImportGroupNode::parse(s).map_into())
+            .choose(|s| ImportAliasNode::parse(s).map_into())
+            .choose(|s| ImportGroupNode::parse(s).map_into())
             .end_choice()
     }
 
@@ -149,7 +149,7 @@ fn parse_group_delimiter(input: ParseState) -> ParseResult<()> {
 }
 
 fn parse_name_id(input: ParseState) -> ParseResult<IdentifierNode> {
-    input.begin_choice().or_else(|s| IdentifierNode::parse(s)).or_else(parse_start_as_name).end_choice()
+    input.begin_choice().choose(|s| IdentifierNode::parse(s)).choose(parse_start_as_name).end_choice()
 }
 
 fn parse_start_as_name(input: ParseState) -> ParseResult<IdentifierNode> {

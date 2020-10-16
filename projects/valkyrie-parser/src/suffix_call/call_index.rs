@@ -23,7 +23,7 @@ impl ThisParser for CallNode<SubscriptNode> {
 impl ThisParser for SubscriptNode {
     /// `[` ~ `]` | `[` [term](SubscriptTermNode::parse) ( ~ `,` ~ [term](SubscriptTermNode::parse))* `,`? `]`
     fn parse(input: ParseState) -> ParseResult<Self> {
-        let (state, (index0, terms)) = input.begin_choice().or_else(parse_index1).or_else(parse_index0).end_choice()?;
+        let (state, (index0, terms)) = input.begin_choice().choose(parse_index1).choose(parse_index0).end_choice()?;
         state.finish(SubscriptNode { index0, terms: terms.body, span: get_span(input, state) })
     }
 
@@ -60,8 +60,8 @@ impl ThisParser for SubscriptTermNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
         input
             .begin_choice()
-            .or_else(|s| SubscriptSliceNode::parse(s).map_into())
-            .or_else(|s| ExpressionNode::parse(s).map_into())
+            .choose(|s| SubscriptSliceNode::parse(s).map_into())
+            .choose(|s| ExpressionNode::parse(s).map_into())
             .end_choice()
     }
 

@@ -6,7 +6,7 @@ use lispify::Lisp;
 use pex::{BracketPattern, ParseResult, ParseState};
 use std::ops::Range;
 use valkyrie_ast::{
-    CallTermNode, ExpressionBody, IdentifierNode, NumberLiteralNode, StringLiteralNode, SubscriptNode, TableKeyType, TableKind,
+    CallTermNode, ExpressionType, IdentifierNode, NumberLiteralNode, StringLiteralNode, SubscriptNode, TableKeyType, TableKind,
     TableNode, TableTermNode,
 };
 
@@ -17,8 +17,8 @@ pub(crate) struct TupleNode {
     pub span: Range<u32>,
 }
 
-impl From<TupleNode> for ExpressionBody {
+impl From<TupleNode> for ExpressionType {
     fn from(value: TupleNode) -> Self {
-        ExpressionBody::Table(Box::new(value.as_table()))
+        ExpressionType::Table(Box::new(value.as_table()))
     }
 }

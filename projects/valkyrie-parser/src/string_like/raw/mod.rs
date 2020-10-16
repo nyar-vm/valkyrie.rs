@@ -5,9 +5,9 @@ impl ThisParser for StringLiteralNode {
         let (state, unit) = input.match_optional(IdentifierNode::parse)?;
         let (state, pair) = state
             .begin_choice()
-            .or_else(|s| quotation_pair_nested(s, '\''))
-            .or_else(|s| quotation_pair_nested(s, '"'))
-            .or_else(|s| quotation_pair(s, '«', '»'))
+            .choose(|s| quotation_pair_nested(s, '\''))
+            .choose(|s| quotation_pair_nested(s, '"'))
+            .choose(|s| quotation_pair(s, '«', '»'))
             .end_choice()?;
 
         state.finish(StringLiteralNode { raw: pair.body.as_string(), unit, span: get_span(input, state) })

@@ -23,31 +23,6 @@ impl PrettyPrint for WhileLoop {
     }
 }
 
-impl PrettyPrint for PatternExpression {
-    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
-        match self {
-            Self::Symbol(v) => v.pretty(theme),
-            Self::Tuple(v) => v.pretty(theme),
-        }
-    }
-}
-
-impl PrettyPrint for TuplePatternNode {
-    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
-        let mut terms = PrettySequence::new(4);
-        if let Some(bind) = &self.bind {
-            terms += bind.pretty(theme);
-            terms += "<-";
-        }
-        if let Some(name) = &self.name {
-            terms += name.pretty(theme);
-        }
-        let block = SoftBlock::parentheses().with_joint(PrettyTree::line_or_comma());
-        terms += block.join_slice(&self.terms, theme);
-        terms.into()
-    }
-}
-
 impl PrettyPrint for WhileConditionNode {
     /// ```vk
     /// # inline style

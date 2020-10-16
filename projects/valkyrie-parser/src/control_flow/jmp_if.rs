@@ -1,4 +1,5 @@
 use super::*;
+use valkyrie_ast::TuplePatternNode;
 
 impl ThisParser for IfStatement {
     fn parse(input: ParseState) -> ParseResult<Self> {
@@ -40,6 +41,20 @@ impl ThisParser for IfLetStatement {
     fn as_lisp(&self) -> Lisp {
         todo!()
     }
+}
+
+#[test]
+fn test_statement2() {
+    let raw = ParseState::new("Some(mut a)");
+    let apply = TuplePatternNode::parse(raw).unwrap();
+    println!("{:#?}", apply);
+}
+
+#[test]
+fn test_statement() {
+    let raw = ParseState::new("if let Some(a, Some(ref b)) = b { print(a) }");
+    let apply = IfLetStatement::parse(raw).unwrap();
+    println!("{:#?}", apply);
 }
 
 fn parse_else_if(input: ParseState) -> ParseResult<IfConditionNode> {

@@ -88,9 +88,6 @@ impl Validation for StatementBody {
             Self::Expression(_) => {
                 todo!()
             }
-            Self::IfLet(_) => {
-                todo!()
-            }
             Self::GuardLet(_) => {
                 todo!()
             }

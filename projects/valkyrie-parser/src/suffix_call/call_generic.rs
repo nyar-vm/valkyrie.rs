@@ -18,7 +18,7 @@ impl ThisParser for CallNode<GenericCallNode> {
 impl ThisParser for GenericCallNode {
     /// `::<T> | ⦓T⦔`
     fn parse(input: ParseState) -> ParseResult<Self> {
-        input.begin_choice().or_else(qwerty_generic).or_else(unicode_generic).end_choice()
+        input.begin_choice().choose(qwerty_generic).choose(unicode_generic).end_choice()
     }
 
     fn as_lisp(&self) -> Lisp {

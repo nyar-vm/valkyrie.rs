@@ -1,6 +1,6 @@
 use super::*;
 
-impl Default for ExpressionBody {
+impl Default for ExpressionType {
     fn default() -> Self {
         Self::Placeholder
     }
@@ -14,56 +14,58 @@ impl PrettyPrint for ExpressionNode {
 }
 
 #[cfg(feature = "pretty-print")]
-impl PrettyPrint for ExpressionBody {
+impl PrettyPrint for ExpressionType {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         match self {
-            ExpressionBody::Placeholder => unreachable!(),
-            ExpressionBody::Slot(node) => node.pretty(theme),
-            ExpressionBody::Symbol(node) => node.pretty(theme),
-            ExpressionBody::Number(node) => node.pretty(theme),
-            ExpressionBody::Text(node) => node.pretty(theme),
-            ExpressionBody::String(node) => node.pretty(theme),
-            ExpressionBody::Prefix(node) => node.pretty(theme),
-            ExpressionBody::Binary(node) => node.pretty(theme),
-            ExpressionBody::Suffix(node) => node.pretty(theme),
-            ExpressionBody::Table(node) => node.pretty(theme),
-            ExpressionBody::Apply(node) => node.pretty(theme),
-            ExpressionBody::ApplyDot(node) => node.pretty(theme),
-            ExpressionBody::LambdaCall(node) => node.pretty(theme),
-            ExpressionBody::LambdaDot(node) => node.pretty(theme),
-            ExpressionBody::Subscript(node) => node.pretty(theme),
-            ExpressionBody::GenericCall(node) => node.pretty(theme),
-            ExpressionBody::New(node) => node.pretty(theme),
-            ExpressionBody::Resume(node) => node.pretty(theme),
-            ExpressionBody::If(node) => node.pretty(theme),
-            ExpressionBody::Switch(node) => node.pretty(theme),
+            Self::Placeholder => unreachable!(),
+            Self::Slot(node) => node.pretty(theme),
+            Self::Symbol(node) => node.pretty(theme),
+            Self::Number(node) => node.pretty(theme),
+            Self::Text(node) => node.pretty(theme),
+            Self::String(node) => node.pretty(theme),
+            Self::Prefix(node) => node.pretty(theme),
+            Self::Binary(node) => node.pretty(theme),
+            Self::Suffix(node) => node.pretty(theme),
+            Self::Table(node) => node.pretty(theme),
+            Self::Apply(node) => node.pretty(theme),
+            Self::ApplyDot(node) => node.pretty(theme),
+            Self::LambdaCall(node) => node.pretty(theme),
+            Self::LambdaDot(node) => node.pretty(theme),
+            Self::Subscript(node) => node.pretty(theme),
+            Self::GenericCall(node) => node.pretty(theme),
+            Self::New(node) => node.pretty(theme),
+            Self::Resume(node) => node.pretty(theme),
+            Self::If(node) => node.pretty(theme),
+            Self::IfLet(node) => node.pretty(theme),
+            Self::Switch(node) => node.pretty(theme),
         }
     }
 }
 
-impl ExpressionBody {
+impl ExpressionType {
     pub fn span(&self) -> Range<u32> {
         match self {
-            ExpressionBody::Placeholder => unreachable!(),
-            ExpressionBody::Slot(node) => node.span.clone(),
-            ExpressionBody::Symbol(node) => node.span.clone(),
-            ExpressionBody::Number(node) => node.span.clone(),
-            ExpressionBody::Text(node) => node.span.clone(),
-            ExpressionBody::String(node) => node.span.clone(),
-            ExpressionBody::New(node) => node.span.clone(),
-            ExpressionBody::Prefix(node) => node.span.clone(),
-            ExpressionBody::Binary(node) => node.span.clone(),
-            ExpressionBody::Suffix(node) => node.span.clone(),
-            ExpressionBody::Table(node) => node.span.clone(),
-            ExpressionBody::Apply(node) => node.span.clone(),
-            ExpressionBody::ApplyDot(node) => node.span.clone(),
-            ExpressionBody::LambdaCall(node) => node.span.clone(),
-            ExpressionBody::LambdaDot(node) => node.span.clone(),
-            ExpressionBody::Subscript(node) => node.span.clone(),
-            ExpressionBody::GenericCall(node) => node.span.clone(),
-            ExpressionBody::Resume(node) => node.span.clone(),
-            ExpressionBody::If(node) => node.span.clone(),
-            ExpressionBody::Switch(node) => node.span.clone(),
+            Self::Placeholder => unreachable!(),
+            Self::Slot(node) => node.span.clone(),
+            Self::Symbol(node) => node.span.clone(),
+            Self::Number(node) => node.span.clone(),
+            Self::Text(node) => node.span.clone(),
+            Self::String(node) => node.span.clone(),
+            Self::New(node) => node.span.clone(),
+            Self::Prefix(node) => node.span.clone(),
+            Self::Binary(node) => node.span.clone(),
+            Self::Suffix(node) => node.span.clone(),
+            Self::Table(node) => node.span.clone(),
+            Self::Apply(node) => node.span.clone(),
+            Self::ApplyDot(node) => node.span.clone(),
+            Self::LambdaCall(node) => node.span.clone(),
+            Self::LambdaDot(node) => node.span.clone(),
+            Self::Subscript(node) => node.span.clone(),
+            Self::GenericCall(node) => node.span.clone(),
+            Self::Resume(node) => node.span.clone(),
+            Self::If(node) => node.span.clone(),
+            Self::IfLet(node) => node.span.clone(),
+            Self::Switch(node) => node.span.clone(),
         }
     }
 }

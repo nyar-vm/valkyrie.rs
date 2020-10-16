@@ -41,12 +41,12 @@ impl ThisParser for ControlType {
     fn parse(input: ParseState) -> ParseResult<Self> {
         input
             .begin_choice()
-            .or_else(|s| s.match_str("break").map_inner(|_| ControlType::Break))
-            .or_else(|s| s.match_str("continue").map_inner(|_| ControlType::Continue))
-            .or_else(|s| s.match_str("fallthrough").map_inner(|_| ControlType::Fallthrough))
-            .or_else(|s| s.match_str("return").map_inner(|_| ControlType::Return))
-            .or_else(|s| s.match_str("resume").map_inner(|_| ControlType::Resume))
-            .or_else(|s| {
+            .choose(|s| s.match_str("break").map_inner(|_| ControlType::Break))
+            .choose(|s| s.match_str("continue").map_inner(|_| ControlType::Continue))
+            .choose(|s| s.match_str("fallthrough").map_inner(|_| ControlType::Fallthrough))
+            .choose(|s| s.match_str("return").map_inner(|_| ControlType::Return))
+            .choose(|s| s.match_str("resume").map_inner(|_| ControlType::Resume))
+            .choose(|s| {
                 let (state, _) = s.match_str("yield")?;
                 state.match_optional(parse_yield).map_inner(|s| s.unwrap_or(ControlType::YieldReturn))
             })
@@ -62,8 +62,8 @@ fn parse_yield(input: ParseState) -> ParseResult<ControlType> {
     input
         .skip(ignore)
         .begin_choice()
-        .or_else(|s| s.match_str("return").map_inner(|_| ControlType::YieldReturn))
-        .or_else(|s| s.match_str("from").map_inner(|_| ControlType::YieldFrom))
-        .or_else(|s| s.match_str("break").map_inner(|_| ControlType::YieldBreak))
+        .choose(|s| s.match_str("return").map_inner(|_| ControlType::YieldReturn))
+        .choose(|s| s.match_str("from").map_inner(|_| ControlType::YieldFrom))
+        .choose(|s| s.match_str("break").map_inner(|_| ControlType::YieldBreak))
         .end_choice()
 }

@@ -1,5 +1,5 @@
 use crate::{
-    ElseStatement, ExpressionNode, LetBindNode, PatternBranch, PatternExpression, PatternGuard, StatementBlock, StatementNode,
+    ElseStatement, ExpressionNode, PatternBranch, PatternExpression, PatternGuard, StatementBlock, StatementNode,
     SwitchStatement, TuplePatternNode, WhileConditionNode,
 };
 use alloc::{boxed::Box, vec::Vec};
@@ -8,8 +8,10 @@ use core::{
     ops::Range,
 };
 #[cfg(feature = "pretty-print")]
-use pretty_print::{helpers::PrettySequence, PrettyPrint, PrettyProvider, PrettyTree};
-use pretty_print::{helpers::SoftBlock, PrettyBuilder};
+use pretty_print::{
+    helpers::{PrettySequence, SoftBlock},
+    PrettyBuilder, PrettyPrint, PrettyProvider, PrettyTree,
+};
 
 pub mod control;
 pub mod jmp_guard;

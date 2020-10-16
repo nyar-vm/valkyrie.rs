@@ -1,6 +1,6 @@
 use super::*;
 use crate::helpers::parse_bind;
-use valkyrie_ast::{ImplicitCaseNode, TuplePatternNode};
+use valkyrie_ast::{ClassPatternNode, ImplicitCaseNode, TuplePatternNode, UnionPatternNode};
 
 impl ThisParser for PatternBranch {
     fn parse(input: ParseState) -> ParseResult<Self> {
@@ -39,10 +39,10 @@ impl ThisParser for PatternCondition {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, head) = input
             .begin_choice()
-            .or_else(|s| PatternCaseNode::parse(s).map_into())
-            .or_else(|s| PatternTypeNode::parse(s).map_into())
-            .or_else(|s| PatternWhenNode::parse(s).map_into())
-            .or_else(|s| PatternElseNode::parse(s).map_into())
+            .choose(|s| PatternCaseNode::parse(s).map_into())
+            .choose(|s| PatternTypeNode::parse(s).map_into())
+            .choose(|s| PatternWhenNode::parse(s).map_into())
+            .choose(|s| PatternElseNode::parse(s).map_into())
             .end_choice()?;
         let (state, _) = state.skip(ignore).match_str(":")?;
         state.finish(head)
@@ -131,15 +131,17 @@ impl ThisParser for PatternExpression {
     fn parse(input: ParseState) -> ParseResult<Self> {
         input
             .begin_choice()
-            .or_else(|s| TuplePatternNode::parse(s).map_into())
-            .or_else(|s| ArgumentKeyNode::parse(s).map_into())
+            .choose(|s| TuplePatternNode::parse(s).map_into())
+            .choose(|s| ArgumentKeyNode::parse(s).map_into())
             .end_choice()
     }
 
     fn as_lisp(&self) -> Lisp {
         match self {
-            PatternExpression::Tuple(s) => s.as_lisp(),
-            PatternExpression::Symbol(s) => s.as_lisp(),
+            Self::Tuple(s) => s.as_lisp(),
+            Self::Symbol(s) => s.as_lisp(),
+            Self::Class(s) => s.as_lisp(),
+            Self::Union(s) => s.as_lisp(),
         }
     }
 }
@@ -147,7 +149,13 @@ impl ThisParser for PatternExpression {
 impl ThisParser for TuplePatternNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, name) = input.match_optional(NamePathNode::parse)?;
-        let pat = BracketPattern::new("(", ")").with_one_tailing(true);
+        let pat = if name.is_some() {
+            BracketPattern::new("(", ")")
+        }
+        else {
+            // need to check if it's a tuple or a parenthesized expression
+            BracketPattern::new("(", ")").with_one_tailing(true)
+        };
         let (state, terms) = pat.consume(state.skip(ignore), ignore, PatternExpression::parse)?;
         state.finish(Self { bind: None, name, terms: terms.body, span: get_span(input, state) })
     }
@@ -162,5 +170,25 @@ impl ThisParser for TuplePatternNode {
             lisp += term.as_lisp();
         }
         lisp
+    }
+}
+
+impl ThisParser for ClassPatternNode {
+    fn parse(input: ParseState) -> ParseResult<Self> {
+        todo!()
+    }
+
+    fn as_lisp(&self) -> Lisp {
+        todo!()
+    }
+}
+
+impl ThisParser for UnionPatternNode {
+    fn parse(input: ParseState) -> ParseResult<Self> {
+        todo!()
+    }
+
+    fn as_lisp(&self) -> Lisp {
+        todo!()
     }
 }

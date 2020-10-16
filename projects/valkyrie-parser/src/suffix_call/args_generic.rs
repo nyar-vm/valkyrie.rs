@@ -4,12 +4,12 @@ impl ThisParser for GenericArgument {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, terms) = input
             .begin_choice()
-            .or_else(|s| {
+            .choose(|s| {
                 let (state, _) = s.match_optional(parse_name_join)?;
                 let pat = BracketPattern::new("<", ">");
                 pat.consume(state.skip(ignore), ignore, GenericArgumentTerm::parse)
             })
-            .or_else(|s| {
+            .choose(|s| {
                 let pat = BracketPattern::new("⦓", "⦔");
                 pat.consume(s, ignore, GenericArgumentTerm::parse)
             })

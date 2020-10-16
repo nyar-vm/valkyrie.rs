@@ -1,4 +1,5 @@
 use super::*;
+use valkyrie_ast::IfLetStatement;
 
 impl ThisParser for PrefixNode {
     fn parse(_: ParseState) -> ParseResult<Self> {
@@ -40,7 +41,7 @@ impl ThisParser for ExpressionNode {
     }
 }
 
-impl ThisParser for ExpressionBody {
+impl ThisParser for ExpressionType {
     fn parse(input: ParseState) -> ParseResult<Self> {
         parse_expression_body(input, ExpressionContext::default())
     }
@@ -64,6 +65,7 @@ impl ThisParser for ExpressionBody {
             Self::New(v) => v.as_lisp(),
             Self::Resume(v) => v.as_lisp(),
             Self::If(v) => v.as_lisp(),
+            Self::IfLet(v) => v.as_lisp(),
             Self::Slot(v) => v.as_lisp(),
             Self::Switch(v) => v.as_lisp(),
             Self::Text(v) => Lisp::string(v.text.clone()),
@@ -135,27 +137,28 @@ fn parse_expr_value<'a>(
     let (state, term) = input
         .skip(ignore)
         .begin_choice()
-        .or_else(|s| parse_group(s, ctx).map_inner(ExpressionStream::Group))
-        .or_else(|s| parse_expression(s, ctx.allow_curly).map_inner(ExpressionStream::Term))
+        .choose(|s| parse_group(s, ctx).map_inner(ExpressionStream::Group))
+        .choose(|s| parse_expression(s, ctx.allow_curly).map_inner(ExpressionStream::Term))
         .end_choice()?;
 
     stream.push(term);
     state.finish(())
 }
 
-pub fn parse_expression(input: ParseState, allow_curly: bool) -> ParseResult<ExpressionBody> {
+pub fn parse_expression(input: ParseState, allow_curly: bool) -> ParseResult<ExpressionType> {
     let (state, mut base) = input
         .begin_choice()
-        .or_else(|s| NewConstructNode::parse(s).map_into())
-        .or_else(|s| NumberLiteralNode::parse(s).map_into())
-        .or_else(|s| StringLiteralNode::parse(s).map_into())
-        .or_else(|s| LambdaSlotNode::parse(s).map_into())
-        .or_else(|s| IfStatement::parse(s).map_into())
-        .or_else(|s| SwitchStatement::parse(s).map_into())
-        .or_else(|s| RaiseNode::parse(s).map_into())
-        .or_else(|s| NamePathNode::parse(s).map_into())
-        .or_else(|s| TableNode::parse(s).map_into())
-        .or_else(|s| TupleNode::parse(s).map_into())
+        .choose(|s| NewConstructNode::parse(s).map_into())
+        .choose(|s| NumberLiteralNode::parse(s).map_into())
+        .choose(|s| StringLiteralNode::parse(s).map_into())
+        .choose(|s| LambdaSlotNode::parse(s).map_into())
+        .choose(|s| IfLetStatement::parse(s).map_into())
+        .choose(|s| IfStatement::parse(s).map_into())
+        .choose(|s| SwitchStatement::parse(s).map_into())
+        .choose(|s| RaiseNode::parse(s).map_into())
+        .choose(|s| NamePathNode::parse(s).map_into())
+        .choose(|s| TableNode::parse(s).map_into())
+        .choose(|s| TupleNode::parse(s).map_into())
         .end_choice()?;
     let (state, rest) = match allow_curly {
         true => state.match_repeats(parse_postfix_curly),
@@ -163,12 +166,12 @@ pub fn parse_expression(input: ParseState, allow_curly: bool) -> ParseResult<Exp
     }?;
     for caller in rest {
         match caller {
-            PostfixCallPart::Apply(v) => base = ExpressionBody::call_apply(base, v, false),
-            PostfixCallPart::ApplyDot(v) => base = ExpressionBody::dot_apply(base, v, false),
-            PostfixCallPart::View(v) => base = ExpressionBody::call_subscript(base, v, false),
-            PostfixCallPart::Generic(v) => base = ExpressionBody::call_generic(base, v, false),
-            PostfixCallPart::Lambda(v) => base = ExpressionBody::call_lambda(base, v, false),
-            PostfixCallPart::LambdaDot(v) => base = ExpressionBody::dot_lambda(base, v, false),
+            PostfixCallPart::Apply(v) => base = ExpressionType::call_apply(base, v, false),
+            PostfixCallPart::ApplyDot(v) => base = ExpressionType::dot_apply(base, v, false),
+            PostfixCallPart::View(v) => base = ExpressionType::call_subscript(base, v, false),
+            PostfixCallPart::Generic(v) => base = ExpressionType::call_generic(base, v, false),
+            PostfixCallPart::Lambda(v) => base = ExpressionType::call_lambda(base, v, false),
+            PostfixCallPart::LambdaDot(v) => base = ExpressionType::dot_lambda(base, v, false),
         }
     }
     state.finish(base)
@@ -178,10 +181,10 @@ fn parse_postfix(input: ParseState) -> ParseResult<PostfixCallPart> {
     input
         .skip(ignore)
         .begin_choice()
-        .or_else(|s| ApplyCallNode::parse(s).map_into())
-        .or_else(|s| ApplyDotNode::parse(s).map_into())
-        .or_else(|s| SubscriptNode::parse(s).map_into())
-        .or_else(|s| GenericCallNode::parse(s).map_into())
+        .choose(|s| ApplyCallNode::parse(s).map_into())
+        .choose(|s| ApplyDotNode::parse(s).map_into())
+        .choose(|s| SubscriptNode::parse(s).map_into())
+        .choose(|s| GenericCallNode::parse(s).map_into())
         .end_choice()
 }
 
@@ -189,11 +192,11 @@ fn parse_postfix_curly(input: ParseState) -> ParseResult<PostfixCallPart> {
     input
         .skip(ignore)
         .begin_choice()
-        .or_else(|s| ApplyCallNode::parse(s).map_into())
-        .or_else(|s| ApplyDotNode::parse(s).map_into())
-        .or_else(|s| SubscriptNode::parse(s).map_into())
-        .or_else(|s| GenericCallNode::parse(s).map_into())
-        .or_else(|s| LambdaCallNode::parse(s).map_into())
-        .or_else(|s| LambdaDotNode::parse(s).map_into())
+        .choose(|s| ApplyCallNode::parse(s).map_into())
+        .choose(|s| ApplyDotNode::parse(s).map_into())
+        .choose(|s| SubscriptNode::parse(s).map_into())
+        .choose(|s| GenericCallNode::parse(s).map_into())
+        .choose(|s| LambdaCallNode::parse(s).map_into())
+        .choose(|s| LambdaDotNode::parse(s).map_into())
         .end_choice()
 }

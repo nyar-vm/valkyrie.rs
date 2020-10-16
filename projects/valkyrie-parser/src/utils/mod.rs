@@ -7,7 +7,7 @@ use crate::{
 use pex::{ParseResult, ParseState, StopBecause};
 use std::ops::Range;
 use valkyrie_ast::{
-    ExpressionBody, ExpressionContext, ExpressionNode, IdentifierNode, ModifiersNode, StatementBlock, StatementNode,
+    ExpressionContext, ExpressionNode, ExpressionType, IdentifierNode, ModifiersNode, StatementBlock, StatementNode,
 };
 
 #[inline]
@@ -34,7 +34,7 @@ pub fn parse_expression_node(input: ParseState, config: ExpressionContext) -> Pa
     state.finish(ExpressionNode { type_level: config.type_level, body, span: get_span(input, state) })
 }
 
-pub fn parse_expression_body(input: ParseState, config: ExpressionContext) -> ParseResult<ExpressionBody> {
+pub fn parse_expression_body(input: ParseState, config: ExpressionContext) -> ParseResult<ExpressionType> {
     parse_expression_node(input, config).map_inner(|s| s.body)
 }
 

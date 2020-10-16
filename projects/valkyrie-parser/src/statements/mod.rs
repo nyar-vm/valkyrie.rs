@@ -70,24 +70,24 @@ impl ThisParser for StatementBody {
     fn parse(input: ParseState) -> ParseResult<Self> {
         input
             .begin_choice()
-            .or_else(|s| DocumentationNode::parse(s).map_into())
-            .or_else(|s| AnnotationNode::parse(s).map_into())
-            .or_else(|s| AnnotationList::parse(s).map_into())
-            .or_else(|s| NamespaceDeclaration::parse(s).map_into())
-            .or_else(|s| ImportStatement::parse(s).map_into())
-            .or_else(|s| ClassDeclaration::parse(s).map_into())
-            .or_else(|s| UnionDeclaration::parse(s).map_into())
-            .or_else(|s| TaggedDeclaration::parse(s).map_into())
-            .or_else(|s| EnumerateDeclaration::parse(s).map_into())
-            .or_else(|s| FlagsDeclaration::parse(s).map_into())
-            .or_else(function_with_head)
-            .or_else(|s| LetBindNode::parse(s).map_into())
-            .or_else(|s| GuardLetStatement::parse(s).map_into())
-            .or_else(|s| GuardStatement::parse(s).map_into())
-            .or_else(|s| WhileLoop::parse(s).map_into())
-            .or_else(|s| ForLoop::parse(s).map_into())
-            .or_else(|s| ControlNode::parse(s).map_into())
-            .or_else(|s| parse_expression_node(s, ExpressionContext::in_free()).map_into())
+            .choose(|s| DocumentationNode::parse(s).map_into())
+            .choose(|s| AnnotationNode::parse(s).map_into())
+            .choose(|s| AnnotationList::parse(s).map_into())
+            .choose(|s| NamespaceDeclaration::parse(s).map_into())
+            .choose(|s| ImportStatement::parse(s).map_into())
+            .choose(|s| ClassDeclaration::parse(s).map_into())
+            .choose(|s| UnionDeclaration::parse(s).map_into())
+            .choose(|s| TaggedDeclaration::parse(s).map_into())
+            .choose(|s| EnumerateDeclaration::parse(s).map_into())
+            .choose(|s| FlagsDeclaration::parse(s).map_into())
+            .choose(function_with_head)
+            .choose(|s| LetBindNode::parse(s).map_into())
+            .choose(|s| GuardLetStatement::parse(s).map_into())
+            .choose(|s| GuardStatement::parse(s).map_into())
+            .choose(|s| WhileLoop::parse(s).map_into())
+            .choose(|s| ForLoop::parse(s).map_into())
+            .choose(|s| ControlNode::parse(s).map_into())
+            .choose(|s| parse_expression_node(s, ExpressionContext::in_free()).map_into())
             .end_choice()
     }
 
@@ -115,7 +115,6 @@ impl ThisParser for StatementBody {
             Self::Enumerate(v) => v.as_lisp(),
             Self::UnionField(v) => v.as_lisp(),
             Self::Annotation(v) => v.as_lisp(),
-            Self::IfLet(v) => v.as_lisp(),
             Self::GuardLet(v) => v.as_lisp(),
         }
     }
@@ -124,14 +123,14 @@ impl ThisParser for StatementBody {
 pub fn parse_repl_statements(input: ParseState) -> ParseResult<StatementBody> {
     input
         .begin_choice()
-        .or_else(|s| NamespaceDeclaration::parse(s).map_into())
-        .or_else(|s| ImportStatement::parse(s).map_into())
-        .or_else(|s| ClassDeclaration::parse(s).map_into())
-        .or_else(|s| LetBindNode::parse(s).map_into())
-        .or_else(|s| FunctionDeclaration::parse(s).map_into())
-        .or_else(|s| WhileLoop::parse(s).map_into())
-        .or_else(|s| ForLoop::parse(s).map_into())
-        .or_else(|s| parse_expression_node(s, ExpressionContext::in_free()).map_into())
+        .choose(|s| NamespaceDeclaration::parse(s).map_into())
+        .choose(|s| ImportStatement::parse(s).map_into())
+        .choose(|s| ClassDeclaration::parse(s).map_into())
+        .choose(|s| LetBindNode::parse(s).map_into())
+        .choose(|s| FunctionDeclaration::parse(s).map_into())
+        .choose(|s| WhileLoop::parse(s).map_into())
+        .choose(|s| ForLoop::parse(s).map_into())
+        .choose(|s| parse_expression_node(s, ExpressionContext::in_free()).map_into())
         .end_choice()
 }
 

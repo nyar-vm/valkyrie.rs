@@ -211,7 +211,7 @@ impl ValkyrieOperator {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct PrefixNode {
     pub operator: OperatorNode,
-    pub base: ExpressionBody,
+    pub base: ExpressionType,
     pub span: Range<u32>,
 }
 
@@ -219,8 +219,8 @@ pub struct PrefixNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct InfixNode {
     pub operator: OperatorNode,
-    pub lhs: ExpressionBody,
-    pub rhs: ExpressionBody,
+    pub lhs: ExpressionType,
+    pub rhs: ExpressionType,
     /// The range of the node
     pub span: Range<u32>,
 }
@@ -229,7 +229,7 @@ pub struct InfixNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct PostfixNode {
     pub operator: OperatorNode,
-    pub base: ExpressionBody,
+    pub base: ExpressionType,
     /// The range of the node
     pub span: Range<u32>,
 }

@@ -36,7 +36,7 @@ pub use crate::{
         symbol::{IdentifierNode, LambdaSlotNode, NamePathNode},
         table::{TableKeyType, TableKind, TableNode, TableTermNode},
         view::{SubscriptNode, SubscriptSliceNode, SubscriptTermNode},
-        ExpressionBody, ExpressionContext, ExpressionNode, PostfixCallPart, TypingExpression,
+        ExpressionContext, ExpressionNode, ExpressionType, PostfixCallPart, TypingExpression,
     },
     helper::ValkyrieNode,
     package_level::{
@@ -59,8 +59,9 @@ pub use crate::{
         unions::{UnionDeclaration, UnionFieldDeclaration},
     },
     patterns::{
-        ImplicitCaseNode, PatternBranch, PatternCaseNode, PatternCondition, PatternElseNode, PatternExpression, PatternGuard,
-        PatternStatements, PatternTypeNode, PatternWhenNode, TuplePatternNode,
+        ClassPatternNode, ImplicitCaseNode, PatternBranch, PatternCaseNode, PatternCondition, PatternElseNode,
+        PatternExpression, PatternGuard, PatternStatements, PatternTypeNode, PatternWhenNode, TuplePatternNode,
+        UnionPatternNode,
     },
     string_like::{
         string_formatter::StringFormatter,

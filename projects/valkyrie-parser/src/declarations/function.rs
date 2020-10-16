@@ -1,6 +1,5 @@
 use super::*;
 
-
 impl ThisParser for FunctionDeclaration {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, head) = FunctionType::parse(input)?;
@@ -60,7 +59,7 @@ impl ThisParser for FunctionType {
 
 impl ThisParser for FunctionReturnNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
-        let (state, _) = input.begin_choice().or_else(|s| s.match_str("->")).or_else(|s| s.match_str(":")).end_choice()?;
+        let (state, _) = input.begin_choice().choose(|s| s.match_str("->")).choose(|s| s.match_str(":")).end_choice()?;
         let (state, typing) = parse_expression_node(state.skip(ignore), ExpressionContext::in_type())?;
         state.finish(FunctionReturnNode { returns: typing, span: get_span(input, state) })
     }

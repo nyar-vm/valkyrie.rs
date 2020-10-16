@@ -41,8 +41,8 @@ impl ThisParser for ForLoop {
 fn for_pattern(input: ParseState) -> ParseResult<PatternExpression> {
     input
         .begin_choice()
-        .or_else(|s| ForBarePattern::parse(s).map_inner(|s| s.as_pattern_expression()))
-        .or_else(PatternExpression::parse)
+        .choose(|s| ForBarePattern::parse(s).map_inner(|s| s.as_pattern_expression()))
+        .choose(PatternExpression::parse)
         .end_choice()
 }
 
