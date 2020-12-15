@@ -29,7 +29,7 @@ pub struct IfStatement {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct IfLetStatement {
     /// The pattern to match
-    pub pattern: PatternExpression,
+    pub pattern: PatternExpressionType,
     /// The condition to check
     pub expression: ExpressionNode,
     /// The range of the node

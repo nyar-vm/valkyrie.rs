@@ -1,5 +1,5 @@
 use super::*;
-use crate::{control_flow::jmp_if::ThenStatement, StatementBody};
+
 #[cfg(feature = "pretty-print")]
 mod display;
 
@@ -60,7 +60,7 @@ pub enum GuardStatementBody {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct GuardLetStatement {
     /// The pattern to match
-    pub pattern: PatternExpression,
+    pub pattern: PatternExpressionType,
     /// The condition to check
     pub expression: ExpressionNode,
     /// same as if let condition
@@ -71,7 +71,7 @@ pub struct GuardLetStatement {
 
 impl GuardStatement {
     /// Get the last statement in the block
-    pub fn last(&self) -> Option<&StatementBody> {
+    pub fn last(&self) -> Option<&StatementType> {
         let node = match &self.main_body {
             GuardStatementBody::Positive(node) => node.body.terms.last(),
             GuardStatementBody::Negative(node) => node.body.terms.last(),

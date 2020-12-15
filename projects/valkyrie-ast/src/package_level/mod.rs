@@ -5,6 +5,7 @@ pub mod flags;
 pub mod function;
 pub mod guarantee;
 pub mod import;
+pub mod labeled;
 pub mod let_bind;
 pub mod license;
 pub mod namespace;
@@ -19,8 +20,8 @@ use crate::{
     ClassMethodDeclaration, ControlNode, DocumentationNode, EnumerateDeclaration, EnumerateFieldDeclaration, ExpressionNode,
     ExpressionType, FlagsDeclaration, ForLoop, FunctionDeclaration, FunctionEffectNode, FunctionReturnNode, GenericArgument,
     GuardLetStatement, GuardStatement, IdentifierNode, ImportStatement, LetBindNode, ModifiersNode, NamePathNode,
-    NamespaceDeclaration, PatternExpression, StatementBlock, StatementBody, StatementNode, StringLiteralNode, StringTextNode,
-    TaggedDeclaration, UnionDeclaration, UnionFieldDeclaration, VariantDeclaration, WhileLoop,
+    NamespaceDeclaration, PatternExpressionType, StatementBlock, StatementNode, StatementType, StringLiteralNode,
+    StringTextNode, TaggedDeclaration, UnionDeclaration, UnionFieldDeclaration, VariantDeclaration, WhileLoop,
 };
 use alloc::{
     boxed::Box,

@@ -32,7 +32,7 @@ mod display;
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ForLoop {
     /// `for pattern`
-    pub pattern: PatternExpression,
+    pub pattern: PatternExpressionType,
     /// `in iterator`
     pub iterator: ExpressionNode,
     /// `if condition`
@@ -57,11 +57,11 @@ pub struct ForBarePattern {
 impl ForBarePattern {
     /// Convert this bare pattern into tuple pattern
     #[allow(clippy::wrong_self_convention)]
-    pub fn as_pattern_expression(self) -> PatternExpression {
+    pub fn as_pattern_expression(self) -> PatternExpressionType {
         TuplePatternNode {
             bind: None,
             name: None,
-            terms: self.pattern.into_iter().map(PatternExpression::from).collect(),
+            terms: self.pattern.into_iter().map(PatternExpressionType::from).collect(),
             span: self.span,
         }
         .into()

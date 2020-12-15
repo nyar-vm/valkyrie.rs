@@ -58,6 +58,67 @@ pub struct ImportResolvedItem {
     pub alias: Option<IdentifierNode>,
 }
 
+/// The resolve result of import
+///
+/// - `function`, `constant`, `structure`, `interface`, `type` share a namespace
+/// - `derive` and `macro` share a namespace
+/// - If a macro is an implicit macro, it occupies the namespace of the function
+///
+/// ```vk
+/// namespace a {
+///     class A;
+///     class B;
+///     class C;
+///     class D;
+/// }
+///
+/// namespace b {
+///     class A;
+///     class B;
+///     class C;
+/// }
+///
+/// using a.*;
+/// using b.*;
+/// using a.{A, B};
+/// using b.B;
+/// ```
+///
+/// ## Script Mode
+///
+/// In script mode, adjusting the import statement orders at the same level does not affect the final result.
+/// - You cannot explicitly import two objects with the same name, it is a compile-time error
+/// - You cannot implicitly import two objects with the same name, this is a compile-time warning
+/// - Extensions cannot be implicitly imported
+///
+/// - A: `a::A (explicit)`
+/// - B: `null (duplicate, error, not available)`
+/// - C: `null (ambiguous, waring, not available)`
+/// - D: `a::D (implicit)`
+///
+/// ## Interactive Mode
+///
+/// In repl mode, imports always available.
+/// - later implicit imports will override earlier implicit imports
+/// - later explicit imports will override earlier explicit imports
+///
+/// - A: `a::A (explicit)`
+/// - B: `b::B (explicit)`
+/// - C: `b::C (implicit)`
+/// - D: `a::D (implicit)`
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum ImportState {
+    /// Available by explicit import
+    Explicit,
+    /// Available by implicit import
+    Implicit,
+    /// Unavailable due to duplicate import
+    Duplicate,
+    /// Unavailable due to ambiguous import
+    Ambiguous,
+}
+
 impl ImportResolvedItem {
     pub fn join_external(&self, name: &IdentifierNode) -> Self {
         Self { annotation: Some(Arc::new(name.clone())), ..self.clone() }

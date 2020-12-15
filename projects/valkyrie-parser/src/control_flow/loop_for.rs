@@ -38,11 +38,11 @@ impl ThisParser for ForLoop {
     }
 }
 
-fn for_pattern(input: ParseState) -> ParseResult<PatternExpression> {
+fn for_pattern(input: ParseState) -> ParseResult<PatternExpressionType> {
     input
         .begin_choice()
         .choose(|s| ForBarePattern::parse(s).map_inner(|s| s.as_pattern_expression()))
-        .choose(PatternExpression::parse)
+        .choose(PatternExpressionType::parse)
         .end_choice()
 }
 

@@ -15,7 +15,7 @@ impl<'a> Iterator for TaggedIterator<'a> {
     fn next(&mut self) -> Option<Self::Item> {
         let term = self.iter.next()?;
         match &term.r#type {
-            StatementBody::Variant(variant) => Some(TaggedTerm::Variant((**variant).clone())),
+            StatementType::Variant(variant) => Some(TaggedTerm::Variant((**variant).clone())),
             _ => None,
         }
     }
@@ -25,6 +25,6 @@ impl StatementNode {
     /// Check if the statement is a variant node.
     #[inline]
     pub fn is_variant(&self) -> bool {
-        matches!(self.r#type, StatementBody::Variant(_))
+        matches!(self.r#type, StatementType::Variant(_))
     }
 }

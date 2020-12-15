@@ -32,12 +32,13 @@ impl PrettyPrint for PatternStatements {
         terms.indent(4)
     }
 }
-impl PrettyPrint for PatternExpression {
+impl PrettyPrint for PatternExpressionType {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         match self {
             Self::Symbol(v) => v.pretty(theme),
             Self::Tuple(v) => v.pretty(theme),
             Self::Class(v) => v.pretty(theme),
+            Self::Array(v) => v.pretty(theme),
             Self::Union(v) => v.pretty(theme),
         }
     }
@@ -61,13 +62,40 @@ impl PrettyPrint for TuplePatternNode {
 
 impl PrettyPrint for ClassPatternNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
-        todo!()
+        let mut terms = PrettySequence::new(4);
+        if let Some(bind) = &self.bind {
+            terms += bind.pretty(theme);
+            terms += "<-";
+        }
+        if let Some(name) = &self.name {
+            terms += name.pretty(theme);
+        }
+        terms.into()
+    }
+}
+
+impl PrettyPrint for ArrayPatternNode {
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        let mut terms = PrettySequence::new(4);
+        if let Some(bind) = &self.bind {
+            terms += bind.pretty(theme);
+            terms += "<-";
+        }
+        // if let Some(name) = &self.name {
+        //     terms += name.pretty(theme);
+        // }
+        terms.into()
     }
 }
 
 impl PrettyPrint for UnionPatternNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
-        todo!()
+        let mut terms = PrettySequence::new(4);
+        if let Some(bind) = &self.bind {
+            terms += bind.pretty(theme);
+            terms += "<-";
+        }
+        terms.into()
     }
 }
 impl PrettyPrint for ImplicitCaseNode {

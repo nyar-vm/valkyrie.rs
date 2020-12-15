@@ -7,7 +7,7 @@ impl PrettyPrint for StatementNode {
     }
 }
 #[cfg(feature = "pretty-print")]
-impl PrettyPrint for StatementBody {
+impl PrettyPrint for StatementType {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         match self {
             Self::Nothing => ";;".into(),

@@ -15,8 +15,8 @@ impl<'a> Iterator for ClassIterator<'a> {
     fn next(&mut self) -> Option<Self::Item> {
         let term = self.inner.next()?;
         match &term.r#type {
-            StatementBody::ClassField(field) => Some(ClassTerm::Field((**field).clone())),
-            StatementBody::ClassMethod(method) => Some(ClassTerm::Method((**method).clone())),
+            StatementType::ClassField(field) => Some(ClassTerm::Field((**field).clone())),
+            StatementType::ClassMethod(method) => Some(ClassTerm::Method((**method).clone())),
             _ => None,
         }
     }

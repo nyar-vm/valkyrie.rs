@@ -1,6 +1,6 @@
 use crate::{
-    ElseStatement, ExpressionNode, PatternBranch, PatternExpression, PatternGuard, StatementBlock, StatementNode,
-    SwitchStatement, TuplePatternNode, WhileConditionNode,
+    control_flow::jmp_if::ThenStatement, ElseStatement, ExpressionNode, PatternBranch, PatternExpressionType, PatternGuard,
+    StatementBlock, StatementNode, StatementType, SwitchStatement, WhileConditionNode,
 };
 use alloc::{boxed::Box, vec::Vec};
 use core::{

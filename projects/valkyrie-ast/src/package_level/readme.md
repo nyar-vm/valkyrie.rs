@@ -76,3 +76,44 @@ a.collect(Pair(0, 2)) // collector
 a.collect(term) // collector
 a.collect(other) // collector
 ```
+
+
+```vk
+for i in [1, 2, 3] if i % 2 == 0 {
+    do_something(i)
+}
+else {
+    do_something_else()
+}
+
+let mut $iter = IntoIterator::into_iterator([1, 2, 3])
+let mut $next = $iter.next()
+let mut $no_run = true;
+while $next.is_some() {
+    let i = $next!;
+    if i % 2 == 0 {
+        $no_run = false;
+        do_something(i);
+    }
+    $next = $iter.next()
+}
+if $no_run {
+    do_something_else();
+}
+
+
+let mut $iter = IntoIterator::into_iterator([1, 2, 3])
+let mut $next = $iter.next()
+while $next.is_some() {
+    let i = $next!;
+    do_something(i);
+    $next = $iter.next()
+}
+```
+
+
+
+```vk
+
+```
+

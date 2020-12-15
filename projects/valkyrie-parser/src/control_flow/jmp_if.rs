@@ -1,5 +1,4 @@
 use super::*;
-use valkyrie_ast::TuplePatternNode;
 
 impl ThisParser for IfStatement {
     fn parse(input: ParseState) -> ParseResult<Self> {
@@ -29,7 +28,7 @@ impl ThisParser for IfLetStatement {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, _) = input.match_str("if")?;
         let (state, _) = state.skip(ignore).match_str("let")?;
-        let (state, pat) = state.skip(ignore).match_fn(PatternExpression::parse)?;
+        let (state, pat) = state.skip(ignore).match_fn(PatternExpressionType::parse)?;
         let (state, _) = state.skip(ignore).match_str("=")?;
         let (state, expr) = state.skip(ignore).match_fn(ExpressionNode::parse)?;
         let (finally, mut then_body) = state.skip(ignore).match_fn(parse_maybe_then)?;
@@ -39,22 +38,17 @@ impl ThisParser for IfLetStatement {
     }
 
     fn as_lisp(&self) -> Lisp {
-        todo!()
+        let mut lisp = Lisp::new(10);
+        lisp += Lisp::keyword("pattern");
+        lisp += self.pattern.as_lisp();
+        lisp += Lisp::keyword("expression");
+        lisp += self.expression.as_lisp();
+        lisp += self.then_body.as_lisp();
+        if let Some(else_body) = &self.else_body {
+            lisp += else_body.as_lisp();
+        }
+        lisp
     }
-}
-
-#[test]
-fn test_statement2() {
-    let raw = ParseState::new("Some(mut a)");
-    let apply = TuplePatternNode::parse(raw).unwrap();
-    println!("{:#?}", apply);
-}
-
-#[test]
-fn test_statement() {
-    let raw = ParseState::new("if let Some(a, Some(ref b)) = b { print(a) }");
-    let apply = IfLetStatement::parse(raw).unwrap();
-    println!("{:#?}", apply);
 }
 
 fn parse_else_if(input: ParseState) -> ParseResult<IfConditionNode> {

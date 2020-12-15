@@ -41,11 +41,11 @@ impl ThisParser for ControlType {
     fn parse(input: ParseState) -> ParseResult<Self> {
         input
             .begin_choice()
-            .choose(|s| s.match_str("break").map_inner(|_| ControlType::Break))
-            .choose(|s| s.match_str("continue").map_inner(|_| ControlType::Continue))
-            .choose(|s| s.match_str("fallthrough").map_inner(|_| ControlType::Fallthrough))
-            .choose(|s| s.match_str("return").map_inner(|_| ControlType::Return))
-            .choose(|s| s.match_str("resume").map_inner(|_| ControlType::Resume))
+            .choose(|s| s.match_str("break").map_value(ControlType::Break))
+            .choose(|s| s.match_str("continue").map_value(ControlType::Continue))
+            .choose(|s| s.match_str("fallthrough").map_value(ControlType::Fallthrough))
+            .choose(|s| s.match_str("return").map_value(ControlType::Return))
+            .choose(|s| s.match_str("resume").map_value(ControlType::Resume))
             .choose(|s| {
                 let (state, _) = s.match_str("yield")?;
                 state.match_optional(parse_yield).map_inner(|s| s.unwrap_or(ControlType::YieldReturn))

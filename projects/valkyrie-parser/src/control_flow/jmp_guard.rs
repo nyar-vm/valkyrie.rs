@@ -48,7 +48,7 @@ impl ThisParser for GuardLetStatement {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, _) = input.match_str("guard")?;
         let (state, _) = state.skip(ignore).match_str("let")?;
-        let (state, pat) = state.skip(ignore).match_fn(PatternExpression::parse)?;
+        let (state, pat) = state.skip(ignore).match_fn(PatternExpressionType::parse)?;
         let (state, _) = state.skip(ignore).match_str("=")?;
         let (state, expr) = state.skip(ignore).match_fn(ExpressionNode::parse)?;
         let (finally, body) = state.skip(ignore).match_fn(GuardStatementBody::parse)?;

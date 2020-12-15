@@ -11,7 +11,7 @@ mod control_flow;
 mod expression_level;
 mod helper;
 mod package_level;
-pub mod patterns;
+mod patterns;
 mod string_like;
 
 pub use crate::{
@@ -50,18 +50,19 @@ pub use crate::{
         },
         guarantee::{EffectTypeNode, GuaranteeNode},
         import::{ImportAliasNode, ImportGroupNode, ImportResolvedItem, ImportStatement, ImportTermNode},
+        labeled::LabelStatement,
         let_bind::LetBindNode,
         namespace::{NamespaceDeclaration, NamespaceKind},
         program::ProgramRoot,
-        statements::{StatementBody, StatementContext, StatementNode},
+        statements::{StatementContext, StatementNode, StatementType},
         tagged::{TaggedDeclaration, VariantDeclaration},
         try_catch::TryStatementNode,
         unions::{UnionDeclaration, UnionFieldDeclaration},
     },
     patterns::{
-        ClassPatternNode, ImplicitCaseNode, PatternBranch, PatternCaseNode, PatternCondition, PatternElseNode,
-        PatternExpression, PatternGuard, PatternStatements, PatternTypeNode, PatternWhenNode, TuplePatternNode,
-        UnionPatternNode,
+        ArrayPatternNode, ClassPatternNode, ImplicitCaseNode, PatternBranch, PatternCaseNode, PatternCondition,
+        PatternElseNode, PatternExpressionType, PatternGuard, PatternStatements, PatternTypeNode, PatternWhenNode,
+        TuplePatternNode, UnionPatternNode,
     },
     string_like::{
         string_formatter::StringFormatter,
@@ -71,5 +72,6 @@ pub use crate::{
         },
     },
 };
+
 #[cfg(feature = "pretty-print")]
 pub use pretty_print::{PrettyPrint, PrettyProvider, PrettyTree};
