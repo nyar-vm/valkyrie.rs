@@ -1,5 +1,26 @@
 use super::*;
-use pretty_print::helpers::SoftBlock;
+
+impl PrettyPrint for PatternBlock {
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        let mut terms = PrettySequence::new(10);
+        terms += "{";
+        terms += PrettyTree::Hardline;
+        let mut inner = PrettySequence::new(10);
+        let len = self.branches.len();
+        for (idx, branch) in self.branches.iter().enumerate() {
+            inner += branch.pretty(theme);
+            if idx == len.saturating_sub(1) {
+            }
+            else {
+                inner += PrettyTree::Hardline;
+            }
+        }
+        terms += inner.indent(4);
+        terms += PrettyTree::Hardline;
+        terms += "}";
+        terms.into()
+    }
+}
 
 impl PrettyPrint for PatternBranch {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {

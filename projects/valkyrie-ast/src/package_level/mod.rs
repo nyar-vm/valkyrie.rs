@@ -30,7 +30,10 @@ use alloc::{
     vec,
     vec::Vec,
 };
-use core::ops::Range;
+use core::{
+    fmt::{Display, Formatter, Write},
+    ops::Range,
+};
 use deriver::From;
 use pretty_print::helpers::SoftBlock;
 

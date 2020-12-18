@@ -70,6 +70,7 @@ impl ThisParser for ExpressionType {
             Self::Switch(v) => v.as_lisp(),
             Self::Text(v) => Lisp::string(v.text.clone()),
             Self::Try(v) => v.as_lisp(),
+            Self::MatchDot(v) => v.as_lisp(),
         }
     }
 }
@@ -174,6 +175,7 @@ pub fn parse_expression(input: ParseState, allow_curly: bool) -> ParseResult<Exp
             PostfixCallPart::Generic(v) => base = ExpressionType::call_generic(base, v, false),
             PostfixCallPart::Lambda(v) => base = ExpressionType::call_lambda(base, v, false),
             PostfixCallPart::LambdaDot(v) => base = ExpressionType::dot_lambda(base, v, false),
+            PostfixCallPart::Match(v) => base = ExpressionType::dot_match(base, v, false),
         }
     }
     state.finish(base)
@@ -194,6 +196,7 @@ fn parse_postfix_curly(input: ParseState) -> ParseResult<PostfixCallPart> {
     input
         .skip(ignore)
         .begin_choice()
+        .choose_from(MatchStatement::parse)
         .choose(|s| ApplyCallNode::parse(s).map_into())
         .choose(|s| ApplyDotNode::parse(s).map_into())
         .choose(|s| SubscriptNode::parse(s).map_into())

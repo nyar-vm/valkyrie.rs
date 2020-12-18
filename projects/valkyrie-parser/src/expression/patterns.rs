@@ -1,6 +1,17 @@
 use super::*;
-use crate::helpers::parse_bind;
-use valkyrie_ast::{ArrayPatternNode, ClassPatternNode, ImplicitCaseNode, TuplePatternNode, UnionPatternNode};
+use valkyrie_ast::PatternBlock;
+
+impl ThisParser for PatternBlock {
+    fn parse(input: ParseState) -> ParseResult<Self> {
+        let pattern = BracketPattern::new("{", "}");
+        let (state, terms) = pattern.consume(input.skip(ignore), ignore, PatternBranch::parse)?;
+        state.finish(Self { branches: terms.body, span: get_span(input, state) })
+    }
+
+    fn as_lisp(&self) -> Lisp {
+        unreachable!()
+    }
+}
 
 impl ThisParser for PatternBranch {
     fn parse(input: ParseState) -> ParseResult<Self> {

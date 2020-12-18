@@ -5,18 +5,19 @@ pub mod ctor;
 mod dispatch;
 pub mod generic;
 pub mod lambda;
+pub mod matches;
 pub mod number;
 pub mod operators;
-pub mod pattern_match;
 pub mod string_template;
 pub mod symbol;
 pub mod table;
 pub mod view;
+
 use crate::{
     ApplyCallNode, ApplyDotNode, ArgumentTermNode, CallNode, CallTermNode, CollectsNode, GenericCallNode, IdentifierNode,
-    IfLetStatement, IfStatement, InfixNode, LambdaCallNode, LambdaDotNode, LambdaSlotNode, NamePathNode, NewConstructNode,
-    NumberLiteralNode, OperatorNode, PatternBranch, PostfixNode, PrefixNode, RaiseNode, StatementNode, StringLiteralNode,
-    StringTextNode, SubscriptNode, SwitchStatement, TableNode, TableTermNode, TryStatement,
+    IfLetStatement, IfStatement, InfixNode, LambdaCallNode, LambdaDotNode, LambdaSlotNode, MatchStatement, NamePathNode,
+    NewConstructNode, NumberLiteralNode, OperatorNode, PatternBlock,  PostfixNode, PrefixNode, RaiseNode,
+    StatementNode, StringLiteralNode, StringTextNode, SubscriptNode, SwitchStatement, TableNode, TableTermNode, TryStatement,
 };
 use alloc::{
     borrow::ToOwned,
@@ -103,6 +104,8 @@ pub enum ExpressionType {
     Subscript(Box<CallNode<SubscriptNode>>),
     /// - Postfix expression
     GenericCall(Box<CallNode<GenericCallNode>>),
+    /// - Postfix expression
+    MatchDot(Box<CallNode<MatchStatement>>),
 }
 
 /// Temporary node for use in the parser
@@ -114,6 +117,7 @@ pub enum PostfixCallPart {
     Generic(GenericCallNode),
     Lambda(LambdaCallNode),
     LambdaDot(LambdaDotNode),
+    Match(MatchStatement),
 }
 
 impl Default for ExpressionContext {
@@ -179,5 +183,9 @@ impl ExpressionType {
     pub fn dot_lambda(base: Self, rest: LambdaDotNode, nullable: bool) -> Self {
         let span = base.span().start..rest.span.end;
         ExpressionType::LambdaDot(Box::new(CallNode { monadic: nullable, base, rest, span }))
+    }
+    pub fn dot_match(base: Self, rest: MatchStatement, nullable: bool) -> Self {
+        let span = base.span().start..rest.span.end;
+        ExpressionType::MatchDot(Box::new(CallNode { monadic: nullable, base, rest, span }))
     }
 }

@@ -2,11 +2,23 @@ use crate::{ArgumentKeyNode, ExpressionNode, IdentifierNode, NamePathNode, State
 use alloc::{boxed::Box, vec, vec::Vec};
 use core::ops::Range;
 use deriver::From;
-use pretty_print::PrettyBuilder;
 #[cfg(feature = "pretty-print")]
-use pretty_print::{helpers::PrettySequence, PrettyPrint, PrettyProvider, PrettyTree};
+use pretty_print::{
+    helpers::{PrettySequence, SoftBlock},
+    PrettyBuilder, PrettyPrint, PrettyProvider, PrettyTree,
+};
 
 mod display;
+
+/// A pattern match statement
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct PatternBlock {
+    /// Branches of the pattern match
+    pub branches: Vec<PatternBranch>,
+    /// The range of the node
+    pub span: Range<u32>,
+}
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]

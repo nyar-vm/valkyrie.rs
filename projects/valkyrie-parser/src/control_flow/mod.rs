@@ -4,16 +4,17 @@ use crate::{
     ThisParser,
 };
 use lispify::Lisp;
-use pex::{helpers::str, ParseResult, ParseState};
+use pex::{helpers::str, BracketPattern, ParseResult, ParseState};
 use valkyrie_ast::{
     ControlNode, ControlType, ElseStatement, ExpressionContext, ExpressionNode, ForLoop, GuardLetStatement, GuardStatement,
-    GuardStatementBody, IfConditionNode, IfLetStatement, IfStatement, PatternExpressionType, PatternGuard, StatementBlock,
-    StatementNode, ThenStatement, WhileConditionNode, WhileLoop,
+    GuardStatementBody, IfConditionNode, IfLetStatement, IfStatement, PatternBlock, PatternBranch, PatternExpressionType,
+    PatternGuard, StatementBlock, StatementNode, SwitchStatement, ThenStatement, WhileConditionNode, WhileLoop,
 };
 
 mod controller;
 mod jmp_guard;
 mod jmp_if;
+mod jmp_match;
 mod jmp_switch;
 mod loop_for;
 mod loop_while;

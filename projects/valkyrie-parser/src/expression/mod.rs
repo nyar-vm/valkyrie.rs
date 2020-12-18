@@ -1,12 +1,12 @@
 mod expression_kind;
 mod infix;
-mod pattern_match;
+mod patterns;
 mod prefix;
 mod suffix;
 mod try_statement;
 
 use crate::{
-    helpers::{ignore, parse_when},
+    helpers::{ignore, parse_bind, parse_when},
     table::TupleNode,
     traits::ThisParser,
     utils::{get_span, parse_expression_body, parse_expression_node},
@@ -20,12 +20,13 @@ use std::{
     sync::LazyLock,
 };
 use valkyrie_ast::{
-    ApplyCallNode, ApplyDotNode, ArgumentKeyNode, ExpressionContext, ExpressionNode, ExpressionType, GenericCallNode,
-    IfStatement, InfixNode, LambdaCallNode, LambdaDotNode, LambdaSlotNode, NamePathNode, NewConstructNode, NumberLiteralNode,
-    OperatorNode, PatternBranch, PatternCaseNode, PatternCondition, PatternElseNode, PatternExpressionType, PatternGuard,
-    PatternStatements, PatternTypeNode, PatternWhenNode, PostfixCallPart, PostfixNode, PrefixNode, RaiseNode, StatementBlock,
-    StatementNode, StringLiteralNode, SubscriptNode, SwitchStatement, TableNode, TryStatement, TypingExpression,
-    ValkyrieOperator,
+    ApplyCallNode, ApplyDotNode, ArgumentKeyNode, ArrayPatternNode, CallNode, ClassPatternNode, ExpressionContext,
+    ExpressionNode, ExpressionType, GenericCallNode, IfStatement, ImplicitCaseNode, InfixNode, LambdaCallNode, LambdaDotNode,
+    LambdaSlotNode, MatchKind, MatchStatement, NamePathNode, NewConstructNode, NumberLiteralNode, OperatorNode, PatternBranch,
+    PatternCaseNode, PatternCondition, PatternElseNode, PatternExpressionType, PatternGuard, PatternStatements,
+    PatternTypeNode, PatternWhenNode, PostfixCallPart, PostfixNode, PrefixNode, RaiseNode, StatementBlock, StatementNode,
+    StringLiteralNode, SubscriptNode, SwitchStatement, TableNode, TryStatement, TuplePatternNode, TypingExpression,
+    UnionPatternNode, ValkyrieOperator,
 };
 
 /// A resolver

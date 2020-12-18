@@ -1,12 +1,13 @@
 use crate::{
-    control_flow::jmp_if::ThenStatement, ElseStatement, ExpressionNode, PatternBranch, PatternExpressionType, PatternGuard,
-    StatementBlock, StatementNode, StatementType, SwitchStatement, WhileConditionNode,
+    control_flow::jmp_if::ThenStatement, patterns::PatternBlock, ElseStatement, ExpressionNode, 
+    PatternExpressionType, PatternGuard, StatementBlock, StatementNode, StatementType, SwitchStatement, WhileConditionNode,
 };
 use alloc::{boxed::Box, vec::Vec};
 use core::{
     fmt::{Debug, Display, Formatter},
     ops::Range,
 };
+
 #[cfg(feature = "pretty-print")]
 use pretty_print::{
     helpers::{PrettySequence, SoftBlock},
