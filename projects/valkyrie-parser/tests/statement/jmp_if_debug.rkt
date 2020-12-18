@@ -4,6 +4,5 @@
 (branches (a (1)) (b (2)) (else (3)))
 (branches (a (1)) (b (2)) (c (3)))
 (branches (a (1)) (b (2)) (c (3)) (else (4)))
-(branches (= (call/apply let (apply x y)) point ((call/apply print (apply ({x}, {y}))))))
-if
-(let (pattern/tuple Failure (error)) x)
+(pattern (pattern/tuple (x) (y)) expression point (then ((call/apply print (apply ({x}, {y}))))))
+(pattern (pattern/tuple Failure (error)) expression x (then ((call/apply print (apply error)))))

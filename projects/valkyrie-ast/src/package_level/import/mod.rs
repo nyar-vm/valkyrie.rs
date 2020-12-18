@@ -7,6 +7,7 @@ mod display;
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ImportStatement {
+    pub annotation: AnnotationList,
     // pub path: Option<StringLiteralNode>,
     pub term: ImportTermNode,
     /// The range of the node
@@ -26,7 +27,9 @@ pub enum ImportTermNode {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ImportGroupNode {
+    /// The path of the import
     pub path: NamePathNode,
+    /// The group of the import
     pub group: Vec<ImportTermNode>,
 }
 
@@ -34,27 +37,35 @@ pub struct ImportGroupNode {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ImportAliasNode {
+    /// The path of the import
     pub path: NamePathNode,
+    /// The alias of the import
     pub alias: IdentifierNode,
 }
 
 impl ImportGroupNode {
+    /// Create a new import group node
     pub fn new(path: NamePathNode, group: Vec<ImportTermNode>) -> Self {
         Self { path, group }
     }
 }
 
 impl ImportAliasNode {
+    /// Create a new import alias node
     pub fn new(path: NamePathNode, alias: IdentifierNode) -> Self {
         Self { alias, path }
     }
 }
 
+/// A resolved import item
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
-// #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ImportResolvedItem {
-    pub annotation: Option<Arc<IdentifierNode>>,
+    /// The annotation of the import
+    pub annotation: Option<Arc<AnnotationList>>,
+    /// The path of the import
     pub path: Vec<IdentifierNode>,
+    /// The alias of the import
     pub alias: Option<IdentifierNode>,
 }
 
@@ -106,7 +117,7 @@ pub struct ImportResolvedItem {
 /// - B: `b::B (explicit)`
 /// - C: `b::C (implicit)`
 /// - D: `a::D (implicit)`
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum ImportState {
     /// Available by explicit import
@@ -121,24 +132,28 @@ pub enum ImportState {
 
 impl ImportResolvedItem {
     pub fn join_external(&self, name: &IdentifierNode) -> Self {
-        Self { annotation: Some(Arc::new(name.clone())), ..self.clone() }
+        todo!()
+        // Self { annotation: Some(Arc::new(name.clone())), ..self.clone() }
     }
     pub fn join_name(&self, name: &IdentifierNode) -> Self {
         let mut path = self.path.clone();
         path.push(name.clone());
         Self { path, ..self.clone() }
     }
+    /// Join a path to the import
     pub fn join_path(&self, namepath: &[IdentifierNode]) -> Self {
         let mut path = self.path.clone();
         path.extend_from_slice(namepath);
         Self { path, ..self.clone() }
     }
+    /// Join an alias to the import
     pub fn join_alias(&self, alias: &IdentifierNode) -> Self {
         Self { alias: Some(alias.clone()), ..self.clone() }
     }
 }
 
 impl ImportStatement {
+    /// Create a new import statement
     pub fn flatten(&self) -> Vec<ImportResolvedItem> {
         let root = ImportResolvedItem::default();
         let mut all = Vec::new();
@@ -148,6 +163,7 @@ impl ImportStatement {
 }
 
 impl ImportTermNode {
+    /// Resolve the import term
     fn resolve(&self, parent: &ImportResolvedItem, all: &mut Vec<ImportResolvedItem>) {
         match self {
             ImportTermNode::Alias(alias) => {

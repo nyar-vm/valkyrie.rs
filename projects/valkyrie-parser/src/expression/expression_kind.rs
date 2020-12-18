@@ -69,6 +69,7 @@ impl ThisParser for ExpressionType {
             Self::Slot(v) => v.as_lisp(),
             Self::Switch(v) => v.as_lisp(),
             Self::Text(v) => Lisp::string(v.text.clone()),
+            Self::Try(v) => v.as_lisp(),
         }
     }
 }
@@ -148,17 +149,17 @@ fn parse_expr_value<'a>(
 pub fn parse_expression(input: ParseState, allow_curly: bool) -> ParseResult<ExpressionType> {
     let (state, mut base) = input
         .begin_choice()
-        .choose(|s| NewConstructNode::parse(s).map_into())
-        .choose(|s| NumberLiteralNode::parse(s).map_into())
-        .choose(|s| StringLiteralNode::parse(s).map_into())
-        .choose(|s| LambdaSlotNode::parse(s).map_into())
-        .choose(|s| IfLetStatement::parse(s).map_into())
-        .choose(|s| IfStatement::parse(s).map_into())
-        .choose(|s| SwitchStatement::parse(s).map_into())
-        .choose(|s| RaiseNode::parse(s).map_into())
-        .choose(|s| NamePathNode::parse(s).map_into())
-        .choose(|s| TableNode::parse(s).map_into())
-        .choose(|s| TupleNode::parse(s).map_into())
+        .choose_from(NewConstructNode::parse)
+        .choose_from(NumberLiteralNode::parse)
+        .choose_from(StringLiteralNode::parse)
+        .choose_from(LambdaSlotNode::parse)
+        .choose_from(IfLetStatement::parse)
+        .choose_from(IfStatement::parse)
+        .choose_from(SwitchStatement::parse)
+        .choose_from(RaiseNode::parse)
+        .choose_from(NamePathNode::parse)
+        .choose_from(TableNode::parse)
+        .choose_from(TupleNode::parse)
         .end_choice()?;
     let (state, rest) = match allow_curly {
         true => state.match_repeats(parse_postfix_curly),

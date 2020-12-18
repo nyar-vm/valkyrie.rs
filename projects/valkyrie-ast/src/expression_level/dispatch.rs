@@ -38,6 +38,7 @@ impl PrettyPrint for ExpressionType {
             Self::If(node) => node.pretty(theme),
             Self::IfLet(node) => node.pretty(theme),
             Self::Switch(node) => node.pretty(theme),
+            Self::Try(node) => node.pretty(theme),
         }
     }
 }
@@ -66,6 +67,7 @@ impl ExpressionType {
             Self::If(node) => node.span.clone(),
             Self::IfLet(node) => node.span.clone(),
             Self::Switch(node) => node.span.clone(),
+            Self::Try(node) => node.span.clone(),
         }
     }
 }

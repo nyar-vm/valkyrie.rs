@@ -6,4 +6,4 @@
 (guard/cases
   (pattern/tuple (x) (y))
   point
-  (then (guard (let (Failure)) (= error x) (call/lambda then ((return error))) (return some {x}, {y}))))
+  (then ((guard/cases (pattern/tuple Failure (error)) x (then ((return error)))) (return some {x}, {y}))))

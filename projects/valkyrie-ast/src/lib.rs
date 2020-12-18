@@ -9,7 +9,7 @@ extern crate alloc;
 
 mod control_flow;
 mod expression_level;
-mod helper;
+pub mod helper;
 mod package_level;
 mod patterns;
 mod string_like;
@@ -38,7 +38,6 @@ pub use crate::{
         view::{SubscriptNode, SubscriptSliceNode, SubscriptTermNode},
         ExpressionContext, ExpressionNode, ExpressionType, PostfixCallPart, TypingExpression,
     },
-    helper::ValkyrieNode,
     package_level::{
         classes::{ClassDeclaration, ClassFieldDeclaration, ClassIterator, ClassKind, ClassMethodDeclaration, ClassTerm},
         documentation::DocumentationNode,
@@ -49,14 +48,14 @@ pub use crate::{
             StatementBlock,
         },
         guarantee::{EffectTypeNode, GuaranteeNode},
-        import::{ImportAliasNode, ImportGroupNode, ImportResolvedItem, ImportStatement, ImportTermNode},
+        import::{ImportAliasNode, ImportGroupNode, ImportResolvedItem, ImportState, ImportStatement, ImportTermNode},
         labeled::LabelStatement,
         let_bind::LetBindNode,
         namespace::{NamespaceDeclaration, NamespaceKind},
         program::ProgramRoot,
         statements::{StatementContext, StatementNode, StatementType},
         tagged::{TaggedDeclaration, VariantDeclaration},
-        try_catch::TryStatementNode,
+        try_catch::TryStatement,
         unions::{UnionDeclaration, UnionFieldDeclaration},
     },
     patterns::{
@@ -72,6 +71,3 @@ pub use crate::{
         },
     },
 };
-
-#[cfg(feature = "pretty-print")]
-pub use pretty_print::{PrettyPrint, PrettyProvider, PrettyTree};

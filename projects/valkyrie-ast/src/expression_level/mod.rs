@@ -16,7 +16,7 @@ use crate::{
     ApplyCallNode, ApplyDotNode, ArgumentTermNode, CallNode, CallTermNode, CollectsNode, GenericCallNode, IdentifierNode,
     IfLetStatement, IfStatement, InfixNode, LambdaCallNode, LambdaDotNode, LambdaSlotNode, NamePathNode, NewConstructNode,
     NumberLiteralNode, OperatorNode, PatternBranch, PostfixNode, PrefixNode, RaiseNode, StatementNode, StringLiteralNode,
-    StringTextNode, SubscriptNode, SwitchStatement, TableNode, TableTermNode,
+    StringTextNode, SubscriptNode, SwitchStatement, TableNode, TableTermNode, TryStatement,
 };
 use alloc::{
     borrow::ToOwned,
@@ -63,14 +63,23 @@ pub enum ExpressionType {
     Placeholder,
     /// - Atomic expression
     Slot(Box<LambdaSlotNode>),
+    /// - Atomic expression
     Symbol(Box<NamePathNode>),
+    /// - Atomic expression
     Number(Box<NumberLiteralNode>),
+    /// - Atomic expression
     Text(Box<StringTextNode>),
+    /// - Atomic expression
     String(Box<StringLiteralNode>),
+    /// - Atomic expression
     New(Box<NewConstructNode>),
+    /// - Compound expression
     Prefix(Box<PrefixNode>),
+    /// - Compound expression
     Binary(Box<InfixNode>),
+    /// - Compound expression
     Suffix(Box<PostfixNode>),
+    /// - Compound expression
     Table(Box<TableNode>),
     /// - Standalone expression
     Resume(Box<RaiseNode>),
@@ -80,12 +89,19 @@ pub enum ExpressionType {
     IfLet(Box<IfLetStatement>),
     /// - Standalone expression
     Switch(Box<SwitchStatement>),
+    /// - Standalone expression
+    Try(Box<TryStatement>),
     /// - Postfix expression
     Apply(Box<CallNode<ApplyCallNode>>),
+    /// - Postfix expression
     ApplyDot(Box<CallNode<ApplyDotNode>>),
+    /// - Postfix expression
     LambdaCall(Box<CallNode<LambdaCallNode>>),
+    /// - Postfix expression
     LambdaDot(Box<CallNode<LambdaDotNode>>),
+    /// - Postfix expression
     Subscript(Box<CallNode<SubscriptNode>>),
+    /// - Postfix expression
     GenericCall(Box<CallNode<GenericCallNode>>),
 }
 

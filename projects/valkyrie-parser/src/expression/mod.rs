@@ -3,6 +3,7 @@ mod infix;
 mod pattern_match;
 mod prefix;
 mod suffix;
+mod try_statement;
 
 use crate::{
     helpers::{ignore, parse_when},
@@ -21,7 +22,7 @@ use std::{
 use valkyrie_ast::{
     ApplyCallNode, ApplyDotNode, ArgumentKeyNode, ExpressionContext, ExpressionNode, ExpressionType, GenericCallNode,
     IfStatement, InfixNode, LambdaCallNode, LambdaDotNode, LambdaSlotNode, NamePathNode, NewConstructNode, NumberLiteralNode,
-    OperatorNode, PatternBranch, PatternCaseNode, PatternCondition, PatternElseNode, PatternExpression, PatternGuard,
+    OperatorNode, PatternBranch, PatternCaseNode, PatternCondition, PatternElseNode, PatternExpressionType, PatternGuard,
     PatternStatements, PatternTypeNode, PatternWhenNode, PostfixCallPart, PostfixNode, PrefixNode, RaiseNode, StatementNode,
     StringLiteralNode, SubscriptNode, SwitchStatement, TableNode, TypingExpression, ValkyrieOperator,
 };

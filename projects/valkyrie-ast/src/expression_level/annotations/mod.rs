@@ -14,6 +14,12 @@ pub enum AnnotationKind {
     NonCapture,
 }
 
+impl Default for AnnotationKind {
+    fn default() -> Self {
+        Self::Normal
+    }
+}
+
 /// `@module∷name.variant(args) <CAPTURE>`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -24,7 +30,7 @@ pub struct AnnotationNode {
 }
 
 /// `@[module∷name.function(args), module∷name.function2(args)] <CAPTURE>`
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct AnnotationList {
     pub kind: AnnotationKind,
