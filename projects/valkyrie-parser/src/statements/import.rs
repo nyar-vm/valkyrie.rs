@@ -54,7 +54,7 @@ impl ThisParser for ImportStatement {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, _) = input.match_str("using")?;
         let (state, head) = state.skip(ignore).match_fn(ImportTermNode::parse)?;
-        state.finish(ImportStatement { term: head, span: get_span(input, state) })
+        state.finish(ImportStatement { annotation: AnnotationList::default(), term: head, span: get_span(input, state) })
     }
 
     fn as_lisp(&self) -> Lisp {

@@ -63,6 +63,8 @@ pub enum ValkyrieOperator {
     BitOr,
     /// suffix operator: `&`
     BitAnd,
+    /// suffix operator: `?`
+    Optional,
     /// suffix operator: `!`
     QuickRaise,
     /// suffix operator: `℃`
@@ -122,6 +124,7 @@ impl ValkyrieOperator {
             Self::Inverse => 25000,
             Self::Surd(_) => 25000,
             // postfix + 0
+            Self::Optional => 45000,
             Self::QuickRaise => 45000,
             Self::Celsius => 45000,
             Self::Fahrenheit => 45000,
@@ -145,6 +148,7 @@ impl ValkyrieOperator {
             Self::Multiply => "*",
             Self::Divide => "/",
             Self::Power => "^",
+            Self::Optional => "?",
             Self::QuickRaise => "!",
             Self::Celsius => "℃",
             Self::Fahrenheit => "℉",

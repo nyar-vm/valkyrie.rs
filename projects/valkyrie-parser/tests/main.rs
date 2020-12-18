@@ -11,7 +11,10 @@ use std::{
     io::Write,
     path::{Path, PathBuf},
 };
-use valkyrie_ast::*;
+use valkyrie_ast::{
+    helper::{PrettyPrint, PrettyProvider},
+    *,
+};
 use valkyrie_parser::{ReplRoot, ThisParser};
 
 #[test]

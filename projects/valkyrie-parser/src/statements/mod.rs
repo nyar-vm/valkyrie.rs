@@ -10,8 +10,8 @@ use valkyrie_ast::{
     AnnotationList, AnnotationNode, ApplyCallNode, ClassDeclaration, ControlNode, DocumentationNode, EnumerateDeclaration,
     ExpressionContext, ExpressionNode, FlagsDeclaration, ForLoop, FunctionDeclaration, GenericCallNode, GuardLetStatement,
     GuardStatement, IdentifierNode, ImportAliasNode, ImportGroupNode, ImportStatement, ImportTermNode, LambdaArgumentNode,
-    LambdaNode, LetBindNode, NamePathNode, NamespaceDeclaration, NamespaceKind, NewConstructNode, PatternExpression,
-    ProgramRoot, StatementBody, StatementNode, TableTermNode, TaggedDeclaration, TypingExpression, UnionDeclaration, WhileLoop,
+    LambdaNode, LetBindNode, NamePathNode, NamespaceDeclaration, NamespaceKind, NewConstructNode, PatternExpressionType,
+    ProgramRoot, StatementNode, StatementType, TableTermNode, TaggedDeclaration, TypingExpression, UnionDeclaration, WhileLoop,
 };
 
 mod annotation;
@@ -59,14 +59,14 @@ impl ThisParser for StatementNode {
 pub fn parse_statement_node(input: ParseState, repl: bool) -> ParseResult<StatementNode> {
     let parser = match repl {
         true => parse_repl_statements,
-        false => StatementBody::parse,
+        false => StatementType::parse,
     };
     let (state, expr) = input.skip(ignore).match_fn(parser)?;
     let (state, eos) = parse_eos(state)?;
     state.finish(StatementNode { r#type: expr, end_semicolon: eos, span: get_span(input, state) })
 }
 
-impl ThisParser for StatementBody {
+impl ThisParser for StatementType {
     fn parse(input: ParseState) -> ParseResult<Self> {
         input
             .begin_choice()
@@ -81,12 +81,12 @@ impl ThisParser for StatementBody {
             .choose(|s| EnumerateDeclaration::parse(s).map_into())
             .choose(|s| FlagsDeclaration::parse(s).map_into())
             .choose(function_with_head)
-            .choose(|s| LetBindNode::parse(s).map_into())
-            .choose(|s| GuardLetStatement::parse(s).map_into())
-            .choose(|s| GuardStatement::parse(s).map_into())
-            .choose(|s| WhileLoop::parse(s).map_into())
-            .choose(|s| ForLoop::parse(s).map_into())
-            .choose(|s| ControlNode::parse(s).map_into())
+            .choose_from(LetBindNode::parse)
+            .choose_from(GuardLetStatement::parse)
+            .choose_from(GuardStatement::parse)
+            .choose_from(WhileLoop::parse)
+            .choose_from(ForLoop::parse)
+            .choose_from(ControlNode::parse)
             .choose(|s| parse_expression_node(s, ExpressionContext::in_free()).map_into())
             .end_choice()
     }
@@ -120,26 +120,36 @@ impl ThisParser for StatementBody {
     }
 }
 
-pub fn parse_repl_statements(input: ParseState) -> ParseResult<StatementBody> {
+pub fn parse_repl_statements(input: ParseState) -> ParseResult<StatementType> {
     input
         .begin_choice()
+        .choose_from(DocumentationNode::parse)
+        .choose(|s| AnnotationNode::parse(s).map_into())
+        .choose(|s| AnnotationList::parse(s).map_into())
         .choose(|s| NamespaceDeclaration::parse(s).map_into())
         .choose(|s| ImportStatement::parse(s).map_into())
         .choose(|s| ClassDeclaration::parse(s).map_into())
-        .choose(|s| LetBindNode::parse(s).map_into())
-        .choose(|s| FunctionDeclaration::parse(s).map_into())
-        .choose(|s| WhileLoop::parse(s).map_into())
-        .choose(|s| ForLoop::parse(s).map_into())
+        .choose(|s| UnionDeclaration::parse(s).map_into())
+        .choose(|s| TaggedDeclaration::parse(s).map_into())
+        .choose(|s| EnumerateDeclaration::parse(s).map_into())
+        .choose(|s| FlagsDeclaration::parse(s).map_into())
+        .choose_from(FunctionDeclaration::parse)
+        .choose_from(LetBindNode::parse)
+        .choose_from(GuardLetStatement::parse)
+        .choose_from(GuardStatement::parse)
+        .choose_from(WhileLoop::parse)
+        .choose_from(ForLoop::parse)
+        .choose_from(ControlNode::parse)
         .choose(|s| parse_expression_node(s, ExpressionContext::in_free()).map_into())
         .end_choice()
 }
 
-fn function_with_head(input: ParseState) -> ParseResult<StatementBody> {
+fn function_with_head(input: ParseState) -> ParseResult<StatementType> {
     let (state, mods) = input.match_repeats(|s| {
         let (state, _) = s.skip(ignore).match_negative(FunctionDeclaration::parse, "KW_FUNCTION")?;
         IdentifierNode::parse(state)
     })?;
     let (state, mut func) = state.skip(ignore).match_fn(FunctionDeclaration::parse)?;
     func.modifiers = mods;
-    state.finish(StatementBody::Function(Box::new(func)))
+    state.finish(StatementType::Function(Box::new(func)))
 }

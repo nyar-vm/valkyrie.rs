@@ -1,5 +1,4 @@
 use super::*;
-use valkyrie_ast::{StatementBlock, TryStatement};
 
 impl ThisParser for TryStatement {
     fn parse(input: ParseState) -> ParseResult<Self> {
@@ -11,6 +10,11 @@ impl ThisParser for TryStatement {
     }
 
     fn as_lisp(&self) -> Lisp {
-        todo!()
+        let mut lisp = Lisp::keyword("try");
+        if let Some(catch) = &self.handler {
+            lisp += catch.as_lisp();
+        }
+        lisp += self.body.as_lisp();
+        lisp
     }
 }

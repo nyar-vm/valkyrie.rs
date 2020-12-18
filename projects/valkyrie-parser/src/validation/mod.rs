@@ -1,5 +1,5 @@
 use crate::ThisParser;
-use valkyrie_ast::{GuardStatement, ProgramRoot, StatementBody, StatementNode};
+use valkyrie_ast::{GuardStatement, ProgramRoot, StatementNode, StatementType};
 use valkyrie_error::{SyntaxError, ValkyrieError};
 
 trait Validation {
@@ -21,7 +21,7 @@ impl Validation for StatementNode {
     }
 }
 
-impl Validation for StatementBody {
+impl Validation for StatementType {
     fn validate(&mut self, errors: &mut Vec<SyntaxError>) -> Result<(), ValkyrieError> {
         match self {
             Self::Nothing => {
@@ -99,7 +99,7 @@ impl Validation for GuardStatement {
     fn validate(&mut self, errors: &mut Vec<SyntaxError>) -> Result<(), ValkyrieError> {
         const MSG: &str = "Guard statement must a explicit control statement as the last statement";
         match self.last() {
-            Some(StatementBody::Control(_)) => {}
+            Some(StatementType::Control(_)) => {}
             Some(other) => errors.push(SyntaxError::new(MSG).with_span(&other.get_range())),
             None => errors.push(SyntaxError::new(MSG).with_span(&self.main_body.get_range())),
         }

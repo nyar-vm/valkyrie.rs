@@ -15,3 +15,5 @@ raise
 (yield break label)
 (yield from)
 (yield from expression)
+(try ((call/apply print (apply try))))
+(try (? T) ((call/apply print (apply try))))

@@ -111,7 +111,7 @@ pub fn parse_group(input: ParseState, ctx: ExpressionContext) -> ParseResult<Vec
 fn parse_term<'i>(state: ParseState<'i>, stream: &mut Vec<ExpressionStream>, ctx: ExpressionContext) -> ParseResult<'i, ()> {
     let (state, _) = state.match_repeats(|s| parse_prefix(s, stream))?;
     let (state, _) = parse_expr_value(state, stream, ctx)?;
-    let (state, _) = state.match_repeats(|s| parse_suffix(s, stream))?;
+    let (state, _) = state.match_repeats(|s| parse_suffix(s, stream, ctx))?;
     state.finish(())
 }
 
@@ -123,8 +123,8 @@ fn parse_prefix<'a>(input: ParseState<'a>, stream: &mut Vec<ExpressionStream>) -
 }
 
 #[inline(always)]
-fn parse_suffix<'a>(input: ParseState<'a>, stream: &mut Vec<ExpressionStream>) -> ParseResult<'a, ()> {
-    let (state, suffix) = input.skip(ignore).match_fn(ValkyrieSuffix::parse)?;
+fn parse_suffix<'a>(input: ParseState<'a>, stream: &mut Vec<ExpressionStream>, ctx: ExpressionContext) -> ParseResult<'a, ()> {
+    let (state, suffix) = input.skip(ignore).match_fn(|s| ValkyrieSuffix::parse(s, ctx.type_level))?;
     stream.push(ExpressionStream::Postfix(suffix));
     state.finish(())
 }
@@ -156,6 +156,7 @@ pub fn parse_expression(input: ParseState, allow_curly: bool) -> ParseResult<Exp
         .choose_from(IfLetStatement::parse)
         .choose_from(IfStatement::parse)
         .choose_from(SwitchStatement::parse)
+        .choose_from(TryStatement::parse)
         .choose_from(RaiseNode::parse)
         .choose_from(NamePathNode::parse)
         .choose_from(TableNode::parse)

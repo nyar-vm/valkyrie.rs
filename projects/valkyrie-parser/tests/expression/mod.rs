@@ -16,9 +16,9 @@ fn test_apply2() {}
 
 #[test]
 fn test_apply() {
-    let raw = "using `python`.numpy";
-    let apply = ImportStatement::parse_text(raw).unwrap();
-    pretty_print(&apply)
+    let raw = "a[1]";
+    let apply = ExpressionNode::parse_text(raw).unwrap();
+    println!("{:#?}", apply);
 }
 
 #[test]

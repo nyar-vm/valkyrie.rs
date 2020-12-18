@@ -15,3 +15,12 @@ yield break;
 yield break label;
 yield from;
 yield from expression;
+
+
+try {
+    print("try");
+}
+
+try T? {
+    print("try");
+}
