@@ -26,11 +26,11 @@ pub use crate::{
     expression_level::{
         annotations::{AnnotationKind, AnnotationList, AnnotationNode, AnnotationPathNode, AnnotationTerm, ModifiersNode},
         apply::{ApplyArgument, ApplyArgumentTerm, ApplyCallNode, ApplyCallTerm, ApplyDotNode, ArgumentKeyNode},
-        common::{ArgumentTermNode, CallNode, CallTermNode},
+        common::{ArgumentTermNode, CallNode, CallTermNode, MonadicCall, MonadicDotCall},
         ctor::{CollectsNode, NewConstructNode},
         generic::{GenericArgument, GenericArgumentTerm, GenericCallNode, GenericCallTerm},
         lambda::{LambdaArgumentNode, LambdaCallNode, LambdaDotNode, LambdaNode},
-        matches::{MatchKind, MatchStatement},
+        matches::{MatchDotStatement, MatchKind},
         number::NumberLiteralNode,
         operators::{InfixNode, OperatorNode, PostfixNode, PrefixNode, ValkyrieOperator},
         symbol::{IdentifierNode, LambdaSlotNode, NamePathNode},

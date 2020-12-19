@@ -16,14 +16,18 @@ fn lex_statements() {
 
 #[test]
 fn debug_statement() {
-    top_debug(include_str!("jmp_if.vk"), "statement/jmp_if_debug.rkt").expect("if");
-    top_debug(include_str!("jmp_guard.vk"), "statement/jmp_guard_debug.rkt").expect("guard");
+    top_debug(include_str!("control.vk"), "statement/control_debug.rkt").expect("control");
 }
 
 #[test]
 fn test_statement() {
-    let raw = ParseState::new("infix `a`()");
-    let apply = ClassMethodDeclaration::parse(raw).unwrap();
+    let raw = ParseState::new(
+        r#". catch {
+    type RuntimeError:
+        print("RuntimeError");
+}"#,
+    );
+    let apply = PostfixCallPart::parse(raw).unwrap();
     pretty_print(&apply)
 }
 

@@ -1,24 +1,27 @@
 use super::*;
-use pex::StopBecause;
-use valkyrie_ast::{CallNode, MatchKind, MatchStatement, PatternBlock};
 
-impl ThisParser for CallNode<MatchStatement> {
+impl ThisParser for CallNode<MatchDotStatement> {
     #[track_caller]
     fn parse(_: ParseState) -> ParseResult<Self> {
         unreachable!()
     }
 
     fn as_lisp(&self) -> Lisp {
-        todo!()
+        let mut lisp = Lisp::new(5);
+        lisp += Lisp::keyword(self.rest.kind.as_str());
+        for term in &self.rest.patterns.branches {
+            lisp += term.as_lisp()
+        }
+        lisp
     }
 }
 
-impl ThisParser for MatchStatement {
+impl ThisParser for MatchDotStatement {
     fn parse(input: ParseState) -> ParseResult<Self> {
-        let (state, kind) = MatchKind::parse(input)?;
+        let (state, monadic) = MonadicDotCall::parse(input)?;
+        let (state, kind) = MatchKind::parse(state)?;
         let (state, pats) = state.skip(ignore).match_fn(PatternBlock::parse)?;
-
-        state.finish(Self { kind, patterns: pats, span: get_span(input, state) })
+        state.finish(Self { monadic, kind, patterns: pats, span: get_span(input, state) })
     }
 
     fn as_lisp(&self) -> Lisp {

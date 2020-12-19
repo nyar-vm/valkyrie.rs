@@ -1,8 +1,40 @@
 use super::*;
 
+
 impl Debug for ValkyrieInfix {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         write!(f, "Infix({}, {:?})", self.as_operator().kind.as_str(), self.span)
+    }
+}
+
+impl ThisParser for MonadicCall {
+    fn parse(input: ParseState) -> ParseResult<Self> {
+        let (state, mark) = match input.match_char('?') {
+            ParseResult::Pending(s, _) => s.finish(true),
+            ParseResult::Stop(_) => input.finish(false),
+        }?;
+        let state = state.skip(ignore);
+        state.finish(Self { mark })
+    }
+
+    fn as_lisp(&self) -> Lisp {
+        unreachable!()
+    }
+}
+
+impl ThisParser for MonadicDotCall {
+    fn parse(input: ParseState) -> ParseResult<Self> {
+        let (state, mark) = match input.match_char('?') {
+            ParseResult::Pending(s, _) => s.finish(true),
+            ParseResult::Stop(_) => input.finish(false),
+        }?;
+        let (state, _) = char('.')(state.skip(ignore))?;
+        let state = state.skip(ignore);
+        state.finish(Self { mark })
+    }
+
+    fn as_lisp(&self) -> Lisp {
+        unreachable!()
     }
 }
 

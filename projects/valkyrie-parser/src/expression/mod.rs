@@ -12,7 +12,10 @@ use crate::{
     utils::{get_span, parse_expression_body, parse_expression_node},
 };
 use lispify::Lisp;
-use pex::{helpers::str, BracketPattern, ParseResult, ParseState, Regex, StopBecause};
+use pex::{
+    helpers::{char, str},
+    BracketPattern, ParseResult, ParseState, Regex, StopBecause,
+};
 use pratt::{Affix, Associativity, PrattError, PrattParser, Precedence};
 use std::{
     fmt::{Debug, Formatter},
@@ -22,11 +25,11 @@ use std::{
 use valkyrie_ast::{
     ApplyCallNode, ApplyDotNode, ArgumentKeyNode, ArrayPatternNode, CallNode, ClassPatternNode, ExpressionContext,
     ExpressionNode, ExpressionType, GenericCallNode, IfStatement, ImplicitCaseNode, InfixNode, LambdaCallNode, LambdaDotNode,
-    LambdaSlotNode, MatchKind, MatchStatement, NamePathNode, NewConstructNode, NumberLiteralNode, OperatorNode, PatternBranch,
-    PatternCaseNode, PatternCondition, PatternElseNode, PatternExpressionType, PatternGuard, PatternStatements,
-    PatternTypeNode, PatternWhenNode, PostfixCallPart, PostfixNode, PrefixNode, RaiseNode, StatementBlock, StatementNode,
-    StringLiteralNode, SubscriptNode, SwitchStatement, TableNode, TryStatement, TuplePatternNode, TypingExpression,
-    UnionPatternNode, ValkyrieOperator,
+    LambdaSlotNode, MatchDotStatement, MatchKind, MonadicCall, MonadicDotCall, NamePathNode, NewConstructNode,
+    NumberLiteralNode, OperatorNode, PatternBranch, PatternCaseNode, PatternCondition, PatternElseNode, PatternExpressionType,
+    PatternGuard, PatternStatements, PatternTypeNode, PatternWhenNode, PostfixCallPart, PostfixNode, PrefixNode, RaiseNode,
+    StatementBlock, StatementNode, StringLiteralNode, SubscriptNode, SwitchStatement, TableNode, TryStatement,
+    TuplePatternNode, TypingExpression, UnionPatternNode, ValkyrieOperator,
 };
 
 /// A resolver

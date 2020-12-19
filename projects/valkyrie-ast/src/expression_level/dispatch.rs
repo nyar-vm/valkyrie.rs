@@ -6,6 +6,20 @@ impl Default for ExpressionType {
     }
 }
 
+impl Debug for PostfixCallPart {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        match self {
+            Self::Apply(call) => Debug::fmt(call, f),
+            Self::ApplyDot(call) => Debug::fmt(call, f),
+            Self::View(call) => Debug::fmt(call, f),
+            Self::Generic(call) => Debug::fmt(call, f),
+            Self::Lambda(call) => Debug::fmt(call, f),
+            Self::LambdaDot(call) => Debug::fmt(call, f),
+            Self::Match(call) => Debug::fmt(call, f),
+        }
+    }
+}
+
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for ExpressionNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
@@ -40,6 +54,20 @@ impl PrettyPrint for ExpressionType {
             Self::Switch(node) => node.pretty(theme),
             Self::Try(node) => node.pretty(theme),
             Self::MatchDot(node) => node.pretty(theme),
+        }
+    }
+}
+
+impl PrettyPrint for PostfixCallPart {
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        match self {
+            Self::Apply(node) => node.pretty(theme),
+            Self::ApplyDot(node) => node.pretty(theme),
+            Self::View(node) => node.pretty(theme),
+            Self::Generic(node) => node.pretty(theme),
+            Self::Lambda(node) => node.pretty(theme),
+            Self::LambdaDot(node) => node.pretty(theme),
+            Self::Match(node) => node.pretty(theme),
         }
     }
 }

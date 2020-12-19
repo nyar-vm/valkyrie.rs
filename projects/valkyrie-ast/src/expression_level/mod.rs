@@ -15,9 +15,9 @@ pub mod view;
 
 use crate::{
     ApplyCallNode, ApplyDotNode, ArgumentTermNode, CallNode, CallTermNode, CollectsNode, GenericCallNode, IdentifierNode,
-    IfLetStatement, IfStatement, InfixNode, LambdaCallNode, LambdaDotNode, LambdaSlotNode, MatchStatement, NamePathNode,
-    NewConstructNode, NumberLiteralNode, OperatorNode, PatternBlock,  PostfixNode, PrefixNode, RaiseNode,
-    StatementNode, StringLiteralNode, StringTextNode, SubscriptNode, SwitchStatement, TableNode, TableTermNode, TryStatement,
+    IfLetStatement, IfStatement, InfixNode, LambdaCallNode, LambdaDotNode, LambdaSlotNode, MatchDotStatement, NamePathNode,
+    NewConstructNode, NumberLiteralNode, OperatorNode, PatternBlock, PostfixNode, PrefixNode, RaiseNode, StatementNode,
+    StringLiteralNode, StringTextNode, SubscriptNode, SwitchStatement, TableNode, TableTermNode, TryStatement,
 };
 use alloc::{
     borrow::ToOwned,
@@ -28,7 +28,7 @@ use alloc::{
     vec::Vec,
 };
 use core::{
-    fmt::{Display, Formatter, Write},
+    fmt::{Debug, Display, Formatter, Write},
     ops::Range,
 };
 use deriver::From;
@@ -105,11 +105,11 @@ pub enum ExpressionType {
     /// - Postfix expression
     GenericCall(Box<CallNode<GenericCallNode>>),
     /// - Postfix expression
-    MatchDot(Box<CallNode<MatchStatement>>),
+    MatchDot(Box<CallNode<MatchDotStatement>>),
 }
 
 /// Temporary node for use in the parser
-#[derive(Clone, Debug, PartialEq, Eq, Hash, From)]
+#[derive(Clone, PartialEq, Eq, Hash, From)]
 pub enum PostfixCallPart {
     Apply(ApplyCallNode),
     ApplyDot(ApplyDotNode),
@@ -117,7 +117,7 @@ pub enum PostfixCallPart {
     Generic(GenericCallNode),
     Lambda(LambdaCallNode),
     LambdaDot(LambdaDotNode),
-    Match(MatchStatement),
+    Match(MatchDotStatement),
 }
 
 impl Default for ExpressionContext {
@@ -160,32 +160,32 @@ impl ExpressionType {
         let span = lhs.span().start..o.span.end;
         Self::Suffix(Box::new(PostfixNode { operator: o, base: lhs, span }))
     }
-    pub fn call_generic(base: Self, rest: GenericCallNode, nullable: bool) -> Self {
+    pub fn call_generic(base: Self, rest: GenericCallNode) -> Self {
         let span = base.span().start..rest.span.end;
-        ExpressionType::GenericCall(Box::new(CallNode { monadic: nullable, base, rest, span }))
+        ExpressionType::GenericCall(Box::new(CallNode { base, rest, span }))
     }
-    pub fn call_apply(base: Self, rest: ApplyCallNode, nullable: bool) -> Self {
+    pub fn call_apply(base: Self, rest: ApplyCallNode) -> Self {
         let span = base.span().start..rest.span.end;
-        ExpressionType::Apply(Box::new(CallNode { monadic: nullable, base, rest, span }))
+        ExpressionType::Apply(Box::new(CallNode { base, rest, span }))
     }
-    pub fn dot_apply(base: Self, rest: ApplyDotNode, nullable: bool) -> Self {
+    pub fn dot_apply(base: Self, rest: ApplyDotNode) -> Self {
         let span = base.span().start..rest.span.end;
-        ExpressionType::ApplyDot(Box::new(CallNode { monadic: nullable, base, rest, span }))
+        ExpressionType::ApplyDot(Box::new(CallNode { base, rest, span }))
     }
-    pub fn call_subscript(base: Self, rest: SubscriptNode, nullable: bool) -> Self {
+    pub fn call_subscript(base: Self, rest: SubscriptNode) -> Self {
         let span = base.span().start..rest.span.end;
-        ExpressionType::Subscript(Box::new(CallNode { monadic: nullable, base, rest, span }))
+        ExpressionType::Subscript(Box::new(CallNode { base, rest, span }))
     }
-    pub fn call_lambda(base: Self, rest: LambdaCallNode, nullable: bool) -> Self {
+    pub fn call_lambda(base: Self, rest: LambdaCallNode) -> Self {
         let span = base.span().start..rest.span.end;
-        ExpressionType::LambdaCall(Box::new(CallNode { monadic: nullable, base, rest, span }))
+        ExpressionType::LambdaCall(Box::new(CallNode { base, rest, span }))
     }
-    pub fn dot_lambda(base: Self, rest: LambdaDotNode, nullable: bool) -> Self {
+    pub fn dot_lambda(base: Self, rest: LambdaDotNode) -> Self {
         let span = base.span().start..rest.span.end;
-        ExpressionType::LambdaDot(Box::new(CallNode { monadic: nullable, base, rest, span }))
+        ExpressionType::LambdaDot(Box::new(CallNode { base, rest, span }))
     }
-    pub fn dot_match(base: Self, rest: MatchStatement, nullable: bool) -> Self {
+    pub fn dot_match(base: Self, rest: MatchDotStatement) -> Self {
         let span = base.span().start..rest.span.end;
-        ExpressionType::MatchDot(Box::new(CallNode { monadic: nullable, base, rest, span }))
+        ExpressionType::MatchDot(Box::new(CallNode { base, rest, span }))
     }
 }

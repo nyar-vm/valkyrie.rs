@@ -1,6 +1,36 @@
 
 
-
+```vk
+try Option<T> {
+    body
+}
+.catch {
+    with handler;
+    case Exception::A(message):
+        resume message ~ "A"
+    case Exception::F(message):
+        return message ~ "F"
+    else:
+        return "else"
+}
+.match {
+    case "A":
+        return "A"
+    case "F":
+        return "F"
+    else:
+        return "else"
+}
+.await {
+    with handler;
+    case Exception::A(message):
+        resume message ~ "A"
+    case Exception::F(message):
+        return message ~ "F"
+    else:
+        return "else"
+}
+```
 
 ```vk
 using {

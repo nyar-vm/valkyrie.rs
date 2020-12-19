@@ -16,4 +16,5 @@ raise
 (yield from)
 (yield from expression)
 (try ((call/apply print (apply try))))
-(try (? T) ((call/apply print (apply try))))
+(try (call/generic Option (generic T)) ((call/apply print (apply try))))
+(match ((match/case (call/apply Some (apply a))) (call/apply print (apply Some))))

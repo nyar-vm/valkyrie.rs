@@ -165,38 +165,44 @@ pub fn parse_expression(input: ParseState, allow_curly: bool) -> ParseResult<Exp
         .end_choice()?;
     let (state, rest) = match allow_curly {
         true => state.match_repeats(parse_postfix_curly),
-        false => state.match_repeats(parse_postfix),
+        false => state.match_repeats(PostfixCallPart::parse),
     }?;
     for caller in rest {
         match caller {
-            PostfixCallPart::Apply(v) => base = ExpressionType::call_apply(base, v, false),
-            PostfixCallPart::ApplyDot(v) => base = ExpressionType::dot_apply(base, v, false),
-            PostfixCallPart::View(v) => base = ExpressionType::call_subscript(base, v, false),
-            PostfixCallPart::Generic(v) => base = ExpressionType::call_generic(base, v, false),
-            PostfixCallPart::Lambda(v) => base = ExpressionType::call_lambda(base, v, false),
-            PostfixCallPart::LambdaDot(v) => base = ExpressionType::dot_lambda(base, v, false),
-            PostfixCallPart::Match(v) => base = ExpressionType::dot_match(base, v, false),
+            PostfixCallPart::Apply(v) => base = ExpressionType::call_apply(base, v),
+            PostfixCallPart::ApplyDot(v) => base = ExpressionType::dot_apply(base, v),
+            PostfixCallPart::View(v) => base = ExpressionType::call_subscript(base, v),
+            PostfixCallPart::Generic(v) => base = ExpressionType::call_generic(base, v),
+            PostfixCallPart::Lambda(v) => base = ExpressionType::call_lambda(base, v),
+            PostfixCallPart::LambdaDot(v) => base = ExpressionType::dot_lambda(base, v),
+            PostfixCallPart::Match(v) => base = ExpressionType::dot_match(base, v),
         }
     }
     state.finish(base)
 }
 
-fn parse_postfix(input: ParseState) -> ParseResult<PostfixCallPart> {
-    input
-        .skip(ignore)
-        .begin_choice()
-        .choose(|s| ApplyCallNode::parse(s).map_into())
-        .choose(|s| ApplyDotNode::parse(s).map_into())
-        .choose(|s| SubscriptNode::parse(s).map_into())
-        .choose(|s| GenericCallNode::parse(s).map_into())
-        .end_choice()
+impl ThisParser for PostfixCallPart {
+    fn parse(input: ParseState) -> ParseResult<Self> {
+        input
+            .skip(ignore)
+            .begin_choice()
+            .choose(|s| ApplyCallNode::parse(s).map_into())
+            .choose(|s| ApplyDotNode::parse(s).map_into())
+            .choose(|s| SubscriptNode::parse(s).map_into())
+            .choose(|s| GenericCallNode::parse(s).map_into())
+            .end_choice()
+    }
+
+    fn as_lisp(&self) -> Lisp {
+        unreachable!()
+    }
 }
 
 fn parse_postfix_curly(input: ParseState) -> ParseResult<PostfixCallPart> {
     input
         .skip(ignore)
         .begin_choice()
-        .choose_from(MatchStatement::parse)
+        .choose_from(MatchDotStatement::parse)
         .choose(|s| ApplyCallNode::parse(s).map_into())
         .choose(|s| ApplyDotNode::parse(s).map_into())
         .choose(|s| SubscriptNode::parse(s).map_into())

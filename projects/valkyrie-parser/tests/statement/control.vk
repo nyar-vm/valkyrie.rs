@@ -21,6 +21,18 @@ try {
     print("try");
 }
 
-try T? {
+try Option<T> {
     print("try");
+}
+
+try T? {
+    execute()
+}
+.catch {
+    type RuntimeError:
+        print("RuntimeError")
+}
+?.match {
+    case Some(a):
+        print("Some"),
 }
