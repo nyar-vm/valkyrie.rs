@@ -1,5 +1,4 @@
 use super::*;
-use crate::MonadicDotCall;
 
 /// `.match {}.catch {}`
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
@@ -19,7 +18,7 @@ pub struct MatchDotStatement {
     pub monadic: MonadicDotCall,
     /// The kind of the match statement
     pub kind: MatchKind,
-    ///
+    /// The patterns of the match statement
     pub patterns: PatternBlock,
     /// The range of the node
     pub span: Range<u32>,

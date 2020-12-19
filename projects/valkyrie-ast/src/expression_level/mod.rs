@@ -15,9 +15,9 @@ pub mod view;
 
 use crate::{
     ApplyCallNode, ApplyDotNode, ArgumentTermNode, CallNode, CallTermNode, CollectsNode, GenericCallNode, IdentifierNode,
-    IfLetStatement, IfStatement, InfixNode, LambdaCallNode, LambdaDotNode, LambdaSlotNode, MatchDotStatement, NamePathNode,
-    NewConstructNode, NumberLiteralNode, OperatorNode, PatternBlock, PostfixNode, PrefixNode, RaiseNode, StatementNode,
-    StringLiteralNode, StringTextNode, SubscriptNode, SwitchStatement, TableNode, TableTermNode, TryStatement,
+    IfLetStatement, IfStatement, InfixNode, LambdaCallNode, LambdaDotNode, LambdaSlotNode, MatchDotStatement, MonadicDotCall,
+    NamePathNode, NewConstructNode, NumberLiteralNode, OperatorNode, PatternBlock, PostfixNode, PrefixNode, RaiseNode,
+    StatementNode, StringLiteralNode, StringTextNode, SubscriptNode, SwitchStatement, TableNode, TableTermNode, TryStatement,
 };
 use alloc::{
     borrow::ToOwned,
@@ -40,22 +40,30 @@ use pretty_print::{helpers::PrettySequence, PrettyPrint, PrettyProvider, PrettyT
 pub struct ExpressionNode {
     pub type_level: bool,
     pub body: ExpressionType,
+    /// The range of the node
     pub span: Range<u32>,
 }
+
 /// Temporary node for use in the parser
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 pub struct TypingExpression {
     pub body: ExpressionType,
+    /// The range of the node
     pub span: Range<u32>,
 }
 
+/// Environment for expression parsing
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ExpressionContext {
+    /// Weather the expression is on type level
     pub type_level: bool,
+    /// Weather the expression allow new line in postfix calls
     pub allow_newline: bool,
+    /// Weather the expression allow curly braces in postfix calls
     pub allow_curly: bool,
 }
+
 /// The base expression type
 #[derive(Clone, Debug, PartialEq, Eq, Hash, From)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -108,15 +116,22 @@ pub enum ExpressionType {
     MatchDot(Box<CallNode<MatchDotStatement>>),
 }
 
-/// Temporary node for use in the parser
+/// Temporary node for resolve postfix calls
 #[derive(Clone, PartialEq, Eq, Hash, From)]
 pub enum PostfixCallPart {
+    /// - Any expression
     Apply(ApplyCallNode),
+    /// - Any expression
     ApplyDot(ApplyDotNode),
+    /// - Any expression
     View(SubscriptNode),
+    /// - Any expression
     Generic(GenericCallNode),
+    /// - Standalone expression
     Lambda(LambdaCallNode),
+    /// - Standalone expression
     LambdaDot(LambdaDotNode),
+    /// - Standalone expression
     Match(MatchDotStatement),
 }
 
@@ -127,9 +142,11 @@ impl Default for ExpressionContext {
 }
 
 impl ExpressionContext {
+    /// A type level expression
     pub fn in_type() -> Self {
         ExpressionContext { type_level: true, allow_newline: true, allow_curly: false }
     }
+    /// A term level expression
     pub fn in_free() -> Self {
         ExpressionContext { type_level: false, allow_newline: true, allow_curly: true }
     }
@@ -148,42 +165,52 @@ impl TypingExpression {
 }
 
 impl ExpressionType {
+    /// Build a new binary expression
     pub fn binary(o: OperatorNode, lhs: Self, rhs: Self) -> Self {
         let span = lhs.span().start..rhs.span().end;
         Self::Binary(Box::new(InfixNode { operator: o, lhs, rhs, span }))
     }
+    /// Build a new prefix expression
     pub fn prefix(o: OperatorNode, rhs: Self) -> Self {
         let span = o.span.start..rhs.span().end;
         Self::Prefix(Box::new(PrefixNode { operator: o, base: rhs, span }))
     }
+    /// Build a new suffix expression
     pub fn suffix(o: OperatorNode, lhs: Self) -> Self {
         let span = lhs.span().start..o.span.end;
         Self::Suffix(Box::new(PostfixNode { operator: o, base: lhs, span }))
     }
+    /// Build a new expression with generic call
     pub fn call_generic(base: Self, rest: GenericCallNode) -> Self {
         let span = base.span().start..rest.span.end;
         ExpressionType::GenericCall(Box::new(CallNode { base, rest, span }))
     }
+    /// Build a new expression with apply call
     pub fn call_apply(base: Self, rest: ApplyCallNode) -> Self {
         let span = base.span().start..rest.span.end;
         ExpressionType::Apply(Box::new(CallNode { base, rest, span }))
     }
+    /// Build a new expression with apply dot call
     pub fn dot_apply(base: Self, rest: ApplyDotNode) -> Self {
         let span = base.span().start..rest.span.end;
         ExpressionType::ApplyDot(Box::new(CallNode { base, rest, span }))
     }
+    /// Build a new expression with subscript call
     pub fn call_subscript(base: Self, rest: SubscriptNode) -> Self {
         let span = base.span().start..rest.span.end;
         ExpressionType::Subscript(Box::new(CallNode { base, rest, span }))
     }
+    /// Build a new expression with lambda call
     pub fn call_lambda(base: Self, rest: LambdaCallNode) -> Self {
         let span = base.span().start..rest.span.end;
         ExpressionType::LambdaCall(Box::new(CallNode { base, rest, span }))
     }
+    /// Build a new expression with lambda dot call
     pub fn dot_lambda(base: Self, rest: LambdaDotNode) -> Self {
         let span = base.span().start..rest.span.end;
         ExpressionType::LambdaDot(Box::new(CallNode { base, rest, span }))
     }
+    /// Build a new expression with dot match
     pub fn dot_match(base: Self, rest: MatchDotStatement) -> Self {
         let span = base.span().start..rest.span.end;
         ExpressionType::MatchDot(Box::new(CallNode { base, rest, span }))
