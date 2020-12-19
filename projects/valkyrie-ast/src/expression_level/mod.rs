@@ -14,10 +14,11 @@ pub mod table;
 pub mod view;
 
 use crate::{
-    ApplyCallNode, ApplyDotNode, ArgumentTermNode, CallNode, CallTermNode, CollectsNode, GenericCallNode, IdentifierNode,
-    IfLetStatement, IfStatement, InfixNode, LambdaCallNode, LambdaDotNode, LambdaSlotNode, MatchDotStatement, MonadicDotCall,
-    NamePathNode, NewConstructNode, NumberLiteralNode, OperatorNode, PatternBlock, PostfixNode, PrefixNode, RaiseNode,
-    StatementNode, StringLiteralNode, StringTextNode, SubscriptNode, SwitchStatement, TableNode, TableTermNode, TryStatement,
+    helper::ValkyrieNode, ApplyCallNode, ApplyDotNode, ArgumentTermNode, CallNode, CallTermNode, CollectsNode, GenericCallNode,
+    IdentifierNode, IfLetStatement, IfStatement, InfixNode, LambdaCallNode, LambdaDotNode, LambdaSlotNode, MatchDotStatement,
+    MonadicDotCall, NamePathNode, NewConstructNode, NumberLiteralNode, OperatorNode, PatternBlock, PostfixNode, PrefixNode,
+    RaiseNode, StatementNode, StringLiteralNode, StringTextNode, SubscriptNode, SwitchStatement, TableNode, TableTermNode,
+    TryStatement,
 };
 use alloc::{
     borrow::ToOwned,
@@ -167,52 +168,52 @@ impl TypingExpression {
 impl ExpressionType {
     /// Build a new binary expression
     pub fn binary(o: OperatorNode, lhs: Self, rhs: Self) -> Self {
-        let span = lhs.span().start..rhs.span().end;
+        let span = lhs.get_start()..rhs.get_end();
         Self::Binary(Box::new(InfixNode { operator: o, lhs, rhs, span }))
     }
     /// Build a new prefix expression
     pub fn prefix(o: OperatorNode, rhs: Self) -> Self {
-        let span = o.span.start..rhs.span().end;
+        let span = o.span.start..rhs.get_end();
         Self::Prefix(Box::new(PrefixNode { operator: o, base: rhs, span }))
     }
     /// Build a new suffix expression
     pub fn suffix(o: OperatorNode, lhs: Self) -> Self {
-        let span = lhs.span().start..o.span.end;
+        let span = lhs.get_start()..o.span.end;
         Self::Suffix(Box::new(PostfixNode { operator: o, base: lhs, span }))
     }
     /// Build a new expression with generic call
     pub fn call_generic(base: Self, rest: GenericCallNode) -> Self {
-        let span = base.span().start..rest.span.end;
+        let span = base.get_start()..rest.span.end;
         ExpressionType::GenericCall(Box::new(CallNode { base, rest, span }))
     }
     /// Build a new expression with apply call
     pub fn call_apply(base: Self, rest: ApplyCallNode) -> Self {
-        let span = base.span().start..rest.span.end;
+        let span = base.get_start()..rest.span.end;
         ExpressionType::Apply(Box::new(CallNode { base, rest, span }))
     }
     /// Build a new expression with apply dot call
     pub fn dot_apply(base: Self, rest: ApplyDotNode) -> Self {
-        let span = base.span().start..rest.span.end;
+        let span = base.get_start()..rest.span.end;
         ExpressionType::ApplyDot(Box::new(CallNode { base, rest, span }))
     }
     /// Build a new expression with subscript call
     pub fn call_subscript(base: Self, rest: SubscriptNode) -> Self {
-        let span = base.span().start..rest.span.end;
+        let span = base.get_start()..rest.span.end;
         ExpressionType::Subscript(Box::new(CallNode { base, rest, span }))
     }
     /// Build a new expression with lambda call
     pub fn call_lambda(base: Self, rest: LambdaCallNode) -> Self {
-        let span = base.span().start..rest.span.end;
+        let span = base.get_start()..rest.span.end;
         ExpressionType::LambdaCall(Box::new(CallNode { base, rest, span }))
     }
     /// Build a new expression with lambda dot call
     pub fn dot_lambda(base: Self, rest: LambdaDotNode) -> Self {
-        let span = base.span().start..rest.span.end;
+        let span = base.get_start()..rest.span.end;
         ExpressionType::LambdaDot(Box::new(CallNode { base, rest, span }))
     }
     /// Build a new expression with dot match
     pub fn dot_match(base: Self, rest: MatchDotStatement) -> Self {
-        let span = base.span().start..rest.span.end;
+        let span = base.get_start()..rest.span.end;
         ExpressionType::MatchDot(Box::new(CallNode { base, rest, span }))
     }
 }

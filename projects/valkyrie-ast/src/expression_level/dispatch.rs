@@ -1,4 +1,5 @@
 use super::*;
+use crate::helper::ValkyrieNode;
 
 impl Default for ExpressionType {
     fn default() -> Self {
@@ -72,8 +73,8 @@ impl PrettyPrint for PostfixCallPart {
     }
 }
 
-impl ExpressionType {
-    pub fn span(&self) -> Range<u32> {
+impl ValkyrieNode for ExpressionType {
+    fn get_range(&self) -> Range<u32> {
         match self {
             Self::Placeholder => unreachable!(),
             Self::Slot(node) => node.span.clone(),

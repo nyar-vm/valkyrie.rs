@@ -34,9 +34,12 @@ pub struct NewConstructNode {
     pub span: Range<u32>,
 }
 
+/// `{ 1: x, p: y, [a, b]: c, **list, ***dict }`
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct CollectsNode {
+    /// The collect terms
     pub terms: Vec<TableTermNode>,
+    /// The range of the node
     pub span: Range<u32>,
 }
