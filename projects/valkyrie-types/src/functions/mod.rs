@@ -42,6 +42,9 @@ pub struct ValkyriePartialFunction {
     pub named: BTreeMap<String, ValkyrieValue>,
 }
 
+/// if the code contains loop, it will be compiled into a state machine
+pub struct ValkyrieFSM {}
+
 #[derive(Clone, Debug)]
 pub struct DefinitionSpan {
     file: String,
@@ -56,5 +59,15 @@ impl DefinitionSpan {
         let workspace = workspace.as_ref();
         let file = workspace.join(&self.file);
         file
+    }
+}
+
+impl std::io::Write for DefinitionSpan {
+    fn write(&mut self, buf: &[u8]) -> std::io::Result<usize> {
+        todo!()
+    }
+
+    fn flush(&mut self) -> std::io::Result<()> {
+        todo!()
     }
 }

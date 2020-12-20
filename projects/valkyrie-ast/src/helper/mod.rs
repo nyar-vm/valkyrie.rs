@@ -1,3 +1,4 @@
+use alloc::{collections::BTreeMap, string::String};
 #[doc = include_str!("readme.md")]
 use core::ops::Range;
 

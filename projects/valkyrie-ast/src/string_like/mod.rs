@@ -1,3 +1,8 @@
+pub mod string_formatter;
+pub mod string_html;
+pub mod string_literal;
+pub mod string_template;
+
 use crate::{ExpressionType, IdentifierNode};
 use alloc::{
     string::{String, ToString},
@@ -8,7 +13,3 @@ use core::{
     ops::Range,
 };
 use pretty_print::{PrettyPrint, PrettyProvider, PrettyTree};
-
-pub mod string_formatter;
-pub mod string_literal;
-pub mod string_template;

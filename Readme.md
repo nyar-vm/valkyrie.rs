@@ -1,13 +1,10 @@
-Notedown Render with Rust
-=========================
+Valkyrie Language Native Runtime
+================================
 
-*AWSL Window Structure Language*
+The project contains the following language facilities
+- [AST Definitions](./projects/valkyrie-ast)
+- [Parser Combinator](./projects/valkyrie-parser)
+- [Builtin Type Definitions](./projects/valkyrie-types)
+- FFI to call Rust from Valkyrie
+- Language Server Protocol
 
-*Another Webpage Service Language*
-
-*Awesome Webview Simplified Language*
-
-
-### Sub projects
-
-- notedown-ast
