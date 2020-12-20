@@ -3,7 +3,7 @@ mod display;
 
 use super::*;
 
-/// `class A⦓T: S = K⦔` or `class A<T: S = K>`
+/// `class A⦓T: S = K⦔` or `class A::(T: S = K)`
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct GenericArgument {
@@ -13,7 +13,7 @@ pub struct GenericArgument {
     pub span: Range<u32>,
 }
 
-/// `A⦓T⦔` or `A::<T>` or `A(G: T)`
+/// `A⦓T⦔` or `A::(T)` or `A(G: T)`
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct GenericCallNode {
@@ -23,14 +23,18 @@ pub struct GenericCallNode {
     pub span: Range<u32>,
 }
 
+/// `T: Type = type_expression`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct GenericArgumentTerm {
+    /// Typed generic argument term
     pub term: ArgumentTermNode<IdentifierNode, ExpressionNode, ExpressionNode>,
 }
 
+/// `T: Type + Trait`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct GenericCallTerm {
+    /// Typed generic call term
     pub term: CallTermNode<IdentifierNode, ExpressionNode>,
 }

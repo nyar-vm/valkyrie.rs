@@ -5,9 +5,13 @@ impl ThisParser for GenericArgument {
         let (state, terms) = input
             .begin_choice()
             .choose(|s| {
-                let (state, _) = s.match_optional(parse_name_join)?;
-                let pat = BracketPattern::new("<", ">");
+                let (state, _) = parse_name_join(s)?;
+                let pat = BracketPattern::new("(", ")");
                 pat.consume(state.skip(ignore), ignore, GenericArgumentTerm::parse)
+            })
+            .choose(|s| {
+                let pat = BracketPattern::new("<", ">");
+                pat.consume(s, ignore, GenericArgumentTerm::parse)
             })
             .choose(|s| {
                 let pat = BracketPattern::new("⦓", "⦔");

@@ -44,8 +44,8 @@ impl ThisParser for GenericCallTerm {
 }
 
 fn qwerty_generic(input: ParseState) -> ParseResult<GenericCallNode> {
-    let (state, _) = input.match_optional(parse_name_join)?;
-    let pat = BracketPattern::new("<", ">");
+    let (state, _) = parse_name_join(input)?;
+    let pat = BracketPattern::new("(", ")");
     let (state, terms) = pat.consume(state.skip(ignore), ignore, GenericCallTerm::parse)?;
     state.finish(GenericCallNode { terms: terms.body, span: get_span(input, state) })
 }

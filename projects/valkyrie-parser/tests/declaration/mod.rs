@@ -13,7 +13,7 @@ fn lex_function() {}
 
 #[test]
 fn test_apply() {
-    let raw = "::<B>";
+    let raw = "::(B)";
     let apply = GenericArgument::parse_text(raw).unwrap();
     pretty_print(&apply)
 }

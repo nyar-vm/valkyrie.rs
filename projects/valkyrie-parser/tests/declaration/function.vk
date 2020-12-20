@@ -12,7 +12,7 @@ micro function(a, k: T, p: U = 1) -> R {
 }
 
 
-micro function::<G, R>(g: G) -> R {
+micro function<G, R>(g: G) -> R {
     1 + 1
     a in b
     print("Hello, world!")

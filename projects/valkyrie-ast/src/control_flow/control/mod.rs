@@ -1,21 +1,24 @@
 use super::*;
-use crate::ExpressionType;
+
 mod display;
 
 /// always equivalent to a statement that returns `( )`, and cannot be used as an `rvalue`.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ControlNode {
+    /// The type of control flow
     pub r#type: ControlType,
+    /// The label of the control flow
     pub expression: Option<ExpressionNode>,
     /// The range of the node
     pub span: Range<u32>,
 }
 
-/// `resume DivideZero()`
+/// `raise DivideZero()`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct RaiseNode {
+    /// The raised expression
     pub expression: Option<ExpressionType>,
     /// The range of the node
     pub span: Range<u32>,

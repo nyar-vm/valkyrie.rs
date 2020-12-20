@@ -59,7 +59,6 @@ impl ImportAliasNode {
 
 /// A resolved import item
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ImportResolvedItem {
     /// The annotation of the import
     pub annotation: Option<Arc<AnnotationList>>,

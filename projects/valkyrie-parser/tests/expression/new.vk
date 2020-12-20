@@ -7,10 +7,10 @@ new C {
 };
 
 
-new D<>;
+new D::();
 
 
-new E<>(){};
+new E::()(){};
 
 new stack List
 {
@@ -18,11 +18,11 @@ new stack List
 }
 
 
-new Integer<A> () {
+new Integer::(A)() {
 
 }
 
-new stack List<A> () {
+new stack List::(A) () {
 
 }
 
@@ -31,7 +31,7 @@ new stack List(10)
     0, 1, 2, 3, 4, 5, 6, 7, 8, 9
 }
 
-new stack List<T: Integer>(capacity: 10)
+new stack List::(T: Integer)(capacity: 10)
 {
     0, 1, 2, 3, 4, 5, 6, 7, 8, 9
 }
@@ -46,7 +46,7 @@ new stack Object {
 
 
 
-new keywords BaseballTeam<T> (args) {
+new keywords BaseballTeam::(T) (args) {
     name: "object one",
     Size: Math::PI,
     ["RF"]: "Mookie Betts",

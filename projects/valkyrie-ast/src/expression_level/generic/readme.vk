@@ -16,10 +16,7 @@ vow A, B, C, D, E, F, G
         T: A
     }
 }
-like(a)
-{
-    callback
-}
+micro like(a)
 {
     callback
 }

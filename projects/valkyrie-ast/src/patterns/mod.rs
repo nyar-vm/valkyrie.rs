@@ -1,3 +1,5 @@
+mod display;
+
 use crate::{ArgumentKeyNode, ExpressionNode, IdentifierNode, NamePathNode, StatementNode};
 use alloc::{boxed::Box, vec, vec::Vec};
 use core::ops::Range;
@@ -8,9 +10,7 @@ use pretty_print::{
     PrettyBuilder, PrettyPrint, PrettyProvider, PrettyTree,
 };
 
-mod display;
-
-/// A pattern match statement
+/// A pattern match statement block
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct PatternBlock {
@@ -20,6 +20,7 @@ pub struct PatternBlock {
     pub span: Range<u32>,
 }
 
+/// A pattern match branch
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct PatternBranch {
@@ -31,9 +32,11 @@ pub struct PatternBranch {
     pub span: Range<u32>,
 }
 
+/// The continuation of a pattern branch
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct PatternStatements {
+    /// The statements of the branch
     pub terms: Vec<StatementNode>,
 }
 
@@ -76,7 +79,9 @@ pub enum PatternCondition {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct PatternCaseNode {
+    /// `case bind <- Some(a)`
     pub pattern: ExpressionNode,
+    /// `case a | b | c`
     pub guard: Option<PatternGuard>,
     /// The range of the node
     pub span: Range<u32>,
@@ -117,6 +122,7 @@ pub struct PatternCaseNode {
 #[derive(Clone, Debug, PartialEq, Eq, Hash, From)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum PatternExpressionType {
+    /// `a, 'string', number, bool`
     Symbol(Box<ArgumentKeyNode>),
     /// `(mut a, mut b)`
     Tuple(Box<TuplePatternNode>),
@@ -132,12 +138,37 @@ pub enum PatternExpressionType {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct UnionPatternNode {
+    /// `case bind <- Some(a)`
     pub bind: Option<IdentifierNode>,
+    /// `case a | b | c`
     pub terms: Vec<PatternExpressionType>,
+    /// The range of the node
     pub span: Range<u32>,
 }
 
 /// `case a <- Named(ref a, mut b, c)`
+///
+/// ```vk
+/// match term {
+///     case bind@module::Name(ref a, mut b, c) if a > 0:
+///         body
+/// }
+/// ```
+///
+///
+/// ```vk
+/// let bind = term;
+/// # Option<(?, ?, ?)>
+/// let unapply = module::Name::extract(bind);
+/// if unapply.is_none() {
+///     break;
+/// }
+/// # (?, ?, ?)
+/// let bind = unapply!;
+/// let a = unapply!.0;
+/// let b = unapply!.1;
+/// let c = unapply!.2;
+/// ```
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct TuplePatternNode {
@@ -152,6 +183,29 @@ pub struct TuplePatternNode {
 }
 
 /// `case a <- Named { a: b, c: d }`
+///
+///
+/// ```vk
+/// match term {
+///     case bind@module::Name {ref a, mut b, c} if a > 0:
+///         body()
+/// }
+/// ```
+///
+///
+/// ```vk
+/// let bind = term;
+/// # Option<(?, ?, ?)>
+/// let unapply = module::Name::extract(bind);
+/// if unapply.is_none() {
+///     break;
+/// }
+/// # (?, ?, ?)
+/// let bind = unapply!;
+/// let a = unapply!.0;
+/// let b = unapply!.1;
+/// let c = unapply!.2;
+/// ```
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ClassPatternNode {
@@ -166,6 +220,28 @@ pub struct ClassPatternNode {
 }
 
 /// `bind <- [a, b, **]`
+///
+/// ```vk
+/// match term {
+///     case bind@module::Name[ref a, mut b, c] if a > 0:
+///         body()
+/// }
+/// ```
+///
+///
+/// ```vk
+/// let bind = term;
+/// # Option<(?, ?, ?)>
+/// let unapply = module::Name::extract(bind);
+/// if unapply.is_none() {
+///     break;
+/// }
+/// # (?, ?, ?)
+/// let bind = unapply!;
+/// let a = unapply!.0;
+/// let b = unapply!.1;
+/// let c = unapply!.2;
+/// ```
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ArrayPatternNode {
@@ -181,7 +257,9 @@ pub struct ArrayPatternNode {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ImplicitCaseNode {
+    /// `Soma(a) | Success { value :a }`
     pub pattern: PatternExpressionType,
+    /// `:=`
     pub body: ExpressionNode,
     /// The range of the node
     pub span: Range<u32>,
@@ -196,6 +274,7 @@ pub struct ImplicitCaseNode {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct PatternWhenNode {
+    /// The condition of the when
     pub guard: ExpressionNode,
     /// The range of the node
     pub span: Range<u32>,
@@ -204,20 +283,33 @@ pub struct PatternWhenNode {
 /// `type Integer | Decimal:`
 ///
 ///
+///
 /// ```vk
 /// type Integer | Decimal:
 /// case x if (x is (Integer | Decimal)):
 /// ```
+///
+///
+/// ```vk
+/// if x is Integer {
+///
+/// }
+/// else if x is Decimal {
+///
+/// }
+/// ````
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct PatternTypeNode {
+    /// The type of the pattern
     pub pattern: ExpressionNode,
+    /// The range of the node
     pub guard: Option<PatternGuard>,
     /// The range of the node
     pub span: Range<u32>,
 }
 
-/// `else:`
+/// `else: ...`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct PatternElseNode {
