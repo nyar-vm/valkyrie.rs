@@ -5,6 +5,7 @@ mod codegen;
 mod functions;
 mod modifiers;
 // #[cfg(test)]
+mod encoding;
 pub mod testing;
 pub mod third_party;
 mod traits;
