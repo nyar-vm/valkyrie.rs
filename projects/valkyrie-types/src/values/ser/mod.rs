@@ -7,41 +7,45 @@ impl Serialize for ValkyrieValue {
         S: Serializer,
     {
         match self {
-            ValkyrieValue::Nothing => {
+            Self::Uninitialized => {
                 todo!()
             }
-            ValkyrieValue::Null => serializer.serialize_none(),
-            ValkyrieValue::Unit => serializer.serialize_unit(),
-            ValkyrieValue::Boolean(v) => serializer.serialize_bool(*v),
-            ValkyrieValue::Integer(v) => v.serialize(serializer),
-            ValkyrieValue::Decimal(v) => serializer.serialize_f64(*v),
-            ValkyrieValue::UTF8Character(v) => serializer.serialize_char(*v),
-            ValkyrieValue::UTF8String(v) => serializer.serialize_str(v),
-            ValkyrieValue::Bytes(_) => {
+            Self::Nothing => {
                 todo!()
             }
-            ValkyrieValue::Class(_) => {
+            Self::Null => serializer.serialize_none(),
+            Self::Unit => serializer.serialize_unit(),
+            Self::Boolean(v) => serializer.serialize_bool(*v),
+            Self::Integer(v) => v.serialize(serializer),
+            Self::Decimal(v) => serializer.serialize_f64(*v),
+            Self::UTF8Character(v) => serializer.serialize_char(*v),
+            Self::UTF8String(v) => serializer.serialize_str(v),
+            Self::Bytes(_) => {
                 todo!()
             }
-            ValkyrieValue::Variant(_) => {
+            Self::Class(_) => {
                 todo!()
             }
-            ValkyrieValue::Json(_) => {
+            Self::Variant(_) => {
                 todo!()
             }
-            ValkyrieValue::NDArray(_) => {
+            Self::Json(_) => {
                 todo!()
             }
-            ValkyrieValue::Image(_) => {
+            Self::NDArray(_) => {
                 todo!()
             }
-            ValkyrieValue::DataFrame(_) => {
+            Self::Image(_) => {
                 todo!()
             }
-            ValkyrieValue::Table(_) => {
+            #[cfg(feature = "polars")]
+            Self::DataFrame(_) => {
                 todo!()
             }
-            ValkyrieValue::Html(_) => {
+            Self::Table(_) => {
+                todo!()
+            }
+            Self::Html(_) => {
                 todo!()
             }
         }

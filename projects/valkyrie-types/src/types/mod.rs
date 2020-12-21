@@ -31,29 +31,31 @@ impl Default for ValkyrieValue {
 }
 
 impl ValkyrieType for ValkyrieValue {
-    fn boxed(self) -> ValkyrieValue {
+    fn boxed(self) -> Self {
         self
     }
 
     fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
         match self {
-            ValkyrieValue::Nothing => primitive_type("std.primitive.Never"),
-            ValkyrieValue::Null => primitive_type("std.primitive.Null"),
-            ValkyrieValue::Unit => primitive_type("std.primitive.Unit"),
-            ValkyrieValue::Boolean(v) => v.dynamic_type(),
-            ValkyrieValue::Integer(v) => v.dynamic_type(),
-            ValkyrieValue::Decimal(v) => v.dynamic_type(),
-            ValkyrieValue::UTF8Character(v) => v.dynamic_type(),
-            ValkyrieValue::UTF8String(v) => v.dynamic_type(),
-            ValkyrieValue::Bytes(v) => v.dynamic_type(),
-            ValkyrieValue::Class(v) => v.dynamic_type(),
-            ValkyrieValue::Variant(v) => v.dynamic_type(),
-            ValkyrieValue::Json(v) => v.dynamic_type(),
-            ValkyrieValue::NDArray(v) => v.dynamic_type(),
-            ValkyrieValue::Image(v) => v.dynamic_type(),
-            ValkyrieValue::DataFrame(v) => v.dynamic_type(),
-            ValkyrieValue::Table(v) => v.dynamic_type(),
-            ValkyrieValue::Html(_) => primitive_type("html.Html"),
+            Self::Uninitialized => primitive_type("std.primitive.Uninitialized"),
+            Self::Nothing => primitive_type("std.primitive.Never"),
+            Self::Null => primitive_type("std.primitive.Null"),
+            Self::Unit => primitive_type("std.primitive.Unit"),
+            Self::Boolean(v) => v.dynamic_type(),
+            Self::Integer(v) => v.dynamic_type(),
+            Self::Decimal(v) => v.dynamic_type(),
+            Self::UTF8Character(v) => v.dynamic_type(),
+            Self::UTF8String(v) => v.dynamic_type(),
+            Self::Bytes(v) => v.dynamic_type(),
+            Self::Class(v) => v.dynamic_type(),
+            Self::Variant(v) => v.dynamic_type(),
+            Self::Json(v) => v.dynamic_type(),
+            Self::NDArray(v) => v.dynamic_type(),
+            Self::Image(v) => v.dynamic_type(),
+            #[cfg(feature = "polars")]
+            Self::DataFrame(v) => v.dynamic_type(),
+            Self::Table(v) => v.dynamic_type(),
+            Self::Html(_) => primitive_type("html.Html"),
         }
     }
 }

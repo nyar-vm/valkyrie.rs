@@ -164,6 +164,4 @@ button {
     event(click, handleClick)
     "Clicked {count} {count === 1 ? 'time' : 'times'}"
 }
-
-
 ```

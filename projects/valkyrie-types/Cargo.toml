@@ -19,7 +19,7 @@ inwelling = "0.5.0"
 itertools = "0.10.5"
 image = { version = "0.24.6", features = [] }
 ndarray = { version = "0.15.6", features = [] }
-polars = { version = "0.30.0", features = ["lazy"]}
+polars = { version = "0.30.0", features = ["lazy"], optional = true }
 
 [dependencies.valkyrie-error]
 version = "0.1.3"

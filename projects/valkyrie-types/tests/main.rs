@@ -1,4 +1,3 @@
-use std::ops::{Add, BitOr};
 use valkyrie_types::testing::assert_type;
 
 #[test]

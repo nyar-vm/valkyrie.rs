@@ -1,4 +1,5 @@
 pub mod boolean;
+#[cfg(feature = "polars")]
 pub mod data_frame;
 pub mod images;
 pub mod json_like;

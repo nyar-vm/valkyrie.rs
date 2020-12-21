@@ -1,6 +1,5 @@
 use super::*;
 
-
 impl Debug for ValkyrieInfix {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         write!(f, "Infix({}, {:?})", self.as_operator().kind.as_str(), self.span)
@@ -42,6 +41,7 @@ static INFIX: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(
         r#"^(?x)(
       [.]{2}[=<]
+    | [‥…]
     # | [.]{1,3}
     # | [⟦⟧⟬⟭{}\[\]()]
     | [$§¶^]

@@ -1,5 +1,9 @@
 
 
+```vk
+type Action<..T> = Function<..T, ()>
+```
+
 
 
 

@@ -4,8 +4,10 @@ use std::{fmt::Debug, sync::Arc};
 mod der;
 mod ser;
 
+#[cfg(feature = "polars")]
+use crate::builtin::data_frame::ValkyrieDataFrame;
 use crate::{
-    builtin::{data_frame::ValkyrieDataFrame, images::ValkyrieImage, ndarray::ValkyrieNDArray},
+    builtin::{images::ValkyrieImage, ndarray::ValkyrieNDArray},
     JsonValue, ValkyrieClassType, ValkyrieTable, ValkyrieVariantType,
 };
 
@@ -13,6 +15,10 @@ use crate::{
 pub enum ValkyrieValue {
     /// ADT = -1
     Nothing,
+    /// An uninitialized value, null for pointer types, and default for value types
+    ///
+    /// Trying to read from an uninitialized value is a fatal error.
+    Uninitialized,
     /// ADT = 0
     Null,
     /// ADT = 1
@@ -32,6 +38,7 @@ pub enum ValkyrieValue {
     Html(Arc<String>),
     NDArray(Arc<ValkyrieNDArray>),
     Image(Arc<ValkyrieImage>),
+    #[cfg(feature = "polars")]
     DataFrame(Arc<ValkyrieDataFrame>),
     Table(Arc<ValkyrieTable>),
     Class(Arc<ValkyrieClassType>),
