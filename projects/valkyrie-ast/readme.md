@@ -46,7 +46,7 @@ try {
 }
 .catch {
     case Logging(level, message):
-        write(stdout(), message)
+        std::io::std_err().lock().write(message)
 }
 ```
 

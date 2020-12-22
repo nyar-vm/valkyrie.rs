@@ -1,4 +1,5 @@
 use super::*;
+use dashu::float::FBig;
 
 impl ValkyrieType for JsonValue {
     fn boxed(self) -> ValkyrieValue {
@@ -13,7 +14,7 @@ impl ValkyrieType for JsonValue {
                     ValkyrieValue::Integer(v.as_u64().unwrap().into())
                 }
                 else if v.is_f64() {
-                    ValkyrieValue::Decimal(v.as_f64().unwrap())
+                    ValkyrieValue::Decimal(FBig::try_from(v.as_f64().unwrap()).unwrap())
                 }
                 else {
                     todo!()

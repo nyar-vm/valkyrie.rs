@@ -1,10 +1,30 @@
 use super::*;
+use crate::ExpressionNode;
 
-/// `f"string %d %s %f"`
+#[doc = include_str!("readme.md")]
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct StringFormatter {
-    pub items: Vec<u32>,
+    /// The raw string of the number.
+    pub items: Vec<ExpressionNode>,
     /// The range of the node
     pub span: Range<u32>,
+}
+
+/// `expr.format(r"?x")`
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ExpressionFormatted {
+    /// The raw string of the number.
+    pub body: ExpressionNode,
+    /// The format arguments
+    pub arguments: String,
+    /// The range of the node
+    pub span: Range<u32>,
+}
+
+impl PrettyPrint for ExpressionFormatted {
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        todo!()
+    }
 }

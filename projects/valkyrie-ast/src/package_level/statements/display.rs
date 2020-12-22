@@ -31,8 +31,8 @@ impl PrettyPrint for StatementType {
             Self::Document(node) => node.pretty(theme),
             Self::LetBind(node) => node.pretty(theme),
             Self::Guard(node) => node.pretty(theme),
-            Self::Flags(node) => node.pretty(theme),
             Self::GuardLet(node) => node.pretty(theme),
+            Self::Flags(node) => node.pretty(theme),
         }
     }
 }

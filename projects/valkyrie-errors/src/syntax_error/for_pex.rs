@@ -7,7 +7,7 @@ impl From<StopBecause> for SyntaxError {
         let Range { start, end } = error.range();
         SyntaxError {
             info: error.to_string(),
-            file: Default::default(),
+            span: Default::default(),
             span: (start as u32)..(end as u32),
             level: Default::default(),
         }

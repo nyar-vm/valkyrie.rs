@@ -102,25 +102,25 @@ impl<'de> Visitor<'de> for ValueVisitor {
         Ok(ValkyrieValue::Integer(IBig::from(v)))
     }
 
-    fn visit_f32<E>(self, v: f32) -> Result<Self::Value, E>
+    fn visit_f32<E>(self, _: f32) -> Result<Self::Value, E>
     where
         E: Error,
     {
-        Ok(ValkyrieValue::Decimal(v as f64))
+        todo!()
     }
 
-    fn visit_f64<E>(self, v: f64) -> Result<Self::Value, E>
+    fn visit_f64<E>(self, _: f64) -> Result<Self::Value, E>
     where
         E: Error,
     {
-        Ok(ValkyrieValue::Decimal(v))
+        todo!()
     }
 
     fn visit_char<E>(self, v: char) -> Result<Self::Value, E>
     where
         E: Error,
     {
-        Ok(ValkyrieValue::UTF8Character(v))
+        Ok(ValkyrieValue::Unicode(v))
     }
 
     fn visit_str<E>(self, v: &str) -> Result<Self::Value, E>

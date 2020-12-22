@@ -44,7 +44,7 @@ impl ValkyrieType for ValkyrieValue {
             Self::Boolean(v) => v.dynamic_type(),
             Self::Integer(v) => v.dynamic_type(),
             Self::Decimal(v) => v.dynamic_type(),
-            Self::UTF8Character(v) => v.dynamic_type(),
+            Self::Unicode(v) => v.dynamic_type(),
             Self::UTF8String(v) => v.dynamic_type(),
             Self::Bytes(v) => v.dynamic_type(),
             Self::Class(v) => v.dynamic_type(),

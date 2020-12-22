@@ -17,8 +17,8 @@ impl Serialize for ValkyrieValue {
             Self::Unit => serializer.serialize_unit(),
             Self::Boolean(v) => serializer.serialize_bool(*v),
             Self::Integer(v) => v.serialize(serializer),
-            Self::Decimal(v) => serializer.serialize_f64(*v),
-            Self::UTF8Character(v) => serializer.serialize_char(*v),
+            Self::Decimal(_) => todo!(),
+            Self::Unicode(v) => serializer.serialize_char(*v),
             Self::UTF8String(v) => serializer.serialize_str(v),
             Self::Bytes(_) => {
                 todo!()

@@ -1,173 +1,153 @@
-use serde::{Serialize, Serializer};
-use valkyrie_error::ValkyrieResult;
+use crate::ValkyrieValue;
+use dashu::{float::FBig, integer::IBig};
+use serde::{ser::SerializeSeq, Serialize, Serializer};
+use std::{
+    alloc::{AllocError, Allocator, Layout},
+    collections::HashMap,
+    io::stderr,
+    ptr::NonNull,
+    sync::Arc,
+};
+use valkyrie_error::{RuntimeError, ValkyrieResult};
 
 /// implicit cast
 /// explicit cast
 /// implicit into
 /// explicit cast
-pub trait IntoValkyrie {}
-
-/// Rust type to valkyrie type
-pub trait ValkyrieEncoder {
-    fn encode_bool(self, v: bool) -> ValkyrieResult<bool>;
+pub trait IntoValkyrie {
+    fn as_valkyrie(&self) -> Result<ValkyrieValue, RuntimeError>;
 }
 
-pub trait FromValkyrie {}
+pub trait FromValkyrie {
+    fn as_rust<T>(&self) -> Result<T, RuntimeError>;
+}
 
-pub struct S {}
+pub struct EncodeAny {}
 
-impl Serializer for S {
-    type Ok = ();
-    type Error = ();
-    type SerializeSeq = ();
-    type SerializeTuple = ();
-    type SerializeTupleStruct = ();
-    type SerializeTupleVariant = ();
-    type SerializeMap = ();
-    type SerializeStruct = ();
-    type SerializeStructVariant = ();
+pub struct EncodeList {
+    items: Vec<ValkyrieValue>,
+}
 
-    fn serialize_bool(self, v: bool) -> Result<Self::Ok, Self::Error> {
+impl EncodeAny {
+    pub fn encode_bool(self, v: bool) -> Result<ValkyrieValue, RuntimeError> {
+        Ok(ValkyrieValue::Boolean(v))
+    }
+
+    pub fn encode_u8(self, v: u8) -> Result<ValkyrieValue, RuntimeError> {
+        Ok(ValkyrieValue::Integer(IBig::from(v)))
+    }
+
+    pub fn encode_u16(self, v: u16) -> Result<ValkyrieValue, RuntimeError> {
+        Ok(ValkyrieValue::Integer(IBig::from(v)))
+    }
+
+    pub fn encode_u32(self, v: u32) -> Result<ValkyrieValue, RuntimeError> {
+        Ok(ValkyrieValue::Integer(IBig::from(v)))
+    }
+
+    pub fn encode_u64(self, v: u64) -> Result<ValkyrieValue, RuntimeError> {
+        Ok(ValkyrieValue::Integer(IBig::from(v)))
+    }
+
+    pub fn encode_u128(self, v: u128) -> Result<ValkyrieValue, RuntimeError> {
+        Ok(ValkyrieValue::Integer(IBig::from(v)))
+    }
+
+    pub fn encode_usize(self, v: usize) -> Result<ValkyrieValue, RuntimeError> {
+        Ok(ValkyrieValue::Integer(IBig::from(v)))
+    }
+
+    pub fn encode_i8(self, v: i8) -> Result<ValkyrieValue, RuntimeError> {
+        Ok(ValkyrieValue::Integer(IBig::from(v)))
+    }
+
+    pub fn encode_i16(self, v: i16) -> Result<ValkyrieValue, RuntimeError> {
+        Ok(ValkyrieValue::Integer(IBig::from(v)))
+    }
+
+    pub fn encode_i32(self, v: i32) -> Result<ValkyrieValue, RuntimeError> {
+        Ok(ValkyrieValue::Integer(IBig::from(v)))
+    }
+
+    pub fn encode_i64(self, v: i64) -> Result<ValkyrieValue, RuntimeError> {
+        Ok(ValkyrieValue::Integer(IBig::from(v)))
+    }
+
+    pub fn encode_i128(self, v: i128) -> Result<ValkyrieValue, RuntimeError> {
+        Ok(ValkyrieValue::Integer(IBig::from(v)))
+    }
+
+    pub fn encode_isize(self, v: isize) -> Result<ValkyrieValue, RuntimeError> {
+        Ok(ValkyrieValue::Integer(IBig::from(v)))
+    }
+
+    pub fn encode_f32(self, v: f32) -> Result<ValkyrieValue, RuntimeError> {
+        Ok(ValkyrieValue::Decimal(FBig::try_from(v)?))
+    }
+
+    pub fn encode_f64(self, v: f64) -> Result<ValkyrieValue, RuntimeError> {
+        Ok(ValkyrieValue::Decimal(FBig::try_from(v)?))
+    }
+
+    pub fn encode_unicode(self, v: char) -> Result<ValkyrieValue, RuntimeError> {
+        Ok(ValkyrieValue::Unicode(v))
+    }
+
+    pub fn encode_utf8(self, v: &str) -> Result<ValkyrieValue, RuntimeError> {
+        Ok(ValkyrieValue::UTF8String(Arc::new(v.to_owned())))
+    }
+
+    pub fn encode_bytes(self, v: &[u8]) -> Result<ValkyrieValue, RuntimeError> {
+        Ok(ValkyrieValue::Bytes(Arc::new(v.to_vec())))
+    }
+
+    pub fn encode_some<T: IntoValkyrie>(self, v: ValkyrieValue) -> Result<ValkyrieValue, RuntimeError> {
         todo!()
     }
 
-    fn serialize_i8(self, v: i8) -> Result<Self::Ok, Self::Error> {
+    pub fn encode_none(self) -> Result<ValkyrieValue, RuntimeError> {
         todo!()
     }
 
-    fn serialize_i16(self, v: i16) -> Result<Self::Ok, Self::Error> {
+    pub fn encode_success<T: IntoValkyrie>(self, v: ValkyrieValue) -> Result<ValkyrieValue, RuntimeError> {
         todo!()
     }
 
-    fn serialize_i32(self, v: i32) -> Result<Self::Ok, Self::Error> {
+    pub fn encode_failure<T: IntoValkyrie>(self, v: ValkyrieValue) -> Result<ValkyrieValue, RuntimeError> {
         todo!()
     }
 
-    fn serialize_i64(self, v: i64) -> Result<Self::Ok, Self::Error> {
+    pub fn encode_unit(self) -> Result<ValkyrieValue, RuntimeError> {
         todo!()
     }
 
-    fn serialize_u8(self, v: u8) -> Result<Self::Ok, Self::Error> {
+    pub fn encode_unit_structure(self, name: &'static str) -> Result<ValkyrieValue, RuntimeError> {
         todo!()
     }
 
-    fn serialize_u16(self, v: u16) -> Result<Self::Ok, Self::Error> {
+    pub fn encode_unit_variant(self, name: &'static str, variant_index: u32) -> Result<ValkyrieValue, RuntimeError> {
         todo!()
     }
 
-    fn serialize_u32(self, v: u32) -> Result<Self::Ok, Self::Error> {
+    pub fn encode_unit_flags(self, name: &'static str, flags: u32) -> Result<ValkyrieValue, RuntimeError> {
         todo!()
     }
 
-    fn serialize_u64(self, v: u64) -> Result<Self::Ok, Self::Error> {
-        todo!()
+    pub fn encode_list(self, capacity: usize) -> Result<EncodeList, RuntimeError> {
+        Ok(EncodeList { items: Vec::with_capacity(capacity) })
     }
+}
 
-    fn serialize_f32(self, v: f32) -> Result<Self::Ok, Self::Error> {
-        todo!()
-    }
-
-    fn serialize_f64(self, v: f64) -> Result<Self::Ok, Self::Error> {
-        todo!()
-    }
-
-    fn serialize_char(self, v: char) -> Result<Self::Ok, Self::Error> {
-        todo!()
-    }
-
-    fn serialize_str(self, v: &str) -> Result<Self::Ok, Self::Error> {
-        todo!()
-    }
-
-    fn serialize_bytes(self, v: &[u8]) -> Result<Self::Ok, Self::Error> {
-        todo!()
-    }
-
-    fn serialize_none(self) -> Result<Self::Ok, Self::Error> {
-        todo!()
-    }
-
-    fn serialize_some<T: ?Sized>(self, value: &T) -> Result<Self::Ok, Self::Error>
+impl EncodeList {
+    pub fn encode_element<T>(&mut self, value: &T) -> Result<(), RuntimeError>
     where
-        T: Serialize,
+        T: IntoValkyrie + ?Sized,
     {
-        todo!()
+        self.items.push(value.as_valkyrie()?);
+        Ok(())
     }
 
-    fn serialize_unit(self) -> Result<Self::Ok, Self::Error> {
-        todo!()
-    }
-
-    fn serialize_unit_struct(self, name: &'static str) -> Result<Self::Ok, Self::Error> {
-        todo!()
-    }
-
-    fn serialize_unit_variant(
-        self,
-        name: &'static str,
-        variant_index: u32,
-        variant: &'static str,
-    ) -> Result<Self::Ok, Self::Error> {
-        todo!()
-    }
-
-    fn serialize_newtype_struct<T: ?Sized>(self, name: &'static str, value: &T) -> Result<Self::Ok, Self::Error>
-    where
-        T: Serialize,
-    {
-        todo!()
-    }
-
-    fn serialize_newtype_variant<T: ?Sized>(
-        self,
-        name: &'static str,
-        variant_index: u32,
-        variant: &'static str,
-        value: &T,
-    ) -> Result<Self::Ok, Self::Error>
-    where
-        T: Serialize,
-    {
-        todo!()
-    }
-
-    fn serialize_seq(self, len: Option<usize>) -> Result<Self::SerializeSeq, Self::Error> {
-        todo!()
-    }
-
-    fn serialize_tuple(self, len: usize) -> Result<Self::SerializeTuple, Self::Error> {
-        todo!()
-    }
-
-    fn serialize_tuple_struct(self, name: &'static str, len: usize) -> Result<Self::SerializeTupleStruct, Self::Error> {
-        todo!()
-    }
-
-    fn serialize_tuple_variant(
-        self,
-        name: &'static str,
-        variant_index: u32,
-        variant: &'static str,
-        len: usize,
-    ) -> Result<Self::SerializeTupleVariant, Self::Error> {
-        todo!()
-    }
-
-    fn serialize_map(self, len: Option<usize>) -> Result<Self::SerializeMap, Self::Error> {
-        todo!()
-    }
-
-    fn serialize_struct(self, name: &'static str, len: usize) -> Result<Self::SerializeStruct, Self::Error> {
-        todo!()
-    }
-
-    fn serialize_struct_variant(
-        self,
-        name: &'static str,
-        variant_index: u32,
-        variant: &'static str,
-        len: usize,
-    ) -> Result<Self::SerializeStructVariant, Self::Error> {
+    pub fn finish(self) -> Result<ValkyrieValue, RuntimeError> {
         todo!()
     }
 }

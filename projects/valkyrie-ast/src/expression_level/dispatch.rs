@@ -55,6 +55,7 @@ impl PrettyPrint for ExpressionType {
             Self::Switch(node) => node.pretty(theme),
             Self::Try(node) => node.pretty(theme),
             Self::MatchDot(node) => node.pretty(theme),
+            Self::Formatted(node) => node.pretty(theme),
         }
     }
 }
@@ -99,6 +100,7 @@ impl ValkyrieNode for ExpressionType {
             Self::Switch(node) => node.span.clone(),
             Self::Try(node) => node.span.clone(),
             Self::MatchDot(node) => node.span.clone(),
+            Self::Formatted(node) => node.span.clone(),
         }
     }
 }

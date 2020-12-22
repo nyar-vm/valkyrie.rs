@@ -1,4 +1,4 @@
-use dashu::integer::IBig;
+use dashu::{float::FBig, integer::IBig};
 use std::sync::Arc;
 
 use crate::{types::ValkyrieMetaType, utils::primitive_type, ValkyrieType, ValkyrieValue};
@@ -223,7 +223,10 @@ impl ValkyrieType for IBig {
 
 impl ValkyrieType for f32 {
     fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::Decimal(self as f64)
+        match FBig::try_from(self) {
+            Ok(float) => ValkyrieValue::Decimal(float),
+            Err(_) => todo!(),
+        }
     }
 
     fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
@@ -235,7 +238,10 @@ impl ValkyrieType for f32 {
 
 impl ValkyrieType for f64 {
     fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::Decimal(self)
+        match FBig::try_from(self) {
+            Ok(float) => ValkyrieValue::Decimal(float),
+            Err(_) => todo!(),
+        }
     }
 
     fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
@@ -245,15 +251,23 @@ impl ValkyrieType for f64 {
     }
 }
 
-impl ValkyrieType for char {
+impl ValkyrieType for FBig {
     fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::UTF8Character(self)
+        ValkyrieValue::Decimal(self)
     }
 
     fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
-        let mut this = ValkyrieMetaType::default();
-        this.set_namepath("std.text.Unicode");
-        Arc::new(this)
+        primitive_type("std.math.Decimal")
+    }
+}
+
+impl ValkyrieType for char {
+    fn boxed(self) -> ValkyrieValue {
+        ValkyrieValue::Unicode(self)
+    }
+
+    fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
+        primitive_type("std.text.Unicode")
     }
 }
 

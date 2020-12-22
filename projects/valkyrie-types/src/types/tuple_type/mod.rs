@@ -1,7 +1,7 @@
 use super::*;
 use crate::utils::primitive_type;
 use indexmap::IndexMap;
-use std::collections::VecDeque;
+use std::collections::{LinkedList, VecDeque};
 
 #[derive(Clone, Debug)]
 pub struct ValkyrieTable {
@@ -11,8 +11,10 @@ pub struct ValkyrieTable {
 }
 
 pub struct ValkyrieList {
-    typing: Arc<ValkyrieMetaType>,
-    items: VecDeque<ValkyrieValue>,
+    /// Type bound if this is a homogeneous list
+    array: Option<Arc<ValkyrieMetaType>>,
+    /// items, homogeneous or heterogeneous
+    items: LinkedList<ValkyrieValue>,
 }
 
 pub struct ValkyrieDict {

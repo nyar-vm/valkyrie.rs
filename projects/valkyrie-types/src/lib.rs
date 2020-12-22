@@ -1,4 +1,5 @@
 #![feature(trivial_bounds)]
+#![feature(allocator_api)]
 
 mod builtin;
 mod codegen;

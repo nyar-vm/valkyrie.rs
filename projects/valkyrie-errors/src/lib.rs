@@ -18,5 +18,5 @@ pub use crate::{
     duplicates::{DuplicateError, DuplicateKind},
     errors::{ValkyrieError, ValkyrieErrorType, ValkyrieResult},
     runtime_error::RuntimeError,
-    syntax_error::SyntaxError,
+    syntax_error::{DefinitionSpan, SyntaxError},
 };

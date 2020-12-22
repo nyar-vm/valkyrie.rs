@@ -1,4 +1,4 @@
-use dashu::integer::IBig;
+use dashu::{float::FBig, integer::IBig, rational::RBig};
 use std::{fmt::Debug, sync::Arc};
 
 mod der;
@@ -28,8 +28,8 @@ pub enum ValkyrieValue {
     /// Native boolean type, 8bit
     Boolean(bool),
     Integer(IBig),
-    Decimal(f64),
-    UTF8Character(char),
+    Decimal(FBig),
+    Unicode(char),
     UTF8String(Arc<String>),
     Bytes(Arc<Vec<u8>>),
     /// Array, Array2D

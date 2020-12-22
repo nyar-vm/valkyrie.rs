@@ -14,11 +14,11 @@ pub mod table;
 pub mod view;
 
 use crate::{
-    helper::ValkyrieNode, ApplyCallNode, ApplyDotNode, ArgumentTermNode, CallNode, CallTermNode, CollectsNode, GenericCallNode,
-    IdentifierNode, IfLetStatement, IfStatement, InfixNode, LambdaCallNode, LambdaDotNode, LambdaSlotNode, MatchDotStatement,
-    MonadicDotCall, NamePathNode, NewConstructNode, NumberLiteralNode, OperatorNode, PatternBlock, PostfixNode, PrefixNode,
-    RaiseNode, StatementNode, StringLiteralNode, StringTextNode, SubscriptNode, SwitchStatement, TableNode, TableTermNode,
-    TryStatement,
+    helper::ValkyrieNode, ApplyCallNode, ApplyDotNode, ArgumentTermNode, CallNode, CallTermNode, CollectsNode,
+    ExpressionFormatted, GenericCallNode, IdentifierNode, IfLetStatement, IfStatement, InfixNode, LambdaCallNode,
+    LambdaDotNode, LambdaSlotNode, MatchDotStatement, MonadicDotCall, NamePathNode, NewConstructNode, NumberLiteralNode,
+    OperatorNode, PatternBlock, PostfixNode, PrefixNode, RaiseNode, StatementNode, StringLiteralNode, StringTextNode,
+    SubscriptNode, SwitchStatement, TableNode, TableTermNode, TryStatement,
 };
 use alloc::{
     borrow::ToOwned,
@@ -36,10 +36,13 @@ use deriver::From;
 #[cfg(feature = "pretty-print")]
 use pretty_print::{helpers::PrettySequence, PrettyPrint, PrettyProvider, PrettyTree};
 
+/// The ast node for an expression
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ExpressionNode {
+    /// Weather it is a type level expression
     pub type_level: bool,
+    /// The expression body
     pub body: ExpressionType,
     /// The range of the node
     pub span: Range<u32>,
@@ -48,6 +51,7 @@ pub struct ExpressionNode {
 /// Temporary node for use in the parser
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 pub struct TypingExpression {
+    /// The type level expression body
     pub body: ExpressionType,
     /// The range of the node
     pub span: Range<u32>,
@@ -81,6 +85,8 @@ pub enum ExpressionType {
     Text(Box<StringTextNode>),
     /// - Atomic expression
     String(Box<StringLiteralNode>),
+    /// - Atomic expression
+    Formatted(Box<ExpressionFormatted>),
     /// - Atomic expression
     New(Box<NewConstructNode>),
     /// - Compound expression
