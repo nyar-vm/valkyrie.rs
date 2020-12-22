@@ -70,7 +70,7 @@ pub struct ImportResolvedItem {
 
 /// The resolve result of import
 ///
-/// - `function`, `constant`, `structure`, `interface`, `type` share a namespace
+/// - `function`, `constant`, `structure`, `interfaces`, `type` share a namespace
 /// - `derive` and `macro` share a namespace
 /// - If a macro is an implicit macro, it occupies the namespace of the function
 ///

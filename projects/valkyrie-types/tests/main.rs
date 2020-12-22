@@ -1,4 +1,4 @@
-use valkyrie_types::testing::assert_type;
+use valkyrie_types::{testing::assert_type, ValkyrieInterface};
 
 #[test]
 fn ready() {
@@ -136,4 +136,13 @@ fn test() {
     let list = vec![6, 7, 8];
     println!("RAW: {}", check_raw(&list));
     println!("FSM: {}", check_fsm(&list));
+}
+
+#[test]
+fn test222() {
+    let t = ValkyrieInterface::new(["std", "display", "Show"].join("∷"));
+    println!("{:#?}", t);
+    println!("{}", t.name());
+    println!("{}", t.namespace());
+    println!("{}", t.full_name());
 }

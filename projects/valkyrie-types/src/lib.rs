@@ -6,10 +6,11 @@ mod codegen;
 mod functions;
 mod modifiers;
 // #[cfg(test)]
+mod definitions;
 mod encoding;
+mod singletons;
 pub mod testing;
 pub mod third_party;
-mod traits;
 mod types;
 mod utils;
 mod validation;
@@ -20,6 +21,10 @@ pub use self::{
         images::ValkyrieImage,
         result::{ValkyrieFailure, ValkyrieSuccess},
         TokenType,
+    },
+    definitions::{
+        classes::{ValkyrieNamepath, ValkyrieStructure},
+        interfaces::ValkyrieInterface,
     },
     functions::{ValkyrieFunction, ValkyrieFunctionType, ValkyrieMonomorphicFunction},
     types::{

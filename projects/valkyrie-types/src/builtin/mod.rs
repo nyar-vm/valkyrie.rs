@@ -31,7 +31,7 @@ pub enum TokenType {
     Unite,
     /// `variant VariantName`
     Variant,
-    /// `interface InterfaceName`
+    /// `interfaces InterfaceName`
     Interface,
     /// `trait TraitName`
     Trait,

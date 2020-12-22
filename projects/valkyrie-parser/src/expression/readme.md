@@ -1,14 +1,16 @@
-a is a scalar
-A is a vector
+### Symbol Reference
 
-| Unicode | Usage   | Expand          |
-|:--------|:--------|:----------------|
-| U+22C8  | `A ⋈ B` | `A.concat(B)`   |             |
-| U+2A1D  | `A ⨝ B` | `A.concat(B)`   |             |
-| U+002D  | `-a`    | `A.negative(a)` |
-| U+002D  | `a - b` | `A.negative(a)` |
-| U+2212  | `-a`    | `A.minus(a)`    |
-| U+2212  | `a − b` | `A.minus(a)`    |
+- a is a scalar
+- A is a vector
+
+| Unicode | Usage    | Expand          |
+|:--------|:---------|:----------------|
+| U+22C8  | `A ++ B` | `A.concat(B)`   |
+| U+2A1D  | `A ++ B` | `A.concat(B)`   |
+| U+002D  | `-a`     | `A.negative(a)` |
+| U+002D  | `a - b`  | `A.negative(a)` |
+| U+2212  | `-a`     | `A.minus(a)`    |
+| U+2212  | `a − b`  | `A.minus(a)`    |
 
 ## Product Operators
 
@@ -27,7 +29,6 @@ A is a vector
 | U+2317  | `A ⌗ B` | `A.cartesian_product(B)` | recommended |
 | U+22C4  | `a ⊙ b` |                          | reserved    |
 | U+2A00  | `a ⨀ b` |                          | reserved    |
-|
 | U+22A0  | `A ⊠ B` |                          | reserved    |
 | U+22C9  | `A ⋉ B` |                          | reserved    |
 | U+22CA  | `A ⋊ B` |                          | reserved    |
@@ -88,8 +89,8 @@ $±$
 
 ⋇
 
-| U+22C3 | `a ⋃ b` | `A.union(a)`             |
-| U+22C2 | `a ⋂ b` | `A.intersection(a)`      |
+|U+22C3 |`a ⋃ b` |`A.union(a)`             |
+|U+22C2 |`a ⋂ b` |`A.intersection(a)`      |
 
 | Unicode | Usage   | Expand                   |
 |:--------|:--------|:-------------------------|
@@ -163,26 +164,24 @@ a.[b]
 
 Logic gate can be called by `p.logic_gate(q, mask)`
 
-
-
-| No. | Mask | Expression |  
+| No. | Mask | Expression |
 |----:|:-----|:----------:|
-|   1 | 0000 |  `false`   | 
-|   2 | 0001 |  `p ∧ q`   |  
-|   3 | 0010 |  `p ∧ ¬q`  |  
-|   4 | 0011 |    `p`     |  
-|   5 | 0100 |  `¬p ∧ q`  | 
-|   6 | 0101 |    `q`     | 
-|   7 | 0110 |  `p ⊻ q`   | 
-|   8 | 0111 |  `p ∨ q`   | 
-|   9 | 1000 | `¬p ∧ ¬q`  | 
-|  10 | 1001 | `p === q`  | 
-|  11 | 1010 |    `¬q`    |  
-|  12 | 1011 |  `p ∨ ¬q`  | 
-|  13 | 1100 |    `¬p`    |   
-|  14 | 1101 |  `¬p ∨ q`  | 
-|  15 | 1110 | `¬p ∨ ¬q`  | 
-|  16 | 1111 |   `true`   |  
+|   1 | 0000 |  `false`   |
+|   2 | 0001 |  `p ∧ q`   |
+|   3 | 0010 |  `p ∧ ¬q`  |
+|   4 | 0011 |    `p`     |
+|   5 | 0100 |  `¬p ∧ q`  |
+|   6 | 0101 |    `q`     |
+|   7 | 0110 |  `p ⊻ q`   |
+|   8 | 0111 |  `p ∨ q`   |
+|   9 | 1000 | `¬p ∧ ¬q`  |
+|  10 | 1001 | `p === q`  |
+|  11 | 1010 |    `¬q`    |
+|  12 | 1011 |  `p ∨ ¬q`  |
+|  13 | 1100 |    `¬p`    |
+|  14 | 1101 |  `¬p ∨ q`  |
+|  15 | 1110 | `¬p ∨ ¬q`  |
+|  16 | 1111 |   `true`   |
 
 ### Comparison
 
