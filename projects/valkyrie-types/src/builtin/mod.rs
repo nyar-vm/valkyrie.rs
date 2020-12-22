@@ -10,3 +10,43 @@ pub mod option;
 pub mod pointer;
 pub mod primitive;
 pub mod result;
+
+/// The display style of a token
+pub enum TokenType {
+    /// A keyword
+    Keyword,
+    /// `a, b, c`
+    Punctuation,
+    /// `a + b`
+    Operator,
+    /// `structure StructureName`
+    Structure,
+    /// `class ClassName`
+    Class,
+    /// `enumerate EnumerateName`
+    Enumerate,
+    /// `union UnionName`
+    Union,
+    /// `unite UniteName`
+    Unite,
+    /// `variant VariantName`
+    Variant,
+    /// `interface InterfaceName`
+    Interface,
+    /// `trait TraitName`
+    Trait,
+    /// `let variable`
+    Variable,
+    /// `let mut variable`
+    VariableMutable,
+    /// `method(parameter)`
+    Parameter,
+    /// `method(mut parameter)`
+    ParameterMutable,
+    /// `method(self)`
+    ParameterSelf,
+    /// `method(mut self)`
+    ParameterSelfMutable,
+    /// `constant`
+    Constant,
+}

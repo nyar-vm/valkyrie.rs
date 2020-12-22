@@ -71,6 +71,7 @@ impl ThisParser for ExpressionType {
             Self::Text(v) => Lisp::string(v.text.clone()),
             Self::Try(v) => v.as_lisp(),
             Self::MatchDot(v) => v.as_lisp(),
+            Self::Formatted(v) => v.as_lisp(),
         }
     }
 }

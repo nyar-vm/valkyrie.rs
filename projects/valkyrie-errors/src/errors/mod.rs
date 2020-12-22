@@ -1,6 +1,6 @@
 use crate::duplicates::DuplicateError;
 
-use crate::SyntaxError;
+use crate::{RuntimeError, SyntaxError};
 use std::{
     error::{Error, Report},
     fmt::{Debug, Display, Formatter},
@@ -21,9 +21,10 @@ impl Error for ValkyrieError {}
 impl Debug for ValkyrieError {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match self {
-            ValkyrieError::Duplicate(v) => Debug::fmt(v, f),
-            ValkyrieError::Custom(v) => Debug::fmt(v, f),
-            ValkyrieError::Syntax(v) => Debug::fmt(v, f),
+            Self::Duplicate(v) => Debug::fmt(v, f),
+            Self::Custom(v) => Debug::fmt(v, f),
+            Self::Syntax(v) => Debug::fmt(v, f),
+            Self::Runtime(v) => Debug::fmt(v, f),
         }
     }
 }
@@ -31,15 +32,17 @@ impl Debug for ValkyrieError {
 impl Display for ValkyrieError {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match self {
-            ValkyrieError::Duplicate(v) => Display::fmt(v, f),
-            ValkyrieError::Custom(v) => Display::fmt(v, f),
-            ValkyrieError::Syntax(v) => Display::fmt(v, f),
+            Self::Duplicate(v) => Display::fmt(v, f),
+            Self::Custom(v) => Display::fmt(v, f),
+            Self::Syntax(v) => Display::fmt(v, f),
+            Self::Runtime(v) => Display::fmt(v, f),
         }
     }
 }
 
 pub enum ValkyrieError {
     Syntax(Box<SyntaxError>),
+    Runtime(Box<RuntimeError>),
     Duplicate(Box<DuplicateError>),
     Custom(Box<String>),
 }

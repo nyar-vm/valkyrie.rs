@@ -20,6 +20,8 @@ itertools = "0.10.5"
 image = { version = "0.24.6", features = [] }
 ndarray = { version = "0.15.6", features = [] }
 polars = { version = "0.30.0", features = ["lazy"], optional = true }
+cranelift-frontend = "0.95.1"
+cranelift-codegen = "0.95.1"
 
 [dependencies.valkyrie-error]
 version = "0.1.3"

@@ -1,3 +1,4 @@
+mod formatted;
 mod raw;
 mod template;
 

@@ -1,5 +1,5 @@
 use super::*;
-use crate::utils::primitive_type;
+use crate::{functions::ValkyriePartialFunction, utils::primitive_type};
 use indexmap::IndexMap;
 use std::collections::{LinkedList, VecDeque};
 
@@ -10,7 +10,9 @@ pub struct ValkyrieTable {
     pairs: IndexMap<ValkyrieValue, ValkyrieValue>,
 }
 
+#[derive(Clone, Debug, Default)]
 pub struct ValkyrieList {
+    tuple: bool,
     /// Type bound if this is a homogeneous list
     array: Option<Arc<ValkyrieMetaType>>,
     /// items, homogeneous or heterogeneous
@@ -19,6 +21,34 @@ pub struct ValkyrieList {
 
 pub struct ValkyrieDict {
     pairs: IndexMap<String, ValkyrieValue>,
+}
+
+impl ValkyrieList {
+    /// `[a] ++ new`
+    /// ```vk
+    /// append<T>(mut self, ..items: List<T>, <) { }
+    /// ```
+    pub fn append(&mut self, item: ValkyrieValue) {
+        self.items.push_back(item);
+    }
+    /// `[a] ++ [new]`
+    pub fn append_many<I>(&mut self, items: I)
+    where
+        I: IntoIterator<Item = ValkyrieValue>,
+    {
+        self.items.extend(items);
+    }
+    /// `new ++ [a]`
+    pub fn prepend(&mut self, item: ValkyrieValue) {
+        self.items.push_front(item);
+    }
+    /// `[new] ++ [a]`
+    pub fn prepend_many<I>(&mut self, items: I)
+    where
+        I: IntoIterator<Item = ValkyrieValue>,
+    {
+        self.items.extend(items);
+    }
 }
 
 impl ValkyrieTable {

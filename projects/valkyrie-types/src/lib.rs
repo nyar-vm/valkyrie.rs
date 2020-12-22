@@ -19,6 +19,7 @@ pub use self::{
     builtin::{
         images::ValkyrieImage,
         result::{ValkyrieFailure, ValkyrieSuccess},
+        TokenType,
     },
     functions::{ValkyrieFunction, ValkyrieFunctionType, ValkyrieMonomorphicFunction},
     types::{
