@@ -36,40 +36,6 @@ pub struct ValkyrieFunction {
     pub return_type: Arc<ValkyrieMonomorphicFunction>,
 }
 
-#[derive(Clone, Debug)]
-pub enum CurryType {
-    /// This is not a curry function
-    None,
-    /// Curry with single assignment
-    Curried,
-    /// Curry with repeated assignment
-    Deferred,
-}
-
-#[derive(Clone, Debug)]
-pub enum InlineType {
-    /// Never inline this function under any circumstances
-    Never,
-    /// This is an inline function
-    Normal,
-    /// This is an inline function, but it is not inlined
-    Aggressive,
-    /// This is an inline function, but it is not inlined
-    Always,
-}
-
-#[derive(Clone, Debug)]
-pub enum AccessType {
-    /// This is a public function
-    Public,
-    /// This is a private function
-    Private,
-    /// This is a protected function
-    Protected,
-    /// This is an internal function
-    Internal,
-}
-
 /// Actual function definition, non-overloading, non-overriding
 ///
 ///

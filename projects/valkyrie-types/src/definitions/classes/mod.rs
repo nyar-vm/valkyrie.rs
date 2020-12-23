@@ -1,6 +1,4 @@
 use super::*;
-use crate::functions::AccessType;
-use valkyrie_ast::ExpressionNode;
 
 #[derive(Clone, Debug)]
 pub struct ValkyrieStructure {
@@ -13,8 +11,6 @@ pub struct ValkyrieStructure {
     /// fields are also properties
     properties: BTreeMap<String, ValkyrieProperty>,
 }
-
-
 
 #[derive(Clone, Debug)]
 pub struct ValkyrieField {
@@ -29,6 +25,7 @@ pub struct ValkyrieField {
 #[derive(Clone, Debug)]
 pub struct ValkyrieProperty {
     name: String,
+    initial: InitializeType,
     typing: ValkyrieMetaType,
     /// Can be a progress or a value
     default: Option<ExpressionNode>,
