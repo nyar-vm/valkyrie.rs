@@ -2,7 +2,7 @@ use super::*;
 
 pub struct ValkyrieInterface {
     /// package∷module::Interface
-    namepath: String,
+    namepath: ValkyrieID,
     /// trait or interfaces
     is_trait: bool,
     /// The functions that are defined in this interfaces
@@ -16,14 +16,14 @@ impl Debug for ValkyrieInterface {
             false => "ValkyrieInterface",
         };
         let f = &mut f.debug_struct(kind);
-        f.field("name", &self.namepath);
-        f.field("document", &self.document);
+        f.field("name", &self.namepath.to_string());
+        // f.field("document", &self.document);
         f.finish()
     }
 }
 
 impl ValkyrieInterface {
-    pub fn new(namepath: String) -> Self {
+    pub fn new(namepath: ValkyrieID) -> Self {
         Self { namepath, is_trait: false, document: Default::default() }
     }
     pub fn mark_trait(self, is_trait: bool) -> Self {
@@ -42,19 +42,13 @@ impl ValkyrieInterface {
     pub fn is_interface(&self) -> bool {
         !self.is_trait
     }
-    pub fn namespace(&self) -> &str {
-        match self.namepath.rsplit_once("∷") {
-            Some((namespace, _)) => namespace,
-            None => "",
-        }
+    pub fn namespace(&self) -> &[String] {
+        self.namepath.namespace()
     }
     pub fn name(&self) -> &str {
-        match self.namepath.rsplit_once("∷") {
-            Some((_, name)) => name,
-            None => self.namepath.as_str(),
-        }
+        self.namepath.name()
     }
-    pub fn full_name(&self) -> &str {
-        self.namepath.as_str()
+    pub fn full_name(&self) -> &[String] {
+        self.namepath.full_name()
     }
 }

@@ -22,11 +22,9 @@ pub use self::{
         result::{ValkyrieFailure, ValkyrieSuccess},
         TokenType,
     },
-    definitions::{
-        classes::{ValkyrieNamepath, ValkyrieStructure},
-        interfaces::ValkyrieInterface,
-    },
+    definitions::{classes::ValkyrieStructure, id::ValkyrieID, interfaces::ValkyrieInterface},
     functions::{ValkyrieFunction, ValkyrieFunctionType, ValkyrieMonomorphicFunction},
+    modifiers::{LazyType, LicenseType, MutableType},
     types::{
         atomic_type::ValkyrieAtomicType, class_type::ValkyrieClassType, literal_type::ValkyrieLiteralType,
         tuple_type::ValkyrieTable, union_type::ValkyrieUnionType, variant_type::ValkyrieVariantType, ValkyrieType,

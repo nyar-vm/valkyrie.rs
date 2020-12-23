@@ -1,4 +1,4 @@
-use valkyrie_types::{testing::assert_type, ValkyrieInterface};
+use valkyrie_types::{testing::assert_type, ValkyrieID, ValkyrieInterface};
 
 #[test]
 fn ready() {
@@ -140,9 +140,10 @@ fn test() {
 
 #[test]
 fn test222() {
-    let t = ValkyrieInterface::new(["std", "display", "Show"].join("∷"));
+    let id = ValkyrieID::new(["std", "display", "Show"].iter().map(|s| s.to_string()));
+    let t = ValkyrieInterface::new(id);
     println!("{:#?}", t);
     println!("{}", t.name());
-    println!("{}", t.namespace());
-    println!("{}", t.full_name());
+    println!("{:?}", t.namespace());
+    println!("{:?}", t.full_name());
 }
