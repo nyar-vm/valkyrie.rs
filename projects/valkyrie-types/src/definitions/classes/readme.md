@@ -1,5 +1,3 @@
-
-
 ```scala
 class C(B1, B2) { }
 
@@ -18,8 +16,6 @@ imply C: Cast(B2) {
     }
 }
 ```
-
-
 
 ```vk
 class A {
@@ -100,8 +96,6 @@ refine interface Modifiable: Scalable {
 }
 ```
 
-
-
 ```vk
 let a = 1;
 
@@ -121,7 +115,6 @@ fn test() {
 
 
 ```
-
 
 ```vk
 effect DivideZeroError(numerator: Integer): Integer;
@@ -154,71 +147,6 @@ def higher(): Integer {
     }
 }
 ```
-
-
-```logger
-final singleton class Logger {
-    event logging(
-        **messages: UTF8Text, 
-        <, >, 
-        eos: UTF8Text
-    );
-    trace(messages: UTF8Text, <, >) {
-        logging(messages, separator: separator, eos: eos, level: LogLevel::Trace);
-    }
-    debug(**messages: UTF8Text, <, >, separator: UTF8Text = '', eos: UTF8Text = '\n') {
-        logging(messages, separator: separator, eos: eos, level: LogLevel::Debug);
-    }
-    print(**messages: UTF8Text, <, >, separator: UTF8Text = '', eos: UTF8Text = '\n') {
-        let mut first = true;
-        let mut std_out = std::io::out().lock();
-        for s in messages {
-            if first {
-                first = false;
-                write(io, s);
-            }
-            else {
-                write(io, separator);
-                write(io, s);
-            }
-        }
-        write(io, eos);
-    }
-    alert(**messages: UTF8Text, <, >, separator: UTF8Text = '', eos: UTF8Text = '\n') {
-        logging(messages, separator: separator, eos: eos, level: LogLevel::Error);
-    }
-    error(**messages: UTF8Text, <, >, separator: UTF8Text = '', eos: UTF8Text = '\n') {
-        logging(messages, separator: separator, eos: eos, level: LogLevel::Error);
-    }
-    fatal(**messages: UTF8Text, <, >, separator: UTF8Text = '', eos: UTF8Text = '\n') {
-        logging(messages, separator: separator, eos: eos, level: LogLevel::Fatal);
-    }
-    initialize() {
-        self.logging += {
-            let mut first = true;
-            let mut std_out = std::io::out().lock();
-            for s in messages {
-                if first {
-                    first = false;
-                    write(io, s);
-                }
-                else {
-                    write(io, separator);
-                    write(io, s);
-                }
-            }
-            write(io, eos);
-        }
-    }
-    reinitialize() {
-        self.print.clear()
-    }
-    deinitialize() {
-    
-    }
-}
-```
-
 
 ```vk
 micro DivideZeroError(numerator: Integer): Integer {
@@ -257,3 +185,266 @@ def higher(return): Integer {
     }
 }
 ```
+
+```vk
+def select_positive(list: List<Integer>) -> Iterator<Integer> / FixZero {
+    for i in list {
+        if i < 0 {
+            contniue
+        }
+        if i == 0 {
+            yield raise FixZero()
+        }
+        yield i
+    }
+    return 999;
+}
+
+def run_select(input: List<Integer>) -> List<Integer> {
+    var zeros = 0;
+    var terms = [];
+    try {
+        for i in select_positive(input) {
+            terms.append(i)
+        }
+    }
+    .catch {
+        case FixZero():
+            zeros += 1;
+            if zeros >= 3 {
+                print("Catch { zeros.length }")
+                return terms
+            }
+            resume zeros
+    }
+    print("Return { zeros.length }")
+    return terms
+}
+
+run_select([2, 0, -3, 0, 5, 0, -7])
+```
+
+Catch 3
+[2, 1, 2, 5]
+
+```vk
+def select_positive(list: List<Integer>) -> Iterator<Integer> / FixZero {
+    for i in list {
+        if i < 0 {
+            contniue
+        }
+        if i == 0 {
+            yield raise FixZero()
+        }
+        yield i
+    }
+    return 999;
+}
+```
+
+if condA {
+actionA
+}
+actionB
+
+function id(x: Any): Any {
+x
+}
+function cps_id(x: Any, ret: Continuation<Any>) {
+ret(x)
+}
+
+```
+function fact(n: Integer): Integer {
+    if n == 0 {
+        1
+    } else {
+        n * fact(n-1)
+    }
+}
+
+function cps_fact(n: Integer, ret: Continuation<Integer>) {
+    if n == 0 {
+        ret(1)
+    } else {
+        cps_fact(n - 1, t0 => { ret(n * t0) })
+    }
+}
+```
+
+```vk
+function iter(list: List<Integer>): Integer {
+    for n in list {
+        if n < 0 {
+            continue
+        } else if n == 0 {
+            break
+        } else {
+           return n
+        }
+    }
+    return -1
+}
+
+
+function cps_iter(list: List<Integer>, ret: Continuation<Integer>) {
+    let cps_for = (index: Integer, br: Continuation) => {
+        if (index >= list.length) {
+            br()
+        } else {
+            let n = list[index]
+            if (n < 0) {
+                cps_for(index + 1) 
+            } else if n == 0 {
+                br()
+            } else {
+                ret(n)
+            }
+        }
+    }
+    loop(0, () => { ret(-1) })
+}
+```
+
+
+```vk
+function iter(list: List<Integer>): Iterator<Integer> {
+    print(list)
+    for n in list {
+        if n < 0 {
+            continue
+        } else if n == 0 {
+            break
+        } else {
+            yield n
+        }
+    }
+    return -1
+}
+
+
+let mut n;
+let state = 0;
+let ret = 0;
+
+print(list)
+loop {
+    @1
+    n = list.next();
+    if n == null {
+        @goto 2
+    }
+    if n < 0 {
+        @goto 1
+    } else if n == 0 {
+        @goto 2
+    } else {
+        ret = n;
+        state = 1
+        @break
+    }
+}
+@2
+ret = -1
+@unreachable
+
+
+struct iter {
+    __ret: Integer?,
+    __state: Integer = 0,
+    n: Integer?,
+    n_1: Integer,
+}
+
+fsm iter.next(iter.state) {
+    case 0:
+        print(list)
+        @jump 1
+    case 1: 
+        n = list.next();
+        @jump 2 if n == null
+        n_1 = n.unwrap()
+        @jump 1 if n < 0
+        @jump 2 if n == 0
+        __ret = n_1;
+        __state = 1
+        @break
+    case 2:
+        __ret = -1
+        state = -1
+        @break
+}
+
+if iter.curry_finish() {
+    iter.next()
+}
+
+
+
+```
+
+
+
+```vk
+def iter(list: List<Integer>): Integer {
+    print(list)
+    loop {
+        if c1 {
+            continue
+        } else c2 {
+            break
+        } else {
+            return n
+        }
+    }
+    return -1
+}
+
+def cps_iter(list: List<Integer>, ret: Integer) {
+    print(list);
+    loop1(br: {
+        ret(-1)
+    })
+}
+function loop1(br: Continuation, env) {
+    if c1 {
+        @tail_call(br)
+    } else c2 {
+        br()
+    } else {
+        env.ret(n)
+    }
+}
+```
+
+## 动机
+
+我为我的语言实现了尾递归优化, 当 `return` 语句调用本身时直接 `goto` 而无需压栈.
+
+```vk
+function fibonacci_recursive(n: Integer) -> Integer {
+    if n <= 1 {
+        n
+    } else {
+        fibonacci_recursive(n - 1) + fibonacci_recursive(n - 2)
+    }
+}
+
+function fibonacci_cps(n: Integer, k: Continuation<Integer>) {
+    function fibonacci_helper(n: Integer, a: Integer, b: Integer) {
+        if n == 0 {
+            k(a);
+        } else {
+            fibonacci_helper(n - 1, b, a + b, k);
+        }
+    }
+
+    fibonacci_helper(n, 0, 1);
+}
+```
+
+然而这里 `n * factorial(n - 1)` 并不直接调用函数本身, 因此无法直接应用尾递归优化, 用户使用这个函数很容易栈溢出.
+
+## 问题
+
+我想知道是否存在一个万能方法才检测函数是否可以写成尾递归, 并在可行的情况下输出其尾递归形式?

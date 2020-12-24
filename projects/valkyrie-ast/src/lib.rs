@@ -18,7 +18,7 @@ pub use crate::{
     control_flow::{
         control::{ControlNode, ControlType, RaiseNode},
         jmp_guard::{GuardLetStatement, GuardStatement, GuardStatementBody},
-        jmp_if::{ElseStatement, IfConditionNode, IfLetStatement, IfStatement, ThenStatement},
+        jmp_if::{BreakStatement, ElseStatement, IfConditionNode, IfLetStatement, IfStatement, JumpStatement, ThenStatement},
         jmp_switch::SwitchStatement,
         loop_for::{ForBarePattern, ForLoop},
         loop_while::{OtherwiseStatement, WhileConditionNode, WhileLoop, WhileLoopKind},

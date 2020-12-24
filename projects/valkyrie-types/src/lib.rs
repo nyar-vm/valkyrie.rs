@@ -22,7 +22,7 @@ pub use self::{
         result::{ValkyrieFailure, ValkyrieSuccess},
         TokenType,
     },
-    definitions::{classes::ValkyrieStructure, id::ValkyrieID, interfaces::ValkyrieInterface},
+    definitions::{classes::ValkyrieStructure, ids::ValkyrieID, interfaces::ValkyrieInterface, names::ValkyrieName},
     functions::{ValkyrieFunction, ValkyrieFunctionType, ValkyrieMonomorphicFunction},
     modifiers::{FeatureType, InitializeType, MutableType},
     types::{

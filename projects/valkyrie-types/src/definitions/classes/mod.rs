@@ -1,5 +1,5 @@
 use super::*;
-use std::{collections::LinkedList, marker::PhantomData};
+use crate::ValkyrieName;
 
 #[derive(Clone, Debug)]
 pub struct ValkyrieStructure {
@@ -16,6 +16,7 @@ pub struct ValkyrieStructure {
 #[derive(Clone, Debug)]
 pub struct ValkyrieField {
     name: String,
+    offset: usize,
     access: AccessType,
     typing: ValkyrieMetaType,
     /// Can be a progress or a value

@@ -4,11 +4,15 @@ use crate::{
     InitializeType, ValkyrieID, ValkyrieValue,
 };
 use std::{
-    collections::BTreeMap,
+    collections::{BTreeMap, LinkedList},
     fmt::{Debug, Formatter},
+    marker::PhantomData,
     ops::Range,
 };
 use valkyrie_ast::ExpressionNode;
 pub mod classes;
-pub mod id;
+pub mod fields;
+pub mod ids;
+pub mod instances;
 pub mod interfaces;
+pub mod names;
