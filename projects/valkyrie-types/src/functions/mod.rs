@@ -1,6 +1,8 @@
-pub mod operators;
-
-use crate::{types::ValkyrieMetaType, ValkyrieValue};
+use crate::{
+    modifiers::{AccessType, CurryType, InlineType},
+    types::ValkyrieMetaType,
+    ValkyrieValue,
+};
 use indexmap::IndexMap;
 use std::{
     collections::BTreeMap,
@@ -9,6 +11,8 @@ use std::{
 };
 use valkyrie_ast::StatementBlock;
 use valkyrie_error::{DefinitionSpan, RuntimeError, ValkyrieError, ValkyrieResult};
+
+pub mod operators;
 
 pub trait ValkyrieFunctionType {
     fn boxed(self) -> ValkyrieValue;
