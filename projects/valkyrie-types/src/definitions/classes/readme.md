@@ -386,65 +386,45 @@ if iter.curry_finish() {
 
 
 ```vk
-def iter(list: List<Integer>): Integer {
-    print(list)
+function iter(list: List<Integer>): Integer {
+    print(n)
+    @loop.head
     loop {
-        if c1 {
-            continue
-        } else c2 {
-            break
+        @loop.start
+        if n < 0 {
+            goto loop.start
+        } else if n == 0 {
+            goto loop.end
         } else {
-            return n
+            ret = n
+            goto block.end
+            yield n
         }
+        @block.end
+        @loop.end
+        goto loop.start
     }
+    @loop.tail
     return -1
 }
 
-def cps_iter(list: List<Integer>, ret: Integer) {
-    print(list);
-    loop1(br: {
-        ret(-1)
-    })
-}
-function loop1(br: Continuation, env) {
-    if c1 {
-        @tail_call(br)
-    } else c2 {
-        br()
-    } else {
-        env.ret(n)
-    }
-}
-```
 
-## 动机
-
-我为我的语言实现了尾递归优化, 当 `return` 语句调用本身时直接 `goto` 而无需压栈.
-
-```vk
-function fibonacci_recursive(n: Integer) -> Integer {
-    if n <= 1 {
-        n
-    } else {
-        fibonacci_recursive(n - 1) + fibonacci_recursive(n - 2)
-    }
-}
-
-function fibonacci_cps(n: Integer, k: Continuation<Integer>) {
-    function fibonacci_helper(n: Integer, a: Integer, b: Integer) {
-        if n == 0 {
-            k(a);
+function cps_iter(list: List<Integer>) {
+    .ret: Continuation<Integer>
+    .next: self.cps_loop.next()
+    .cps_loop.next = {
+        if (n < 0) {
+            cps_loop.next()
+        } else if n == 0 {
+            cps_loop.br()
         } else {
-            fibonacci_helper(n - 1, b, a + b, k);
+            cps_iter.next = cps_loop()
+            cps_iter.ret(n)
         }
     }
-
-    fibonacci_helper(n, 0, 1);
+    .cps_loop.br = { cps_iter.next() }
 }
+
+print(cps_iter.next())
+
 ```
-
-然而这里 `n * factorial(n - 1)` 并不直接调用函数本身, 因此无法直接应用尾递归优化, 用户使用这个函数很容易栈溢出.
-
-## 问题
-
-我想知道是否存在一个万能方法才检测函数是否可以写成尾递归, 并在可行的情况下输出其尾递归形式?

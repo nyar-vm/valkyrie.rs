@@ -10,18 +10,18 @@ license = "MPL-2.0"
 edition = "2021"
 
 [dependencies]
-serde = "1.0.163"
-patricia_tree = "0.5.7"
+serde = "1.0.188"
+patricia_tree = "0.6.2"
 dashu = { version = "0.3.1", features = ["serde"] }
-num-traits = "0.2.15"
-indexmap = "1.9.2"
+num-traits = "0.2.16"
+indexmap = "2.0.0"
 inwelling = "0.5.0"
-itertools = "0.10.5"
-image = { version = "0.24.6", features = [] }
+itertools = "0.11.0"
+image = { version = "0.24.7", features = [] }
 ndarray = { version = "0.15.6", features = [] }
-polars = { version = "0.30.0", features = ["lazy"], optional = true }
-cranelift-frontend = "0.95.1"
-cranelift-codegen = "0.95.1"
+polars = { version = "0.32.1", features = ["lazy"], optional = true }
+cranelift-frontend = "0.99.1"
+cranelift-codegen = "0.99.1"
 
 [dependencies.valkyrie-error]
 version = "0.1.3"

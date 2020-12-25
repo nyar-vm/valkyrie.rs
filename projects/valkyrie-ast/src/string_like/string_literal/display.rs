@@ -19,7 +19,7 @@ impl Display for StringTextNode {
 
 impl Display for StringLiteralNode {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        if let Some(unit) = &self.unit {
+        if let Some(unit) = &self.handler {
             f.write_str(&unit.name)?;
         }
         Display::fmt(&self.as_raw(), f)

@@ -1,14 +1,12 @@
 use super::*;
-use pex::StopBecause;
-use valkyrie_ast::{OtherwiseStatement, WhileLoopKind};
 
 impl ThisParser for WhileLoop {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, kw) = WhileLoopKind::parse(input)?;
         let (state, condition) = state.skip(ignore).match_fn(WhileConditionNode::parse)?;
         let (state, stmts) = state.skip(ignore).match_fn(StatementBlock::parse)?;
-        let (finally, rest) = state.skip(ignore).match_optional(ElseStatement::parse)?;
-        finally.finish(WhileLoop { kind: kw, condition, then_body: stmts, else_body: rest, span: get_span(input, finally) })
+        let (finally, rest) = state.skip(ignore).match_optional(OtherwiseStatement::parse)?;
+        finally.finish(WhileLoop { kind: kw, condition, then_body: stmts, otherwise: rest, span: get_span(input, finally) })
     }
 
     fn as_lisp(&self) -> Lisp {

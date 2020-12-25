@@ -13,10 +13,10 @@ edition = "2021"
 
 [dependencies]
 deriver = "0.0.0"
-serde = { version = "1.0.163", default-features = false, optional = true }
+serde = { version = "1.0.188", default-features = false, optional = true }
 
 [dependencies.pretty-print]
-version = "0.1.7"
+version = "0.1.9"
 optional = true
 #path = 'C:\Users\Dell\CLionProjects\pretty-print\projects\pretty-print'
 

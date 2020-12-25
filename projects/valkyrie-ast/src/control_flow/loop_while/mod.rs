@@ -3,21 +3,29 @@ use super::*;
 #[cfg(feature = "pretty-print")]
 mod display;
 
-/// `while cond {...} else {...}`
+/// `while cond {...} otherwise {...}`
 ///
 ///
 /// ```vk
-/// let $loop_else = false;
-/// @!label(loop_1_start)
+/// let loop_else = false;
+/// @loop.1.head
 /// loop {
+///     @loop.1.start
+///     @block.2.head
 ///     if !cond {
-///         goto loop_1_end;
+///         @block.2.start
+///         goto loop.1.end;
+///         @block.2.end;
+///         goto loop.2.tail;
 ///     }
-///     $loop_else = true;
+///     @block.2.tail
+///     loop_else = true;
 ///     "run main body"
+///     @loop.1.end
+///     goto loop.1.start
 /// }
-/// @!label(loop_1_end)
-/// if !$loop_else {
+/// @label(loop.1.tail)
+/// if !loop_else {
 ///    "run else body"
 /// }
 /// ```
@@ -31,7 +39,7 @@ pub struct WhileLoop {
     /// The main body of the loop
     pub then_body: StatementBlock,
     /// If the loop does not execute once, execute this statement.
-    pub else_body: Option<ElseStatement>,
+    pub otherwise: Option<OtherwiseStatement>,
     /// The range of the node
     pub span: Range<u32>,
 }
@@ -46,6 +54,7 @@ pub enum WhileLoopKind {
     Until,
 }
 
+/// `while true`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum WhileConditionNode {

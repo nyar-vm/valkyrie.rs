@@ -23,16 +23,16 @@ class B(A) { }
 class Logging {
     level: Integer
     message: String
-    effect debug(s: String): Unit {
+    effect debug(s: String): Self / Pure {
         new Self { level: 0, message: s }
     }
-    effect print(s: String): Unit {
+    effect print(s: String): Self / Pure {
         new Self { level: 1, message: s }
     }
-    effect error(s: String): Unit {
+    effect error(s: String): Self / Pure {
         new Self { level: 2, message: s }
     }
-    effect fatal(s: String): Unit {
+    effect fatal(s: String): Self / Pure {
         new Self { level: 3, message: s }
     }
 }
@@ -52,6 +52,29 @@ try {
 
 这段代码应该怎么编译
 
+```vk
+if a {
+    yield 1 
+    print 2
+}
+yield 2
+
+
+
+let yield1 = {
+    print(2)
+    if_break()
+}
+let if_break = {
+    yield2()
+}
+let yield2 = {
+    ret()
+}
+
+
+
+```
 
 
 类型签名部分分为 `Type / Effect` 两部分, 两者都可以省略, Type 的默认值为 Unit, Effect 的默认值为 Pure.

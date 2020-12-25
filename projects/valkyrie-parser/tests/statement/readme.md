@@ -116,3 +116,69 @@ violate {
     x.variant_a
 }
 ```
+
+
+```vk
+let x = call/cc {
+    10 * 3
+}
+print(5 + x)
+
+let x = call/cc {
+    10 * exit 3
+}
+print(5 + x)
+
+let x = call/cc {
+    exit 10;
+    3;
+}
+print(5 + x)
+
+
+console.log(5 + callcc(exit => { exit(10); return 3 }))
+console.log(5 + callcc(exit => { exit(10); throw Error("test failed") }))
+
+try {
+  console.log(5 + callcc(exit => { throw Error("test passed!") }))
+}
+catch (e) {
+  console.error(e)
+}
+
+🚪
+let z = y * 2;
+console.log(z + 1);
+```
+
+
+```shell
+ying = with_cc
+print '@'
+yang = with_cc
+print '*'
+ying yang
+```
+
+
+```vk
+阴 = call/cc {
+    曰 '0'
+    阳 = call/cc {
+        曰 '1'
+        阴 阳
+    }
+}
+阳 = call/cc {
+    曰 '1'
+    阴 阳
+}
+曰 '0'
+曰 '1'
+阴 阳
+```
+
+```vk
+曰 '1'
+阴 阳
+```

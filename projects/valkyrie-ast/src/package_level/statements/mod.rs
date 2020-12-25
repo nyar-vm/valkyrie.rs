@@ -77,6 +77,7 @@ impl From<AnnotationNode> for StatementType {
 }
 
 impl StatementNode {
+    /// Create a new expression node
     pub fn expression(body: ExpressionType, span: Range<u32>) -> Self {
         Self {
             r#type: StatementType::Expression(Box::new(ExpressionNode { type_level: false, body, span: span.clone() })),
@@ -84,12 +85,13 @@ impl StatementNode {
             span: span.clone(),
         }
     }
+    /// Create a new raw text node
     pub fn text<S: ToString>(s: S, span: Range<u32>) -> Self {
         let literal = StringTextNode { text: s.to_string(), span: span.clone() };
         Self::expression(ExpressionType::Text(Box::new(literal)), span)
     }
     pub fn string<S: ToString>(s: S, span: Range<u32>) -> Self {
-        let literal = StringLiteralNode { raw: s.to_string(), unit: None, span: span.clone() };
+        let literal = StringLiteralNode { literal: s.to_string(), handler: None, span: span.clone() };
         Self::expression(ExpressionType::String(Box::new(literal)), span)
     }
 }

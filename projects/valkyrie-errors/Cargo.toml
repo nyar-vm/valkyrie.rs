@@ -11,12 +11,12 @@ edition = "2021"
 
 [dependencies]
 diagnostic = "0.5.1"
-serde = { version = "1.0.163", optional = true }
+serde = { version = "1.0.188", optional = true }
 # Parsing
 dashu = { version = "0.3.1", optional = true, features = ["serde"] }
-toml = { version = "0.7.2", optional = true }
+toml = { version = "0.7.7", optional = true }
 json5 = { version = "0.4.1", optional = true, features = [] }
-serde_json = { version = "1.0.96", optional = true }
+serde_json = { version = "1.0.105", optional = true }
 #indexmap = "1.9.2"
 #patricia_tree = "0.5.7"
 #convert_case = "0.6.0"

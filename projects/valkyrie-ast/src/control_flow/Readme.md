@@ -48,13 +48,9 @@ for a in b {
     T
 }
 
-
-let a = return xx;
-let b = yield xx;
-
-new Class() 
-{
-
+refine class Positive(Integer) {
+    get positive(self): bool {
+        self > 0
+    }
 }
 ```
-

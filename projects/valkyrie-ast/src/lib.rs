@@ -16,7 +16,7 @@ mod string_like;
 
 pub use crate::{
     control_flow::{
-        control::{ControlNode, ControlType, RaiseNode},
+        control::{ControlNode, ControlType, RaiseNode, TailCallNode},
         jmp_guard::{GuardLetStatement, GuardStatement, GuardStatementBody},
         jmp_if::{BreakStatement, ElseStatement, IfConditionNode, IfLetStatement, IfStatement, JumpStatement, ThenStatement},
         jmp_switch::SwitchStatement,

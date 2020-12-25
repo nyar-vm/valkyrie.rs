@@ -22,12 +22,11 @@ fn debug_statement() {
 #[test]
 fn test_statement() {
     let raw = ParseState::new(
-        r#". catch {
-    type RuntimeError:
-        print("RuntimeError");
+        r#"while 0 {
+
 }"#,
     );
-    let apply = PostfixCallPart::parse(raw).unwrap();
+    let apply = WhileLoop::parse(raw).unwrap();
     pretty_print(&apply)
 }
 

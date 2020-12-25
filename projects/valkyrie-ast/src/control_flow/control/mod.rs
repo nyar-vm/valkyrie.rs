@@ -2,6 +2,14 @@ use super::*;
 
 mod display;
 
+/// `@tail_call(ret, recursion: true)`, **MIR**
+#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct TailCallNode {
+    /// Weather it is a recursive tail call
+    pub recursion: bool,
+}
+
 /// always equivalent to a statement that returns `( )`, and cannot be used as an `rvalue`.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]

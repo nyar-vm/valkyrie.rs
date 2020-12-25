@@ -10,12 +10,12 @@ impl ThisParser for StringLiteralNode {
             .choose(|s| quotation_pair(s, '«', '»'))
             .end_choice()?;
 
-        state.finish(StringLiteralNode { raw: pair.body.as_string(), unit, span: get_span(input, state) })
+        state.finish(StringLiteralNode { literal: pair.body.as_string(), handler: unit, span: get_span(input, state) })
     }
 
     fn as_lisp(&self) -> Lisp {
-        let literal = Lisp::string(self.raw.to_string());
-        match &self.unit {
+        let literal = Lisp::string(self.literal.to_string());
+        match &self.handler {
             Some(s) => Lisp::unit(s.name.clone()) & literal,
             None => literal,
         }

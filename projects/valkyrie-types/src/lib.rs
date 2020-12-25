@@ -1,5 +1,9 @@
 #![feature(trivial_bounds)]
 #![feature(allocator_api)]
+#![feature(never_type)]
+#![feature(unboxed_closures)]
+#![feature(iter_from_generator)]
+#![feature(generators)]
 
 mod builtin;
 mod codegen;
