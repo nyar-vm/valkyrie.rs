@@ -7,8 +7,6 @@ mod display;
 pub struct StatementNode {
     pub r#type: StatementType,
     pub end_semicolon: bool,
-    /// The range of the node
-    pub span: Range<u32>,
 }
 
 /// The top level elements in script mode.
@@ -82,7 +80,6 @@ impl StatementNode {
         Self {
             r#type: StatementType::Expression(Box::new(ExpressionNode { type_level: false, body, span: span.clone() })),
             end_semicolon: false,
-            span: span.clone(),
         }
     }
     /// Create a new raw text node

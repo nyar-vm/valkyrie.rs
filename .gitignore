@@ -9,3 +9,7 @@ target/
 Cargo.lock
 Untitled.ipynb
 .ipynb_checkpoints/
+
+# Antlr
+.antlr/
+*.jar

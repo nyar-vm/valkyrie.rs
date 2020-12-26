@@ -1,0 +1,15 @@
+catch a {
+
+}
+
+try {
+
+}
+catch {
+
+}
+
+match a() {
+	case Int::ary(): {}
+}
+

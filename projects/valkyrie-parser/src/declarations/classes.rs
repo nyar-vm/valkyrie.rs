@@ -1,4 +1,5 @@
 use super::*;
+use lispify::Lispify;
 
 impl ThisParser for ClassDeclaration {
     fn parse(input: ParseState) -> ParseResult<Self> {
@@ -8,7 +9,7 @@ impl ThisParser for ClassDeclaration {
         let (finally, stmt) = parse_statement_block(state.skip(ignore), class_statements)?;
         finally.finish(ClassDeclaration {
             kind: ClassKind::Class,
-            namepath,
+            identifier: namepath,
             generic,
             modifiers: ModifiersNode::default(),
             auto_traits: vec![],
@@ -19,14 +20,7 @@ impl ThisParser for ClassDeclaration {
     }
 
     fn as_lisp(&self) -> Lisp {
-        let mut lisp = Lisp::new(4);
-        lisp += Lisp::keyword("define/class");
-        lisp += self.namepath.as_lisp();
-        lisp += self.modifiers.as_lisp();
-        for item in &self.body.terms {
-            lisp += item.as_lisp();
-        }
-        lisp
+        self.lispify()
     }
 }
 
@@ -140,21 +134,6 @@ impl ThisParser for ClassMethodDeclaration {
             for item in &body.terms {
                 lisp += item.as_lisp();
             }
-        }
-        lisp
-    }
-}
-
-impl ThisParser for ModifiersNode {
-    fn parse(_: ParseState) -> ParseResult<Self> {
-        unreachable!()
-    }
-
-    fn as_lisp(&self) -> Lisp {
-        let mut lisp = Lisp::new(4);
-        lisp += Lisp::keyword("modifiers");
-        for modifier in &self.terms {
-            lisp += modifier.as_lisp();
         }
         lisp
     }

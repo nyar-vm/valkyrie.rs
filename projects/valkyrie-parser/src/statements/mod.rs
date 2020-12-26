@@ -92,31 +92,7 @@ impl ThisParser for StatementType {
     }
 
     fn as_lisp(&self) -> Lisp {
-        match self {
-            Self::Nothing => Lisp::default(),
-            Self::Namespace(v) => v.as_lisp(),
-            Self::Import(v) => v.as_lisp(),
-            Self::While(v) => v.as_lisp(),
-            Self::For(v) => v.as_lisp(),
-            Self::Class(v) => v.as_lisp(),
-            Self::ClassField(v) => v.as_lisp(),
-            Self::ClassMethod(v) => v.as_lisp(),
-            Self::Expression(v) => v.as_lisp(),
-            Self::Function(v) => v.as_lisp(),
-            Self::Control(v) => v.as_lisp(),
-            Self::Document(v) => v.as_lisp(),
-            Self::LetBind(v) => v.as_lisp(),
-            Self::Guard(v) => v.as_lisp(),
-            Self::Flags(v) => v.as_lisp(),
-            Self::EnumerateField(v) => v.as_lisp(),
-            Self::Tagged(v) => v.as_lisp(),
-            Self::Variant(v) => v.as_lisp(),
-            Self::Union(v) => v.as_lisp(),
-            Self::Enumerate(v) => v.as_lisp(),
-            Self::UnionField(v) => v.as_lisp(),
-            Self::Annotation(v) => v.as_lisp(),
-            Self::GuardLet(v) => v.as_lisp(),
-        }
+        self.lispify()
     }
 }
 

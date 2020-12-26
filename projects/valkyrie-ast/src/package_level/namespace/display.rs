@@ -11,6 +11,24 @@ impl PrettyPrint for NamespaceDeclaration {
     }
 }
 
+impl Lispify for NamespaceDeclaration {
+    type Output = Lisp;
+
+    fn lispify(&self) -> Self::Output {
+        let mut lisp = Lisp::new(self.path.len() + 1);
+        let kind = match self.kind {
+            NamespaceKind::Shared => "namespace/shared",
+            NamespaceKind::Unique => "namespace/unique",
+            NamespaceKind::Test => "namespace/test",
+        };
+        lisp += Lisp::keyword(kind);
+        for id in &self.path {
+            lisp += id.lispify();
+        }
+        lisp
+    }
+}
+
 impl NamespaceKind {
     /// Get the string representation of the namespace kind
     pub fn as_str(&self) -> &'static str {

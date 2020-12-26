@@ -1,3 +1,4 @@
+use lispify::Lispify;
 use super::*;
 
 pub static NAMESPACE: LazyLock<Regex> = LazyLock::new(|| {
@@ -21,17 +22,7 @@ impl ThisParser for NamespaceDeclaration {
     }
 
     fn as_lisp(&self) -> Lisp {
-        let mut lisp = Lisp::new(self.path.len() + 1);
-        let kind = match self.kind {
-            NamespaceKind::Shared => "namespace/shared",
-            NamespaceKind::Unique => "namespace/unique",
-            NamespaceKind::Test => "namespace/test",
-        };
-        lisp += Lisp::keyword(kind);
-        for id in &self.path {
-            lisp += id.as_lisp();
-        }
-        lisp
+        self.lispify()
     }
 }
 

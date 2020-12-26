@@ -1,4 +1,5 @@
 use super::*;
+use lispify::{Lisp, Lispify};
 
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for StatementNode {
@@ -33,6 +34,46 @@ impl PrettyPrint for StatementType {
             Self::Guard(node) => node.pretty(theme),
             Self::GuardLet(node) => node.pretty(theme),
             Self::Flags(node) => node.pretty(theme),
+        }
+    }
+}
+
+impl Lispify for StatementNode {
+    type Output = Lisp;
+
+    fn lispify(&self) -> Self::Output {
+        self.r#type.lispify()
+    }
+}
+
+impl Lispify for StatementType {
+    type Output = Lisp;
+
+    fn lispify(&self) -> Self::Output {
+        match self {
+            Self::Nothing => Lisp::default(),
+            Self::Namespace(v) => v.lispify(),
+            Self::Import(v) => todo!(),
+            Self::While(v) => todo!(),
+            Self::For(v) => todo!(),
+            Self::Class(v) => v.lispify(),
+            Self::ClassField(v) => todo!(),
+            Self::ClassMethod(v) => todo!(),
+            Self::Expression(v) => todo!(),
+            Self::Function(v) => todo!(),
+            Self::Control(v) => todo!(),
+            Self::Document(v) => todo!(),
+            Self::LetBind(v) => todo!(),
+            Self::Guard(v) => todo!(),
+            Self::Flags(v) => todo!(),
+            Self::EnumerateField(v) => todo!(),
+            Self::Tagged(v) => todo!(),
+            Self::Variant(v) => todo!(),
+            Self::Union(v) => todo!(),
+            Self::Enumerate(v) => todo!(),
+            Self::UnionField(v) => todo!(),
+            Self::Annotation(v) => todo!(),
+            Self::GuardLet(v) => todo!(),
         }
     }
 }

@@ -1,4 +1,5 @@
 use super::*;
+use lispify::{Lisp, Lispify};
 
 impl Display for AnnotationKind {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
@@ -58,5 +59,18 @@ impl PrettyPrint for AnnotationTerm {
 impl PrettyPrint for AnnotationPathNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         theme.annotation(self.to_string())
+    }
+}
+
+impl Lispify for ModifiersNode {
+    type Output = Lisp;
+
+    fn lispify(&self) -> Self::Output {
+        let mut lisp = Lisp::new(4);
+        lisp += Lisp::keyword("modifiers");
+        for modifier in &self.terms {
+            lisp += modifier.lispify();
+        }
+        lisp
     }
 }

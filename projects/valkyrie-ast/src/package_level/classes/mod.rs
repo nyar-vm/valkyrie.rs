@@ -14,7 +14,7 @@ pub struct ClassDeclaration {
     /// The modifiers of the class.
     pub modifiers: ModifiersNode,
     /// The name of the class.
-    pub namepath: NamePathNode,
+    pub identifier: IdentifierNode,
     /// The generic arguments of the class.
     pub generic: Option<GenericArgument>,
     /// The super class of the class.

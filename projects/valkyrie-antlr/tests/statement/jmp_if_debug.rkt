@@ -1,0 +1,8 @@
+(branches (a (1)))
+(branches (a (1)) (else (2)))
+(branches (a (1)) (b (2)))
+(branches (a (1)) (b (2)) (else (3)))
+(branches (a (1)) (b (2)) (c (3)))
+(branches (a (1)) (b (2)) (c (3)) (else (4)))
+(pattern (pattern/tuple (x) (y)) expression point (then ((call/apply print (apply ({x}, {y}))))))
+(pattern (pattern/tuple Failure (error)) expression x (then ((call/apply print (apply error)))))

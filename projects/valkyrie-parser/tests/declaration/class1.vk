@@ -21,7 +21,7 @@ vow {
         self != infinity
     }
 }
-def a() {
+function a() {
     @assert // 断言
     @assume // 假设
     @refute // 否定
@@ -59,7 +59,7 @@ union A(u8): A + B {
 	A
 }
 
-def a() {
+function a() {
 
 }
 

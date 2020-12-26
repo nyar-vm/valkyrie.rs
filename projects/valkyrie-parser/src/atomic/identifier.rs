@@ -1,4 +1,5 @@
 use super::*;
+use lispify::Lispify;
 use valkyrie_ast::LambdaSlotNode;
 
 pub static IDENTIFIER: LazyLock<Regex> = LazyLock::new(|| {
@@ -22,7 +23,7 @@ impl ThisParser for IdentifierNode {
     }
 
     fn as_lisp(&self) -> Lisp {
-        Lisp::symbol(self.to_string())
+        self.lispify()
     }
 }
 

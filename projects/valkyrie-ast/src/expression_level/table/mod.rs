@@ -17,6 +17,7 @@ pub enum TableKind {
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct TableNode {
+    ///  The kind of table.
     pub kind: TableKind,
     /// The raw string of the number.
     pub terms: Vec<TableTermNode>,
@@ -33,9 +34,13 @@ pub struct TableTermNode {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum TableKeyType {
+    /// A valid identifier key
     Identifier(Box<IdentifierNode>),
+    /// A valid number key
     Number(Box<NumberLiteralNode>),
+    /// A raw string key
     String(Box<StringLiteralNode>),
+    /// A subscript key
     Subscript(Box<SubscriptNode>),
 }
 

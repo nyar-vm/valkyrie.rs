@@ -2,7 +2,7 @@
 
 class A<T: A = B>
 {
-	def foo(self) -> T { ??? }
+	function foo(self) -> T { ??? }
 }
 
 

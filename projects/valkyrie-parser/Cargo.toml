@@ -12,12 +12,11 @@ license = "MPL-2.0"
 fancy-regex = "0.11.0"
 pratt = "0.4.0"
 bit-set = "0.5.3"
-eff = "0.1.0"
 
 [dependencies.pex]
 version = "0.2.3"
 features = ["regex"]
-path = 'C:\Users\Dell\CLionProjects\pex\projects\pex-core'
+#path = 'C:\Users\Dell\CLionProjects\pex\projects\pex-core'
 
 [dependencies.lispify]
 version = "0.1.0"
@@ -25,7 +24,7 @@ version = "0.1.0"
 
 [dependencies.valkyrie-ast]
 version = "0.1.*"
-features = ["pretty-print", "std"]
+features = ["pretty-print", "std", "lispify"]
 path = "../valkyrie-ast"
 
 [dependencies.valkyrie-error]

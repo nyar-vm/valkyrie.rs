@@ -1,0 +1,41 @@
+if a {1}
+if a {1} else {2}
+if a {1} else if b {2}
+if a {1} else if b {2} else {3}
+if a {1} else if b {2} else if c {3}
+if a {1} else if b {2} else if c {3} else {4}
+
+
+if let (x, y) = point {
+    print("({x}, {y})");
+}
+
+if let Failure(error) = x {
+    print(error);
+}
+
+if let Point(x, y) = point {
+    return "some {x}, {y}"
+}
+
+#guard
+if let null = condition {
+    return
+}
+
+#guard
+if not Some = condition {
+    return
+}
+
+
+#guard
+if a > 0 {
+    return ok
+}
+
+
+#guard
+if !pattern {
+    return true
+}

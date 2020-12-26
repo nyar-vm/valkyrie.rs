@@ -1,6 +1,8 @@
 #[doc = include_str!("readme.md")]
 use core::ops::Range;
 
+#[cfg(feature = "lispify")]
+pub use lispify::{Lisp, Lispify};
 #[cfg(feature = "pretty-print")]
 pub use pretty_print::{PrettyPrint, PrettyProvider, PrettyTree};
 

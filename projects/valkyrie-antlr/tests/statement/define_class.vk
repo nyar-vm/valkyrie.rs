@@ -1,0 +1,27 @@
+@@space
+
+@decorator
+class Empty {}
+
+@decorator
+union Empty {}
+
+class ClassA {
+    @decorator
+    field;
+    public static field: A;
+
+    method();
+
+    infix `/`(self, rhs: Self): Self / DivideZero {
+        return self / rhs
+    }
+    @inline
+    join<T>(mut self: T, other: T): T {
+        return self.append(other)
+    }
+}
+# union must have type
+union UnionA {
+    field: Type
+}

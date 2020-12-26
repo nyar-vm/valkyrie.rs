@@ -6,7 +6,7 @@ impl PrettyPrint for ClassDeclaration {
         let mut terms = PrettySequence::new(4);
         terms += theme.keyword("class");
         terms += " ";
-        terms += self.namepath.pretty(theme);
+        terms += self.identifier.pretty(theme);
         if let Some(gen) = &self.generic {
             terms += gen.pretty(theme);
         }
@@ -14,6 +14,21 @@ impl PrettyPrint for ClassDeclaration {
         let block = SoftBlock::curly_braces().with_joint(PrettyTree::text(";").append(PrettyTree::Hardline));
         terms += block.join_slice(&self.body.terms, theme);
         terms.into()
+    }
+}
+
+impl Lispify for ClassDeclaration {
+    type Output = Lisp;
+
+    fn lispify(&self) -> Self::Output {
+        let mut lisp = Lisp::new(4);
+        lisp += Lisp::keyword("define/class");
+        lisp += self.identifier.lispify();
+        lisp += self.modifiers.lispify();
+        for item in &self.body.terms {
+            lisp += item.lispify();
+        }
+        lisp
     }
 }
 
