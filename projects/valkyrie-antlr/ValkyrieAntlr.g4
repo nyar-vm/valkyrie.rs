@@ -81,15 +81,17 @@ define_extends
     ;
 impliments: (COLON | KW_IMPLEMENTS) type_expression;
 // ===========================================================================
-define_union:   KW_UNION identifier base_layout? type_hint? union_block;
+define_union:   annotation* modifiers KW_UNION identifier base_layout? type_hint? union_block;
 base_layout:    PARENTHESES_L type_expression? PARENTHESES_R;
 union_block:    BRACE_L (class_method | define_variant | eos_free)* BRACE_R;
 define_variant: identifier variant_block?;
 variant_block:  BRACE_L (class_field | eos_free)* BRACE_R;
 // ===========================================================================
-define_bitflags: KW_BITFLAGS identifier base_layout? type_hint? bitflags_block;
-bitflags_block:  BRACE_L (class_method | bitflags_item | eos_free)* BRACE_R;
-bitflags_item:   annotation* identifier (OP_ASSIGN expression)?;
+define_bitflags
+    : annotation* modifiers KW_BITFLAGS identifier base_layout? type_hint? bitflags_block
+    ;
+bitflags_block: BRACE_L (class_method | bitflags_item | eos_free)* BRACE_R;
+bitflags_item:  annotation* identifier (OP_ASSIGN expression)?;
 // ===========================================================================
 define_function
     : template_call? annotation* modifiers KW_FUNCTION namepath define_generic? function_parameters type_hint? effect_hint? function_block
@@ -383,7 +385,7 @@ range_end:   inline_expression;
 range_step:  inline_expression;
 // ===========================================================================
 modifiers:           identifier*;
-modified_identifier: identifier+;
+modified_identifier: (mods += identifier)* id = identifier;
 modified_namepath:   identifier+ (OP_PROPORTION identifier)*;
 // namepath
 lambda_name:   LAMBDA_SLOT (identifier | number)?;

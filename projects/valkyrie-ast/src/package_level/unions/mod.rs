@@ -9,13 +9,16 @@ mod iters;
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct UnionDeclaration {
-    pub document: DocumentationNode,
     /// The range of the number.
     pub name: IdentifierNode,
-    pub modifiers: Vec<IdentifierNode>,
-    pub base_unions: Option<String>,
+    /// The super type for the union
+    pub document: DocumentationNode,
+    /// The modifiers for the union
+    pub modifiers: ModifiersNode,
+    pub layout: Option<String>,
     pub derive_traits: Vec<String>,
     pub body: StatementBlock,
+    /// The text range of the statement
     pub span: Range<u32>,
 }
 

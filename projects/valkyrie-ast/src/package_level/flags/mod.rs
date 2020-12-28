@@ -12,7 +12,7 @@ pub struct FlagsDeclaration {
     /// `flags Name`
     pub name: IdentifierNode,
     /// The modifiers for this flag.
-    pub modifiers: Vec<IdentifierNode>,
+    pub modifiers: ModifiersNode,
     /// `(8bits)`
     pub layout: Option<ExpressionNode>,
     /// `: Trait`

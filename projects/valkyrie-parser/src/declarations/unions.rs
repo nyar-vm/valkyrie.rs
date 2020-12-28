@@ -11,14 +11,10 @@ impl ThisParser for UnionDeclaration {
             document: Default::default(),
             name: name,
             modifiers: vec![],
-            base_unions: None,
+            layout: None,
             derive_traits: vec![],
             body: stmt,
         })
-    }
-
-    fn as_lisp(&self) -> Lisp {
-        self.lispify()
     }
 }
 
@@ -34,10 +30,6 @@ impl ThisParser for UnionFieldDeclaration {
             r#type: typing.as_normal(),
             span: get_span(input, state),
         })
-    }
-
-    fn as_lisp(&self) -> Lisp {
-        todo!()
     }
 }
 
