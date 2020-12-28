@@ -1,4 +1,5 @@
 use super::*;
+use valkyrie_ast::{FlagsDeclaration, UnionDeclaration};
 
 impl<'i> Extractor<IdentifierContextAll<'i>> for IdentifierNode {
     fn take(node: Option<Rc<IdentifierContextAll<'i>>>) -> Option<Self> {
@@ -19,22 +20,54 @@ impl<'i> Extractor<IdentifierContextAll<'i>> for IdentifierNode {
     }
 }
 
+impl<'i> Extractor<Define_unionContextAll<'i>> for UnionDeclaration {
+    fn take(node: Option<Rc<Define_unionContextAll<'i>>>) -> Option<Self> {
+        let raw = &*node?;
+        let id = IdentifierNode::take(raw.identifier())?;
+        let span = Range { start: raw.start().start as u32, end: raw.stop().stop as u32 };
+        Some(Self {
+            document: Default::default(),
+            name: id,
+            modifiers: vec![],
+            base_unions: None,
+            derive_traits: vec![],
+            body: Default::default(),
+            span,
+        })
+    }
+}
+
+impl<'i> Extractor<Define_bitflagsContextAll<'i>> for FlagsDeclaration {
+    fn take(node: Option<Rc<Define_bitflagsContextAll<'i>>>) -> Option<Self> {
+        let raw = &*node?;
+        let id = IdentifierNode::take(raw.identifier())?;
+        let span = Range { start: raw.start().start as u32, end: raw.stop().stop as u32 };
+        Some(Self {
+            documentation: Default::default(),
+            name: id,
+            modifiers: vec![],
+            layout: None,
+            implements: vec![],
+            body: Default::default(),
+            span,
+        })
+    }
+}
 impl<'i> Extractor<Define_classContextAll<'i>> for ClassDeclaration {
     fn take(node: Option<Rc<Define_classContextAll<'i>>>) -> Option<Self> {
         let raw = &*node?;
-        let id = IdentifierNode::take(raw.identifier());
+        let id = IdentifierNode::take(raw.identifier())?;
         let span = Range { start: raw.start().start as u32, end: raw.stop().stop as u32 };
-        let define = ClassDeclaration {
+        Some(ClassDeclaration {
             kind: ClassKind::Class,
+            name: id,
             modifiers: Default::default(),
-            identifier: id.unwrap(),
             generic: None,
             base_classes: None,
             auto_traits: vec![],
             body: Default::default(),
             span,
-        };
-        Some(define)
+        })
     }
 }
 

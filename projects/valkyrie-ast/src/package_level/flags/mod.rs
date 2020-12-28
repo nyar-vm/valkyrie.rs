@@ -10,7 +10,7 @@ pub struct FlagsDeclaration {
     /// The documentation for this flag.
     pub documentation: DocumentationNode,
     /// `flags Name`
-    pub namepath: NamePathNode,
+    pub name: IdentifierNode,
     /// The modifiers for this flag.
     pub modifiers: Vec<IdentifierNode>,
     /// `(8bits)`

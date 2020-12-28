@@ -9,7 +9,7 @@ impl ThisParser for ClassDeclaration {
         let (finally, stmt) = parse_statement_block(state.skip(ignore), class_statements)?;
         finally.finish(ClassDeclaration {
             kind: ClassKind::Class,
-            identifier: namepath,
+            name: namepath,
             generic,
             modifiers: ModifiersNode::default(),
             auto_traits: vec![],
@@ -17,10 +17,6 @@ impl ThisParser for ClassDeclaration {
             base_classes: None,
             span: get_span(input, finally),
         })
-    }
-
-    fn as_lisp(&self) -> Lisp {
-        self.lispify()
     }
 }
 

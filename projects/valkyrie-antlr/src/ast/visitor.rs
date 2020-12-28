@@ -1,7 +1,7 @@
 use super::*;
 use crate::extractors::Extractor;
 use antlr_rust::{tree::Tree, TidExt};
-use valkyrie_ast::{NamePathNode, NamespaceDeclaration};
+use valkyrie_ast::{FlagsDeclaration, NamePathNode, NamespaceDeclaration, UnionDeclaration};
 
 impl ParseTreeVisitorCompat<'_> for ValkyrieProgramParser {
     type Node = ValkyrieAntlrParserContextType;
@@ -25,11 +25,19 @@ impl ValkyrieAntlrVisitor<'_> for ValkyrieProgramParser {
 
     fn visit_top_statement(&mut self, ctx: &Top_statementContext<'_>) {
         if let Some(s) = NamespaceDeclaration::take(ctx.define_namespace()) {
-            self.statements.push(StatementNode { r#type: StatementType::Namespace(Box::new(s)), end_semicolon: false });
+            self.statements.push(StatementNode { r#type: s.into(), end_semicolon: false });
             return;
         }
         if let Some(s) = ClassDeclaration::take(ctx.define_class()) {
-            self.statements.push(StatementNode { r#type: StatementType::Class(Box::new(s)), end_semicolon: false });
+            self.statements.push(StatementNode { r#type: s.into(), end_semicolon: false });
+            return;
+        }
+        if let Some(s) = FlagsDeclaration::take(ctx.define_bitflags()) {
+            self.statements.push(StatementNode { r#type: s.into(), end_semicolon: false });
+            return;
+        }
+        if let Some(s) = UnionDeclaration::take(ctx.define_union()) {
+            self.statements.push(StatementNode { r#type: s.into(), end_semicolon: false });
             return;
         }
     }

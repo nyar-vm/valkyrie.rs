@@ -11,11 +11,12 @@ mod iters;
 pub struct UnionDeclaration {
     pub document: DocumentationNode,
     /// The range of the number.
-    pub namepath: NamePathNode,
+    pub name: IdentifierNode,
     pub modifiers: Vec<IdentifierNode>,
     pub base_unions: Option<String>,
     pub derive_traits: Vec<String>,
     pub body: StatementBlock,
+    pub span: Range<u32>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]

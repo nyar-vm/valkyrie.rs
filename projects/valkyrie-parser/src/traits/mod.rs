@@ -24,5 +24,4 @@ where
     fn get_range(&self) -> Range<u32> {
         unreachable!()
     }
-    fn as_lisp(&self) -> Lisp;
 }

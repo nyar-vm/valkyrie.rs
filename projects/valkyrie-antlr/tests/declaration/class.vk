@@ -11,9 +11,7 @@ refine class Positive(Integer) {
 
 }
 
-violate {
-    y._private_field
-}
+
 
 generic {
 
@@ -52,6 +50,9 @@ class A(B, C): C + D {
     }
     _a,
     get a() {
+        violate {
+            y._private_field
+        }
         return _a
     }
     set a() {

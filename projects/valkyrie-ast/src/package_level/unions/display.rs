@@ -5,9 +5,20 @@ impl PrettyPrint for UnionDeclaration {
         let mut terms = PrettySequence::new(4);
         terms += theme.keyword("union");
         terms += " ";
-        terms += self.namepath.pretty(theme);
+        terms += self.name.pretty(theme);
         terms += self.body.pretty(theme);
         terms.into()
+    }
+}
+
+impl Lispify for UnionDeclaration {
+    type Output = Lisp;
+
+    fn lispify(&self) -> Self::Output {
+        let mut lisp = Lisp::new(4);
+        lisp += Lisp::keyword("union");
+        lisp += self.name.lispify();
+        lisp
     }
 }
 
@@ -19,5 +30,13 @@ impl PrettyPrint for UnionFieldDeclaration {
         terms += theme.keyword(":");
         terms += " ";
         terms.into()
+    }
+}
+
+impl Lispify for UnionFieldDeclaration {
+    type Output = Lisp;
+
+    fn lispify(&self) -> Self::Output {
+        todo!()
     }
 }

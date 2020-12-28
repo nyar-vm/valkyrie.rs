@@ -1,4 +1,5 @@
 use super::*;
+use lispify::Lispify;
 
 impl ThisParser for UnionDeclaration {
     fn parse(input: ParseState) -> ParseResult<Self> {
@@ -8,7 +9,7 @@ impl ThisParser for UnionDeclaration {
 
         state.finish(UnionDeclaration {
             document: Default::default(),
-            namepath: name,
+            name: name,
             modifiers: vec![],
             base_unions: None,
             derive_traits: vec![],
@@ -17,10 +18,7 @@ impl ThisParser for UnionDeclaration {
     }
 
     fn as_lisp(&self) -> Lisp {
-        let mut lisp = Lisp::new(4);
-        lisp += Lisp::keyword("union");
-        lisp += self.namepath.as_lisp();
-        lisp
+        self.lispify()
     }
 }
 
