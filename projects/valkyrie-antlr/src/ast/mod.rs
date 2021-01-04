@@ -7,7 +7,7 @@ use crate::{
         valkyrieantlrparser::{self, *},
         valkyrieantlrvisitor::ValkyrieAntlrVisitor,
     },
-    extractors::Extractor,
+    traits::Extractor,
 };
 use antlr_rust::{
     common_token_stream::CommonTokenStream,

@@ -1,8 +1,22 @@
 use super::*;
-use valkyrie_ast::{ClassFieldDeclaration, FlagsDeclaration, ModifiersNode, UnionDeclaration};
+use valkyrie_ast::{ClassFieldDeclaration, FlagsDeclaration, ForLoop, ModifiersNode, PatternExpressionType, UnionDeclaration};
 
 mod annotations;
 mod classes;
+
+impl<'i> Extractor<For_statementContextAll<'i>> for ForLoop {
+    fn take_one(node: &For_statementContextAll<'i>) -> Option<Self> {
+        // Some(Self {
+        //     pattern: PatternExpressionType::Array(),
+        //     iterator: Default::default(),
+        //     condition: None,
+        //     then_body: Default::default(),
+        //     else_body: None,
+        //     span: Default::default(),
+        // })
+        todo!()
+    }
+}
 
 impl<'i> Extractor<IdentifierContextAll<'i>> for IdentifierNode {
     fn take_one(node: &IdentifierContextAll<'i>) -> Option<Self> {

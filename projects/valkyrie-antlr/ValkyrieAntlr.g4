@@ -226,10 +226,22 @@ type_expression
     | SPECIAL        # TSpecial
     ;
 // ===========================================================================
-prefix_call: OP_NOT | OP_ADD | OP_SUB | OP_AND | OP_REFERENCE | OP_DECONSTRUCT;
+prefix_call
+    : OP_NOT
+    | OP_ADD
+    | OP_SUB
+    | OP_AND
+    | OP_REFERENCE
+    | OP_DECONSTRUCT
+    | OP_INVERSE
+    | OP_ROOTS
+    | OP_MUL
+    ;
 suffix_call
     : OP_NOT
     | OP_TEMPERATURE
+    | OP_TRANSPOSE
+    | OP_PERCENT
     | slice_call
     | offset_call
     | generic_call

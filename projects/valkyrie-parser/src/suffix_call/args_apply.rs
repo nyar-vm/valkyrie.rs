@@ -5,8 +5,4 @@ impl ThisParser for ApplyArgumentTerm {
         let (state, term) = ArgumentTermNode::<ArgumentKeyNode, TypingExpression, ExpressionNode>::parse(input)?;
         state.finish(ApplyArgumentTerm { term: term.map_value(|v| v.as_normal()) })
     }
-
-    fn as_lisp(&self) -> Lisp {
-        self.term.as_lisp()
-    }
 }

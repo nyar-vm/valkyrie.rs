@@ -2,6 +2,6 @@ pub(crate) mod antlr;
 
 mod ast;
 
-mod extractors;
+mod traits;
 
 pub use self::ast::ValkyrieProgramParser;

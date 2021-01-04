@@ -27,3 +27,4 @@ flags ManyFlags {
     C = Base.A && Base.B,
     D = ManyEnums[Self::A] || ManyEnums[Self::B],
 }
+

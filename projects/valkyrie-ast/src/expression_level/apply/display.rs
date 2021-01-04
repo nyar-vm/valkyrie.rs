@@ -40,13 +40,26 @@ impl Lispify for ApplyArgument {
     type Output = Lisp;
 
     fn lispify(&self) -> Self::Output {
-        todo!()
+        let mut lisp = Lisp::new(self.terms.len());
+        for term in self.terms.iter() {
+            lisp += term.lispify();
+        }
+        lisp
     }
 }
 
 impl PrettyPrint for ApplyArgumentTerm {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         self.term.pretty(theme)
+    }
+}
+
+#[cfg(feature = "lispify")]
+impl Lispify for ApplyArgumentTerm {
+    type Output = Lisp;
+
+    fn lispify(&self) -> Self::Output {
+        todo!()
     }
 }
 

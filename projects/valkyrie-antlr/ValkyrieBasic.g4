@@ -40,7 +40,7 @@ OP_INC: '++';
 OP_SUB: '-';
 OP_DEC: '--';
 OP_MUL: '*';
-OP_DIV: '/';
+OP_DIV: '/' | '//' | '÷' | '/%';
 // equal
 OP_EQ: '==';
 OP_NE: '!=';
@@ -109,16 +109,16 @@ KW_AS: 'as' | 'as!' | 'as*';
 OP_DECONSTRUCT: '...' | '..';
 OP_UNTIL:       '..<' | '..=';
 OP_POW:         '^';
+// prefix
+OP_INVERSE: '⅟';
+OP_ROOTS:   '√' | '∛' | '∜';
 // suffix
 OP_TEMPERATURE: '℃' | '℉';
+OP_TRANSPOSE:   'ᵀ' | 'ᴴ';
+OP_PERCENT:     '%' | '‰' | '‱';
 // standalone
 OP_REFERENCE: '※';
 OP_LABEL:     '¶';
-
-// DOT ":=", "≔" -> pushToken(ValkyrieTypes.PATTERN_SET, r) "->", "==", "≡" ->
-// pushToken(ValkyrieTypes.OP_EQ, r) "...", ".." -> pushToken(ValkyrieTypes.KW_DOTS, r) r) "¶" ->
-// pushToken(ValkyrieTypes.OP_QUOTE, r) "⤇", "|=>", "⤃", "!=>" -> {
-// pushToken(ValkyrieTypes.OP_EMPTY, r) }
 
 // keywords
 KW_NAMESPACE: 'namespace' ('!' | '*' | '?')?;
@@ -162,7 +162,7 @@ fragment EXP: [Ee] [+\-]? INTEGER;
 
 STRING_SINGLE: '\'' ~[']* '\'';
 STRING_DOUBLE: '"' ~["]* '"';
-STRING_BLOCK: '"""' .*? '"""' | '\'\'\'' .*? '\'\'\'';
+STRING_BLOCK:  '"""' .*? '"""' | '\'\'\'' .*? '\'\'\'';
 
 // conditional
 KW_IF:        'if';

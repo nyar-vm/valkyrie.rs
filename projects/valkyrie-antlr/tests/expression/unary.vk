@@ -1,18 +1,26 @@
 ~~ sign
-+a;
--a;
++counter;
+-counter;
+
+~ pointer
+&pointer;
+*pointer;
 
 ~~ unbox, unpack, unpack all
-*var;
-**var;
-⁑var;
-***var;
-⁂ var;
-a ** var;
+~*var;
+~**var;
+~⁑var;
+~***var;
+~⁂ var;
+~a ** var;
 
 
 ~~ inverse
 ⅟a;
+a // 2
+a /% 2
+
+3 %% 4
 
 ~~ surd
 √2 + ∛3 + ∜5;
@@ -28,3 +36,5 @@ a ** var;
 x%‰‱;
 
 ~~ tensor ᵀᴴᵀ
+matrixᵀ;
+matrixᴴ;

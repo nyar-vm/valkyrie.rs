@@ -92,14 +92,6 @@ impl ThisParser for ApplyArgument {
         let (state, terms) = pattern.consume(input, ignore, ApplyArgumentTerm::parse)?;
         state.finish(ApplyArgument { terms: terms.body, span: get_span(input, state) })
     }
-
-    fn as_lisp(&self) -> Lisp {
-        let mut lisp = Lisp::new(self.terms.len());
-        for term in self.terms.iter() {
-            lisp += term.as_lisp();
-        }
-        lisp
-    }
 }
 
 impl<K, V, D> ThisParser for ArgumentTermNode<K, V, D>

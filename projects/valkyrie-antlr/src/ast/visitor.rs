@@ -1,5 +1,5 @@
 use super::*;
-use crate::extractors::Extractor;
+use crate::traits::Extractor;
 use antlr_rust::{tree::Tree, TidExt};
 use valkyrie_ast::{FlagsDeclaration, NamePathNode, NamespaceDeclaration, UnionDeclaration};
 
