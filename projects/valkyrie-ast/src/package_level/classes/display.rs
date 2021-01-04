@@ -12,7 +12,8 @@ impl PrettyPrint for ClassDeclaration {
         }
         terms += " ";
         let block = SoftBlock::curly_braces().with_joint(PrettyTree::text(";").append(PrettyTree::Hardline));
-        terms += block.join_slice(&self.body.terms, theme);
+        terms += block.join_slice(&self.fields, theme);
+        terms += block.join_slice(&self.methods, theme);
         terms.into()
     }
 }
@@ -25,7 +26,10 @@ impl Lispify for ClassDeclaration {
         lisp += Lisp::keyword("define/class");
         lisp += self.name.lispify();
         lisp += self.modifiers.lispify();
-        for item in &self.body.terms {
+        for item in &self.fields {
+            lisp += item.lispify();
+        }
+        for item in &self.methods {
             lisp += item.lispify();
         }
         lisp
@@ -47,7 +51,28 @@ impl PrettyPrint for ClassFieldDeclaration {
             terms += " ";
             terms += value.pretty(theme);
         }
+
         terms.into()
+    }
+}
+
+impl Lispify for ClassFieldDeclaration {
+    type Output = Lisp;
+
+    fn lispify(&self) -> Self::Output {
+        let mut lisp = Lisp::new(10);
+        lisp += Lisp::keyword("class/field");
+        lisp += self.field_name.lispify();
+        lisp += self.modifiers.lispify();
+        if let Some(typing) = &self.r#type {
+            lisp += Lisp::keyword(":");
+            lisp += typing.lispify();
+        }
+        if let Some(value) = &self.default {
+            lisp += Lisp::keyword("=");
+            lisp += value.lispify();
+        }
+        lisp
     }
 }
 
@@ -73,6 +98,44 @@ impl PrettyPrint for ClassMethodDeclaration {
             terms += " ";
             terms += value.pretty(theme);
         }
+
         terms.into()
+    }
+}
+
+impl Lispify for ClassMethodDeclaration {
+    type Output = Lisp;
+
+    fn lispify(&self) -> Self::Output {
+        let mut lisp = Lisp::new(4);
+        lisp += Lisp::keyword("class/method");
+        lisp += self.method_name.lispify();
+        lisp += self.modifiers.lispify();
+        if let Some(generic) = &self.generic {
+            if !generic.terms.is_empty() {
+                lisp += generic.lispify();
+            }
+        }
+        lisp += self.arguments.lispify();
+        match &self.return_type {
+            Some(ty) => {
+                lisp += Lisp::keyword("return/type") + ty.lispify();
+            }
+            None => {
+                lisp += Lisp::keyword("return/type") + Lisp::symbol("Unit");
+            }
+        }
+        match &self.effect_type {
+            Some(ty) => lisp += ty.lispify(),
+            None => {
+                lisp += Lisp::keyword("return/type") + Lisp::symbol("Pure");
+            }
+        }
+        if let Some(body) = &self.body {
+            for item in &body.terms {
+                lisp += item.lispify();
+            }
+        }
+        lisp
     }
 }

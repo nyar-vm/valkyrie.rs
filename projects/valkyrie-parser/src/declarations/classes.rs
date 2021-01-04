@@ -63,22 +63,6 @@ impl ThisParser for ClassFieldDeclaration {
             span: get_span(input, state),
         })
     }
-
-    fn as_lisp(&self) -> Lisp {
-        let mut lisp = Lisp::new(10);
-        lisp += Lisp::keyword("class/field");
-        lisp += self.field_name.as_lisp();
-        lisp += self.modifiers.as_lisp();
-        if let Some(typing) = &self.r#type {
-            lisp += Lisp::keyword(":");
-            lisp += typing.as_lisp();
-        }
-        if let Some(value) = &self.default {
-            lisp += Lisp::keyword("=");
-            lisp += value.as_lisp();
-        }
-        lisp
-    }
 }
 
 impl ThisParser for ClassMethodDeclaration {
@@ -99,39 +83,6 @@ impl ThisParser for ClassMethodDeclaration {
             effect_type,
             body,
         })
-    }
-
-    fn as_lisp(&self) -> Lisp {
-        let mut lisp = Lisp::new(4);
-        lisp += Lisp::keyword("class/method");
-        lisp += self.method_name.as_lisp();
-        lisp += self.modifiers.as_lisp();
-        if let Some(generic) = &self.generic {
-            if !generic.terms.is_empty() {
-                lisp += generic.as_lisp();
-            }
-        }
-        lisp += self.arguments.as_lisp();
-        match &self.return_type {
-            Some(ty) => {
-                lisp += Lisp::keyword("return/type") + ty.as_lisp();
-            }
-            None => {
-                lisp += Lisp::keyword("return/type") + Lisp::symbol("Unit");
-            }
-        }
-        match &self.effect_type {
-            Some(ty) => lisp += ty.as_lisp(),
-            None => {
-                lisp += Lisp::keyword("return/type") + Lisp::symbol("Pure");
-            }
-        }
-        if let Some(body) = &self.body {
-            for item in &body.terms {
-                lisp += item.as_lisp();
-            }
-        }
-        lisp
     }
 }
 

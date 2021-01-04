@@ -34,6 +34,14 @@ impl PrettyPrint for GenericArgument {
     }
 }
 
+impl Lispify for GenericArgument {
+    type Output = Lisp;
+
+    fn lispify(&self) -> Self::Output {
+        todo!()
+    }
+}
+
 impl PrettyPrint for GenericArgumentTerm {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(5);

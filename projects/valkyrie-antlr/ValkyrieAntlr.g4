@@ -386,7 +386,9 @@ range_step:  inline_expression;
 // ===========================================================================
 modifiers:           identifier*;
 modified_identifier: (mods += identifier)* id = identifier;
-modified_namepath:   identifier+ (OP_PROPORTION identifier)*;
+modified_namepath
+    : (mods += identifier)* path += identifier (OP_PROPORTION path += identifier)*
+    ;
 // namepath
 lambda_name:   LAMBDA_SLOT (identifier | number)?;
 function_name: identifier (OP_PROPORTION identifier)* (DOT identifier)?;

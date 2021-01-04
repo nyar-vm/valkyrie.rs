@@ -36,6 +36,14 @@ impl PrettyPrint for ApplyArgument {
     }
 }
 
+impl Lispify for ApplyArgument {
+    type Output = Lisp;
+
+    fn lispify(&self) -> Self::Output {
+        todo!()
+    }
+}
+
 impl PrettyPrint for ApplyArgumentTerm {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         self.term.pretty(theme)

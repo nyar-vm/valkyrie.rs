@@ -19,7 +19,7 @@ impl Lispify for FlagsDeclaration {
         terms += Lisp::keyword("flags");
         terms += self.name.lispify();
         if let Some(s) = &self.layout {
-            // terms += Lisp::keyword("layout") + s.lispify();
+            terms += Lisp::keyword("layout") + s.lispify();
         }
         for term in &self.body.terms {
             terms += term.lispify();

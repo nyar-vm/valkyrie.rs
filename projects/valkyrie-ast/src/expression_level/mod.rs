@@ -13,6 +13,8 @@ pub mod symbol;
 pub mod table;
 pub mod view;
 
+mod display;
+
 use crate::{
     helper::ValkyrieNode, ApplyCallNode, ApplyDotNode, ArgumentTermNode, CallNode, CallTermNode, CollectsNode,
     ExpressionFormatted, GenericCallNode, IdentifierNode, IfLetStatement, IfStatement, InfixNode, LambdaCallNode,
@@ -33,6 +35,7 @@ use core::{
     ops::Range,
 };
 use deriver::From;
+use lispify::{Lisp, Lispify};
 #[cfg(feature = "pretty-print")]
 use pretty_print::{helpers::PrettySequence, PrettyPrint, PrettyProvider, PrettyTree};
 

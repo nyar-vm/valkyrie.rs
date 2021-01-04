@@ -39,7 +39,7 @@ pub use crate::{
         ExpressionContext, ExpressionNode, ExpressionType, PostfixCallPart, TypingExpression,
     },
     package_level::{
-        classes::{ClassDeclaration, ClassFieldDeclaration, ClassIterator, ClassKind, ClassMethodDeclaration, ClassTerm},
+        classes::{ClassDeclaration, ClassFieldDeclaration, ClassKind, ClassMethodDeclaration},
         documentation::DocumentationNode,
         enumerates::{EnumerateDeclaration, EnumerateFieldDeclaration},
         flags::{FlagsDeclaration, FlagsIterator, FlagsTerm},

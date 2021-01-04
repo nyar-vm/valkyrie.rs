@@ -41,6 +41,14 @@ impl PrettyPrint for FunctionReturnNode {
     }
 }
 
+impl Lispify for FunctionReturnNode {
+    type Output = Lisp;
+
+    fn lispify(&self) -> Self::Output {
+        todo!()
+    }
+}
+
 impl PrettyPrint for FunctionEffectNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(4);
@@ -50,7 +58,13 @@ impl PrettyPrint for FunctionEffectNode {
         terms.into()
     }
 }
+impl Lispify for FunctionEffectNode {
+    type Output = Lisp;
 
+    fn lispify(&self) -> Self::Output {
+        todo!()
+    }
+}
 impl PrettyPrint for StatementBlock {
     /// ```vk
     /// # inline style

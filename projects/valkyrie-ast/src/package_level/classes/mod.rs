@@ -21,24 +21,12 @@ pub struct ClassDeclaration {
     pub base_classes: Option<String>,
     /// The traits that the class implements.
     pub auto_traits: Vec<String>,
-    /// The main body of the class, can't be empty.
-    pub body: StatementBlock,
+    /// All fields declared in this block, exclude extensions.
+    pub fields: Vec<ClassFieldDeclaration>,
+    /// All fields declared in this block, exclude extensions.
+    pub methods: Vec<ClassMethodDeclaration>,
     /// The range of the number.
     pub span: Range<u32>,
-}
-
-/// The valid terms in a class body.
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum ClassTerm {
-    Field(ClassFieldDeclaration),
-    Method(ClassMethodDeclaration),
-}
-
-/// Iterate over all legal elements in the class
-#[derive(Clone, Debug)]
-pub struct ClassIterator<'a> {
-    inner: core::slice::Iter<'a, StatementNode>,
 }
 
 /// `field: Type = default`
