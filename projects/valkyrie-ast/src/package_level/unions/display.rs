@@ -10,7 +10,7 @@ impl PrettyPrint for UnionDeclaration {
         terms.into()
     }
 }
-
+#[cfg(feature = "lispify")]
 impl Lispify for UnionDeclaration {
     type Output = Lisp;
 
@@ -32,7 +32,7 @@ impl PrettyPrint for UnionFieldDeclaration {
         terms.into()
     }
 }
-
+#[cfg(feature = "lispify")]
 impl Lispify for UnionFieldDeclaration {
     type Output = Lisp;
 

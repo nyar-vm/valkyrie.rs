@@ -10,7 +10,7 @@ impl PrettyPrint for NamespaceDeclaration {
         head.append(space).append(path).append(semi)
     }
 }
-
+#[cfg(feature = "lispify")]
 impl Lispify for NamespaceDeclaration {
     type Output = Lisp;
 

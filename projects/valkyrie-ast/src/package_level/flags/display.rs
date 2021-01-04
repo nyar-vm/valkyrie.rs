@@ -10,7 +10,7 @@ impl PrettyPrint for FlagsDeclaration {
         terms.into()
     }
 }
-
+#[cfg(feature = "lispify")]
 impl Lispify for FlagsDeclaration {
     type Output = Lisp;
 

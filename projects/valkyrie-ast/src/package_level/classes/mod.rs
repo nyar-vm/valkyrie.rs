@@ -52,7 +52,7 @@ pub struct ClassMethodDeclaration {
     /// The modifiers of the node.
     pub modifiers: ModifiersNode,
     /// `method_name()`
-    pub method_name: IdentifierNode,
+    pub method_name: NamePathNode,
     /// `method_name<T>()`
     pub generic: Option<GenericArgument>,
     /// `method_name(arguments)`

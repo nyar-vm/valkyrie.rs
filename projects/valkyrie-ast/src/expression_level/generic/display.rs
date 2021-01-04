@@ -33,7 +33,7 @@ impl PrettyPrint for GenericArgument {
         terms.into()
     }
 }
-
+#[cfg(feature = "lispify")]
 impl Lispify for GenericArgument {
     type Output = Lisp;
 

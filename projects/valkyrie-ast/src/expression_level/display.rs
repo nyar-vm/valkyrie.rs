@@ -1,5 +1,5 @@
 use super::*;
-
+#[cfg(feature = "lispify")]
 impl Lispify for ExpressionNode {
     type Output = Lisp;
 
@@ -7,7 +7,7 @@ impl Lispify for ExpressionNode {
         self.body.lispify()
     }
 }
-
+#[cfg(feature = "lispify")]
 impl Lispify for ExpressionType {
     type Output = Lisp;
 

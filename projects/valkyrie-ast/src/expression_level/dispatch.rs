@@ -79,7 +79,7 @@ impl ValkyrieNode for ExpressionType {
         match self {
             Self::Placeholder => unreachable!(),
             Self::Slot(node) => node.span.clone(),
-            Self::Symbol(node) => node.span.clone(),
+            Self::Symbol(node) => node.get_range(),
             Self::Number(node) => node.span.clone(),
             Self::Text(node) => node.span.clone(),
             Self::String(node) => node.span.clone(),

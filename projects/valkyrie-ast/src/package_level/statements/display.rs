@@ -1,5 +1,5 @@
 use super::*;
-use lispify::{Lisp, Lispify};
+
 
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for StatementNode {
@@ -37,7 +37,7 @@ impl PrettyPrint for StatementType {
         }
     }
 }
-
+#[cfg(feature = "lispify")]
 impl Lispify for StatementNode {
     type Output = Lisp;
 
@@ -45,7 +45,7 @@ impl Lispify for StatementNode {
         self.r#type.lispify()
     }
 }
-
+#[cfg(feature = "lispify")]
 impl Lispify for StatementType {
     type Output = Lisp;
 

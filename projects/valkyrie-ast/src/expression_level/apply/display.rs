@@ -35,7 +35,7 @@ impl PrettyPrint for ApplyArgument {
         PrettyTree::text("(").append(theme.join(self.terms.clone(), ", ")).append(")")
     }
 }
-
+#[cfg(feature = "lispify")]
 impl Lispify for ApplyArgument {
     type Output = Lisp;
 

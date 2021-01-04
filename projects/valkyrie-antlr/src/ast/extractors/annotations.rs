@@ -18,10 +18,14 @@ impl<'i> Extractor<Modified_identifierContextAll<'i>> for IdentifierNode {
     }
 }
 
-// impl<'i> Extractor<ModifiersContextAll<'i>> for ModifiersNode {
-//     fn take(node: Option<Rc<ModifiersContextAll<'i>>>) -> Option<Self> {
-//         let raw = node?;
-//         // let span = Range { start: raw.start().start as u32, end: raw.stop().stop as u32 };
-//         Some(Self { terms: IdentifierNode::take_many(raw.identifier_all()) })
-//     }
-// }
+impl<'i> Extractor<Modified_namepathContextAll<'i>> for ModifiersNode {
+    fn take_one(node: &Modified_namepathContextAll<'i>) -> Option<Self> {
+        Some(Self { terms: IdentifierNode::take_many(&node.mods) })
+    }
+}
+
+impl<'i> Extractor<Modified_namepathContextAll<'i>> for NamePathNode {
+    fn take_one(node: &Modified_namepathContextAll<'i>) -> Option<Self> {
+        Some(Self { names: IdentifierNode::take_many(&node.path) })
+    }
+}

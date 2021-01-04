@@ -35,6 +35,7 @@ use core::{
     ops::Range,
 };
 use deriver::From;
+#[cfg(feature = "lispify")]
 use lispify::{Lisp, Lispify};
 #[cfg(feature = "pretty-print")]
 use pretty_print::{helpers::PrettySequence, PrettyPrint, PrettyProvider, PrettyTree};

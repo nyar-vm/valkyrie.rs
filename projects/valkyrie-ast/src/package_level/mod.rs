@@ -20,7 +20,7 @@ use crate::{
     ClassMethodDeclaration, ControlNode, DocumentationNode, EnumerateDeclaration, EnumerateFieldDeclaration, ExpressionNode,
     ExpressionType, FlagsDeclaration, ForLoop, FunctionDeclaration, FunctionEffectNode, FunctionReturnNode, GenericArgument,
     GuardLetStatement, GuardStatement, IdentifierNode, ImportStatement, LetBindNode, ModifiersNode, NamePathNode,
-    NamespaceDeclaration, PatternExpressionType, StatementBlock, StatementNode, StatementType, StringLiteralNode,
+    NamespaceDeclaration, PatternExpressionType, ProgramRoot, StatementBlock, StatementNode, StatementType, StringLiteralNode,
     StringTextNode, TaggedDeclaration, UnionDeclaration, UnionFieldDeclaration, VariantDeclaration, WhileLoop,
 };
 use alloc::{
@@ -37,10 +37,10 @@ use core::{
 use deriver::From;
 use pretty_print::helpers::SoftBlock;
 
+#[cfg(feature = "lispify")]
+use lispify::{Lisp, Lispify};
 #[cfg(feature = "pretty-print")]
 use pretty_print::{
     helpers::{KAndRBracket, PrettySequence},
     PrettyPrint, PrettyProvider, PrettyTree,
 };
-#[cfg(feature = "lispify")]
-use lispify::{Lisp, Lispify};

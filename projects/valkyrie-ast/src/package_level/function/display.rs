@@ -40,7 +40,7 @@ impl PrettyPrint for FunctionReturnNode {
         terms.into()
     }
 }
-
+#[cfg(feature = "lispify")]
 impl Lispify for FunctionReturnNode {
     type Output = Lisp;
 
@@ -58,6 +58,7 @@ impl PrettyPrint for FunctionEffectNode {
         terms.into()
     }
 }
+#[cfg(feature = "lispify")]
 impl Lispify for FunctionEffectNode {
     type Output = Lisp;
 

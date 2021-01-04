@@ -17,7 +17,7 @@ impl PrettyPrint for ClassDeclaration {
         terms.into()
     }
 }
-
+#[cfg(feature = "lispify")]
 impl Lispify for ClassDeclaration {
     type Output = Lisp;
 
@@ -55,7 +55,7 @@ impl PrettyPrint for ClassFieldDeclaration {
         terms.into()
     }
 }
-
+#[cfg(feature = "lispify")]
 impl Lispify for ClassFieldDeclaration {
     type Output = Lisp;
 
@@ -80,7 +80,7 @@ impl PrettyPrint for ClassMethodDeclaration {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(10);
         terms += self.modifiers.pretty(theme);
-        terms += theme.operator(self.method_name.name.to_string());
+        terms += theme.operator(self.method_name.to_string());
         if let Some(typing) = &self.generic {
             if !typing.terms.is_empty() {
                 terms += typing.pretty(theme);
@@ -102,7 +102,7 @@ impl PrettyPrint for ClassMethodDeclaration {
         terms.into()
     }
 }
-
+#[cfg(feature = "lispify")]
 impl Lispify for ClassMethodDeclaration {
     type Output = Lisp;
 

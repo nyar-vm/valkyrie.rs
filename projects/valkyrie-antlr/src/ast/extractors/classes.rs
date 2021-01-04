@@ -34,7 +34,7 @@ impl<'i> Extractor<Class_fieldContextAll<'i>> for ClassFieldDeclaration {
 
 impl<'i> Extractor<Class_methodContextAll<'i>> for ClassMethodDeclaration {
     fn take_one(node: &Class_methodContextAll<'i>) -> Option<Self> {
-        let id = IdentifierNode::take(node.modified_namepath())?;
+        let id = NamePathNode::take(node.modified_namepath())?;
         let modifiers = ModifiersNode::take(node.modified_namepath()).unwrap_or_default();
         let span = Range { start: node.start().start as u32, end: node.stop().stop as u32 };
         Some(Self {

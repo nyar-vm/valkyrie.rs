@@ -16,8 +16,6 @@ pub struct IdentifierNode {
 pub struct NamePathNode {
     /// The names of the identifier.
     pub names: Vec<IdentifierNode>,
-    /// The range of the identifier.
-    pub span: Range<u32>,
 }
 
 /// `$, $1, $x`
@@ -38,18 +36,22 @@ impl LambdaSlotNode {
 }
 
 impl NamePathNode {
+    /// Create a new name path node with given identifiers.
     pub fn new<I>(names: I) -> Self
     where
         I: IntoIterator<Item = IdentifierNode>,
     {
-        let names: Vec<IdentifierNode> = names.into_iter().collect();
-        let start = names.iter().map(|s| s.span.start).min().unwrap_or(0);
-        let end = names.iter().map(|n| n.span.end).max().unwrap_or(0);
-        Self { names, span: start..end }
+        Self { names: names.into_iter().collect() }
     }
     pub fn join<I: IntoIterator<Item = IdentifierNode>>(mut self, other: I) -> Self {
         self.names.extend(other);
         self
+    }
+    /// Calculate range by first and last elements
+    pub fn get_range(&self) -> Range<u32> {
+        let head = self.names.first().map(|x| x.span.start).unwrap_or_default();
+        let tail = self.names.last().map(|x| x.span.end).unwrap_or_default();
+        head..tail
     }
 }
 

@@ -9,10 +9,6 @@ impl ThisParser for NamePathNode {
         let (state, _) = state.match_repeats(|s| pare_colon_id(s, &mut names))?;
         state.finish(NamePathNode { names, span: get_span(input, state) })
     }
-
-    fn as_lisp(&self) -> Lisp {
-        Lisp::symbol(self.to_string())
-    }
 }
 
 fn pare_colon_id<'i>(input: ParseState<'i>, names: &mut Vec<IdentifierNode>) -> ParseResult<'i, ()> {

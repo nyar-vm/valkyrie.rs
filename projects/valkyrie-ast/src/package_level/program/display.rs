@@ -1,6 +1,6 @@
-use crate::ProgramRoot;
-use lispify::{Lisp, Lispify};
+use super::*;
 
+#[cfg(feature = "lispify")]
 impl Lispify for ProgramRoot {
     type Output = Lisp;
 

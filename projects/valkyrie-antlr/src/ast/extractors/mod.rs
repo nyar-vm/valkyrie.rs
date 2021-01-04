@@ -58,15 +58,13 @@ impl<'i> Extractor<Define_bitflagsContextAll<'i>> for FlagsDeclaration {
 
 impl<'i> Extractor<Namepath_freeContextAll<'i>> for NamePathNode {
     fn take_one(node: &Namepath_freeContextAll<'i>) -> Option<Self> {
-        let span = Range { start: node.start().start as u32, end: node.stop().stop as u32 };
-        Some(Self { names: IdentifierNode::take_many(&node.identifier_all()), span })
+        Some(Self { names: IdentifierNode::take_many(&node.identifier_all()) })
     }
 }
 
 impl<'i> Extractor<NamepathContextAll<'i>> for NamePathNode {
     fn take_one(node: &NamepathContextAll<'i>) -> Option<Self> {
-        let span = Range { start: node.start().start as u32, end: node.stop().stop as u32 };
-        Some(Self { names: IdentifierNode::take_many(&node.identifier_all()), span })
+        Some(Self { names: IdentifierNode::take_many(&node.identifier_all()) })
     }
 }
 
