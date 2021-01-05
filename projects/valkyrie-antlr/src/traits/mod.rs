@@ -10,6 +10,16 @@ where
 
     fn take_one(node: &R) -> Option<Self>;
 
+    fn take_one_of(nodes: Vec<Option<Rc<R>>>) -> Option<Self> {
+        for term in nodes {
+            let finish = Self::take(term);
+            if finish.is_some() {
+                return finish;
+            }
+        }
+        return None;
+    }
+
     fn take_many(nodes: &[Rc<R>]) -> Vec<Self> {
         let mut out = Vec::with_capacity(nodes.len());
         for node in nodes {

@@ -59,6 +59,12 @@ pub enum ValkyrieOperator {
     Multiply,
     /// binary operator: `/`
     Divide,
+    /// binary operator: `%`
+    Remider,
+    /// binary operator: `/%`
+    DivideRemider,
+    /// binary operator: `//`
+    DivideFloor,
     /// binary operator: `^`
     Power,
     /// suffix operator: `|`
@@ -114,6 +120,9 @@ impl ValkyrieOperator {
             // infix + 1
             Self::Multiply => 15100,
             Self::Divide => 15100,
+            Self::Remider => 15100,
+            Self::DivideRemider => 15100,
+            Self::DivideFloor => 15100,
             // infix + 2
             Self::Power => 15200,
             // prefix + 0
@@ -150,6 +159,9 @@ impl ValkyrieOperator {
             Self::MinusAssign => "-=",
             Self::Multiply => "*",
             Self::Divide => "/",
+            Self::Remider => "%",
+            Self::DivideRemider => "/%",
+            Self::DivideFloor => "//",
             Self::Power => "^",
             Self::Optional => "?",
             Self::QuickRaise => "!",

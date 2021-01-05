@@ -33,20 +33,15 @@ impl<'i> Extractor<Top_expressionContext<'i>> for ExpressionNode {
 impl<'i> Extractor<ExpressionContextAll<'i>> for ExpressionType {
     fn take_one(node: &ExpressionContextAll<'i>) -> Option<Self> {
         let body = match node {
-            ExpressionContextAll::EPrefixContext(prefix) => {
-                let this = PrefixNode::take_one(prefix)?;
-                ExpressionType::Prefix(Box::new(this))
-            }
-            ExpressionContextAll::ESuffixContext(suffix) => {
-                let this = PostfixNode::take_one(suffix)?;
-                ExpressionType::Suffix(Box::new(this))
-            }
+            ExpressionContextAll::EPrefixContext(prefix) => PrefixNode::take_one(prefix)?.into(),
+            ExpressionContextAll::ESuffixContext(suffix) => PostfixNode::take_one(suffix)?.into(),
+            ExpressionContextAll::EPowContext(infix) => InfixNode::take_one(infix)?.into(),
+            ExpressionContextAll::EPlusContext(infix) => InfixNode::take_one(infix)?.into(),
+            ExpressionContextAll::EMulContext(infix) => InfixNode::take_one(infix)?.into(),
             ExpressionContextAll::ENamepathContext(namepath) => {
                 let this = NamePathNode::take(namepath.namepath())?;
                 ExpressionType::Symbol(Box::new(this))
             }
-            ExpressionContextAll::EPlusContext(plus) => InfixNode::take_one(plus)?.into(),
-            ExpressionContextAll::EMulContext(mul) => InfixNode::take_one(mul)?.into(),
             ExpressionContextAll::EGroupContext(group) => ExpressionType::take(group.expression())?,
             ExpressionContextAll::ENumberContext(plus) => NumberLiteralNode::take_one(plus)?.into(),
             _ => {
