@@ -39,11 +39,11 @@ trait TestTrait {
 
 
 function test(
-    ~~ 1
+    ~ 1
     #[nice(#boat args)]
-    ~~ 2
+    ~ 2
     placeholder mut a: A = 0,
-    ~~ 3
+    ~ 3
     `b`: `B` = null
 ) -> ReturnType {
     if err != nil {

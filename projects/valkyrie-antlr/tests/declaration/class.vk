@@ -17,20 +17,20 @@ generic {
 
 }
 function a() {
-    @assert ~~ 断言
-    @assume ~~ 假设
-    @refute ~~ 否定
+    @assert ~ 断言
+    @assume ~ 假设
+    @refute ~ 否定
 }
 
 
 generic T, U {
-    ~~ forall {f32, f64}
-    ~~ ~~ 前置
-    ~~ require {
+    ~ forall {f32, f64}
+    ~ ~ 前置
+    ~ require {
     ~~
-    ~~ }
-    ~~ ensure {}~~ 后置
-    ~~ where {}~~ 约束
+    ~ }
+    ~ ensure {}~ 后置
+    ~ where {}~ 约束
 }
 class A {
     inherit Base,
@@ -65,9 +65,9 @@ generic T {
         T: Trait
     }
 }
-~~ test
+~ test
 #[Copy(Clone), Debug]
-~~ test
+~ test
 #derive(PartialEq, Eq, Hash)
 class A⟨T⟩ {
 

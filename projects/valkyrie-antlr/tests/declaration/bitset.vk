@@ -16,17 +16,17 @@ public bitflag Flags {
 test function  test() {
     let e1 = Flags::A | Flags::C;
     let e2 = Flags::B | Flags::C;
-    ~~ union
+    ~ union
     assert_eq!((e1 | e2), Flags::ABC);
-    ~~ intersection
+    ~ intersection
     assert_eq!((e1 & e2), Flags::C);
-    ~~ set difference
+    ~ set difference
     assert_eq!((e1 - e2), Flags::A);
-    ~~ set complement
+    ~ set complement
     assert_eq!(!e2, Flags::A);
-    ~~ set all bits to 1
+    ~ set all bits to 1
     e1.all();
-    ~~ set all bits to 0
+    ~ set all bits to 0
     e1.none();
 }
 
@@ -38,7 +38,7 @@ extends Bitflags {
 
     }
 }
-~~ always public
+~ always public
 #infix('|')
 function oppo logic_or(self, rhs: Self) -> Self {
     Self::from(self.bits | rhs.bits)

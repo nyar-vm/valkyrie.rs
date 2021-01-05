@@ -7,7 +7,7 @@ a ^ b ^ c;
 5 ^ (4 * (3 + 2) - 1);
 1 + 2 * 3 ^ (4 - 5);
 
-~~ Equality
+~ Equality
 
 a ≖ b == c;
 a ≠ b != c;
@@ -15,23 +15,23 @@ a ≡ b === c;
 a ≢ b !== c =!= c;
 a =!= b =!= c;
 
-~~ Ordering
+~ Ordering
 
 a > b > c;
 
 
-~~ a >= b >= c >= d;
+~ a >= b >= c >= d;
 
 a < b < c;
 
-~~ a <= b <= c <= d;
+~ a <= b <= c <= d;
 
 a ≫ b >> c;
 a ⋙ b >>> c;
 a ≪ b << c;
 a ⋘ b <<< c;
 
-~~ contains
+~ contains
 
 a ∈ list;
 a ∊ list;
@@ -39,8 +39,8 @@ a ∉ list;
 a in list;
 a not in list;
 
-~~ subtyping
+~ subtyping
 a is String;
 b is not String;
 
-~~ a && b || c ∨ d ⊽ e ⊻ f ∧ g ⊼ h ⩟ i;
+~ a && b || c ∨ d ⊽ e ⊻ f ∧ g ⊼ h ⩟ i;

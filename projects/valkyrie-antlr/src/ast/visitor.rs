@@ -1,7 +1,7 @@
 use super::*;
 use crate::traits::Extractor;
 use antlr_rust::{tree::Tree, TidExt};
-use valkyrie_ast::{FlagsDeclaration, NamePathNode, NamespaceDeclaration, UnionDeclaration};
+use valkyrie_ast::{ExpressionNode, FlagsDeclaration, NamePathNode, NamespaceDeclaration, UnionDeclaration};
 
 impl ParseTreeVisitorCompat<'_> for ValkyrieProgramParser {
     type Node = ValkyrieAntlrParserContextType;
@@ -37,6 +37,11 @@ impl ValkyrieAntlrVisitor<'_> for ValkyrieProgramParser {
             return;
         }
         if let Some(s) = UnionDeclaration::take(ctx.define_union()) {
+            self.statements.push(StatementNode { r#type: s.into(), end_semicolon: false });
+            return;
+        }
+
+        if let Some(s) = ExpressionNode::take(ctx.top_expression()) {
             self.statements.push(StatementNode { r#type: s.into(), end_semicolon: false });
             return;
         }

@@ -43,6 +43,16 @@ use pretty_print::{helpers::PrettySequence, PrettyPrint, PrettyProvider, PrettyT
 /// The ast node for an expression
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ExpressionRoot {
+    /// Weather it is a type level expression
+    pub type_level: bool,
+    /// The expression body
+    pub body: ExpressionNode,
+}
+
+/// The ast node for an expression
+#[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ExpressionNode {
     /// Weather it is a type level expression
     pub type_level: bool,

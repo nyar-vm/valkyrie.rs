@@ -1,5 +1,8 @@
 use super::*;
-use valkyrie_ast::{ClassFieldDeclaration, FlagsDeclaration, ForLoop, ModifiersNode, PatternExpressionType, UnionDeclaration};
+use valkyrie_ast::{
+    ClassFieldDeclaration, ExpressionNode, ExpressionType, FlagsDeclaration, ForLoop, ModifiersNode, OperatorNode,
+    PatternExpressionType, PrefixNode, UnionDeclaration, ValkyrieOperator,
+};
 
 mod annotations;
 mod classes;
@@ -15,6 +18,55 @@ impl<'i> Extractor<For_statementContextAll<'i>> for ForLoop {
         //     span: Default::default(),
         // })
         todo!()
+    }
+}
+
+impl<'i> Extractor<Top_expressionContext<'i>> for ExpressionNode {
+    fn take_one(node: &Top_expressionContext<'i>) -> Option<Self> {
+        let node = ExpressionType::take(node.expression())?;
+        Some(Self { type_level: false, body: node, span: Default::default() })
+    }
+}
+
+impl<'i> Extractor<ExpressionContextAll<'i>> for ExpressionType {
+    fn take_one(node: &ExpressionContextAll<'i>) -> Option<Self> {
+        let body = match node {
+            ExpressionContextAll::EPrefixContext(prefix) => {
+                let this = PrefixNode::take_one(prefix)?;
+                ExpressionType::Prefix(Box::new(this))
+            }
+            ExpressionContextAll::ENamepathContext(namepath) => {
+                let this = NamePathNode::take(namepath.namepath())?;
+                ExpressionType::Symbol(Box::new(this))
+            }
+            _ => {
+                unimplemented!("{:?}", node)
+            }
+        };
+        Some(body)
+    }
+}
+
+impl<'i> Extractor<EPrefixContext<'i>> for PrefixNode {
+    fn take_one(node: &EPrefixContext<'i>) -> Option<Self> {
+        let prefix = OperatorNode::take(node.prefix_call())?;
+        let base = ExpressionType::take(node.expression())?;
+        let span = Range { start: node.start().start as u32, end: node.stop().stop as u32 };
+        Some(Self { operator: prefix, base, span })
+    }
+}
+
+impl<'i> Extractor<Prefix_callContextAll<'i>> for OperatorNode {
+    fn take_one(node: &Prefix_callContextAll<'i>) -> Option<Self> {
+        let text = node.get_text();
+        let span = Range { start: node.start().start as u32, end: node.stop().stop as u32 };
+        let kind = match text.as_str() {
+            "+" => ValkyrieOperator::Positive,
+            _ => {
+                unreachable!("Missing prefix {:?}", text)
+            }
+        };
+        Some(Self { kind, span })
     }
 }
 
