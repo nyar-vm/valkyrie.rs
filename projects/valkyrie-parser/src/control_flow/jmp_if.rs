@@ -11,14 +11,14 @@ impl ThisParser for IfStatement {
         finally.finish(IfStatement { branches, else_body, span: get_span(input, finally) })
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         let mut lisp = Lisp::new(10);
         lisp += Lisp::keyword("branches");
         for branch in &self.branches {
-            lisp += branch.as_lisp();
+            lisp += branch.lispify();
         }
         if let Some(else_body) = &self.else_body {
-            lisp += else_body.as_lisp();
+            lisp += else_body.lispify();
         }
         lisp
     }
@@ -37,15 +37,15 @@ impl ThisParser for IfLetStatement {
         finally.finish(Self { pattern: pat, expression: expr, then_body, else_body, span: get_span(input, finally) })
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         let mut lisp = Lisp::new(10);
         lisp += Lisp::keyword("pattern");
-        lisp += self.pattern.as_lisp();
+        lisp += self.pattern.lispify();
         lisp += Lisp::keyword("expression");
-        lisp += self.expression.as_lisp();
-        lisp += self.then_body.as_lisp();
+        lisp += self.expression.lispify();
+        lisp += self.then_body.lispify();
         if let Some(else_body) = &self.else_body {
-            lisp += else_body.as_lisp();
+            lisp += else_body.lispify();
         }
         lisp
     }
@@ -65,8 +65,8 @@ impl ThisParser for IfConditionNode {
         state.finish(IfConditionNode { condition: cond, body, span: get_span(input, state) })
     }
 
-    fn as_lisp(&self) -> Lisp {
-        self.condition.as_lisp() + self.body.as_lisp()
+    fn lispify(&self) -> Lisp {
+        self.condition.lispify() + self.body.lispify()
     }
 }
 impl ThisParser for ThenStatement {
@@ -76,8 +76,8 @@ impl ThisParser for ThenStatement {
         state.finish(ThenStatement { show: true, body: func, span: get_span(input, state) })
     }
 
-    fn as_lisp(&self) -> Lisp {
-        Lisp::keyword("then") + self.body.as_lisp()
+    fn lispify(&self) -> Lisp {
+        Lisp::keyword("then") + self.body.lispify()
     }
 }
 
@@ -88,7 +88,7 @@ impl ThisParser for ElseStatement {
         state.finish(ElseStatement { body: func, span: get_span(input, state) })
     }
 
-    fn as_lisp(&self) -> Lisp {
-        Lisp::keyword("else") + self.body.as_lisp()
+    fn lispify(&self) -> Lisp {
+        Lisp::keyword("else") + self.body.lispify()
     }
 }

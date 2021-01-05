@@ -39,15 +39,15 @@ impl ThisParser for NewConstructNode {
         })
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         let mut lisp = Lisp::new(self.body.terms.len() + 3);
 
         lisp += Lisp::keyword("new");
-        lisp += self.namepath.as_lisp();
-        lisp += self.generic.as_lisp();
-        lisp += self.arguments.as_lisp();
+        lisp += self.namepath.lispify();
+        lisp += self.generic.lispify();
+        lisp += self.arguments.lispify();
         for term in &self.body.terms {
-            lisp += term.as_lisp();
+            lisp += term.lispify();
         }
         lisp
     }
@@ -70,7 +70,7 @@ impl ThisParser for CollectsNode {
         state.finish(CollectsNode { terms: terms.body, span: get_span(input, state) })
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         unreachable!()
     }
 }

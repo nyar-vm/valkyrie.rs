@@ -41,14 +41,6 @@ impl ThisParser for NumberLiteralNode {
         number.unit = unit;
         state.finish(number)
     }
-
-    fn as_lisp(&self) -> Lisp {
-        let number = Lisp::number(self.value.clone());
-        match &self.unit {
-            Some(s) => number & Lisp::unit(s.name.clone()),
-            None => number,
-        }
-    }
 }
 
 pub static BYTES: LazyLock<Regex> = LazyLock::new(|| {
@@ -89,7 +81,7 @@ impl ThisParser for ValkyrieBytes {
         state.finish(ValkyrieBytes { bytes: value, unit, range: Default::default() })
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         todo!()
     }
 }

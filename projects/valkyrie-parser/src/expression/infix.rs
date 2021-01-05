@@ -16,7 +16,7 @@ impl ThisParser for MonadicCall {
         state.finish(Self { mark })
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         unreachable!()
     }
 }
@@ -32,7 +32,7 @@ impl ThisParser for MonadicDotCall {
         state.finish(Self { mark })
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         unreachable!()
     }
 }

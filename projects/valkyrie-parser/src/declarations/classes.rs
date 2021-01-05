@@ -33,7 +33,7 @@ impl ThisParser for ClassKind {
         }
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         let define = match self {
             Self::Class => "define/class",
             Self::Structure => "define/structure",

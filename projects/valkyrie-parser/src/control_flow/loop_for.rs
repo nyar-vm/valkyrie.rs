@@ -22,18 +22,18 @@ impl ThisParser for ForLoop {
         })
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         let mut lisp = Lisp::new(10);
         lisp += Lisp::keyword("loop/for");
-        lisp += Lisp::keyword("iterator") + self.iterator.as_lisp();
-        lisp += Lisp::keyword("pattern") + self.pattern.as_lisp();
+        lisp += Lisp::keyword("iterator") + self.iterator.lispify();
+        lisp += Lisp::keyword("pattern") + self.pattern.lispify();
         if let Some(cond) = &self.condition {
             lisp += Lisp::keyword("condition");
-            lisp += cond.as_lisp();
+            lisp += cond.lispify();
         }
-        lisp += self.then_body.terms.iter().map(|s| s.as_lisp()).collect::<Lisp>();
+        lisp += self.then_body.terms.iter().map(|s| s.lispify()).collect::<Lisp>();
         lisp += Lisp::keyword("otherwise");
-        lisp += self.else_body.iter().map(|s| s.as_lisp()).collect::<Lisp>();
+        lisp += self.else_body.iter().map(|s| s.lispify()).collect::<Lisp>();
         lisp
     }
 }
@@ -55,7 +55,7 @@ impl ThisParser for ForBarePattern {
         state.finish(Self { pattern: pats, span: get_span(input, state) })
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         unreachable!()
     }
 }

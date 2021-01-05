@@ -5,7 +5,7 @@ impl ThisParser for DocumentationNode {
         input.begin_choice().choose(parse_one_line).choose(parse_multi_line).end_choice()
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         todo!()
 
         // Lisp::String(Box::new(ListString { text: "#?".to_string(), unit: self.documentation.clone() }))

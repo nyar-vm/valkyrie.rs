@@ -20,18 +20,18 @@ impl ThisParser for FunctionDeclaration {
         })
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         let mut lisp = Lisp::new(6);
-        lisp += self.r#type.as_lisp();
-        lisp += self.namepath.as_lisp();
+        lisp += self.r#type.lispify();
+        lisp += self.namepath.lispify();
         if let Some(generic) = &self.generic {
-            lisp += generic.as_lisp();
+            lisp += generic.lispify();
         }
-        lisp += self.arguments.as_lisp();
+        lisp += self.arguments.lispify();
         if let Some(r#return) = &self.r#return {
-            lisp += r#return.as_lisp();
+            lisp += r#return.lispify();
         }
-        lisp += self.body.as_lisp();
+        lisp += self.body.lispify();
         lisp
     }
 }
@@ -52,7 +52,7 @@ impl ThisParser for FunctionType {
         }
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         Lisp::keyword(self.as_str())
     }
 }
@@ -64,8 +64,8 @@ impl ThisParser for FunctionReturnNode {
         state.finish(FunctionReturnNode { returns: typing, span: get_span(input, state) })
     }
 
-    fn as_lisp(&self) -> Lisp {
-        self.returns.as_lisp()
+    fn lispify(&self) -> Lisp {
+        self.returns.lispify()
     }
 }
 
@@ -76,11 +76,11 @@ impl ThisParser for FunctionEffectNode {
         state.finish(FunctionEffectNode { effects: vec![typing], span: get_span(input, state) })
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         let mut lisp = Lisp::new(self.effects.len());
         lisp += Lisp::keyword("return/effect");
         for effect in &self.effects {
-            lisp += effect.as_lisp();
+            lisp += effect.lispify();
         }
         lisp
     }
@@ -114,15 +114,15 @@ where
         state.finish(ArgumentTermNode { key, value, default })
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         let mut lisp = Lisp::new(3);
-        lisp += self.key.as_lisp();
+        lisp += self.key.lispify();
         lisp += match &self.value {
-            Some(v) => v.as_lisp(),
+            Some(v) => v.lispify(),
             None => Lisp::symbol("Any"),
         };
         lisp += match &self.default {
-            Some(v) => v.as_lisp(),
+            Some(v) => v.lispify(),
             None => Lisp::keyword("null"),
         };
         lisp
@@ -136,12 +136,12 @@ impl ThisParser for ArgumentKeyNode {
         state.finish(ArgumentKeyNode { modifiers: mods, key: id })
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         let mut lisp = Lisp::new(self.modifiers.terms.len() + 1);
         for modifier in self.modifiers.terms.iter() {
-            lisp += modifier.as_lisp();
+            lisp += modifier.lispify();
         }
-        lisp += self.key.as_lisp();
+        lisp += self.key.lispify();
         lisp
     }
 }

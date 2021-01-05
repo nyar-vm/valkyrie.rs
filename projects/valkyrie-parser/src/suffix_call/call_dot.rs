@@ -6,11 +6,11 @@ impl ThisParser for CallNode<ApplyDotNode> {
         unreachable!()
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         let mut lisp = Lisp::new(3);
         lisp += Lisp::keyword("call/apply-dot");
-        lisp += self.base.as_lisp();
-        lisp += self.rest.as_lisp();
+        lisp += self.base.lispify();
+        lisp += self.rest.lispify();
         lisp
     }
 }
@@ -27,11 +27,11 @@ impl ThisParser for ApplyDotNode {
         finally.finish(ApplyDotNode { nullable: false, caller, terms, span: get_span(input, finally) })
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         let mut lisp = Lisp::new(self.terms.len() + 3);
-        lisp += self.caller.as_lisp();
+        lisp += self.caller.lispify();
         for term in &self.terms {
-            lisp += term.as_lisp();
+            lisp += term.lispify();
         }
         lisp
     }

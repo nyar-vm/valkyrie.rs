@@ -164,45 +164,52 @@ if_guard: KW_IF inline_expression;
 // ==========================================================================
 top_expression: annotation* expression;
 expression
-    : expression suffix_call                       # ESuffix
-    | <assoc = right> expression OP_POW expression # EPow
-    | expression op_multiple expression            # EMul
-    | expression op_plus expression                # EPlus
-    | expression op_logic expression               # ELogic
-    | expression op_compare expression             # ECompare
-    | expression OP_UNTIL expression               # ERange
-    | expression infix_is type_expression          # EIsA
-    | expression op_assign type_expression         # EAssign
-    | expression OP_OR_ELSE type_expression        # EOrElse
-    | control_expression                           # EControl
-    | prefix_call expression                       # EPrefix
-    | PARENTHESES_L expression PARENTHESES_R       # EGroup
-    | try_statement                                # ETry
-    | if_statement                                 # EIf
-    | match_statement                              # EMatch
-    | new_statement                                # ENew
-    | object_statement                             # EObject
-    | macro_call                                   # EMacro
-    | function_call                                # EFunction
-    | define_label                                 # EDefine
-    | collection_literal                           # ECollection
-    | string_literal                               # EString
-    | number_literal                               # ENumber
-    | lambda_name                                  # ELambda
-    | namepath                                     # ENamepath
-    | SPECIAL                                      # ESpecial
+    : <assoc = right> expression OP_POW expression      # EPow
+    | lhs = expression op_multiple expression           # EMul
+    | lhs = expression op_plus rhs = expression         # EPlus
+    | lhs = expression op_logic rhs = expression        # ELogic
+    | lhs = expression op_compare rhs = expression      # ECompare
+    | lhs = expression OP_UNTIL rhs = expression        # ERange
+    | lhs = expression infix_is rhs = type_expression   # EIsA
+    | lhs = expression op_assign rhs = type_expression  # EAssign
+    | lhs = expression OP_OR_ELSE rhs = type_expression # EOrElse
+    | op_prefix expression                              # EPrefix
+    | expression op_suffix                              # ESuffix
+    | expression slice_call                             # ESlice
+    | expression offset_call                            # EOffset
+    | expression generic_call                           # EGeneric
+    | expression lambda_call                            # ELambda
+    | expression match_call                             # EMatch
+    | expression function_call                          # EFunction
+    | expression dot_call                               # EDot
+    | control_expression                                # EControl
+    | PARENTHESES_L expression PARENTHESES_R            # EGroup
+    | try_statement                                     # ETry
+    | if_statement                                      # EIf
+    | match_statement                                   # EMatch
+    | new_statement                                     # ENew
+    | object_statement                                  # EObject
+    | macro_call                                        # EMacro
+    | function_call                                     # EFunction
+    | define_label                                      # EDefine
+    | collection_literal                                # ECollection
+    | string_literal                                    # EString
+    | number_literal                                    # ENumber
+    | lambda_name                                       # ELambda
+    | namepath                                          # ENamepath
+    | SPECIAL                                           # ESpecial
     ;
 inline_expression
     : inline_expression dot_call                                 # IDot
     | inline_expression slice_call                               # ISlice
     | inline_expression op_multiple inline_expression            # IMul
-    | inline_expression op_plus inline_expression                # IPlus
+    | inline_expression op = (OP_ADD | OP_SUB) inline_expression # IPlus
     | inline_expression op_logic inline_expression               # ILogic
     | inline_expression op_compare inline_expression             # ICompare
     | inline_expression (KW_IS | KW_IS KW_NOT) inline_expression # IIsA
     | inline_expression OP_UNTIL inline_expression               # IRange
     | inline_expression KW_AS inline_expression                  # IAs
-    | prefix_call inline_expression                              # IPrefix
+    | op_prefix inline_expression                                # IPrefix
     | macro_call                                                 # IMacro
     | function_call                                              # IFunction
     | collection_literal                                         # ICollection
@@ -226,9 +233,9 @@ type_expression
     | SPECIAL        # TSpecial
     ;
 // ===========================================================================
-prefix_call
+op_prefix
     : OP_NOT
-    | OP_ADD 
+    | OP_ADD
     | OP_SUB
     | OP_AND
     | OP_REFERENCE
@@ -237,19 +244,7 @@ prefix_call
     | OP_ROOTS
     | OP_MUL
     ;
-suffix_call
-    : OP_NOT
-    | OP_TEMPERATURE
-    | OP_TRANSPOSE
-    | OP_PERCENT
-    | slice_call
-    | offset_call
-    | generic_call
-    | lambda_call
-    | match_call
-    | function_call
-    | dot_call
-    ;
+op_suffix: OP_NOT | OP_TEMPERATURE | OP_TRANSPOSE | OP_PERCENT;
 control_expression
     : RETURN expression?
     | RESUME expression

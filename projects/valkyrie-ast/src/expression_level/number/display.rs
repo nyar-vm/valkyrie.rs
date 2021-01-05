@@ -12,3 +12,16 @@ impl PrettyPrint for NumberLiteralNode {
         }
     }
 }
+
+#[cfg(feature = "lispify")]
+impl Lispify for NumberLiteralNode {
+    type Output = Lisp;
+
+    fn lispify(&self) -> Self::Output {
+        let number = Lisp::number(self.value.clone());
+        match &self.unit {
+            Some(s) => number & Lisp::unit(s.name.clone()),
+            None => number,
+        }
+    }
+}

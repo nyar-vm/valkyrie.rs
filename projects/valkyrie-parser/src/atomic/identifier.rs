@@ -22,7 +22,7 @@ impl ThisParser for IdentifierNode {
         state.finish(id)
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         self.lispify()
     }
 }
@@ -34,7 +34,7 @@ impl ThisParser for LambdaSlotNode {
         state.finish(LambdaSlotNode::new(id.name, get_span(input, state)))
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         Lisp::keyword(self.name.to_string())
     }
 }

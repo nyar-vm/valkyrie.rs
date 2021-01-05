@@ -10,7 +10,7 @@ impl ThisParser for LambdaNode {
         finally.finish(LambdaNode { arguments, body, span: get_span(input, finally) })
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         todo!()
     }
 }
@@ -21,7 +21,7 @@ impl ThisParser for LambdaArgumentNode {
         state.finish(LambdaArgumentNode { terms: vec![], range: get_span(input, state) })
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         todo!()
     }
 }

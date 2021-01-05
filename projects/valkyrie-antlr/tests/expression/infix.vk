@@ -7,13 +7,19 @@ a ^ b ^ c;
 5 ^ (4 * (3 + 2) - 1);
 1 + 2 * 3 ^ (4 - 5);
 
+
+~ divide
+a // 2
+a /% 2
+3 %% 4
+
 ~ Equality
 
-a ≖ b == c;
-a ≠ b != c;
-a ≡ b === c;
-a ≢ b !== c =!= c;
-a =!= b =!= c;
+~ a ≖ b == c;
+~ a ≠ b != c;
+~ a ≡ b === c;
+~ a ≢ b !== c =!= c;
+~ a =!= b =!= c;
 
 ~ Ordering
 
@@ -26,18 +32,18 @@ a < b < c;
 
 ~ a <= b <= c <= d;
 
-a ≫ b >> c;
-a ⋙ b >>> c;
-a ≪ b << c;
-a ⋘ b <<< c;
+~ a ≫ b >> c;
+~ a ⋙ b >>> c;
+~ a ≪ b << c;
+~ a ⋘ b <<< c;
 
 ~ contains
 
-a ∈ list;
-a ∊ list;
-a ∉ list;
-a in list;
-a not in list;
+~ a ∈ list;
+~ a ∊ list;
+~ a ∉ list;
+~ a in list;
+~ a not in list;
 
 ~ subtyping
 a is String;

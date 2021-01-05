@@ -8,19 +8,19 @@ impl ThisParser for GuardStatement {
         finally.finish(GuardStatement { condition: cond, main_body: body, span: get_span(input, finally) })
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         let mut lisp = Lisp::new(4);
 
         match &self.main_body {
             GuardStatementBody::Positive(v) => {
                 lisp += Lisp::keyword("guard/positive");
-                lisp += self.condition.as_lisp();
-                lisp.extend(v.body.terms.iter().map(|s| s.as_lisp()));
+                lisp += self.condition.lispify();
+                lisp.extend(v.body.terms.iter().map(|s| s.lispify()));
             }
             GuardStatementBody::Negative(v) => {
                 lisp += Lisp::keyword("guard/negative");
-                lisp += self.condition.as_lisp();
-                lisp.extend(v.body.terms.iter().map(|s| s.as_lisp()));
+                lisp += self.condition.lispify();
+                lisp.extend(v.body.terms.iter().map(|s| s.lispify()));
             }
         }
         lisp
@@ -36,10 +36,10 @@ impl ThisParser for GuardStatementBody {
             .end_choice()
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         match self {
-            GuardStatementBody::Positive(v) => v.as_lisp(),
-            GuardStatementBody::Negative(v) => v.as_lisp(),
+            GuardStatementBody::Positive(v) => v.lispify(),
+            GuardStatementBody::Negative(v) => v.lispify(),
         }
     }
 }
@@ -55,12 +55,12 @@ impl ThisParser for GuardLetStatement {
         finally.finish(GuardLetStatement { pattern: pat, expression: expr, main_body: body, span: get_span(input, finally) })
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         let mut lisp = Lisp::new(4);
         lisp += Lisp::keyword("guard/cases");
-        lisp += self.pattern.as_lisp();
-        lisp += self.expression.as_lisp();
-        lisp += self.main_body.as_lisp();
+        lisp += self.pattern.lispify();
+        lisp += self.expression.lispify();
+        lisp += self.main_body.lispify();
         lisp
     }
 }

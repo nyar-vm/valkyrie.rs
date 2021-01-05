@@ -39,7 +39,7 @@ fn top_debug(text: &str, output: &str) -> std::io::Result<()> {
         println!("=================================================================");
         pretty_print(expr);
         let text = expr.pretty_colorful(&theme);
-        let lisp = expr.as_lisp();
+        let lisp = expr.lispify();
         writeln!(file, "{}", lisp.pretty_string(&theme))?;
         println!("{}", lisp.pretty_colorful(&theme));
     }
@@ -54,7 +54,7 @@ fn repl_debug(text: &str, output: &str) -> std::io::Result<()> {
         println!("=================================================================");
         pretty_print(expr);
         let text = expr.pretty_colorful(&theme);
-        let lisp = expr.as_lisp();
+        let lisp = expr.lispify();
         writeln!(file, "{}", lisp.pretty_string(&theme))?;
         println!("{}", lisp.pretty_colorful(&theme));
     }

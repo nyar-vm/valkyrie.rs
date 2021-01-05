@@ -1,78 +1,19 @@
 use super::*;
 use valkyrie_ast::IfLetStatement;
 
-impl ThisParser for PrefixNode {
-    fn parse(_: ParseState) -> ParseResult<Self> {
-        unreachable!()
-    }
-
-    fn as_lisp(&self) -> Lisp {
-        Lisp::operator(self.operator.kind.as_str(), vec![self.base.as_lisp()])
-    }
-}
-
-impl ThisParser for InfixNode {
-    fn parse(_: ParseState) -> ParseResult<Self> {
-        unreachable!()
-    }
-
-    fn as_lisp(&self) -> Lisp {
-        Lisp::operator(self.operator.kind.as_str(), vec![self.lhs.as_lisp(), self.rhs.as_lisp()])
-    }
-}
-
-impl ThisParser for PostfixNode {
-    fn parse(_: ParseState) -> ParseResult<Self> {
-        unreachable!()
-    }
-
-    fn as_lisp(&self) -> Lisp {
-        Lisp::operator(self.operator.kind.as_str(), vec![self.base.as_lisp()])
-    }
-}
-
 impl ThisParser for ExpressionNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
         parse_expression_node(input, ExpressionContext::default())
     }
 
-    fn as_lisp(&self) -> Lisp {
-        self.body.as_lisp()
+    fn lispify(&self) -> Lisp {
+        self.body.lispify()
     }
 }
 
 impl ThisParser for ExpressionType {
     fn parse(input: ParseState) -> ParseResult<Self> {
         parse_expression_body(input, ExpressionContext::default())
-    }
-
-    fn as_lisp(&self) -> Lisp {
-        match self {
-            Self::Placeholder => Lisp::keyword("placeholder"),
-            Self::Prefix(v) => v.as_lisp(),
-            Self::Binary(v) => v.as_lisp(),
-            Self::Suffix(v) => v.as_lisp(),
-            Self::Number(v) => v.as_lisp(),
-            Self::Symbol(v) => v.as_lisp(),
-            Self::String(v) => v.as_lisp(),
-            Self::Table(v) => v.as_lisp(),
-            Self::Apply(v) => v.as_lisp(),
-            Self::ApplyDot(v) => v.as_lisp(),
-            Self::Subscript(v) => v.as_lisp(),
-            Self::GenericCall(v) => v.as_lisp(),
-            Self::LambdaCall(v) => v.as_lisp(),
-            Self::LambdaDot(v) => v.as_lisp(),
-            Self::New(v) => v.as_lisp(),
-            Self::Resume(v) => v.as_lisp(),
-            Self::If(v) => v.as_lisp(),
-            Self::IfLet(v) => v.as_lisp(),
-            Self::Slot(v) => v.as_lisp(),
-            Self::Switch(v) => v.as_lisp(),
-            Self::Text(v) => Lisp::string(v.text.clone()),
-            Self::Try(v) => v.as_lisp(),
-            Self::MatchDot(v) => v.as_lisp(),
-            Self::Formatted(v) => v.as_lisp(),
-        }
     }
 }
 
@@ -194,7 +135,7 @@ impl ThisParser for PostfixCallPart {
             .end_choice()
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         unreachable!()
     }
 }

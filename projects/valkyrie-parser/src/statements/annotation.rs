@@ -11,7 +11,7 @@ impl ThisParser for AnnotationKind {
             .end_choice()
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         todo!()
     }
 }
@@ -24,8 +24,8 @@ impl ThisParser for AnnotationNode {
         state.finish(AnnotationNode { kind, term, span: get_span(input, state) })
     }
 
-    fn as_lisp(&self) -> Lisp {
-        AnnotationList::from(self.clone()).as_lisp()
+    fn lispify(&self) -> Lisp {
+        AnnotationList::from(self.clone()).lispify()
     }
 }
 
@@ -36,8 +36,8 @@ impl ThisParser for AnnotationTerm {
         state.finish(AnnotationTerm { path: name, arguments: Default::default(), collects: Default::default() })
     }
 
-    fn as_lisp(&self) -> Lisp {
-        self.path.as_lisp()
+    fn lispify(&self) -> Lisp {
+        self.path.lispify()
     }
 }
 
@@ -49,7 +49,7 @@ impl ThisParser for AnnotationPathNode {
         state.finish(AnnotationPathNode::new(path, names, get_span(input, state)))
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         Lisp::symbol(self.to_string())
     }
 }
@@ -69,11 +69,11 @@ impl ThisParser for AnnotationList {
         state.finish(AnnotationList { kind, terms: terms.body, span: get_span(input, state) })
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         let mut lisp = Lisp::new(10);
         lisp += Lisp::keyword("annotation/list");
         for term in &self.terms {
-            lisp += term.as_lisp();
+            lisp += term.lispify();
         }
         lisp
     }

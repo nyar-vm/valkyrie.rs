@@ -15,7 +15,7 @@ impl ThisParser for TupleNode {
         state.finish(TupleNode { terms: terms.body, span: get_span(input, state) })
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         unreachable!()
     }
 }

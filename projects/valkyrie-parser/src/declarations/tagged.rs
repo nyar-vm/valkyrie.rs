@@ -16,12 +16,12 @@ impl ThisParser for TaggedDeclaration {
         })
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         let mut lisp = Lisp::new(10);
         lisp += Lisp::keyword("tagged");
-        lisp += self.namepath.as_lisp();
+        lisp += self.namepath.lispify();
         for stmt in &self.statements.terms {
-            lisp += stmt.as_lisp();
+            lisp += stmt.lispify();
         }
         lisp
     }
@@ -42,11 +42,11 @@ impl ThisParser for VariantDeclaration {
         })
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         let mut lisp = Lisp::new(self.statements.terms.len() + 2);
-        lisp += self.variant.as_lisp();
+        lisp += self.variant.lispify();
         for stmt in &self.statements.terms {
-            lisp += stmt.as_lisp();
+            lisp += stmt.lispify();
         }
         lisp
     }

@@ -6,11 +6,11 @@ impl ThisParser for CallNode<GenericCallNode> {
         unreachable!()
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         let mut lisp = Lisp::new(3);
         lisp += Lisp::keyword("call/generic");
-        lisp += self.base.as_lisp();
-        lisp += self.rest.as_lisp();
+        lisp += self.base.lispify();
+        lisp += self.rest.lispify();
         lisp
     }
 }
@@ -21,12 +21,12 @@ impl ThisParser for GenericCallNode {
         input.begin_choice().choose(qwerty_generic).choose(unicode_generic).end_choice()
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         let mut lisp = Lisp::new(self.terms.len() + 2);
         lisp += Lisp::keyword("generic");
         // terms.push(self.base.lispify().into());
         for term in &self.terms {
-            lisp += term.term.as_lisp();
+            lisp += term.term.lispify();
         }
         lisp
     }
@@ -38,8 +38,8 @@ impl ThisParser for GenericCallTerm {
         state.finish(GenericCallTerm { term: term.map_value(|s| s.as_normal()) })
     }
 
-    fn as_lisp(&self) -> Lisp {
-        self.term.as_lisp()
+    fn lispify(&self) -> Lisp {
+        self.term.lispify()
     }
 }
 

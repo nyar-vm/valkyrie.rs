@@ -1,8 +1,8 @@
 use super::*;
 
 #[test]
-fn lex_expression() {
-    // top_debug(include_str!("infix.vk"), "expression/infix_debug.rkt").expect("infix");
+fn antlr_expression() {
+    top_debug(include_str!("infix.vk"), "expression/infix_debug.rkt").expect("infix");
     top_debug(include_str!("unary.vk"), "expression/unary_debug.rkt").expect("unary");
     // top_debug(include_str!("table.vk"), "expression/table_debug.rkt").expect("table");
     // top_debug(include_str!("apply.vk"), "expression/apply_debug.rkt").expect("apply");

@@ -32,11 +32,11 @@ impl ThisParser for WhileConditionNode {
             .end_choice()
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         match self {
             WhileConditionNode::Unconditional => Lisp::keyword("true"),
             WhileConditionNode::Case => Lisp::keyword("case"),
-            WhileConditionNode::Expression(v) => v.as_lisp(),
+            WhileConditionNode::Expression(v) => v.lispify(),
         }
     }
 }
@@ -46,10 +46,10 @@ impl ThisParser for StatementBlock {
         parse_statement_block(input, StatementNode::parse)
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         let mut lisp = Lisp::new(self.terms.len());
         for term in self.terms.iter() {
-            lisp += term.as_lisp();
+            lisp += term.lispify();
         }
         lisp
     }

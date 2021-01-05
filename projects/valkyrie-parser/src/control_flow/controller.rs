@@ -9,11 +9,11 @@ impl ThisParser for ControlNode {
         state.finish(ControlNode { r#type: kw, expression: expr, span: get_span(input, state) })
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         let mut lisp = Lisp::default();
-        lisp += self.r#type.as_lisp();
+        lisp += self.r#type.lispify();
         if let Some(s) = &self.expression {
-            lisp += s.as_lisp();
+            lisp += s.lispify();
         }
         lisp
     }
@@ -28,10 +28,10 @@ impl ThisParser for RaiseNode {
         state.finish(Self { expression: expr, span: get_span(input, state) })
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         let kw = Lisp::keyword("raise");
         match &self.expression {
-            Some(s) => kw + s.as_lisp(),
+            Some(s) => kw + s.lispify(),
             None => kw,
         }
     }
@@ -53,7 +53,7 @@ impl ThisParser for ControlType {
             .end_choice()
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         Lisp::keyword(self.as_str())
     }
 }

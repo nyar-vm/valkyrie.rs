@@ -512,6 +512,24 @@ pub trait ValkyrieAntlrVisitor<'input>: ParseTreeVisitor<'input, ValkyrieAntlrPa
     }
 
     /**
+     * Visit a parse tree produced by the {@code ESlice}
+     * labeled alternative in {@link ValkyrieAntlrParser#expression}.
+     * @param ctx the parse tree
+     */
+    fn visit_ESlice(&mut self, ctx: &ESliceContext<'input>) {
+        self.visit_children(ctx)
+    }
+
+    /**
+     * Visit a parse tree produced by the {@code EOffset}
+     * labeled alternative in {@link ValkyrieAntlrParser#expression}.
+     * @param ctx the parse tree
+     */
+    fn visit_EOffset(&mut self, ctx: &EOffsetContext<'input>) {
+        self.visit_children(ctx)
+    }
+
+    /**
      * Visit a parse tree produced by the {@code ETry}
      * labeled alternative in {@link ValkyrieAntlrParser#expression}.
      * @param ctx the parse tree
@@ -571,6 +589,15 @@ pub trait ValkyrieAntlrVisitor<'input>: ParseTreeVisitor<'input, ValkyrieAntlrPa
      * @param ctx the parse tree
      */
     fn visit_ELambda(&mut self, ctx: &ELambdaContext<'input>) {
+        self.visit_children(ctx)
+    }
+
+    /**
+     * Visit a parse tree produced by the {@code EDot}
+     * labeled alternative in {@link ValkyrieAntlrParser#expression}.
+     * @param ctx the parse tree
+     */
+    fn visit_EDot(&mut self, ctx: &EDotContext<'input>) {
         self.visit_children(ctx)
     }
 
@@ -661,6 +688,15 @@ pub trait ValkyrieAntlrVisitor<'input>: ParseTreeVisitor<'input, ValkyrieAntlrPa
      * @param ctx the parse tree
      */
     fn visit_ECompare(&mut self, ctx: &ECompareContext<'input>) {
+        self.visit_children(ctx)
+    }
+
+    /**
+     * Visit a parse tree produced by the {@code EGeneric}
+     * labeled alternative in {@link ValkyrieAntlrParser#expression}.
+     * @param ctx the parse tree
+     */
+    fn visit_EGeneric(&mut self, ctx: &EGenericContext<'input>) {
         self.visit_children(ctx)
     }
 
@@ -962,18 +998,18 @@ pub trait ValkyrieAntlrVisitor<'input>: ParseTreeVisitor<'input, ValkyrieAntlrPa
     }
 
     /**
-     * Visit a parse tree produced by {@link ValkyrieAntlrParser#prefix_call}.
+     * Visit a parse tree produced by {@link ValkyrieAntlrParser#op_prefix}.
      * @param ctx the parse tree
      */
-    fn visit_prefix_call(&mut self, ctx: &Prefix_callContext<'input>) {
+    fn visit_op_prefix(&mut self, ctx: &Op_prefixContext<'input>) {
         self.visit_children(ctx)
     }
 
     /**
-     * Visit a parse tree produced by {@link ValkyrieAntlrParser#suffix_call}.
+     * Visit a parse tree produced by {@link ValkyrieAntlrParser#op_suffix}.
      * @param ctx the parse tree
      */
-    fn visit_suffix_call(&mut self, ctx: &Suffix_callContext<'input>) {
+    fn visit_op_suffix(&mut self, ctx: &Op_suffixContext<'input>) {
         self.visit_children(ctx)
     }
 
@@ -2031,6 +2067,24 @@ pub trait ValkyrieAntlrVisitorCompat<'input>: ParseTreeVisitorCompat<'input, Nod
     }
 
     /**
+     * Visit a parse tree produced by the {@code ESlice}
+     * labeled alternative in {@link ValkyrieAntlrParser#expression}.
+     * @param ctx the parse tree
+     */
+    fn visit_ESlice(&mut self, ctx: &ESliceContext<'input>) -> Self::Return {
+        self.visit_children(ctx)
+    }
+
+    /**
+     * Visit a parse tree produced by the {@code EOffset}
+     * labeled alternative in {@link ValkyrieAntlrParser#expression}.
+     * @param ctx the parse tree
+     */
+    fn visit_EOffset(&mut self, ctx: &EOffsetContext<'input>) -> Self::Return {
+        self.visit_children(ctx)
+    }
+
+    /**
      * Visit a parse tree produced by the {@code ETry}
      * labeled alternative in {@link ValkyrieAntlrParser#expression}.
      * @param ctx the parse tree
@@ -2090,6 +2144,15 @@ pub trait ValkyrieAntlrVisitorCompat<'input>: ParseTreeVisitorCompat<'input, Nod
      * @param ctx the parse tree
      */
     fn visit_ELambda(&mut self, ctx: &ELambdaContext<'input>) -> Self::Return {
+        self.visit_children(ctx)
+    }
+
+    /**
+     * Visit a parse tree produced by the {@code EDot}
+     * labeled alternative in {@link ValkyrieAntlrParser#expression}.
+     * @param ctx the parse tree
+     */
+    fn visit_EDot(&mut self, ctx: &EDotContext<'input>) -> Self::Return {
         self.visit_children(ctx)
     }
 
@@ -2180,6 +2243,15 @@ pub trait ValkyrieAntlrVisitorCompat<'input>: ParseTreeVisitorCompat<'input, Nod
      * @param ctx the parse tree
      */
     fn visit_ECompare(&mut self, ctx: &ECompareContext<'input>) -> Self::Return {
+        self.visit_children(ctx)
+    }
+
+    /**
+     * Visit a parse tree produced by the {@code EGeneric}
+     * labeled alternative in {@link ValkyrieAntlrParser#expression}.
+     * @param ctx the parse tree
+     */
+    fn visit_EGeneric(&mut self, ctx: &EGenericContext<'input>) -> Self::Return {
         self.visit_children(ctx)
     }
 
@@ -2481,18 +2553,18 @@ pub trait ValkyrieAntlrVisitorCompat<'input>: ParseTreeVisitorCompat<'input, Nod
     }
 
     /**
-     * Visit a parse tree produced by {@link ValkyrieAntlrParser#prefix_call}.
+     * Visit a parse tree produced by {@link ValkyrieAntlrParser#op_prefix}.
      * @param ctx the parse tree
      */
-    fn visit_prefix_call(&mut self, ctx: &Prefix_callContext<'input>) -> Self::Return {
+    fn visit_op_prefix(&mut self, ctx: &Op_prefixContext<'input>) -> Self::Return {
         self.visit_children(ctx)
     }
 
     /**
-     * Visit a parse tree produced by {@link ValkyrieAntlrParser#suffix_call}.
+     * Visit a parse tree produced by {@link ValkyrieAntlrParser#op_suffix}.
      * @param ctx the parse tree
      */
-    fn visit_suffix_call(&mut self, ctx: &Suffix_callContext<'input>) -> Self::Return {
+    fn visit_op_suffix(&mut self, ctx: &Op_suffixContext<'input>) -> Self::Return {
         self.visit_children(ctx)
     }
 
@@ -3359,6 +3431,16 @@ where
         *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
     }
 
+    fn visit_ESlice(&mut self, ctx: &ESliceContext<'input>) {
+        let result = <Self as ValkyrieAntlrVisitorCompat>::visit_ESlice(self, ctx);
+        *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
+    }
+
+    fn visit_EOffset(&mut self, ctx: &EOffsetContext<'input>) {
+        let result = <Self as ValkyrieAntlrVisitorCompat>::visit_EOffset(self, ctx);
+        *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
+    }
+
     fn visit_ETry(&mut self, ctx: &ETryContext<'input>) {
         let result = <Self as ValkyrieAntlrVisitorCompat>::visit_ETry(self, ctx);
         *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
@@ -3391,6 +3473,11 @@ where
 
     fn visit_ELambda(&mut self, ctx: &ELambdaContext<'input>) {
         let result = <Self as ValkyrieAntlrVisitorCompat>::visit_ELambda(self, ctx);
+        *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
+    }
+
+    fn visit_EDot(&mut self, ctx: &EDotContext<'input>) {
+        let result = <Self as ValkyrieAntlrVisitorCompat>::visit_EDot(self, ctx);
         *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
     }
 
@@ -3441,6 +3528,11 @@ where
 
     fn visit_ECompare(&mut self, ctx: &ECompareContext<'input>) {
         let result = <Self as ValkyrieAntlrVisitorCompat>::visit_ECompare(self, ctx);
+        *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
+    }
+
+    fn visit_EGeneric(&mut self, ctx: &EGenericContext<'input>) {
+        let result = <Self as ValkyrieAntlrVisitorCompat>::visit_EGeneric(self, ctx);
         *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
     }
 
@@ -3609,13 +3701,13 @@ where
         *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
     }
 
-    fn visit_prefix_call(&mut self, ctx: &Prefix_callContext<'input>) {
-        let result = <Self as ValkyrieAntlrVisitorCompat>::visit_prefix_call(self, ctx);
+    fn visit_op_prefix(&mut self, ctx: &Op_prefixContext<'input>) {
+        let result = <Self as ValkyrieAntlrVisitorCompat>::visit_op_prefix(self, ctx);
         *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
     }
 
-    fn visit_suffix_call(&mut self, ctx: &Suffix_callContext<'input>) {
-        let result = <Self as ValkyrieAntlrVisitorCompat>::visit_suffix_call(self, ctx);
+    fn visit_op_suffix(&mut self, ctx: &Op_suffixContext<'input>) {
+        let result = <Self as ValkyrieAntlrVisitorCompat>::visit_op_suffix(self, ctx);
         *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
     }
 

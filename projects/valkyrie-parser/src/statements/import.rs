@@ -1,5 +1,5 @@
-use lispify::Lispify;
 use super::*;
+use lispify::Lispify;
 
 pub static NAMESPACE: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(
@@ -21,7 +21,7 @@ impl ThisParser for NamespaceDeclaration {
         finally.finish(NamespaceDeclaration::new(names, get_span(input, finally)).with_kind(kind))
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         self.lispify()
     }
 }
@@ -48,12 +48,12 @@ impl ThisParser for ImportStatement {
         state.finish(ImportStatement { annotation: AnnotationList::default(), term: head, span: get_span(input, state) })
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         let mut lisp = Lisp::new(2);
         lisp += Lisp::keyword("using");
         lisp += match &self.term {
-            ImportTermNode::Alias(v) => v.as_lisp(),
-            ImportTermNode::Group(v) => v.as_lisp(),
+            ImportTermNode::Alias(v) => v.lispify(),
+            ImportTermNode::Group(v) => v.lispify(),
         };
         lisp
     }
@@ -68,10 +68,10 @@ impl ThisParser for ImportTermNode {
             .end_choice()
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         match self {
-            ImportTermNode::Alias(v) => v.as_lisp(),
-            ImportTermNode::Group(v) => v.as_lisp(),
+            ImportTermNode::Alias(v) => v.lispify(),
+            ImportTermNode::Group(v) => v.lispify(),
         }
     }
 }
@@ -84,8 +84,8 @@ impl ThisParser for ImportAliasNode {
         state.finish(ImportAliasNode::new(path, alias))
     }
 
-    fn as_lisp(&self) -> Lisp {
-        Lisp::keyword("import/alias") + self.path.as_lisp() + self.alias.as_lisp()
+    fn lispify(&self) -> Lisp {
+        Lisp::keyword("import/alias") + self.path.lispify() + self.alias.lispify()
     }
 }
 
@@ -96,12 +96,12 @@ impl ThisParser for ImportGroupNode {
         state.finish(ImportGroupNode::new(path, group.unwrap_or_default()))
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         let mut lisp = Lisp::new(self.group.len() + 2);
         lisp += Lisp::keyword("import/group");
-        lisp += self.path.as_lisp();
+        lisp += self.path.lispify();
         for i in self.group.iter() {
-            lisp += i.as_lisp();
+            lisp += i.lispify();
         }
         lisp
     }

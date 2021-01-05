@@ -6,7 +6,7 @@ impl ThisParser for CallNode<SubscriptNode> {
         unreachable!()
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         let mut lisp = Lisp::new(3);
         if self.rest.index0 {
             lisp += Lisp::keyword("call/subscript0");
@@ -14,8 +14,8 @@ impl ThisParser for CallNode<SubscriptNode> {
         else {
             lisp += Lisp::keyword("call/subscript1");
         }
-        lisp += self.base.as_lisp();
-        lisp += self.rest.as_lisp();
+        lisp += self.base.lispify();
+        lisp += self.rest.lispify();
         lisp
     }
 }
@@ -27,11 +27,11 @@ impl ThisParser for SubscriptNode {
         state.finish(SubscriptNode { index0, terms: terms.body, span: get_span(input, state) })
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         let mut lisp = Lisp::new(self.terms.len() + 2);
         lisp += Lisp::keyword(self.method());
         for term in &self.terms {
-            lisp += term.as_lisp();
+            lisp += term.lispify();
         }
         lisp
     }
@@ -65,10 +65,10 @@ impl ThisParser for SubscriptTermNode {
             .end_choice()
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         match self {
-            SubscriptTermNode::Index(v) => v.as_lisp(),
-            SubscriptTermNode::Slice(v) => v.as_lisp(),
+            SubscriptTermNode::Index(v) => v.lispify(),
+            SubscriptTermNode::Slice(v) => v.lispify(),
         }
     }
 }
@@ -83,20 +83,20 @@ impl ThisParser for SubscriptSliceNode {
         state.finish(Self { start, end, step: step.flatten(), span: get_span(input, state) })
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         let mut lisp = Lisp::new(4);
         lisp += Lisp::symbol("range");
         match &self.start {
             None => lisp += Lisp::keyword("null"),
-            Some(s) => lisp += s.as_lisp(),
+            Some(s) => lisp += s.lispify(),
         }
         match &self.end {
             None => lisp += Lisp::keyword("null"),
-            Some(s) => lisp += s.as_lisp(),
+            Some(s) => lisp += s.lispify(),
         }
         match &self.step {
             None => lisp += Lisp::keyword("null"),
-            Some(s) => lisp += s.as_lisp(),
+            Some(s) => lisp += s.lispify(),
         }
         lisp
     }

@@ -6,11 +6,11 @@ impl ThisParser for CallNode<MatchDotStatement> {
         unreachable!()
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         let mut lisp = Lisp::new(5);
         lisp += Lisp::keyword(self.rest.kind.as_str());
         for term in &self.rest.patterns.branches {
-            lisp += term.as_lisp()
+            lisp += term.lispify()
         }
         lisp
     }
@@ -24,7 +24,7 @@ impl ThisParser for MatchDotStatement {
         state.finish(Self { monadic, kind, patterns: pats, span: get_span(input, state) })
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         todo!()
     }
 }
@@ -42,7 +42,7 @@ impl ThisParser for MatchKind {
         }
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         Lisp::keyword(self.as_str())
     }
 }

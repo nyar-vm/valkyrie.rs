@@ -8,7 +8,7 @@ impl ThisParser for ExpressionFormatted {
         todo!()
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         todo!()
     }
 }

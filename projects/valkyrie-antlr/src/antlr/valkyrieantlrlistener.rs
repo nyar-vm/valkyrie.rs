@@ -639,6 +639,30 @@ pub trait ValkyrieAntlrListener<'input>: ParseTreeListener<'input, ValkyrieAntlr
      */
     fn exit_EPlus(&mut self, _ctx: &EPlusContext<'input>) {}
     /**
+     * Enter a parse tree produced by the {@code ESlice}
+     * labeled alternative in {@link ValkyrieAntlrParser#expression}.
+     * @param ctx the parse tree
+     */
+    fn enter_ESlice(&mut self, _ctx: &ESliceContext<'input>) {}
+    /**
+     * Exit a parse tree produced by the {@code ESlice}
+     * labeled alternative in {@link ValkyrieAntlrParser#expression}.
+     * @param ctx the parse tree
+     */
+    fn exit_ESlice(&mut self, _ctx: &ESliceContext<'input>) {}
+    /**
+     * Enter a parse tree produced by the {@code EOffset}
+     * labeled alternative in {@link ValkyrieAntlrParser#expression}.
+     * @param ctx the parse tree
+     */
+    fn enter_EOffset(&mut self, _ctx: &EOffsetContext<'input>) {}
+    /**
+     * Exit a parse tree produced by the {@code EOffset}
+     * labeled alternative in {@link ValkyrieAntlrParser#expression}.
+     * @param ctx the parse tree
+     */
+    fn exit_EOffset(&mut self, _ctx: &EOffsetContext<'input>) {}
+    /**
      * Enter a parse tree produced by the {@code ETry}
      * labeled alternative in {@link ValkyrieAntlrParser#expression}.
      * @param ctx the parse tree
@@ -722,6 +746,18 @@ pub trait ValkyrieAntlrListener<'input>: ParseTreeListener<'input, ValkyrieAntlr
      * @param ctx the parse tree
      */
     fn exit_ELambda(&mut self, _ctx: &ELambdaContext<'input>) {}
+    /**
+     * Enter a parse tree produced by the {@code EDot}
+     * labeled alternative in {@link ValkyrieAntlrParser#expression}.
+     * @param ctx the parse tree
+     */
+    fn enter_EDot(&mut self, _ctx: &EDotContext<'input>) {}
+    /**
+     * Exit a parse tree produced by the {@code EDot}
+     * labeled alternative in {@link ValkyrieAntlrParser#expression}.
+     * @param ctx the parse tree
+     */
+    fn exit_EDot(&mut self, _ctx: &EDotContext<'input>) {}
     /**
      * Enter a parse tree produced by the {@code ENumber}
      * labeled alternative in {@link ValkyrieAntlrParser#expression}.
@@ -842,6 +878,18 @@ pub trait ValkyrieAntlrListener<'input>: ParseTreeListener<'input, ValkyrieAntlr
      * @param ctx the parse tree
      */
     fn exit_ECompare(&mut self, _ctx: &ECompareContext<'input>) {}
+    /**
+     * Enter a parse tree produced by the {@code EGeneric}
+     * labeled alternative in {@link ValkyrieAntlrParser#expression}.
+     * @param ctx the parse tree
+     */
+    fn enter_EGeneric(&mut self, _ctx: &EGenericContext<'input>) {}
+    /**
+     * Exit a parse tree produced by the {@code EGeneric}
+     * labeled alternative in {@link ValkyrieAntlrParser#expression}.
+     * @param ctx the parse tree
+     */
+    fn exit_EGeneric(&mut self, _ctx: &EGenericContext<'input>) {}
     /**
      * Enter a parse tree produced by the {@code EIsA}
      * labeled alternative in {@link ValkyrieAntlrParser#expression}.
@@ -1239,25 +1287,25 @@ pub trait ValkyrieAntlrListener<'input>: ParseTreeListener<'input, ValkyrieAntlr
      */
     fn exit_TArrows(&mut self, _ctx: &TArrowsContext<'input>) {}
     /**
-     * Enter a parse tree produced by {@link ValkyrieAntlrParser#prefix_call}.
+     * Enter a parse tree produced by {@link ValkyrieAntlrParser#op_prefix}.
      * @param ctx the parse tree
      */
-    fn enter_prefix_call(&mut self, _ctx: &Prefix_callContext<'input>) {}
+    fn enter_op_prefix(&mut self, _ctx: &Op_prefixContext<'input>) {}
     /**
-     * Exit a parse tree produced by {@link ValkyrieAntlrParser#prefix_call}.
+     * Exit a parse tree produced by {@link ValkyrieAntlrParser#op_prefix}.
      * @param ctx the parse tree
      */
-    fn exit_prefix_call(&mut self, _ctx: &Prefix_callContext<'input>) {}
+    fn exit_op_prefix(&mut self, _ctx: &Op_prefixContext<'input>) {}
     /**
-     * Enter a parse tree produced by {@link ValkyrieAntlrParser#suffix_call}.
+     * Enter a parse tree produced by {@link ValkyrieAntlrParser#op_suffix}.
      * @param ctx the parse tree
      */
-    fn enter_suffix_call(&mut self, _ctx: &Suffix_callContext<'input>) {}
+    fn enter_op_suffix(&mut self, _ctx: &Op_suffixContext<'input>) {}
     /**
-     * Exit a parse tree produced by {@link ValkyrieAntlrParser#suffix_call}.
+     * Exit a parse tree produced by {@link ValkyrieAntlrParser#op_suffix}.
      * @param ctx the parse tree
      */
-    fn exit_suffix_call(&mut self, _ctx: &Suffix_callContext<'input>) {}
+    fn exit_op_suffix(&mut self, _ctx: &Op_suffixContext<'input>) {}
     /**
      * Enter a parse tree produced by {@link ValkyrieAntlrParser#control_expression}.
      * @param ctx the parse tree

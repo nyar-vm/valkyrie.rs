@@ -29,3 +29,29 @@ impl PrettyPrint for PostfixNode {
         self.base.pretty(theme).append(self.operator.pretty(theme))
     }
 }
+
+#[cfg(feature = "lispify")]
+impl Lispify for PrefixNode {
+    type Output = Lisp;
+
+    fn lispify(&self) -> Self::Output {
+        Lisp::operator(self.operator.kind.as_str(), vec![self.base.lispify()])
+    }
+}
+#[cfg(feature = "lispify")]
+impl Lispify for InfixNode {
+    type Output = Lisp;
+
+    fn lispify(&self) -> Self::Output {
+        Lisp::operator(self.operator.kind.as_str(), vec![self.lhs.lispify(), self.rhs.lispify()])
+    }
+}
+
+#[cfg(feature = "lispify")]
+impl Lispify for PostfixNode {
+    type Output = Lisp;
+
+    fn lispify(&self) -> Self::Output {
+        Lisp::operator(self.operator.kind.as_str(), vec![self.base.lispify()])
+    }
+}

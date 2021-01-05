@@ -69,7 +69,7 @@ impl ThisParser for TypingExpression {
         state.finish(TypingExpression { body: out.body, span: get_span(input, state) })
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         unreachable!()
     }
 }

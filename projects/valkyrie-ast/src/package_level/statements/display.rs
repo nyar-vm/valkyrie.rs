@@ -1,6 +1,5 @@
 use super::*;
 
-
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for StatementNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
@@ -59,7 +58,7 @@ impl Lispify for StatementType {
             Self::Class(v) => v.lispify(),
             Self::ClassField(v) => todo!(),
             Self::ClassMethod(v) => todo!(),
-            Self::Expression(v) => todo!(),
+            Self::Expression(v) => v.lispify(),
             Self::Function(v) => todo!(),
             Self::Control(v) => todo!(),
             Self::Document(v) => todo!(),

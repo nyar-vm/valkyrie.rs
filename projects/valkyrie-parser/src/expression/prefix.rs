@@ -26,7 +26,7 @@ impl ThisParser for ValkyriePrefix {
         state.finish(id)
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         unreachable!()
     }
 }

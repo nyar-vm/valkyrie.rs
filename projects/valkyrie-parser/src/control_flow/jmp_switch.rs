@@ -7,11 +7,11 @@ impl ThisParser for SwitchStatement {
         state.finish(Self { patterns: pats, span: get_span(input, state) })
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         let mut lisp = Lisp::new(10);
         lisp += Lisp::keyword("switch");
         for branch in &self.patterns.branches {
-            lisp += branch.as_lisp();
+            lisp += branch.lispify();
         }
         lisp
     }

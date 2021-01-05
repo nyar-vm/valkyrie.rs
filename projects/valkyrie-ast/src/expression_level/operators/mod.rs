@@ -11,6 +11,8 @@ pub enum ValkyrieOperator {
     Positive,
     /// prefix operator: `-`
     Negative,
+    /// prefix operator: `&`
+    Box,
     /// prefix operator: `*`
     Unbox,
     /// prefix operator: `**`
@@ -18,8 +20,8 @@ pub enum ValkyrieOperator {
     /// prefix operator: `**`
     UnpackAll,
     /// prefix operator: `⅟`
-    Inverse,
-    /// prefix operator: `⅟`
+    Reciprocal,
+    /// prefix operator: `√`, `∛`, `∜`     
     Surd(u8),
     /// infix operator: `=`
     Assign,
@@ -118,10 +120,11 @@ impl ValkyrieOperator {
             Self::Not => 25000,
             Self::Positive => 25000,
             Self::Negative => 25000,
+            Self::Box => 25000,
             Self::Unbox => 25000,
             Self::Unpack => 25000,
             Self::UnpackAll => 25000,
-            Self::Inverse => 25000,
+            Self::Reciprocal => 25000,
             Self::Surd(_) => 25000,
             // postfix + 0
             Self::Optional => 45000,
@@ -155,6 +158,7 @@ impl ValkyrieOperator {
             Self::Transpose => "ᵀ",
             Self::Transjugate => "ᴴ",
             Self::Hermitian => "Hermitian",
+            Self::Box => "&",
             Self::Unbox => "*",
             Self::Unpack => "⁑",
             Self::UnpackAll => "⁂",
@@ -180,7 +184,7 @@ impl ValkyrieOperator {
                 true => "≡",
                 false => "≢",
             },
-            Self::Inverse => "i",
+            Self::Reciprocal => "⅟",
             Self::Surd(v) => match v {
                 3 => "∛",
                 4 => "∜",
@@ -214,16 +218,22 @@ impl ValkyrieOperator {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct PrefixNode {
+    ///   The operator of the node
     pub operator: OperatorNode,
+    ///   The expression that the operator is applied to
     pub base: ExpressionType,
+    ///    The span of the operator
     pub span: Range<u32>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct InfixNode {
+    ///  The operator of the node
     pub operator: OperatorNode,
+    ///  The left hand side of the node
     pub lhs: ExpressionType,
+    ///  The right hand side of the node
     pub rhs: ExpressionType,
     /// The range of the node
     pub span: Range<u32>,
@@ -232,7 +242,9 @@ pub struct InfixNode {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct PostfixNode {
+    ///  The operator of the node
     pub operator: OperatorNode,
+    ///  The base of the node
     pub base: ExpressionType,
     /// The range of the node
     pub span: Range<u32>,
@@ -241,6 +253,7 @@ pub struct PostfixNode {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct OperatorNode {
+    /// The valid kind of operator
     pub kind: ValkyrieOperator,
     /// The range of the node
     pub span: Range<u32>,

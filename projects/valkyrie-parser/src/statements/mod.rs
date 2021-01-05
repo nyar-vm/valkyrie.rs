@@ -30,7 +30,7 @@ impl ThisParser for ReplRoot {
         input.match_repeats(|s| parse_statement_node(s, false)).map_inner(|s| ReplRoot { statements: s })
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         unreachable!()
     }
 }
@@ -40,7 +40,7 @@ impl ThisParser for ProgramRoot {
         input.match_repeats(|s| parse_statement_node(s, false)).map_inner(|s| ProgramRoot { statements: s })
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         unreachable!()
     }
 }
@@ -51,8 +51,8 @@ impl ThisParser for StatementNode {
         parse_statement_node(input, false)
     }
 
-    fn as_lisp(&self) -> Lisp {
-        self.r#type.as_lisp()
+    fn lispify(&self) -> Lisp {
+        self.r#type.lispify()
     }
 }
 
@@ -91,7 +91,7 @@ impl ThisParser for StatementType {
             .end_choice()
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         self.lispify()
     }
 }

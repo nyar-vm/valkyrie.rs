@@ -9,12 +9,12 @@ impl ThisParser for TryStatement {
         state.finish(Self { handler: catch, body: block, span: get_span(input, state) })
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         let mut lisp = Lisp::keyword("try");
         if let Some(catch) = &self.handler {
-            lisp += catch.as_lisp();
+            lisp += catch.lispify();
         }
-        lisp += self.body.as_lisp();
+        lisp += self.body.lispify();
         lisp
     }
 }

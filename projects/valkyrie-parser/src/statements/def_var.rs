@@ -9,15 +9,15 @@ impl ThisParser for LetBindNode {
         state.finish(LetBindNode { pattern, type_hint, body })
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         let mut lisp = Lisp::new(5);
         lisp += Lisp::keyword("let");
-        lisp += self.pattern.as_lisp();
+        lisp += self.pattern.lispify();
         if let Some(type_hint) = &self.type_hint {
-            lisp += type_hint.as_lisp();
+            lisp += type_hint.lispify();
         }
         if let Some(body) = &self.body {
-            lisp += body.as_lisp();
+            lisp += body.lispify();
         }
         lisp
     }

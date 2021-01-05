@@ -15,7 +15,7 @@ impl ThisParser for StringTemplateNode {
         state.finish(StringTemplateNode { items: vec![text], span: get_span(input, state) })
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         todo!()
     }
 }

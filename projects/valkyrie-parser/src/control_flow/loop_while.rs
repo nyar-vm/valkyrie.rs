@@ -9,12 +9,12 @@ impl ThisParser for WhileLoop {
         finally.finish(WhileLoop { kind: kw, condition, then_body: stmts, otherwise: rest, span: get_span(input, finally) })
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         let mut lisp = Lisp::new(self.then_body.terms.len() + 1);
-        lisp += self.kind.as_lisp();
-        lisp += self.condition.as_lisp();
+        lisp += self.kind.lispify();
+        lisp += self.condition.lispify();
         for term in &self.then_body.terms {
-            lisp += term.as_lisp();
+            lisp += term.lispify();
         }
         lisp
     }
@@ -33,7 +33,7 @@ impl ThisParser for WhileLoopKind {
         }
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         match self {
             Self::While => Lisp::keyword("while"),
             Self::Until => Lisp::keyword("until"),
@@ -48,7 +48,7 @@ impl ThisParser for OtherwiseStatement {
         state.finish(Self { terms: func.terms, span: get_span(input, state) })
     }
 
-    fn as_lisp(&self) -> Lisp {
-        Lisp::keyword("otherwise") + self.terms.iter().map(|s| s.as_lisp()).collect::<Lisp>()
+    fn lispify(&self) -> Lisp {
+        Lisp::keyword("otherwise") + self.terms.iter().map(|s| s.lispify()).collect::<Lisp>()
     }
 }

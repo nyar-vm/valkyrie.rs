@@ -13,7 +13,7 @@ impl ThisParser for StringLiteralNode {
         state.finish(StringLiteralNode { literal: pair.body.as_string(), handler: unit, span: get_span(input, state) })
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         let literal = Lisp::string(self.literal.to_string());
         match &self.handler {
             Some(s) => Lisp::unit(s.name.clone()) & literal,

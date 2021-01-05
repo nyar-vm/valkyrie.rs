@@ -17,15 +17,15 @@ impl ThisParser for EnumerateDeclaration {
         })
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         let mut lisp = Lisp::new(3 + self.body.terms.len());
         lisp += Lisp::keyword("enumerate");
-        lisp += self.namepath.as_lisp();
+        lisp += self.namepath.lispify();
         if let Some(s) = &self.layout {
-            lisp += Lisp::keyword("layout") + s.as_lisp();
+            lisp += Lisp::keyword("layout") + s.lispify();
         }
         for term in &self.body.terms {
-            lisp += term.as_lisp();
+            lisp += term.lispify();
         }
         lisp
     }
@@ -43,12 +43,12 @@ impl ThisParser for EnumerateFieldDeclaration {
         state.finish(EnumerateFieldDeclaration { documentation: Default::default(), name, value, span: get_span(input, state) })
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         let mut lisp = Lisp::new(3);
         lisp += Lisp::keyword("flag");
-        lisp += self.name.as_lisp();
+        lisp += self.name.lispify();
         if let Some(value) = &self.value {
-            lisp += value.as_lisp();
+            lisp += value.lispify();
         }
         lisp
     }

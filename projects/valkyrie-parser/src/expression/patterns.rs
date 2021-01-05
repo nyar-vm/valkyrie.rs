@@ -8,7 +8,7 @@ impl ThisParser for PatternBlock {
         state.finish(Self { branches: terms.body, span: get_span(input, state) })
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         unreachable!()
     }
 }
@@ -20,11 +20,11 @@ impl ThisParser for PatternBranch {
         state.finish(Self { condition: cond, statements: PatternStatements { terms: stmts }, span: get_span(input, state) })
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         let mut lisp = Lisp::new(10);
-        lisp += self.condition.as_lisp();
+        lisp += self.condition.lispify();
         for stmt in &self.statements.terms {
-            lisp += stmt.as_lisp();
+            lisp += stmt.lispify();
         }
         lisp
     }
@@ -59,12 +59,12 @@ impl ThisParser for PatternCondition {
         state.finish(head)
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         match self {
-            Self::Case(v) => v.as_lisp(),
-            Self::When(v) => v.as_lisp(),
-            Self::Type(v) => v.as_lisp(),
-            Self::Else(v) => v.as_lisp(),
+            Self::Case(v) => v.lispify(),
+            Self::When(v) => v.lispify(),
+            Self::Type(v) => v.lispify(),
+            Self::Else(v) => v.lispify(),
         }
     }
 }
@@ -77,7 +77,7 @@ impl ThisParser for ImplicitCaseNode {
         state.finish(Self { pattern: lhs, body: rhs, span: get_span(input, state) })
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         todo!()
     }
 }
@@ -89,8 +89,8 @@ impl ThisParser for PatternCaseNode {
         state.finish(Self { pattern: pat, guard: None, span: get_span(input, state) })
     }
 
-    fn as_lisp(&self) -> Lisp {
-        Lisp::keyword("match/case") + self.pattern.as_lisp()
+    fn lispify(&self) -> Lisp {
+        Lisp::keyword("match/case") + self.pattern.lispify()
     }
 }
 impl ThisParser for PatternTypeNode {
@@ -100,8 +100,8 @@ impl ThisParser for PatternTypeNode {
         state.finish(Self { pattern: expr, guard: None, span: get_span(input, state) })
     }
 
-    fn as_lisp(&self) -> Lisp {
-        Lisp::keyword("match/type") + self.pattern.as_lisp()
+    fn lispify(&self) -> Lisp {
+        Lisp::keyword("match/type") + self.pattern.lispify()
     }
 }
 impl ThisParser for PatternWhenNode {
@@ -111,8 +111,8 @@ impl ThisParser for PatternWhenNode {
         state.finish(Self { guard: expr, span: get_span(input, state) })
     }
 
-    fn as_lisp(&self) -> Lisp {
-        Lisp::keyword("match/when") + self.guard.as_lisp()
+    fn lispify(&self) -> Lisp {
+        Lisp::keyword("match/when") + self.guard.lispify()
     }
 }
 impl ThisParser for PatternElseNode {
@@ -121,7 +121,7 @@ impl ThisParser for PatternElseNode {
         state.finish(Self { span: get_span(input, state) })
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         Lisp::keyword("match/else")
     }
 }
@@ -133,8 +133,8 @@ impl ThisParser for PatternGuard {
         state.finish(Self { condition: cond, span: get_span(input, state) })
     }
 
-    fn as_lisp(&self) -> Lisp {
-        Lisp::keyword("if") + self.condition.as_lisp()
+    fn lispify(&self) -> Lisp {
+        Lisp::keyword("if") + self.condition.lispify()
     }
 }
 
@@ -147,13 +147,13 @@ impl ThisParser for PatternExpressionType {
             .end_choice()
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         match self {
-            Self::Tuple(s) => s.as_lisp(),
-            Self::Symbol(s) => s.as_lisp(),
-            Self::Class(s) => s.as_lisp(),
-            Self::Array(s) => s.as_lisp(),
-            Self::Union(s) => s.as_lisp(),
+            Self::Tuple(s) => s.lispify(),
+            Self::Symbol(s) => s.lispify(),
+            Self::Class(s) => s.lispify(),
+            Self::Array(s) => s.lispify(),
+            Self::Union(s) => s.lispify(),
         }
     }
 }
@@ -172,14 +172,14 @@ impl ThisParser for TuplePatternNode {
         state.finish(Self { bind: None, name, terms: terms.body, span: get_span(input, state) })
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         let mut lisp = Lisp::new(10);
         lisp += Lisp::keyword("pattern/tuple");
         if let Some(name) = &self.name {
-            lisp += name.as_lisp();
+            lisp += name.lispify();
         }
         for term in &self.terms {
-            lisp += term.as_lisp();
+            lisp += term.lispify();
         }
         lisp
     }
@@ -193,7 +193,7 @@ impl ThisParser for ArrayPatternNode {
         state.finish(Self { bind: None, terms: terms.body, span: get_span(input, state) })
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         todo!()
     }
 }
@@ -204,7 +204,7 @@ impl ThisParser for ClassPatternNode {
         todo!()
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         todo!()
     }
 }
@@ -214,7 +214,7 @@ impl ThisParser for UnionPatternNode {
         todo!()
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         todo!()
     }
 }

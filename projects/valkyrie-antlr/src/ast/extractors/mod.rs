@@ -1,11 +1,13 @@
 use super::*;
 use valkyrie_ast::{
-    ClassFieldDeclaration, ExpressionNode, ExpressionType, FlagsDeclaration, ForLoop, ModifiersNode, OperatorNode,
-    PatternExpressionType, PrefixNode, UnionDeclaration, ValkyrieOperator,
+    ClassFieldDeclaration, ExpressionNode, ExpressionType, FlagsDeclaration, ForLoop, InfixNode, ModifiersNode,
+    NumberLiteralNode, OperatorNode, PatternExpressionType, PostfixNode, PrefixNode, UnionDeclaration, ValkyrieOperator,
 };
 
 mod annotations;
+mod binary;
 mod classes;
+mod unary;
 
 impl<'i> Extractor<For_statementContextAll<'i>> for ForLoop {
     fn take_one(node: &For_statementContextAll<'i>) -> Option<Self> {
@@ -35,10 +37,18 @@ impl<'i> Extractor<ExpressionContextAll<'i>> for ExpressionType {
                 let this = PrefixNode::take_one(prefix)?;
                 ExpressionType::Prefix(Box::new(this))
             }
+            ExpressionContextAll::ESuffixContext(suffix) => {
+                let this = PostfixNode::take_one(suffix)?;
+                ExpressionType::Suffix(Box::new(this))
+            }
             ExpressionContextAll::ENamepathContext(namepath) => {
                 let this = NamePathNode::take(namepath.namepath())?;
                 ExpressionType::Symbol(Box::new(this))
             }
+            ExpressionContextAll::EPlusContext(plus) => InfixNode::take_one(plus)?.into(),
+            ExpressionContextAll::EMulContext(mul) => InfixNode::take_one(mul)?.into(),
+            ExpressionContextAll::EGroupContext(group) => ExpressionType::take(group.expression())?,
+            ExpressionContextAll::ENumberContext(plus) => NumberLiteralNode::take_one(plus)?.into(),
             _ => {
                 unimplemented!("{:?}", node)
             }
@@ -47,26 +57,13 @@ impl<'i> Extractor<ExpressionContextAll<'i>> for ExpressionType {
     }
 }
 
-impl<'i> Extractor<EPrefixContext<'i>> for PrefixNode {
-    fn take_one(node: &EPrefixContext<'i>) -> Option<Self> {
-        let prefix = OperatorNode::take(node.prefix_call())?;
-        let base = ExpressionType::take(node.expression())?;
+impl<'i> Extractor<ENumberContext<'i>> for NumberLiteralNode {
+    fn take_one(node: &ENumberContext<'i>) -> Option<Self> {
+        let node = node.number_literal()?;
+        let value = node.number()?.get_text();
+        let suffix = IdentifierNode::take(node.identifier());
         let span = Range { start: node.start().start as u32, end: node.stop().stop as u32 };
-        Some(Self { operator: prefix, base, span })
-    }
-}
-
-impl<'i> Extractor<Prefix_callContextAll<'i>> for OperatorNode {
-    fn take_one(node: &Prefix_callContextAll<'i>) -> Option<Self> {
-        let text = node.get_text();
-        let span = Range { start: node.start().start as u32, end: node.stop().stop as u32 };
-        let kind = match text.as_str() {
-            "+" => ValkyrieOperator::Positive,
-            _ => {
-                unreachable!("Missing prefix {:?}", text)
-            }
-        };
-        Some(Self { kind, span })
+        Some(Self { value, unit: suffix, span })
     }
 }
 

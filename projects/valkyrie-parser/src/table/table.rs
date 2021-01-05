@@ -8,11 +8,11 @@ impl ThisParser for TableNode {
         state.finish(TableNode { kind: TableKind::OffsetTable, terms: terms.body, span: get_span(input, state) })
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         let mut lisp = Lisp::new(self.terms.len() + 2);
         lisp += Lisp::keyword("table");
         for term in &self.terms {
-            lisp += term.as_lisp();
+            lisp += term.lispify();
         }
         lisp
     }
@@ -24,8 +24,8 @@ impl ThisParser for TableTermNode {
         state.finish(TableTermNode { pair })
     }
 
-    fn as_lisp(&self) -> Lisp {
-        self.pair.as_lisp()
+    fn lispify(&self) -> Lisp {
+        self.pair.lispify()
     }
 }
 
@@ -40,12 +40,12 @@ impl ThisParser for TableKeyType {
             .end_choice()
     }
 
-    fn as_lisp(&self) -> Lisp {
+    fn lispify(&self) -> Lisp {
         match self {
-            TableKeyType::Identifier(e) => e.as_lisp(),
-            TableKeyType::Number(e) => e.as_lisp(),
-            TableKeyType::String(e) => e.as_lisp(),
-            TableKeyType::Subscript(e) => e.as_lisp(),
+            TableKeyType::Identifier(e) => e.lispify(),
+            TableKeyType::Number(e) => e.lispify(),
+            TableKeyType::String(e) => e.lispify(),
+            TableKeyType::Subscript(e) => e.lispify(),
         }
     }
 }
@@ -66,10 +66,10 @@ where
         state.finish(CallTermNode { key, value })
     }
 
-    fn as_lisp(&self) -> Lisp {
-        let value = self.value.as_lisp();
+    fn lispify(&self) -> Lisp {
+        let value = self.value.lispify();
         match &self.key {
-            Some(key) => key.as_lisp() + value,
+            Some(key) => key.lispify() + value,
             None => value,
         }
     }
