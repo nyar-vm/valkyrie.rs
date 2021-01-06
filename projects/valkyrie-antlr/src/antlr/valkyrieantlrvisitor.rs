@@ -503,6 +503,15 @@ pub trait ValkyrieAntlrVisitor<'input>: ParseTreeVisitor<'input, ValkyrieAntlrPa
     }
 
     /**
+     * Visit a parse tree produced by the {@code EIn}
+     * labeled alternative in {@link ValkyrieAntlrParser#expression}.
+     * @param ctx the parse tree
+     */
+    fn visit_EIn(&mut self, ctx: &EInContext<'input>) {
+        self.visit_children(ctx)
+    }
+
+    /**
      * Visit a parse tree produced by the {@code EPlus}
      * labeled alternative in {@link ValkyrieAntlrParser#expression}.
      * @param ctx the parse tree
@@ -535,6 +544,15 @@ pub trait ValkyrieAntlrVisitor<'input>: ParseTreeVisitor<'input, ValkyrieAntlrPa
      * @param ctx the parse tree
      */
     fn visit_ETry(&mut self, ctx: &ETryContext<'input>) {
+        self.visit_children(ctx)
+    }
+
+    /**
+     * Visit a parse tree produced by the {@code EAs}
+     * labeled alternative in {@link ValkyrieAntlrParser#expression}.
+     * @param ctx the parse tree
+     */
+    fn visit_EAs(&mut self, ctx: &EAsContext<'input>) {
         self.visit_children(ctx)
     }
 
@@ -580,6 +598,15 @@ pub trait ValkyrieAntlrVisitor<'input>: ParseTreeVisitor<'input, ValkyrieAntlrPa
      * @param ctx the parse tree
      */
     fn visit_EMul(&mut self, ctx: &EMulContext<'input>) {
+        self.visit_children(ctx)
+    }
+
+    /**
+     * Visit a parse tree produced by the {@code EPipe}
+     * labeled alternative in {@link ValkyrieAntlrParser#expression}.
+     * @param ctx the parse tree
+     */
+    fn visit_EPipe(&mut self, ctx: &EPipeContext<'input>) {
         self.visit_children(ctx)
     }
 
@@ -1066,6 +1093,14 @@ pub trait ValkyrieAntlrVisitor<'input>: ParseTreeVisitor<'input, ValkyrieAntlrPa
      * @param ctx the parse tree
      */
     fn visit_op_logic(&mut self, ctx: &Op_logicContext<'input>) {
+        self.visit_children(ctx)
+    }
+
+    /**
+     * Visit a parse tree produced by {@link ValkyrieAntlrParser#op_pipeline}.
+     * @param ctx the parse tree
+     */
+    fn visit_op_pipeline(&mut self, ctx: &Op_pipelineContext<'input>) {
         self.visit_children(ctx)
     }
 
@@ -2058,6 +2093,15 @@ pub trait ValkyrieAntlrVisitorCompat<'input>: ParseTreeVisitorCompat<'input, Nod
     }
 
     /**
+     * Visit a parse tree produced by the {@code EIn}
+     * labeled alternative in {@link ValkyrieAntlrParser#expression}.
+     * @param ctx the parse tree
+     */
+    fn visit_EIn(&mut self, ctx: &EInContext<'input>) -> Self::Return {
+        self.visit_children(ctx)
+    }
+
+    /**
      * Visit a parse tree produced by the {@code EPlus}
      * labeled alternative in {@link ValkyrieAntlrParser#expression}.
      * @param ctx the parse tree
@@ -2090,6 +2134,15 @@ pub trait ValkyrieAntlrVisitorCompat<'input>: ParseTreeVisitorCompat<'input, Nod
      * @param ctx the parse tree
      */
     fn visit_ETry(&mut self, ctx: &ETryContext<'input>) -> Self::Return {
+        self.visit_children(ctx)
+    }
+
+    /**
+     * Visit a parse tree produced by the {@code EAs}
+     * labeled alternative in {@link ValkyrieAntlrParser#expression}.
+     * @param ctx the parse tree
+     */
+    fn visit_EAs(&mut self, ctx: &EAsContext<'input>) -> Self::Return {
         self.visit_children(ctx)
     }
 
@@ -2135,6 +2188,15 @@ pub trait ValkyrieAntlrVisitorCompat<'input>: ParseTreeVisitorCompat<'input, Nod
      * @param ctx the parse tree
      */
     fn visit_EMul(&mut self, ctx: &EMulContext<'input>) -> Self::Return {
+        self.visit_children(ctx)
+    }
+
+    /**
+     * Visit a parse tree produced by the {@code EPipe}
+     * labeled alternative in {@link ValkyrieAntlrParser#expression}.
+     * @param ctx the parse tree
+     */
+    fn visit_EPipe(&mut self, ctx: &EPipeContext<'input>) -> Self::Return {
         self.visit_children(ctx)
     }
 
@@ -2621,6 +2683,14 @@ pub trait ValkyrieAntlrVisitorCompat<'input>: ParseTreeVisitorCompat<'input, Nod
      * @param ctx the parse tree
      */
     fn visit_op_logic(&mut self, ctx: &Op_logicContext<'input>) -> Self::Return {
+        self.visit_children(ctx)
+    }
+
+    /**
+     * Visit a parse tree produced by {@link ValkyrieAntlrParser#op_pipeline}.
+     * @param ctx the parse tree
+     */
+    fn visit_op_pipeline(&mut self, ctx: &Op_pipelineContext<'input>) -> Self::Return {
         self.visit_children(ctx)
     }
 
@@ -3426,6 +3496,11 @@ where
         *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
     }
 
+    fn visit_EIn(&mut self, ctx: &EInContext<'input>) {
+        let result = <Self as ValkyrieAntlrVisitorCompat>::visit_EIn(self, ctx);
+        *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
+    }
+
     fn visit_EPlus(&mut self, ctx: &EPlusContext<'input>) {
         let result = <Self as ValkyrieAntlrVisitorCompat>::visit_EPlus(self, ctx);
         *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
@@ -3443,6 +3518,11 @@ where
 
     fn visit_ETry(&mut self, ctx: &ETryContext<'input>) {
         let result = <Self as ValkyrieAntlrVisitorCompat>::visit_ETry(self, ctx);
+        *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
+    }
+
+    fn visit_EAs(&mut self, ctx: &EAsContext<'input>) {
+        let result = <Self as ValkyrieAntlrVisitorCompat>::visit_EAs(self, ctx);
         *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
     }
 
@@ -3468,6 +3548,11 @@ where
 
     fn visit_EMul(&mut self, ctx: &EMulContext<'input>) {
         let result = <Self as ValkyrieAntlrVisitorCompat>::visit_EMul(self, ctx);
+        *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
+    }
+
+    fn visit_EPipe(&mut self, ctx: &EPipeContext<'input>) {
+        let result = <Self as ValkyrieAntlrVisitorCompat>::visit_EPipe(self, ctx);
         *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
     }
 
@@ -3743,6 +3828,11 @@ where
 
     fn visit_op_logic(&mut self, ctx: &Op_logicContext<'input>) {
         let result = <Self as ValkyrieAntlrVisitorCompat>::visit_op_logic(self, ctx);
+        *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
+    }
+
+    fn visit_op_pipeline(&mut self, ctx: &Op_pipelineContext<'input>) {
+        let result = <Self as ValkyrieAntlrVisitorCompat>::visit_op_pipeline(self, ctx);
         *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
     }
 

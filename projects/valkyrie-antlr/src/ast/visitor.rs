@@ -40,7 +40,6 @@ impl ValkyrieAntlrVisitor<'_> for ValkyrieProgramParser {
             self.statements.push(StatementNode { r#type: s.into(), end_semicolon: false });
             return;
         }
-
         if let Some(s) = ExpressionNode::take(ctx.top_expression()) {
             self.statements.push(StatementNode { r#type: s.into(), end_semicolon: false });
             return;

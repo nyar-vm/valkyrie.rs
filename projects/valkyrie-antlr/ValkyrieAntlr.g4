@@ -164,59 +164,68 @@ if_guard: KW_IF inline_expression;
 // ==========================================================================
 top_expression: annotation* expression;
 expression
-    : <assoc = right> lhs = expression OP_POW rhs = expression                                           # EPow
-    | lhs = expression op = (OP_MUL | OP_DIV) rhs = expression                                           # EMul
-    | lhs = expression op = (OP_ADD | OP_SUB) rhs = expression                                           # EPlus
-    | lhs = expression op = (LOGIC_OR | LOGIC_AND | LOGIC_XOR | LOGIC_NOR | LOGIC_NAND) rhs = expression # ELogic
-    | lhs = expression op = (OP_LT | OP_LEQ | OP_GT | OP_GEQ | OP_EQ | OP_NE) rhs = expression           # ECompare
-    | lhs = expression OP_UNTIL rhs = expression                                                         # ERange
-    | lhs = expression infix_is rhs = type_expression                                                    # EIsA
-    | lhs = expression op_assign rhs = type_expression                                                   # EAssign
-    | lhs = expression OP_OR_ELSE rhs = type_expression                                                  # EOrElse
-    | op_prefix expression                                                                               # EPrefix
-    | expression op_suffix                                                                               # ESuffix
-    | expression slice_call                                                                              # ESlice
-    | expression offset_call                                                                             # EOffset
-    | expression generic_call                                                                            # EGeneric
-    | expression lambda_call                                                                             # ELambda
-    | expression match_call                                                                              # EMatch
-    | expression function_call                                                                           # EFunction
-    | expression dot_call                                                                                # EDot
-    | control_expression                                                                                 # EControl
-    | PARENTHESES_L expression PARENTHESES_R                                                             # EGroup
-    | try_statement                                                                                      # ETry
-    | if_statement                                                                                       # EIf
-    | match_statement                                                                                    # EMatch
-    | new_statement                                                                                      # ENew
-    | object_statement                                                                                   # EObject
-    | macro_call                                                                                         # EMacro
-    | function_call                                                                                      # EFunction
-    | define_label                                                                                       # EDefine
-    | collection_literal                                                                                 # ECollection
-    | string_literal                                                                                     # EString
-    | number_literal                                                                                     # ENumber
-    | lambda_name                                                                                        # ELambda
-    | namepath                                                                                           # ENamepath
-    | SPECIAL                                                                                            # ESpecial
+    : <assoc = right> lhs = expression OP_POW rhs = expression # EPow
+    | lhs = expression op_multiple rhs = expression            # EMul
+    | lhs = expression op_plus rhs = expression                # EPlus
+    | lhs = expression op_logic rhs = expression               # ELogic
+    | lhs = expression op_compare rhs = expression             # ECompare
+    | lhs = expression OP_UNTIL rhs = expression               # ERange
+    | lhs = expression infix_is rhs = type_expression          # EIsA
+    | lhs = expression KW_AS rhs = type_expression             # EAs
+    | lhs = expression infix_in rhs = expression               # EIn
+    | lhs = expression op_assign rhs = type_expression         # EAssign
+    | lhs = expression OP_OR_ELSE rhs = type_expression        # EOrElse
+    | lhs = expression op_pipeline rhs = type_expression       # EPipe
+    // suffix
+    | expression op_suffix     # ESuffix
+    | expression slice_call    # ESlice
+    | expression offset_call   # EOffset
+    | expression generic_call  # EGeneric
+    | expression lambda_call   # ELambda
+    | expression match_call    # EMatch
+    | expression function_call # EFunction
+    | expression dot_call      # EDot
+    // suffix
+    | op_prefix expression # EPrefix
+    // atomic
+    | PARENTHESES_L expression PARENTHESES_R # EGroup
+    | control_expression                     # EControl
+    | try_statement                          # ETry
+    | if_statement                           # EIf
+    | match_statement                        # EMatch
+    | new_statement                          # ENew
+    | object_statement                       # EObject
+    | macro_call                             # EMacro
+    | function_call                          # EFunction
+    | define_label                           # EDefine
+    | collection_literal                     # ECollection
+    | string_literal                         # EString
+    | number_literal                         # ENumber
+    | lambda_name                            # ELambda
+    | namepath                               # ENamepath
+    | SPECIAL                                # ESpecial
     ;
 inline_expression
-    : inline_expression dot_call                                 # IDot
-    | inline_expression slice_call                               # ISlice
-    | inline_expression op_multiple inline_expression            # IMul
-    | inline_expression op = (OP_ADD | OP_SUB) inline_expression # IPlus
-    | inline_expression op_logic inline_expression               # ILogic
-    | inline_expression op_compare inline_expression             # ICompare
-    | inline_expression (KW_IS | KW_IS KW_NOT) inline_expression # IIsA
-    | inline_expression OP_UNTIL inline_expression               # IRange
-    | inline_expression KW_AS inline_expression                  # IAs
-    | op_prefix inline_expression                                # IPrefix
-    | macro_call                                                 # IMacro
-    | function_call                                              # IFunction
-    | collection_literal                                         # ICollection
-    | string_literal                                             # IString
-    | number_literal                                             # INumber
-    | namepath                                                   # INamepath
-    | SPECIAL                                                    # ISpecial
+    : inline_expression op_multiple inline_expression # IMul
+    | inline_expression op_plus inline_expression     # IPlus
+    | inline_expression op_logic inline_expression    # ILogic
+    | inline_expression op_compare inline_expression  # ICompare
+    | inline_expression infix_is inline_expression    # IIsA
+    | inline_expression OP_UNTIL inline_expression    # IRange
+    | inline_expression KW_AS inline_expression       # IAs
+    // suffix
+    | inline_expression dot_call   # IDot
+    | inline_expression slice_call # ISlice
+    | macro_call                   # IMacro
+    | function_call                # IFunction
+    // prefix
+    | op_prefix inline_expression # IPrefix
+    // atomic
+    | collection_literal # ICollection
+    | string_literal     # IString
+    | number_literal     # INumber
+    | namepath           # INamepath
+    | SPECIAL            # ISpecial
     ;
 type_expression
     : type_expression op_pattern type_expression   # TPattern
@@ -257,12 +266,13 @@ control_expression
     ;
 // 带返回值的表达式, 能作为表达式的开头
 
-op_compare:   OP_LT | OP_LEQ | OP_GT | OP_GEQ | OP_EQ | OP_NE;
+op_compare:   OP_LT | OP_LEQ | OP_GT | OP_GEQ | OP_EQ | OP_NE | OP_EEE | OP_NEE;
 op_pattern:   OP_AND | OP_OR;
 infix_arrows: OP_ARROW | OP_ARROW2;
-op_multiple:  OP_MUL | OP_DIV;
+op_multiple:  OP_MUL | OP_DIV | OP_DIV | OP_DIV_REM;
 op_plus:      OP_ADD | OP_SUB;
-op_logic:     LOGIC_OR | LOGIC_AND | LOGIC_XOR | LOGIC_NOR | LOGIC_NAND;
+op_logic:     LOGIC_OR | LOGIC_AND | LOGIC_XOR | LOGIC_NOR | LOGIC_NAND | LOGIC_XAND;
+op_pipeline:  OP_LL | OP_LLE | OP_LLL | OP_GG | OP_GGE | OP_GGG;
 op_assign
     : OP_ASSIGN
     | OP_ADD_ASSIGN
@@ -271,8 +281,8 @@ op_assign
     | OP_DIV_ASSIGN
     | OP_MAY_ASSIGN
     ;
-infix_is: KW_IS | KW_IS KW_NOT;
-infix_in: KW_IN | OP_IN;
+infix_is: KW_IS | KW_IS KW_NOT | OP_IS | OP_IS_NOT;
+infix_in: KW_IN | KW_NOT KW_IN | OP_IN | OP_NOT_IN;
 // ===========================================================================
 define_generic
     : GENERIC_L GENERIC_R
@@ -305,10 +315,13 @@ tempalte_terms: KW_WHERE where_block | eos_free;
 where_block:    BRACE_L where_bound* BRACE_R;
 where_bound:    identifier COLON type_expression | eos_free;
 // ===========================================================================
-macro_call: OP_AT annotation_call_item;
+macro_call
+    : OP_AT annotation_call_item class_block?
+    | OP_AT BRACKET_L annotation_call_item (COMMA annotation_call_item)* BRACKET_R class_block?
+    ;
 annotation
-    : OP_HASH annotation_call_item
-    | OP_HASH BRACKET_L annotation_call_item (COMMA annotation_call_item)* BRACKET_R
+    : OP_HASH annotation_call_item class_block?
+    | OP_HASH BRACKET_L annotation_call_item (COMMA annotation_call_item)* BRACKET_R class_block?
     ;
 annotation_call_item: namepath tuple_call_body? class_block?;
 // ===========================================================================

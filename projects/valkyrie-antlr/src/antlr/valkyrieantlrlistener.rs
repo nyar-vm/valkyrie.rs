@@ -627,6 +627,18 @@ pub trait ValkyrieAntlrListener<'input>: ParseTreeListener<'input, ValkyrieAntlr
      */
     fn exit_ESpecial(&mut self, _ctx: &ESpecialContext<'input>) {}
     /**
+     * Enter a parse tree produced by the {@code EIn}
+     * labeled alternative in {@link ValkyrieAntlrParser#expression}.
+     * @param ctx the parse tree
+     */
+    fn enter_EIn(&mut self, _ctx: &EInContext<'input>) {}
+    /**
+     * Exit a parse tree produced by the {@code EIn}
+     * labeled alternative in {@link ValkyrieAntlrParser#expression}.
+     * @param ctx the parse tree
+     */
+    fn exit_EIn(&mut self, _ctx: &EInContext<'input>) {}
+    /**
      * Enter a parse tree produced by the {@code EPlus}
      * labeled alternative in {@link ValkyrieAntlrParser#expression}.
      * @param ctx the parse tree
@@ -674,6 +686,18 @@ pub trait ValkyrieAntlrListener<'input>: ParseTreeListener<'input, ValkyrieAntlr
      * @param ctx the parse tree
      */
     fn exit_ETry(&mut self, _ctx: &ETryContext<'input>) {}
+    /**
+     * Enter a parse tree produced by the {@code EAs}
+     * labeled alternative in {@link ValkyrieAntlrParser#expression}.
+     * @param ctx the parse tree
+     */
+    fn enter_EAs(&mut self, _ctx: &EAsContext<'input>) {}
+    /**
+     * Exit a parse tree produced by the {@code EAs}
+     * labeled alternative in {@link ValkyrieAntlrParser#expression}.
+     * @param ctx the parse tree
+     */
+    fn exit_EAs(&mut self, _ctx: &EAsContext<'input>) {}
     /**
      * Enter a parse tree produced by the {@code EObject}
      * labeled alternative in {@link ValkyrieAntlrParser#expression}.
@@ -734,6 +758,18 @@ pub trait ValkyrieAntlrListener<'input>: ParseTreeListener<'input, ValkyrieAntlr
      * @param ctx the parse tree
      */
     fn exit_EMul(&mut self, _ctx: &EMulContext<'input>) {}
+    /**
+     * Enter a parse tree produced by the {@code EPipe}
+     * labeled alternative in {@link ValkyrieAntlrParser#expression}.
+     * @param ctx the parse tree
+     */
+    fn enter_EPipe(&mut self, _ctx: &EPipeContext<'input>) {}
+    /**
+     * Exit a parse tree produced by the {@code EPipe}
+     * labeled alternative in {@link ValkyrieAntlrParser#expression}.
+     * @param ctx the parse tree
+     */
+    fn exit_EPipe(&mut self, _ctx: &EPipeContext<'input>) {}
     /**
      * Enter a parse tree produced by the {@code ELambda}
      * labeled alternative in {@link ValkyrieAntlrParser#expression}.
@@ -1376,6 +1412,16 @@ pub trait ValkyrieAntlrListener<'input>: ParseTreeListener<'input, ValkyrieAntlr
      * @param ctx the parse tree
      */
     fn exit_op_logic(&mut self, _ctx: &Op_logicContext<'input>) {}
+    /**
+     * Enter a parse tree produced by {@link ValkyrieAntlrParser#op_pipeline}.
+     * @param ctx the parse tree
+     */
+    fn enter_op_pipeline(&mut self, _ctx: &Op_pipelineContext<'input>) {}
+    /**
+     * Exit a parse tree produced by {@link ValkyrieAntlrParser#op_pipeline}.
+     * @param ctx the parse tree
+     */
+    fn exit_op_pipeline(&mut self, _ctx: &Op_pipelineContext<'input>) {}
     /**
      * Enter a parse tree produced by {@link ValkyrieAntlrParser#op_assign}.
      * @param ctx the parse tree

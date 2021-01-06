@@ -35,21 +35,26 @@ COLLECTION_L:  '⦃';
 COLLECTION_R:  '⦄';
 
 // infix
-OP_ADD: '+';
-OP_INC: '++';
-OP_SUB: '-';
-OP_DEC: '--';
-OP_MUL: '*';
-OP_DIV: '/' | '//' | '÷' | '/%'| '%%';
+OP_ADD:     '+';
+OP_INC:     '++';
+OP_SUB:     '-';
+OP_DEC:     '--';
+OP_MUL:     '*';
+OP_DIV:     '/';
+OP_DIV_REM: '/%' | '÷';
 // equal
-OP_EQ: '==';
-OP_NE: '!=';
+OP_EQ:  '==';
+OP_NE:  '≠' | '!=';
+OP_NEE: '≢' | '!==' | '=!=';
+OP_EEE: '≡' | '===';
 // compare
-OP_LEQ: '⩽' | '≤' | '<='; 
+OP_LEQ: '⩽' | '≤' | '<=';
+OP_LLE: '<<=';
 OP_LLL: '⋘' | '<' '<' '<';
 OP_LL:  '≪' | '<' '<';
 OP_LT:  '<';
 OP_GEQ: '⩾' | '≥' | '>=';
+OP_GGE: '>>=';
 OP_GGG: '⋙' | '>' '>' '>';
 OP_GG:  '≫' | '>' '>';
 OP_GT:  '>';
@@ -68,15 +73,18 @@ OP_DIV_ASSIGN: '/=';
 // logical
 LOGIC_NOT:  '¬';
 LOGIC_AND:  '&&' | '∧';
+LOGIC_XAND: '⩟';
+LOGIC_NAND: '⊼';
 LOGIC_OR:   '||' | '∨';
 LOGIC_XOR:  '⊻';
 LOGIC_NOR:  '⊽';
-LOGIC_NAND: '⊼';
+// set
+SET_INTERSECTION: '∩';
+SET_UNION:        '∪';
 // bitwise
 OP_AND:  '&';
 OP_OR:   '|';
 OP_XOR:  '⊕';
-OP_EQV:  '≡';
 OP_IMPL: '‽';
 OP_IFF:  '⇔';
 
@@ -182,8 +190,8 @@ RAW_ID:     '`' ~[`]+ '`';
 UNICODE_ID: [_\p{XID_start}] [\p{XID_continue}]*;
 
 // comment
-LINE_COMMENT:  '~' ~[\r\n]* -> channel(HIDDEN);
-BLOCK_COMMENT: '[~' .*? '~]' -> channel(HIDDEN);
+LINE_COMMENT:  '//' ~[\r\n]* -> channel(HIDDEN);
+BLOCK_COMMENT: '/*' .*? '*/' -> channel(HIDDEN);
 
 WHITE_SPACE:     [\p{White_Space}]+ -> channel(HIDDEN);
 ERROR_CHARACTAR: . -> channel(HIDDEN);

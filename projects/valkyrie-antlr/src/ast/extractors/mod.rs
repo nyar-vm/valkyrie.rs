@@ -38,11 +38,12 @@ impl<'i> Extractor<ExpressionContextAll<'i>> for ExpressionType {
             ExpressionContextAll::EPowContext(infix) => InfixNode::take_one(infix)?.into(),
             ExpressionContextAll::EPlusContext(infix) => InfixNode::take_one(infix)?.into(),
             ExpressionContextAll::EMulContext(infix) => InfixNode::take_one(infix)?.into(),
+            ExpressionContextAll::EIsAContext(infix) => InfixNode::take_one(infix)?.into(),
             ExpressionContextAll::ECompareContext(infix) => InfixNode::take_one(infix)?.into(),
-            ExpressionContextAll::ENamepathContext(namepath) => {
-                let this = NamePathNode::take(namepath.namepath())?;
-                ExpressionType::Symbol(Box::new(this))
-            }
+            ExpressionContextAll::EPipeContext(infix) => InfixNode::take_one(infix)?.into(),
+            ExpressionContextAll::EInContext(infix) => InfixNode::take_one(infix)?.into(),
+            ExpressionContextAll::ELogicContext(infix) => InfixNode::take_one(infix)?.into(),
+            ExpressionContextAll::ENamepathContext(namepath) => NamePathNode::take(namepath.namepath())?.into(),
             ExpressionContextAll::EGroupContext(group) => ExpressionType::take(group.expression())?,
             ExpressionContextAll::ENumberContext(plus) => NumberLiteralNode::take_one(plus)?.into(),
             _ => {
@@ -52,7 +53,17 @@ impl<'i> Extractor<ExpressionContextAll<'i>> for ExpressionType {
         Some(body)
     }
 }
-
+impl<'i> Extractor<Type_expressionContextAll<'i>> for ExpressionType {
+    fn take_one(node: &Type_expressionContextAll<'i>) -> Option<Self> {
+        let body = match node {
+            Type_expressionContextAll::TNamepathContext(namepath) => NamePathNode::take(namepath.namepath())?.into(),
+            _ => {
+                unimplemented!("{:?}", node)
+            }
+        };
+        Some(body)
+    }
+}
 impl<'i> Extractor<ENumberContext<'i>> for NumberLiteralNode {
     fn take_one(node: &ENumberContext<'i>) -> Option<Self> {
         let node = node.number_literal()?;

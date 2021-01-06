@@ -1,10 +1,13 @@
 use super::*;
+use core::ptr::eq;
 #[cfg(feature = "pretty-print")]
 mod display;
 
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum ValkyrieOperator {
+    /// unassigned operator symbol
+    Placeholder,
     /// prefix operator: `!`
     Not,
     /// prefix operator: `+`
@@ -31,18 +34,16 @@ pub enum ValkyrieOperator {
     PlusAssign,
     /// binary operator: `++`
     Concat,
-    /// binary operator: `>`
-    Greater {
-        equal: bool,
-    },
-    /// binary operator: `>=`, `⩾`
-    GreaterEqual,
     /// binary operator: `<`
     Less {
+        /// binary operator: `<=`, `⩽`
         equal: bool,
     },
-    /// binary operator: `<=`, `⩽`
-    LessEqual,
+    /// binary operator: `>`
+    Greater {
+        /// binary operator: `>=`, `⩾`
+        equal: bool,
+    },
     /// binary operator: `≫`, `>>`
     MuchGreater,
     /// binary operator:
@@ -55,10 +56,21 @@ pub enum ValkyrieOperator {
     Equal(bool),
     /// binary operator:
     StrictlyEqual(bool),
-    /// binary operator: `in, not in`
-    Belongs(bool),
     /// binary operator: `⊑, ⋢, is, is not`
-    IsA(bool),
+    Is {
+        /// negative operator: `⋢, is not`
+        negative: bool,
+    },
+    /// binary operator: `∈`, `∉`, `in`, `not in`
+    In {
+        /// negative operator: `∉, not in`
+        negative: bool,
+    },
+    /// binary operator: `∋`, `∌`    
+    Contains {
+        /// negative operator: `∉, not in`
+        negative: bool,
+    },
     /// binary operator: `-`
     Minus,
     /// binary operator: `-=`
@@ -75,10 +87,34 @@ pub enum ValkyrieOperator {
     DivideFloor,
     /// binary operator: `^`
     Power,
-    /// suffix operator: `|`
-    BitOr,
-    /// suffix operator: `&`
-    BitAnd,
+    /// binary operator: `&,  |`
+    LogicMatrix {
+        /// ```
+        /// pub fn logic_matrix(p: bool, q: bool, mask: u8) -> Option<bool> {
+        ///     let ok = match mask {
+        ///         0 => false,
+        ///         1 => p && q,
+        ///         2 => p && !q,
+        ///         3 => p,
+        ///         4 => !p && q,
+        ///         5 => q,
+        ///         6 => p ^ q,
+        ///         7 => p || q,
+        ///         8 => !p && !q,
+        ///         9 => p == q,
+        ///         10 => !q,
+        ///         11 => p || !q,
+        ///         12 => !p,
+        ///         13 => !p || q,
+        ///         14 => !p || !q,
+        ///         15 => true,
+        ///         _ => return None,
+        ///     };
+        ///     Some(ok)
+        /// }
+        /// ```
+        mask: u8,
+    },
     /// suffix operator: `?`
     Optional,
     /// suffix operator: `!`
@@ -99,24 +135,24 @@ pub enum ValkyrieOperator {
 impl ValkyrieOperator {
     pub fn precedence(&self) -> u32 {
         match self {
+            Self::Placeholder => 0,
             //
             Self::Concat => 14000,
-            Self::Belongs(_) => 14000,
-            Self::IsA(_) => 14000,
-
+            Self::Is { .. } => 14000,
+            Self::In { .. } => 14000,
+            Self::Contains { .. } => 14000,
             Self::Assign => 14000,
             // prefix - 3
             Self::PlusAssign => 14100,
             Self::MinusAssign => 14100,
 
             // infix - 3
-            Self::BitOr => 14700,
-            Self::BitAnd => 14700,
+            Self::LogicMatrix { .. } => 14700,
             Self::Equal(_) => 14700,
             Self::StrictlyEqual(_) => 14700,
             // infix - 2
-            Self::Greater => 14800,
-            Self::Less => 14800,
+            Self::Greater { .. } => 14800,
+            Self::Less { .. } => 14800,
             // infix - 1
             Self::MuchLess => 14900,
             Self::MuchGreater => 14900,
@@ -157,6 +193,7 @@ impl ValkyrieOperator {
     /// Get the normalised string representation of the operator.
     pub fn as_str(&self) -> &'static str {
         match self {
+            Self::Placeholder => "???",
             Self::Not => "!",
             Self::Concat => "++",
             Self::Positive => "+",
@@ -182,19 +219,29 @@ impl ValkyrieOperator {
             Self::Unbox => "*",
             Self::Unpack => "⁑",
             Self::UnpackAll => "⁂",
-            Self::Greater => ">",
+            Self::Greater { equal } => match equal {
+                true => "⩾",
+                false => ">",
+            },
             Self::MuchGreater => "≫",
             Self::VeryMuchGreater => "⋙",
-            Self::Less => "<",
+            Self::Less { equal } => match equal {
+                true => "⩽",
+                false => "<",
+            },
             Self::MuchLess => "≪",
             Self::VeryMuchLess => "⋘",
-            Self::Belongs(v) => match v {
-                true => "∈",
-                false => "∉",
+            Self::Is { negative } => match negative {
+                true => "⋢",
+                false => "⊑",
             },
-            Self::IsA(v) => match v {
-                true => "⊑",
-                false => "⋢",
+            Self::In { negative } => match negative {
+                true => "∉",
+                false => "∈",
+            },
+            Self::Contains { negative } => match negative {
+                true => "∌",
+                false => "∋",
             },
             Self::Equal(v) => match v {
                 true => "≖",
@@ -216,8 +263,11 @@ impl ValkyrieOperator {
                 _ => "%",
             },
             Self::Assign => "=",
-            Self::BitOr => "|",
-            Self::BitAnd => "&",
+            Self::LogicMatrix { mask } => match mask {
+                1 => "&",
+                7 => "|",
+                _ => unreachable!(),
+            },
         }
     }
     pub fn accept_arguments(&self) -> usize {
