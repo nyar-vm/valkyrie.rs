@@ -164,40 +164,40 @@ if_guard: KW_IF inline_expression;
 // ==========================================================================
 top_expression: annotation* expression;
 expression
-    : <assoc = right> lhs = expression OP_POW rhs = expression                                      # EPow
-    | lhs = expression (OP_MUL | OP_DIV) rhs = expression                                           # EMul
-    | lhs = expression (OP_ADD | OP_SUB) rhs = expression                                           # EPlus
-    | lhs = expression (LOGIC_OR | LOGIC_AND | LOGIC_XOR | LOGIC_NOR | LOGIC_NAND) rhs = expression # ELogic
-    | lhs = expression (OP_LT | OP_LEQ | OP_GT | OP_GEQ | OP_EQ | OP_NE) rhs = expression           # ECompare
-    | lhs = expression OP_UNTIL rhs = expression                                                    # ERange
-    | lhs = expression infix_is rhs = type_expression                                               # EIsA
-    | lhs = expression op_assign rhs = type_expression                                              # EAssign
-    | lhs = expression OP_OR_ELSE rhs = type_expression                                             # EOrElse
-    | op_prefix expression                                                                          # EPrefix
-    | expression op_suffix                                                                          # ESuffix
-    | expression slice_call                                                                         # ESlice
-    | expression offset_call                                                                        # EOffset
-    | expression generic_call                                                                       # EGeneric
-    | expression lambda_call                                                                        # ELambda
-    | expression match_call                                                                         # EMatch
-    | expression function_call                                                                      # EFunction
-    | expression dot_call                                                                           # EDot
-    | control_expression                                                                            # EControl
-    | PARENTHESES_L expression PARENTHESES_R                                                        # EGroup
-    | try_statement                                                                                 # ETry
-    | if_statement                                                                                  # EIf
-    | match_statement                                                                               # EMatch
-    | new_statement                                                                                 # ENew
-    | object_statement                                                                              # EObject
-    | macro_call                                                                                    # EMacro
-    | function_call                                                                                 # EFunction
-    | define_label                                                                                  # EDefine
-    | collection_literal                                                                            # ECollection
-    | string_literal                                                                                # EString
-    | number_literal                                                                                # ENumber
-    | lambda_name                                                                                   # ELambda
-    | namepath                                                                                      # ENamepath
-    | SPECIAL                                                                                       # ESpecial
+    : <assoc = right> lhs = expression OP_POW rhs = expression                                           # EPow
+    | lhs = expression op = (OP_MUL | OP_DIV) rhs = expression                                           # EMul
+    | lhs = expression op = (OP_ADD | OP_SUB) rhs = expression                                           # EPlus
+    | lhs = expression op = (LOGIC_OR | LOGIC_AND | LOGIC_XOR | LOGIC_NOR | LOGIC_NAND) rhs = expression # ELogic
+    | lhs = expression op = (OP_LT | OP_LEQ | OP_GT | OP_GEQ | OP_EQ | OP_NE) rhs = expression           # ECompare
+    | lhs = expression OP_UNTIL rhs = expression                                                         # ERange
+    | lhs = expression infix_is rhs = type_expression                                                    # EIsA
+    | lhs = expression op_assign rhs = type_expression                                                   # EAssign
+    | lhs = expression OP_OR_ELSE rhs = type_expression                                                  # EOrElse
+    | op_prefix expression                                                                               # EPrefix
+    | expression op_suffix                                                                               # ESuffix
+    | expression slice_call                                                                              # ESlice
+    | expression offset_call                                                                             # EOffset
+    | expression generic_call                                                                            # EGeneric
+    | expression lambda_call                                                                             # ELambda
+    | expression match_call                                                                              # EMatch
+    | expression function_call                                                                           # EFunction
+    | expression dot_call                                                                                # EDot
+    | control_expression                                                                                 # EControl
+    | PARENTHESES_L expression PARENTHESES_R                                                             # EGroup
+    | try_statement                                                                                      # ETry
+    | if_statement                                                                                       # EIf
+    | match_statement                                                                                    # EMatch
+    | new_statement                                                                                      # ENew
+    | object_statement                                                                                   # EObject
+    | macro_call                                                                                         # EMacro
+    | function_call                                                                                      # EFunction
+    | define_label                                                                                       # EDefine
+    | collection_literal                                                                                 # ECollection
+    | string_literal                                                                                     # EString
+    | number_literal                                                                                     # ENumber
+    | lambda_name                                                                                        # ELambda
+    | namepath                                                                                           # ENamepath
+    | SPECIAL                                                                                            # ESpecial
     ;
 inline_expression
     : inline_expression dot_call                                 # IDot

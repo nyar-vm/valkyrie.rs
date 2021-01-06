@@ -32,9 +32,17 @@ pub enum ValkyrieOperator {
     /// binary operator: `++`
     Concat,
     /// binary operator: `>`
-    Greater,
+    Greater {
+        equal: bool,
+    },
+    /// binary operator: `>=`, `⩾`
+    GreaterEqual,
     /// binary operator: `<`
-    Less,
+    Less {
+        equal: bool,
+    },
+    /// binary operator: `<=`, `⩽`
+    LessEqual,
     /// binary operator: `≫`, `>>`
     MuchGreater,
     /// binary operator:

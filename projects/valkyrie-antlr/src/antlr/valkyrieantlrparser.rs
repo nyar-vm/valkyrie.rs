@@ -11594,6 +11594,7 @@ impl<'input> EPlusContextAttrs<'input> for EPlusContext<'input> {}
 pub struct EPlusContextExt<'input> {
     base: ExpressionContextExt<'input>,
     pub lhs: Option<Rc<ExpressionContextAll<'input>>>,
+    pub op: Option<TokenType<'input>>,
     pub rhs: Option<Rc<ExpressionContextAll<'input>>>,
     ph: PhantomData<&'input str>,
 }
@@ -11645,7 +11646,7 @@ impl<'input> EPlusContextExt<'input> {
     fn new(ctx: &dyn ExpressionContextAttrs<'input>) -> Rc<ExpressionContextAll<'input>> {
         Rc::new(ExpressionContextAll::EPlusContext(BaseParserRuleContext::copy_from(
             ctx,
-            EPlusContextExt { lhs: None, rhs: None, base: ctx.borrow().clone(), ph: PhantomData },
+            EPlusContextExt { op: None, lhs: None, rhs: None, base: ctx.borrow().clone(), ph: PhantomData },
         )))
     }
 }
@@ -12220,6 +12221,7 @@ impl<'input> EMulContextAttrs<'input> for EMulContext<'input> {}
 pub struct EMulContextExt<'input> {
     base: ExpressionContextExt<'input>,
     pub lhs: Option<Rc<ExpressionContextAll<'input>>>,
+    pub op: Option<TokenType<'input>>,
     pub rhs: Option<Rc<ExpressionContextAll<'input>>>,
     ph: PhantomData<&'input str>,
 }
@@ -12271,7 +12273,7 @@ impl<'input> EMulContextExt<'input> {
     fn new(ctx: &dyn ExpressionContextAttrs<'input>) -> Rc<ExpressionContextAll<'input>> {
         Rc::new(ExpressionContextAll::EMulContext(BaseParserRuleContext::copy_from(
             ctx,
-            EMulContextExt { lhs: None, rhs: None, base: ctx.borrow().clone(), ph: PhantomData },
+            EMulContextExt { op: None, lhs: None, rhs: None, base: ctx.borrow().clone(), ph: PhantomData },
         )))
     }
 }
@@ -13196,6 +13198,7 @@ impl<'input> ECompareContextAttrs<'input> for ECompareContext<'input> {}
 pub struct ECompareContextExt<'input> {
     base: ExpressionContextExt<'input>,
     pub lhs: Option<Rc<ExpressionContextAll<'input>>>,
+    pub op: Option<TokenType<'input>>,
     pub rhs: Option<Rc<ExpressionContextAll<'input>>>,
     ph: PhantomData<&'input str>,
 }
@@ -13247,7 +13250,7 @@ impl<'input> ECompareContextExt<'input> {
     fn new(ctx: &dyn ExpressionContextAttrs<'input>) -> Rc<ExpressionContextAll<'input>> {
         Rc::new(ExpressionContextAll::ECompareContext(BaseParserRuleContext::copy_from(
             ctx,
-            ECompareContextExt { lhs: None, rhs: None, base: ctx.borrow().clone(), ph: PhantomData },
+            ECompareContextExt { op: None, lhs: None, rhs: None, base: ctx.borrow().clone(), ph: PhantomData },
         )))
     }
 }
@@ -13630,6 +13633,7 @@ impl<'input> ELogicContextAttrs<'input> for ELogicContext<'input> {}
 pub struct ELogicContextExt<'input> {
     base: ExpressionContextExt<'input>,
     pub lhs: Option<Rc<ExpressionContextAll<'input>>>,
+    pub op: Option<TokenType<'input>>,
     pub rhs: Option<Rc<ExpressionContextAll<'input>>>,
     ph: PhantomData<&'input str>,
 }
@@ -13681,7 +13685,7 @@ impl<'input> ELogicContextExt<'input> {
     fn new(ctx: &dyn ExpressionContextAttrs<'input>) -> Rc<ExpressionContextAll<'input>> {
         Rc::new(ExpressionContextAll::ELogicContext(BaseParserRuleContext::copy_from(
             ctx,
-            ELogicContextExt { lhs: None, rhs: None, base: ctx.borrow().clone(), ph: PhantomData },
+            ELogicContextExt { op: None, lhs: None, rhs: None, base: ctx.borrow().clone(), ph: PhantomData },
         )))
     }
 }
@@ -14198,9 +14202,25 @@ where
                                             ))?;
                                         }
                                         recog.base.set_state(1002);
+                                        if let ExpressionContextAll::EMulContext(ctx) =
+                                            cast_mut::<_, ExpressionContextAll>(&mut _localctx)
+                                        {
+                                            ctx.op = recog.base.input.lt(1).cloned();
+                                        }
+                                        else {
+                                            unreachable!("cant cast");
+                                        }
                                         _la = recog.base.input.la(1);
                                         if { !(_la == OP_MUL || _la == OP_DIV) } {
-                                            recog.err_handler.recover_inline(&mut recog.base)?;
+                                            let tmp = recog.err_handler.recover_inline(&mut recog.base)?;
+                                            if let ExpressionContextAll::EMulContext(ctx) =
+                                                cast_mut::<_, ExpressionContextAll>(&mut _localctx)
+                                            {
+                                                ctx.op = Some(tmp.clone());
+                                            }
+                                            else {
+                                                unreachable!("cant cast");
+                                            }
                                         }
                                         else {
                                             if recog.base.input.la(1) == TOKEN_EOF {
@@ -14248,9 +14268,25 @@ where
                                             ))?;
                                         }
                                         recog.base.set_state(1005);
+                                        if let ExpressionContextAll::EPlusContext(ctx) =
+                                            cast_mut::<_, ExpressionContextAll>(&mut _localctx)
+                                        {
+                                            ctx.op = recog.base.input.lt(1).cloned();
+                                        }
+                                        else {
+                                            unreachable!("cant cast");
+                                        }
                                         _la = recog.base.input.la(1);
                                         if { !(_la == OP_ADD || _la == OP_SUB) } {
-                                            recog.err_handler.recover_inline(&mut recog.base)?;
+                                            let tmp = recog.err_handler.recover_inline(&mut recog.base)?;
+                                            if let ExpressionContextAll::EPlusContext(ctx) =
+                                                cast_mut::<_, ExpressionContextAll>(&mut _localctx)
+                                            {
+                                                ctx.op = Some(tmp.clone());
+                                            }
+                                            else {
+                                                unreachable!("cant cast");
+                                            }
                                         }
                                         else {
                                             if recog.base.input.la(1) == TOKEN_EOF {
@@ -14298,6 +14334,14 @@ where
                                             ))?;
                                         }
                                         recog.base.set_state(1008);
+                                        if let ExpressionContextAll::ELogicContext(ctx) =
+                                            cast_mut::<_, ExpressionContextAll>(&mut _localctx)
+                                        {
+                                            ctx.op = recog.base.input.lt(1).cloned();
+                                        }
+                                        else {
+                                            unreachable!("cant cast");
+                                        }
                                         _la = recog.base.input.la(1);
                                         if {
                                             !(((_la - 52) & !0x3f) == 0
@@ -14309,7 +14353,15 @@ where
                                                         | (1usize << (LOGIC_NAND - 52))))
                                                     != 0)
                                         } {
-                                            recog.err_handler.recover_inline(&mut recog.base)?;
+                                            let tmp = recog.err_handler.recover_inline(&mut recog.base)?;
+                                            if let ExpressionContextAll::ELogicContext(ctx) =
+                                                cast_mut::<_, ExpressionContextAll>(&mut _localctx)
+                                            {
+                                                ctx.op = Some(tmp.clone());
+                                            }
+                                            else {
+                                                unreachable!("cant cast");
+                                            }
                                         }
                                         else {
                                             if recog.base.input.la(1) == TOKEN_EOF {
@@ -14357,6 +14409,14 @@ where
                                             ))?;
                                         }
                                         recog.base.set_state(1011);
+                                        if let ExpressionContextAll::ECompareContext(ctx) =
+                                            cast_mut::<_, ExpressionContextAll>(&mut _localctx)
+                                        {
+                                            ctx.op = recog.base.input.lt(1).cloned();
+                                        }
+                                        else {
+                                            unreachable!("cant cast");
+                                        }
                                         _la = recog.base.input.la(1);
                                         if {
                                             !(((_la - 31) & !0x3f) == 0
@@ -14369,7 +14429,15 @@ where
                                                         | (1usize << (OP_GT - 31))))
                                                     != 0)
                                         } {
-                                            recog.err_handler.recover_inline(&mut recog.base)?;
+                                            let tmp = recog.err_handler.recover_inline(&mut recog.base)?;
+                                            if let ExpressionContextAll::ECompareContext(ctx) =
+                                                cast_mut::<_, ExpressionContextAll>(&mut _localctx)
+                                            {
+                                                ctx.op = Some(tmp.clone());
+                                            }
+                                            else {
+                                                unreachable!("cant cast");
+                                            }
                                         }
                                         else {
                                             if recog.base.input.la(1) == TOKEN_EOF {

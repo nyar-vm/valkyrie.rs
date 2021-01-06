@@ -38,6 +38,7 @@ impl<'i> Extractor<ExpressionContextAll<'i>> for ExpressionType {
             ExpressionContextAll::EPowContext(infix) => InfixNode::take_one(infix)?.into(),
             ExpressionContextAll::EPlusContext(infix) => InfixNode::take_one(infix)?.into(),
             ExpressionContextAll::EMulContext(infix) => InfixNode::take_one(infix)?.into(),
+            ExpressionContextAll::ECompareContext(infix) => InfixNode::take_one(infix)?.into(),
             ExpressionContextAll::ENamepathContext(namepath) => {
                 let this = NamePathNode::take(namepath.namepath())?;
                 ExpressionType::Symbol(Box::new(this))
