@@ -1,4 +1,5 @@
 use super::*;
+use lispify::{Lisp, Lispify};
 
 impl PrettyPrint for IfStatement {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
@@ -23,7 +24,24 @@ impl PrettyPrint for IfStatement {
     }
 }
 
-impl PrettyPrint for IfConditionNode {
+#[cfg(feature = "lispify")]
+impl Lispify for IfStatement {
+    type Output = Lisp;
+
+    fn lispify(&self) -> Self::Output {
+        let mut lisp = Lisp::new(10);
+        lisp += Lisp::keyword("branches");
+        for branch in &self.branches {
+            lisp += branch.lispify();
+        }
+        if let Some(else_body) = &self.else_body {
+            lisp += else_body.lispify();
+        }
+        lisp
+    }
+}
+
+impl PrettyPrint for IfBranchNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(10);
         terms += self.condition.pretty(theme);
@@ -31,6 +49,16 @@ impl PrettyPrint for IfConditionNode {
         terms.into()
     }
 }
+
+#[cfg(feature = "lispify")]
+impl Lispify for IfBranchNode {
+    type Output = Lisp;
+
+    fn lispify(&self) -> Self::Output {
+        todo!()
+    }
+}
+
 impl PrettyPrint for ElseStatement {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(10);
@@ -40,26 +68,11 @@ impl PrettyPrint for ElseStatement {
         terms.into()
     }
 }
+#[cfg(feature = "lispify")]
+impl Lispify for ElseStatement {
+    type Output = Lisp;
 
-impl PrettyPrint for ThenStatement {
-    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
-        let mut terms = PrettySequence::new(10);
-        terms += theme.keyword("then");
-        terms += " ";
-        terms += SoftBlock::curly_braces().join_slice(&self.body.terms, theme);
-        terms.into()
-    }
-}
-
-impl PrettyPrint for IfLetStatement {
-    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
-        let mut terms = PrettySequence::new(10);
-        terms += theme.keyword("if let ");
-        terms += self.pattern.pretty(theme);
-        terms += self.then_body.pretty(theme);
-        if let Some(else_body) = &self.else_body {
-            terms += else_body.pretty(theme);
-        }
-        terms.into()
+    fn lispify(&self) -> Self::Output {
+        todo!()
     }
 }

@@ -1,5 +1,0 @@
-(flags Empty)
-(flags OneFlag)
-(flags TestFlags2)
-(flags ManyEnums)
-(flags ManyFlags)

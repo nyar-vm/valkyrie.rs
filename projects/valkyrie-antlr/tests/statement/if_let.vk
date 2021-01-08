@@ -1,24 +1,23 @@
-if a {
-    print(1)
-}
-
-if a {
-    print(1)
-}
-else {
-    print(2)
-}
 
 
-if a {
-    print(1)
+if let (x, y) = point {
+    print("({x}, {y})");
 }
-else if b {
-    print(2)
+
+if let Failure(error) = x {
+    print(error);
 }
-else if c {
-    print(3)
+
+if let Point(x, y) = point {
+    return "some {x}, {y}"
 }
-else {
-    print(4)
+
+#guard
+if let null = condition {
+    return
+}
+
+#guard
+if not Some = condition {
+    return
 }

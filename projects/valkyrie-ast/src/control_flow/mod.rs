@@ -1,7 +1,7 @@
 use crate::{
-    control_flow::jmp_if::ThenStatement, patterns::PatternBlock, ElseStatement, ExpressionNode, 
-    PatternExpressionType, PatternGuard, StatementBlock, StatementNode, StatementType, SwitchStatement, WhileConditionNode,
-};use crate::ExpressionType;
+    patterns::PatternBlock, ElseStatement, ExpressionNode, ExpressionType, PatternExpressionType, PatternGuard, StatementBlock,
+    StatementNode, StatementType, SwitchStatement, WhileConditionNode,
+};
 use alloc::{boxed::Box, vec::Vec};
 use core::{
     fmt::{Debug, Display, Formatter},

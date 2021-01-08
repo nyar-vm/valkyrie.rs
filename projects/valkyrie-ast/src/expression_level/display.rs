@@ -29,7 +29,7 @@ impl Lispify for ExpressionType {
             Self::LambdaDot(v) => todo!(),
             Self::New(v) => todo!(),
             Self::Resume(v) => todo!(),
-            Self::If(v) => todo!(),
+            Self::If(v) => v.lispify(),
             Self::IfLet(v) => todo!(),
             Self::Slot(v) => todo!(),
             Self::Switch(v) => todo!(),

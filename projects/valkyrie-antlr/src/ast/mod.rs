@@ -15,13 +15,15 @@ use antlr_rust::{
     parser::ParserNodeType,
     parser_rule_context::ParserRuleContext,
     token::Token,
-    tree::{ParseTree, ParseTreeListener, ParseTreeVisitorCompat, TerminalNode, VisitChildren, VisitableDyn},
-    CoerceTo, InputStream,
+    tree::{ParseTree, ParseTreeListener, ParseTreeVisitorCompat, TerminalNode, Tree, VisitChildren, VisitableDyn},
+    CoerceTo, InputStream, TidExt,
 };
 use std::{ops::Range, rc::Rc};
 use valkyrie_ast::{
-    ClassDeclaration, ClassKind, IdentifierNode, NamePathNode, NamespaceDeclaration, NamespaceKind, ProgramRoot, StatementNode,
-    StatementType,
+    ClassDeclaration, ClassFieldDeclaration, ClassKind, ExpressionNode, ExpressionType, FlagsDeclaration, ForLoop,
+    IdentifierNode, InfixNode, ModifiersNode, NamePathNode, NamespaceDeclaration, NamespaceKind, NumberLiteralNode,
+    OperatorNode, PatternExpressionType, PostfixNode, PrefixNode, ProgramRoot, StatementNode, StatementType, UnionDeclaration,
+    ValkyrieOperator,
 };
 
 #[derive(Clone, Debug, Default)]

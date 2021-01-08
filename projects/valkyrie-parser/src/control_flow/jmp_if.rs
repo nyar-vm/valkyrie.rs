@@ -3,28 +3,16 @@ use super::*;
 impl ThisParser for IfStatement {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, _) = parse_when(input)?;
-        let (state, cond) = state.skip(ignore).match_fn(IfConditionNode::parse)?;
+        let (state, cond) = state.skip(ignore).match_fn(IfBranchNode::parse)?;
         let (state, body) = state.match_repeats(parse_else_if)?;
         let (finally, else_body) = state.skip(ignore).match_optional(ElseStatement::parse)?;
         let mut branches = vec![cond];
         branches.extend(body);
         finally.finish(IfStatement { branches, else_body, span: get_span(input, finally) })
     }
-
-    fn lispify(&self) -> Lisp {
-        let mut lisp = Lisp::new(10);
-        lisp += Lisp::keyword("branches");
-        for branch in &self.branches {
-            lisp += branch.lispify();
-        }
-        if let Some(else_body) = &self.else_body {
-            lisp += else_body.lispify();
-        }
-        lisp
-    }
 }
 
-impl ThisParser for IfLetStatement {
+impl ThisParser for GuardStatement {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, _) = input.match_str("if")?;
         let (state, _) = state.skip(ignore).match_str("let")?;
@@ -51,18 +39,18 @@ impl ThisParser for IfLetStatement {
     }
 }
 
-fn parse_else_if(input: ParseState) -> ParseResult<IfConditionNode> {
+fn parse_else_if(input: ParseState) -> ParseResult<IfBranchNode> {
     let (state, _) = str("else")(input.skip(ignore))?;
     let (state, _) = str("if")(state.skip(ignore))?;
-    let (state, cond) = state.skip(ignore).match_fn(IfConditionNode::parse)?;
+    let (state, cond) = state.skip(ignore).match_fn(IfBranchNode::parse)?;
     state.finish(cond)
 }
 
-impl ThisParser for IfConditionNode {
+impl ThisParser for IfBranchNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, cond) = input.match_fn(ExpressionNode::parse)?;
         let (state, body) = state.skip(ignore).match_fn(StatementBlock::parse)?;
-        state.finish(IfConditionNode { condition: cond, body, span: get_span(input, state) })
+        state.finish(IfBranchNode { condition: cond, body, span: get_span(input, state) })
     }
 
     fn lispify(&self) -> Lisp {

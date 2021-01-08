@@ -1,3 +1,14 @@
+while _ {}
+while true {
+    print("Loop!");
+    while n > 0 {
+        print("Deep loop!");
+        while k != n {
+            print("Deeper loop!");
+        }
+    }
+}
+
 while true {
     match a {
         case 1:

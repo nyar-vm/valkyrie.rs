@@ -17,8 +17,8 @@ mod string_like;
 pub use crate::{
     control_flow::{
         control::{ControlNode, ControlType, RaiseNode, TailCallNode},
-        jmp_guard::{GuardLetStatement, GuardStatement, GuardStatementBody},
-        jmp_if::{BreakStatement, ElseStatement, IfConditionNode, IfLetStatement, IfStatement, JumpStatement, ThenStatement},
+        jmp_guard::{GuardPattern, GuardStatement},
+        jmp_if::{BreakStatement, ElseStatement, IfBranchNode, IfStatement, JumpStatement},
         jmp_switch::SwitchStatement,
         loop_for::{ForBarePattern, ForLoop},
         loop_while::{OtherwiseStatement, WhileConditionNode, WhileLoop, WhileLoopKind},
@@ -32,7 +32,7 @@ pub use crate::{
         lambda::{LambdaArgumentNode, LambdaCallNode, LambdaDotNode, LambdaNode},
         matches::{MatchDotStatement, MatchKind},
         number::NumberLiteralNode,
-        operators::{InfixNode, OperatorNode, PostfixNode, PrefixNode, ValkyrieOperator},
+        operators::{InfixNode, LogicMatrix, OperatorNode, PostfixNode, PrefixNode, ValkyrieOperator},
         symbol::{IdentifierNode, LambdaSlotNode, NamePathNode},
         table::{TableKeyType, TableKind, TableNode, TableTermNode},
         view::{SubscriptNode, SubscriptSliceNode, SubscriptTermNode},

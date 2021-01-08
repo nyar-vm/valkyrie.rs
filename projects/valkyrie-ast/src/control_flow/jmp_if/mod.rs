@@ -7,9 +7,29 @@ mod display;
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct IfStatement {
     /// The case branches to check
-    pub branches: Vec<IfConditionNode>,
+    pub branches: Vec<IfBranchNode>,
     /// The default branch if all cases fail
     pub else_body: Option<ElseStatement>,
+    /// The range of the node
+    pub span: Range<u32>,
+}
+
+/// `a > 0 then { ... }`
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct IfBranchNode {
+    pub condition: ExpressionNode,
+    pub body: StatementBlock,
+    /// The range of the node
+    pub span: Range<u32>,
+}
+
+/// Helper function to format the body of an if statement
+#[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ElseStatement {
+    /// The main body of the statement
+    pub body: StatementBlock,
     /// The range of the node
     pub span: Range<u32>,
 }
@@ -30,66 +50,6 @@ pub struct JumpStatement {
 pub struct BreakStatement {
     /// Break condition if exists
     pub condition: Option<ExpressionNode>,
-}
-
-/// `if let Some(a) = b then {...} else {...}`
-///
-///
-/// ```vk
-/// if let
-///     Some(a) = b
-/// then {
-///
-/// }
-/// else {
-///
-/// }
-/// ```
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct IfLetStatement {
-    /// The pattern to match
-    pub pattern: PatternExpressionType,
-    /// The condition to check
-    pub expression: ExpressionNode,
-    /// The range of the node
-    pub then_body: ThenStatement,
-    /// The range of the node
-    pub else_body: Option<ElseStatement>,
-    /// The range of the node
-    pub span: Range<u32>,
-}
-
-/// `a > 0 then { ... }`
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct IfConditionNode {
-    pub condition: ExpressionNode,
-    pub body: StatementBlock,
-    /// The range of the node
-    pub span: Range<u32>,
-}
-
-/// Helper function to format the body of an if statement
-#[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ElseStatement {
-    /// The main body of the statement
-    pub body: StatementBlock,
-    /// The range of the node
-    pub span: Range<u32>,
-}
-
-/// Helper function to format the body of an if statement
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ThenStatement {
-    /// Should show the `then` keyword
-    pub show: bool,
-    /// The main body of the statement
-    pub body: StatementBlock,
-    /// The range of the node
-    pub span: Range<u32>,
 }
 
 impl IfStatement {

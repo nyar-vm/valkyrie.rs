@@ -3,7 +3,7 @@ use super::*;
 #[cfg(feature = "pretty-print")]
 mod display;
 
-/// `guard a > 0 else { ... }`
+/// `guard a > 0 { ... }`
 ///
 /// The else block must use control.
 ///
@@ -24,27 +24,7 @@ mod display;
 /// }
 /// do_something_else();
 /// ```
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct GuardStatement {
-    /// The condition to check
-    pub condition: ExpressionNode,
-    /// same as if condition
-    pub main_body: GuardStatementBody,
-    /// The range of the node
-    pub span: Range<u32>,
-}
-
-/// `guard <CONDITION> then { ... } else { ... }`
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum GuardStatementBody {
-    /// Same as if condition
-    Positive(ThenStatement),
-    /// Same as if !condition
-    Negative(ElseStatement),
-}
-
+///
 /// `guard let Failure(error) = e if xxx then { ... }`
 ///
 /// The else block must use control.
@@ -58,24 +38,27 @@ pub enum GuardStatementBody {
 /// ```
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct GuardLetStatement {
-    /// The pattern to match
-    pub pattern: PatternExpressionType,
+pub struct GuardStatement {
     /// The condition to check
-    pub expression: ExpressionNode,
-    /// same as if let condition
-    pub main_body: GuardStatementBody,
+    pub positive: bool,
+    /// The condition to check
+    pub condition: ExpressionNode,
+    /// same as if condition
+    pub main_body: GuardPattern,
     /// The range of the node
     pub span: Range<u32>,
 }
 
-impl GuardStatement {
-    /// Get the last statement in the block
-    pub fn last(&self) -> Option<&StatementType> {
-        let node = match &self.main_body {
-            GuardStatementBody::Positive(node) => node.body.terms.last(),
-            GuardStatementBody::Negative(node) => node.body.terms.last(),
-        }?;
-        Some(&node.r#type)
-    }
+/// `guard <CONDITION> then { ... } else { ... }`
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum GuardPattern {
+    /// Same as if condition
+    Expression(ExpressionNode),
+    /// Same as if !condition
+    List(ElseStatement),
+    /// Same as if !condition
+    Dict(ElseStatement),
 }
+
+impl GuardStatement {}

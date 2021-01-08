@@ -1,5 +1,5 @@
 use super::*;
-use valkyrie_ast::IfLetStatement;
+use valkyrie_ast::GuardStatement;
 
 impl ThisParser for ExpressionNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
@@ -96,7 +96,7 @@ pub fn parse_expression(input: ParseState, allow_curly: bool) -> ParseResult<Exp
         .choose_from(NumberLiteralNode::parse)
         .choose_from(StringLiteralNode::parse)
         .choose_from(LambdaSlotNode::parse)
-        .choose_from(IfLetStatement::parse)
+        .choose_from(GuardStatement::parse)
         .choose_from(IfStatement::parse)
         .choose_from(SwitchStatement::parse)
         .choose_from(TryStatement::parse)

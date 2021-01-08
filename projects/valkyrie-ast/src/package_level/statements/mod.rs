@@ -53,8 +53,6 @@ pub enum StatementType {
     LetBind(Box<LetBindNode>),
     /// The guard statement node.
     Guard(Box<GuardStatement>),
-    /// The guard let statement node.
-    GuardLet(Box<GuardLetStatement>),
     /// The apply argument node.
     Control(Box<ControlNode>),
     /// The apply argument node.

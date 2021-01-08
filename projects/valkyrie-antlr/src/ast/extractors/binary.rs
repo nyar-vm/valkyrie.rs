@@ -1,4 +1,5 @@
 use super::*;
+use valkyrie_ast::LogicMatrix;
 
 impl<'i> Extractor<EPowContext<'i>> for InfixNode {
     fn take_one(node: &EPowContext<'i>) -> Option<Self> {
@@ -40,14 +41,12 @@ impl<'i> Extractor<ELogicContext<'i>> for InfixNode {
     fn take_one(node: &ELogicContext<'i>) -> Option<Self> {
         let o = node.op_logic()?;
         let infix = infix_map(&[
-            (o.LOGIC_AND(), ValkyrieOperator::LogicMatrix { mask: 1 }),
-            // xand = xnor
-            (o.LOGIC_XAND(), ValkyrieOperator::LogicMatrix { mask: 9 }),
-            (o.LOGIC_NAND(), ValkyrieOperator::LogicMatrix { mask: 14 }),
-            (o.LOGIC_OR(), ValkyrieOperator::LogicMatrix { mask: 7 }),
-            // xnand = xor
-            (o.LOGIC_XOR(), ValkyrieOperator::LogicMatrix { mask: 6 }),
-            (o.LOGIC_NOR(), ValkyrieOperator::LogicMatrix { mask: 8 }),
+            (o.LOGIC_AND(), ValkyrieOperator::LogicMatrix { mask: LogicMatrix::And }),
+            (o.LOGIC_XAND(), ValkyrieOperator::LogicMatrix { mask: LogicMatrix::Xnor }),
+            (o.LOGIC_NAND(), ValkyrieOperator::LogicMatrix { mask: LogicMatrix::Nand }),
+            (o.LOGIC_OR(), ValkyrieOperator::LogicMatrix { mask: LogicMatrix::Or }),
+            (o.LOGIC_XOR(), ValkyrieOperator::LogicMatrix { mask: LogicMatrix::Xor }),
+            (o.LOGIC_NOR(), ValkyrieOperator::LogicMatrix { mask: LogicMatrix::Nor }),
         ])?;
         let lhs = ExpressionType::take(node.lhs.clone())?;
         let rhs = ExpressionType::take(node.rhs.clone())?;

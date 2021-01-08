@@ -1,7 +1,9 @@
 use super::*;
-use core::ptr::eq;
+
 #[cfg(feature = "pretty-print")]
 mod display;
+
+mod logic;
 
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -89,31 +91,8 @@ pub enum ValkyrieOperator {
     Power,
     /// binary operator: `&,  |`
     LogicMatrix {
-        /// ```
-        /// pub fn logic_matrix(p: bool, q: bool, mask: u8) -> Option<bool> {
-        ///     let ok = match mask {
-        ///         0 => false,
-        ///         1 => p && q,
-        ///         2 => p && !q,
-        ///         3 => p,
-        ///         4 => !p && q,
-        ///         5 => q,
-        ///         6 => p ^ q,
-        ///         7 => p || q,
-        ///         8 => !p && !q,
-        ///         9 => p == q,
-        ///         10 => !q,
-        ///         11 => p || !q,
-        ///         12 => !p,
-        ///         13 => !p || q,
-        ///         14 => !p || !q,
-        ///         15 => true,
-        ///         _ => return None,
-        ///     };
-        ///     Some(ok)
-        /// }
-        /// ```
-        mask: u8,
+        /// binary operator: `&,  |`
+        mask: LogicMatrix,
     },
     /// suffix operator: `?`
     Optional,
@@ -129,7 +108,45 @@ pub enum ValkyrieOperator {
     Transpose,
     /// suffix operator: `ᴴ`, `\^H`, `\conjugate_transpose
     Transjugate,
+    ///  suffix operator: `\hat`
     Hermitian,
+}
+
+#[repr(u8)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub enum LogicMatrix {
+    /// 1. always false
+    False = 0b0,
+    /// 2. p and q            ∧
+    And = 0b1,
+    /// 3. p and not q        >
+    AndNot = 0b10,
+    /// 4. p                  ⊣
+    P = 0b11,
+    /// 5. not p and q        <
+    NotAnd = 0b100,
+    /// 6. q                  ⊢
+    Q = 0b101,
+    /// 7. xor                ≠
+    Xor = 0b110,
+    /// 8. p or q             ∨
+    Or = 0b111,
+    /// 9. not p and not q    ⍱
+    Nor = 0b1000,
+    /// 10. p == q
+    Xnor = 0b1001,
+    /// 11. not q              ~⊢
+    NotQ = 0b1010,
+    /// 12. p or not q         ≥
+    OrNot = 0b1011,
+    /// 13. not p              ~⊣
+    NotP = 0b1100,
+    /// 14. not p or q         ≤
+    NotOr = 0b1101,
+    /// 15. not p or not q     ⍲
+    Nand = 0b1110,
+    /// 16. always true
+    True = 0b1111,
 }
 
 impl ValkyrieOperator {
@@ -263,19 +280,17 @@ impl ValkyrieOperator {
                 _ => "%",
             },
             Self::Assign => "=",
-            Self::LogicMatrix { mask } => match mask {
-                1 => "&",
-                7 => "|",
-                _ => unreachable!(),
-            },
+            Self::LogicMatrix { mask } => mask.as_str(),
         }
     }
+    /// user input arguments
     pub fn accept_arguments(&self) -> usize {
         match self {
             Self::Plus | Self::Multiply => 0,
             _ => 1,
         }
     }
+    /// if this operatr can be override
     pub fn overrideable(&self) -> bool {
         match self {
             Self::Equal(false) => false,

@@ -31,7 +31,6 @@ impl PrettyPrint for StatementType {
             Self::Document(node) => node.pretty(theme),
             Self::LetBind(node) => node.pretty(theme),
             Self::Guard(node) => node.pretty(theme),
-            Self::GuardLet(node) => node.pretty(theme),
             Self::Flags(node) => node.pretty(theme),
         }
     }
@@ -72,7 +71,6 @@ impl Lispify for StatementType {
             Self::Enumerate(v) => todo!(),
             Self::UnionField(v) => todo!(),
             Self::Annotation(v) => todo!(),
-            Self::GuardLet(v) => todo!(),
         }
     }
 }

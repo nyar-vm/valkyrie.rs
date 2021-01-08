@@ -141,7 +141,7 @@ KW_TYPE:     'type';
 //
 KW_TEMPLATE:   'template' | 'generic' | 'forall';
 KW_EXTENDS:    'extend' | 'extends';
-KW_IMPLEMENTS: 'implement' | 'implements';
+KW_IMPLEMENTS: 'implement';
 KW_WHERE:      'where';
 //
 KW_WHILE: 'while' | 'until';

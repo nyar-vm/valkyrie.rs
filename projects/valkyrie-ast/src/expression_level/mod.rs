@@ -17,7 +17,7 @@ mod display;
 
 use crate::{
     helper::ValkyrieNode, ApplyCallNode, ApplyDotNode, ArgumentTermNode, CallNode, CallTermNode, CollectsNode,
-    ExpressionFormatted, GenericCallNode, IdentifierNode, IfLetStatement, IfStatement, InfixNode, LambdaCallNode,
+    ExpressionFormatted, GenericCallNode, GuardStatement, IdentifierNode, IfStatement, InfixNode, LambdaCallNode,
     LambdaDotNode, LambdaSlotNode, MatchDotStatement, MonadicDotCall, NamePathNode, NewConstructNode, NumberLiteralNode,
     OperatorNode, PatternBlock, PostfixNode, PrefixNode, RaiseNode, StatementNode, StringLiteralNode, StringTextNode,
     SubscriptNode, SwitchStatement, TableNode, TableTermNode, TryStatement,
@@ -116,7 +116,7 @@ pub enum ExpressionType {
     /// - Standalone expression
     If(Box<IfStatement>),
     /// - Standalone expression
-    IfLet(Box<IfLetStatement>),
+    IfLet(Box<GuardStatement>),
     /// - Standalone expression
     Switch(Box<SwitchStatement>),
     /// - Standalone expression

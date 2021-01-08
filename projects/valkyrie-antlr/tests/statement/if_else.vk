@@ -1,3 +1,6 @@
+namespace std.create.test;
+
+if _ {}
 if a {1}
 if a {1} else {2}
 if a {1} else if b {2}
@@ -6,26 +9,29 @@ if a {1} else if b {2} else if c {3}
 if a {1} else if b {2} else if c {3} else {4}
 
 
-if let (x, y) = point {
-    print("({x}, {y})");
+if a {
+    print(1)
 }
 
-if let Failure(error) = x {
-    print(error);
+if a {
+    print(1)
+}
+else {
+    print(2)
 }
 
-if let Point(x, y) = point {
-    return "some {x}, {y}"
-}
 
-#guard
-if let null = condition {
-    return
+if a {
+    print(1)
 }
-
-#guard
-if not Some = condition {
-    return
+else if b {
+    print(2)
+}
+else if c {
+    print(3)
+}
+else {
+    print(4)
 }
 
 

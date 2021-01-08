@@ -12,25 +12,12 @@ impl PrettyPrint for GuardStatement {
     }
 }
 
-impl PrettyPrint for GuardStatementBody {
+impl PrettyPrint for GuardPattern {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         match self {
-            Self::Positive(node) => node.pretty(theme),
-            Self::Negative(node) => node.pretty(theme),
+            Self::Expression(node) => node.pretty(theme),
+            Self::List(node) => node.pretty(theme),
+            Self::Dict(node) => node.pretty(theme),
         }
-    }
-}
-
-impl PrettyPrint for GuardLetStatement {
-    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
-        let mut terms = PrettySequence::new(10);
-        terms += theme.keyword("guard let");
-        terms += " ";
-        terms += self.pattern.pretty(theme);
-        terms += " = ";
-        terms += self.expression.pretty(theme);
-        terms += " ";
-        terms += self.main_body.pretty(theme);
-        terms.into()
     }
 }

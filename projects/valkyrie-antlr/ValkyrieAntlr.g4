@@ -6,32 +6,18 @@ options {
 
 // $antlr-format useTab false, columnLimit 144
 // $antlr-format alignColons hanging, alignSemicolons hanging, alignFirstTokens true
-program: top_statement* EOF;
+program: (top_statement | eos)* EOF;
 top_statement
-    : define_namespace
-    | import_statement
-    | define_extension
-    | define_class
-    | define_union
-    | define_bitflags
-    | define_trait
-    | define_extends
-    | define_function
-    | define_type
-    | define_variale
-    | if_statement
-    | while_statement
-    | for_statement
-    | top_expression
-    | eos
-    ;
-function_statements
-    : define_lambda
-    | define_variale
-    | while_statement
-    | for_statement
-    | top_expression
-    | eos
+    : define_namespace   # SNamespace
+    | import_statement   # SImport
+    | define_extension   # SExtension
+    | define_class       # SClass
+    | define_union       # SUnion
+    | define_bitflags    # SFlags
+    | define_trait       # STrait
+    | define_extends     # SExtends
+    | define_function    # SFunction
+    | function_statement # S1
     ;
 eos:      SEMICOLON;
 eos_free: COMMA | SEMICOLON;
@@ -71,15 +57,15 @@ class_method
 class_dsl: annotation* modified_identifier class_block;
 // ===========================================================================
 define_trait
-    : template_call? annotation* modifiers KW_TRAIT identifier define_generic? impliments? trait_block eos?
+    : template_call? annotation* modifiers KW_TRAIT identifier define_generic? with_implements? trait_block eos?
     ;
 trait_block:       BRACE_L (define_trait_type | class_method | class_field | eos_free)* BRACE_R;
 define_trait_type: KW_TYPE identifier (OP_ASSIGN type_expression)?;
 // ===========================================================================
 define_extends
-    : template_call? annotation* modifiers KW_EXTENDS namepath define_generic? impliments? trait_block
+    : template_call? annotation* modifiers KW_EXTENDS namepath define_generic? with_implements? trait_block
     ;
-impliments: (COLON | KW_IMPLEMENTS) type_expression;
+with_implements: (COLON | KW_IMPLEMENTS) type_expression;
 // ===========================================================================
 define_union:   annotation* modifiers KW_UNION identifier base_layout? type_hint? union_block;
 base_layout:    PARENTHESES_L type_expression? PARENTHESES_R;
@@ -119,9 +105,17 @@ tuple_call_item: identifier COLON expression | expression;
 define_lambda: annotation* KW_LAMBDA function_parameters type_hint? function_block;
 lambda_call:   OP_THROW? function_block;
 // ===========================================================================
-function_block: BRACE_L function_statements* BRACE_R;
+function_block: BRACE_L (function_statement | eos)* BRACE_R;
+function_statement
+    : define_type     # SType
+    | define_lambda   # Slambda
+    | let_binding     # SLet
+    | loop_statement  # SLoop
+    | guard_statement # SIfLet
+    | expression_root # S2
+    ;
 // ===========================================================================
-define_variale:    KW_LET let_pattern type_hint? (OP_ASSIGN expression)?;
+let_binding:       KW_LET let_pattern type_hint? (OP_ASSIGN expression)?;
 let_pattern:       let_pattern_tuple | let_pattern_plain;
 let_pattern_plain: modified_identifier (COMMA modified_identifier)* COMMA?;
 let_pattern_tuple
@@ -147,29 +141,29 @@ effect_hint: OP_DIV type_expression;
 if_statement
     : annotation* KW_IF inline_expression then_block = function_block else_if_statement* (
         KW_ELSE else_block = function_block
-    )?                                                                                                                                 # IfFlow
-    | annotation* KW_IF (KW_LET | KW_NOT) (let_pattern_tuple | identifier | SPECIAL) OP_ASSIGN inline_expression then = function_block # IfGuard
-    // | KW_IF (KW_LET | KW_NOT) inline_expression then = function_block # IfFastGuard
+    )?
+    ;
+guard_statement
+    : annotation* KW_IF (KW_LET | KW_NOT) (let_pattern_tuple | identifier | SPECIAL) OP_ASSIGN inline_expression then = function_block
+    | annotation* KW_IF (KW_LET | KW_NOT) inline_expression then = function_block
     ;
 else_if_statement: KW_ELSE KW_IF inline_expression function_block;
 // ===========================================================================
-while_statement
-    : annotation* KW_WHILE inline_expression function_block                              # WhileExpression
+loop_statement
+    : annotation* KW_WHILE inline_expression function_block                              # WhileLoop
     | annotation* KW_WHILE KW_LET let_pattern OP_ASSIGN inline_expression function_block # WhileLet
-    ;
-for_statement
-    : annotation* KW_FOR let_pattern infix_in inline_expression if_guard? function_block
+    | annotation* KW_FOR let_pattern infix_in inline_expression if_guard? function_block # ForLoop
     ;
 if_guard: KW_IF inline_expression;
 // ==========================================================================
-top_expression: annotation* expression;
+expression_root: annotation* expression eos?;
 expression
     : <assoc = right> lhs = expression OP_POW rhs = expression # EPow
     | lhs = expression op_multiple rhs = expression            # EMul
     | lhs = expression op_plus rhs = expression                # EPlus
     | lhs = expression op_logic rhs = expression               # ELogic
     | lhs = expression op_compare rhs = expression             # ECompare
-    | lhs = expression OP_UNTIL rhs = expression               # ERange
+    | lhs = expression OP_UNTIL rhs = expression               # EUntil
     | lhs = expression infix_is rhs = type_expression          # EIsA
     | lhs = expression KW_AS rhs = type_expression             # EAs
     | lhs = expression infix_in rhs = expression               # EIn
@@ -182,50 +176,45 @@ expression
     | expression offset_call   # EOffset
     | expression generic_call  # EGeneric
     | expression lambda_call   # ELambda
-    | expression match_call    # EMatch
-    | expression function_call # EFunction
+    | expression match_call    # EDotMatch
+    | expression function_call # EDotFunction
     | expression dot_call      # EDot
     // suffix
     | op_prefix expression # EPrefix
     // atomic
     | PARENTHESES_L expression PARENTHESES_R # EGroup
     | control_expression                     # EControl
-    | try_statement                          # ETry
-    | if_statement                           # EIf
-    | match_statement                        # EMatch
-    | new_statement                          # ENew
-    | object_statement                       # EObject
-    | macro_call                             # EMacro
-    | function_call                          # EFunction
-    | define_label                           # EDefine
-    | collection_literal                     # ECollection
-    | string_literal                         # EString
-    | number_literal                         # ENumber
-    | lambda_name                            # ELambda
-    | namepath                               # ENamepath
-    | SPECIAL                                # ESpecial
+    | term_with_follow                       # E1
     ;
+// statement without return
+term_with_follow
+    : if_statement     # SIf
+    | new_statement    # ENew
+    | try_statement    # ETry
+    | match_statement  # EMatch
+    | object_statement # EObject
+    | macro_call       # EMacro
+    | function_call    # EFunction
+    | define_label     # EDefine
+    | tuple_literal    # ETuple
+    | range_literal    # ERange
+    | atomic           # E2
+    ;
+// statement with return type
 inline_expression
-    : inline_expression op_multiple inline_expression # IMul
-    | inline_expression op_plus inline_expression     # IPlus
-    | inline_expression op_logic inline_expression    # ILogic
-    | inline_expression op_compare inline_expression  # ICompare
-    | inline_expression infix_is inline_expression    # IIsA
-    | inline_expression OP_UNTIL inline_expression    # IRange
-    | inline_expression KW_AS inline_expression       # IAs
+    : lhs = inline_expression op_multiple rhs = inline_expression # IMul
+    | lhs = inline_expression op_plus rhs = inline_expression     # IPlus
+    | lhs = inline_expression op_logic rhs = inline_expression    # ILogic
+    | lhs = inline_expression op_compare rhs = inline_expression  # ICompare
+    | lhs = inline_expression infix_is rhs = inline_expression    # IIsA
+    | lhs = inline_expression OP_UNTIL rhs = inline_expression    # IRange
+    | lhs = inline_expression KW_AS rhs = inline_expression       # IAs
     // suffix
     | inline_expression dot_call   # IDot
     | inline_expression slice_call # ISlice
-    | macro_call                   # IMacro
-    | function_call                # IFunction
     // prefix
     | op_prefix inline_expression # IPrefix
-    // atomic
-    | collection_literal # ICollection
-    | string_literal     # IString
-    | number_literal     # INumber
-    | namepath           # INamepath
-    | SPECIAL            # ISpecial
+    | atomic                      # E3
     ;
 type_expression
     : type_expression op_pattern type_expression   # TPattern
@@ -236,10 +225,14 @@ type_expression
         type_expression COMMA // must add ,
         | type_expression (COMMA type_expression)+ COMMA?
     )? PARENTHESES_R # TTuple
-    | string_literal # TStrig
-    | number_literal # TNumber
-    | namepath       # TNamepath
-    | SPECIAL        # TSpecial
+    | atomic         # E4
+    ;
+atomic
+    : string_literal # AString
+    | number_literal # ANumber
+    | lambda_name    # ALambda
+    | namepath       # ANamepath
+    | SPECIAL        # ASpecial
     ;
 // ===========================================================================
 op_prefix
@@ -255,14 +248,13 @@ op_prefix
     ;
 op_suffix: OP_NOT | OP_TEMPERATURE | OP_TRANSPOSE | OP_PERCENT;
 control_expression
-    : RETURN expression?
-    | RESUME expression
-    | BREAK (OP_LABEL identifier)?
-    | CONTINUE (OP_LABEL identifier)?
-    | RAISE expression
-    | YIELD (OP_LABEL identifier)? expression?
-    | YIELD BREAK
-    | YIELD KW_WITH expression
+    : (RETURN | RESUME expression?)            # CReturn
+    | BREAK (OP_LABEL identifier)?             # CBreak
+    | CONTINUE (OP_LABEL identifier)?          # CContinue
+    | RAISE expression                         # CRaise
+    | YIELD (OP_LABEL identifier)? expression? # CYield
+    | YIELD BREAK                              # CBreak
+    | YIELD KW_WITH expression                 # CWith
     ;
 // 带返回值的表达式, 能作为表达式的开头
 
@@ -281,7 +273,7 @@ op_assign
     | OP_DIV_ASSIGN
     | OP_MAY_ASSIGN
     ;
-infix_is: KW_IS | KW_IS KW_NOT | OP_IS | OP_IS_NOT;
+infix_is: KW_IS | KW_IS KW_NOT | OP_IS | OP_IS_NOT | OP_CONTINUES;
 infix_in: KW_IN | KW_NOT KW_IN | OP_IN | OP_NOT_IN;
 // ===========================================================================
 define_generic
@@ -310,10 +302,10 @@ template_call
     : annotation* modifiers KW_TEMPLATE template_block
     | annotation* modifiers KW_TEMPLATE identifier (COMMA identifier)* COMMA? template_block
     ;
-template_block: BRACE_L tempalte_terms* BRACE_R;
-tempalte_terms: KW_WHERE where_block | eos_free;
-where_block:    BRACE_L where_bound* BRACE_R;
-where_bound:    identifier COLON type_expression | eos_free;
+template_block:      BRACE_L (template_statements | eos_free)* BRACE_R;
+template_statements: KW_WHERE where_block;
+where_block:         BRACE_L where_bound* BRACE_R;
+where_bound:         identifier COLON type_expression | eos_free;
 // ===========================================================================
 macro_call
     : OP_AT annotation_call_item class_block?
@@ -331,7 +323,7 @@ match_statement
     ;
 // ===========================================================================
 match_call:  OP_THROW? DOT (KW_MATCH | KW_CATCH) (KW_AS identifier type_hint?)? match_block;
-match_block: BRACE_L match_terms* BRACE_R;
+match_block: BRACE_L (match_terms | eos_free)* BRACE_R;
 match_terms
     : annotation* KW_WITH identifier                                                   # MatchWith
     | annotation* KW_WITH BRACKET_L (identifier (COMMA identifier)* COMMA?)? BRACKET_R # MatchWithMany
@@ -339,7 +331,6 @@ match_terms
     | annotation* KW_WHEN inline_expression match_case_block                           # MatchWhen
     | annotation* KW_ELSE match_case_block                                             # MatchElse
     | annotation* KW_CASE case_pattern (KW_IF inline_expression)? match_case_block     # MatchCase
-    | eos_free                                                                         # MatchSkip
     ;
 match_case_block: COLON expression*;
 case_pattern
@@ -379,10 +370,8 @@ new_body
     ;
 new_block: BRACE_L (tuple_call_item | eos_free)* BRACE_R;
 // ===========================================================================
-collection_literal
-    : BRACKET_L BRACKET_R
-    | BRACKET_L collection_pair (COMMA collection_pair)* COMMA? BRACKET_R
-    | PARENTHESES_L PARENTHESES_R
+tuple_literal
+    : PARENTHESES_L PARENTHESES_R
     | PARENTHESES_L collection_pair (COMMA collection_pair)+ COMMA? PARENTHESES_R
     | PARENTHESES_L collection_pair COMMA PARENTHESES_R
     ;
@@ -416,7 +405,7 @@ namepath_free: identifier ((OP_PROPORTION | DOT) identifier)*;
 namepath:      identifier (OP_PROPORTION identifier)*;
 // identifier
 identifier: UNICODE_ID | RAW_ID;
-// numbewr
+// number
 number:         DECIMAL | INTEGER;
 number_literal: number identifier?;
 // string
