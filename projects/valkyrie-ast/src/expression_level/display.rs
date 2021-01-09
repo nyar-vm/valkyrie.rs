@@ -37,6 +37,8 @@ impl Lispify for ExpressionType {
             Self::Try(v) => todo!(),
             Self::MatchDot(v) => todo!(),
             Self::Formatted(v) => todo!(),
+            Self::Null(v) => v.lispify(),
+            Self::Boolean(v) => v.lispify(),
         }
     }
 }

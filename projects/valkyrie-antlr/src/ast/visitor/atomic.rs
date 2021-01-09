@@ -1,10 +1,20 @@
 use super::*;
+use valkyrie_ast::{BooleanNode, NullNode};
 
 impl<'i> Extractor<AtomicContextAll<'i>> for ExpressionType {
     fn take_one(node: &AtomicContextAll<'i>) -> Option<Self> {
         let body: ExpressionType = match node {
             AtomicContextAll::ASpecialContext(s) => {
-                todo!()
+                let this = s.SPECIAL()?;
+                let text = this.get_text();
+                let span = Range { start: this.symbol.start as u32, end: this.symbol.stop as u32 };
+                match text.as_str() {
+                    "true" => BooleanNode { value: true, span }.into(),
+                    "false" => BooleanNode { value: false, span }.into(),
+                    "null" => NullNode { nil: false, span }.into(),
+                    "nil" => NullNode { nil: true, span }.into(),
+                    _ => unreachable!("Atom: {}", text),
+                }
             }
             AtomicContextAll::ALambdaContext(s) => {
                 todo!()

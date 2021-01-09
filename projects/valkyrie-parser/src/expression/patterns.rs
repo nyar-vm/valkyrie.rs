@@ -71,7 +71,7 @@ impl ThisParser for PatternCondition {
 
 impl ThisParser for ImplicitCaseNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
-        let (state, lhs) = PatternExpressionType::parse(input)?;
+        let (state, lhs) = LetPattern::parse(input)?;
         let (state, _) = state.skip(ignore).match_fn(parse_bind)?;
         let (state, rhs) = parse_expression_node(state.skip(ignore), ExpressionContext::default())?;
         state.finish(Self { pattern: lhs, body: rhs, span: get_span(input, state) })
@@ -138,7 +138,7 @@ impl ThisParser for PatternGuard {
     }
 }
 
-impl ThisParser for PatternExpressionType {
+impl ThisParser for LetPattern {
     fn parse(input: ParseState) -> ParseResult<Self> {
         input
             .begin_choice()
@@ -168,7 +168,7 @@ impl ThisParser for TuplePatternNode {
             // need to check if it's a tuple or a parenthesized expression
             BracketPattern::new("(", ")").with_one_tailing(true)
         };
-        let (state, terms) = pat.consume(state.skip(ignore), ignore, PatternExpressionType::parse)?;
+        let (state, terms) = pat.consume(state.skip(ignore), ignore, LetPattern::parse)?;
         state.finish(Self { bind: None, name, terms: terms.body, span: get_span(input, state) })
     }
 
@@ -189,7 +189,7 @@ impl ThisParser for ArrayPatternNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
         // let (state, name) = input.match_optional(NamePathNode::parse)?;
         let pat = BracketPattern::new("[", "]");
-        let (state, terms) = pat.consume(input.skip(ignore), ignore, PatternExpressionType::parse)?;
+        let (state, terms) = pat.consume(input.skip(ignore), ignore, LetPattern::parse)?;
         state.finish(Self { bind: None, terms: terms.body, span: get_span(input, state) })
     }
 

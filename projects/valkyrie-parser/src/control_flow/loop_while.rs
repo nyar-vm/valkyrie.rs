@@ -8,16 +8,6 @@ impl ThisParser for WhileLoop {
         let (finally, rest) = state.skip(ignore).match_optional(OtherwiseStatement::parse)?;
         finally.finish(WhileLoop { kind: kw, condition, then_body: stmts, otherwise: rest, span: get_span(input, finally) })
     }
-
-    fn lispify(&self) -> Lisp {
-        let mut lisp = Lisp::new(self.then_body.terms.len() + 1);
-        lisp += self.kind.lispify();
-        lisp += self.condition.lispify();
-        for term in &self.then_body.terms {
-            lisp += term.lispify();
-        }
-        lisp
-    }
 }
 
 impl ThisParser for WhileLoopKind {

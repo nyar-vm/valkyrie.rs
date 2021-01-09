@@ -47,9 +47,9 @@ impl ValkyriePrefix {
             "⁂" | "***" => ValkyrieOperator::UnpackAll,
             "!" => ValkyrieOperator::Not,
             "⅟" => ValkyrieOperator::Minus,
-            "√" => ValkyrieOperator::Surd(2),
-            "∛" => ValkyrieOperator::Surd(3),
-            "∜" => ValkyrieOperator::Surd(4),
+            "√" => ValkyrieOperator::Roots(2),
+            "∛" => ValkyrieOperator::Roots(3),
+            "∜" => ValkyrieOperator::Roots(4),
             _ => unreachable!("Unknown operator: {}", self.normalized),
         };
         OperatorNode::new(kind, self.span.clone())

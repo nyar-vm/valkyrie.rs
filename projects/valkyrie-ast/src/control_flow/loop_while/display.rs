@@ -1,4 +1,5 @@
 use super::*;
+use lispify::{Lisp, Lispify};
 
 impl PrettyPrint for WhileLoop {
     /// ```vk
@@ -23,6 +24,28 @@ impl PrettyPrint for WhileLoop {
     }
 }
 
+#[cfg(feature = "lispify")]
+impl Lispify for WhileLoop {
+    type Output = Lisp;
+
+    fn lispify(&self) -> Self::Output {
+        let mut lisp = Lisp::new(self.then_body.terms.len() + 1);
+        match self.kind {
+            WhileLoopKind::While => {
+                lisp += Lisp::keyword("while");
+            }
+            WhileLoopKind::Until => {
+                lisp += Lisp::keyword("until");
+            }
+        }
+        lisp += self.condition.lispify();
+        for term in &self.then_body.terms {
+            lisp += term.lispify();
+        }
+        lisp
+    }
+}
+
 impl PrettyPrint for WhileConditionNode {
     /// ```vk
     /// # inline style
@@ -39,6 +62,19 @@ impl PrettyPrint for WhileConditionNode {
             WhileConditionNode::Unconditional => theme.keyword("true"),
             WhileConditionNode::Case => theme.keyword("case"),
             WhileConditionNode::Expression(e) => e.pretty(theme),
+        }
+    }
+}
+
+#[cfg(feature = "lispify")]
+impl Lispify for WhileConditionNode {
+    type Output = Lisp;
+
+    fn lispify(&self) -> Self::Output {
+        match self {
+            WhileConditionNode::Unconditional => Lisp::keyword("true"),
+            WhileConditionNode::Case => Lisp::keyword("case"),
+            WhileConditionNode::Expression(v) => v.lispify(),
         }
     }
 }

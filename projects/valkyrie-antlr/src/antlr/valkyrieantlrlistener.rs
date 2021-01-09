@@ -697,15 +697,15 @@ pub trait ValkyrieAntlrListener<'input>: ParseTreeListener<'input, ValkyrieAntlr
      */
     fn exit_if_statement(&mut self, _ctx: &If_statementContext<'input>) {}
     /**
-     * Enter a parse tree produced by {@link ValkyrieAntlrParser#if_let_statement}.
+     * Enter a parse tree produced by {@link ValkyrieAntlrParser#guard_statement}.
      * @param ctx the parse tree
      */
-    fn enter_if_let_statement(&mut self, _ctx: &If_let_statementContext<'input>) {}
+    fn enter_guard_statement(&mut self, _ctx: &Guard_statementContext<'input>) {}
     /**
-     * Exit a parse tree produced by {@link ValkyrieAntlrParser#if_let_statement}.
+     * Exit a parse tree produced by {@link ValkyrieAntlrParser#guard_statement}.
      * @param ctx the parse tree
      */
-    fn exit_if_let_statement(&mut self, _ctx: &If_let_statementContext<'input>) {}
+    fn exit_guard_statement(&mut self, _ctx: &Guard_statementContext<'input>) {}
     /**
      * Enter a parse tree produced by {@link ValkyrieAntlrParser#else_if_statement}.
      * @param ctx the parse tree
@@ -1457,26 +1457,6 @@ pub trait ValkyrieAntlrListener<'input>: ParseTreeListener<'input, ValkyrieAntlr
      */
     fn exit_ASpecial(&mut self, _ctx: &ASpecialContext<'input>) {}
     /**
-     * Enter a parse tree produced by {@link ValkyrieAntlrParser#op_prefix}.
-     * @param ctx the parse tree
-     */
-    fn enter_op_prefix(&mut self, _ctx: &Op_prefixContext<'input>) {}
-    /**
-     * Exit a parse tree produced by {@link ValkyrieAntlrParser#op_prefix}.
-     * @param ctx the parse tree
-     */
-    fn exit_op_prefix(&mut self, _ctx: &Op_prefixContext<'input>) {}
-    /**
-     * Enter a parse tree produced by {@link ValkyrieAntlrParser#op_suffix}.
-     * @param ctx the parse tree
-     */
-    fn enter_op_suffix(&mut self, _ctx: &Op_suffixContext<'input>) {}
-    /**
-     * Exit a parse tree produced by {@link ValkyrieAntlrParser#op_suffix}.
-     * @param ctx the parse tree
-     */
-    fn exit_op_suffix(&mut self, _ctx: &Op_suffixContext<'input>) {}
-    /**
      * Enter a parse tree produced by the {@code CReturn}
      * labeled alternative in {@link ValkyrieAntlrParser#control_expression}.
      * @param ctx the parse tree
@@ -1549,6 +1529,26 @@ pub trait ValkyrieAntlrListener<'input>: ParseTreeListener<'input, ValkyrieAntlr
      */
     fn exit_CWith(&mut self, _ctx: &CWithContext<'input>) {}
     /**
+     * Enter a parse tree produced by {@link ValkyrieAntlrParser#op_prefix}.
+     * @param ctx the parse tree
+     */
+    fn enter_op_prefix(&mut self, _ctx: &Op_prefixContext<'input>) {}
+    /**
+     * Exit a parse tree produced by {@link ValkyrieAntlrParser#op_prefix}.
+     * @param ctx the parse tree
+     */
+    fn exit_op_prefix(&mut self, _ctx: &Op_prefixContext<'input>) {}
+    /**
+     * Enter a parse tree produced by {@link ValkyrieAntlrParser#op_suffix}.
+     * @param ctx the parse tree
+     */
+    fn enter_op_suffix(&mut self, _ctx: &Op_suffixContext<'input>) {}
+    /**
+     * Exit a parse tree produced by {@link ValkyrieAntlrParser#op_suffix}.
+     * @param ctx the parse tree
+     */
+    fn exit_op_suffix(&mut self, _ctx: &Op_suffixContext<'input>) {}
+    /**
      * Enter a parse tree produced by {@link ValkyrieAntlrParser#op_compare}.
      * @param ctx the parse tree
      */
@@ -1568,6 +1568,16 @@ pub trait ValkyrieAntlrListener<'input>: ParseTreeListener<'input, ValkyrieAntlr
      * @param ctx the parse tree
      */
     fn exit_op_pattern(&mut self, _ctx: &Op_patternContext<'input>) {}
+    /**
+     * Enter a parse tree produced by {@link ValkyrieAntlrParser#infix_pow}.
+     * @param ctx the parse tree
+     */
+    fn enter_infix_pow(&mut self, _ctx: &Infix_powContext<'input>) {}
+    /**
+     * Exit a parse tree produced by {@link ValkyrieAntlrParser#infix_pow}.
+     * @param ctx the parse tree
+     */
+    fn exit_infix_pow(&mut self, _ctx: &Infix_powContext<'input>) {}
     /**
      * Enter a parse tree produced by {@link ValkyrieAntlrParser#infix_arrows}.
      * @param ctx the parse tree
@@ -1638,6 +1648,16 @@ pub trait ValkyrieAntlrListener<'input>: ParseTreeListener<'input, ValkyrieAntlr
      * @param ctx the parse tree
      */
     fn exit_infix_is(&mut self, _ctx: &Infix_isContext<'input>) {}
+    /**
+     * Enter a parse tree produced by {@link ValkyrieAntlrParser#infix_as}.
+     * @param ctx the parse tree
+     */
+    fn enter_infix_as(&mut self, _ctx: &Infix_asContext<'input>) {}
+    /**
+     * Exit a parse tree produced by {@link ValkyrieAntlrParser#infix_as}.
+     * @param ctx the parse tree
+     */
+    fn exit_infix_as(&mut self, _ctx: &Infix_asContext<'input>) {}
     /**
      * Enter a parse tree produced by {@link ValkyrieAntlrParser#infix_in}.
      * @param ctx the parse tree

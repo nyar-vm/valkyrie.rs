@@ -1,4 +1,5 @@
 use super::*;
+use lispify::{Lisp, Lispify};
 
 impl PrettyPrint for ForLoop {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
@@ -17,9 +18,23 @@ impl PrettyPrint for ForLoop {
             terms += s.pretty(theme);
         }
         terms += self.then_body.pretty(theme);
-        if let Some(s) = &self.else_body {
-            terms += s.pretty(theme);
-        }
         terms.into()
+    }
+}
+
+impl Lispify for ForLoop {
+    type Output = Lisp;
+
+    fn lispify(&self) -> Self::Output {
+        let mut lisp = Lisp::new(10);
+        lisp += Lisp::keyword("loop/for");
+        lisp += Lisp::keyword("iterator") + self.iterator.lispify();
+        // lisp += Lisp::keyword("pattern") + self.pattern.lispify();
+        if let Some(cond) = &self.condition {
+            lisp += Lisp::keyword("condition");
+            lisp += cond.lispify();
+        }
+        lisp += self.then_body.terms.iter().map(|s| s.lispify()).collect::<Lisp>();
+        lisp
     }
 }

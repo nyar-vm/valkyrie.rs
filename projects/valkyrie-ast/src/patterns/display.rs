@@ -53,7 +53,7 @@ impl PrettyPrint for PatternStatements {
         terms.indent(4)
     }
 }
-impl PrettyPrint for PatternExpressionType {
+impl PrettyPrint for LetPattern {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         match self {
             Self::Symbol(v) => v.pretty(theme),

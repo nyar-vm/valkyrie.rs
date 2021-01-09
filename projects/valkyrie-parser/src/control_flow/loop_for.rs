@@ -21,28 +21,13 @@ impl ThisParser for ForLoop {
             span: get_span(input, state),
         })
     }
-
-    fn lispify(&self) -> Lisp {
-        let mut lisp = Lisp::new(10);
-        lisp += Lisp::keyword("loop/for");
-        lisp += Lisp::keyword("iterator") + self.iterator.lispify();
-        lisp += Lisp::keyword("pattern") + self.pattern.lispify();
-        if let Some(cond) = &self.condition {
-            lisp += Lisp::keyword("condition");
-            lisp += cond.lispify();
-        }
-        lisp += self.then_body.terms.iter().map(|s| s.lispify()).collect::<Lisp>();
-        lisp += Lisp::keyword("otherwise");
-        lisp += self.else_body.iter().map(|s| s.lispify()).collect::<Lisp>();
-        lisp
-    }
 }
 
-fn for_pattern(input: ParseState) -> ParseResult<PatternExpressionType> {
+fn for_pattern(input: ParseState) -> ParseResult<LetPattern> {
     input
         .begin_choice()
         .choose(|s| ForBarePattern::parse(s).map_inner(|s| s.as_pattern_expression()))
-        .choose(PatternExpressionType::parse)
+        .choose(LetPattern::parse)
         .end_choice()
 }
 

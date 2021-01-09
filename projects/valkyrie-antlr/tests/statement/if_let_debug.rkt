@@ -1,0 +1,5 @@
+(guard/positive 0)
+(guard/positive 0)
+(guard/positive 0)
+(guard/positive 0)
+(guard/positive 0)

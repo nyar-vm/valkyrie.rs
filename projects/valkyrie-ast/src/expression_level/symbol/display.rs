@@ -52,3 +52,50 @@ impl Lispify for NamePathNode {
         Lisp::symbol(self.to_string())
     }
 }
+
+impl BooleanNode {
+    pub fn as_str(&self) -> &'static str {
+        match self.value {
+            true => "true",
+            false => "false",
+        }
+    }
+}
+
+#[cfg(feature = "pretty-print")]
+impl PrettyPrint for BooleanNode {
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        theme.keyword(self.as_str())
+    }
+}
+#[cfg(feature = "lispify")]
+impl Lispify for BooleanNode {
+    type Output = Lisp;
+
+    fn lispify(&self) -> Self::Output {
+        Lisp::symbol(self.as_str())
+    }
+}
+impl NullNode {
+    pub fn as_str(&self) -> &'static str {
+        match self.nil {
+            true => "nil",
+            false => "null",
+        }
+    }
+}
+#[cfg(feature = "pretty-print")]
+impl PrettyPrint for NullNode {
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        theme.keyword(self.as_str())
+    }
+}
+
+#[cfg(feature = "lispify")]
+impl Lispify for NullNode {
+    type Output = Lisp;
+
+    fn lispify(&self) -> Self::Output {
+        Lisp::symbol(self.as_str())
+    }
+}

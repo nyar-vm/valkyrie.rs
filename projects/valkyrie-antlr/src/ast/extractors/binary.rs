@@ -1,121 +1,84 @@
 use super::*;
-use valkyrie_ast::LogicMatrix;
 
-impl<'i> Extractor<EPowContext<'i>> for InfixNode {
-    fn take_one(node: &EPowContext<'i>) -> Option<Self> {
-        let infix = infix_map(&[(node.OP_POW(), ValkyrieOperator::Power)])?;
-        let lhs = ExpressionType::take(node.lhs.clone())?;
-        let rhs = ExpressionType::take(node.rhs.clone())?;
-        let span = Range { start: node.start().start as u32, end: node.stop().stop as u32 };
-        Some(Self { operator: infix, lhs, rhs, span })
+impl<'i> Extractor<Infix_powContextAll<'i>> for OperatorNode {
+    fn take_one(node: &Infix_powContextAll<'i>) -> Option<Self> {
+        infix_map(&[(node.OP_POW(), ValkyrieOperator::Power), (node.OP_ROOT2(), ValkyrieOperator::Surd)])
     }
 }
 
-impl<'i> Extractor<EMulContext<'i>> for InfixNode {
-    fn take_one(node: &EMulContext<'i>) -> Option<Self> {
-        let o = node.op_multiple()?;
-        let infix = infix_map(&[
-            (o.OP_MUL(), ValkyrieOperator::Multiply),
-            (o.OP_DIV(), ValkyrieOperator::Divide),
+impl<'i> Extractor<Op_multipleContextAll<'i>> for OperatorNode {
+    fn take_one(node: &Op_multipleContextAll<'i>) -> Option<Self> {
+        infix_map(&[
+            (node.OP_MUL(), ValkyrieOperator::Multiply),
+            (node.OP_DIV(), ValkyrieOperator::Divide),
             // (o.OP_DIV_DIV(), ValkyrieOperator::DivideFloor),
-            (o.OP_DIV_REM(), ValkyrieOperator::DivideRemider),
-            // (o.OP_REM_REM(), ValkyrieOperator::DivideFloor),
-        ])?;
-        let lhs = ExpressionType::take(node.lhs.clone())?;
-        let rhs = ExpressionType::take(node.rhs.clone())?;
-        let span = Range { start: node.start().start as u32, end: node.stop().stop as u32 };
-        Some(Self { operator: infix, lhs, rhs, span })
+            (node.OP_DIV_REM(), ValkyrieOperator::DivideRemider), // (o.OP_REM_REM(), ValkyrieOperator::DivideFloor),
+        ])
     }
 }
-impl<'i> Extractor<EPlusContext<'i>> for InfixNode {
-    fn take_one(node: &EPlusContext<'i>) -> Option<Self> {
-        let o = node.op_plus()?;
-        let infix = infix_map(&[(o.OP_ADD(), ValkyrieOperator::Plus), (o.OP_SUB(), ValkyrieOperator::Minus)])?;
-        let lhs = ExpressionType::take(node.lhs.clone())?;
-        let rhs = ExpressionType::take(node.rhs.clone())?;
-        let span = Range { start: node.start().start as u32, end: node.stop().stop as u32 };
-        Some(Self { operator: infix, lhs, rhs, span })
+
+impl<'i> Extractor<Op_plusContextAll<'i>> for OperatorNode {
+    fn take_one(node: &Op_plusContextAll<'i>) -> Option<Self> {
+        infix_map(&[(node.OP_ADD(), ValkyrieOperator::Plus), (node.OP_SUB(), ValkyrieOperator::Minus)])
     }
 }
-impl<'i> Extractor<ELogicContext<'i>> for InfixNode {
-    fn take_one(node: &ELogicContext<'i>) -> Option<Self> {
-        let o = node.op_logic()?;
-        let infix = infix_map(&[
-            (o.LOGIC_AND(), ValkyrieOperator::LogicMatrix { mask: LogicMatrix::And }),
-            (o.LOGIC_XAND(), ValkyrieOperator::LogicMatrix { mask: LogicMatrix::Xnor }),
-            (o.LOGIC_NAND(), ValkyrieOperator::LogicMatrix { mask: LogicMatrix::Nand }),
-            (o.LOGIC_OR(), ValkyrieOperator::LogicMatrix { mask: LogicMatrix::Or }),
-            (o.LOGIC_XOR(), ValkyrieOperator::LogicMatrix { mask: LogicMatrix::Xor }),
-            (o.LOGIC_NOR(), ValkyrieOperator::LogicMatrix { mask: LogicMatrix::Nor }),
-        ])?;
-        let lhs = ExpressionType::take(node.lhs.clone())?;
-        let rhs = ExpressionType::take(node.rhs.clone())?;
-        let span = Range { start: node.start().start as u32, end: node.stop().stop as u32 };
-        Some(Self { operator: infix, lhs, rhs, span })
+impl<'i> Extractor<Op_logicContextAll<'i>> for OperatorNode {
+    fn take_one(node: &Op_logicContextAll<'i>) -> Option<Self> {
+        infix_map(&[
+            (node.LOGIC_AND(), ValkyrieOperator::LogicMatrix { mask: LogicMatrix::And }),
+            (node.LOGIC_XAND(), ValkyrieOperator::LogicMatrix { mask: LogicMatrix::Xnor }),
+            (node.LOGIC_NAND(), ValkyrieOperator::LogicMatrix { mask: LogicMatrix::Nand }),
+            (node.LOGIC_OR(), ValkyrieOperator::LogicMatrix { mask: LogicMatrix::Or }),
+            (node.LOGIC_XOR(), ValkyrieOperator::LogicMatrix { mask: LogicMatrix::Xor }),
+            (node.LOGIC_NOR(), ValkyrieOperator::LogicMatrix { mask: LogicMatrix::Nor }),
+        ])
     }
 }
-impl<'i> Extractor<EPipeContext<'i>> for InfixNode {
-    fn take_one(node: &EPipeContext<'i>) -> Option<Self> {
-        let o = node.op_pipeline()?;
-        let infix = infix_map(&[
-            (o.OP_LL(), ValkyrieOperator::Placeholder),
-            (o.OP_LLL(), ValkyrieOperator::Placeholder),
-            (o.OP_LLE(), ValkyrieOperator::Placeholder),
-            (o.OP_GG(), ValkyrieOperator::Placeholder),
-            (o.OP_GGG(), ValkyrieOperator::Placeholder),
-            (o.OP_GGE(), ValkyrieOperator::Placeholder),
-        ])?;
-        let lhs = ExpressionType::take(node.lhs.clone())?;
-        let rhs = ExpressionType::take(node.rhs.clone())?;
-        let span = Range { start: node.start().start as u32, end: node.stop().stop as u32 };
-        Some(Self { operator: infix, lhs, rhs, span })
+
+impl<'i> Extractor<Op_pipelineContextAll<'i>> for OperatorNode {
+    fn take_one(node: &Op_pipelineContextAll<'i>) -> Option<Self> {
+        infix_map(&[
+            (node.OP_LL(), ValkyrieOperator::Placeholder),
+            (node.OP_LLL(), ValkyrieOperator::Placeholder),
+            (node.OP_LLE(), ValkyrieOperator::Placeholder),
+            (node.OP_GG(), ValkyrieOperator::Placeholder),
+            (node.OP_GGG(), ValkyrieOperator::Placeholder),
+            (node.OP_GGE(), ValkyrieOperator::Placeholder),
+        ])
     }
 }
-impl<'i> Extractor<ECompareContext<'i>> for InfixNode {
-    fn take_one(node: &ECompareContext<'i>) -> Option<Self> {
-        let o = node.op_compare()?;
-        let infix = infix_map(&[
-            (o.OP_NE(), ValkyrieOperator::Equal(false)),
-            (o.OP_EQ(), ValkyrieOperator::Equal(true)),
-            (o.OP_LT(), ValkyrieOperator::Less { equal: false }),
-            (o.OP_LEQ(), ValkyrieOperator::Less { equal: true }),
-            (o.OP_GT(), ValkyrieOperator::Greater { equal: false }),
-            (o.OP_GEQ(), ValkyrieOperator::Greater { equal: true }),
-        ])?;
-        let lhs = ExpressionType::take(node.lhs.clone())?;
-        let rhs = ExpressionType::take(node.rhs.clone())?;
-        let span = Range { start: node.start().start as u32, end: node.stop().stop as u32 };
-        Some(Self { operator: infix, lhs, rhs, span })
+
+impl<'i> Extractor<Op_compareContextAll<'i>> for OperatorNode {
+    fn take_one(node: &Op_compareContextAll<'i>) -> Option<Self> {
+        infix_map(&[
+            (node.OP_NE(), ValkyrieOperator::Equal(false)),
+            (node.OP_EQ(), ValkyrieOperator::Equal(true)),
+            (node.OP_LT(), ValkyrieOperator::Less { equal: false }),
+            (node.OP_LEQ(), ValkyrieOperator::Less { equal: true }),
+            (node.OP_GT(), ValkyrieOperator::Greater { equal: false }),
+            (node.OP_GEQ(), ValkyrieOperator::Greater { equal: true }),
+        ])
     }
 }
-impl<'i> Extractor<EIsAContext<'i>> for InfixNode {
-    fn take_one(node: &EIsAContext<'i>) -> Option<Self> {
-        let o = node.infix_is()?;
-        let infix = infix_map(&[
-            (o.KW_NOT(), ValkyrieOperator::Is { negative: true }),
-            (o.KW_IS(), ValkyrieOperator::Is { negative: false }),
-        ])?;
-        let lhs = ExpressionType::take(node.lhs.clone())?;
-        let rhs = ExpressionType::take(node.rhs.clone())?;
-        let span = Range { start: node.start().start as u32, end: node.stop().stop as u32 };
-        Some(Self { operator: infix, lhs, rhs, span })
+impl<'i> Extractor<Infix_isContextAll<'i>> for OperatorNode {
+    fn take_one(node: &Infix_isContextAll<'i>) -> Option<Self> {
+        infix_map(&[
+            (node.KW_NOT(), ValkyrieOperator::Is { negative: true }),
+            (node.KW_IS(), ValkyrieOperator::Is { negative: false }),
+        ])
     }
 }
-impl<'i> Extractor<EInContext<'i>> for InfixNode {
-    fn take_one(node: &EInContext<'i>) -> Option<Self> {
-        let o = node.infix_in()?;
-        let infix = infix_map(&[
-            (o.KW_NOT(), ValkyrieOperator::In { negative: true }),
-            (o.KW_IN(), ValkyrieOperator::In { negative: false }),
-            (o.OP_NOT_IN(), ValkyrieOperator::In { negative: true }),
-            (o.OP_IN(), ValkyrieOperator::In { negative: false }),
-        ])?;
-        let lhs = ExpressionType::take(node.lhs.clone())?;
-        let rhs = ExpressionType::take(node.rhs.clone())?;
-        let span = Range { start: node.start().start as u32, end: node.stop().stop as u32 };
-        Some(Self { operator: infix, lhs, rhs, span })
+impl<'i> Extractor<Infix_inContextAll<'i>> for OperatorNode {
+    fn take_one(node: &Infix_inContextAll<'i>) -> Option<Self> {
+        infix_map(&[
+            (node.KW_NOT(), ValkyrieOperator::In { negative: true }),
+            (node.KW_IN(), ValkyrieOperator::In { negative: false }),
+            (node.OP_NOT_IN(), ValkyrieOperator::In { negative: true }),
+            (node.OP_IN(), ValkyrieOperator::In { negative: false }),
+        ])
     }
 }
+
 fn infix_map(map: &[(Option<Rc<TerminalNode<ValkyrieAntlrParserContextType>>>, ValkyrieOperator)]) -> Option<OperatorNode> {
     for (source, target) in map {
         if let Some(s) = source {

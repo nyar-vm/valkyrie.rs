@@ -1,7 +1,8 @@
 use super::*;
-use valkyrie_ast::{FunctionDeclaration, FunctionReturnNode, FunctionType, IfStatement};
+use valkyrie_ast::{FunctionDeclaration, FunctionReturnNode, FunctionType, GuardPattern, GuardStatement, IfStatement};
 
 mod atomic;
+mod looping;
 
 impl ParseTreeVisitorCompat<'_> for ValkyrieProgramParser {
     type Node = ValkyrieAntlrParserContextType;
@@ -30,7 +31,7 @@ impl<'i> Extractor<Top_statementContextAll<'i>> for StatementNode {
     fn take_one(node: &Top_statementContextAll<'i>) -> Option<Self> {
         let body: StatementType = match node {
             Top_statementContextAll::SClassContext(s) => ClassDeclaration::take(s.define_class())?.into(),
-            Top_statementContextAll::SExtendsContext(_) => {
+            Top_statementContextAll::SExtendsContext(s) => {
                 todo!()
             }
             Top_statementContextAll::STraitContext(_) => {
@@ -61,15 +62,11 @@ impl<'i> Extractor<Function_statementContextAll<'i>> for StatementType {
             Function_statementContextAll::SlambdaContext(_) => {
                 todo!()
             }
-            Function_statementContextAll::SLoopContext(_) => {
-                todo!()
-            }
+            Function_statementContextAll::SLoopContext(v) => StatementType::take(v.loop_statement())?.into(),
             Function_statementContextAll::STypeContext(_) => {
                 todo!()
             }
-            Function_statementContextAll::SIfLetContext(_) => {
-                todo!()
-            }
+            Function_statementContextAll::SIfLetContext(s) => GuardStatement::take(s.guard_statement())?.into(),
             Function_statementContextAll::SLetContext(_) => {
                 todo!()
             }
@@ -79,6 +76,19 @@ impl<'i> Extractor<Function_statementContextAll<'i>> for StatementType {
             }
         };
         Some(body)
+    }
+}
+
+impl<'i> Extractor<Guard_statementContextAll<'i>> for GuardStatement {
+    fn take_one(node: &Guard_statementContextAll<'i>) -> Option<Self> {
+        let negative = node.KW_NOT().is_some();
+        let span = Range { start: node.start().start as u32, end: node.stop().stop as u32 };
+        let place = ExpressionNode {
+            type_level: false,
+            body: ExpressionType::Number(Box::new(NumberLiteralNode::new("0", 0..0))),
+            span: span.clone(),
+        };
+        Some(Self { negative, condition: place.clone(), main_body: GuardPattern::Expression(place), span })
     }
 }
 
@@ -108,14 +118,54 @@ impl<'i> Extractor<ExpressionContextAll<'i>> for ExpressionType {
         let body = match node {
             ExpressionContextAll::EPrefixContext(prefix) => PrefixNode::take_one(prefix)?.into(),
             ExpressionContextAll::ESuffixContext(suffix) => PostfixNode::take_one(suffix)?.into(),
-            ExpressionContextAll::EPowContext(infix) => InfixNode::take_one(infix)?.into(),
-            ExpressionContextAll::EPlusContext(infix) => InfixNode::take_one(infix)?.into(),
-            ExpressionContextAll::EMulContext(infix) => InfixNode::take_one(infix)?.into(),
-            ExpressionContextAll::EIsAContext(infix) => InfixNode::take_one(infix)?.into(),
-            ExpressionContextAll::ECompareContext(infix) => InfixNode::take_one(infix)?.into(),
-            ExpressionContextAll::EPipeContext(infix) => InfixNode::take_one(infix)?.into(),
-            ExpressionContextAll::EInContext(infix) => InfixNode::take_one(infix)?.into(),
-            ExpressionContextAll::ELogicContext(infix) => InfixNode::take_one(infix)?.into(),
+            ExpressionContextAll::EPowContext(infix) => {
+                let operator = OperatorNode::take(infix.infix_pow())?;
+                let lhs = ExpressionType::take(infix.lhs.clone())?;
+                let rhs = ExpressionType::take(infix.rhs.clone())?;
+                InfixNode { infix: operator, lhs, rhs }.into()
+            }
+            ExpressionContextAll::EPlusContext(infix) => {
+                let operator = OperatorNode::take(infix.op_plus())?;
+                let lhs = ExpressionType::take(infix.lhs.clone())?;
+                let rhs = ExpressionType::take(infix.rhs.clone())?;
+                InfixNode { infix: operator, lhs, rhs }.into()
+            }
+            ExpressionContextAll::EMulContext(infix) => {
+                let operator = OperatorNode::take(infix.op_multiple())?;
+                let lhs = ExpressionType::take(infix.lhs.clone())?;
+                let rhs = ExpressionType::take(infix.rhs.clone())?;
+                InfixNode { infix: operator, lhs, rhs }.into()
+            }
+            ExpressionContextAll::EIsAContext(infix) => {
+                let operator = OperatorNode::take(infix.infix_is())?;
+                let lhs = ExpressionType::take(infix.lhs.clone())?;
+                let rhs = ExpressionType::take(infix.rhs.clone())?;
+                InfixNode { infix: operator, lhs, rhs }.into()
+            }
+            ExpressionContextAll::ECompareContext(infix) => {
+                let operator = OperatorNode::take(infix.op_compare())?;
+                let lhs = ExpressionType::take(infix.lhs.clone())?;
+                let rhs = ExpressionType::take(infix.rhs.clone())?;
+                InfixNode { infix: operator, lhs, rhs }.into()
+            }
+            ExpressionContextAll::EPipeContext(infix) => {
+                let operator = OperatorNode::take(infix.op_pipeline())?;
+                let lhs = ExpressionType::take(infix.lhs.clone())?;
+                let rhs = ExpressionType::take(infix.rhs.clone())?;
+                InfixNode { infix: operator, lhs, rhs }.into()
+            }
+            ExpressionContextAll::EInContext(infix) => {
+                let operator = OperatorNode::take(infix.infix_in())?;
+                let lhs = ExpressionType::take(infix.lhs.clone())?;
+                let rhs = ExpressionType::take(infix.rhs.clone())?;
+                InfixNode { infix: operator, lhs, rhs }.into()
+            }
+            ExpressionContextAll::ELogicContext(infix) => {
+                let operator = OperatorNode::take(infix.op_logic())?;
+                let lhs = ExpressionType::take(infix.lhs.clone())?;
+                let rhs = ExpressionType::take(infix.rhs.clone())?;
+                InfixNode { infix: operator, lhs, rhs }.into()
+            }
             ExpressionContextAll::EGroupContext(group) => ExpressionType::take(group.expression())?,
             ExpressionContextAll::ESliceContext(_) => {
                 todo!()
@@ -164,39 +214,53 @@ impl<'i> Extractor<ExpressionContextAll<'i>> for ExpressionType {
 impl<'i> Extractor<Inline_expressionContextAll<'i>> for ExpressionType {
     fn take_one(node: &Inline_expressionContextAll<'i>) -> Option<Self> {
         let body = match node {
-            Inline_expressionContextAll::ILogicContext(_) => {
+            Inline_expressionContextAll::ILogicContext(inline) => {
+                let operator = OperatorNode::take(inline.op_logic())?;
+                let lhs = ExpressionType::take(inline.rhs.clone())?;
+                let rhs = ExpressionType::take(inline.rhs.clone())?;
+                InfixNode { infix: operator, lhs, rhs }.into()
+            }
+            Inline_expressionContextAll::IDotContext(inline) => {
                 todo!()
             }
-            Inline_expressionContextAll::IDotContext(_) => {
+            Inline_expressionContextAll::IRangeContext(inline) => {
                 todo!()
             }
-            Inline_expressionContextAll::IRangeContext(_) => {
+            Inline_expressionContextAll::IMulContext(inline) => {
+                let operator = OperatorNode::take(inline.op_multiple())?;
+                let lhs = ExpressionType::take(inline.rhs.clone())?;
+                let rhs = ExpressionType::take(inline.rhs.clone())?;
+                InfixNode { infix: operator, lhs, rhs }.into()
+            }
+            Inline_expressionContextAll::IPlusContext(inline) => {
+                let operator = OperatorNode::take(inline.op_plus())?;
+                let lhs = ExpressionType::take(inline.rhs.clone())?;
+                let rhs = ExpressionType::take(inline.rhs.clone())?;
+                InfixNode { infix: operator, lhs, rhs }.into()
+            }
+            Inline_expressionContextAll::ICompareContext(inline) => {
+                let operator = OperatorNode::take(inline.op_compare())?;
+                let lhs = ExpressionType::take(inline.rhs.clone())?;
+                let rhs = ExpressionType::take(inline.rhs.clone())?;
+                InfixNode { infix: operator, lhs, rhs }.into()
+            }
+            Inline_expressionContextAll::IAsContext(inline) => {
                 todo!()
             }
-            Inline_expressionContextAll::IMulContext(_) => {
+            Inline_expressionContextAll::IPrefixContext(inline) => {
                 todo!()
             }
-            Inline_expressionContextAll::IPlusContext(_) => {
-                todo!()
+            Inline_expressionContextAll::IIsAContext(inline) => {
+                let operator = OperatorNode::take(inline.infix_is())?;
+                let lhs = ExpressionType::take(inline.rhs.clone())?;
+                let rhs = ExpressionType::take(inline.rhs.clone())?;
+                InfixNode { infix: operator, lhs, rhs }.into()
             }
-            Inline_expressionContextAll::ICompareContext(_) => {
-                todo!()
-            }
-            Inline_expressionContextAll::IAsContext(_) => {
-                todo!()
-            }
-            Inline_expressionContextAll::IPrefixContext(_) => {
-                todo!()
-            }
-            Inline_expressionContextAll::IIsAContext(_) => {
-                todo!()
-            }
-            Inline_expressionContextAll::E3Context(_) => {
-                todo!()
-            }
+
             Inline_expressionContextAll::ISliceContext(_) => {
                 todo!()
             }
+            Inline_expressionContextAll::E3Context(rest) => ExpressionType::take(rest.atomic())?,
             Inline_expressionContextAll::Error(_) => {
                 todo!()
             }
@@ -222,9 +286,7 @@ impl<'i> Extractor<Type_expressionContextAll<'i>> for ExpressionType {
             Type_expressionContextAll::TArrowsContext(_) => {
                 todo!()
             }
-            Type_expressionContextAll::E4Context(_) => {
-                todo!()
-            }
+            Type_expressionContextAll::E4Context(rest) => ExpressionType::take(rest.atomic())?,
             Type_expressionContextAll::Error(_) => {
                 todo!()
             }

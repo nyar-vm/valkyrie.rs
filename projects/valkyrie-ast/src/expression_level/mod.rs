@@ -16,11 +16,11 @@ pub mod view;
 mod display;
 
 use crate::{
-    helper::ValkyrieNode, ApplyCallNode, ApplyDotNode, ArgumentTermNode, CallNode, CallTermNode, CollectsNode,
+    helper::ValkyrieNode, ApplyCallNode, ApplyDotNode, ArgumentTermNode, BooleanNode, CallNode, CallTermNode, CollectsNode,
     ExpressionFormatted, GenericCallNode, GuardStatement, IdentifierNode, IfStatement, InfixNode, LambdaCallNode,
-    LambdaDotNode, LambdaSlotNode, MatchDotStatement, MonadicDotCall, NamePathNode, NewConstructNode, NumberLiteralNode,
-    OperatorNode, PatternBlock, PostfixNode, PrefixNode, RaiseNode, StatementNode, StringLiteralNode, StringTextNode,
-    SubscriptNode, SwitchStatement, TableNode, TableTermNode, TryStatement,
+    LambdaDotNode, LambdaSlotNode, MatchDotStatement, MonadicDotCall, NamePathNode, NewConstructNode, NullNode,
+    NumberLiteralNode, OperatorNode, PatternBlock, PostfixNode, PrefixNode, RaiseNode, StatementNode, StringLiteralNode,
+    StringTextNode, SubscriptNode, SwitchStatement, TableNode, TableTermNode, TryStatement,
 };
 use alloc::{
     borrow::ToOwned,
@@ -89,6 +89,10 @@ pub struct ExpressionContext {
 pub enum ExpressionType {
     /// - Placeholder expression
     Placeholder,
+    /// - Atomic expression
+    Null(Box<NullNode>),
+    /// - Atomic expression
+    Boolean(Box<BooleanNode>),
     /// - Atomic expression
     Slot(Box<LambdaSlotNode>),
     /// - Atomic expression
@@ -188,8 +192,7 @@ impl TypingExpression {
 impl ExpressionType {
     /// Build a new binary expression
     pub fn binary(o: OperatorNode, lhs: Self, rhs: Self) -> Self {
-        let span = lhs.get_start()..rhs.get_end();
-        Self::Binary(Box::new(InfixNode { operator: o, lhs, rhs, span }))
+        Self::Binary(Box::new(InfixNode { infix: o, lhs, rhs }))
     }
     /// Build a new prefix expression
     pub fn prefix(o: OperatorNode, rhs: Self) -> Self {

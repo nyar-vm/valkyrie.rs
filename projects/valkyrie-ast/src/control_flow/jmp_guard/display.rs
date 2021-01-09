@@ -1,4 +1,5 @@
 use super::*;
+use lispify::{Lisp, Lispify};
 
 impl PrettyPrint for GuardStatement {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
@@ -9,6 +10,33 @@ impl PrettyPrint for GuardStatement {
         terms += " ";
         terms += self.main_body.pretty(theme);
         terms.into()
+    }
+}
+
+impl Lispify for GuardStatement {
+    type Output = Lisp;
+
+    fn lispify(&self) -> Self::Output {
+        let mut lisp = Lisp::new(4);
+
+        match &self.main_body {
+            GuardPattern::Expression(v) => {
+                lisp += Lisp::keyword("guard/positive");
+                lisp += self.condition.lispify();
+                // lisp.extend(v.body.terms.iter().map(|s| s.lispify()));
+            }
+            GuardPattern::List(v) => {
+                lisp += Lisp::keyword("guard/negative");
+                lisp += self.condition.lispify();
+                lisp.extend(v.body.terms.iter().map(|s| s.lispify()));
+            }
+            GuardPattern::Dict(v) => {
+                lisp += Lisp::keyword("guard/negative");
+                lisp += self.condition.lispify();
+                lisp.extend(v.body.terms.iter().map(|s| s.lispify()));
+            }
+        }
+        lisp
     }
 }
 

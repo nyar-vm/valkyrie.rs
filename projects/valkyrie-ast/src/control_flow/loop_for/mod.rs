@@ -2,7 +2,7 @@ use super::*;
 use crate::{ArgumentKeyNode, OtherwiseStatement, TuplePatternNode};
 mod display;
 
-/// `for ... in ... if ... {...} else {...}`
+/// `for ... in ... if ... {...}`
 ///
 ///
 /// ```vk
@@ -32,15 +32,13 @@ mod display;
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ForLoop {
     /// `for pattern`
-    pub pattern: PatternExpressionType,
+    pub pattern: LetPattern,
     /// `in iterator`
-    pub iterator: ExpressionNode,
+    pub iterator: ExpressionType,
     /// `if condition`
-    pub condition: Option<PatternGuard>,
+    pub condition: Option<ExpressionType>,
     /// `{ body }`
     pub then_body: StatementBlock,
-    /// `otherwise { body }`
-    pub else_body: Option<OtherwiseStatement>,
     /// The range of the node
     pub span: Range<u32>,
 }
@@ -57,11 +55,11 @@ pub struct ForBarePattern {
 impl ForBarePattern {
     /// Convert this bare pattern into tuple pattern
     #[allow(clippy::wrong_self_convention)]
-    pub fn as_pattern_expression(self) -> PatternExpressionType {
+    pub fn as_pattern_expression(self) -> LetPattern {
         TuplePatternNode {
             bind: None,
             name: None,
-            terms: self.pattern.into_iter().map(PatternExpressionType::from).collect(),
+            terms: self.pattern.into_iter().map(LetPattern::from).collect(),
             span: self.span,
         }
         .into()

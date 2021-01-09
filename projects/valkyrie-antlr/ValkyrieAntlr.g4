@@ -150,26 +150,28 @@ guard_statement
 else_if_statement: KW_ELSE KW_IF inline_expression function_block;
 // ===========================================================================
 loop_statement
-    : annotation* KW_WHILE inline_expression function_block                              # WhileLoop
+    : annotation* KW_WHILE cond = inline_expression function_block                       # WhileLoop
     | annotation* KW_WHILE KW_LET let_pattern OP_ASSIGN inline_expression function_block # WhileLet
-    | annotation* KW_FOR let_pattern infix_in inline_expression if_guard? function_block # ForLoop
+    | annotation* KW_FOR let_pattern infix_in cond = inline_expression (
+        KW_IF guard = inline_expression
+    )? function_block # ForLoop
     ;
 if_guard: KW_IF inline_expression;
 // ==========================================================================
 expression_root: annotation* expression eos?;
 expression
-    : <assoc = right> lhs = expression OP_POW rhs = expression # EPow
-    | lhs = expression op_multiple rhs = expression            # EMul
-    | lhs = expression op_plus rhs = expression                # EPlus
-    | lhs = expression op_logic rhs = expression               # ELogic
-    | lhs = expression op_compare rhs = expression             # ECompare
-    | lhs = expression OP_UNTIL rhs = expression               # EUntil
-    | lhs = expression infix_is rhs = type_expression          # EIsA
-    | lhs = expression KW_AS rhs = type_expression             # EAs
-    | lhs = expression infix_in rhs = expression               # EIn
-    | lhs = expression op_assign rhs = type_expression         # EAssign
-    | lhs = expression OP_OR_ELSE rhs = type_expression        # EOrElse
-    | lhs = expression op_pipeline rhs = type_expression       # EPipe
+    : <assoc = right> lhs = expression infix_pow rhs = expression # EPow
+    | lhs = expression op_multiple rhs = expression               # EMul
+    | lhs = expression op_plus rhs = expression                   # EPlus
+    | lhs = expression op_logic rhs = expression                  # ELogic
+    | lhs = expression op_compare rhs = expression                # ECompare
+    | lhs = expression OP_UNTIL rhs = expression                  # EUntil
+    | lhs = expression infix_is rhs = type_expression             # EIsA
+    | lhs = expression infix_as rhs = type_expression             # EAs
+    | lhs = expression infix_in rhs = expression                  # EIn
+    | lhs = expression op_assign rhs = type_expression            # EAssign
+    | lhs = expression OP_OR_ELSE rhs = type_expression           # EOrElse
+    | lhs = expression op_pipeline rhs = type_expression          # EPipe
     // suffix
     | expression op_suffix     # ESuffix
     | expression slice_call    # ESlice
@@ -235,18 +237,6 @@ atomic
     | SPECIAL        # ASpecial
     ;
 // ===========================================================================
-op_prefix
-    : OP_NOT
-    | OP_ADD
-    | OP_SUB
-    | OP_AND
-    | OP_REFERENCE
-    | OP_DECONSTRUCT
-    | OP_INVERSE
-    | OP_ROOTS
-    | OP_MUL
-    ;
-op_suffix: OP_NOT | OP_TEMPERATURE | OP_TRANSPOSE | OP_PERCENT;
 control_expression
     : (RETURN | RESUME expression?)            # CReturn
     | BREAK (OP_LABEL identifier)?             # CBreak
@@ -256,10 +246,24 @@ control_expression
     | YIELD BREAK                              # CBreak
     | YIELD KW_WITH expression                 # CWith
     ;
-// 带返回值的表达式, 能作为表达式的开头
-
+op_prefix
+    : OP_NOT
+    | OP_ADD
+    | OP_SUB
+    | OP_AND
+    | OP_REFERENCE
+    | OP_DECONSTRUCT
+    | OP_INVERSE
+    | OP_ROOT2
+    | OP_ROOT3
+    | OP_ROOT4
+    | OP_MUL
+    ;
+op_suffix: OP_NOT | OP_TEMPERATURE | OP_TRANSPOSE | OP_PERCENT;
+// 中缀运算符
 op_compare:   OP_LT | OP_LEQ | OP_GT | OP_GEQ | OP_EQ | OP_NE | OP_EEE | OP_NEE;
 op_pattern:   OP_AND | OP_OR;
+infix_pow:    OP_POW | OP_ROOT2;
 infix_arrows: OP_ARROW | OP_ARROW2;
 op_multiple:  OP_MUL | OP_DIV | OP_DIV | OP_DIV_REM;
 op_plus:      OP_ADD | OP_SUB;
@@ -274,6 +278,7 @@ op_assign
     | OP_MAY_ASSIGN
     ;
 infix_is: KW_IS | KW_IS KW_NOT | OP_IS | OP_IS_NOT | OP_CONTINUES;
+infix_as: KW_AS;
 infix_in: KW_IN | KW_NOT KW_IN | OP_IN | OP_NOT_IN;
 // ===========================================================================
 define_generic

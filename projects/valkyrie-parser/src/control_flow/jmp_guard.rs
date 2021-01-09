@@ -7,24 +7,6 @@ impl ThisParser for GuardStatement {
         let (finally, body) = state.skip(ignore).match_fn(GuardPattern::parse)?;
         finally.finish(GuardStatement { condition: cond, main_body: body, span: get_span(input, finally) })
     }
-
-    fn lispify(&self) -> Lisp {
-        let mut lisp = Lisp::new(4);
-
-        match &self.main_body {
-            GuardPattern::Expression(v) => {
-                lisp += Lisp::keyword("guard/positive");
-                lisp += self.condition.lispify();
-                lisp.extend(v.body.terms.iter().map(|s| s.lispify()));
-            }
-            GuardPattern::List(v) => {
-                lisp += Lisp::keyword("guard/negative");
-                lisp += self.condition.lispify();
-                lisp.extend(v.body.terms.iter().map(|s| s.lispify()));
-            }
-        }
-        lisp
-    }
 }
 
 impl ThisParser for GuardPattern {
@@ -48,7 +30,7 @@ impl ThisParser for GuardLetStatement {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, _) = input.match_str("guard")?;
         let (state, _) = state.skip(ignore).match_str("let")?;
-        let (state, pat) = state.skip(ignore).match_fn(PatternExpressionType::parse)?;
+        let (state, pat) = state.skip(ignore).match_fn(LetPattern::parse)?;
         let (state, _) = state.skip(ignore).match_str("=")?;
         let (state, expr) = state.skip(ignore).match_fn(ExpressionNode::parse)?;
         let (finally, body) = state.skip(ignore).match_fn(GuardPattern::parse)?;

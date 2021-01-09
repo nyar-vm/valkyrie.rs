@@ -119,7 +119,9 @@ OP_UNTIL:       '..<' | '..=';
 OP_POW:         '^';
 // prefix
 OP_INVERSE: '⅟';
-OP_ROOTS:   '√' | '∛' | '∜';
+OP_ROOT2:   '√';
+OP_ROOT3:   '∛';
+OP_ROOT4:   '∜';
 // suffix
 OP_TEMPERATURE: '℃' | '℉';
 OP_TRANSPOSE:   'ᵀ' | 'ᴴ';

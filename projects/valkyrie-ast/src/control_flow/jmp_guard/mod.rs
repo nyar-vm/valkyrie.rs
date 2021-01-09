@@ -40,7 +40,7 @@ mod display;
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct GuardStatement {
     /// The condition to check
-    pub positive: bool,
+    pub negative: bool,
     /// The condition to check
     pub condition: ExpressionNode,
     /// same as if condition

@@ -121,7 +121,7 @@ pub struct PatternCaseNode {
 /// ```
 #[derive(Clone, Debug, PartialEq, Eq, Hash, From)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum PatternExpressionType {
+pub enum LetPattern {
     /// `a, 'string', number, bool`
     Symbol(Box<ArgumentKeyNode>),
     /// `(mut a, mut b)`
@@ -141,7 +141,7 @@ pub struct UnionPatternNode {
     /// `case bind <- Some(a)`
     pub bind: Option<IdentifierNode>,
     /// `case a | b | c`
-    pub terms: Vec<PatternExpressionType>,
+    pub terms: Vec<LetPattern>,
     /// The range of the node
     pub span: Range<u32>,
 }
@@ -177,7 +177,7 @@ pub struct TuplePatternNode {
     /// `case namespace::Name()`
     pub name: Option<NamePathNode>,
     /// `case (ref a, mut b)`
-    pub terms: Vec<PatternExpressionType>,
+    pub terms: Vec<LetPattern>,
     /// The range of the node
     pub span: Range<u32>,
 }
@@ -214,7 +214,7 @@ pub struct ClassPatternNode {
     /// `case namespace::Name()`
     pub name: Option<NamePathNode>,
     /// `case (ref a, mut b)`
-    pub terms: Vec<PatternExpressionType>,
+    pub terms: Vec<LetPattern>,
     /// The range of the node
     pub span: Range<u32>,
 }
@@ -248,7 +248,7 @@ pub struct ArrayPatternNode {
     /// `bind <- ...`
     pub bind: Option<IdentifierNode>,
     /// `[a, b, **]`
-    pub terms: Vec<PatternExpressionType>,
+    pub terms: Vec<LetPattern>,
     /// The range of the node
     pub span: Range<u32>,
 }
@@ -258,7 +258,7 @@ pub struct ArrayPatternNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ImplicitCaseNode {
     /// `Soma(a) | Success { value :a }`
-    pub pattern: PatternExpressionType,
+    pub pattern: LetPattern,
     /// `:=`
     pub body: ExpressionNode,
     /// The range of the node

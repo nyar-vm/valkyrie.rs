@@ -17,7 +17,7 @@ impl PrettyPrint for InfixNode {
         let mut items = PrettySequence::new(5);
         items.push(self.lhs.pretty(theme));
         items.push(" ");
-        items.push(self.operator.pretty(theme));
+        items.push(self.infix.pretty(theme));
         items.push(" ");
         items.push(self.rhs.pretty(theme));
         items.into()
@@ -43,7 +43,7 @@ impl Lispify for InfixNode {
     type Output = Lisp;
 
     fn lispify(&self) -> Self::Output {
-        Lisp::operator(self.operator.kind.as_str(), vec![self.lhs.lispify(), self.rhs.lispify()])
+        Lisp::operator(self.infix.kind.as_str(), vec![self.lhs.lispify(), self.rhs.lispify()])
     }
 }
 

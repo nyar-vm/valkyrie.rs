@@ -27,9 +27,9 @@ impl<'i> Extractor<Op_prefixContextAll<'i>> for OperatorNode {
             "&" => ValkyrieOperator::Box,
             "*" => ValkyrieOperator::Unbox,
             "⅟" => ValkyrieOperator::Reciprocal,
-            "√" => ValkyrieOperator::Surd(2),
-            "∛" => ValkyrieOperator::Surd(3),
-            "∜" => ValkyrieOperator::Surd(4),
+            "√" => ValkyrieOperator::Roots(2),
+            "∛" => ValkyrieOperator::Roots(3),
+            "∜" => ValkyrieOperator::Roots(4),
             _ => unreachable!("Missing prefix {:?}", text),
         };
         Some(Self { kind, span })

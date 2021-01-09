@@ -7,8 +7,8 @@ use lispify::Lisp;
 use pex::{helpers::str, ParseResult, ParseState, StopBecause};
 use valkyrie_ast::{
     CallNode, ControlNode, ControlType, ElseStatement, ExpressionContext, ExpressionNode, ForLoop, GuardLetStatement,
-    GuardPattern, GuardStatement, IfBranchNode, IfStatement, MatchDotStatement, MatchKind, MonadicDotCall, OtherwiseStatement,
-    PatternBlock, PatternExpressionType, PatternGuard, StatementBlock, StatementNode, SwitchStatement, ThenStatement,
+    GuardPattern, GuardStatement, IfBranchNode, IfStatement, LetPattern, MatchDotStatement, MatchKind, MonadicDotCall,
+    OtherwiseStatement, PatternBlock, PatternGuard, StatementBlock, StatementNode, SwitchStatement, ThenStatement,
     WhileConditionNode, WhileLoop, WhileLoopKind,
 };
 
@@ -30,14 +30,6 @@ impl ThisParser for WhileConditionNode {
             })
             .choose(|s| s.finish(WhileConditionNode::Unconditional))
             .end_choice()
-    }
-
-    fn lispify(&self) -> Lisp {
-        match self {
-            WhileConditionNode::Unconditional => Lisp::keyword("true"),
-            WhileConditionNode::Case => Lisp::keyword("case"),
-            WhileConditionNode::Expression(v) => v.lispify(),
-        }
     }
 }
 

@@ -1,5 +1,5 @@
 use crate::{
-    patterns::PatternBlock, ElseStatement, ExpressionNode, ExpressionType, PatternExpressionType, PatternGuard, StatementBlock,
+    patterns::PatternBlock, ElseStatement, ExpressionNode, ExpressionType, LetPattern, PatternGuard, StatementBlock,
     StatementNode, StatementType, SwitchStatement, WhileConditionNode,
 };
 use alloc::{boxed::Box, vec::Vec};

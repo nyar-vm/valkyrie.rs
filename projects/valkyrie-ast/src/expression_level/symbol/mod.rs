@@ -17,6 +17,23 @@ pub struct NamePathNode {
     /// The names of the identifier.
     pub names: Vec<IdentifierNode>,
 }
+/// `package∷module∷name`
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct BooleanNode {
+    pub value: bool,
+    /// The range of the node
+    pub span: Range<u32>,
+}
+/// `package∷module∷name`
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct NullNode {
+    pub nil: bool,
+    /// The range of the node
+    pub span: Range<u32>,
+}
+
 
 /// `$, $1, $x`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]

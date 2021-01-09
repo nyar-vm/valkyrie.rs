@@ -1,0 +1,5 @@
+(loop/for (iterator iterator) ())
+(loop/for (iterator list1) ())
+(loop/for (iterator ℤ) ())
+(loop/for (iterator list) ())
+(loop/for (iterator items) ())

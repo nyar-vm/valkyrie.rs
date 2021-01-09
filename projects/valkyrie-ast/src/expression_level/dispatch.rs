@@ -56,6 +56,8 @@ impl PrettyPrint for ExpressionType {
             Self::Try(node) => node.pretty(theme),
             Self::MatchDot(node) => node.pretty(theme),
             Self::Formatted(node) => node.pretty(theme),
+            Self::Null(node) => node.pretty(theme),
+            Self::Boolean(node) => node.pretty(theme),
         }
     }
 }
@@ -85,7 +87,7 @@ impl ValkyrieNode for ExpressionType {
             Self::String(node) => node.span.clone(),
             Self::New(node) => node.span.clone(),
             Self::Prefix(node) => node.span.clone(),
-            Self::Binary(node) => node.span.clone(),
+            Self::Binary(node) => node.get_range(),
             Self::Suffix(node) => node.span.clone(),
             Self::Table(node) => node.span.clone(),
             Self::Apply(node) => node.span.clone(),
@@ -101,6 +103,8 @@ impl ValkyrieNode for ExpressionType {
             Self::Try(node) => node.span.clone(),
             Self::MatchDot(node) => node.span.clone(),
             Self::Formatted(node) => node.span.clone(),
+            Self::Null(node) => node.span.clone(),
+            Self::Boolean(node) => node.span.clone(),
         }
     }
 }

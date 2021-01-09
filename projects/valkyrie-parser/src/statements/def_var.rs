@@ -3,7 +3,7 @@ use super::*;
 impl ThisParser for LetBindNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, _) = input.match_str("let")?;
-        let (state, pattern) = state.skip(ignore).match_fn(PatternExpressionType::parse)?;
+        let (state, pattern) = state.skip(ignore).match_fn(LetPattern::parse)?;
         let (state, type_hint) = state.match_optional(parse_type_hint)?;
         let (state, body) = state.match_optional(parse_expr)?;
         state.finish(LetBindNode { pattern, type_hint, body })

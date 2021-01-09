@@ -553,10 +553,10 @@ pub trait ValkyrieAntlrVisitor<'input>: ParseTreeVisitor<'input, ValkyrieAntlrPa
     }
 
     /**
-     * Visit a parse tree produced by {@link ValkyrieAntlrParser#if_let_statement}.
+     * Visit a parse tree produced by {@link ValkyrieAntlrParser#guard_statement}.
      * @param ctx the parse tree
      */
-    fn visit_if_let_statement(&mut self, ctx: &If_let_statementContext<'input>) {
+    fn visit_guard_statement(&mut self, ctx: &Guard_statementContext<'input>) {
         self.visit_children(ctx)
     }
 
@@ -1125,22 +1125,6 @@ pub trait ValkyrieAntlrVisitor<'input>: ParseTreeVisitor<'input, ValkyrieAntlrPa
     }
 
     /**
-     * Visit a parse tree produced by {@link ValkyrieAntlrParser#op_prefix}.
-     * @param ctx the parse tree
-     */
-    fn visit_op_prefix(&mut self, ctx: &Op_prefixContext<'input>) {
-        self.visit_children(ctx)
-    }
-
-    /**
-     * Visit a parse tree produced by {@link ValkyrieAntlrParser#op_suffix}.
-     * @param ctx the parse tree
-     */
-    fn visit_op_suffix(&mut self, ctx: &Op_suffixContext<'input>) {
-        self.visit_children(ctx)
-    }
-
-    /**
      * Visit a parse tree produced by the {@code CReturn}
      * labeled alternative in {@link ValkyrieAntlrParser#control_expression}.
      * @param ctx the parse tree
@@ -1195,6 +1179,22 @@ pub trait ValkyrieAntlrVisitor<'input>: ParseTreeVisitor<'input, ValkyrieAntlrPa
     }
 
     /**
+     * Visit a parse tree produced by {@link ValkyrieAntlrParser#op_prefix}.
+     * @param ctx the parse tree
+     */
+    fn visit_op_prefix(&mut self, ctx: &Op_prefixContext<'input>) {
+        self.visit_children(ctx)
+    }
+
+    /**
+     * Visit a parse tree produced by {@link ValkyrieAntlrParser#op_suffix}.
+     * @param ctx the parse tree
+     */
+    fn visit_op_suffix(&mut self, ctx: &Op_suffixContext<'input>) {
+        self.visit_children(ctx)
+    }
+
+    /**
      * Visit a parse tree produced by {@link ValkyrieAntlrParser#op_compare}.
      * @param ctx the parse tree
      */
@@ -1207,6 +1207,14 @@ pub trait ValkyrieAntlrVisitor<'input>: ParseTreeVisitor<'input, ValkyrieAntlrPa
      * @param ctx the parse tree
      */
     fn visit_op_pattern(&mut self, ctx: &Op_patternContext<'input>) {
+        self.visit_children(ctx)
+    }
+
+    /**
+     * Visit a parse tree produced by {@link ValkyrieAntlrParser#infix_pow}.
+     * @param ctx the parse tree
+     */
+    fn visit_infix_pow(&mut self, ctx: &Infix_powContext<'input>) {
         self.visit_children(ctx)
     }
 
@@ -1263,6 +1271,14 @@ pub trait ValkyrieAntlrVisitor<'input>: ParseTreeVisitor<'input, ValkyrieAntlrPa
      * @param ctx the parse tree
      */
     fn visit_infix_is(&mut self, ctx: &Infix_isContext<'input>) {
+        self.visit_children(ctx)
+    }
+
+    /**
+     * Visit a parse tree produced by {@link ValkyrieAntlrParser#infix_as}.
+     * @param ctx the parse tree
+     */
+    fn visit_infix_as(&mut self, ctx: &Infix_asContext<'input>) {
         self.visit_children(ctx)
     }
 
@@ -2280,10 +2296,10 @@ pub trait ValkyrieAntlrVisitorCompat<'input>: ParseTreeVisitorCompat<'input, Nod
     }
 
     /**
-     * Visit a parse tree produced by {@link ValkyrieAntlrParser#if_let_statement}.
+     * Visit a parse tree produced by {@link ValkyrieAntlrParser#guard_statement}.
      * @param ctx the parse tree
      */
-    fn visit_if_let_statement(&mut self, ctx: &If_let_statementContext<'input>) -> Self::Return {
+    fn visit_guard_statement(&mut self, ctx: &Guard_statementContext<'input>) -> Self::Return {
         self.visit_children(ctx)
     }
 
@@ -2852,22 +2868,6 @@ pub trait ValkyrieAntlrVisitorCompat<'input>: ParseTreeVisitorCompat<'input, Nod
     }
 
     /**
-     * Visit a parse tree produced by {@link ValkyrieAntlrParser#op_prefix}.
-     * @param ctx the parse tree
-     */
-    fn visit_op_prefix(&mut self, ctx: &Op_prefixContext<'input>) -> Self::Return {
-        self.visit_children(ctx)
-    }
-
-    /**
-     * Visit a parse tree produced by {@link ValkyrieAntlrParser#op_suffix}.
-     * @param ctx the parse tree
-     */
-    fn visit_op_suffix(&mut self, ctx: &Op_suffixContext<'input>) -> Self::Return {
-        self.visit_children(ctx)
-    }
-
-    /**
      * Visit a parse tree produced by the {@code CReturn}
      * labeled alternative in {@link ValkyrieAntlrParser#control_expression}.
      * @param ctx the parse tree
@@ -2922,6 +2922,22 @@ pub trait ValkyrieAntlrVisitorCompat<'input>: ParseTreeVisitorCompat<'input, Nod
     }
 
     /**
+     * Visit a parse tree produced by {@link ValkyrieAntlrParser#op_prefix}.
+     * @param ctx the parse tree
+     */
+    fn visit_op_prefix(&mut self, ctx: &Op_prefixContext<'input>) -> Self::Return {
+        self.visit_children(ctx)
+    }
+
+    /**
+     * Visit a parse tree produced by {@link ValkyrieAntlrParser#op_suffix}.
+     * @param ctx the parse tree
+     */
+    fn visit_op_suffix(&mut self, ctx: &Op_suffixContext<'input>) -> Self::Return {
+        self.visit_children(ctx)
+    }
+
+    /**
      * Visit a parse tree produced by {@link ValkyrieAntlrParser#op_compare}.
      * @param ctx the parse tree
      */
@@ -2934,6 +2950,14 @@ pub trait ValkyrieAntlrVisitorCompat<'input>: ParseTreeVisitorCompat<'input, Nod
      * @param ctx the parse tree
      */
     fn visit_op_pattern(&mut self, ctx: &Op_patternContext<'input>) -> Self::Return {
+        self.visit_children(ctx)
+    }
+
+    /**
+     * Visit a parse tree produced by {@link ValkyrieAntlrParser#infix_pow}.
+     * @param ctx the parse tree
+     */
+    fn visit_infix_pow(&mut self, ctx: &Infix_powContext<'input>) -> Self::Return {
         self.visit_children(ctx)
     }
 
@@ -2990,6 +3014,14 @@ pub trait ValkyrieAntlrVisitorCompat<'input>: ParseTreeVisitorCompat<'input, Nod
      * @param ctx the parse tree
      */
     fn visit_infix_is(&mut self, ctx: &Infix_isContext<'input>) -> Self::Return {
+        self.visit_children(ctx)
+    }
+
+    /**
+     * Visit a parse tree produced by {@link ValkyrieAntlrParser#infix_as}.
+     * @param ctx the parse tree
+     */
+    fn visit_infix_as(&mut self, ctx: &Infix_asContext<'input>) -> Self::Return {
         self.visit_children(ctx)
     }
 
@@ -3795,8 +3827,8 @@ where
         *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
     }
 
-    fn visit_if_let_statement(&mut self, ctx: &If_let_statementContext<'input>) {
-        let result = <Self as ValkyrieAntlrVisitorCompat>::visit_if_let_statement(self, ctx);
+    fn visit_guard_statement(&mut self, ctx: &Guard_statementContext<'input>) {
+        let result = <Self as ValkyrieAntlrVisitorCompat>::visit_guard_statement(self, ctx);
         *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
     }
 
@@ -4115,16 +4147,6 @@ where
         *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
     }
 
-    fn visit_op_prefix(&mut self, ctx: &Op_prefixContext<'input>) {
-        let result = <Self as ValkyrieAntlrVisitorCompat>::visit_op_prefix(self, ctx);
-        *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
-    }
-
-    fn visit_op_suffix(&mut self, ctx: &Op_suffixContext<'input>) {
-        let result = <Self as ValkyrieAntlrVisitorCompat>::visit_op_suffix(self, ctx);
-        *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
-    }
-
     fn visit_CReturn(&mut self, ctx: &CReturnContext<'input>) {
         let result = <Self as ValkyrieAntlrVisitorCompat>::visit_CReturn(self, ctx);
         *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
@@ -4155,6 +4177,16 @@ where
         *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
     }
 
+    fn visit_op_prefix(&mut self, ctx: &Op_prefixContext<'input>) {
+        let result = <Self as ValkyrieAntlrVisitorCompat>::visit_op_prefix(self, ctx);
+        *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
+    }
+
+    fn visit_op_suffix(&mut self, ctx: &Op_suffixContext<'input>) {
+        let result = <Self as ValkyrieAntlrVisitorCompat>::visit_op_suffix(self, ctx);
+        *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
+    }
+
     fn visit_op_compare(&mut self, ctx: &Op_compareContext<'input>) {
         let result = <Self as ValkyrieAntlrVisitorCompat>::visit_op_compare(self, ctx);
         *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
@@ -4162,6 +4194,11 @@ where
 
     fn visit_op_pattern(&mut self, ctx: &Op_patternContext<'input>) {
         let result = <Self as ValkyrieAntlrVisitorCompat>::visit_op_pattern(self, ctx);
+        *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
+    }
+
+    fn visit_infix_pow(&mut self, ctx: &Infix_powContext<'input>) {
+        let result = <Self as ValkyrieAntlrVisitorCompat>::visit_infix_pow(self, ctx);
         *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
     }
 
@@ -4197,6 +4234,11 @@ where
 
     fn visit_infix_is(&mut self, ctx: &Infix_isContext<'input>) {
         let result = <Self as ValkyrieAntlrVisitorCompat>::visit_infix_is(self, ctx);
+        *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
+    }
+
+    fn visit_infix_as(&mut self, ctx: &Infix_asContext<'input>) {
+        let result = <Self as ValkyrieAntlrVisitorCompat>::visit_infix_as(self, ctx);
         *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
     }
 

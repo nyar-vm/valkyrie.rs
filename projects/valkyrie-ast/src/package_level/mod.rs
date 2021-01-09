@@ -20,7 +20,7 @@ use crate::{
     ClassMethodDeclaration, ControlNode, DocumentationNode, EnumerateDeclaration, EnumerateFieldDeclaration, ExpressionNode,
     ExpressionType, FlagsDeclaration, ForLoop, FunctionDeclaration, FunctionEffectNode, FunctionReturnNode, GenericArgument,
     GuardStatement, IdentifierNode, ImportStatement, LetBindNode, ModifiersNode, NamePathNode, NamespaceDeclaration,
-    PatternExpressionType, ProgramRoot, StatementBlock, StatementNode, StatementType, StringLiteralNode, StringTextNode,
+    LetPattern, ProgramRoot, StatementBlock, StatementNode, StatementType, StringLiteralNode, StringTextNode,
     TaggedDeclaration, UnionDeclaration, UnionFieldDeclaration, VariantDeclaration, WhileLoop,
 };
 use alloc::{

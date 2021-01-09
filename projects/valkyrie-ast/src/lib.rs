@@ -33,7 +33,7 @@ pub use crate::{
         matches::{MatchDotStatement, MatchKind},
         number::NumberLiteralNode,
         operators::{InfixNode, LogicMatrix, OperatorNode, PostfixNode, PrefixNode, ValkyrieOperator},
-        symbol::{IdentifierNode, LambdaSlotNode, NamePathNode},
+        symbol::{IdentifierNode, LambdaSlotNode, NamePathNode, BooleanNode, NullNode},
         table::{TableKeyType, TableKind, TableNode, TableTermNode},
         view::{SubscriptNode, SubscriptSliceNode, SubscriptTermNode},
         ExpressionContext, ExpressionNode, ExpressionType, PostfixCallPart, TypingExpression,
@@ -60,7 +60,7 @@ pub use crate::{
     },
     patterns::{
         ArrayPatternNode, ClassPatternNode, ImplicitCaseNode, PatternBlock, PatternBranch, PatternCaseNode, PatternCondition,
-        PatternElseNode, PatternExpressionType, PatternGuard, PatternStatements, PatternTypeNode, PatternWhenNode,
+        PatternElseNode, LetPattern, PatternGuard, PatternStatements, PatternTypeNode, PatternWhenNode,
         TuplePatternNode, UnionPatternNode,
     },
     string_like::{

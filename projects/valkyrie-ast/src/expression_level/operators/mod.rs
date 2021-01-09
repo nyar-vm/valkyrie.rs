@@ -27,7 +27,7 @@ pub enum ValkyrieOperator {
     /// prefix operator: `⅟`
     Reciprocal,
     /// prefix operator: `√`, `∛`, `∜`     
-    Surd(u8),
+    Roots(u8),
     /// infix operator: `=`
     Assign,
     /// binary operator: `+`
@@ -89,6 +89,8 @@ pub enum ValkyrieOperator {
     DivideFloor,
     /// binary operator: `^`
     Power,
+    /// binary operator: `√`
+    Surd,
     /// binary operator: `&,  |`
     LogicMatrix {
         /// binary operator: `&,  |`
@@ -186,6 +188,7 @@ impl ValkyrieOperator {
             Self::DivideFloor => 15100,
             // infix + 2
             Self::Power => 15200,
+            Self::Surd => 15200,
             // prefix + 0
             Self::Not => 25000,
             Self::Positive => 25000,
@@ -195,7 +198,7 @@ impl ValkyrieOperator {
             Self::Unpack => 25000,
             Self::UnpackAll => 25000,
             Self::Reciprocal => 25000,
-            Self::Surd(_) => 25000,
+            Self::Roots(_) => 25000,
             // postfix + 0
             Self::Optional => 45000,
             Self::QuickRaise => 45000,
@@ -225,6 +228,7 @@ impl ValkyrieOperator {
             Self::DivideRemider => "/%",
             Self::DivideFloor => "//",
             Self::Power => "^",
+            Self::Surd => "√",
             Self::Optional => "?",
             Self::QuickRaise => "!",
             Self::Celsius => "℃",
@@ -269,7 +273,7 @@ impl ValkyrieOperator {
                 false => "≢",
             },
             Self::Reciprocal => "⅟",
-            Self::Surd(v) => match v {
+            Self::Roots(v) => match v {
                 3 => "∛",
                 4 => "∜",
                 _ => "√",
@@ -315,13 +319,11 @@ pub struct PrefixNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct InfixNode {
     ///  The operator of the node
-    pub operator: OperatorNode,
+    pub infix: OperatorNode,
     ///  The left hand side of the node
     pub lhs: ExpressionType,
     ///  The right hand side of the node
     pub rhs: ExpressionType,
-    /// The range of the node
-    pub span: Range<u32>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
@@ -342,6 +344,14 @@ pub struct OperatorNode {
     pub kind: ValkyrieOperator,
     /// The range of the node
     pub span: Range<u32>,
+}
+
+impl ValkyrieNode for InfixNode {
+    fn get_range(&self) -> Range<u32> {
+        let head = self.lhs.get_range().start;
+        let tail = self.rhs.get_range().end;
+        head..tail
+    }
 }
 
 impl OperatorNode {

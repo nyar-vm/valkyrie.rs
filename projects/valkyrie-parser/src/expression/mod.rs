@@ -26,7 +26,7 @@ use valkyrie_ast::{
     ApplyCallNode, ApplyDotNode, ArgumentKeyNode, ArrayPatternNode, CallNode, ClassPatternNode, ExpressionContext,
     ExpressionNode, ExpressionType, GenericCallNode, IfStatement, ImplicitCaseNode, InfixNode, LambdaCallNode, LambdaDotNode,
     LambdaSlotNode, MatchDotStatement, MatchKind, MonadicCall, MonadicDotCall, NamePathNode, NewConstructNode,
-    NumberLiteralNode, OperatorNode, PatternBranch, PatternCaseNode, PatternCondition, PatternElseNode, PatternExpressionType,
+    NumberLiteralNode, OperatorNode, PatternBranch, PatternCaseNode, PatternCondition, PatternElseNode, LetPattern,
     PatternGuard, PatternStatements, PatternTypeNode, PatternWhenNode, PostfixCallPart, PostfixNode, PrefixNode, RaiseNode,
     StatementBlock, StatementNode, StringLiteralNode, SubscriptNode, SwitchStatement, TableNode, TryStatement,
     TuplePatternNode, TypingExpression, UnionPatternNode, ValkyrieOperator,
