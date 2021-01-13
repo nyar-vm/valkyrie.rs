@@ -8,6 +8,8 @@ use core::{
     ops::Range,
 };
 
+#[cfg(feature = "lispify")]
+use lispify::{Lisp, Lispify};
 #[cfg(feature = "pretty-print")]
 use pretty_print::{
     helpers::{PrettySequence, SoftBlock},

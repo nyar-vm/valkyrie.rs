@@ -1,9 +1,9 @@
-use dashu::integer::IBig;
 use serde::{
     de::{EnumAccess, Error, MapAccess, SeqAccess, Visitor},
     Deserialize, Deserializer,
 };
 use std::sync::Arc;
+use valkyrie_error::third_party::IBig;
 
 use crate::ValkyrieValue;
 
@@ -36,70 +36,70 @@ impl<'de> Visitor<'de> for ValueVisitor {
     where
         E: Error,
     {
-        Ok(ValkyrieValue::Integer(IBig::from(v)))
+        Ok(ValkyrieValue::Number(IBig::from(v)))
     }
 
     fn visit_i16<E>(self, v: i16) -> Result<Self::Value, E>
     where
         E: Error,
     {
-        Ok(ValkyrieValue::Integer(IBig::from(v)))
+        Ok(ValkyrieValue::Number(IBig::from(v)))
     }
 
     fn visit_i32<E>(self, v: i32) -> Result<Self::Value, E>
     where
         E: Error,
     {
-        Ok(ValkyrieValue::Integer(IBig::from(v)))
+        Ok(ValkyrieValue::Number(IBig::from(v)))
     }
 
     fn visit_i64<E>(self, v: i64) -> Result<Self::Value, E>
     where
         E: Error,
     {
-        Ok(ValkyrieValue::Integer(IBig::from(v)))
+        Ok(ValkyrieValue::Number(IBig::from(v)))
     }
 
     fn visit_i128<E>(self, v: i128) -> Result<Self::Value, E>
     where
         E: Error,
     {
-        Ok(ValkyrieValue::Integer(IBig::from(v)))
+        Ok(ValkyrieValue::Number(IBig::from(v)))
     }
 
     fn visit_u8<E>(self, v: u8) -> Result<Self::Value, E>
     where
         E: Error,
     {
-        Ok(ValkyrieValue::Integer(IBig::from(v)))
+        Ok(ValkyrieValue::Number(IBig::from(v)))
     }
 
     fn visit_u16<E>(self, v: u16) -> Result<Self::Value, E>
     where
         E: Error,
     {
-        Ok(ValkyrieValue::Integer(IBig::from(v)))
+        Ok(ValkyrieValue::Number(IBig::from(v)))
     }
 
     fn visit_u32<E>(self, v: u32) -> Result<Self::Value, E>
     where
         E: Error,
     {
-        Ok(ValkyrieValue::Integer(IBig::from(v)))
+        Ok(ValkyrieValue::Number(IBig::from(v)))
     }
 
     fn visit_u64<E>(self, v: u64) -> Result<Self::Value, E>
     where
         E: Error,
     {
-        Ok(ValkyrieValue::Integer(IBig::from(v)))
+        Ok(ValkyrieValue::Number(IBig::from(v)))
     }
 
     fn visit_u128<E>(self, v: u128) -> Result<Self::Value, E>
     where
         E: Error,
     {
-        Ok(ValkyrieValue::Integer(IBig::from(v)))
+        Ok(ValkyrieValue::Number(IBig::from(v)))
     }
 
     fn visit_f32<E>(self, _: f32) -> Result<Self::Value, E>

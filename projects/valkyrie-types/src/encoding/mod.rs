@@ -1,6 +1,7 @@
-use crate::ValkyrieValue;
-use dashu::{float::FBig, integer::IBig};
+use crate::{ValkyrieNumber, ValkyrieValue};
+
 use serde::{ser::SerializeSeq, Serialize, Serializer};
+use shredder::Gc;
 use std::{
     alloc::{AllocError, Allocator, Layout},
     collections::HashMap,
@@ -8,8 +9,10 @@ use std::{
     ptr::NonNull,
     sync::Arc,
 };
-use valkyrie_error::{RuntimeError, ValkyrieResult};
-
+use valkyrie_error::{
+    third_party::{FBig, IBig},
+    RuntimeError, ValkyrieResult,
+};
 /// implicit cast
 /// explicit cast
 /// implicit into
@@ -34,59 +37,59 @@ impl EncodeAny {
     }
 
     pub fn encode_u8(self, v: u8) -> Result<ValkyrieValue, RuntimeError> {
-        Ok(ValkyrieValue::Integer(IBig::from(v)))
+        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(v))))
     }
 
     pub fn encode_u16(self, v: u16) -> Result<ValkyrieValue, RuntimeError> {
-        Ok(ValkyrieValue::Integer(IBig::from(v)))
+        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(v))))
     }
 
     pub fn encode_u32(self, v: u32) -> Result<ValkyrieValue, RuntimeError> {
-        Ok(ValkyrieValue::Integer(IBig::from(v)))
+        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(v))))
     }
 
     pub fn encode_u64(self, v: u64) -> Result<ValkyrieValue, RuntimeError> {
-        Ok(ValkyrieValue::Integer(IBig::from(v)))
+        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(v))))
     }
 
     pub fn encode_u128(self, v: u128) -> Result<ValkyrieValue, RuntimeError> {
-        Ok(ValkyrieValue::Integer(IBig::from(v)))
+        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(v))))
     }
 
     pub fn encode_usize(self, v: usize) -> Result<ValkyrieValue, RuntimeError> {
-        Ok(ValkyrieValue::Integer(IBig::from(v)))
+        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(v))))
     }
 
     pub fn encode_i8(self, v: i8) -> Result<ValkyrieValue, RuntimeError> {
-        Ok(ValkyrieValue::Integer(IBig::from(v)))
+        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(v))))
     }
 
     pub fn encode_i16(self, v: i16) -> Result<ValkyrieValue, RuntimeError> {
-        Ok(ValkyrieValue::Integer(IBig::from(v)))
+        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(v))))
     }
 
     pub fn encode_i32(self, v: i32) -> Result<ValkyrieValue, RuntimeError> {
-        Ok(ValkyrieValue::Integer(IBig::from(v)))
+        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(v))))
     }
 
     pub fn encode_i64(self, v: i64) -> Result<ValkyrieValue, RuntimeError> {
-        Ok(ValkyrieValue::Integer(IBig::from(v)))
+        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(v))))
     }
 
     pub fn encode_i128(self, v: i128) -> Result<ValkyrieValue, RuntimeError> {
-        Ok(ValkyrieValue::Integer(IBig::from(v)))
+        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(v))))
     }
 
     pub fn encode_isize(self, v: isize) -> Result<ValkyrieValue, RuntimeError> {
-        Ok(ValkyrieValue::Integer(IBig::from(v)))
+        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(v))))
     }
 
     pub fn encode_f32(self, v: f32) -> Result<ValkyrieValue, RuntimeError> {
-        Ok(ValkyrieValue::Decimal(FBig::try_from(v)?))
+        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(v))))
     }
 
     pub fn encode_f64(self, v: f64) -> Result<ValkyrieValue, RuntimeError> {
-        Ok(ValkyrieValue::Decimal(FBig::try_from(v)?))
+        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(v))))
     }
 
     pub fn encode_unicode(self, v: char) -> Result<ValkyrieValue, RuntimeError> {

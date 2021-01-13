@@ -1,12 +1,11 @@
 use crate::{
     modifiers::AccessType,
     types::{atomic_type::ValkyrieDocument, ValkyrieMetaType},
-    InitializeType, ValkyrieID, ValkyrieValue,
+    InitializeType, ValkyrieID,
 };
 use std::{
-    collections::{BTreeMap, LinkedList},
+    collections::BTreeMap,
     fmt::{Debug, Formatter},
-    marker::PhantomData,
     ops::Range,
 };
 use valkyrie_ast::ExpressionNode;

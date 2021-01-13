@@ -1,13 +1,13 @@
+use crate::{types::atomic_type::ValkyrieDocument, utils::primitive_type, ValkyrieClassType, ValkyrieValue};
+use itertools::Itertools;
+use shredder::{marker::GcSafe, Gc, Scan};
 use std::{
     any::type_name,
     fmt::{Debug, Display},
     hash::{Hash, Hasher},
     sync::Arc,
 };
-
-use itertools::Itertools;
-
-use crate::{types::atomic_type::ValkyrieDocument, utils::primitive_type, ValkyrieClassType, ValkyrieValue};
+use valkyrie_error::third_party::{FBig, IBig, RBig};
 
 pub mod atomic_type;
 pub mod class_type;
@@ -17,7 +17,7 @@ pub mod union_type;
 pub mod variant_type;
 
 // rtti of valkyrie type
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug, Default, Scan)]
 pub struct ValkyrieMetaType {
     namepath: Vec<String>,
     document: ValkyrieDocument,
@@ -42,8 +42,7 @@ impl ValkyrieType for ValkyrieValue {
             Self::Null => primitive_type("std.primitive.Null"),
             Self::Unit => primitive_type("std.primitive.Unit"),
             Self::Boolean(v) => v.dynamic_type(),
-            Self::Integer(v) => v.dynamic_type(),
-            Self::Decimal(v) => v.dynamic_type(),
+            Self::Number(v) => v.dynamic_type(),
             Self::Unicode(v) => v.dynamic_type(),
             Self::UTF8String(v) => v.dynamic_type(),
             Self::Bytes(v) => v.dynamic_type(),
@@ -73,10 +72,10 @@ impl ValkyrieMetaType {
             self.namepath.push(s.to_string());
         }
     }
-    pub fn mut_namepath(&mut self) -> &mut Vec<String> {
+    pub fn mut_namepath(&mut self) -> &mut Gc<String> {
         &mut self.namepath
     }
-    pub fn mut_generic_types(&mut self) -> &mut Vec<Arc<ValkyrieMetaType>> {
+    pub fn mut_generic_types(&mut self) -> &mut Vec<Gc<ValkyrieMetaType>> {
         &mut self.generic_types
     }
 }
@@ -88,10 +87,10 @@ where
 {
     fn boxed(self) -> ValkyrieValue;
 
-    fn static_type() -> Arc<ValkyrieMetaType> {
+    fn static_type() -> Gc<ValkyrieMetaType> {
         panic!("{} does not a static type", type_name::<Self>())
     }
-    fn dynamic_type(&self) -> Arc<ValkyrieMetaType>;
+    fn dynamic_type(&self) -> Gc<ValkyrieMetaType>;
 }
 
 impl ValkyrieMetaType {

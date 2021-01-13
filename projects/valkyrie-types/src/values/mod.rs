@@ -1,5 +1,7 @@
-use dashu::{float::FBig, integer::IBig, rational::RBig};
+use shredder::{marker::GcSafe, Gc, Scan, Scanner};
 use std::{fmt::Debug, sync::Arc};
+use valkyrie_ast::helper::ValkyrieNode;
+use valkyrie_error::third_party::{FBig, IBig, RBig};
 
 mod der;
 mod ser;
@@ -8,7 +10,7 @@ mod ser;
 use crate::builtin::data_frame::ValkyrieDataFrame;
 use crate::{
     builtin::{images::ValkyrieImage, ndarray::ValkyrieNDArray},
-    JsonValue, ValkyrieClassType, ValkyrieTable, ValkyrieVariantType,
+    JsonValue, ValkyrieClassType, ValkyrieNumber, ValkyrieTable, ValkyrieVariantType,
 };
 
 #[derive(Clone, Debug)]
@@ -27,20 +29,19 @@ pub enum ValkyrieValue {
     ///
     /// Native boolean type, 8bit
     Boolean(bool),
-    Integer(IBig),
-    Decimal(FBig),
+    Number(Gc<ValkyrieNumber>),
     Unicode(char),
-    UTF8String(Arc<String>),
-    Bytes(Arc<Vec<u8>>),
+    UTF8String(Gc<String>),
+    Bytes(Gc<Vec<u8>>),
     /// Array, Array2D
     /// ArrayView, ArrayView2D
-    Json(Arc<JsonValue>),
-    Html(Arc<String>),
-    NDArray(Arc<ValkyrieNDArray>),
-    Image(Arc<ValkyrieImage>),
+    Json(Gc<JsonValue>),
+    Html(Gc<String>),
+    NDArray(Gc<ValkyrieNDArray>),
+    Image(Gc<ValkyrieImage>),
     #[cfg(feature = "polars")]
-    DataFrame(Arc<ValkyrieDataFrame>),
-    Table(Arc<ValkyrieTable>),
-    Class(Arc<ValkyrieClassType>),
-    Variant(Arc<ValkyrieVariantType>),
+    DataFrame(Gc<ValkyrieDataFrame>),
+    Table(Gc<ValkyrieTable>),
+    Class(Gc<ValkyrieClassType>),
+    Variant(Gc<ValkyrieVariantType>),
 }

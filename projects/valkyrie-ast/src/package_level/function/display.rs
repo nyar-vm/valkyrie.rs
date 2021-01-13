@@ -30,6 +30,25 @@ impl PrettyPrint for FunctionDeclaration {
         terms.into()
     }
 }
+#[cfg(feature = "lispify")]
+impl Lispify for FunctionDeclaration {
+    type Output = Lisp;
+
+    fn lispify(&self) -> Self::Output {
+        let mut lisp = Lisp::new(6);
+        // lisp += self.r#type.lispify();
+        lisp += self.namepath.lispify();
+        if let Some(generic) = &self.generic {
+            lisp += generic.lispify();
+        }
+        lisp += self.arguments.lispify();
+        if let Some(r#return) = &self.r#return {
+            lisp += r#return.lispify();
+        }
+        // lisp += self.body.lispify();
+        lisp
+    }
+}
 
 impl PrettyPrint for FunctionReturnNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {

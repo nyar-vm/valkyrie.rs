@@ -1,5 +1,5 @@
 use super::*;
-use dashu::float::FBig;
+use valkyrie_error::third_party::{FBig, IBig};
 
 impl ValkyrieType for JsonValue {
     fn boxed(self) -> ValkyrieValue {

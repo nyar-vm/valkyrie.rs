@@ -15,8 +15,6 @@ impl PrettyPrint for StatementType {
             Self::Namespace(node) => node.pretty(theme),
             Self::Import(node) => node.pretty(theme),
             Self::Class(node) => node.pretty(theme),
-            Self::ClassField(node) => node.pretty(theme),
-            Self::ClassMethod(node) => node.pretty(theme),
             Self::Tagged(node) => node.pretty(theme),
             Self::Variant(node) => node.pretty(theme),
             Self::Union(node) => node.pretty(theme),
@@ -32,6 +30,8 @@ impl PrettyPrint for StatementType {
             Self::LetBind(node) => node.pretty(theme),
             Self::Guard(node) => node.pretty(theme),
             Self::Flags(node) => node.pretty(theme),
+            Self::Trait(node) => node.pretty(theme),
+            Self::Extends(node) => node.pretty(theme),
         }
     }
 }
@@ -55,10 +55,8 @@ impl Lispify for StatementType {
             Self::While(v) => v.lispify(),
             Self::For(v) => v.lispify(),
             Self::Class(v) => v.lispify(),
-            Self::ClassField(v) => todo!(),
-            Self::ClassMethod(v) => todo!(),
             Self::Expression(v) => v.lispify(),
-            Self::Function(v) => todo!(),
+            Self::Function(v) => v.lispify(),
             Self::Control(v) => todo!(),
             Self::Document(v) => todo!(),
             Self::LetBind(v) => todo!(),
@@ -71,6 +69,8 @@ impl Lispify for StatementType {
             Self::Enumerate(v) => todo!(),
             Self::UnionField(v) => todo!(),
             Self::Annotation(v) => todo!(),
+            Self::Trait(v) => v.lispify(),
+            Self::Extends(v) => v.lispify(),
         }
     }
 }

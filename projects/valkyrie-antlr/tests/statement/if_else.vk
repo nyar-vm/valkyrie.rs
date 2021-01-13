@@ -45,3 +45,11 @@ if a > 0 {
 if !pattern {
     return true
 }
+
+
+// @*@**@***@****@*****@******@*******@********@*********@**********@*********
+let (yin, yang) = (callcc { yield '@'}, callcc { yield '*' })
+yin(yang)
+
+
+

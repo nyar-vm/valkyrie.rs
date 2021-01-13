@@ -20,20 +20,7 @@ impl ThisParser for FunctionDeclaration {
         })
     }
 
-    fn lispify(&self) -> Lisp {
-        let mut lisp = Lisp::new(6);
-        lisp += self.r#type.lispify();
-        lisp += self.namepath.lispify();
-        if let Some(generic) = &self.generic {
-            lisp += generic.lispify();
-        }
-        lisp += self.arguments.lispify();
-        if let Some(r#return) = &self.r#return {
-            lisp += r#return.lispify();
-        }
-        lisp += self.body.lispify();
-        lisp
-    }
+
 }
 
 impl ThisParser for FunctionType {

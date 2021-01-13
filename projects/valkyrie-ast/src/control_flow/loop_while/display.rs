@@ -1,5 +1,4 @@
 use super::*;
-use lispify::{Lisp, Lispify};
 
 impl PrettyPrint for WhileLoop {
     /// ```vk

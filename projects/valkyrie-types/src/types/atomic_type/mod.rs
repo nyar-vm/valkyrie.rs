@@ -7,14 +7,14 @@ pub struct ValkyrieAtomicType {
     document: ValkyrieDocument,
 }
 
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug, Default, Scan)]
 pub struct ValkyrieDocument {
     r#type: ValkyrieDocumentType,
     input: String,
 }
 
 #[repr(u8)]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Scan)]
 pub enum ValkyrieDocumentType {
     Markdown,
     Notedown,

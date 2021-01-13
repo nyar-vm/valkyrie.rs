@@ -1,5 +1,7 @@
 use super::*;
-use valkyrie_ast::{FunctionDeclaration, FunctionReturnNode, FunctionType, GuardPattern, GuardStatement, IfStatement};
+use valkyrie_ast::{
+    ExtendsStatement, FunctionDeclaration, FunctionReturnNode, FunctionType, GuardPattern, GuardStatement, IfStatement,
+};
 
 mod atomic;
 mod looping;
@@ -31,9 +33,7 @@ impl<'i> Extractor<Top_statementContextAll<'i>> for StatementNode {
     fn take_one(node: &Top_statementContextAll<'i>) -> Option<Self> {
         let body: StatementType = match node {
             Top_statementContextAll::SClassContext(s) => ClassDeclaration::take(s.define_class())?.into(),
-            Top_statementContextAll::SExtendsContext(s) => {
-                todo!()
-            }
+            Top_statementContextAll::SExtendsContext(s) => ExtendsStatement::take(s.define_extends())?.into(),
             Top_statementContextAll::STraitContext(_) => {
                 todo!()
             }
@@ -55,7 +55,11 @@ impl<'i> Extractor<Top_statementContextAll<'i>> for StatementNode {
         Some(Self { r#type: body, end_semicolon: false })
     }
 }
-
+impl<'i> Extractor<Define_extendsContextAll<'i>> for ExtendsStatement {
+    fn take_one(node: &Define_extendsContextAll<'i>) -> Option<Self> {
+        Some(Self { fields: vec![], methods: vec![] })
+    }
+}
 impl<'i> Extractor<Function_statementContextAll<'i>> for StatementType {
     fn take_one(node: &Function_statementContextAll<'i>) -> Option<Self> {
         let body: StatementType = match node {

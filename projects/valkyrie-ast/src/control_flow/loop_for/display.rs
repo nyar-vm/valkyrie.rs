@@ -1,5 +1,4 @@
 use super::*;
-use lispify::{Lisp, Lispify};
 
 impl PrettyPrint for ForLoop {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
@@ -21,7 +20,7 @@ impl PrettyPrint for ForLoop {
         terms.into()
     }
 }
-
+#[cfg(feature = "lispify")]
 impl Lispify for ForLoop {
     type Output = Lisp;
 

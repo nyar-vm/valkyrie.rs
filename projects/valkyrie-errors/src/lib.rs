@@ -5,6 +5,8 @@ mod errors;
 mod runtime_error;
 mod syntax_error;
 
+pub mod third_party;
+
 #[cfg(feature = "url")]
 pub use url::Url;
 

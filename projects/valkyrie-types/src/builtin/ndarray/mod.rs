@@ -1,8 +1,9 @@
 use crate::{types::ValkyrieMetaType, ValkyrieType, ValkyrieValue};
 use ndarray::{Array, Array2};
+use shredder::Scan;
 use std::sync::Arc;
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Scan)]
 pub struct ValkyrieNDArray {
     inner_bytes: Array2<u8>,
     data_type: NDArrayDataType,

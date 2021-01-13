@@ -4,13 +4,9 @@ use crate::{
     ValkyrieValue,
 };
 use indexmap::IndexMap;
-use std::{
-    collections::BTreeMap,
-    path::{Path, PathBuf},
-    sync::Arc,
-};
+use std::{collections::BTreeMap, sync::Arc};
 use valkyrie_ast::StatementBlock;
-use valkyrie_error::{DefinitionSpan, RuntimeError, ValkyrieError, ValkyrieResult};
+use valkyrie_error::{DefinitionSpan, RuntimeError, ValkyrieResult};
 
 pub mod operators;
 

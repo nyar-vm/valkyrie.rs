@@ -1,4 +1,5 @@
 use super::*;
+use crate::{ExtendsStatement, TraitDeclaration};
 
 mod display;
 
@@ -25,10 +26,6 @@ pub enum StatementType {
     Import(Box<ImportStatement>),
     /// The class declaration node.
     Class(Box<ClassDeclaration>),
-    /// The class's declaration node.
-    ClassField(Box<ClassFieldDeclaration>),
-    /// The class's method declaration node.
-    ClassMethod(Box<ClassMethodDeclaration>),
     /// The union declaration node.
     Union(Box<UnionDeclaration>),
     /// The union's field declaration node.
@@ -43,6 +40,10 @@ pub enum StatementType {
     Tagged(Box<TaggedDeclaration>),
     /// The tagged union's variant declaration node.
     Variant(Box<VariantDeclaration>),
+    /// The trait declaration node
+    Trait(Box<TraitDeclaration>),
+    /// The type extension node
+    Extends(Box<ExtendsStatement>),
     /// The function declaration node.
     Function(Box<FunctionDeclaration>),
     /// The while loop statement node.

@@ -15,13 +15,17 @@ pub mod tagged;
 pub mod try_catch;
 pub mod unions;
 
+pub mod traits;
+
+pub mod extends;
+
 use crate::{
     AnnotationList, AnnotationNode, ApplyArgument, ArgumentTermNode, ClassDeclaration, ClassFieldDeclaration,
     ClassMethodDeclaration, ControlNode, DocumentationNode, EnumerateDeclaration, EnumerateFieldDeclaration, ExpressionNode,
     ExpressionType, FlagsDeclaration, ForLoop, FunctionDeclaration, FunctionEffectNode, FunctionReturnNode, GenericArgument,
-    GuardStatement, IdentifierNode, ImportStatement, LetBindNode, ModifiersNode, NamePathNode, NamespaceDeclaration,
-    LetPattern, ProgramRoot, StatementBlock, StatementNode, StatementType, StringLiteralNode, StringTextNode,
-    TaggedDeclaration, UnionDeclaration, UnionFieldDeclaration, VariantDeclaration, WhileLoop,
+    GuardStatement, IdentifierNode, ImportStatement, LetBindNode, LetPattern, ModifiersNode, NamePathNode,
+    NamespaceDeclaration, StatementBlock, StatementNode, StatementType, StringLiteralNode, StringTextNode, TaggedDeclaration,
+    UnionDeclaration, UnionFieldDeclaration, VariantDeclaration, WhileLoop,
 };
 use alloc::{
     boxed::Box,

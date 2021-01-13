@@ -35,5 +35,6 @@ pub use self::{
     },
     values::ValkyrieValue,
 };
+pub use nyar_number::NyarNumber as ValkyrieNumber;
 pub use valkyrie_ast::ValkyrieOperator;
 pub use valkyrie_error::{JsonValue, RuntimeError, SyntaxError, ValkyrieError, ValkyrieResult};

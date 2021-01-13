@@ -1,5 +1,4 @@
 use super::*;
-use crate::ValkyrieName;
 
 #[derive(Clone, Debug)]
 pub struct ValkyrieStructure {

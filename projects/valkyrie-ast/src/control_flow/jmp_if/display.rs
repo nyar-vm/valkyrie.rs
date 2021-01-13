@@ -1,5 +1,4 @@
 use super::*;
-use lispify::{Lisp, Lispify};
 
 impl PrettyPrint for IfStatement {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {

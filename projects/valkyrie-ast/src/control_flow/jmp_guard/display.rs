@@ -1,5 +1,4 @@
 use super::*;
-use lispify::{Lisp, Lispify};
 
 impl PrettyPrint for GuardStatement {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
@@ -13,6 +12,7 @@ impl PrettyPrint for GuardStatement {
     }
 }
 
+#[cfg(feature = "lispify")]
 impl Lispify for GuardStatement {
     type Output = Lisp;
 
