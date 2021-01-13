@@ -77,15 +77,10 @@ impl FunctionType {
 }
 impl StatementBlock {
     pub fn last_semicolon(&self) -> bool {
-        match self.terms.last() {
-            Some(s) => s.end_semicolon,
-            None => true,
-        }
+        todo!()
     }
     pub fn fill_semicolon(&mut self) {
-        for x in self.terms.iter_mut().rev().skip(1) {
-            x.end_semicolon = true;
-        }
+        todo!()
     }
 }
 

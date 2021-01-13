@@ -3,17 +3,10 @@ use crate::{ExtendsStatement, TraitDeclaration};
 
 mod display;
 
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct StatementNode {
-    pub r#type: StatementType,
-    pub end_semicolon: bool,
-}
-
 /// The top level elements in script mode.
 #[derive(Clone, Debug, PartialEq, Eq, Hash, From)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum StatementType {
+pub enum StatementNode {
     /// Placeholder for when the parser fails to parse a statement.
     Nothing,
     /// The documentation node, must have acceptor underneath.
@@ -65,21 +58,18 @@ pub enum StatementType {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct StatementContext {}
 
-impl From<AnnotationNode> for StatementType {
+impl From<AnnotationNode> for StatementNode {
     fn from(value: AnnotationNode) -> Self {
         let list = AnnotationList { kind: value.kind, terms: vec![value.term], span: value.span };
 
-        StatementType::Annotation(Box::new(list))
+        StatementNode::Annotation(Box::new(list))
     }
 }
 
 impl StatementNode {
     /// Create a new expression node
     pub fn expression(body: ExpressionType, span: Range<u32>) -> Self {
-        Self {
-            r#type: StatementType::Expression(Box::new(ExpressionNode { type_level: false, body, span: span.clone() })),
-            end_semicolon: false,
-        }
+        Self::Expression(Box::new(ExpressionNode { type_level: false, body, span: span.clone() }))
     }
     /// Create a new raw text node
     pub fn text<S: ToString>(s: S, span: Range<u32>) -> Self {

@@ -21,65 +21,34 @@ impl ParseTreeVisitorCompat<'_> for ValkyrieProgramParser {
 /// Convert weakly typed ast to strongly typed ast
 impl ValkyrieAntlrVisitor<'_> for ValkyrieProgramParser {
     fn visit_program(&mut self, ctx: &ProgramContext<'_>) {
-        for node in ctx.top_statement_all() {
-            if let Some(s) = StatementNode::take_one(&*node) {
-                self.statements.push(s)
+        for node in ctx.get_children() {
+            if let Some(s) = node.downcast_ref::<Define_namespaceContextAll>().and_then(NamespaceDeclaration::take_one) {
+                self.statements.push(s.into());
+                continue;
+            }
+            if let Some(s) = node.downcast_ref::<Define_classContextAll>().and_then(ClassDeclaration::take_one) {
+                self.statements.push(s.into());
+                continue;
+            }
+            if let Some(s) = node.downcast_ref::<Define_extendsContextAll>().and_then(ExtendsStatement::take_one) {
+                self.statements.push(s.into());
+                continue;
             }
         }
+        // Top_statementContextAll::SNamespaceContext(s) => NamespaceDeclaration::take(s.define_namespace())?.into(),
+        // Top_statementContextAll::SFunctionContext(s) => FunctionDeclaration::take(s.define_function())?.into(),
+        // Top_statementContextAll::SFlagsContext(s) => FlagsDeclaration::take(s.define_bitflags())?.into(),
+        // Top_statementContextAll::SUnionContext(s) => UnionDeclaration::take(s.define_union())?.into(),
+        // Top_statementContextAll::S1Context(rest) => StatementType::take(rest.function_statement())?,
+        // Function_statementContextAll::SLoopContext(v) => StatementType::take(v.loop_statement())?.into(),
+        // Function_statementContextAll::SIfLetContext(s) => GuardStatement::take(s.guard_statement())?.into(),
+        // Function_statementContextAll::S2Context(rest) => ExpressionNode::take(rest.expression_root())?.into(),
     }
 }
 
-impl<'i> Extractor<Top_statementContextAll<'i>> for StatementNode {
-    fn take_one(node: &Top_statementContextAll<'i>) -> Option<Self> {
-        let body: StatementType = match node {
-            Top_statementContextAll::SClassContext(s) => ClassDeclaration::take(s.define_class())?.into(),
-            Top_statementContextAll::SExtendsContext(s) => ExtendsStatement::take(s.define_extends())?.into(),
-            Top_statementContextAll::STraitContext(_) => {
-                todo!()
-            }
-            Top_statementContextAll::SNamespaceContext(s) => NamespaceDeclaration::take(s.define_namespace())?.into(),
-            Top_statementContextAll::SExtensionContext(_) => {
-                todo!()
-            }
-            Top_statementContextAll::SFunctionContext(s) => FunctionDeclaration::take(s.define_function())?.into(),
-            Top_statementContextAll::SImportContext(_) => {
-                todo!()
-            }
-            Top_statementContextAll::SFlagsContext(s) => FlagsDeclaration::take(s.define_bitflags())?.into(),
-            Top_statementContextAll::SUnionContext(s) => UnionDeclaration::take(s.define_union())?.into(),
-            Top_statementContextAll::S1Context(rest) => StatementType::take(rest.function_statement())?,
-            Top_statementContextAll::Error(_) => {
-                todo!()
-            }
-        };
-        Some(Self { r#type: body, end_semicolon: false })
-    }
-}
 impl<'i> Extractor<Define_extendsContextAll<'i>> for ExtendsStatement {
     fn take_one(node: &Define_extendsContextAll<'i>) -> Option<Self> {
         Some(Self { fields: vec![], methods: vec![] })
-    }
-}
-impl<'i> Extractor<Function_statementContextAll<'i>> for StatementType {
-    fn take_one(node: &Function_statementContextAll<'i>) -> Option<Self> {
-        let body: StatementType = match node {
-            Function_statementContextAll::SlambdaContext(_) => {
-                todo!()
-            }
-            Function_statementContextAll::SLoopContext(v) => StatementType::take(v.loop_statement())?.into(),
-            Function_statementContextAll::STypeContext(_) => {
-                todo!()
-            }
-            Function_statementContextAll::SIfLetContext(s) => GuardStatement::take(s.guard_statement())?.into(),
-            Function_statementContextAll::SLetContext(_) => {
-                todo!()
-            }
-            Function_statementContextAll::S2Context(rest) => ExpressionNode::take(rest.expression_root())?.into(),
-            Function_statementContextAll::Error(_) => {
-                todo!()
-            }
-        };
-        Some(body)
     }
 }
 
@@ -174,9 +143,6 @@ impl<'i> Extractor<ExpressionContextAll<'i>> for ExpressionType {
             ExpressionContextAll::ESliceContext(_) => {
                 todo!()
             }
-            ExpressionContextAll::EOffsetContext(_) => {
-                todo!()
-            }
             ExpressionContextAll::EAsContext(_) => {
                 todo!()
             }
@@ -184,9 +150,6 @@ impl<'i> Extractor<ExpressionContextAll<'i>> for ExpressionType {
                 todo!()
             }
             ExpressionContextAll::ELambdaContext(_) => {
-                todo!()
-            }
-            ExpressionContextAll::EDotContext(_) => {
                 todo!()
             }
             ExpressionContextAll::EOrElseContext(_) => {
@@ -204,10 +167,45 @@ impl<'i> Extractor<ExpressionContextAll<'i>> for ExpressionType {
             ExpressionContextAll::EDotMatchContext(_) => {
                 todo!()
             }
-            ExpressionContextAll::EDotFunctionContext(_) => {
+            ExpressionContextAll::EIfContext(_) => {
                 todo!()
             }
-            ExpressionContextAll::E1Context(rest) => ExpressionType::take(rest.term_with_follow())?,
+            ExpressionContextAll::ETryContext(_) => {
+                todo!()
+            }
+            ExpressionContextAll::EObjectContext(_) => {
+                todo!()
+            }
+            ExpressionContextAll::ETupleContext(_) => {
+                todo!()
+            }
+            ExpressionContextAll::ERangeContext(_) => {
+                todo!()
+            }
+            ExpressionContextAll::EAtomContext(_) => {
+                todo!()
+            }
+            ExpressionContextAll::EFunctionContext(_) => {
+                todo!()
+            }
+            ExpressionContextAll::EClosureContext(_) => {
+                todo!()
+            }
+            ExpressionContextAll::EMatchContext(_) => {
+                todo!()
+            }
+            ExpressionContextAll::EMacroContext(_) => {
+                todo!()
+            }
+            ExpressionContextAll::EDefineContext(_) => {
+                todo!()
+            }
+            ExpressionContextAll::EMapContext(_) => {
+                todo!()
+            }
+            ExpressionContextAll::ENewContext(_) => {
+                todo!()
+            }
             ExpressionContextAll::Error(_) => {
                 todo!()
             }
@@ -264,7 +262,17 @@ impl<'i> Extractor<Inline_expressionContextAll<'i>> for ExpressionType {
             Inline_expressionContextAll::ISliceContext(_) => {
                 todo!()
             }
-            Inline_expressionContextAll::E3Context(rest) => ExpressionType::take(rest.atomic())?,
+
+            Inline_expressionContextAll::IGenericContext(_) => {
+                todo!()
+            }
+            Inline_expressionContextAll::IMapContext(_) => {
+                todo!()
+            }
+            Inline_expressionContextAll::ITupleContext(_) => {
+                todo!()
+            }
+            Inline_expressionContextAll::IAtomContext(atom) => ExpressionType::take(atom.atomic())?,
             Inline_expressionContextAll::Error(_) => {
                 todo!()
             }
@@ -290,47 +298,8 @@ impl<'i> Extractor<Type_expressionContextAll<'i>> for ExpressionType {
             Type_expressionContextAll::TArrowsContext(_) => {
                 todo!()
             }
-            Type_expressionContextAll::E4Context(rest) => ExpressionType::take(rest.atomic())?,
+            Type_expressionContextAll::TAtomContext(atom) => ExpressionType::take(atom.atomic())?,
             Type_expressionContextAll::Error(_) => {
-                todo!()
-            }
-        };
-        Some(body)
-    }
-}
-impl<'i> Extractor<Term_with_followContextAll<'i>> for ExpressionType {
-    fn take_one(node: &Term_with_followContextAll<'i>) -> Option<Self> {
-        let body = match node {
-            Term_with_followContextAll::SIfContext(s) => IfStatement::take(s.if_statement())?.into(),
-            Term_with_followContextAll::ETryContext(_) => {
-                todo!()
-            }
-            Term_with_followContextAll::EFunctionContext(_) => {
-                todo!()
-            }
-            Term_with_followContextAll::EDefineContext(_) => {
-                todo!()
-            }
-            Term_with_followContextAll::EObjectContext(_) => {
-                todo!()
-            }
-            Term_with_followContextAll::ETupleContext(_) => {
-                todo!()
-            }
-            Term_with_followContextAll::ERangeContext(_) => {
-                todo!()
-            }
-            Term_with_followContextAll::EMatchContext(_) => {
-                todo!()
-            }
-            Term_with_followContextAll::ENewContext(_) => {
-                todo!()
-            }
-            Term_with_followContextAll::EMacroContext(_) => {
-                todo!()
-            }
-            Term_with_followContextAll::E2Context(rest) => ExpressionType::take(rest.atomic())?.into(),
-            Term_with_followContextAll::Error(_) => {
                 todo!()
             }
         };

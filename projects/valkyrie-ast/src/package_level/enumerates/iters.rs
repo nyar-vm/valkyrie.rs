@@ -14,8 +14,8 @@ impl<'a> Iterator for EnumerateIterator<'a> {
 
     fn next(&mut self) -> Option<Self::Item> {
         let term = self.inner.next()?;
-        match &term.r#type {
-            StatementType::EnumerateField(field) => Some(EnumerateTerm::Field((**field).clone())),
+        match &term {
+            StatementNode::EnumerateField(field) => Some(EnumerateTerm::Field((**field).clone())),
             _ => self.next(),
         }
     }

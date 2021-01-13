@@ -10,8 +10,8 @@ use valkyrie_ast::{
     AnnotationList, AnnotationNode, ApplyCallNode, ClassDeclaration, ControlNode, DocumentationNode, EnumerateDeclaration,
     ExpressionContext, ExpressionNode, FlagsDeclaration, ForLoop, FunctionDeclaration, GenericCallNode, GuardLetStatement,
     GuardStatement, IdentifierNode, ImportAliasNode, ImportGroupNode, ImportStatement, ImportTermNode, LambdaArgumentNode,
-    LambdaNode, LetBindNode, NamePathNode, NamespaceDeclaration, NamespaceKind, NewConstructNode, LetPattern,
-    ProgramRoot, StatementNode, StatementType, TableTermNode, TaggedDeclaration, TypingExpression, UnionDeclaration, WhileLoop,
+    LambdaNode, LetBindNode, LetPattern, NamePathNode, NamespaceDeclaration, NamespaceKind, NewConstructNode, ProgramRoot,
+    StatementNode, TableTermNode, TaggedDeclaration, TypingExpression, UnionDeclaration, WhileLoop,
 };
 
 mod annotation;
@@ -59,14 +59,14 @@ impl ThisParser for StatementNode {
 pub fn parse_statement_node(input: ParseState, repl: bool) -> ParseResult<StatementNode> {
     let parser = match repl {
         true => parse_repl_statements,
-        false => StatementType::parse,
+        false => StatementNode::parse,
     };
     let (state, expr) = input.skip(ignore).match_fn(parser)?;
     let (state, eos) = parse_eos(state)?;
     state.finish(StatementNode { r#type: expr, end_semicolon: eos, span: get_span(input, state) })
 }
 
-impl ThisParser for StatementType {
+impl ThisParser for StatementNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
         input
             .begin_choice()
@@ -96,7 +96,7 @@ impl ThisParser for StatementType {
     }
 }
 
-pub fn parse_repl_statements(input: ParseState) -> ParseResult<StatementType> {
+pub fn parse_repl_statements(input: ParseState) -> ParseResult<StatementNode> {
     input
         .begin_choice()
         .choose_from(DocumentationNode::parse)
@@ -120,12 +120,12 @@ pub fn parse_repl_statements(input: ParseState) -> ParseResult<StatementType> {
         .end_choice()
 }
 
-fn function_with_head(input: ParseState) -> ParseResult<StatementType> {
+fn function_with_head(input: ParseState) -> ParseResult<StatementNode> {
     let (state, mods) = input.match_repeats(|s| {
         let (state, _) = s.skip(ignore).match_negative(FunctionDeclaration::parse, "KW_FUNCTION")?;
         IdentifierNode::parse(state)
     })?;
     let (state, mut func) = state.skip(ignore).match_fn(FunctionDeclaration::parse)?;
     func.modifiers = mods;
-    state.finish(StatementType::Function(Box::new(func)))
+    state.finish(StatementNode::Function(Box::new(func)))
 }

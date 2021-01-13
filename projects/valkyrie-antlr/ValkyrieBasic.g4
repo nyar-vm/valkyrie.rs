@@ -34,14 +34,18 @@ FLOOR_R:       '⌋';
 COLLECTION_L:  '⦃';
 COLLECTION_R:  '⦄';
 
-// infix
+// add
 OP_ADD:     '+';
-OP_INC:     '++';
 OP_SUB:     '-';
+// append
+OP_INC:     '++';
 OP_DEC:     '--';
+// mul
 OP_MUL:     '*';
-OP_DIV:     '/';
+OP_DIV:     '⁄' | '∕' | '/';
+OP_REM:     '%' | '⁒';
 OP_DIV_REM: '/%' | '÷';
+OP_LAST:    '%%';
 // equal
 OP_EQ:  '==';
 OP_NE:  '≠' | '!=';
@@ -82,11 +86,13 @@ LOGIC_NOR:  '⊽';
 SET_INTERSECTION: '∩';
 SET_UNION:        '∪';
 // bitwise
-OP_AND:  '&';
-OP_OR:   '|';
-OP_XOR:  '⊕';
-OP_IMPL: '‽';
-OP_IFF:  '⇔';
+OP_AND:    '&';
+OP_OR:     '|';
+OP_IMPL:   '‽';
+OP_IFF:    '⇔';
+OP_MAP:    '/@' | '⇴' | '⨵';
+OP_APPLY2: '@@' | '⊕';
+OP_APPLY3: '@@@' | '⟴';
 
 // macro call
 OP_AT:   '@';
@@ -95,9 +101,10 @@ OP_HASH: '#' | '##' | '#!';
 LAMBDA_SLOT: '$' | '$$';
 MACRO_SLOT:  '§' | '§§';
 // monadic
-OP_UNIMPLEMENTED: '⅏' | '???';
+OP_UNIMPLEMENTED: '⅏' | '⍼' | '⟁' | '???';
+OP_OR_DEFAULT:    '??';
 OP_OR_ELSE:       '?:';
-OP_THROW:         '?';
+OP_AND_THEN:      '?';
 // not
 OP_NOT: '!';
 KW_NOT: 'not';
@@ -125,7 +132,7 @@ OP_ROOT4:   '∜';
 // suffix
 OP_TEMPERATURE: '℃' | '℉';
 OP_TRANSPOSE:   'ᵀ' | 'ᴴ';
-OP_PERCENT:     '%' | '‰' | '‱';
+OP_PERCENT:     '‰' | '‱';
 // standalone
 OP_REFERENCE: '※';
 OP_LABEL:     '¶';

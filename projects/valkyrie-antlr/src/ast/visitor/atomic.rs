@@ -24,6 +24,9 @@ impl<'i> Extractor<AtomicContextAll<'i>> for ExpressionType {
                 todo!()
             }
             AtomicContextAll::ANamepathContext(s) => NamePathNode::take(s.namepath())?.into(),
+            AtomicContextAll::AOutputContext(_) => {
+                todo!()
+            }
             AtomicContextAll::Error(_) => {
                 todo!()
             }

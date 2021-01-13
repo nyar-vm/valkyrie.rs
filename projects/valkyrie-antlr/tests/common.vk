@@ -1,0 +1,32 @@
+/// (1 + 2).print { $x }
+1 + 2 >> print($x)
+
+
+/// print(add(1 + 2))
+1 + 2 >> add >> print;
+/// print(add(1 + 2))
+print << add << 1 + 1;
+
+/// Some(print(add(1+2)))
+Some(1 + 2) >>> add >>> print;
+
+f << g;
+
+x.last
+
+`+` ⊕ digits ⇴ 123
+
+`+` ⊕ [1, 2, 3]
+
+`+` ⟴ [(1, ), (1, 2), (1, 2, 3)]
+
+{$x; print($x)}
+
+
+let list = {$} ⇴ [1, 2, 3];
+
+x >>= f;
+
+x = f(x)
+
+-20%;

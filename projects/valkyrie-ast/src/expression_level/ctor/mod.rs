@@ -25,6 +25,7 @@ mod display;
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct NewConstructNode {
+    /// The modifiers for new
     pub modifiers: Vec<IdentifierNode>,
     pub namepath: NamePathNode,
     pub generic: GenericCallNode,

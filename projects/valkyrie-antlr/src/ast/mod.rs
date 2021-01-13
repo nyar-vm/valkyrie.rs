@@ -3,7 +3,6 @@ mod visitor;
 use crate::{
     antlr::{
         valkyrieantlrlexer::ValkyrieAntlrLexer,
-        valkyrieantlrlistener::ValkyrieAntlrListener,
         valkyrieantlrparser::{self, *},
         valkyrieantlrvisitor::ValkyrieAntlrVisitor,
     },
@@ -14,16 +13,14 @@ use antlr_rust::{
     errors::ANTLRError,
     parser::ParserNodeType,
     parser_rule_context::ParserRuleContext,
-    token::Token,
-    tree::{ParseTree, ParseTreeListener, ParseTreeVisitorCompat, TerminalNode, Tree, VisitChildren, VisitableDyn},
+    tree::{ParseTree, ParseTreeVisitorCompat, TerminalNode, Tree, VisitChildren, VisitableDyn},
     CoerceTo, InputStream, TidExt,
 };
 use std::{ops::Range, rc::Rc};
 use valkyrie_ast::{
     ClassDeclaration, ClassFieldDeclaration, ClassKind, ExpressionNode, ExpressionType, FlagsDeclaration, ForLoop,
     IdentifierNode, InfixNode, LetPattern, LogicMatrix, ModifiersNode, NamePathNode, NamespaceDeclaration, NamespaceKind,
-    NumberLiteralNode, OperatorNode, PostfixNode, PrefixNode, ProgramRoot, StatementNode, StatementType, UnionDeclaration,
-    ValkyrieOperator,
+    NumberLiteralNode, OperatorNode, PostfixNode, PrefixNode, ProgramRoot, StatementNode, UnionDeclaration, ValkyrieOperator,
 };
 
 #[derive(Clone, Debug, Default)]

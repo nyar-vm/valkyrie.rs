@@ -3,12 +3,6 @@ use super::*;
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for StatementNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
-        self.r#type.pretty(theme)
-    }
-}
-#[cfg(feature = "pretty-print")]
-impl PrettyPrint for StatementType {
-    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         match self {
             Self::Nothing => ";;".into(),
             Self::Annotation(node) => node.pretty(theme),
@@ -35,16 +29,9 @@ impl PrettyPrint for StatementType {
         }
     }
 }
+
 #[cfg(feature = "lispify")]
 impl Lispify for StatementNode {
-    type Output = Lisp;
-
-    fn lispify(&self) -> Self::Output {
-        self.r#type.lispify()
-    }
-}
-#[cfg(feature = "lispify")]
-impl Lispify for StatementType {
     type Output = Lisp;
 
     fn lispify(&self) -> Self::Output {

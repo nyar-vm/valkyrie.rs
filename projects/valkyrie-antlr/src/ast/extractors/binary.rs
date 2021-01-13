@@ -43,7 +43,6 @@ impl<'i> Extractor<Op_pipelineContextAll<'i>> for OperatorNode {
             (node.OP_LLE(), ValkyrieOperator::Placeholder),
             (node.OP_GG(), ValkyrieOperator::Placeholder),
             (node.OP_GGG(), ValkyrieOperator::Placeholder),
-            (node.OP_GGE(), ValkyrieOperator::Placeholder),
         ])
     }
 }

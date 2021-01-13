@@ -14,8 +14,8 @@ impl<'a> Iterator for FlagsIterator<'a> {
 
     fn next(&mut self) -> Option<Self::Item> {
         let term = self.inner.next()?;
-        match &term.r#type {
-            StatementType::EnumerateField(field) => Some(FlagsTerm::Field((**field).clone())),
+        match &term {
+            StatementNode::EnumerateField(field) => Some(FlagsTerm::Field((**field).clone())),
             _ => self.next(),
         }
     }

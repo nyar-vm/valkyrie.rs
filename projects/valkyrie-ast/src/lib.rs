@@ -54,7 +54,7 @@ pub use crate::{
         let_bind::LetBindNode,
         namespace::{NamespaceDeclaration, NamespaceKind},
         program::ProgramRoot,
-        statements::{StatementContext, StatementNode, StatementType},
+        statements::{StatementContext, StatementNode},
         tagged::{TaggedDeclaration, VariantDeclaration},
         traits::TraitDeclaration,
         try_catch::TryStatement,

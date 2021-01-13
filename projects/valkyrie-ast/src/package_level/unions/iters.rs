@@ -14,8 +14,8 @@ impl<'a> Iterator for UnionIterator<'a> {
 
     fn next(&mut self) -> Option<Self::Item> {
         let term = self.inner.next()?;
-        match &term.r#type {
-            StatementType::UnionField(field) => Some(UnionTerm::Field((**field).clone())),
+        match &term {
+            StatementNode::UnionField(field) => Some(UnionTerm::Field((**field).clone())),
             _ => self.next(),
         }
     }

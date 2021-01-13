@@ -1,9 +1,9 @@
 use super::*;
 use valkyrie_ast::{TuplePatternNode, WhileConditionNode, WhileLoop, WhileLoopKind};
 
-impl<'i> Extractor<Loop_statementContextAll<'i>> for StatementType {
+impl<'i> Extractor<Loop_statementContextAll<'i>> for StatementNode {
     fn take_one(node: &Loop_statementContextAll<'i>) -> Option<Self> {
-        let body: StatementType = match node {
+        let body: StatementNode = match node {
             Loop_statementContextAll::ForLoopContext(s) => ForLoop::take_one(s)?.into(),
             Loop_statementContextAll::WhileLetContext(s) => WhileLoop::take_one(s)?.into(),
             Loop_statementContextAll::WhileLoopContext(s) => WhileLoop::take_one(s)?.into(),

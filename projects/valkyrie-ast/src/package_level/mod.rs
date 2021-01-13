@@ -24,7 +24,7 @@ use crate::{
     ClassMethodDeclaration, ControlNode, DocumentationNode, EnumerateDeclaration, EnumerateFieldDeclaration, ExpressionNode,
     ExpressionType, FlagsDeclaration, ForLoop, FunctionDeclaration, FunctionEffectNode, FunctionReturnNode, GenericArgument,
     GuardStatement, IdentifierNode, ImportStatement, LetBindNode, LetPattern, ModifiersNode, NamePathNode,
-    NamespaceDeclaration, StatementBlock, StatementNode, StatementType, StringLiteralNode, StringTextNode, TaggedDeclaration,
+    NamespaceDeclaration, StatementBlock, StatementNode, StringLiteralNode, StringTextNode, TaggedDeclaration,
     UnionDeclaration, UnionFieldDeclaration, VariantDeclaration, WhileLoop,
 };
 use alloc::{
