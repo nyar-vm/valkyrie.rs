@@ -1,7 +1,6 @@
-use crate::{types::ValkyrieMetaType, ValkyrieType, ValkyrieValue};
+use super::*;
+
 use ndarray::{Array, Array2};
-use shredder::Scan;
-use std::sync::Arc;
 
 #[derive(Clone, Debug, Scan)]
 pub struct ValkyrieNDArray {
@@ -27,7 +26,7 @@ impl ValkyrieType for ValkyrieNDArray {
         todo!()
     }
 
-    fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
+    fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
         todo!()
     }
 }

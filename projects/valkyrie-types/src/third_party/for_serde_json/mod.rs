@@ -1,5 +1,4 @@
 use super::*;
-use valkyrie_error::third_party::{FBig, IBig};
 
 impl ValkyrieType for JsonValue {
     fn boxed(self) -> ValkyrieValue {
@@ -7,20 +6,18 @@ impl ValkyrieType for JsonValue {
             JsonValue::Null => ValkyrieValue::Null,
             JsonValue::Bool(v) => ValkyrieValue::Boolean(v),
             JsonValue::Number(v) => {
-                if v.is_i64() {
-                    ValkyrieValue::Integer(v.as_i64().unwrap().into())
+                if let Some(s) = v.as_i64() {
+                    return ValkyrieValue::from(s);
                 }
-                else if v.is_u64() {
-                    ValkyrieValue::Integer(v.as_u64().unwrap().into())
+                if let Some(s) = v.as_u64() {
+                    return ValkyrieValue::from(s);
                 }
-                else if v.is_f64() {
-                    ValkyrieValue::Decimal(FBig::try_from(v.as_f64().unwrap()).unwrap())
+                if let Some(s) = v.as_f64() {
+                    return ValkyrieValue::from(s);
                 }
-                else {
-                    todo!()
-                }
+                ValkyrieValue::Null
             }
-            JsonValue::String(v) => ValkyrieValue::UTF8String(Arc::new(v)),
+            JsonValue::String(v) => ValkyrieValue::UTF8String(Gc::new(v)),
             JsonValue::Array(_) => {
                 todo!()
             }
@@ -30,7 +27,7 @@ impl ValkyrieType for JsonValue {
         }
     }
 
-    fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
+    fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
         todo!()
     }
 }

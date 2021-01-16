@@ -12,7 +12,7 @@ pub mod operators;
 
 pub trait ValkyrieFunctionType {
     fn boxed(self) -> ValkyrieValue;
-    fn type_info(&self) -> Arc<ValkyrieMetaType>;
+    fn type_info(&self) -> Gc<ValkyrieMetaType>;
 }
 
 /// A function that can be called from Valkyrie.

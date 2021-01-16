@@ -12,7 +12,6 @@ edition = "2021"
 [dependencies]
 serde = "1.0.188"
 shredder = "0.2.0"
-patricia_tree = "0.6.2"
 num-traits = "0.2.16"
 indexmap = "2.0.0"
 itertools = "0.11.0"

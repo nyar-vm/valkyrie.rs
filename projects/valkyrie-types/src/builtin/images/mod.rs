@@ -1,53 +1,26 @@
-use crate::{types::ValkyrieMetaType, ValkyrieType, ValkyrieValue};
-use image::DynamicImage;
-use std::sync::Arc;
+use super::*;
+use image::{DynamicImage, RgbaImage};
 
 #[derive(Clone, Debug)]
 pub struct ValkyrieImage {
-    any_image: DynamicImage,
+    rgba: RgbaImage,
+}
+
+unsafe impl GcSafe for ValkyrieImage {}
+
+unsafe impl Scan for ValkyrieImage {
+    fn scan(&self, _: &mut Scanner<'_>) {}
 }
 
 impl ValkyrieImage {
     pub fn width(&self) -> ValkyrieValue {
-        ValkyrieValue::from(self.any_image.width())
+        ValkyrieValue::from(self.rgba.width())
     }
     pub fn height(&self) -> ValkyrieValue {
-        ValkyrieValue::from(self.any_image.height())
+        ValkyrieValue::from(self.rgba.height())
     }
     pub fn get_pixel(&self) {
-        match &self.any_image {
-            DynamicImage::ImageLuma8(_) => {
-                todo!()
-            }
-            DynamicImage::ImageLumaA8(_) => {
-                todo!()
-            }
-            DynamicImage::ImageRgb8(_) => {
-                todo!()
-            }
-            DynamicImage::ImageRgba8(_) => {
-                todo!()
-            }
-            DynamicImage::ImageLuma16(_) => {
-                todo!()
-            }
-            DynamicImage::ImageLumaA16(_) => {
-                todo!()
-            }
-            DynamicImage::ImageRgb16(_) => {
-                todo!()
-            }
-            DynamicImage::ImageRgba16(_) => {
-                todo!()
-            }
-            DynamicImage::ImageRgb32F(_) => {
-                todo!()
-            }
-            DynamicImage::ImageRgba32F(_) => {
-                todo!()
-            }
-            _ => unreachable!(),
-        }
+        todo!()
     }
 }
 
@@ -56,7 +29,7 @@ impl ValkyrieType for ValkyrieImage {
         todo!()
     }
 
-    fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
+    fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
         // TODO: pixel generic
         let this = ValkyrieMetaType::new("std.image.Image");
         // this.set_namepath("std.collection.SortedMap");

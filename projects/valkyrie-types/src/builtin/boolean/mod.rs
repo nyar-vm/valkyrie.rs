@@ -1,20 +1,11 @@
-use std::{
-    collections::hash_map::DefaultHasher,
-    hash::{Hash, Hasher},
-    ops::Not,
-    sync::Arc,
-};
-
-use indexmap::IndexMap;
-
-use crate::{types::ValkyrieMetaType, ValkyrieType, ValkyrieValue};
+use super::*;
 
 impl ValkyrieType for bool {
     fn boxed(self) -> ValkyrieValue {
         ValkyrieValue::Boolean(self)
     }
 
-    fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
+    fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
         let mut meta = ValkyrieMetaType::default();
         meta.set_namepath("std.primitive.Boolean");
         Arc::new(meta)
@@ -22,11 +13,11 @@ impl ValkyrieType for bool {
 }
 
 pub struct TypeManager {
-    types: IndexMap<u64, Arc<ValkyrieMetaType>>,
+    types: IndexMap<u64, Gc<ValkyrieMetaType>>,
 }
 
 impl TypeManager {
-    pub fn get_or_insert(&mut self, info: Arc<ValkyrieMetaType>) -> Arc<ValkyrieMetaType> {
+    pub fn get_or_insert(&mut self, info: Gc<ValkyrieMetaType>) -> Gc<ValkyrieMetaType> {
         let mut hasher = DefaultHasher::new();
         info.hash(&mut hasher);
         let hash = hasher.finish();

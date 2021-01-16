@@ -10,7 +10,7 @@ where
         let this = ValkyrieVariantType::new("std.primitive.Option".to_string());
         this.boxed()
     }
-    fn dynamic_type(&self) -> Arc<ValkyrieMetaType>
+    fn dynamic_type(&self) -> Gc<ValkyrieMetaType>
     where
         Self: Sized,
     {

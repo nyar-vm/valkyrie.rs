@@ -15,7 +15,7 @@ impl ValkyrieType for ValkyrieUnionType {
         todo!()
     }
 
-    fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
+    fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
         todo!()
     }
 }

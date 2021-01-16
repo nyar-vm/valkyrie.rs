@@ -1,3 +1,4 @@
+use shredder::Gc;
 use std::{
     collections::{BTreeMap, BTreeSet},
     sync::Arc,
@@ -14,14 +15,14 @@ where
         for item in self {
             out.extend_one(item.boxed());
         }
-        ValkyrieValue::Table(Arc::new(out))
+        ValkyrieValue::Table(Gc::new(out))
     }
 
-    fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
+    fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
         let mut this = ValkyrieMetaType::default();
         this.set_namepath("std.collection.Array");
         this.mut_generic_types().push(T::static_type());
-        Arc::new(this)
+        Gc::new(this)
     }
 }
 
@@ -34,14 +35,14 @@ where
         for item in self {
             out.extend_one(item.boxed());
         }
-        ValkyrieValue::Table(Arc::new(out))
+        ValkyrieValue::Table(Gc::new(out))
     }
 
-    fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
+    fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
         let mut this = ValkyrieMetaType::default();
         this.set_namepath("std.collection.SortedSet");
         this.mut_generic_types().push(T::static_type());
-        Arc::new(this)
+        Gc::new(this)
     }
 }
 
@@ -55,14 +56,14 @@ where
         for item in self {
             out.extend_one(item.boxed());
         }
-        ValkyrieValue::Table(Arc::new(out))
+        ValkyrieValue::Table(Gc::new(out))
     }
 
-    fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
+    fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
         let mut this = ValkyrieMetaType::default();
         this.set_namepath("std.collection.SortedMap");
         this.mut_generic_types().push(K::static_type());
         this.mut_generic_types().push(V::static_type());
-        Arc::new(this)
+        Gc::new(this)
     }
 }

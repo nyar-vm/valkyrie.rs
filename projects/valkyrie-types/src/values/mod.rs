@@ -1,7 +1,6 @@
 use shredder::{marker::GcSafe, Gc, Scan, Scanner};
 use std::{fmt::Debug, sync::Arc};
 use valkyrie_ast::helper::ValkyrieNode;
-use valkyrie_error::third_party::{FBig, IBig, RBig};
 
 mod der;
 mod ser;
@@ -33,9 +32,6 @@ pub enum ValkyrieValue {
     Unicode(char),
     UTF8String(Gc<String>),
     Bytes(Gc<Vec<u8>>),
-    /// Array, Array2D
-    /// ArrayView, ArrayView2D
-    Json(Gc<JsonValue>),
     Html(Gc<String>),
     NDArray(Gc<ValkyrieNDArray>),
     Image(Gc<ValkyrieImage>),

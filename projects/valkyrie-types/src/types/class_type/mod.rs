@@ -74,7 +74,7 @@ impl ValkyrieType for ValkyrieClassType {
         todo!()
     }
 
-    fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
+    fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
         let mut this = ValkyrieMetaType::default();
         this.set_namepath("std.primitive.List");
 

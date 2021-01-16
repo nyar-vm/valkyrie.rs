@@ -1,6 +1,5 @@
 use shredder::Gc;
 use std::sync::Arc;
-use valkyrie_error::third_party::{FBig, IBig};
 
 use crate::{types::ValkyrieMetaType, utils::primitive_type, ValkyrieNumber, ValkyrieType, ValkyrieValue};
 
@@ -15,10 +14,10 @@ impl ValkyrieType for u8 {
         ValkyrieValue::from(self)
     }
 
-    fn static_type() -> Arc<ValkyrieMetaType> {
+    fn static_type() -> Gc<ValkyrieMetaType> {
         primitive_type("std.primitive.Unsigned8")
     }
-    fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
+    fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
         primitive_type("std.primitive.Unsigned8")
     }
 }
@@ -33,11 +32,11 @@ impl ValkyrieType for u16 {
         ValkyrieValue::from(self)
     }
 
-    fn static_type() -> Arc<ValkyrieMetaType> {
+    fn static_type() -> Gc<ValkyrieMetaType> {
         primitive_type("std.primitive.Unsigned16")
     }
 
-    fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
+    fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
         primitive_type("std.primitive.Unsigned16")
     }
 }
@@ -53,11 +52,11 @@ impl ValkyrieType for u32 {
         ValkyrieValue::from(self)
     }
 
-    fn static_type() -> Arc<ValkyrieMetaType> {
+    fn static_type() -> Gc<ValkyrieMetaType> {
         primitive_type("std.primitive.Unsigned32")
     }
 
-    fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
+    fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
         primitive_type("std.primitive.Unsigned32")
     }
 }
@@ -73,10 +72,10 @@ impl ValkyrieType for u64 {
         ValkyrieValue::from(self)
     }
 
-    fn static_type() -> Arc<ValkyrieMetaType> {
+    fn static_type() -> Gc<ValkyrieMetaType> {
         primitive_type("std.primitive.Unsigned64")
     }
-    fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
+    fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
         primitive_type("std.primitive.Unsigned64")
     }
 }
@@ -91,10 +90,10 @@ impl ValkyrieType for u128 {
         ValkyrieValue::from(self)
     }
 
-    fn static_type() -> Arc<ValkyrieMetaType> {
+    fn static_type() -> Gc<ValkyrieMetaType> {
         primitive_type("std.primitive.Unsigned128")
     }
-    fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
+    fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
         primitive_type("std.primitive.Unsigned128")
     }
 }
@@ -109,7 +108,7 @@ impl ValkyrieType for usize {
         ValkyrieValue::from(self)
     }
 
-    fn static_type() -> Arc<ValkyrieMetaType> {
+    fn static_type() -> Gc<ValkyrieMetaType> {
         if cfg!(target_pointer_width = "64") {
             primitive_type("std.primitive.Unsigned64")
         }
@@ -118,7 +117,7 @@ impl ValkyrieType for usize {
         }
     }
 
-    fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
+    fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
         Self::static_type()
     }
 }
@@ -131,10 +130,10 @@ impl ValkyrieType for i8 {
     fn boxed(self) -> ValkyrieValue {
         ValkyrieValue::from(self)
     }
-    fn static_type() -> Arc<ValkyrieMetaType> {
+    fn static_type() -> Gc<ValkyrieMetaType> {
         primitive_type("std.primitive.Integer8")
     }
-    fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
+    fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
         Self::static_type()
     }
 }
@@ -147,10 +146,10 @@ impl ValkyrieType for i16 {
     fn boxed(self) -> ValkyrieValue {
         ValkyrieValue::from(self)
     }
-    fn static_type() -> Arc<ValkyrieMetaType> {
+    fn static_type() -> Gc<ValkyrieMetaType> {
         primitive_type("std.primitive.Integer16")
     }
-    fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
+    fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
         Self::static_type()
     }
 }
@@ -163,7 +162,7 @@ impl ValkyrieType for i32 {
     fn boxed(self) -> ValkyrieValue {
         ValkyrieValue::from(self)
     }
-    fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
+    fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
         primitive_type("std.primitive.Integer32")
     }
 }
@@ -176,7 +175,7 @@ impl ValkyrieType for i64 {
     fn boxed(self) -> ValkyrieValue {
         ValkyrieValue::from(self)
     }
-    fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
+    fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
         primitive_type("std.primitive.Integer64")
     }
 }
@@ -189,7 +188,7 @@ impl ValkyrieType for i128 {
     fn boxed(self) -> ValkyrieValue {
         ValkyrieValue::from(self)
     }
-    fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
+    fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
         primitive_type("std.primitive.Integer128")
     }
 }
@@ -202,7 +201,7 @@ impl ValkyrieType for isize {
     fn boxed(self) -> ValkyrieValue {
         ValkyrieValue::from(self)
     }
-    fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
+    fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
         if cfg!(target_pointer_width = "64") {
             primitive_type("std.primitive.Integer64")
         }
@@ -217,7 +216,7 @@ impl ValkyrieType for f32 {
         ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(self)))
     }
 
-    fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
+    fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
         let mut this = ValkyrieMetaType::default();
         this.set_namepath("std.primitive.Float32");
         Arc::new(this)
@@ -229,20 +228,10 @@ impl ValkyrieType for f64 {
         ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(self)))
     }
 
-    fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
+    fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
         let mut this = ValkyrieMetaType::default();
         this.set_namepath("std.primitive.Float64");
         Arc::new(this)
-    }
-}
-
-impl ValkyrieType for FBig {
-    fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::Decimal(self)
-    }
-
-    fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
-        primitive_type("std.math.Decimal")
     }
 }
 
@@ -251,17 +240,17 @@ impl ValkyrieType for char {
         ValkyrieValue::Unicode(self)
     }
 
-    fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
+    fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
         primitive_type("std.text.Unicode")
     }
 }
 
 impl ValkyrieType for String {
     fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::UTF8String(Arc::new(self))
+        ValkyrieValue::UTF8String(Gc::new(self))
     }
 
-    fn dynamic_type(&self) -> Arc<ValkyrieMetaType>
+    fn dynamic_type(&self) -> Gc<ValkyrieMetaType>
     where
         Self: Sized,
     {

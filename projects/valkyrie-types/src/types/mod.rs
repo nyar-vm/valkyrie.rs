@@ -7,7 +7,6 @@ use std::{
     hash::{Hash, Hasher},
     sync::Arc,
 };
-use valkyrie_error::third_party::{FBig, IBig, RBig};
 
 pub mod atomic_type;
 pub mod class_type;
@@ -21,7 +20,7 @@ pub mod variant_type;
 pub struct ValkyrieMetaType {
     namepath: Vec<String>,
     document: ValkyrieDocument,
-    generic_types: Vec<Arc<ValkyrieMetaType>>,
+    generic_types: Vec<Gc<ValkyrieMetaType>>,
 }
 
 impl Default for ValkyrieValue {
@@ -35,7 +34,7 @@ impl ValkyrieType for ValkyrieValue {
         self
     }
 
-    fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
+    fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
         match self {
             Self::Uninitialized => primitive_type("std.primitive.Uninitialized"),
             Self::Nothing => primitive_type("std.primitive.Never"),
@@ -131,7 +130,7 @@ impl ValkyrieType for ValkyrieMetaType {
         todo!()
     }
 
-    fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
+    fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
         Arc::new(self.clone())
     }
 }

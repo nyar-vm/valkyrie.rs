@@ -1,7 +1,8 @@
+use shredder::Scan;
 use std::fmt::{Debug, Display, Formatter};
 
 /// A unique identifier used to query the valkyrie object
-#[derive(Clone, PartialEq, Eq, Hash)]
+#[derive(Clone, PartialEq, Eq, Hash, Scan)]
 pub struct ValkyrieID {
     path: Vec<String>,
 }

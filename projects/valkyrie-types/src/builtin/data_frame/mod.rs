@@ -1,9 +1,6 @@
-use crate::{types::ValkyrieMetaType, ValkyrieType, ValkyrieValue};
+use super::*;
+
 use polars::prelude::LazyFrame;
-use std::{
-    fmt::{Debug, Formatter},
-    sync::Arc,
-};
 
 #[derive(Clone)]
 pub struct ValkyrieDataFrame {
@@ -21,7 +18,7 @@ impl ValkyrieType for ValkyrieDataFrame {
         todo!()
     }
 
-    fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
+    fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
         todo!()
     }
 }

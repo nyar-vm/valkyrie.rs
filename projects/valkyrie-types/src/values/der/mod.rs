@@ -2,10 +2,10 @@ use serde::{
     de::{EnumAccess, Error, MapAccess, SeqAccess, Visitor},
     Deserialize, Deserializer,
 };
+use shredder::Gc;
 use std::sync::Arc;
-use valkyrie_error::third_party::IBig;
 
-use crate::ValkyrieValue;
+use crate::{ValkyrieNumber, ValkyrieValue};
 
 pub struct ValueVisitor;
 
@@ -36,84 +36,84 @@ impl<'de> Visitor<'de> for ValueVisitor {
     where
         E: Error,
     {
-        Ok(ValkyrieValue::Number(IBig::from(v)))
+        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(v))))
     }
 
     fn visit_i16<E>(self, v: i16) -> Result<Self::Value, E>
     where
         E: Error,
     {
-        Ok(ValkyrieValue::Number(IBig::from(v)))
+        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(v))))
     }
 
     fn visit_i32<E>(self, v: i32) -> Result<Self::Value, E>
     where
         E: Error,
     {
-        Ok(ValkyrieValue::Number(IBig::from(v)))
+        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(v))))
     }
 
     fn visit_i64<E>(self, v: i64) -> Result<Self::Value, E>
     where
         E: Error,
     {
-        Ok(ValkyrieValue::Number(IBig::from(v)))
+        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(v))))
     }
 
     fn visit_i128<E>(self, v: i128) -> Result<Self::Value, E>
     where
         E: Error,
     {
-        Ok(ValkyrieValue::Number(IBig::from(v)))
+        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(v))))
     }
 
     fn visit_u8<E>(self, v: u8) -> Result<Self::Value, E>
     where
         E: Error,
     {
-        Ok(ValkyrieValue::Number(IBig::from(v)))
+        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(v))))
     }
 
     fn visit_u16<E>(self, v: u16) -> Result<Self::Value, E>
     where
         E: Error,
     {
-        Ok(ValkyrieValue::Number(IBig::from(v)))
+        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(v))))
     }
 
     fn visit_u32<E>(self, v: u32) -> Result<Self::Value, E>
     where
         E: Error,
     {
-        Ok(ValkyrieValue::Number(IBig::from(v)))
+        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(v))))
     }
 
     fn visit_u64<E>(self, v: u64) -> Result<Self::Value, E>
     where
         E: Error,
     {
-        Ok(ValkyrieValue::Number(IBig::from(v)))
+        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(v))))
     }
 
     fn visit_u128<E>(self, v: u128) -> Result<Self::Value, E>
     where
         E: Error,
     {
-        Ok(ValkyrieValue::Number(IBig::from(v)))
+        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(v))))
     }
 
-    fn visit_f32<E>(self, _: f32) -> Result<Self::Value, E>
+    fn visit_f32<E>(self, v: f32) -> Result<Self::Value, E>
     where
         E: Error,
     {
-        todo!()
+        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(v))))
     }
 
-    fn visit_f64<E>(self, _: f64) -> Result<Self::Value, E>
+    fn visit_f64<E>(self, v: f64) -> Result<Self::Value, E>
     where
         E: Error,
     {
-        todo!()
+        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(v))))
     }
 
     fn visit_char<E>(self, v: char) -> Result<Self::Value, E>
@@ -127,42 +127,42 @@ impl<'de> Visitor<'de> for ValueVisitor {
     where
         E: Error,
     {
-        Ok(ValkyrieValue::UTF8String(Arc::new(v.to_string())))
+        Ok(ValkyrieValue::UTF8String(Gc::new(v.to_string())))
     }
 
     fn visit_borrowed_str<E>(self, v: &'de str) -> Result<Self::Value, E>
     where
         E: Error,
     {
-        Ok(ValkyrieValue::UTF8String(Arc::new(v.to_string())))
+        Ok(ValkyrieValue::UTF8String(Gc::new(v.to_string())))
     }
 
     fn visit_string<E>(self, v: String) -> Result<Self::Value, E>
     where
         E: Error,
     {
-        Ok(ValkyrieValue::UTF8String(Arc::new(v)))
+        Ok(ValkyrieValue::UTF8String(Gc::new(v)))
     }
 
     fn visit_bytes<E>(self, v: &[u8]) -> Result<Self::Value, E>
     where
         E: Error,
     {
-        Ok(ValkyrieValue::Bytes(Arc::new(v.to_vec())))
+        Ok(ValkyrieValue::Bytes(Gc::new(v.to_vec())))
     }
 
     fn visit_borrowed_bytes<E>(self, v: &'de [u8]) -> Result<Self::Value, E>
     where
         E: Error,
     {
-        Ok(ValkyrieValue::Bytes(Arc::new(v.to_vec())))
+        Ok(ValkyrieValue::Bytes(Gc::new(v.to_vec())))
     }
 
     fn visit_byte_buf<E>(self, v: Vec<u8>) -> Result<Self::Value, E>
     where
         E: Error,
     {
-        Ok(ValkyrieValue::Bytes(Arc::new(v)))
+        Ok(ValkyrieValue::Bytes(Gc::new(v)))
     }
 
     fn visit_none<E>(self) -> Result<Self::Value, E>

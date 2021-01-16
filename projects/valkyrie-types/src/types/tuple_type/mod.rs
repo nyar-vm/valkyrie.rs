@@ -3,7 +3,7 @@ use crate::{functions::ValkyriePartialFunction, utils::primitive_type};
 use indexmap::IndexMap;
 use std::collections::{LinkedList, VecDeque};
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Scan)]
 pub struct ValkyrieTable {
     tuple: bool,
     items: VecDeque<ValkyrieValue>,
@@ -14,7 +14,7 @@ pub struct ValkyrieTable {
 pub struct ValkyrieList {
     tuple: bool,
     /// Type bound if this is a homogeneous list
-    array: Option<Arc<ValkyrieMetaType>>,
+    array: Option<Gc<ValkyrieMetaType>>,
     /// items, homogeneous or heterogeneous
     items: LinkedList<ValkyrieValue>,
 }
@@ -88,7 +88,7 @@ impl ValkyrieType for ValkyrieTable {
         ValkyrieValue::Table(Arc::new(self))
     }
 
-    fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
+    fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
         let mut this = ValkyrieMetaType::default();
         this.set_namepath("std.primitive.List");
 
@@ -101,10 +101,10 @@ impl ValkyrieType for () {
         ValkyrieValue::Table(Arc::new(ValkyrieTable::tuple()))
     }
 
-    fn static_type() -> Arc<ValkyrieMetaType> {
+    fn static_type() -> Gc<ValkyrieMetaType> {
         primitive_type("std.primitive.Tuple")
     }
-    fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
+    fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
         primitive_type("std.primitive.Tuple")
     }
 }
@@ -117,7 +117,7 @@ where
         ValkyrieValue::Table(Arc::new(ValkyrieTable::tuple()))
     }
 
-    fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
+    fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
         let mut this = ValkyrieMetaType::default();
         this.set_namepath("std.primitive.Tuple");
         this.mut_generic_types().push(T1::static_type());
@@ -134,7 +134,7 @@ where
         ValkyrieValue::Table(Arc::new(ValkyrieTable::tuple()))
     }
 
-    fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
+    fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
         let mut this = ValkyrieMetaType::default();
         this.set_namepath("std.primitive.Tuple");
         this.mut_generic_types().push(T1::static_type());
@@ -153,7 +153,7 @@ where
         ValkyrieValue::Table(Arc::new(ValkyrieTable::tuple()))
     }
 
-    fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
+    fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
         let mut this = ValkyrieMetaType::default();
         this.set_namepath("std.primitive.Tuple");
         this.mut_generic_types().push(T1::static_type());
@@ -174,7 +174,7 @@ where
         ValkyrieValue::Table(Arc::new(ValkyrieTable::tuple()))
     }
 
-    fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
+    fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
         let mut this = ValkyrieMetaType::default();
         this.set_namepath("std.primitive.Tuple");
         this.mut_generic_types().push(T1::static_type());
@@ -197,7 +197,7 @@ where
         ValkyrieValue::Table(Arc::new(ValkyrieTable::tuple()))
     }
 
-    fn dynamic_type(&self) -> Arc<ValkyrieMetaType> {
+    fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
         let mut this = ValkyrieMetaType::default();
         this.set_namepath("std.primitive.Tuple");
         this.mut_generic_types().push(T1::static_type());
