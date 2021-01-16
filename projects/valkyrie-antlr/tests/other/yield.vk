@@ -14,7 +14,7 @@ self.word ?= b"Hello, World!"
 
 
 
-generic T, E { }
+template T, E { }
 extends Result⟨T, E⟩: Perform {
     perform(self) -> T / E {
         match self {
@@ -24,7 +24,7 @@ extends Result⟨T, E⟩: Perform {
     }
 }
 
-generic T {}
+template T {}
 extends Option⟨T⟩: Perform {
     perform(self) -> T / null {
         match self {

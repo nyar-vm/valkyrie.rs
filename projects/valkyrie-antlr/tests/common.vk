@@ -14,19 +14,53 @@ f << g;
 
 x.last
 
-`+` ⊕ digits ⇴ 123
 
-`+` ⊕ [1, 2, 3]
-
-`+` ⟴ [(1, ), (1, 2), (1, 2, 3)]
-
-{$x; print($x)}
+{$x; print($x, c: 2, 3)}
 
 
 let list = {$} ⇴ [1, 2, 3];
 
-x >>= f;
 
-x = f(x)
 
--20%;
+
+// 能被 @derive 的 trait
+#derive(Copy, Clone, Debug, PartialEq, Eq, Hash)
+derived macro A {
+
+}
+
+
+//
+implicit macro print() {
+
+}
+
+print("a")
+
+a[T]
+a⁅T⁆
+
+micro name < G, R > (g: G) -> R {
+1 + 1
+a in b
+print("Hello, world!")
+}
+
+
+macro outer < L > (lhs: L) -> String {
+#mut let mut count = 0
+}
+
+micro inner < R > (rhs: R) {
+while count < 10 {
+count += 1
+print("{lhs} {rhs}")
+}
+}
+"{count}"
+}
+
+public static final micro main(mut args: [String]) -> Int {
+outer("Hello")("world")
+return 0
+}

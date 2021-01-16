@@ -41,3 +41,28 @@ pub enum ValkyrieValue {
     Class(Gc<ValkyrieClassType>),
     Variant(Gc<ValkyrieVariantType>),
 }
+
+unsafe impl GcSafe for ValkyrieValue {}
+
+unsafe impl Scan for ValkyrieValue {
+    fn scan(&self, scanner: &mut Scanner<'_>) {
+        match self {
+            ValkyrieValue::Nothing => {}
+            ValkyrieValue::Uninitialized => {}
+            ValkyrieValue::Null => {}
+            ValkyrieValue::Unit => {}
+            ValkyrieValue::Boolean(_) => {}
+            ValkyrieValue::Number(v) => scanner.scan(v),
+            ValkyrieValue::Unicode(_) => {}
+            ValkyrieValue::UTF8String(_) => {}
+            ValkyrieValue::Bytes(_) => {}
+            ValkyrieValue::Html(_) => {}
+            ValkyrieValue::NDArray(_) => {}
+            ValkyrieValue::Image(_) => {}
+            ValkyrieValue::DataFrame(_) => {}
+            ValkyrieValue::Table(_) => {}
+            ValkyrieValue::Class(_) => {}
+            ValkyrieValue::Variant(_) => {}
+        }
+    }
+}

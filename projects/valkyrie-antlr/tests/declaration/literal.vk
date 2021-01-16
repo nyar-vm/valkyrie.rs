@@ -17,7 +17,7 @@ let range = [-1..+1, -a..<+a, "a"..="z", 'A'..<'Z']
 
 let symbol = b;
 let function = a()
-let generic = a::<a>()[:, ::, 1::-1, : 0:];
+let template = a::<a>()[:, ::, 1::-1, : 0:];
 let a = a[a > 0]
 let a = f"{:?}"(t)
 let a = cf"%d"(t)

@@ -1,4 +1,6 @@
 use super::*;
+use crate::ValkyrieNumber;
+use std::convert::Infallible;
 
 impl ValkyrieType for JsonValue {
     fn boxed(self) -> ValkyrieValue {
@@ -13,7 +15,10 @@ impl ValkyrieType for JsonValue {
                     return ValkyrieValue::from(s);
                 }
                 if let Some(s) = v.as_f64() {
-                    return ValkyrieValue::from(s);
+                    return match ValkyrieNumber::try_from(s) {
+                        Ok(o) => ValkyrieValue::Number(Gc::new(o)),
+                        Err(_) => ValkyrieValue::Null,
+                    };
                 }
                 ValkyrieValue::Null
             }

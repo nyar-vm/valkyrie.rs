@@ -76,6 +76,7 @@ impl StatementNode {
         let literal = StringTextNode { text: s.to_string(), span: span.clone() };
         Self::expression(ExpressionType::Text(Box::new(literal)), span)
     }
+    /// Create a new string literal node.
     pub fn string<S: ToString>(s: S, span: Range<u32>) -> Self {
         let literal = StringLiteralNode { literal: s.to_string(), handler: None, span: span.clone() };
         Self::expression(ExpressionType::String(Box::new(literal)), span)

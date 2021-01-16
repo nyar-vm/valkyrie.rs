@@ -75,24 +75,8 @@ impl EncodeAny {
         Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(v))))
     }
 
-    pub fn encode_f32(self, v: f32) -> Result<ValkyrieValue, RuntimeError> {
-        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(v))))
-    }
-
-    pub fn encode_f64(self, v: f64) -> Result<ValkyrieValue, RuntimeError> {
-        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(v))))
-    }
-
     pub fn encode_unicode(self, v: char) -> Result<ValkyrieValue, RuntimeError> {
         Ok(ValkyrieValue::Unicode(v))
-    }
-
-    pub fn encode_utf8(self, v: &str) -> Result<ValkyrieValue, RuntimeError> {
-        Ok(ValkyrieValue::UTF8String(Arc::new(v.to_owned())))
-    }
-
-    pub fn encode_bytes(self, v: &[u8]) -> Result<ValkyrieValue, RuntimeError> {
-        Ok(ValkyrieValue::Bytes(Arc::new(v.to_vec())))
     }
 
     pub fn encode_some<T: IntoValkyrie>(self, v: ValkyrieValue) -> Result<ValkyrieValue, RuntimeError> {

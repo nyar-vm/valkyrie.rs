@@ -4,37 +4,31 @@ value class B {}
 
 
 
-generic {
+template {
+    where {
+
+    }
+    // 前置
+    require {
+
+    }
+    // 后置
+    ensures {
+
+    }
+    // 约束
+    return Positive
+}
+refine class Positive(like std::Integer) {
 
 }
-refine class Positive(Integer) {
 
-}
+template T, U {
 
-
-
-generic {
-
-}
-function a() {
-    @assert // 断言
-    @assume // 假设
-    @refute // 否定
-}
-
-
-generic T, U {
-    // forall {f32, f64}
-    // // 前置
-    // require {
-    ~~
-    // }
-    // ensure {}// 后置
-    // where {}// 约束
 }
 class A {
-    inherit Base,
-    inherit Base2,
+    inherit Base: Base,
+    inherit Base2: Base2,
 }
 
 
@@ -58,9 +52,12 @@ class A(B, C): C + D {
     set a() {
         _a = value
     }
+    into⟨Boolean⟩(){
+    
+    }
 }
 
-generic T {
+template T {
     where {
         T: Trait
     }
@@ -79,7 +76,7 @@ class Empty2() {};
 
 #derive()
 compile_time reflect
-generic T, U {
+template T, U {
     where {
         T: AnyType => U
         U: AnyType
@@ -108,24 +105,28 @@ class Inherit2 {
 
 #derive(Default, Debug, Encode, Decode)
 class 原神⟨T: Debug⟩(Integer): Clone + Debug {
-    启动(self) {
+    启动(self): Unit {
         shell"F:\Games\Genshin Impact\UnityCrashHandler64.exe"
     }
-    get value(self): Integer {
+    get value(): Integer {
         _integer
     }
-    set value(mut self) {
+    set value() {
         _integer
     }
 }
 
 class ClassA {
-    #decorator
-    field,
-    public static field: A,
-    item: String = "item",
+    public static `type`: String = "item",
+    unknown_all,
+    default_value: A,
+    infer_type = null,
+    get property() {};
+    set property() {};
     method();
 
+
+    #decorator
     infix `/`(self, rhs: Self): Self / DivideZero {
         return self / rhs
     }
@@ -162,12 +163,12 @@ class Class⟨T⟩
 
 
 extends std::Class {
-    functions() {
-        for  i, j, k    in
-        {
-
-        }
+functions() {
+    for  i, j, k,    in
+    {
 
     }
+
+}
 }
 

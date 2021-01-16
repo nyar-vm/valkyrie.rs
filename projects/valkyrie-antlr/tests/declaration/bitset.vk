@@ -1,29 +1,29 @@
-bitflag Bitflags: Debug + Copy + !Default {
-    A = 0b01
-    B = 0o02
-    C = 0x04
+flags Bitflags: Debug + Copy + !Default {
+    A = b"01"
+    B = o"01"
+    C = x"01"
     D = 8
 }
 
-public bitflag Flags {
+public flags Flags {
     A = 1 << 0
     B = 1 << 1
     C = 1 << 2
-    bitflag = A | B | C
-    `class` = 1 >> 8
+    bitflag = A || B || C,
+    `class` = 1 >> 8,
 }
 
-test function  test() {
-    let e1 = Flags::A | Flags::C;
-    let e2 = Flags::B | Flags::C;
+test function test() {
+    let e1 = Flags::A || Flags::C;
+    let e2 = Flags::B || Flags::C;
     // union
-    assert_eq!((e1 | e2), Flags::ABC);
+    assert_eq((e1 || e2), Flags::ABC);
     // intersection
-    assert_eq!((e1 & e2), Flags::C);
+    assert_eq((e1 && e2), Flags::C);
     // set difference
-    assert_eq!((e1 - e2), Flags::A);
+    assert_eq((e1 - e2), Flags::A);
     // set complement
-    assert_eq!(!e2, Flags::A);
+    assert_eq(!e2, Flags::A);
     // set all bits to 1
     e1.all();
     // set all bits to 0
@@ -31,17 +31,16 @@ test function  test() {
 }
 
 extends Bitflags {
-    function get_bits(self) {
+    get_bits(self) {
 
     }
-    function as_bools(self) {
+    as_bools(self) {
 
     }
 }
+
 // always public
 #infix('|')
-function oppo logic_or(self, rhs: Self) -> Self {
-    Self::from(self.bits | rhs.bits)
+oppo function logic_or(self, rhs: Self) -> Self {
+    Self::from(self.bits || rhs.bits)
 }
-
-unlimited

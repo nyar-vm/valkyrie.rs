@@ -4,6 +4,7 @@ use crate::{
     ValkyrieValue,
 };
 use indexmap::IndexMap;
+use shredder::Gc;
 use std::{collections::BTreeMap, sync::Arc};
 use valkyrie_ast::StatementBlock;
 use valkyrie_error::{DefinitionSpan, RuntimeError, ValkyrieResult};

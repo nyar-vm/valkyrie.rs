@@ -32,12 +32,16 @@ match _ as a {
 }
 
 match e := last as String {
+    type Type:
+        @todo
+    when e is not Type:
+        @todo
     case Type if ture:
-        // expr == true
         @todo
     case ():
         @todo
-    case (1, )
+    case (1, ):
+        @todo
     case (114, "514", a) if true:
         // expr is tuple && expr.1 == 114 && expr.2 == 514; a = expr.3
         @todo
@@ -122,7 +126,6 @@ try Option⟨u64⟩{
 
 }
 .match {
-    // with []
     case Some(a):
         print("Caught some")
     when null || A:

@@ -1,4 +1,8 @@
-use crate::{types::atomic_type::ValkyrieDocument, utils::primitive_type, ValkyrieClassType, ValkyrieValue};
+use crate::{
+    types::atomic_type::ValkyrieDocument,
+    utils::{primitive_type, Namepath},
+    ValkyrieClassType, ValkyrieValue,
+};
 use itertools::Itertools;
 use shredder::{marker::GcSafe, Gc, Scan};
 use std::{
@@ -18,7 +22,7 @@ pub mod variant_type;
 // rtti of valkyrie type
 #[derive(Clone, Debug, Default, Scan)]
 pub struct ValkyrieMetaType {
-    namepath: Vec<String>,
+    namepath: Namepath,
     document: ValkyrieDocument,
     generic_types: Vec<Gc<ValkyrieMetaType>>,
 }
@@ -40,20 +44,20 @@ impl ValkyrieType for ValkyrieValue {
             Self::Nothing => primitive_type("std.primitive.Never"),
             Self::Null => primitive_type("std.primitive.Null"),
             Self::Unit => primitive_type("std.primitive.Unit"),
-            Self::Boolean(v) => v.dynamic_type(),
-            Self::Number(v) => v.dynamic_type(),
-            Self::Unicode(v) => v.dynamic_type(),
-            Self::UTF8String(v) => v.dynamic_type(),
-            Self::Bytes(v) => v.dynamic_type(),
-            Self::Class(v) => v.dynamic_type(),
-            Self::Variant(v) => v.dynamic_type(),
-            Self::Json(v) => v.dynamic_type(),
-            Self::NDArray(v) => v.dynamic_type(),
-            Self::Image(v) => v.dynamic_type(),
-            #[cfg(feature = "polars")]
-            Self::DataFrame(v) => v.dynamic_type(),
-            Self::Table(v) => v.dynamic_type(),
-            Self::Html(_) => primitive_type("html.Html"),
+            // Self::Boolean(v) => v.dynamic_type(),
+            // Self::Number(v) => v.dynamic_type(),
+            // Self::Unicode(v) => v.dynamic_type(),
+            // Self::UTF8String(v) => v.dynamic_type(),
+            // Self::Bytes(v) => v.dynamic_type(),
+            // Self::Class(v) => v.dynamic_type(),
+            // Self::Variant(v) => v.dynamic_type(),
+            // Self::NDArray(v) => v.dynamic_type(),
+            // Self::Image(v) => v.dynamic_type(),
+            // #[cfg(feature = "polars")]
+            // Self::DataFrame(v) => v.dynamic_type(),
+            // Self::Table(v) => v.dynamic_type(),
+            // Self::Html(_) => primitive_type("html.Html"),
+            _ => todo!(),
         }
     }
 }
@@ -66,12 +70,11 @@ impl ValkyrieMetaType {
     }
 
     pub fn set_namepath(&mut self, namepath: &str) {
-        self.namepath.clear();
         for s in namepath.split('.') {
-            self.namepath.push(s.to_string());
+            self.namepath.push(s);
         }
     }
-    pub fn mut_namepath(&mut self) -> &mut Gc<String> {
+    pub fn mut_namepath(&mut self) -> &mut Namepath {
         &mut self.namepath
     }
     pub fn mut_generic_types(&mut self) -> &mut Vec<Gc<ValkyrieMetaType>> {
@@ -131,6 +134,6 @@ impl ValkyrieType for ValkyrieMetaType {
     }
 
     fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
-        Arc::new(self.clone())
+        Gc::new(self.clone())
     }
 }

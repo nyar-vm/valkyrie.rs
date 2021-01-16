@@ -1,15 +1,16 @@
 use super::*;
+use std::str::FromStr;
 
 #[derive(Clone, Debug, Scan)]
 pub struct ValkyrieVariantType {
-    namepath: Vec<String>,
+    namepath: Namepath,
     generics: Vec<Gc<ValkyrieMetaType>>,
-    variants: Vec<Arc<ValkyrieClassType>>,
+    variants: Vec<Gc<ValkyrieClassType>>,
 }
 
 impl ValkyrieVariantType {
-    pub fn new(namepath: String) -> Self {
-        Self { namepath: namepath.split('.').map(|s| s.to_string()).collect(), generics: vec![], variants: vec![] }
+    pub fn new(namepath: &str) -> Self {
+        Self { namepath: Namepath::from_str(namepath).unwrap(), generics: vec![], variants: vec![] }
     }
     pub fn mut_generics(&mut self) -> &mut Vec<Gc<ValkyrieMetaType>> {
         &mut self.generics

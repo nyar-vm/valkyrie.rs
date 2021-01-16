@@ -5,3 +5,34 @@ a[1]{2}(3)
 a{1}(2)[3]
 a{1}[2](3)
 
+// a⟦T⟧
+// a⦅T⦆
+// a⟬T⟭
+// a⦉T⦊
+
+
+ℤ[]
+
+ℤ[:]
+ℤ[head:]
+ℤ[:tail]
+ℤ[head:tail]
+
+ℤ[::]
+ℤ[ : : ]
+ℤ[head::]
+ℤ[head: :]
+ℤ[:tail:]
+ℤ[::step]
+ℤ[: :step]
+ℤ[head:tail:]
+ℤ[:tail:step]
+ℤ[head::step]
+ℤ[head: :step]
+ℤ[head:tail:step]
+
+return (b: 2, like: c, 33)
+
+match a:= _{
+
+}

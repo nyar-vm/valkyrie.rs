@@ -1,5 +1,4 @@
 use shredder::Gc;
-use std::sync::Arc;
 
 use crate::{types::ValkyrieMetaType, utils::primitive_type, ValkyrieNumber, ValkyrieType, ValkyrieValue};
 
@@ -213,25 +212,35 @@ impl ValkyrieType for isize {
 
 impl ValkyrieType for f32 {
     fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(self)))
+        match ValkyrieNumber::try_from(self) {
+            Ok(o) => ValkyrieValue::Number(Gc::new(o)),
+            Err(_) => {
+                todo!()
+            }
+        }
     }
 
     fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
         let mut this = ValkyrieMetaType::default();
         this.set_namepath("std.primitive.Float32");
-        Arc::new(this)
+        Gc::new(this)
     }
 }
 
 impl ValkyrieType for f64 {
     fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(self)))
+        match ValkyrieNumber::try_from(self) {
+            Ok(o) => ValkyrieValue::Number(Gc::new(o)),
+            Err(_) => {
+                todo!()
+            }
+        }
     }
 
     fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
         let mut this = ValkyrieMetaType::default();
         this.set_namepath("std.primitive.Float64");
-        Arc::new(this)
+        Gc::new(this)
     }
 }
 
@@ -256,6 +265,6 @@ impl ValkyrieType for String {
     {
         let mut this = ValkyrieMetaType::default();
         this.set_namepath("std.text.UTF8Text");
-        Arc::new(this)
+        Gc::new(this)
     }
 }

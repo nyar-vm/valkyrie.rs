@@ -1,3 +1,4 @@
+use shredder::Gc;
 use std::sync::Arc;
 
 use crate::{types::ValkyrieMetaType, ValkyrieType, ValkyrieValue, ValkyrieVariantType};
@@ -7,7 +8,7 @@ where
     T: ValkyrieType + 'static,
 {
     fn boxed(self) -> ValkyrieValue {
-        let this = ValkyrieVariantType::new("std.primitive.Option".to_string());
+        let this = ValkyrieVariantType::new("std.primitive.Option");
         this.boxed()
     }
     fn dynamic_type(&self) -> Gc<ValkyrieMetaType>
@@ -17,6 +18,6 @@ where
         let mut this = ValkyrieMetaType::default();
         this.set_namepath("std.primitive.Option");
         this.mut_generic_types().push(T::static_type());
-        Arc::new(this)
+        Gc::new(this)
     }
 }

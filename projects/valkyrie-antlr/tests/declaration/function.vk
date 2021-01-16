@@ -1,10 +1,51 @@
-namespace test.macroes;
-
 function name() {}
 
-macro module::`function`(): R / P {
+
+function package::module::`function`
+(
+    // This parameter cannot be called by name
+    position_only,
+    <,
+    // The parameter's name and value is optional
+    free: int = 1,
+    >,
+    // This parameter must be called by name
+    name_only,
+    // If this parameter is not passed in,
+    // the variable named `name` in the environment will be automatically captured.
+    // **Note that this parameter does not participate in position matching**
+    context name,
+    // Redundant nameless functions will be captured as `list_catch`
+    // *Otherwise, passing in extra parameters is a compilation error*
+    ..list_catch,
+    // Redundant named functions will be caught as `dict_catch`
+    // *Otherwise, passing in extra parameters is a compilation error*
+    ...dict_catch
+)
+{
+    markdown"*2*"
+}
+
+micro return_self(effect: int) -> Equirecursive {
 
 }
+
+macro progress⟨R, P⟩(): R / P {
+
+}
+
+template {
+    return Integer + Number;
+}
+function a() {
+    @assert // 断言
+    assert
+    @assume // 假设
+    assume
+    @refute // 否定
+    refute
+}
+
 
 inline function package::path::range(min: int, max: int, step: int): Range {
     new lazy std::iterator::Range⟨int⟩() {
@@ -35,77 +76,23 @@ function name(args) {
     block
 }
 
-generic P {
+template P {
     where { P: AnyType }
 }
-function Print<P>(w: Write, ..parameters: P) {
-    lambda () { };
+public static void fun main function print⟨P⟩(w: Write, .., ...) {
+    #another
+    lambda (args, .., ...): T {
+        w.write(this)
+    }
+    .call()
 }
 
 
 #require(safe)
-public static void fun main function main(args: List<String>, a) {
-
-}
-
-
-
-function a() {
-
+public static void fun main function main(args: List⟨String⟩, a) {
+    a ⇴ b ⊕ c ⟴ d ⁒ 2 ÷ 3
 }
 
 
 
 
-
-base 1
-a⟦T⟧
-
-a⟬T⟭
-a⦅T⦆
-base 0
-
-a⦉T⦊
-
-#? 能被 @derive 的 trait
-@derive(Copy, Clone, Debug, PartialEq, Eq, Hash)
-@(Copy, Clone, Debug, PartialEq, Eq, Hash)
-derived macro A {
-
-}
-
-
-#? 隐式宏, 此类宏不需要
-implicit macro print() {
-
-}
-
-print("a")
-
-a[T]
-a⁅T⁆
-
-micro name<G, R>(g: G) -> R {
-    1 + 1
-    a in b
-    print("Hello, world!")
-}
-
-
-macro outer<L>(lhs: L) -> String {
-    #mut let mut count = 0
-}
-
-micro inner<R>(rhs: R) {
-    while count < 10 {
-        count += 1
-        print("{lhs} {rhs}")
-    }
-}
-    "{count}"
-}
-
-public static final micro main(mut args: [String]) -> Int {
-    outer("Hello")("world")
-    return 0
-}

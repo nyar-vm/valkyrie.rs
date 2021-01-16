@@ -2,7 +2,7 @@ trait A: Trait + Trait
 {
 
 }
-generic F {
+template F {
     where {
         F: AnyType -> AnyType
     }
@@ -17,7 +17,7 @@ trait Functor< F > {
 //     function call(self, **_: Args) -> Ret;
 // }
 trait Functor<F> {
-   generic A, B {}
+   template A, B {}
    function map(a: F<A>, f: Function<A, B>) -> F<B>;
 }
 

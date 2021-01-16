@@ -8,7 +8,7 @@ impl ValkyrieType for bool {
     fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
         let mut meta = ValkyrieMetaType::default();
         meta.set_namepath("std.primitive.Boolean");
-        Arc::new(meta)
+        Gc::new(meta)
     }
 }
 

@@ -35,6 +35,6 @@ impl ValkyrieType for ValkyrieImage {
         // this.set_namepath("std.collection.SortedMap");
         // this.mut_generic_types().push(K::static_type());
         // this.mut_generic_types().push(V::static_type());
-        Arc::new(this)
+        Gc::new(this)
     }
 }

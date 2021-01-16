@@ -1,25 +1,23 @@
 use super::*;
 
-use ndarray::{Array, Array2};
-
-#[derive(Clone, Debug, Scan)]
+// #[derive(Clone, Debug, Scan)]
 pub struct ValkyrieNDArray {
-    inner_bytes: Array2<u8>,
+    inner_bytes: Vec<u8>,
     data_type: NDArrayDataType,
     dimension: Vec<usize>,
 }
 
+unsafe impl GcSafe for ValkyrieNDArray {}
+unsafe impl Scan for ValkyrieNDArray {
+    fn scan(&self, _: &mut Scanner<'_>) {}
+}
 #[derive(Clone, Debug)]
 pub enum NDArrayDataType {
     Float32,
     Float64,
 }
 
-impl ValkyrieNDArray {
-    pub fn recast<A, D>(&self) -> Array<A, D> {
-        todo!()
-    }
-}
+impl ValkyrieNDArray {}
 
 impl ValkyrieType for ValkyrieNDArray {
     fn boxed(self) -> ValkyrieValue {

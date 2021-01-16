@@ -18,4 +18,5 @@ let (mut a, b) = [1, 2]
 
 let (mut a, b) = (1, 2)
 
-let case Fraction(mut a, b) = Fraction(1 ,2)
+let Fraction(mut a, b) = Fraction(1 ,2)
+

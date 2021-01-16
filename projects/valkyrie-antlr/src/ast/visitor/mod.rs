@@ -30,19 +30,25 @@ impl ValkyrieAntlrVisitor<'_> for ValkyrieProgramParser {
                 self.statements.push(s.into());
                 continue;
             }
+            if let Some(s) = node.downcast_ref::<Define_bitflagsContextAll>().and_then(FlagsDeclaration::take_one) {
+                self.statements.push(s.into());
+                continue;
+            }
+            if let Some(s) = node.downcast_ref::<Define_unionContextAll>().and_then(UnionDeclaration::take_one) {
+                self.statements.push(s.into());
+                continue;
+            }
             if let Some(s) = node.downcast_ref::<Define_extendsContextAll>().and_then(ExtendsStatement::take_one) {
                 self.statements.push(s.into());
                 continue;
             }
+            if let Some(s) = node.downcast_ref::<Define_functionContextAll>().and_then(FunctionDeclaration::take_one) {
+                self.statements.push(s.into());
+                continue;
+            }
         }
-        // Top_statementContextAll::SNamespaceContext(s) => NamespaceDeclaration::take(s.define_namespace())?.into(),
-        // Top_statementContextAll::SFunctionContext(s) => FunctionDeclaration::take(s.define_function())?.into(),
-        // Top_statementContextAll::SFlagsContext(s) => FlagsDeclaration::take(s.define_bitflags())?.into(),
-        // Top_statementContextAll::SUnionContext(s) => UnionDeclaration::take(s.define_union())?.into(),
-        // Top_statementContextAll::S1Context(rest) => StatementType::take(rest.function_statement())?,
         // Function_statementContextAll::SLoopContext(v) => StatementType::take(v.loop_statement())?.into(),
         // Function_statementContextAll::SIfLetContext(s) => GuardStatement::take(s.guard_statement())?.into(),
-        // Function_statementContextAll::S2Context(rest) => ExpressionNode::take(rest.expression_root())?.into(),
     }
 }
 

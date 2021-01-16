@@ -1,6 +1,7 @@
 use super::*;
 
 use indexmap::IndexMap;
+use shredder::Scanner;
 
 #[derive(Clone, Debug)]
 pub struct ValkyrieSymbol {
@@ -24,6 +25,12 @@ impl ValkyrieSymbol {
 pub struct ValkyrieClassType {
     name: ValkyrieSymbol,
     items: IndexMap<String, ValkyrieValue>,
+}
+
+unsafe impl GcSafe for ValkyrieClassType {}
+
+unsafe impl Scan for ValkyrieClassType {
+    fn scan(&self, _: &mut Scanner<'_>) {}
 }
 
 impl ValkyrieClassType {
@@ -78,6 +85,6 @@ impl ValkyrieType for ValkyrieClassType {
         let mut this = ValkyrieMetaType::default();
         this.set_namepath("std.primitive.List");
 
-        Arc::new(this)
+        Gc::new(this)
     }
 }

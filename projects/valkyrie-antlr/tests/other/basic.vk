@@ -6,7 +6,7 @@ type A = a;
 
 alias type `null` = Null;
 
-generic T {}
+template T {}
 extends Vec<T>: Iterable {
 
 }
