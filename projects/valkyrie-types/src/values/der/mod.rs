@@ -106,14 +106,14 @@ impl<'de> Visitor<'de> for ValueVisitor {
     where
         E: Error,
     {
-        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(v))))
+        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::try_from(v)?)))
     }
 
     fn visit_f64<E>(self, v: f64) -> Result<Self::Value, E>
     where
         E: Error,
     {
-        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(v))))
+        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::try_from(v)?)))
     }
 
     fn visit_char<E>(self, v: char) -> Result<Self::Value, E>

@@ -96,23 +96,27 @@ where
 }
 
 impl ValkyrieMetaType {
-    pub fn name(&self) -> String {
-        assert_ne!(self.namepath.len(), 0, "namepath `{:?}` is not valid", self.namepath);
-        self.namepath.last().unwrap().to_owned()
+    pub fn name(&self) -> &str {
+        assert_ne!(self.namepath.length(), 0, "namepath `{:?}` is not valid", self.namepath);
+        self.namepath.name()
     }
     pub fn namespace(&self, join: &str) -> String {
-        assert_ne!(self.namepath.len(), 0, "namepath `{:?}` is not valid", self.namepath);
-        self.namepath[..self.namepath.len() - 1].join(join)
+        assert_ne!(self.namepath.length(), 0, "namepath `{:?}` is not valid", self.namepath);
+        self.namepath.namespace().join(join)
     }
     pub fn display_type(&self, full_path: bool) -> String {
         let this = match full_path {
             true => self.namepath.join("::"),
-            false => self.name(),
+            false => self.name().to_string(),
         };
         if self.generic_types.is_empty() {
             return this;
         }
-        format!("{}[{}]", this, self.generic_types.iter().map(|f| f.dynamic_type().display_type(full_path)).join(", "))
+        format!(
+            "{}[{}]",
+            this,
+            self.generic_types.iter().map(|f| f.get().dynamic_type().get().display_type(full_path)).join(", ")
+        )
     }
 }
 

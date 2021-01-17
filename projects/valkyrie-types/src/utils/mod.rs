@@ -4,7 +4,7 @@ use shredder::{
     Gc, Scan, Scanner,
 };
 use std::{
-    fmt::{Debug, Formatter},
+    fmt::{Debug, Formatter, Write},
     slice::Iter,
     str::FromStr,
     sync::Arc,
@@ -29,6 +29,37 @@ unsafe impl Scan for Namepath {
 }
 
 impl Namepath {
+    pub fn length(&self) -> usize {
+        self.path.len()
+    }
+    pub fn name(&self) -> &str {
+        match self.path.last() {
+            Some(s) => s.as_ref(),
+            None => "",
+        }
+    }
+    pub fn namespace(&self) -> Vec<&str> {
+        self.path.iter().map(|s| s.as_ref()).collect()
+    }
+    pub fn join(&self, joiner: &str) -> String {
+        let mut out = String::with_capacity(joiner.len() * self.path.len());
+        self.join_write(&mut out, joiner).ok();
+        out
+    }
+    fn join_write(&self, w: &mut impl Write, joiner: &str) -> std::fmt::Result {
+        let mut items = self.path.iter();
+        match items.next() {
+            Some(s) => {
+                w.write_str(s)?;
+            }
+            None => w.write_str("<EMPTY>")?,
+        }
+        for item in items {
+            w.write_str(joiner)?;
+            w.write_str(item)?;
+        }
+        Ok(())
+    }
     pub fn push(&mut self, path: &str) {
         self.path.push(Box::from(path))
     }
@@ -36,18 +67,7 @@ impl Namepath {
 
 impl Debug for Namepath {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        let mut items = self.path.iter();
-        match items.next() {
-            Some(s) => {
-                f.write_str(s)?;
-            }
-            None => f.write_str("<EMPTY>"),
-        }
-        for item in items {
-            f.write_str("::")?;
-            f.write_str(item)?;
-        }
-        Ok(())
+        self.join_write(f, "::")
     }
 }
 

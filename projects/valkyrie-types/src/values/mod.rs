@@ -59,6 +59,7 @@ unsafe impl Scan for ValkyrieValue {
             ValkyrieValue::Html(_) => {}
             ValkyrieValue::NDArray(_) => {}
             ValkyrieValue::Image(_) => {}
+            #[cfg(feature = "polars")]
             ValkyrieValue::DataFrame(_) => {}
             ValkyrieValue::Table(_) => {}
             ValkyrieValue::Class(_) => {}
