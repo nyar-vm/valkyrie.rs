@@ -1,4 +1,5 @@
 use super::*;
+use lispify::{Lisp, Lispify};
 
 impl Display for StringTextNode {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
@@ -29,6 +30,19 @@ impl Display for StringLiteralNode {
 impl PrettyPrint for StringLiteralNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         theme.string(self.to_string())
+    }
+}
+
+#[cfg(feature = "lispify")]
+impl Lispify for StringLiteralNode {
+    type Output = Lisp;
+
+    fn lispify(&self) -> Self::Output {
+        let literal = Lisp::string(self.literal.to_string());
+        match &self.handler {
+            Some(s) => Lisp::unit(s.name.clone()) & literal,
+            None => literal,
+        }
     }
 }
 

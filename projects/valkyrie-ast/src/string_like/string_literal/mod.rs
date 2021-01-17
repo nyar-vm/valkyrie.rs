@@ -31,6 +31,9 @@ impl StringLiteralNode {
     pub fn as_raw(&self) -> StringTextNode {
         StringTextNode { text: self.literal.clone(), span: self.span.clone() }
     }
+    pub fn as_escaped(&self) -> String {
+        self.literal.clone()
+    }
     /// Attack a handler to the unit of the number.
     pub fn with_handler(self, handler: IdentifierNode) -> Self {
         Self { handler: Some(handler), ..self }

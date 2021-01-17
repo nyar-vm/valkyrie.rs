@@ -35,11 +35,11 @@ COLLECTION_L:  '⦃';
 COLLECTION_R:  '⦄';
 
 // add
-OP_ADD:     '+';
-OP_SUB:     '-';
+OP_ADD: '+';
+OP_SUB: '-';
 // append
-OP_INC:     '++';
-OP_DEC:     '--';
+OP_INC: '++';
+OP_DEC: '--';
 // mul
 OP_MUL:     '*';
 OP_DIV:     '⁄' | '∕' | '/';
@@ -66,6 +66,8 @@ OP_GT:  '>';
 OP_LEFT:   '←' | '<-';
 OP_ARROW:  '⟶' | '->';
 OP_ARROW2: '⇒' | '=>';
+OP_ARROW3: '==>';
+
 // assign
 OP_ASSIGN:     '=';
 OP_BIND:       '≔' | ':=';
@@ -121,9 +123,10 @@ OP_IS_NOT: '⋢' | '<!';
 // as
 KW_AS: 'as' | 'as!' | 'as*';
 // until
-OP_DECONSTRUCT: '...' | '..';
-OP_UNTIL:       '..<' | '..=';
-OP_POW:         '^';
+OP_DOT3:  '…' | '...';
+OP_DOT2:  '‥' | '..';
+OP_UNTIL: '..<' | '..=';
+OP_POW:   '^';
 // prefix
 OP_INVERSE: '⅟';
 OP_ROOT2:   '√';
@@ -148,10 +151,9 @@ KW_UNION:    'union';
 KW_BITFLAGS: 'flags';
 KW_TYPE:     'type';
 //
-KW_TEMPLATE:   'template' | 'generic' | 'forall';
-KW_EXTENDS:    'extend' | 'extends';
-KW_IMPLEMENTS: 'implement';
-KW_WHERE:      'where';
+KW_TEMPLATE:   'template';
+KW_EXTENDS:    'extends';
+KW_IMPLEMENTS: 'implements';
 //
 KW_WHILE: 'while' | 'until';
 KW_FOR:   'for';

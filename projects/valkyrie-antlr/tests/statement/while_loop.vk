@@ -1,4 +1,7 @@
+namespace test.unary;
+
 while _ {}
+
 while true {
     print("Loop!");
     while n > 0 {

@@ -46,6 +46,10 @@ impl ValkyrieAntlrVisitor<'_> for ValkyrieProgramParser {
                 self.statements.push(s.into());
                 continue;
             }
+            if let Some(s) = node.downcast_ref::<Expression_rootContextAll>().and_then(ExpressionNode::take_one) {
+                self.statements.push(s.into());
+                continue;
+            }
         }
         // Function_statementContextAll::SLoopContext(v) => StatementType::take(v.loop_statement())?.into(),
         // Function_statementContextAll::SIfLetContext(s) => GuardStatement::take(s.guard_statement())?.into(),
@@ -85,6 +89,7 @@ impl<'i> Extractor<Define_functionContextAll<'i>> for FunctionDeclaration {
         })
     }
 }
+
 impl<'i> Extractor<Expression_rootContext<'i>> for ExpressionNode {
     fn take_one(node: &Expression_rootContextAll<'i>) -> Option<Self> {
         let body = node.expression()?;
@@ -92,6 +97,7 @@ impl<'i> Extractor<Expression_rootContext<'i>> for ExpressionNode {
         Some(Self { type_level: false, body: node, span: Default::default() })
     }
 }
+
 impl<'i> Extractor<ExpressionContextAll<'i>> for ExpressionType {
     fn take_one(node: &ExpressionContextAll<'i>) -> Option<Self> {
         let body = match node {
@@ -173,10 +179,14 @@ impl<'i> Extractor<ExpressionContextAll<'i>> for ExpressionType {
             ExpressionContextAll::EDotMatchContext(_) => {
                 todo!()
             }
-            ExpressionContextAll::EIfContext(_) => {
+            ExpressionContextAll::EIfContext(v) => IfStatement::take(v.if_statement())?.into(),
+            ExpressionContextAll::ETryContext(_) => {
                 todo!()
             }
-            ExpressionContextAll::ETryContext(_) => {
+            ExpressionContextAll::EFloorContext(_) => {
+                todo!()
+            }
+            ExpressionContextAll::ECeilingContext(_) => {
                 todo!()
             }
             ExpressionContextAll::EObjectContext(_) => {
@@ -188,9 +198,7 @@ impl<'i> Extractor<ExpressionContextAll<'i>> for ExpressionType {
             ExpressionContextAll::ERangeContext(_) => {
                 todo!()
             }
-            ExpressionContextAll::EAtomContext(_) => {
-                todo!()
-            }
+
             ExpressionContextAll::EFunctionContext(_) => {
                 todo!()
             }
@@ -212,6 +220,7 @@ impl<'i> Extractor<ExpressionContextAll<'i>> for ExpressionType {
             ExpressionContextAll::ENewContext(_) => {
                 todo!()
             }
+            ExpressionContextAll::EAtomContext(atom) => ExpressionType::take(atom.atomic())?,
             ExpressionContextAll::Error(_) => {
                 todo!()
             }
@@ -227,9 +236,6 @@ impl<'i> Extractor<Inline_expressionContextAll<'i>> for ExpressionType {
                 let lhs = ExpressionType::take(inline.rhs.clone())?;
                 let rhs = ExpressionType::take(inline.rhs.clone())?;
                 InfixNode { infix: operator, lhs, rhs }.into()
-            }
-            Inline_expressionContextAll::IDotContext(inline) => {
-                todo!()
             }
             Inline_expressionContextAll::IRangeContext(inline) => {
                 todo!()
@@ -258,7 +264,7 @@ impl<'i> Extractor<Inline_expressionContextAll<'i>> for ExpressionType {
             Inline_expressionContextAll::IPrefixContext(inline) => {
                 todo!()
             }
-            Inline_expressionContextAll::IIsAContext(inline) => {
+            Inline_expressionContextAll::IIsContext(inline) => {
                 let operator = OperatorNode::take(inline.infix_is())?;
                 let lhs = ExpressionType::take(inline.rhs.clone())?;
                 let rhs = ExpressionType::take(inline.rhs.clone())?;
@@ -280,6 +286,18 @@ impl<'i> Extractor<Inline_expressionContextAll<'i>> for ExpressionType {
             }
             Inline_expressionContextAll::IAtomContext(atom) => ExpressionType::take(atom.atomic())?,
             Inline_expressionContextAll::Error(_) => {
+                todo!()
+            }
+            Inline_expressionContextAll::IFunctionContext(_) => {
+                todo!()
+            }
+            Inline_expressionContextAll::IGroupContext(_) => {
+                todo!()
+            }
+            Inline_expressionContextAll::IFloorContext(_) => {
+                todo!()
+            }
+            Inline_expressionContextAll::ICeilingContext(_) => {
                 todo!()
             }
         };
@@ -306,6 +324,9 @@ impl<'i> Extractor<Type_expressionContextAll<'i>> for ExpressionType {
             }
             Type_expressionContextAll::TAtomContext(atom) => ExpressionType::take(atom.atomic())?,
             Type_expressionContextAll::Error(_) => {
+                todo!()
+            }
+            Type_expressionContextAll::TPrefixContext(_) => {
                 todo!()
             }
         };

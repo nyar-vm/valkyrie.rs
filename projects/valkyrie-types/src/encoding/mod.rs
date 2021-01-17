@@ -28,51 +28,51 @@ impl EncodeAny {
     }
 
     pub fn encode_u8(self, v: u8) -> Result<ValkyrieValue, RuntimeError> {
-        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(v))))
+        Ok(ValkyrieValue::Number(ValkyrieNumber::from(v)))
     }
 
     pub fn encode_u16(self, v: u16) -> Result<ValkyrieValue, RuntimeError> {
-        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(v))))
+        Ok(ValkyrieValue::Number(ValkyrieNumber::from(v)))
     }
 
     pub fn encode_u32(self, v: u32) -> Result<ValkyrieValue, RuntimeError> {
-        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(v))))
+        Ok(ValkyrieValue::Number(ValkyrieNumber::from(v)))
     }
 
     pub fn encode_u64(self, v: u64) -> Result<ValkyrieValue, RuntimeError> {
-        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(v))))
+        Ok(ValkyrieValue::Number(ValkyrieNumber::from(v)))
     }
 
     pub fn encode_u128(self, v: u128) -> Result<ValkyrieValue, RuntimeError> {
-        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(v))))
+        Ok(ValkyrieValue::Number(ValkyrieNumber::from(v)))
     }
 
     pub fn encode_usize(self, v: usize) -> Result<ValkyrieValue, RuntimeError> {
-        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(v))))
+        Ok(ValkyrieValue::Number(ValkyrieNumber::from(v)))
     }
 
     pub fn encode_i8(self, v: i8) -> Result<ValkyrieValue, RuntimeError> {
-        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(v))))
+        Ok(ValkyrieValue::Number(ValkyrieNumber::from(v)))
     }
 
     pub fn encode_i16(self, v: i16) -> Result<ValkyrieValue, RuntimeError> {
-        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(v))))
+        Ok(ValkyrieValue::Number(ValkyrieNumber::from(v)))
     }
 
     pub fn encode_i32(self, v: i32) -> Result<ValkyrieValue, RuntimeError> {
-        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(v))))
+        Ok(ValkyrieValue::Number(ValkyrieNumber::from(v)))
     }
 
     pub fn encode_i64(self, v: i64) -> Result<ValkyrieValue, RuntimeError> {
-        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(v))))
+        Ok(ValkyrieValue::Number(ValkyrieNumber::from(v)))
     }
 
     pub fn encode_i128(self, v: i128) -> Result<ValkyrieValue, RuntimeError> {
-        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(v))))
+        Ok(ValkyrieValue::Number(ValkyrieNumber::from(v)))
     }
 
     pub fn encode_isize(self, v: isize) -> Result<ValkyrieValue, RuntimeError> {
-        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(v))))
+        Ok(ValkyrieValue::Number(ValkyrieNumber::from(v)))
     }
 
     pub fn encode_unicode(self, v: char) -> Result<ValkyrieValue, RuntimeError> {

@@ -1,3 +1,5 @@
+namespace test.unary;
+
 for item in iterator {
     for key, value in iterator if condition {
 

@@ -215,6 +215,16 @@ pub trait ValkyrieAntlrListener<'input>: ParseTreeListener<'input, ValkyrieAntlr
      */
     fn exit_define_extends(&mut self, _ctx: &Define_extendsContext<'input>) {}
     /**
+     * Enter a parse tree produced by {@link ValkyrieAntlrParser#extends_block}.
+     * @param ctx the parse tree
+     */
+    fn enter_extends_block(&mut self, _ctx: &Extends_blockContext<'input>) {}
+    /**
+     * Exit a parse tree produced by {@link ValkyrieAntlrParser#extends_block}.
+     * @param ctx the parse tree
+     */
+    fn exit_extends_block(&mut self, _ctx: &Extends_blockContext<'input>) {}
+    /**
      * Enter a parse tree produced by {@link ValkyrieAntlrParser#with_implements}.
      * @param ctx the parse tree
      */
@@ -597,6 +607,18 @@ pub trait ValkyrieAntlrListener<'input>: ParseTreeListener<'input, ValkyrieAntlr
      */
     fn exit_EIn(&mut self, _ctx: &EInContext<'input>) {}
     /**
+     * Enter a parse tree produced by the {@code EFloor}
+     * labeled alternative in {@link ValkyrieAntlrParser#expression}.
+     * @param ctx the parse tree
+     */
+    fn enter_EFloor(&mut self, _ctx: &EFloorContext<'input>) {}
+    /**
+     * Exit a parse tree produced by the {@code EFloor}
+     * labeled alternative in {@link ValkyrieAntlrParser#expression}.
+     * @param ctx the parse tree
+     */
+    fn exit_EFloor(&mut self, _ctx: &EFloorContext<'input>) {}
+    /**
      * Enter a parse tree produced by the {@code EPlus}
      * labeled alternative in {@link ValkyrieAntlrParser#expression}.
      * @param ctx the parse tree
@@ -777,18 +799,6 @@ pub trait ValkyrieAntlrListener<'input>: ParseTreeListener<'input, ValkyrieAntlr
      */
     fn exit_EGroup(&mut self, _ctx: &EGroupContext<'input>) {}
     /**
-     * Enter a parse tree produced by the {@code ESuffix}
-     * labeled alternative in {@link ValkyrieAntlrParser#expression}.
-     * @param ctx the parse tree
-     */
-    fn enter_ESuffix(&mut self, _ctx: &ESuffixContext<'input>) {}
-    /**
-     * Exit a parse tree produced by the {@code ESuffix}
-     * labeled alternative in {@link ValkyrieAntlrParser#expression}.
-     * @param ctx the parse tree
-     */
-    fn exit_ESuffix(&mut self, _ctx: &ESuffixContext<'input>) {}
-    /**
      * Enter a parse tree produced by the {@code EFunction}
      * labeled alternative in {@link ValkyrieAntlrParser#expression}.
      * @param ctx the parse tree
@@ -800,6 +810,18 @@ pub trait ValkyrieAntlrListener<'input>: ParseTreeListener<'input, ValkyrieAntlr
      * @param ctx the parse tree
      */
     fn exit_EFunction(&mut self, _ctx: &EFunctionContext<'input>) {}
+    /**
+     * Enter a parse tree produced by the {@code ESuffix}
+     * labeled alternative in {@link ValkyrieAntlrParser#expression}.
+     * @param ctx the parse tree
+     */
+    fn enter_ESuffix(&mut self, _ctx: &ESuffixContext<'input>) {}
+    /**
+     * Exit a parse tree produced by the {@code ESuffix}
+     * labeled alternative in {@link ValkyrieAntlrParser#expression}.
+     * @param ctx the parse tree
+     */
+    fn exit_ESuffix(&mut self, _ctx: &ESuffixContext<'input>) {}
     /**
      * Enter a parse tree produced by the {@code EClosure}
      * labeled alternative in {@link ValkyrieAntlrParser#expression}.
@@ -957,6 +979,18 @@ pub trait ValkyrieAntlrListener<'input>: ParseTreeListener<'input, ValkyrieAntlr
      */
     fn exit_ENew(&mut self, _ctx: &ENewContext<'input>) {}
     /**
+     * Enter a parse tree produced by the {@code ECeiling}
+     * labeled alternative in {@link ValkyrieAntlrParser#expression}.
+     * @param ctx the parse tree
+     */
+    fn enter_ECeiling(&mut self, _ctx: &ECeilingContext<'input>) {}
+    /**
+     * Exit a parse tree produced by the {@code ECeiling}
+     * labeled alternative in {@link ValkyrieAntlrParser#expression}.
+     * @param ctx the parse tree
+     */
+    fn exit_ECeiling(&mut self, _ctx: &ECeilingContext<'input>) {}
+    /**
      * Enter a parse tree produced by the {@code ILogic}
      * labeled alternative in {@link ValkyrieAntlrParser#inline_expression}.
      * @param ctx the parse tree
@@ -968,18 +1002,6 @@ pub trait ValkyrieAntlrListener<'input>: ParseTreeListener<'input, ValkyrieAntlr
      * @param ctx the parse tree
      */
     fn exit_ILogic(&mut self, _ctx: &ILogicContext<'input>) {}
-    /**
-     * Enter a parse tree produced by the {@code IDot}
-     * labeled alternative in {@link ValkyrieAntlrParser#inline_expression}.
-     * @param ctx the parse tree
-     */
-    fn enter_IDot(&mut self, _ctx: &IDotContext<'input>) {}
-    /**
-     * Exit a parse tree produced by the {@code IDot}
-     * labeled alternative in {@link ValkyrieAntlrParser#inline_expression}.
-     * @param ctx the parse tree
-     */
-    fn exit_IDot(&mut self, _ctx: &IDotContext<'input>) {}
     /**
      * Enter a parse tree produced by the {@code IPlus}
      * labeled alternative in {@link ValkyrieAntlrParser#inline_expression}.
@@ -1017,17 +1039,17 @@ pub trait ValkyrieAntlrListener<'input>: ParseTreeListener<'input, ValkyrieAntlr
      */
     fn exit_IGeneric(&mut self, _ctx: &IGenericContext<'input>) {}
     /**
-     * Enter a parse tree produced by the {@code IIsA}
+     * Enter a parse tree produced by the {@code IFunction}
      * labeled alternative in {@link ValkyrieAntlrParser#inline_expression}.
      * @param ctx the parse tree
      */
-    fn enter_IIsA(&mut self, _ctx: &IIsAContext<'input>) {}
+    fn enter_IFunction(&mut self, _ctx: &IFunctionContext<'input>) {}
     /**
-     * Exit a parse tree produced by the {@code IIsA}
+     * Exit a parse tree produced by the {@code IFunction}
      * labeled alternative in {@link ValkyrieAntlrParser#inline_expression}.
      * @param ctx the parse tree
      */
-    fn exit_IIsA(&mut self, _ctx: &IIsAContext<'input>) {}
+    fn exit_IFunction(&mut self, _ctx: &IFunctionContext<'input>) {}
     /**
      * Enter a parse tree produced by the {@code IMap}
      * labeled alternative in {@link ValkyrieAntlrParser#inline_expression}.
@@ -1040,6 +1062,18 @@ pub trait ValkyrieAntlrListener<'input>: ParseTreeListener<'input, ValkyrieAntlr
      * @param ctx the parse tree
      */
     fn exit_IMap(&mut self, _ctx: &IMapContext<'input>) {}
+    /**
+     * Enter a parse tree produced by the {@code IIs}
+     * labeled alternative in {@link ValkyrieAntlrParser#inline_expression}.
+     * @param ctx the parse tree
+     */
+    fn enter_IIs(&mut self, _ctx: &IIsContext<'input>) {}
+    /**
+     * Exit a parse tree produced by the {@code IIs}
+     * labeled alternative in {@link ValkyrieAntlrParser#inline_expression}.
+     * @param ctx the parse tree
+     */
+    fn exit_IIs(&mut self, _ctx: &IIsContext<'input>) {}
     /**
      * Enter a parse tree produced by the {@code ITuple}
      * labeled alternative in {@link ValkyrieAntlrParser#inline_expression}.
@@ -1064,6 +1098,18 @@ pub trait ValkyrieAntlrListener<'input>: ParseTreeListener<'input, ValkyrieAntlr
      * @param ctx the parse tree
      */
     fn exit_IRange(&mut self, _ctx: &IRangeContext<'input>) {}
+    /**
+     * Enter a parse tree produced by the {@code IGroup}
+     * labeled alternative in {@link ValkyrieAntlrParser#inline_expression}.
+     * @param ctx the parse tree
+     */
+    fn enter_IGroup(&mut self, _ctx: &IGroupContext<'input>) {}
+    /**
+     * Exit a parse tree produced by the {@code IGroup}
+     * labeled alternative in {@link ValkyrieAntlrParser#inline_expression}.
+     * @param ctx the parse tree
+     */
+    fn exit_IGroup(&mut self, _ctx: &IGroupContext<'input>) {}
     /**
      * Enter a parse tree produced by the {@code IMul}
      * labeled alternative in {@link ValkyrieAntlrParser#inline_expression}.
@@ -1101,6 +1147,18 @@ pub trait ValkyrieAntlrListener<'input>: ParseTreeListener<'input, ValkyrieAntlr
      */
     fn exit_IPrefix(&mut self, _ctx: &IPrefixContext<'input>) {}
     /**
+     * Enter a parse tree produced by the {@code IFloor}
+     * labeled alternative in {@link ValkyrieAntlrParser#inline_expression}.
+     * @param ctx the parse tree
+     */
+    fn enter_IFloor(&mut self, _ctx: &IFloorContext<'input>) {}
+    /**
+     * Exit a parse tree produced by the {@code IFloor}
+     * labeled alternative in {@link ValkyrieAntlrParser#inline_expression}.
+     * @param ctx the parse tree
+     */
+    fn exit_IFloor(&mut self, _ctx: &IFloorContext<'input>) {}
+    /**
      * Enter a parse tree produced by the {@code IAtom}
      * labeled alternative in {@link ValkyrieAntlrParser#inline_expression}.
      * @param ctx the parse tree
@@ -1113,6 +1171,18 @@ pub trait ValkyrieAntlrListener<'input>: ParseTreeListener<'input, ValkyrieAntlr
      */
     fn exit_IAtom(&mut self, _ctx: &IAtomContext<'input>) {}
     /**
+     * Enter a parse tree produced by the {@code ICeiling}
+     * labeled alternative in {@link ValkyrieAntlrParser#inline_expression}.
+     * @param ctx the parse tree
+     */
+    fn enter_ICeiling(&mut self, _ctx: &ICeilingContext<'input>) {}
+    /**
+     * Exit a parse tree produced by the {@code ICeiling}
+     * labeled alternative in {@link ValkyrieAntlrParser#inline_expression}.
+     * @param ctx the parse tree
+     */
+    fn exit_ICeiling(&mut self, _ctx: &ICeilingContext<'input>) {}
+    /**
      * Enter a parse tree produced by the {@code ISlice}
      * labeled alternative in {@link ValkyrieAntlrParser#inline_expression}.
      * @param ctx the parse tree
@@ -1124,6 +1194,18 @@ pub trait ValkyrieAntlrListener<'input>: ParseTreeListener<'input, ValkyrieAntlr
      * @param ctx the parse tree
      */
     fn exit_ISlice(&mut self, _ctx: &ISliceContext<'input>) {}
+    /**
+     * Enter a parse tree produced by the {@code TPrefix}
+     * labeled alternative in {@link ValkyrieAntlrParser#type_expression}.
+     * @param ctx the parse tree
+     */
+    fn enter_TPrefix(&mut self, _ctx: &TPrefixContext<'input>) {}
+    /**
+     * Exit a parse tree produced by the {@code TPrefix}
+     * labeled alternative in {@link ValkyrieAntlrParser#type_expression}.
+     * @param ctx the parse tree
+     */
+    fn exit_TPrefix(&mut self, _ctx: &TPrefixContext<'input>) {}
     /**
      * Enter a parse tree produced by the {@code TGeneric}
      * labeled alternative in {@link ValkyrieAntlrParser#type_expression}.
@@ -1401,6 +1483,16 @@ pub trait ValkyrieAntlrListener<'input>: ParseTreeListener<'input, ValkyrieAntlr
      */
     fn exit_infix_pow(&mut self, _ctx: &Infix_powContext<'input>) {}
     /**
+     * Enter a parse tree produced by {@link ValkyrieAntlrParser#infix_range}.
+     * @param ctx the parse tree
+     */
+    fn enter_infix_range(&mut self, _ctx: &Infix_rangeContext<'input>) {}
+    /**
+     * Exit a parse tree produced by {@link ValkyrieAntlrParser#infix_range}.
+     * @param ctx the parse tree
+     */
+    fn exit_infix_range(&mut self, _ctx: &Infix_rangeContext<'input>) {}
+    /**
      * Enter a parse tree produced by {@link ValkyrieAntlrParser#infix_arrows}.
      * @param ctx the parse tree
      */
@@ -1600,6 +1692,16 @@ pub trait ValkyrieAntlrListener<'input>: ParseTreeListener<'input, ValkyrieAntlr
      * @param ctx the parse tree
      */
     fn exit_where_bound(&mut self, _ctx: &Where_boundContext<'input>) {}
+    /**
+     * Enter a parse tree produced by {@link ValkyrieAntlrParser#require_block}.
+     * @param ctx the parse tree
+     */
+    fn enter_require_block(&mut self, _ctx: &Require_blockContext<'input>) {}
+    /**
+     * Exit a parse tree produced by {@link ValkyrieAntlrParser#require_block}.
+     * @param ctx the parse tree
+     */
+    fn exit_require_block(&mut self, _ctx: &Require_blockContext<'input>) {}
     /**
      * Enter a parse tree produced by {@link ValkyrieAntlrParser#macro_call}.
      * @param ctx the parse tree
@@ -1903,36 +2005,6 @@ pub trait ValkyrieAntlrListener<'input>: ParseTreeListener<'input, ValkyrieAntlr
      */
     fn exit_range_axis(&mut self, _ctx: &Range_axisContext<'input>) {}
     /**
-     * Enter a parse tree produced by {@link ValkyrieAntlrParser#range_start}.
-     * @param ctx the parse tree
-     */
-    fn enter_range_start(&mut self, _ctx: &Range_startContext<'input>) {}
-    /**
-     * Exit a parse tree produced by {@link ValkyrieAntlrParser#range_start}.
-     * @param ctx the parse tree
-     */
-    fn exit_range_start(&mut self, _ctx: &Range_startContext<'input>) {}
-    /**
-     * Enter a parse tree produced by {@link ValkyrieAntlrParser#range_end}.
-     * @param ctx the parse tree
-     */
-    fn enter_range_end(&mut self, _ctx: &Range_endContext<'input>) {}
-    /**
-     * Exit a parse tree produced by {@link ValkyrieAntlrParser#range_end}.
-     * @param ctx the parse tree
-     */
-    fn exit_range_end(&mut self, _ctx: &Range_endContext<'input>) {}
-    /**
-     * Enter a parse tree produced by {@link ValkyrieAntlrParser#range_step}.
-     * @param ctx the parse tree
-     */
-    fn enter_range_step(&mut self, _ctx: &Range_stepContext<'input>) {}
-    /**
-     * Exit a parse tree produced by {@link ValkyrieAntlrParser#range_step}.
-     * @param ctx the parse tree
-     */
-    fn exit_range_step(&mut self, _ctx: &Range_stepContext<'input>) {}
-    /**
      * Enter a parse tree produced by {@link ValkyrieAntlrParser#modifiers}.
      * @param ctx the parse tree
      */
@@ -1982,16 +2054,6 @@ pub trait ValkyrieAntlrListener<'input>: ParseTreeListener<'input, ValkyrieAntlr
      * @param ctx the parse tree
      */
     fn exit_output_name(&mut self, _ctx: &Output_nameContext<'input>) {}
-    /**
-     * Enter a parse tree produced by {@link ValkyrieAntlrParser#function_name}.
-     * @param ctx the parse tree
-     */
-    fn enter_function_name(&mut self, _ctx: &Function_nameContext<'input>) {}
-    /**
-     * Exit a parse tree produced by {@link ValkyrieAntlrParser#function_name}.
-     * @param ctx the parse tree
-     */
-    fn exit_function_name(&mut self, _ctx: &Function_nameContext<'input>) {}
     /**
      * Enter a parse tree produced by {@link ValkyrieAntlrParser#namepath_free}.
      * @param ctx the parse tree

@@ -1,6 +1,6 @@
 [package]
 name = "valkyrie-types"
-version = "0.0.5"
+version = "0.0.6"
 authors = ["Aster <192607617@qq.com>"]
 description = "Shard types for valkyrie language"
 repository = "https://github.com/nyar-vm/valkyrie.rs"
@@ -12,18 +12,16 @@ edition = "2021"
 [dependencies]
 serde = "1.0.188"
 shredder = "0.2.0"
-num-traits = "0.2.16"
 indexmap = "2.0.0"
 itertools = "0.11.0"
 image = { version = "0.24.7", features = [] }
 ndarray = { version = "0.15.6", features = [] }
 polars = { version = "0.33.2", features = ["lazy"], optional = true }
-nyar-number = { version = "0.2.8", features = ["serde"] }
 
 [dependencies.valkyrie-error]
 version = "0.1.*"
 path = "../valkyrie-errors"
-features = ["serde_json", "json5"]
+features = ["serde_json", "json5", "nyar-number"]
 
 [dependencies.valkyrie-ast]
 version = "0.1.*"

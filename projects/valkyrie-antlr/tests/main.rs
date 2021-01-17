@@ -1,5 +1,6 @@
 mod declaration;
 mod expression;
+mod literal;
 mod statement;
 
 use std::{

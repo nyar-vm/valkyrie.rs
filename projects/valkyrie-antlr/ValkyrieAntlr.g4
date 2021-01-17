@@ -19,7 +19,6 @@ program
         | define_function
         | define_type
         // same as function
-        | define_lambda
         | let_binding
         | loop_statement
         | guard_statement
@@ -28,8 +27,8 @@ program
     )* EOF
     ;
 
-eos:      SEMICOLON;
-eos_free: COMMA | SEMICOLON;
+eos:      SEMICOLON | FAKE_COLON;
+eos_free: COMMA | SEMICOLON | FAKE_COLON;
 // ===========================================================================
 define_namespace: KW_NAMESPACE namepath_free eos?;
 // ===========================================================================
@@ -72,8 +71,9 @@ trait_block:       BRACE_L (define_trait_type | class_method | class_field | eos
 define_trait_type: KW_TYPE identifier (OP_ASSIGN type_expression)?;
 // ===========================================================================
 define_extends
-    : template_call? annotation* modifiers KW_EXTENDS namepath define_generic? with_implements? trait_block
+    : template_call? annotation* modifiers KW_EXTENDS namepath define_generic? with_implements? extends_block
     ;
+extends_block:   BRACE_L (define_trait_type | class_method | eos_free)* BRACE_R;
 with_implements: (COLON | KW_IMPLEMENTS) type_expression;
 // ===========================================================================
 define_union:   annotation* modifiers KW_UNION identifier base_layout? type_hint? union_block;
@@ -95,11 +95,18 @@ function_parameters
     : PARENTHESES_L PARENTHESES_R
     | PARENTHESES_L parameter_item (COMMA parameter_item)* PARENTHESES_R
     ;
-parameter_item:    annotation* modified_identifier type_hint? parameter_default?;
+parameter_item
+    : annotation* (mods += identifier)* OP_DOT3 id = identifier? type_hint? parameter_default?
+    | annotation* (mods += identifier)* OP_DOT2 id = identifier? type_hint? parameter_default?
+    | annotation* (mods += identifier)* id = identifier type_hint? parameter_default?
+    | OP_LT
+    | OP_GT
+    ;
 parameter_default: OP_ASSIGN expression;
 // ===========================================================================
 function_call
     : OP_AND_THEN? tuple_call_body // method?(b)
+    | OP_AND_THEN? DOT INTEGER tuple_call_body? // value.1()
     | OP_AND_THEN? DOT OP_AT? namepath tuple_call_body? // value?.path::method()
     ;
 tuple_call_body
@@ -113,7 +120,6 @@ define_lambda: annotation* KW_LAMBDA function_parameters type_hint? function_blo
 function_block
     : BRACE_L (
         define_type
-        | define_lambda
         | let_binding
         | loop_statement
         | guard_statement
@@ -122,7 +128,7 @@ function_block
     )* BRACE_R
     ;
 // ===========================================================================
-let_binding:       KW_LET let_pattern type_hint? (OP_ASSIGN expression_root)?;
+let_binding:       annotation* KW_LET let_pattern type_hint? (OP_ASSIGN expression_root)?;
 let_pattern:       let_pattern_tuple | let_pattern_plain;
 let_pattern_plain: modified_identifier (COMMA modified_identifier)* COMMA?;
 let_pattern_tuple
@@ -137,11 +143,14 @@ let_pattern_tuple
 let_pattern_item
     : (modified_identifier COLON)? (bind = identifier OP_BIND)? let_pattern_tuple
     | (modified_identifier COLON)? (bind = identifier OP_BIND)? identifier
-    | modified_identifier? OP_DECONSTRUCT bind = identifier?
+    | modified_identifier? OP_DOT2 bind = identifier?
     | modified_identifier
     ;
 // ===========================================================================
-define_type: KW_TYPE identifier OP_ASSIGN identifier;
+define_type
+    : annotation* modifiers KW_TYPE identifier define_generic? OP_ASSIGN type_expression
+    | annotation* modifiers KW_TYPE identifier define_generic? template_block
+    ;
 type_hint:   (COLON | OP_ARROW) type_expression;
 effect_hint: OP_DIV type_expression;
 // ===========================================================================
@@ -183,15 +192,18 @@ expression
     | lhs = expression op_plus rhs = expression                   # EPlus
     | lhs = expression op_logic rhs = expression                  # ELogic
     | lhs = expression op_compare rhs = expression                # ECompare
-    | lhs = expression OP_UNTIL rhs = expression                  # EUntil
+    | lhs = expression infix_range rhs = expression               # EUntil
     | lhs = expression infix_map rhs = expression                 # EMap
     | lhs = expression infix_is rhs = type_expression             # EIsA
     | lhs = expression infix_as rhs = type_expression             # EAs
     | lhs = expression infix_in rhs = expression                  # EIn
-    | lhs = expression OP_OR_ELSE rhs = type_expression           # EOrElse
+    | lhs = expression OP_OR_ELSE rhs = op_assign                 # EOrElse
     | lhs = expression op_pipeline rhs = expression               # EPipe
-    | lhs = expression op_assign rhs = type_expression            # EAssign
-    | PARENTHESES_L expression PARENTHESES_R                      # EGroup
+    | lhs = expression op_assign rhs = expression                 # EAssign
+    // groups
+    | PARENTHESES_L expression PARENTHESES_R # EGroup
+    | FLOOR_L expression FLOOR_R             # EFloor
+    | CEILING_L expression CEILING_R         # ECeiling
     // term
     | control_expression # EControl
     | if_statement       # EIf
@@ -200,7 +212,8 @@ expression
     | match_statement    # EMatch
     | object_statement   # EObject
     | macro_call         # EMacro
-    | function_block     # ELambda
+    | define_lambda      # ELambda
+    | function_block     # EFunction
     | define_label       # EDefine
     | tuple_literal      # ETuple
     | range_literal      # ERange
@@ -212,7 +225,7 @@ inline_expression
     // prefix
     op_prefix inline_expression # IPrefix
     // suffix
-    | inline_expression function_call # IDot
+    | inline_expression function_call # IFunction
     | inline_expression generic_call  # IGeneric
     | inline_expression slice_call    # ISlice
     // infix
@@ -221,16 +234,22 @@ inline_expression
     | lhs = inline_expression op_logic rhs = inline_expression    # ILogic
     | lhs = inline_expression infix_map rhs = inline_expression   # IMap
     | lhs = inline_expression op_compare rhs = inline_expression  # ICompare
-    | lhs = inline_expression infix_is rhs = inline_expression    # IIsA
-    | lhs = inline_expression OP_UNTIL rhs = inline_expression    # IRange
-    | lhs = inline_expression KW_AS rhs = inline_expression       # IAs
+    | lhs = inline_expression infix_is rhs = type_expression      # IIs
+    | lhs = inline_expression infix_as rhs = type_expression      # IAs
+    | lhs = inline_expression infix_range rhs = inline_expression # IRange
+    // groups
+    | PARENTHESES_L expression PARENTHESES_R # IGroup
+    | FLOOR_L expression FLOOR_R             # IFloor
+    | CEILING_L expression CEILING_R         # ICeiling
     // term
     | tuple_literal # ITuple
     | range_literal # IRange
     | atomic        # IAtom
     ;
 type_expression
-    : type_expression op_pattern type_expression   # TPattern
+    : op_prefix type_expression                    # TPrefix
+    | type_expression generic_call_in_type         # TGeneric
+    | type_expression op_pattern type_expression   # TPattern
     | type_expression infix_arrows type_expression # TArrows
     | type_expression OP_ADD type_expression       # TAdd
     | type_expression generic_call_in_type         # TGeneric
@@ -264,7 +283,8 @@ op_prefix
     | OP_SUB
     | OP_AND
     | OP_REFERENCE
-    | OP_DECONSTRUCT
+    | OP_DOT2
+    | OP_DOT3
     | OP_INVERSE
     | OP_ROOT2
     | OP_ROOT3
@@ -286,11 +306,12 @@ op_compare:   OP_LT | OP_LEQ | OP_GT | OP_GEQ | OP_EQ | OP_NE | OP_EEE | OP_NEE;
 op_pattern:   OP_AND | OP_OR;
 infix_map:    OP_MAP | OP_APPLY2 | OP_APPLY3;
 infix_pow:    OP_POW | OP_ROOT2;
+infix_range:  OP_UNTIL;
 infix_arrows: OP_ARROW | OP_ARROW2;
 op_multiple:  OP_MUL | OP_DIV | OP_REM | OP_DIV_REM;
 op_plus:      OP_ADD | OP_SUB;
 op_logic:     LOGIC_OR | LOGIC_AND | LOGIC_XOR | LOGIC_NOR | LOGIC_NAND | LOGIC_XAND;
-op_pipeline:  OP_LL | OP_LLE | OP_LLL | OP_GG | OP_GGG;
+op_pipeline:  OP_LL | OP_LLE | OP_LLL | OP_GG | OP_GGG | OP_ARROW3;
 op_assign
     : OP_ASSIGN
     | OP_ADD_ASSIGN
@@ -330,9 +351,10 @@ template_call
     | annotation* modifiers KW_TEMPLATE identifier (COMMA identifier)* COMMA? template_block
     ;
 template_block:      BRACE_L (template_statements | eos_free)* BRACE_R;
-template_statements: KW_WHERE where_block;
+template_statements: 'where' where_block | RETURN type_expression | identifier require_block;
 where_block:         BRACE_L where_bound* BRACE_R;
 where_bound:         identifier COLON type_expression | eos_free;
+require_block:       BRACE_L (expression_root | eos_free)* BRACE_R;
 // ===========================================================================
 macro_call
     : OP_AT annotation_call_item class_block?
@@ -410,22 +432,29 @@ range_literal
     ;
 range_axis
     : COLON // [:]
-    | OP_PROPORTION // [::]
-    | range_start (COLON range_end)? (COLON range_step)?
+    | index = expression // [s]
+    | head = expression COLON // [s:]
+    | COLON tail = expression // [:s]
+    | head = expression COLON tail = expression //[s:s]
+    | (OP_PROPORTION | COLON COLON) // [::] + [: :]
+    | head = expression (OP_PROPORTION | COLON COLON) // [s::]
+    | COLON tail = expression COLON // [:s:]
+    | (OP_PROPORTION | COLON COLON) step = expression // [::s]
+    | head = expression COLON tail = expression COLON // [s:s:]
+    | COLON tail = expression COLON step = expression // [:s:s]
+    | head = expression (OP_PROPORTION | COLON COLON) setp = expression // [s::s]
+    | head = expression COLON tail = expression COLON step = expression // [s:s:s]
     ;
-range_start: inline_expression;
-range_end:   inline_expression;
-range_step:  inline_expression;
 // ===========================================================================
-modifiers:           identifier*;
+modifiers:           (mods += identifier)*;
 modified_identifier: (mods += identifier)* id = identifier;
 modified_namepath
     : (mods += identifier)* path += identifier (OP_PROPORTION path += identifier)*
     ;
 // namepath
-lambda_name:   LAMBDA_SLOT (identifier | number)?;
-output_name:   (OP_REM | OP_LAST) INTEGER;
-function_name: identifier (OP_PROPORTION identifier)* (DOT identifier)?;
+lambda_name: LAMBDA_SLOT (identifier | number)?;
+output_name: (OP_REM | OP_LAST) INTEGER;
+
 namepath_free: identifier ((OP_PROPORTION | DOT) identifier)*;
 namepath:      identifier (OP_PROPORTION identifier)*;
 // identifier

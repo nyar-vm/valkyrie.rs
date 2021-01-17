@@ -1,10 +1,20 @@
 use shredder::Gc;
+use valkyrie_error::{third_party::NyarReal, ValkyrieError};
 
 use crate::{types::ValkyrieMetaType, utils::primitive_type, ValkyrieNumber, ValkyrieType, ValkyrieValue};
 
 impl From<u8> for ValkyrieValue {
     fn from(value: u8) -> Self {
-        ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(value)))
+        ValkyrieValue::Number(ValkyrieNumber::from(value))
+    }
+}
+
+impl ValkyrieValue {
+    pub fn parse_integer(input: &str, radix: u32) -> Result<ValkyrieValue, ValkyrieError> {
+        Ok(ValkyrieValue::Number(ValkyrieNumber::parse_integer_radix(input, radix)?))
+    }
+    pub fn parse_decimal(input: &str, radix: u32) -> Result<ValkyrieValue, ValkyrieError> {
+        Ok(ValkyrieValue::Number(ValkyrieNumber::parse_decimal_radix(input, radix)?))
     }
 }
 
@@ -23,9 +33,10 @@ impl ValkyrieType for u8 {
 
 impl From<u16> for ValkyrieValue {
     fn from(value: u16) -> Self {
-        ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(value)))
+        ValkyrieValue::Number(ValkyrieNumber::from(value))
     }
 }
+
 impl ValkyrieType for u16 {
     fn boxed(self) -> ValkyrieValue {
         ValkyrieValue::from(self)
@@ -42,7 +53,7 @@ impl ValkyrieType for u16 {
 
 impl From<u32> for ValkyrieValue {
     fn from(value: u32) -> Self {
-        ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(value)))
+        ValkyrieValue::Number(ValkyrieNumber::from(value))
     }
 }
 
@@ -62,7 +73,7 @@ impl ValkyrieType for u32 {
 
 impl From<u64> for ValkyrieValue {
     fn from(value: u64) -> Self {
-        ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(value)))
+        ValkyrieValue::Number(ValkyrieNumber::from(value))
     }
 }
 
@@ -80,7 +91,7 @@ impl ValkyrieType for u64 {
 }
 impl From<u128> for ValkyrieValue {
     fn from(value: u128) -> Self {
-        ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(value)))
+        ValkyrieValue::Number(ValkyrieNumber::from(value))
     }
 }
 
@@ -98,7 +109,7 @@ impl ValkyrieType for u128 {
 }
 impl From<usize> for ValkyrieValue {
     fn from(value: usize) -> Self {
-        ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(value)))
+        ValkyrieValue::Number(ValkyrieNumber::from(value))
     }
 }
 
@@ -122,7 +133,7 @@ impl ValkyrieType for usize {
 }
 impl From<i8> for ValkyrieValue {
     fn from(value: i8) -> Self {
-        ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(value)))
+        ValkyrieValue::Number(ValkyrieNumber::from(value))
     }
 }
 impl ValkyrieType for i8 {
@@ -138,7 +149,7 @@ impl ValkyrieType for i8 {
 }
 impl From<i16> for ValkyrieValue {
     fn from(value: i16) -> Self {
-        ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(value)))
+        ValkyrieValue::Number(ValkyrieNumber::from(value))
     }
 }
 impl ValkyrieType for i16 {
@@ -154,7 +165,7 @@ impl ValkyrieType for i16 {
 }
 impl From<i32> for ValkyrieValue {
     fn from(value: i32) -> Self {
-        ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(value)))
+        ValkyrieValue::Number(ValkyrieNumber::from(value))
     }
 }
 impl ValkyrieType for i32 {
@@ -167,7 +178,7 @@ impl ValkyrieType for i32 {
 }
 impl From<i64> for ValkyrieValue {
     fn from(value: i64) -> Self {
-        ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(value)))
+        ValkyrieValue::Number(ValkyrieNumber::from(value))
     }
 }
 impl ValkyrieType for i64 {
@@ -180,7 +191,7 @@ impl ValkyrieType for i64 {
 }
 impl From<i128> for ValkyrieValue {
     fn from(value: i128) -> Self {
-        ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(value)))
+        ValkyrieValue::Number(ValkyrieNumber::from(value))
     }
 }
 impl ValkyrieType for i128 {
@@ -193,7 +204,7 @@ impl ValkyrieType for i128 {
 }
 impl From<isize> for ValkyrieValue {
     fn from(value: isize) -> Self {
-        ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(value)))
+        ValkyrieValue::Number(ValkyrieNumber::from(value))
     }
 }
 impl ValkyrieType for isize {
@@ -213,7 +224,7 @@ impl ValkyrieType for isize {
 impl ValkyrieType for f32 {
     fn boxed(self) -> ValkyrieValue {
         match ValkyrieNumber::try_from(self) {
-            Ok(o) => ValkyrieValue::Number(Gc::new(o)),
+            Ok(o) => ValkyrieValue::Number(o),
             Err(_) => {
                 todo!()
             }
@@ -230,7 +241,7 @@ impl ValkyrieType for f32 {
 impl ValkyrieType for f64 {
     fn boxed(self) -> ValkyrieValue {
         match ValkyrieNumber::try_from(self) {
-            Ok(o) => ValkyrieValue::Number(Gc::new(o)),
+            Ok(o) => ValkyrieValue::Number(o),
             Err(_) => {
                 todo!()
             }

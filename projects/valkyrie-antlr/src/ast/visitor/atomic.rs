@@ -1,5 +1,5 @@
 use super::*;
-use valkyrie_ast::{BooleanNode, NullNode};
+use valkyrie_ast::{BooleanNode, NullNode, StringLiteralNode};
 
 impl<'i> Extractor<AtomicContextAll<'i>> for ExpressionType {
     fn take_one(node: &AtomicContextAll<'i>) -> Option<Self> {
@@ -20,9 +20,7 @@ impl<'i> Extractor<AtomicContextAll<'i>> for ExpressionType {
                 todo!()
             }
             AtomicContextAll::ANumberContext(s) => NumberLiteralNode::take(s.number_literal())?.into(),
-            AtomicContextAll::AStringContext(s) => {
-                todo!()
-            }
+            AtomicContextAll::AStringContext(s) => StringLiteralNode::take(s.string_literal())?.into(),
             AtomicContextAll::ANamepathContext(s) => NamePathNode::take(s.namepath())?.into(),
             AtomicContextAll::AOutputContext(_) => {
                 todo!()
@@ -43,7 +41,37 @@ impl<'i> Extractor<Number_literalContextAll<'i>> for NumberLiteralNode {
         Some(Self { value, unit: suffix, span })
     }
 }
-
+impl<'i> Extractor<String_literalContextAll<'i>> for StringLiteralNode {
+    fn take_one(node: &String_literalContextAll<'i>) -> Option<Self> {
+        let handler = IdentifierNode::take(node.identifier());
+        let span = Range { start: node.start().start as u32, end: node.stop().stop as u32 };
+        match node.STRING_SINGLE() {
+            Some(s) => {
+                let raw = s.get_text();
+                let s = &raw[1..=raw.len() - 1];
+                return Some(Self { literal: s.to_string(), handler, span });
+            }
+            None => {}
+        };
+        match node.STRING_DOUBLE() {
+            Some(s) => {
+                let raw = s.get_text();
+                let s = &raw[1..=raw.len() - 1];
+                return Some(Self { literal: s.to_string(), handler, span });
+            }
+            None => {}
+        };
+        match node.STRING_BLOCK() {
+            Some(s) => {
+                let raw = s.get_text();
+                let s = &raw[3..=raw.len() - 3];
+                return Some(Self { literal: s.to_string(), handler, span });
+            }
+            None => {}
+        };
+        None
+    }
+}
 impl<'i> Extractor<IdentifierContextAll<'i>> for IdentifierNode {
     fn take_one(node: &IdentifierContextAll<'i>) -> Option<Self> {
         if let Some(s) = node.UNICODE_ID() {

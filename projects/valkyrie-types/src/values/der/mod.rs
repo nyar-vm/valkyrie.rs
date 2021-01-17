@@ -3,7 +3,6 @@ use serde::{
     Deserialize, Deserializer,
 };
 use shredder::Gc;
-use std::sync::Arc;
 
 use crate::{ValkyrieNumber, ValkyrieValue};
 
@@ -36,84 +35,90 @@ impl<'de> Visitor<'de> for ValueVisitor {
     where
         E: Error,
     {
-        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(v))))
+        Ok(ValkyrieValue::Number(ValkyrieNumber::from(v)))
     }
 
     fn visit_i16<E>(self, v: i16) -> Result<Self::Value, E>
     where
         E: Error,
     {
-        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(v))))
+        Ok(ValkyrieValue::Number(ValkyrieNumber::from(v)))
     }
 
     fn visit_i32<E>(self, v: i32) -> Result<Self::Value, E>
     where
         E: Error,
     {
-        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(v))))
+        Ok(ValkyrieValue::Number(ValkyrieNumber::from(v)))
     }
 
     fn visit_i64<E>(self, v: i64) -> Result<Self::Value, E>
     where
         E: Error,
     {
-        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(v))))
+        Ok(ValkyrieValue::Number(ValkyrieNumber::from(v)))
     }
 
     fn visit_i128<E>(self, v: i128) -> Result<Self::Value, E>
     where
         E: Error,
     {
-        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(v))))
+        Ok(ValkyrieValue::Number(ValkyrieNumber::from(v)))
     }
 
     fn visit_u8<E>(self, v: u8) -> Result<Self::Value, E>
     where
         E: Error,
     {
-        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(v))))
+        Ok(ValkyrieValue::Number(ValkyrieNumber::from(v)))
     }
 
     fn visit_u16<E>(self, v: u16) -> Result<Self::Value, E>
     where
         E: Error,
     {
-        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(v))))
+        Ok(ValkyrieValue::Number(ValkyrieNumber::from(v)))
     }
 
     fn visit_u32<E>(self, v: u32) -> Result<Self::Value, E>
     where
         E: Error,
     {
-        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(v))))
+        Ok(ValkyrieValue::Number(ValkyrieNumber::from(v)))
     }
 
     fn visit_u64<E>(self, v: u64) -> Result<Self::Value, E>
     where
         E: Error,
     {
-        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(v))))
+        Ok(ValkyrieValue::Number(ValkyrieNumber::from(v)))
     }
 
     fn visit_u128<E>(self, v: u128) -> Result<Self::Value, E>
     where
         E: Error,
     {
-        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::from(v))))
+        Ok(ValkyrieValue::Number(ValkyrieNumber::from(v)))
     }
 
     fn visit_f32<E>(self, v: f32) -> Result<Self::Value, E>
     where
         E: Error,
     {
-        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::try_from(v)?)))
+        match ValkyrieNumber::try_from(v) {
+            Ok(n) => Ok(ValkyrieValue::Number(n)),
+            Err(e) => Err(E::missing_field("???")),
+        }
     }
 
     fn visit_f64<E>(self, v: f64) -> Result<Self::Value, E>
     where
         E: Error,
     {
-        Ok(ValkyrieValue::Number(Gc::new(ValkyrieNumber::try_from(v)?)))
+        match ValkyrieNumber::try_from(v) {
+            Ok(n) => Ok(ValkyrieValue::Number(n)),
+            Err(e) => Err(E::missing_field("???")),
+        }
     }
 
     fn visit_char<E>(self, v: char) -> Result<Self::Value, E>

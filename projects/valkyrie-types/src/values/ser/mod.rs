@@ -16,9 +16,9 @@ impl Serialize for ValkyrieValue {
             Self::Null => serializer.serialize_none(),
             Self::Unit => serializer.serialize_unit(),
             Self::Boolean(v) => serializer.serialize_bool(*v),
-            Self::Number(v) => v.get().serialize(serializer),
+            Self::Number(v) => v.serialize(serializer),
             Self::Unicode(v) => serializer.serialize_char(*v),
-            Self::UTF8String(v) => serializer.serialize_str(v.get()),
+            Self::UTF8String(v) => serializer.serialize_str(&v.get()),
             Self::Bytes(_) => {
                 todo!()
             }

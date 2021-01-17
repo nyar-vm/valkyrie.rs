@@ -1,6 +1,6 @@
 [package]
 name = "valkyrie-error"
-version = "0.1.4"
+version = "0.1.5"
 authors = ["Aster <192607617@qq.com>"]
 description = "Error types for valkyrie language"
 repository = "https://github.com/nyar-vm/valkyrie.rs"
@@ -13,6 +13,7 @@ edition = "2021"
 diagnostic = "0.5.1"
 serde = { version = "1.0.188", optional = true }
 # Parsing
+nyar-number = { version = "0.3.1", optional = true, features = ["serde"] }
 dashu = { version = "0.4.0", optional = true, features = ["serde"] }
 toml = { version = "0.8.0", optional = true }
 json5 = { version = "0.4.1", optional = true, features = [] }

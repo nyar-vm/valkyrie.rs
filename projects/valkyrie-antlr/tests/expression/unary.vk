@@ -1,4 +1,7 @@
-// sign
+namespace test.unary;
+
+
+// prefix
 +counter;
 -counter;
 

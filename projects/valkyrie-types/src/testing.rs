@@ -7,6 +7,5 @@ where
 {
     let v = value.dynamic_type();
     assert_eq!(format!("{}", v), short);
-    // assert_eq!(v.display_type(true), long);
-    todo!()
+    assert_eq!(v.get().display_type(true), long);
 }

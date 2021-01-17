@@ -16,7 +16,7 @@ impl ValkyrieType for JsonValue {
                 }
                 if let Some(s) = v.as_f64() {
                     return match ValkyrieNumber::try_from(s) {
-                        Ok(o) => ValkyrieValue::Number(Gc::new(o)),
+                        Ok(o) => ValkyrieValue::Number(o),
                         Err(_) => ValkyrieValue::Null,
                     };
                 }

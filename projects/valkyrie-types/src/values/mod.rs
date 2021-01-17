@@ -28,7 +28,7 @@ pub enum ValkyrieValue {
     ///
     /// Native boolean type, 8bit
     Boolean(bool),
-    Number(Gc<ValkyrieNumber>),
+    Number(ValkyrieNumber),
     Unicode(char),
     UTF8String(Gc<String>),
     Bytes(Gc<Vec<u8>>),

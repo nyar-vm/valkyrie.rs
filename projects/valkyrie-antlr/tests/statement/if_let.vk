@@ -1,4 +1,4 @@
-
+namespace test.unary;
 
 if let (x, y) = point {
     print("({x}, {y})");

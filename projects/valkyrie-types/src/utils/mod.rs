@@ -81,6 +81,6 @@ impl FromStr for Namepath {
     type Err = !;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        Ok(Self { path: s.split('.').map(|s| s.to_string()).collect() })
+        Ok(Self { path: s.split('.').map(Box::from).collect() })
     }
 }

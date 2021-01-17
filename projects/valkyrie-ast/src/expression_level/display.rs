@@ -19,7 +19,7 @@ impl Lispify for ExpressionType {
             Self::Suffix(v) => v.lispify(),
             Self::Number(v) => v.lispify(),
             Self::Symbol(v) => v.lispify(),
-            Self::String(v) => todo!(),
+            Self::String(v) => v.lispify(),
             Self::Table(v) => todo!(),
             Self::Apply(v) => todo!(),
             Self::ApplyDot(v) => todo!(),

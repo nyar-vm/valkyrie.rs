@@ -57,6 +57,7 @@ pub enum ControlType {
 }
 
 impl ControlType {
+    /// Convert to keywords
     pub fn as_str(&self) -> &'static str {
         match self {
             Self::Goto => "goto",
