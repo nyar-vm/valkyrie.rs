@@ -6,6 +6,6 @@ pub use dashu::{
 };
 
 #[cfg(feature = "nyar-number")]
-pub use nyar_number::{NyarReal, One, Zero};
+pub use nyar_number::{Num, NyarReal, One, ToPrimitive, Zero};
 #[cfg(feature = "nyar-number")]
 mod for_number;

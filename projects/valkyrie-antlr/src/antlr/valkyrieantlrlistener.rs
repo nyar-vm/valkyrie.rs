@@ -345,6 +345,16 @@ pub trait ValkyrieAntlrListener<'input>: ParseTreeListener<'input, ValkyrieAntlr
      */
     fn exit_parameter_item(&mut self, _ctx: &Parameter_itemContext<'input>) {}
     /**
+     * Enter a parse tree produced by {@link ValkyrieAntlrParser#return_type}.
+     * @param ctx the parse tree
+     */
+    fn enter_return_type(&mut self, _ctx: &Return_typeContext<'input>) {}
+    /**
+     * Exit a parse tree produced by {@link ValkyrieAntlrParser#return_type}.
+     * @param ctx the parse tree
+     */
+    fn exit_return_type(&mut self, _ctx: &Return_typeContext<'input>) {}
+    /**
      * Enter a parse tree produced by {@link ValkyrieAntlrParser#parameter_default}.
      * @param ctx the parse tree
      */
@@ -474,16 +484,6 @@ pub trait ValkyrieAntlrListener<'input>: ParseTreeListener<'input, ValkyrieAntlr
      * @param ctx the parse tree
      */
     fn exit_type_hint(&mut self, _ctx: &Type_hintContext<'input>) {}
-    /**
-     * Enter a parse tree produced by {@link ValkyrieAntlrParser#effect_hint}.
-     * @param ctx the parse tree
-     */
-    fn enter_effect_hint(&mut self, _ctx: &Effect_hintContext<'input>) {}
-    /**
-     * Exit a parse tree produced by {@link ValkyrieAntlrParser#effect_hint}.
-     * @param ctx the parse tree
-     */
-    fn exit_effect_hint(&mut self, _ctx: &Effect_hintContext<'input>) {}
     /**
      * Enter a parse tree produced by {@link ValkyrieAntlrParser#if_statement}.
      * @param ctx the parse tree
@@ -2045,15 +2045,29 @@ pub trait ValkyrieAntlrListener<'input>: ParseTreeListener<'input, ValkyrieAntlr
      */
     fn exit_lambda_name(&mut self, _ctx: &Lambda_nameContext<'input>) {}
     /**
-     * Enter a parse tree produced by {@link ValkyrieAntlrParser#output_name}.
+     * Enter a parse tree produced by the {@code PositiveOutput}
+     * labeled alternative in {@link ValkyrieAntlrParser#output_name}.
      * @param ctx the parse tree
      */
-    fn enter_output_name(&mut self, _ctx: &Output_nameContext<'input>) {}
+    fn enter_PositiveOutput(&mut self, _ctx: &PositiveOutputContext<'input>) {}
     /**
-     * Exit a parse tree produced by {@link ValkyrieAntlrParser#output_name}.
+     * Exit a parse tree produced by the {@code PositiveOutput}
+     * labeled alternative in {@link ValkyrieAntlrParser#output_name}.
      * @param ctx the parse tree
      */
-    fn exit_output_name(&mut self, _ctx: &Output_nameContext<'input>) {}
+    fn exit_PositiveOutput(&mut self, _ctx: &PositiveOutputContext<'input>) {}
+    /**
+     * Enter a parse tree produced by the {@code NegativeOutput}
+     * labeled alternative in {@link ValkyrieAntlrParser#output_name}.
+     * @param ctx the parse tree
+     */
+    fn enter_NegativeOutput(&mut self, _ctx: &NegativeOutputContext<'input>) {}
+    /**
+     * Exit a parse tree produced by the {@code NegativeOutput}
+     * labeled alternative in {@link ValkyrieAntlrParser#output_name}.
+     * @param ctx the parse tree
+     */
+    fn exit_NegativeOutput(&mut self, _ctx: &NegativeOutputContext<'input>) {}
     /**
      * Enter a parse tree produced by {@link ValkyrieAntlrParser#namepath_free}.
      * @param ctx the parse tree

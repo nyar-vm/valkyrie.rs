@@ -1,7 +1,7 @@
 grammar ValkyrieAntlr;
-import ValkyrieBasic;
+
 options {
-	language = Java;
+	tokenVocab = 'ValkyrieAntlrLexer';
 }
 
 // $antlr-format useTab false, columnLimit 144
@@ -60,7 +60,7 @@ class_inherit
 class_inherit_item: modified_namepath;
 class_field:        annotation* modified_identifier type_hint? parameter_default?;
 class_method
-    : annotation* modified_namepath define_generic? function_parameters type_hint? effect_hint? function_block?
+    : annotation* modified_namepath define_generic? function_parameters type_hint? function_block?
     ;
 class_dsl: annotation* modified_identifier class_block;
 // ===========================================================================
@@ -76,7 +76,9 @@ define_extends
 extends_block:   BRACE_L (define_trait_type | class_method | eos_free)* BRACE_R;
 with_implements: (COLON | KW_IMPLEMENTS) type_expression;
 // ===========================================================================
-define_union:   annotation* modifiers KW_UNION identifier base_layout? type_hint? union_block;
+define_union
+    : template_call? annotation* modifiers KW_UNION identifier define_generic? base_layout? type_hint? union_block
+    ;
 base_layout:    PARENTHESES_L type_expression? PARENTHESES_R;
 union_block:    BRACE_L (class_method | define_variant | eos_free)* BRACE_R;
 define_variant: identifier variant_block?;
@@ -89,7 +91,7 @@ bitflags_block: BRACE_L (class_method | bitflags_item | eos_free)* BRACE_R;
 bitflags_item:  annotation* identifier (OP_ASSIGN expression)?;
 // ===========================================================================
 define_function
-    : template_call? annotation* modifiers KW_FUNCTION namepath define_generic? function_parameters type_hint? effect_hint? function_block
+    : template_call? annotation* modifiers KW_FUNCTION namepath define_generic? function_parameters return_type? function_block
     ;
 function_parameters
     : PARENTHESES_L PARENTHESES_R
@@ -102,6 +104,7 @@ parameter_item
     | OP_LT
     | OP_GT
     ;
+return_type:       (COLON | OP_ARROW) ret = type_expression (OP_DIV eff = type_expression)?;
 parameter_default: OP_ASSIGN expression;
 // ===========================================================================
 function_call
@@ -151,8 +154,7 @@ define_type
     : annotation* modifiers KW_TYPE identifier define_generic? OP_ASSIGN type_expression
     | annotation* modifiers KW_TYPE identifier define_generic? template_block
     ;
-type_hint:   (COLON | OP_ARROW) type_expression;
-effect_hint: OP_DIV type_expression;
+type_hint: COLON type_expression;
 // ===========================================================================
 if_statement
     : annotation* KW_IF inline_expression then_block = function_block else_if_statement* (
@@ -351,7 +353,7 @@ template_call
     | annotation* modifiers KW_TEMPLATE identifier (COMMA identifier)* COMMA? template_block
     ;
 template_block:      BRACE_L (template_statements | eos_free)* BRACE_R;
-template_statements: 'where' where_block | RETURN type_expression | identifier require_block;
+template_statements: KW_WHERE where_block | RETURN type_expression | identifier require_block;
 where_block:         BRACE_L where_bound* BRACE_R;
 where_bound:         identifier COLON type_expression | eos_free;
 require_block:       BRACE_L (expression_root | eos_free)* BRACE_R;
@@ -390,6 +392,7 @@ case_pattern_item
     : case_pattern_tuple
     | bind = identifier OP_BIND case_pattern_item
     | modified_identifier COLON (bind = identifier OP_BIND)? case_pattern_item
+    | (OP_DOT2 | OP_DOT3) identifier?
     | modified_identifier
     | namepath
     | number_literal
@@ -453,7 +456,7 @@ modified_namepath
     ;
 // namepath
 lambda_name: LAMBDA_SLOT (identifier | number)?;
-output_name: (OP_REM | OP_LAST) INTEGER;
+output_name: OP_REM INTEGER # PositiveOutput | OP_LAST INTEGER? # NegativeOutput;
 
 namepath_free: identifier ((OP_PROPORTION | DOT) identifier)*;
 namepath:      identifier (OP_PROPORTION identifier)*;
@@ -463,9 +466,5 @@ identifier: UNICODE_ID | RAW_ID;
 number:         DECIMAL | INTEGER;
 number_literal: number identifier?;
 // string
-string: STRING_SINGLE | STRING_DOUBLE;
-string_literal
-    : identifier? STRING_SINGLE
-    | identifier? STRING_DOUBLE
-    | identifier? STRING_BLOCK
-    ;
+string:         STRING_START STRING_TEXT* STRING_END;
+string_literal: identifier? string;

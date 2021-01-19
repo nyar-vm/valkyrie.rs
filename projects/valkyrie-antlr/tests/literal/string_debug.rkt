@@ -1,7 +1,19 @@
-(namespace/test tests literal escape)
-
-
+(namespace/shared tests literal escape)
+''
+""
+"'"
+'"'
+"\n"
+r"\n"
+'\
 '
-"
-\n
-r\n
+'\u{24}'
+'\u{03D6}'
+'\u{000024}'
+'\u{99999999}'
+'\n'
+'\a'
+re'ab[cd]'
+xml'
+<list>xml</list>
+'

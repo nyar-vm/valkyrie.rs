@@ -23,7 +23,7 @@ impl Lispify for GuardStatement {
             GuardPattern::Expression(v) => {
                 lisp += Lisp::keyword("guard/positive");
                 lisp += self.condition.lispify();
-                // lisp.extend(v.body.terms.iter().map(|s| s.lispify()));
+                // lisp.extend(v.body..iter().map(|s| s.lispify()));
             }
             GuardPattern::List(v) => {
                 lisp += Lisp::keyword("guard/negative");

@@ -1,5 +1,5 @@
 use super::*;
-use crate::ValkyrieNumber;
+use crate::{ValkyrieNumber, ValkyrieTable};
 use std::convert::Infallible;
 
 impl ValkyrieType for JsonValue {
@@ -23,10 +23,11 @@ impl ValkyrieType for JsonValue {
                 ValkyrieValue::Null
             }
             JsonValue::String(v) => ValkyrieValue::UTF8String(Gc::new(v)),
-            JsonValue::Array(_) => {
+            JsonValue::Array(v) => {
+                let mut table = ValkyrieTable::list();
                 todo!()
             }
-            JsonValue::Object(_) => {
+            JsonValue::Object(v) => {
                 todo!()
             }
         }

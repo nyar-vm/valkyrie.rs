@@ -1,4 +1,5 @@
-use valkyrie_types::{testing::assert_type, ValkyrieID, ValkyrieInterface};
+use std::str::FromStr;
+use valkyrie_types::{testing::assert_type, ValkyrieID, ValkyrieInterface, ValkyrieList, ValkyrieNumber, ValkyrieValue};
 
 #[test]
 fn ready() {
@@ -13,6 +14,24 @@ fn test_primitive() {
     assert_type(value, "Float64", "std::primitive::Float64");
 }
 
+#[test]
+fn test_parse() {
+    let value = ValkyrieValue::parse_integer("0", 10);
+    println!("{:?}", value.unwrap());
+    let value = ValkyrieValue::parse_integer("+1", 10);
+    println!("{:?}", value.unwrap());
+    let value = ValkyrieValue::parse_integer("-1", 10);
+    println!("{:?}", value.unwrap());
+    let value = ValkyrieNumber::parse_integer("-1");
+    println!("{:?}", value.unwrap());
+}
+#[test]
+fn test_list_index() {
+    let out = ValkyrieList::from_iter(vec!['1', '2', '3', '4', '5', '6', '7', '8', '9']);
+    println!("1: {:?}", out.get(ValkyrieValue::from(1)));
+    println!("2: {:?}", out.get(ValkyrieValue::from(-1)));
+    println!("2: {:?}", out.get_range(ValkyrieValue::from(1), ValkyrieValue::from(-1), ValkyrieValue::from(1)));
+}
 #[test]
 fn test_list() {
     let value: Vec<usize> = vec![];

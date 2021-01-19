@@ -18,15 +18,10 @@ r"\n";
 '\n';
 '\a';
 
-
-json'
-{
-    nice: 123,
-    poe:  123
-}
+re'
+# comment
+ab[cd]
 '
-
-re'ab[cd]'
 
 xml'
 <list>xml</list>

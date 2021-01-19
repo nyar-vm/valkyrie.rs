@@ -12,4 +12,6 @@ use core::{
     fmt::{Display, Formatter, Write},
     ops::Range,
 };
+#[cfg(feature = "lispify")]
+use lispify::{Lisp, Lispify};
 use pretty_print::{PrettyPrint, PrettyProvider, PrettyTree};

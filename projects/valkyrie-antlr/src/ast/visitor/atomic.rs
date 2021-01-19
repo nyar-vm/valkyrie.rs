@@ -12,7 +12,7 @@ impl<'i> Extractor<AtomicContextAll<'i>> for ExpressionType {
                     "true" => BooleanNode { value: true, span }.into(),
                     "false" => BooleanNode { value: false, span }.into(),
                     "null" => NullNode { nil: false, span }.into(),
-                    "nil" => NullNode { nil: true, span }.into(),
+                    "nil" | "∅" => NullNode { nil: true, span }.into(),
                     _ => unreachable!("Atom: {}", text),
                 }
             }
@@ -22,8 +22,11 @@ impl<'i> Extractor<AtomicContextAll<'i>> for ExpressionType {
             AtomicContextAll::ANumberContext(s) => NumberLiteralNode::take(s.number_literal())?.into(),
             AtomicContextAll::AStringContext(s) => StringLiteralNode::take(s.string_literal())?.into(),
             AtomicContextAll::ANamepathContext(s) => NamePathNode::take(s.namepath())?.into(),
-            AtomicContextAll::AOutputContext(_) => {
-                todo!()
+            AtomicContextAll::AOutputContext(s) => {
+                // let id = IdentifierNode::take(s.output_name());
+                println!("Output: {:?}", s);
+
+                return None;
             }
             AtomicContextAll::Error(_) => {
                 todo!()
@@ -45,33 +48,20 @@ impl<'i> Extractor<String_literalContextAll<'i>> for StringLiteralNode {
     fn take_one(node: &String_literalContextAll<'i>) -> Option<Self> {
         let handler = IdentifierNode::take(node.identifier());
         let span = Range { start: node.start().start as u32, end: node.stop().stop as u32 };
-        match node.STRING_SINGLE() {
-            Some(s) => {
-                let raw = s.get_text();
-                let s = &raw[1..=raw.len() - 1];
-                return Some(Self { literal: s.to_string(), handler, span });
-            }
-            None => {}
-        };
-        match node.STRING_DOUBLE() {
-            Some(s) => {
-                let raw = s.get_text();
-                let s = &raw[1..=raw.len() - 1];
-                return Some(Self { literal: s.to_string(), handler, span });
-            }
-            None => {}
-        };
-        match node.STRING_BLOCK() {
-            Some(s) => {
-                let raw = s.get_text();
-                let s = &raw[3..=raw.len() - 3];
-                return Some(Self { literal: s.to_string(), handler, span });
-            }
-            None => {}
-        };
-        None
+        let raw = String::take(node.string())?;
+        Some(Self { literal: raw, handler, span })
     }
 }
+impl<'i> Extractor<StringContext<'i>> for String {
+    fn take_one(node: &StringContext<'i>) -> Option<Self> {
+        let mut out = String::with_capacity(node.get_text().len());
+        for item in node.STRING_TEXT_all() {
+            out.push_str(&item.get_text());
+        }
+        Some(out)
+    }
+}
+
 impl<'i> Extractor<IdentifierContextAll<'i>> for IdentifierNode {
     fn take_one(node: &IdentifierContextAll<'i>) -> Option<Self> {
         if let Some(s) = node.UNICODE_ID() {

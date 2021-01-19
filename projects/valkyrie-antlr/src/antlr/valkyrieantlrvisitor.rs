@@ -281,6 +281,14 @@ pub trait ValkyrieAntlrVisitor<'input>: ParseTreeVisitor<'input, ValkyrieAntlrPa
     }
 
     /**
+     * Visit a parse tree produced by {@link ValkyrieAntlrParser#return_type}.
+     * @param ctx the parse tree
+     */
+    fn visit_return_type(&mut self, ctx: &Return_typeContext<'input>) {
+        self.visit_children(ctx)
+    }
+
+    /**
      * Visit a parse tree produced by {@link ValkyrieAntlrParser#parameter_default}.
      * @param ctx the parse tree
      */
@@ -381,14 +389,6 @@ pub trait ValkyrieAntlrVisitor<'input>: ParseTreeVisitor<'input, ValkyrieAntlrPa
      * @param ctx the parse tree
      */
     fn visit_type_hint(&mut self, ctx: &Type_hintContext<'input>) {
-        self.visit_children(ctx)
-    }
-
-    /**
-     * Visit a parse tree produced by {@link ValkyrieAntlrParser#effect_hint}.
-     * @param ctx the parse tree
-     */
-    fn visit_effect_hint(&mut self, ctx: &Effect_hintContext<'input>) {
         self.visit_children(ctx)
     }
 
@@ -1590,10 +1590,20 @@ pub trait ValkyrieAntlrVisitor<'input>: ParseTreeVisitor<'input, ValkyrieAntlrPa
     }
 
     /**
-     * Visit a parse tree produced by {@link ValkyrieAntlrParser#output_name}.
+     * Visit a parse tree produced by the {@code PositiveOutput}
+     * labeled alternative in {@link ValkyrieAntlrParser#output_name}.
      * @param ctx the parse tree
      */
-    fn visit_output_name(&mut self, ctx: &Output_nameContext<'input>) {
+    fn visit_PositiveOutput(&mut self, ctx: &PositiveOutputContext<'input>) {
+        self.visit_children(ctx)
+    }
+
+    /**
+     * Visit a parse tree produced by the {@code NegativeOutput}
+     * labeled alternative in {@link ValkyrieAntlrParser#output_name}.
+     * @param ctx the parse tree
+     */
+    fn visit_NegativeOutput(&mut self, ctx: &NegativeOutputContext<'input>) {
         self.visit_children(ctx)
     }
 
@@ -1928,6 +1938,14 @@ pub trait ValkyrieAntlrVisitorCompat<'input>: ParseTreeVisitorCompat<'input, Nod
     }
 
     /**
+     * Visit a parse tree produced by {@link ValkyrieAntlrParser#return_type}.
+     * @param ctx the parse tree
+     */
+    fn visit_return_type(&mut self, ctx: &Return_typeContext<'input>) -> Self::Return {
+        self.visit_children(ctx)
+    }
+
+    /**
      * Visit a parse tree produced by {@link ValkyrieAntlrParser#parameter_default}.
      * @param ctx the parse tree
      */
@@ -2028,14 +2046,6 @@ pub trait ValkyrieAntlrVisitorCompat<'input>: ParseTreeVisitorCompat<'input, Nod
      * @param ctx the parse tree
      */
     fn visit_type_hint(&mut self, ctx: &Type_hintContext<'input>) -> Self::Return {
-        self.visit_children(ctx)
-    }
-
-    /**
-     * Visit a parse tree produced by {@link ValkyrieAntlrParser#effect_hint}.
-     * @param ctx the parse tree
-     */
-    fn visit_effect_hint(&mut self, ctx: &Effect_hintContext<'input>) -> Self::Return {
         self.visit_children(ctx)
     }
 
@@ -3237,10 +3247,20 @@ pub trait ValkyrieAntlrVisitorCompat<'input>: ParseTreeVisitorCompat<'input, Nod
     }
 
     /**
-     * Visit a parse tree produced by {@link ValkyrieAntlrParser#output_name}.
+     * Visit a parse tree produced by the {@code PositiveOutput}
+     * labeled alternative in {@link ValkyrieAntlrParser#output_name}.
      * @param ctx the parse tree
      */
-    fn visit_output_name(&mut self, ctx: &Output_nameContext<'input>) -> Self::Return {
+    fn visit_PositiveOutput(&mut self, ctx: &PositiveOutputContext<'input>) -> Self::Return {
+        self.visit_children(ctx)
+    }
+
+    /**
+     * Visit a parse tree produced by the {@code NegativeOutput}
+     * labeled alternative in {@link ValkyrieAntlrParser#output_name}.
+     * @param ctx the parse tree
+     */
+    fn visit_NegativeOutput(&mut self, ctx: &NegativeOutputContext<'input>) -> Self::Return {
         self.visit_children(ctx)
     }
 
@@ -3475,6 +3495,11 @@ where
         *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
     }
 
+    fn visit_return_type(&mut self, ctx: &Return_typeContext<'input>) {
+        let result = <Self as ValkyrieAntlrVisitorCompat>::visit_return_type(self, ctx);
+        *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
+    }
+
     fn visit_parameter_default(&mut self, ctx: &Parameter_defaultContext<'input>) {
         let result = <Self as ValkyrieAntlrVisitorCompat>::visit_parameter_default(self, ctx);
         *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
@@ -3537,11 +3562,6 @@ where
 
     fn visit_type_hint(&mut self, ctx: &Type_hintContext<'input>) {
         let result = <Self as ValkyrieAntlrVisitorCompat>::visit_type_hint(self, ctx);
-        *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
-    }
-
-    fn visit_effect_hint(&mut self, ctx: &Effect_hintContext<'input>) {
-        let result = <Self as ValkyrieAntlrVisitorCompat>::visit_effect_hint(self, ctx);
         *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
     }
 
@@ -4240,8 +4260,13 @@ where
         *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
     }
 
-    fn visit_output_name(&mut self, ctx: &Output_nameContext<'input>) {
-        let result = <Self as ValkyrieAntlrVisitorCompat>::visit_output_name(self, ctx);
+    fn visit_PositiveOutput(&mut self, ctx: &PositiveOutputContext<'input>) {
+        let result = <Self as ValkyrieAntlrVisitorCompat>::visit_PositiveOutput(self, ctx);
+        *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
+    }
+
+    fn visit_NegativeOutput(&mut self, ctx: &NegativeOutputContext<'input>) {
+        let result = <Self as ValkyrieAntlrVisitorCompat>::visit_NegativeOutput(self, ctx);
         *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
     }
 

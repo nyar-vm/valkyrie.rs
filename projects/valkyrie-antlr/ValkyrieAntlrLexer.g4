@@ -1,4 +1,4 @@
-lexer grammar ValkyrieBasic;
+lexer grammar ValkyrieAntlrLexer;
 // $antlr-format useTab false, alignColons hanging, alignSemicolons hanging
 // $antlr-format alignFirstTokens true
 @lexer::members {
@@ -171,6 +171,7 @@ KW_CATCH: 'catch';
 KW_WITH:  'with';
 KW_CASE:  'case';
 KW_WHEN:  'when';
+KW_WHERE: 'where';
 // number
 INTEGER: [0] | [1-9][0-9]*;
 DECIMAL
@@ -178,11 +179,12 @@ DECIMAL
     | INTEGER EXP
     ;
 fragment EXP: [Ee] [+\-]? INTEGER;
-
-STRING_SINGLE: '\'' ~[']* '\'';
-STRING_DOUBLE: '"' ~["]* '"';
-STRING_BLOCK:  '"""' .*? '"""' | '\'\'\'' .*? '\'\'\'';
-
+// $antlr-format off
+STRING_START: '\'' -> pushMode(IN_STRING1);
+STRING_DOUBLE: '"' -> type(STRING_START), pushMode(IN_STRING2);
+STRING_TRIPLE:  '\'\'\'' -> type(STRING_START), pushMode(IN_STRING3);
+STRING_SIXFOLD: '"""' -> type(STRING_START), pushMode(IN_STRING6);
+// $antlr-format on
 // conditional
 KW_IF:        'if';
 KW_ELSE:      'else';
@@ -206,3 +208,22 @@ BLOCK_COMMENT: '/*' .*? '*/' -> channel(HIDDEN);
 
 WHITE_SPACE:     [\p{White_Space}]+ -> channel(HIDDEN);
 ERROR_CHARACTAR: . -> channel(HIDDEN);
+
+// $antlr-format off
+mode IN_STRING1;
+STRING_TEXT: ~[']+;
+STRING_END:  '\'' -> popMode;
+
+mode IN_STRING2;
+STRING_TEXT2: ~["]+ -> type(STRING_TEXT);
+STRING_OUT2:  '"' -> type(STRING_END), popMode;
+
+mode IN_STRING3;
+STRING_TEXT3: ~[']+ -> type(STRING_TEXT);
+ESCAPE_TEXT:  '\'' -> type(STRING_TEXT);
+STRING_OUT3:  '\'\'\'' -> type(STRING_END), popMode;
+
+mode IN_STRING6;
+STRING_TEXT6: ~["]+ -> type(STRING_TEXT);
+ESCAPE_TEXT6: '"' -> type(STRING_TEXT);
+STRING_OUT6:  '"""' -> type(STRING_END), popMode;

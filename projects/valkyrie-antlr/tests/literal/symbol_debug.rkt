@@ -1,0 +1,10 @@
+nil
+null
+true
+false
+a
+a∷b
+a∷b∷c
+我
+我∷的
+我∷的∷库

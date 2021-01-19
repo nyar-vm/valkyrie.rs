@@ -3,6 +3,12 @@ use valkyrie_error::{third_party::NyarReal, ValkyrieError};
 
 use crate::{types::ValkyrieMetaType, utils::primitive_type, ValkyrieNumber, ValkyrieType, ValkyrieValue};
 
+impl From<char> for ValkyrieValue {
+    fn from(value: char) -> Self {
+        Self::Unicode(value)
+    }
+}
+
 impl From<u8> for ValkyrieValue {
     fn from(value: u8) -> Self {
         ValkyrieValue::Number(ValkyrieNumber::from(value))
@@ -11,10 +17,10 @@ impl From<u8> for ValkyrieValue {
 
 impl ValkyrieValue {
     pub fn parse_integer(input: &str, radix: u32) -> Result<ValkyrieValue, ValkyrieError> {
-        Ok(ValkyrieValue::Number(ValkyrieNumber::parse_integer_radix(input, radix)?))
+        Ok(Self::Number(ValkyrieNumber::parse_integer_radix(input, radix)?))
     }
     pub fn parse_decimal(input: &str, radix: u32) -> Result<ValkyrieValue, ValkyrieError> {
-        Ok(ValkyrieValue::Number(ValkyrieNumber::parse_decimal_radix(input, radix)?))
+        Ok(Self::Number(ValkyrieNumber::parse_decimal_radix(input, radix)?))
     }
 }
 

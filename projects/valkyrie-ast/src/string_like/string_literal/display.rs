@@ -1,5 +1,4 @@
 use super::*;
-use lispify::{Lisp, Lispify};
 
 impl Display for StringTextNode {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {

@@ -5,8 +5,11 @@
 #![feature(iter_from_generator)]
 #![feature(generators)]
 
+extern crate core;
+
 mod builtin;
 mod codegen;
+mod collection;
 mod functions;
 mod modifiers;
 // #[cfg(test)]
@@ -26,6 +29,7 @@ pub use self::{
         result::{ValkyrieFailure, ValkyrieSuccess},
         TokenType,
     },
+    collection::ValkyrieList,
     definitions::{classes::ValkyrieStructure, ids::ValkyrieID, interfaces::ValkyrieInterface, names::ValkyrieName},
     functions::{ValkyrieFunction, ValkyrieFunctionType, ValkyrieMonomorphicFunction},
     modifiers::{FeatureType, InitializeType, MutableType},
@@ -38,5 +42,6 @@ pub use self::{
 pub use shredder::Gc;
 pub use valkyrie_ast::ValkyrieOperator;
 pub use valkyrie_error::{
-    third_party::NyarReal as ValkyrieNumber, JsonValue, RuntimeError, SyntaxError, ValkyrieError, ValkyrieResult,
+    third_party::{Num, NyarReal as ValkyrieNumber, One, Zero},
+    RuntimeError, SyntaxError, ValkyrieError, ValkyrieResult,
 };

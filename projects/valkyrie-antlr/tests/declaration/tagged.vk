@@ -1,33 +1,65 @@
-variant Option<T> {
-    ~~/ No value.
-    #[lang = "None"]
-    #[stable(feature = "rust1", since = "1.0.0")]
+union Option⟨T⟩ {
+    // Some value of type `T`.
+    Some {
+        value: T
+    },
+    // No value.
     None,
-    ~~/ Some value of type `T`.
-    #[lang = "Some"]
-    #[stable(feature = "rust1", since = "1.0.0")]
-    Some(#[stable(feature = "rust1", since = "1.0.0")] T),
 }
 
-variant Either<L, R> {
-    Left(T),
-    Riht(E),
+union Either⟨L, R⟩ {
+    Left {
+        value: L
+    },
+    Riht {
+        value: R
+    },
 }
 
-variant Result<T, E>
-where E: Error
+template T, E {
+    where {
+        E: Error
+    }
+}
+union Result⟨T, E⟩
 {
-    Success(T),
-    Failure(E),
+    Success {
+        fine: T
+    },
+    Failure {
+        fail: E
+    },
 }
 
-variant Validation {
-    Fine(T, [E]),
-    Fail(E, [E]),
+union Validation⟨T, E⟩ {
+    Fine {
+        value: T,
+        errors: List⟨E⟩
+    },
+    Fail {
+        fatal: E,
+        errors: List⟨E⟩
+    },
+    as_result(self): Result⟨T, E⟩ {
+        match self {
+            case Fine { value, ... }:
+                Success(value)
+            case Fail { fatal, ... }:
+                Failure(fatal)
+        }
+    }
+    as_option(self): Option⟨T⟩ {
+        match self {
+            case Fine { value, ... }:
+                Some(value)
+            case Fail { fatal, ... }:
+                None
+        }
+    }
 }
 
 extends Validation {
-    function is_true(self): bool {
+    is_true(self): bool {
         @matches(self, Fine(_, []))
     }
 }

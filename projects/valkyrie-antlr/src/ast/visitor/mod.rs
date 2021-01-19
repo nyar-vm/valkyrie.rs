@@ -1,7 +1,5 @@
 use super::*;
-use valkyrie_ast::{
-    ExtendsStatement, FunctionDeclaration, FunctionReturnNode, FunctionType, GuardPattern, GuardStatement, IfStatement,
-};
+use valkyrie_ast::{ExtendsStatement, FunctionDeclaration, FunctionType, GuardPattern, GuardStatement, IfStatement};
 
 mod atomic;
 mod looping;
@@ -158,8 +156,9 @@ impl<'i> Extractor<ExpressionContextAll<'i>> for ExpressionType {
             ExpressionContextAll::EAsContext(_) => {
                 todo!()
             }
-            ExpressionContextAll::EAssignContext(_) => {
-                todo!()
+            ExpressionContextAll::EAssignContext(infix) => {
+                println!("EAssignContext: {infix:?}");
+                return None;
             }
             ExpressionContextAll::ELambdaContext(_) => {
                 todo!()

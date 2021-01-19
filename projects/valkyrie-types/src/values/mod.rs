@@ -9,7 +9,7 @@ mod ser;
 use crate::builtin::data_frame::ValkyrieDataFrame;
 use crate::{
     builtin::{images::ValkyrieImage, ndarray::ValkyrieNDArray},
-    JsonValue, ValkyrieClassType, ValkyrieNumber, ValkyrieTable, ValkyrieVariantType,
+    ValkyrieClassType, ValkyrieNumber, ValkyrieTable, ValkyrieVariantType,
 };
 
 #[derive(Clone, Debug)]

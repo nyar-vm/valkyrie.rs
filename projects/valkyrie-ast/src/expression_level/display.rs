@@ -17,9 +17,6 @@ impl Lispify for ExpressionType {
             Self::Prefix(v) => v.lispify(),
             Self::Binary(v) => v.lispify(),
             Self::Suffix(v) => v.lispify(),
-            Self::Number(v) => v.lispify(),
-            Self::Symbol(v) => v.lispify(),
-            Self::String(v) => v.lispify(),
             Self::Table(v) => todo!(),
             Self::Apply(v) => todo!(),
             Self::ApplyDot(v) => todo!(),
@@ -39,6 +36,9 @@ impl Lispify for ExpressionType {
             Self::Formatted(v) => todo!(),
             Self::Null(v) => v.lispify(),
             Self::Boolean(v) => v.lispify(),
+            Self::Symbol(v) => v.lispify(),
+            Self::Number(v) => v.lispify(),
+            Self::String(v) => v.lispify(),
         }
     }
 }
