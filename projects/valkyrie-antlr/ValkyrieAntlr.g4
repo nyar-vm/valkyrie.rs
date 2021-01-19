@@ -60,7 +60,7 @@ class_inherit
 class_inherit_item: modified_namepath;
 class_field:        annotation* modified_identifier type_hint? parameter_default?;
 class_method
-    : annotation* modified_namepath define_generic? function_parameters type_hint? function_block?
+    : annotation* modified_namepath define_generic? function_parameters return_type? function_block?
     ;
 class_dsl: annotation* modified_identifier class_block;
 // ===========================================================================
@@ -98,13 +98,23 @@ function_parameters
     | PARENTHESES_L parameter_item (COMMA parameter_item)* PARENTHESES_R
     ;
 parameter_item
-    : annotation* (mods += identifier)* OP_DOT3 id = identifier? type_hint? parameter_default?
-    | annotation* (mods += identifier)* OP_DOT2 id = identifier? type_hint? parameter_default?
+    : annotation* (mods += identifier)* parameter_special id = identifier? type_hint? parameter_default?
     | annotation* (mods += identifier)* id = identifier type_hint? parameter_default?
     | OP_LT
     | OP_GT
     ;
-return_type:       (COLON | OP_ARROW) ret = type_expression (OP_DIV eff = type_expression)?;
+parameter_special
+    : OP_DOT3 # DictParameters
+    | OP_DOT2 # ListParameters
+    | OP_POW  # ContextParameter
+    ;
+return_type
+    : (COLON | OP_ARROW) ret = type_expression
+    | ((COLON | OP_ARROW) ret = type_expression)? OP_DIV eff += type_expression
+    | ((COLON | OP_ARROW) ret = type_expression)? OP_DIV BRACKET_L (
+        eff += type_expression (COMMA eff += type_expression)* COMMA?
+    )? BRACKET_R
+    ;
 parameter_default: OP_ASSIGN expression;
 // ===========================================================================
 function_call
@@ -116,9 +126,9 @@ tuple_call_body
     : PARENTHESES_L PARENTHESES_R
     | PARENTHESES_L tuple_call_item (COMMA tuple_call_item)* COMMA? PARENTHESES_R
     ;
-tuple_call_item: identifier COLON expression | expression;
+tuple_call_item: annotation* (mods += identifier)* field=identifier COLON expression | annotation* expression;
 // ===========================================================================
-define_lambda: annotation* KW_LAMBDA function_parameters type_hint? function_block;
+define_lambda: annotation* KW_LAMBDA function_parameters return_type? function_block;
 // ===========================================================================
 function_block
     : BRACE_L (
@@ -147,6 +157,7 @@ let_pattern_item
     : (modified_identifier COLON)? (bind = identifier OP_BIND)? let_pattern_tuple
     | (modified_identifier COLON)? (bind = identifier OP_BIND)? identifier
     | modified_identifier? OP_DOT2 bind = identifier?
+    | modified_identifier? OP_DOT3 bind = identifier?
     | modified_identifier
     ;
 // ===========================================================================
@@ -250,6 +261,7 @@ inline_expression
     ;
 type_expression
     : op_prefix type_expression                    # TPrefix
+    | type_expression OP_AND_THEN                  # TOptional
     | type_expression generic_call_in_type         # TGeneric
     | type_expression op_pattern type_expression   # TPattern
     | type_expression infix_arrows type_expression # TArrows
@@ -274,10 +286,11 @@ control_expression
     : (RETURN | RESUME expression?)            # CReturn
     | BREAK (OP_LABEL identifier)?             # CBreak
     | CONTINUE (OP_LABEL identifier)?          # CContinue
-    | RAISE expression                         # CRaise
+    | RAISE expression?                        # CRaise
     | YIELD (OP_LABEL identifier)? expression? # CYield
     | YIELD BREAK                              # CBreak
     | YIELD KW_WITH expression                 # CWith
+    | FALL_THROUGH (OP_LABEL identifier)?      # CFall
     ;
 op_prefix
     : OP_NOT
@@ -364,13 +377,13 @@ macro_call
     ;
 annotation
     : OP_HASH annotation_call_item class_block?
-    | OP_HASH BRACKET_L annotation_call_item (COMMA annotation_call_item)* BRACKET_R class_block?
+    | OP_HASH BRACKET_L annotation_call_item (COMMA annotation_call_item)* BRACKET_R
     ;
 annotation_call_item: namepath tuple_call_body? class_block?;
 // ===========================================================================
 try_statement: annotation* KW_TRY type_expression? function_block;
 match_statement
-    : annotation* (KW_MATCH | KW_CATCH) (identifier OP_BIND)? inline_expression match_block
+    : annotation* (KW_MATCH | KW_CATCH) (identifier OP_BIND)? inline_expression OP_AND_THEN? match_block
     ;
 // ===========================================================================
 match_block: BRACE_L (match_terms | eos_free)* BRACE_R;
@@ -411,22 +424,30 @@ case_pattern_tuple
     ;
 // ===========================================================================
 object_statement: KW_OBJECT define_generic? class_inherit? type_hint? class_block;
+// ===========================================================================
 new_statement
     : KW_NEW modified_namepath generic_call_in_type? tuple_call_body? new_block
     | KW_NEW modified_namepath generic_call_in_type? tuple_call_body
     ;
-new_body
-    : tuple_call_body? new_block // 可选
-    | tuple_call_body // 必选
+new_block: BRACE_L (new_call_item | eos_free)* BRACE_R;
+new_call_item
+    : identifier COLON expression
+    | INTEGER COLON expression
+    | range_literal COLON expression
+    | expression
     ;
-new_block: BRACE_L (tuple_call_item | eos_free)* BRACE_R;
 // ===========================================================================
 tuple_literal
     : PARENTHESES_L PARENTHESES_R
     | PARENTHESES_L collection_pair (COMMA collection_pair)+ COMMA? PARENTHESES_R
     | PARENTHESES_L collection_pair COMMA PARENTHESES_R
     ;
-collection_pair: (identifier COLON)? expression;
+collection_pair
+    : identifier COLON expression
+    | INTEGER COLON expression
+    | string COLON expression
+    | expression
+    ;
 // ===========================================================================
 slice_call: OP_AND_THEN? range_literal;
 range_literal

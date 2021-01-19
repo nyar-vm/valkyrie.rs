@@ -24,10 +24,19 @@ pub struct StringLiteralNode {
     pub span: Range<u32>,
 }
 
+impl StringTextNode {
+    /// Create a new raw text node
+    pub fn new<S: ToString>(value: S, span: Range<u32>) -> Self {
+        Self { text: value.to_string(), span }
+    }
+}
+
 impl StringLiteralNode {
+    /// Create a text node with unknown handler
     pub fn new<S: ToString>(value: S, start: u32, end: u32) -> Self {
         Self { literal: value.to_string(), handler: None, span: start..end }
     }
+    /// Convert to a raw string
     pub fn as_raw(&self) -> StringTextNode {
         StringTextNode { text: self.literal.clone(), span: self.span.clone() }
     }

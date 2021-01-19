@@ -76,8 +76,7 @@ new stack List {
 }
 
 
-
-new keywords BaseballTeam ⟨T⟩ (args) {
+new keywords BaseballTeam⟨T⟩(args) {
     name: "object one",
     Size: Math::PI,
     ["RF"]: "Mookie Betts",

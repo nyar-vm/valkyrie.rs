@@ -6,7 +6,7 @@ namespace* tests.literal.escape;
 "'";
 '"';
 // newline
-"\n";
+f"\n";
 r"\n";
 '\
 ';

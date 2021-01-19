@@ -24,6 +24,35 @@ impl PrettyPrint for IdentifierNode {
         PrettyTree::text(self.name.to_string())
     }
 }
+
+impl Display for OutputNode {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        if self.count == 0 {
+            f.write_str("%%")
+        }
+        else if self.count < 0 {
+            write!(f, "%%{}", -self.count)
+        }
+        else {
+            write!(f, "%{}", self.count)
+        }
+    }
+}
+
+impl PrettyPrint for OutputNode {
+    fn pretty(&self, _: &PrettyProvider) -> PrettyTree {
+        PrettyTree::text(self.to_string())
+    }
+}
+#[cfg(feature = "lispify")]
+impl Lispify for OutputNode {
+    type Output = Lisp;
+
+    fn lispify(&self) -> Self::Output {
+        Lisp::symbol(self.to_string())
+    }
+}
+
 #[cfg(feature = "lispify")]
 impl Lispify for IdentifierNode {
     type Output = Lisp;

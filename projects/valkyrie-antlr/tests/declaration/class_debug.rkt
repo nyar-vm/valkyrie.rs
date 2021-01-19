@@ -38,4 +38,15 @@
   (class/method property (modifiers get) () (return/type Unit) (return/type Pure))
   (class/method property (modifiers set) () (return/type Unit) (return/type Pure))
   (class/method method (modifiers) () (return/type Unit) (return/type Pure))
-  (class/method / (modifiers infix) () (return/type Unit) (return/type Pure)))
+  (class/method / (modifiers infix) () (return/type Unit) (return/type Pure))
+  (class/method join (modifiers) () (return/type Unit) (return/type Pure)))
+(define/class TestClass (modifiers))
+(define/class
+  Class
+  (modifiers)
+  (class/field field1 (modifiers readonly))
+  (class/field field 2 (modifiers readonly))
+  (class/field main (modifiers class static void))
+  (class/field fields (modifiers mut))
+  (class/method try_add (modifiers) () (return/type Unit) (return/type Pure)))
+extends

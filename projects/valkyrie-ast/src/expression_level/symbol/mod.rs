@@ -25,15 +25,27 @@ pub struct BooleanNode {
     /// The range of the node
     pub span: Range<u32>,
 }
-/// `package∷module∷name`
+
+/// `null, nil`, type of null value
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct NullNode {
+    /// Whether the collection is empty or does not exist
     pub nil: bool,
     /// The range of the node
     pub span: Range<u32>,
 }
 
+/// `%1, %%1`, the number of the reference
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct OutputNode {
+    /// - positive number indicates the nth one
+    /// - negative number indicates the nth one from the last
+    pub count: isize,
+    /// The range of the node
+    pub span: Range<u32>,
+}
 
 /// `$, $1, $x`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]

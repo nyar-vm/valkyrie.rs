@@ -281,6 +281,33 @@ pub trait ValkyrieAntlrVisitor<'input>: ParseTreeVisitor<'input, ValkyrieAntlrPa
     }
 
     /**
+     * Visit a parse tree produced by the {@code DictParameters}
+     * labeled alternative in {@link ValkyrieAntlrParser#parameter_special}.
+     * @param ctx the parse tree
+     */
+    fn visit_DictParameters(&mut self, ctx: &DictParametersContext<'input>) {
+        self.visit_children(ctx)
+    }
+
+    /**
+     * Visit a parse tree produced by the {@code ListParameters}
+     * labeled alternative in {@link ValkyrieAntlrParser#parameter_special}.
+     * @param ctx the parse tree
+     */
+    fn visit_ListParameters(&mut self, ctx: &ListParametersContext<'input>) {
+        self.visit_children(ctx)
+    }
+
+    /**
+     * Visit a parse tree produced by the {@code ContextParameter}
+     * labeled alternative in {@link ValkyrieAntlrParser#parameter_special}.
+     * @param ctx the parse tree
+     */
+    fn visit_ContextParameter(&mut self, ctx: &ContextParameterContext<'input>) {
+        self.visit_children(ctx)
+    }
+
+    /**
      * Visit a parse tree produced by {@link ValkyrieAntlrParser#return_type}.
      * @param ctx the parse tree
      */
@@ -991,6 +1018,15 @@ pub trait ValkyrieAntlrVisitor<'input>: ParseTreeVisitor<'input, ValkyrieAntlrPa
     }
 
     /**
+     * Visit a parse tree produced by the {@code TOptional}
+     * labeled alternative in {@link ValkyrieAntlrParser#type_expression}.
+     * @param ctx the parse tree
+     */
+    fn visit_TOptional(&mut self, ctx: &TOptionalContext<'input>) {
+        self.visit_children(ctx)
+    }
+
+    /**
      * Visit a parse tree produced by the {@code AString}
      * labeled alternative in {@link ValkyrieAntlrParser#atomic}.
      * @param ctx the parse tree
@@ -1095,6 +1131,15 @@ pub trait ValkyrieAntlrVisitor<'input>: ParseTreeVisitor<'input, ValkyrieAntlrPa
      * @param ctx the parse tree
      */
     fn visit_CWith(&mut self, ctx: &CWithContext<'input>) {
+        self.visit_children(ctx)
+    }
+
+    /**
+     * Visit a parse tree produced by the {@code CFall}
+     * labeled alternative in {@link ValkyrieAntlrParser#control_expression}.
+     * @param ctx the parse tree
+     */
+    fn visit_CFall(&mut self, ctx: &CFallContext<'input>) {
         self.visit_children(ctx)
     }
 
@@ -1492,18 +1537,18 @@ pub trait ValkyrieAntlrVisitor<'input>: ParseTreeVisitor<'input, ValkyrieAntlrPa
     }
 
     /**
-     * Visit a parse tree produced by {@link ValkyrieAntlrParser#new_body}.
-     * @param ctx the parse tree
-     */
-    fn visit_new_body(&mut self, ctx: &New_bodyContext<'input>) {
-        self.visit_children(ctx)
-    }
-
-    /**
      * Visit a parse tree produced by {@link ValkyrieAntlrParser#new_block}.
      * @param ctx the parse tree
      */
     fn visit_new_block(&mut self, ctx: &New_blockContext<'input>) {
+        self.visit_children(ctx)
+    }
+
+    /**
+     * Visit a parse tree produced by {@link ValkyrieAntlrParser#new_call_item}.
+     * @param ctx the parse tree
+     */
+    fn visit_new_call_item(&mut self, ctx: &New_call_itemContext<'input>) {
         self.visit_children(ctx)
     }
 
@@ -1934,6 +1979,33 @@ pub trait ValkyrieAntlrVisitorCompat<'input>: ParseTreeVisitorCompat<'input, Nod
      * @param ctx the parse tree
      */
     fn visit_parameter_item(&mut self, ctx: &Parameter_itemContext<'input>) -> Self::Return {
+        self.visit_children(ctx)
+    }
+
+    /**
+     * Visit a parse tree produced by the {@code DictParameters}
+     * labeled alternative in {@link ValkyrieAntlrParser#parameter_special}.
+     * @param ctx the parse tree
+     */
+    fn visit_DictParameters(&mut self, ctx: &DictParametersContext<'input>) -> Self::Return {
+        self.visit_children(ctx)
+    }
+
+    /**
+     * Visit a parse tree produced by the {@code ListParameters}
+     * labeled alternative in {@link ValkyrieAntlrParser#parameter_special}.
+     * @param ctx the parse tree
+     */
+    fn visit_ListParameters(&mut self, ctx: &ListParametersContext<'input>) -> Self::Return {
+        self.visit_children(ctx)
+    }
+
+    /**
+     * Visit a parse tree produced by the {@code ContextParameter}
+     * labeled alternative in {@link ValkyrieAntlrParser#parameter_special}.
+     * @param ctx the parse tree
+     */
+    fn visit_ContextParameter(&mut self, ctx: &ContextParameterContext<'input>) -> Self::Return {
         self.visit_children(ctx)
     }
 
@@ -2648,6 +2720,15 @@ pub trait ValkyrieAntlrVisitorCompat<'input>: ParseTreeVisitorCompat<'input, Nod
     }
 
     /**
+     * Visit a parse tree produced by the {@code TOptional}
+     * labeled alternative in {@link ValkyrieAntlrParser#type_expression}.
+     * @param ctx the parse tree
+     */
+    fn visit_TOptional(&mut self, ctx: &TOptionalContext<'input>) -> Self::Return {
+        self.visit_children(ctx)
+    }
+
+    /**
      * Visit a parse tree produced by the {@code AString}
      * labeled alternative in {@link ValkyrieAntlrParser#atomic}.
      * @param ctx the parse tree
@@ -2752,6 +2833,15 @@ pub trait ValkyrieAntlrVisitorCompat<'input>: ParseTreeVisitorCompat<'input, Nod
      * @param ctx the parse tree
      */
     fn visit_CWith(&mut self, ctx: &CWithContext<'input>) -> Self::Return {
+        self.visit_children(ctx)
+    }
+
+    /**
+     * Visit a parse tree produced by the {@code CFall}
+     * labeled alternative in {@link ValkyrieAntlrParser#control_expression}.
+     * @param ctx the parse tree
+     */
+    fn visit_CFall(&mut self, ctx: &CFallContext<'input>) -> Self::Return {
         self.visit_children(ctx)
     }
 
@@ -3149,18 +3239,18 @@ pub trait ValkyrieAntlrVisitorCompat<'input>: ParseTreeVisitorCompat<'input, Nod
     }
 
     /**
-     * Visit a parse tree produced by {@link ValkyrieAntlrParser#new_body}.
-     * @param ctx the parse tree
-     */
-    fn visit_new_body(&mut self, ctx: &New_bodyContext<'input>) -> Self::Return {
-        self.visit_children(ctx)
-    }
-
-    /**
      * Visit a parse tree produced by {@link ValkyrieAntlrParser#new_block}.
      * @param ctx the parse tree
      */
     fn visit_new_block(&mut self, ctx: &New_blockContext<'input>) -> Self::Return {
+        self.visit_children(ctx)
+    }
+
+    /**
+     * Visit a parse tree produced by {@link ValkyrieAntlrParser#new_call_item}.
+     * @param ctx the parse tree
+     */
+    fn visit_new_call_item(&mut self, ctx: &New_call_itemContext<'input>) -> Self::Return {
         self.visit_children(ctx)
     }
 
@@ -3492,6 +3582,21 @@ where
 
     fn visit_parameter_item(&mut self, ctx: &Parameter_itemContext<'input>) {
         let result = <Self as ValkyrieAntlrVisitorCompat>::visit_parameter_item(self, ctx);
+        *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
+    }
+
+    fn visit_DictParameters(&mut self, ctx: &DictParametersContext<'input>) {
+        let result = <Self as ValkyrieAntlrVisitorCompat>::visit_DictParameters(self, ctx);
+        *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
+    }
+
+    fn visit_ListParameters(&mut self, ctx: &ListParametersContext<'input>) {
+        let result = <Self as ValkyrieAntlrVisitorCompat>::visit_ListParameters(self, ctx);
+        *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
+    }
+
+    fn visit_ContextParameter(&mut self, ctx: &ContextParameterContext<'input>) {
+        let result = <Self as ValkyrieAntlrVisitorCompat>::visit_ContextParameter(self, ctx);
         *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
     }
 
@@ -3900,6 +4005,11 @@ where
         *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
     }
 
+    fn visit_TOptional(&mut self, ctx: &TOptionalContext<'input>) {
+        let result = <Self as ValkyrieAntlrVisitorCompat>::visit_TOptional(self, ctx);
+        *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
+    }
+
     fn visit_AString(&mut self, ctx: &AStringContext<'input>) {
         let result = <Self as ValkyrieAntlrVisitorCompat>::visit_AString(self, ctx);
         *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
@@ -3957,6 +4067,11 @@ where
 
     fn visit_CWith(&mut self, ctx: &CWithContext<'input>) {
         let result = <Self as ValkyrieAntlrVisitorCompat>::visit_CWith(self, ctx);
+        *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
+    }
+
+    fn visit_CFall(&mut self, ctx: &CFallContext<'input>) {
+        let result = <Self as ValkyrieAntlrVisitorCompat>::visit_CFall(self, ctx);
         *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
     }
 
@@ -4200,13 +4315,13 @@ where
         *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
     }
 
-    fn visit_new_body(&mut self, ctx: &New_bodyContext<'input>) {
-        let result = <Self as ValkyrieAntlrVisitorCompat>::visit_new_body(self, ctx);
+    fn visit_new_block(&mut self, ctx: &New_blockContext<'input>) {
+        let result = <Self as ValkyrieAntlrVisitorCompat>::visit_new_block(self, ctx);
         *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
     }
 
-    fn visit_new_block(&mut self, ctx: &New_blockContext<'input>) {
-        let result = <Self as ValkyrieAntlrVisitorCompat>::visit_new_block(self, ctx);
+    fn visit_new_call_item(&mut self, ctx: &New_call_itemContext<'input>) {
+        let result = <Self as ValkyrieAntlrVisitorCompat>::visit_new_call_item(self, ctx);
         *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
     }
 

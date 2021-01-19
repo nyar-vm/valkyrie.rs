@@ -39,6 +39,7 @@ impl Lispify for ExpressionType {
             Self::Symbol(v) => v.lispify(),
             Self::Number(v) => v.lispify(),
             Self::String(v) => v.lispify(),
+            Self::OutputReference(v) => v.lispify(),
         }
     }
 }

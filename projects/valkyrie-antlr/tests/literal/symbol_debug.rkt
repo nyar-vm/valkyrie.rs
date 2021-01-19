@@ -1,3 +1,5 @@
+(namespace/shared std create test)
+∞
 nil
 null
 true

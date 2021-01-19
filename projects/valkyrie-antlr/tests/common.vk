@@ -1,66 +1,13 @@
-/// (1 + 2).print { $x }
-1 + 2 >> print($x)
-
-
-/// print(add(1 + 2))
-1 + 2 >> add >> print;
-/// print(add(1 + 2))
-print << add << 1 + 1;
-
-/// Some(print(add(1+2)))
-Some(1 + 2) >>> add >>> print;
-
-f << g;
-
-x.last
-
-
-{$x; print($x, c: 2, 3)}
-
-
-let list = {$} ⇴ [1, 2, 3];
-
-
-
-
-// 能被 @derive 的 trait
-#derive(Copy, Clone, Debug, PartialEq, Eq, Hash)
-derived macro A {
-
+function test(
+    // 1
+    #[nice(#boat args: what)]
+    // 2
+    placeholder mut a: A = 0,
+    // 3
+    `b`: `B` = null
+) -> ReturnType {
+    if err != nil {
+        return a
+    }
 }
 
-
-//
-implicit macro print() {
-
-}
-
-print("a")
-
-a[T]
-a⁅T⁆
-
-micro name < G, R > (g: G) -> R {
-1 + 1
-a in b
-print("Hello, world!")
-}
-
-
-macro outer < L > (lhs: L) -> String {
-#mut let mut count = 0
-}
-
-micro inner < R > (rhs: R) {
-while count < 10 {
-count += 1
-print("{lhs} {rhs}")
-}
-}
-"{count}"
-}
-
-public static final micro main(mut args: [String]) -> Int {
-outer("Hello")("world")
-return 0
-}

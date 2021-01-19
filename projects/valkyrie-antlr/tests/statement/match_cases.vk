@@ -14,7 +14,7 @@ match _ {
         @todo
 }
 
-match _ as a {
+match a := _ as T {
     type AnyType:
         @todo
     type Debug + Display:

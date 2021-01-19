@@ -19,8 +19,8 @@ use crate::{
     helper::ValkyrieNode, ApplyCallNode, ApplyDotNode, ArgumentTermNode, BooleanNode, CallNode, CallTermNode, CollectsNode,
     ExpressionFormatted, GenericCallNode, GuardStatement, IdentifierNode, IfStatement, InfixNode, LambdaCallNode,
     LambdaDotNode, LambdaSlotNode, MatchDotStatement, MonadicDotCall, NamePathNode, NewConstructNode, NullNode,
-    NumberLiteralNode, OperatorNode, PatternBlock, PostfixNode, PrefixNode, RaiseNode, StatementNode, StringLiteralNode,
-    StringTextNode, SubscriptNode, SwitchStatement, TableNode, TableTermNode, TryStatement,
+    NumberLiteralNode, OperatorNode, OutputNode, PatternBlock, PostfixNode, PrefixNode, RaiseNode, StatementNode,
+    StringLiteralNode, StringTextNode, SubscriptNode, SwitchStatement, TableNode, TableTermNode, TryStatement,
 };
 use alloc::{
     borrow::ToOwned,
@@ -139,6 +139,8 @@ pub enum ExpressionType {
     GenericCall(Box<CallNode<GenericCallNode>>),
     /// - Postfix expression
     MatchDot(Box<CallNode<MatchDotStatement>>),
+    /// - REPL Reference
+    OutputReference(Box<OutputNode>),
 }
 
 /// Temporary node for resolve postfix calls

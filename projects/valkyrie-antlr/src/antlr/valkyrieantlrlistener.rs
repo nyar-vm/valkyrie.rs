@@ -345,6 +345,42 @@ pub trait ValkyrieAntlrListener<'input>: ParseTreeListener<'input, ValkyrieAntlr
      */
     fn exit_parameter_item(&mut self, _ctx: &Parameter_itemContext<'input>) {}
     /**
+     * Enter a parse tree produced by the {@code DictParameters}
+     * labeled alternative in {@link ValkyrieAntlrParser#parameter_special}.
+     * @param ctx the parse tree
+     */
+    fn enter_DictParameters(&mut self, _ctx: &DictParametersContext<'input>) {}
+    /**
+     * Exit a parse tree produced by the {@code DictParameters}
+     * labeled alternative in {@link ValkyrieAntlrParser#parameter_special}.
+     * @param ctx the parse tree
+     */
+    fn exit_DictParameters(&mut self, _ctx: &DictParametersContext<'input>) {}
+    /**
+     * Enter a parse tree produced by the {@code ListParameters}
+     * labeled alternative in {@link ValkyrieAntlrParser#parameter_special}.
+     * @param ctx the parse tree
+     */
+    fn enter_ListParameters(&mut self, _ctx: &ListParametersContext<'input>) {}
+    /**
+     * Exit a parse tree produced by the {@code ListParameters}
+     * labeled alternative in {@link ValkyrieAntlrParser#parameter_special}.
+     * @param ctx the parse tree
+     */
+    fn exit_ListParameters(&mut self, _ctx: &ListParametersContext<'input>) {}
+    /**
+     * Enter a parse tree produced by the {@code ContextParameter}
+     * labeled alternative in {@link ValkyrieAntlrParser#parameter_special}.
+     * @param ctx the parse tree
+     */
+    fn enter_ContextParameter(&mut self, _ctx: &ContextParameterContext<'input>) {}
+    /**
+     * Exit a parse tree produced by the {@code ContextParameter}
+     * labeled alternative in {@link ValkyrieAntlrParser#parameter_special}.
+     * @param ctx the parse tree
+     */
+    fn exit_ContextParameter(&mut self, _ctx: &ContextParameterContext<'input>) {}
+    /**
      * Enter a parse tree produced by {@link ValkyrieAntlrParser#return_type}.
      * @param ctx the parse tree
      */
@@ -1279,6 +1315,18 @@ pub trait ValkyrieAntlrListener<'input>: ParseTreeListener<'input, ValkyrieAntlr
      */
     fn exit_TArrows(&mut self, _ctx: &TArrowsContext<'input>) {}
     /**
+     * Enter a parse tree produced by the {@code TOptional}
+     * labeled alternative in {@link ValkyrieAntlrParser#type_expression}.
+     * @param ctx the parse tree
+     */
+    fn enter_TOptional(&mut self, _ctx: &TOptionalContext<'input>) {}
+    /**
+     * Exit a parse tree produced by the {@code TOptional}
+     * labeled alternative in {@link ValkyrieAntlrParser#type_expression}.
+     * @param ctx the parse tree
+     */
+    fn exit_TOptional(&mut self, _ctx: &TOptionalContext<'input>) {}
+    /**
      * Enter a parse tree produced by the {@code AString}
      * labeled alternative in {@link ValkyrieAntlrParser#atomic}.
      * @param ctx the parse tree
@@ -1422,6 +1470,18 @@ pub trait ValkyrieAntlrListener<'input>: ParseTreeListener<'input, ValkyrieAntlr
      * @param ctx the parse tree
      */
     fn exit_CWith(&mut self, _ctx: &CWithContext<'input>) {}
+    /**
+     * Enter a parse tree produced by the {@code CFall}
+     * labeled alternative in {@link ValkyrieAntlrParser#control_expression}.
+     * @param ctx the parse tree
+     */
+    fn enter_CFall(&mut self, _ctx: &CFallContext<'input>) {}
+    /**
+     * Exit a parse tree produced by the {@code CFall}
+     * labeled alternative in {@link ValkyrieAntlrParser#control_expression}.
+     * @param ctx the parse tree
+     */
+    fn exit_CFall(&mut self, _ctx: &CFallContext<'input>) {}
     /**
      * Enter a parse tree produced by {@link ValkyrieAntlrParser#op_prefix}.
      * @param ctx the parse tree
@@ -1921,16 +1981,6 @@ pub trait ValkyrieAntlrListener<'input>: ParseTreeListener<'input, ValkyrieAntlr
      */
     fn exit_new_statement(&mut self, _ctx: &New_statementContext<'input>) {}
     /**
-     * Enter a parse tree produced by {@link ValkyrieAntlrParser#new_body}.
-     * @param ctx the parse tree
-     */
-    fn enter_new_body(&mut self, _ctx: &New_bodyContext<'input>) {}
-    /**
-     * Exit a parse tree produced by {@link ValkyrieAntlrParser#new_body}.
-     * @param ctx the parse tree
-     */
-    fn exit_new_body(&mut self, _ctx: &New_bodyContext<'input>) {}
-    /**
      * Enter a parse tree produced by {@link ValkyrieAntlrParser#new_block}.
      * @param ctx the parse tree
      */
@@ -1940,6 +1990,16 @@ pub trait ValkyrieAntlrListener<'input>: ParseTreeListener<'input, ValkyrieAntlr
      * @param ctx the parse tree
      */
     fn exit_new_block(&mut self, _ctx: &New_blockContext<'input>) {}
+    /**
+     * Enter a parse tree produced by {@link ValkyrieAntlrParser#new_call_item}.
+     * @param ctx the parse tree
+     */
+    fn enter_new_call_item(&mut self, _ctx: &New_call_itemContext<'input>) {}
+    /**
+     * Exit a parse tree produced by {@link ValkyrieAntlrParser#new_call_item}.
+     * @param ctx the parse tree
+     */
+    fn exit_new_call_item(&mut self, _ctx: &New_call_itemContext<'input>) {}
     /**
      * Enter a parse tree produced by {@link ValkyrieAntlrParser#tuple_literal}.
      * @param ctx the parse tree

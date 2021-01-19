@@ -116,6 +116,7 @@ pub enum ValkyrieOperator {
 
 #[repr(u8)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum LogicMatrix {
     /// 1. always false
     False = 0b0,

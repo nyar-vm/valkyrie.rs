@@ -3,7 +3,7 @@
 ""
 "'"
 '"'
-"\n"
+f"\n"
 r"\n"
 '\
 '
@@ -13,7 +13,10 @@ r"\n"
 '\u{99999999}'
 '\n'
 '\a'
-re'ab[cd]'
+re'
+# comment
+ab[cd]
+'
 xml'
 <list>xml</list>
 '

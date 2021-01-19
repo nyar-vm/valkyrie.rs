@@ -150,7 +150,8 @@ impl<'i> Extractor<ExpressionContextAll<'i>> for ExpressionType {
                 InfixNode { infix: operator, lhs, rhs }.into()
             }
             ExpressionContextAll::EGroupContext(group) => ExpressionType::take(group.expression())?,
-            ExpressionContextAll::ESliceContext(_) => {
+            ExpressionContextAll::ESliceContext(slice) => {
+                // SubscriptSliceNode::take(slice.slice_call())
                 todo!()
             }
             ExpressionContextAll::EAsContext(_) => {
@@ -191,9 +192,7 @@ impl<'i> Extractor<ExpressionContextAll<'i>> for ExpressionType {
             ExpressionContextAll::EObjectContext(_) => {
                 todo!()
             }
-            ExpressionContextAll::ETupleContext(_) => {
-                todo!()
-            }
+            ExpressionContextAll::ETupleContext(v) => v,
             ExpressionContextAll::ERangeContext(_) => {
                 todo!()
             }
@@ -322,10 +321,13 @@ impl<'i> Extractor<Type_expressionContextAll<'i>> for ExpressionType {
                 todo!()
             }
             Type_expressionContextAll::TAtomContext(atom) => ExpressionType::take(atom.atomic())?,
-            Type_expressionContextAll::Error(_) => {
+            Type_expressionContextAll::TPrefixContext(_) => {
                 todo!()
             }
-            Type_expressionContextAll::TPrefixContext(_) => {
+            Type_expressionContextAll::TOptionalContext(_) => {
+                todo!()
+            }
+            Type_expressionContextAll::Error(_) => {
                 todo!()
             }
         };

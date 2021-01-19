@@ -20,3 +20,6 @@ chain
     .reject {
         $x > 5
     }
+    .then(lambda(#mut a) -> b {
+
+    })

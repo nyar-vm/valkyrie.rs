@@ -1,12 +1,12 @@
-function function() {}
+function f() {}
 
-function eager function() {}
-function function(self, ...list: List , <, >) {}
-function function(input: Integer = 0) {}
+eager function  f() {}
+function f(self, ...list: List, <, >) {}
+function f(input: Integer = 0) {}
 
-function \\\*\\\ function() -> Integer \\\*\\\ {}
-function \\\*\\\ function() / DivideZero \\\*\\\ {}
+function /*=*/ f/*=*/(/*=*/) /*=*/ ->/*=*/ Integer /*=*/ {}
+function /*=*/ f/*=*/(/*=*/) /*=*/ / /*=*/ DivideZero /*=*/ {}
 
-function eager function(mut self, <, input: Integer = 0, >, ^list: List) -> Integer / [DivideZero, ParseError] {
+eager function f(mut self, <, input: Integer = 0, >, ^list: List) -> Integer / [DivideZero, ParseError] {
 
 }

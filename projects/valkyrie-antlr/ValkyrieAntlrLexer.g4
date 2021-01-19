@@ -108,7 +108,7 @@ OP_OR_DEFAULT:    '??';
 OP_OR_ELSE:       '?:';
 OP_AND_THEN:      '?';
 // not
-OP_NOT: '!';
+OP_NOT: '!' | '¬';
 KW_NOT: 'not';
 // in
 OP_IN:        '∈' | '∊';
@@ -134,7 +134,7 @@ OP_ROOT3:   '∛';
 OP_ROOT4:   '∜';
 // suffix
 OP_TEMPERATURE: '℃' | '℉';
-OP_TRANSPOSE:   'ᵀ' | 'ᴴ';
+OP_TRANSPOSE:   '⊤' | '†' | '⊹'; // ᵀ,ᴴ are XIDs
 OP_PERCENT:     '‰' | '‱';
 // standalone
 OP_REFERENCE: '※';
@@ -159,7 +159,6 @@ KW_WHILE: 'while' | 'until';
 KW_FOR:   'for';
 //
 KW_LET:      'let';
-KW_WITCH:    'which';
 KW_NEW:      'new';
 KW_OBJECT:   'object';
 KW_LAMBDA:   'lambda';
@@ -179,7 +178,7 @@ DECIMAL
     | INTEGER EXP
     ;
 fragment EXP: [Ee] [+\-]? INTEGER;
-// $antlr-format off
+              // $antlr-format off
 STRING_START: '\'' -> pushMode(IN_STRING1);
 STRING_DOUBLE: '"' -> type(STRING_START), pushMode(IN_STRING2);
 STRING_TRIPLE:  '\'\'\'' -> type(STRING_START), pushMode(IN_STRING3);
@@ -190,14 +189,15 @@ KW_IF:        'if';
 KW_ELSE:      'else';
 KW_OTHERWISE: 'otherwise';
 // control goto FROM: 'from';
-RETURN:   'return';
-RESUME:   'resume';
-YIELD:    'yield';
-BREAK:    'break';
-CONTINUE: 'continue';
-RAISE:    'raise';
+RETURN:       'return';
+RESUME:       'resume';
+YIELD:        'yield';
+BREAK:        'break';
+CONTINUE:     'continue';
+FALL_THROUGH: 'fallthrough';
+RAISE:        'raise';
 // atom
-SPECIAL: 'true' | 'false' | 'null' | 'nil' | '∅';
+SPECIAL: 'true' | 'false' | 'null' | 'nil' | '∅' | '∞';
 // atom
 RAW_ID:     '`' ~[`]+ '`';
 UNICODE_ID: [_\p{XID_start}] [\p{XID_continue}]*;

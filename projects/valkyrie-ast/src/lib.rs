@@ -33,7 +33,7 @@ pub use crate::{
         matches::{MatchDotStatement, MatchKind},
         number::NumberLiteralNode,
         operators::{InfixNode, LogicMatrix, OperatorNode, PostfixNode, PrefixNode, ValkyrieOperator},
-        symbol::{BooleanNode, IdentifierNode, LambdaSlotNode, NamePathNode, NullNode},
+        symbol::{BooleanNode, IdentifierNode, LambdaSlotNode, NamePathNode, NullNode, OutputNode},
         table::{TableKeyType, TableKind, TableNode, TableTermNode},
         view::{SubscriptNode, SubscriptSliceNode, SubscriptTermNode},
         ExpressionContext, ExpressionNode, ExpressionType, PostfixCallPart, TypingExpression,

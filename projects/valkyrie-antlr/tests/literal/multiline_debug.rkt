@@ -1,8 +1,8 @@
-'''
-$x
-
-${y}
-${{}
+(namespace/shared std create test)
+i'''
+x
+{1 2 3 4 5 6 7 8 9}
+{x + 2}
 '''
 json'''
 {

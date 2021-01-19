@@ -1,5 +1,7 @@
 use super::*;
-use valkyrie_ast::{BooleanNode, NullNode, StringLiteralNode};
+use antlr_rust::token::Token;
+use std::str::FromStr;
+use valkyrie_ast::{BooleanNode, NullNode, OutputNode, StringLiteralNode, StringTextNode};
 
 impl<'i> Extractor<AtomicContextAll<'i>> for ExpressionType {
     fn take_one(node: &AtomicContextAll<'i>) -> Option<Self> {
@@ -13,6 +15,7 @@ impl<'i> Extractor<AtomicContextAll<'i>> for ExpressionType {
                     "false" => BooleanNode { value: false, span }.into(),
                     "null" => NullNode { nil: false, span }.into(),
                     "nil" | "∅" => NullNode { nil: true, span }.into(),
+                    "∞" => StringTextNode::new("∞", span).into(),
                     _ => unreachable!("Atom: {}", text),
                 }
             }
@@ -22,17 +25,30 @@ impl<'i> Extractor<AtomicContextAll<'i>> for ExpressionType {
             AtomicContextAll::ANumberContext(s) => NumberLiteralNode::take(s.number_literal())?.into(),
             AtomicContextAll::AStringContext(s) => StringLiteralNode::take(s.string_literal())?.into(),
             AtomicContextAll::ANamepathContext(s) => NamePathNode::take(s.namepath())?.into(),
-            AtomicContextAll::AOutputContext(s) => {
-                // let id = IdentifierNode::take(s.output_name());
-                println!("Output: {:?}", s);
-
-                return None;
-            }
+            AtomicContextAll::AOutputContext(s) => OutputNode::take(s.output_name())?.into(),
             AtomicContextAll::Error(_) => {
                 todo!()
             }
         };
         Some(body)
+    }
+}
+
+impl<'i> Extractor<TerminalNode<'i, ValkyrieAntlrParserContextType>> for isize {
+    fn take_one(node: &TerminalNode<'i, ValkyrieAntlrParserContextType>) -> Option<Self> {
+        isize::from_str(&node.get_text()).ok()
+    }
+}
+
+impl<'i> Extractor<Output_nameContextAll<'i>> for OutputNode {
+    fn take_one(node: &Output_nameContextAll<'i>) -> Option<Self> {
+        let index = match node {
+            Output_nameContextAll::PositiveOutputContext(v) => isize::take(v.INTEGER())?,
+            Output_nameContextAll::NegativeOutputContext(v) => -isize::take(v.INTEGER())?,
+            Output_nameContextAll::Error(_) => 0,
+        };
+        let span = Range { start: node.start().get_start() as u32, end: node.stop().get_stop() as u32 };
+        Some(Self { count: index, span })
     }
 }
 

@@ -10,7 +10,8 @@ a ^ b ^ c;
 
 // divide
 a /% 2
-3 %% 4
+
+%%4
 
 // Equality
 a == c;
