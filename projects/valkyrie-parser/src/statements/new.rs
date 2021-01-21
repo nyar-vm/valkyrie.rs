@@ -66,7 +66,7 @@ impl ThisParser for CollectsNode {
     /// ```
     fn parse(input: ParseState) -> ParseResult<Self> {
         let pat = BracketPattern::new("{", "}");
-        let (state, terms) = pat.consume(input, ignore, TableTermNode::parse)?;
+        let (state, terms) = pat.consume(input, ignore, TupleTermNode::parse)?;
         state.finish(CollectsNode { terms: terms.body, span: get_span(input, state) })
     }
 

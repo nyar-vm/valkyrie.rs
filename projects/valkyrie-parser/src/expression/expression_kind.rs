@@ -102,7 +102,7 @@ pub fn parse_expression(input: ParseState, allow_curly: bool) -> ParseResult<Exp
         .choose_from(TryStatement::parse)
         .choose_from(RaiseNode::parse)
         .choose_from(NamePathNode::parse)
-        .choose_from(TableNode::parse)
+        .choose_from(TupleNode::parse)
         .choose_from(TupleNode::parse)
         .end_choice()?;
     let (state, rest) = match allow_curly {

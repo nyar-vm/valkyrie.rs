@@ -2,6 +2,7 @@ namespace std.create.test;
 
 ∞;
 ∅;
+nil;
 null;
 true;
 false;

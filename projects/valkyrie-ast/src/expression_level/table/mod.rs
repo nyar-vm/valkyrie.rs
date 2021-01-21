@@ -4,36 +4,39 @@ mod display;
 
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum TableKind {
-    /// `(a, b, c)`
+pub enum TupleKind {
+    /// `(a, b, ..c)`
     Tuple,
-    /// `[a, b, c]`
-    OffsetTable,
-    /// `{a = 1, b = 2, c = 3}`
-    OrdinalTable,
+    /// `[a: 1, b, ..c]`
+    List,
+    /// `{a: 1, b, ..c}`
+    Dict,
 }
 
-/// `[table]` or `(tuple)`
+/// `(table, ), (named: tuple, expression)`
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct TableNode {
+pub struct TupleNode {
     ///  The kind of table.
-    pub kind: TableKind,
+    pub kind: TupleKind,
     /// The raw string of the number.
-    pub terms: Vec<TableTermNode>,
+    pub terms: Vec<TupleTermNode>,
     /// The range of the number.
     pub span: Range<u32>,
 }
 
+/// `a: item`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct TableTermNode {
-    pub pair: CallTermNode<TableKeyType, ExpressionNode>,
+pub struct TupleTermNode {
+    /// element in tuple
+    pub pair: CallTermNode<TupleKeyType, ExpressionType>,
 }
 
+/// The key of tuple
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum TableKeyType {
+pub enum TupleKeyType {
     /// A valid identifier key
     Identifier(Box<IdentifierNode>),
     /// A valid number key
@@ -44,7 +47,7 @@ pub enum TableKeyType {
     Subscript(Box<SubscriptNode>),
 }
 
-impl Default for TableKind {
+impl Default for TupleKind {
     fn default() -> Self {
         Self::Tuple
     }

@@ -34,7 +34,7 @@ pub use crate::{
         number::NumberLiteralNode,
         operators::{InfixNode, LogicMatrix, OperatorNode, PostfixNode, PrefixNode, ValkyrieOperator},
         symbol::{BooleanNode, IdentifierNode, LambdaSlotNode, NamePathNode, NullNode, OutputNode},
-        table::{TableKeyType, TableKind, TableNode, TableTermNode},
+        table::{TupleKeyType, TupleKind, TupleNode, TupleTermNode},
         view::{SubscriptNode, SubscriptSliceNode, SubscriptTermNode},
         ExpressionContext, ExpressionNode, ExpressionType, PostfixCallPart, TypingExpression,
     },

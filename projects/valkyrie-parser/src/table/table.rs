@@ -1,11 +1,11 @@
 use super::*;
 
-impl ThisParser for TableNode {
+impl ThisParser for TupleNode {
     /// `[` ~ `]` | `[` [term](CallTermNode::parse) ( ~ `,` ~ [term](CallTermNode::parse))* `,`? `]`
     fn parse(input: ParseState) -> ParseResult<Self> {
         let pat = BracketPattern::new("[", "]");
-        let (state, terms) = pat.consume(input, ignore, TableTermNode::parse)?;
-        state.finish(TableNode { kind: TableKind::OffsetTable, terms: terms.body, span: get_span(input, state) })
+        let (state, terms) = pat.consume(input, ignore, TupleTermNode::parse)?;
+        state.finish(TupleNode { kind: TupleKind::List, terms: terms.body, span: get_span(input, state) })
     }
 
     fn lispify(&self) -> Lisp {
@@ -18,10 +18,10 @@ impl ThisParser for TableNode {
     }
 }
 
-impl ThisParser for TableTermNode {
+impl ThisParser for TupleTermNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, pair) = CallTermNode::parse(input)?;
-        state.finish(TableTermNode { pair })
+        state.finish(TupleTermNode { pair })
     }
 
     fn lispify(&self) -> Lisp {
@@ -29,23 +29,23 @@ impl ThisParser for TableTermNode {
     }
 }
 
-impl ThisParser for TableKeyType {
+impl ThisParser for TupleKeyType {
     fn parse(input: ParseState) -> ParseResult<Self> {
         input
             .begin_choice()
-            .choose(|s| IdentifierNode::parse(s).map_inner(|e| TableKeyType::Identifier(Box::new(e))))
-            .choose(|s| NumberLiteralNode::parse(s).map_inner(|e| TableKeyType::Number(Box::new(e))))
-            .choose(|s| StringLiteralNode::parse(s).map_inner(|e| TableKeyType::String(Box::new(e))))
-            .choose(|s| SubscriptNode::parse(s).map_inner(|e| TableKeyType::Subscript(Box::new(e))))
+            .choose(|s| IdentifierNode::parse(s).map_inner(|e| TupleKeyType::Identifier(Box::new(e))))
+            .choose(|s| NumberLiteralNode::parse(s).map_inner(|e| TupleKeyType::Number(Box::new(e))))
+            .choose(|s| StringLiteralNode::parse(s).map_inner(|e| TupleKeyType::String(Box::new(e))))
+            .choose(|s| SubscriptNode::parse(s).map_inner(|e| TupleKeyType::Subscript(Box::new(e))))
             .end_choice()
     }
 
     fn lispify(&self) -> Lisp {
         match self {
-            TableKeyType::Identifier(e) => e.lispify(),
-            TableKeyType::Number(e) => e.lispify(),
-            TableKeyType::String(e) => e.lispify(),
-            TableKeyType::Subscript(e) => e.lispify(),
+            TupleKeyType::Identifier(e) => e.lispify(),
+            TupleKeyType::Number(e) => e.lispify(),
+            TupleKeyType::String(e) => e.lispify(),
+            TupleKeyType::Subscript(e) => e.lispify(),
         }
     }
 }

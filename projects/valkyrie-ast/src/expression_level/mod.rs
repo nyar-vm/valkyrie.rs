@@ -20,7 +20,7 @@ use crate::{
     ExpressionFormatted, GenericCallNode, GuardStatement, IdentifierNode, IfStatement, InfixNode, LambdaCallNode,
     LambdaDotNode, LambdaSlotNode, MatchDotStatement, MonadicDotCall, NamePathNode, NewConstructNode, NullNode,
     NumberLiteralNode, OperatorNode, OutputNode, PatternBlock, PostfixNode, PrefixNode, RaiseNode, StatementNode,
-    StringLiteralNode, StringTextNode, SubscriptNode, SwitchStatement, TableNode, TableTermNode, TryStatement,
+    StringLiteralNode, StringTextNode, SubscriptNode, SwitchStatement, TryStatement, TupleNode, TupleTermNode,
 };
 use alloc::{
     borrow::ToOwned,
@@ -114,7 +114,7 @@ pub enum ExpressionType {
     /// - Compound expression
     Suffix(Box<PostfixNode>),
     /// - Compound expression
-    Table(Box<TableNode>),
+    Tuple(Box<TupleNode>),
     /// - Standalone expression
     Resume(Box<RaiseNode>),
     /// - Standalone expression

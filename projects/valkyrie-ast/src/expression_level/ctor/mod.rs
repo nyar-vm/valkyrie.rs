@@ -40,7 +40,7 @@ pub struct NewConstructNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct CollectsNode {
     /// The collect terms
-    pub terms: Vec<TableTermNode>,
+    pub terms: Vec<TupleTermNode>,
     /// The range of the node
     pub span: Range<u32>,
 }

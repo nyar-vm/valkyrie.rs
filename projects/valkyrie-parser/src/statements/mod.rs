@@ -11,7 +11,7 @@ use valkyrie_ast::{
     ExpressionContext, ExpressionNode, FlagsDeclaration, ForLoop, FunctionDeclaration, GenericCallNode, GuardLetStatement,
     GuardStatement, IdentifierNode, ImportAliasNode, ImportGroupNode, ImportStatement, ImportTermNode, LambdaArgumentNode,
     LambdaNode, LetBindNode, LetPattern, NamePathNode, NamespaceDeclaration, NamespaceKind, NewConstructNode, ProgramRoot,
-    StatementNode, TableTermNode, TaggedDeclaration, TypingExpression, UnionDeclaration, WhileLoop,
+    StatementNode, TaggedDeclaration, TupleTermNode, TypingExpression, UnionDeclaration, WhileLoop,
 };
 
 mod annotation;

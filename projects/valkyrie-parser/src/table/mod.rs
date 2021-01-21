@@ -6,19 +6,6 @@ use lispify::Lisp;
 use pex::{BracketPattern, ParseResult, ParseState};
 use std::ops::Range;
 use valkyrie_ast::{
-    CallTermNode, ExpressionType, IdentifierNode, NumberLiteralNode, StringLiteralNode, SubscriptNode, TableKeyType, TableKind,
-    TableNode, TableTermNode,
+    CallTermNode, ExpressionType, IdentifierNode, NumberLiteralNode, StringLiteralNode, SubscriptNode, TupleKeyType, TupleKind,
+    TupleNode, TupleTermNode,
 };
-
-pub(crate) struct TupleNode {
-    /// The raw string of the number.
-    pub terms: Vec<TableTermNode>,
-    /// The range of the node
-    pub span: Range<u32>,
-}
-
-impl From<TupleNode> for ExpressionType {
-    fn from(value: TupleNode) -> Self {
-        ExpressionType::Table(Box::new(value.as_table()))
-    }
-}
