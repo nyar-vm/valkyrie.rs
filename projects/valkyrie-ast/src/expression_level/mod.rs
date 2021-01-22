@@ -16,8 +16,8 @@ pub mod view;
 mod display;
 
 use crate::{
-    helper::ValkyrieNode, ApplyCallNode, ApplyDotNode, ArgumentTermNode, BooleanNode, CallNode, CallTermNode, CollectsNode,
-    ExpressionFormatted, GenericCallNode, GuardStatement, IdentifierNode, IfStatement, InfixNode, LambdaCallNode,
+    helper::ValkyrieNode, ApplyCallNode, ApplyDotNode, ArgumentTermNode, ArrayNode, BooleanNode, CallNode, CallTermNode,
+    CollectsNode, ExpressionFormatted, GenericCallNode, GuardStatement, IdentifierNode, IfStatement, InfixNode, LambdaCallNode,
     LambdaDotNode, LambdaSlotNode, MatchDotStatement, MonadicDotCall, NamePathNode, NewConstructNode, NullNode,
     NumberLiteralNode, OperatorNode, OutputNode, PatternBlock, PostfixNode, PrefixNode, RaiseNode, StatementNode,
     StringLiteralNode, StringTextNode, SubscriptNode, SwitchStatement, TryStatement, TupleNode, TupleTermNode,
@@ -115,6 +115,8 @@ pub enum ExpressionType {
     Suffix(Box<PostfixNode>),
     /// - Compound expression
     Tuple(Box<TupleNode>),
+    /// - Compound expression
+    Array(Box<ArrayNode>),
     /// - Standalone expression
     Resume(Box<RaiseNode>),
     /// - Standalone expression

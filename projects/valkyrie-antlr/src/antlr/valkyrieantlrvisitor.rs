@@ -1577,20 +1577,10 @@ pub trait ValkyrieAntlrVisitor<'input>: ParseTreeVisitor<'input, ValkyrieAntlrPa
     }
 
     /**
-     * Visit a parse tree produced by the {@code Ordinal}
-     * labeled alternative in {@link ValkyrieAntlrParser#range_literal}.
+     * Visit a parse tree produced by {@link ValkyrieAntlrParser#range_literal}.
      * @param ctx the parse tree
      */
-    fn visit_Ordinal(&mut self, ctx: &OrdinalContext<'input>) {
-        self.visit_children(ctx)
-    }
-
-    /**
-     * Visit a parse tree produced by the {@code Offset}
-     * labeled alternative in {@link ValkyrieAntlrParser#range_literal}.
-     * @param ctx the parse tree
-     */
-    fn visit_Offset(&mut self, ctx: &OffsetContext<'input>) {
+    fn visit_range_literal(&mut self, ctx: &Range_literalContext<'input>) {
         self.visit_children(ctx)
     }
 
@@ -3279,20 +3269,10 @@ pub trait ValkyrieAntlrVisitorCompat<'input>: ParseTreeVisitorCompat<'input, Nod
     }
 
     /**
-     * Visit a parse tree produced by the {@code Ordinal}
-     * labeled alternative in {@link ValkyrieAntlrParser#range_literal}.
+     * Visit a parse tree produced by {@link ValkyrieAntlrParser#range_literal}.
      * @param ctx the parse tree
      */
-    fn visit_Ordinal(&mut self, ctx: &OrdinalContext<'input>) -> Self::Return {
-        self.visit_children(ctx)
-    }
-
-    /**
-     * Visit a parse tree produced by the {@code Offset}
-     * labeled alternative in {@link ValkyrieAntlrParser#range_literal}.
-     * @param ctx the parse tree
-     */
-    fn visit_Offset(&mut self, ctx: &OffsetContext<'input>) -> Self::Return {
+    fn visit_range_literal(&mut self, ctx: &Range_literalContext<'input>) -> Self::Return {
         self.visit_children(ctx)
     }
 
@@ -4340,13 +4320,8 @@ where
         *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
     }
 
-    fn visit_Ordinal(&mut self, ctx: &OrdinalContext<'input>) {
-        let result = <Self as ValkyrieAntlrVisitorCompat>::visit_Ordinal(self, ctx);
-        *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
-    }
-
-    fn visit_Offset(&mut self, ctx: &OffsetContext<'input>) {
-        let result = <Self as ValkyrieAntlrVisitorCompat>::visit_Offset(self, ctx);
+    fn visit_range_literal(&mut self, ctx: &Range_literalContext<'input>) {
+        let result = <Self as ValkyrieAntlrVisitorCompat>::visit_range_literal(self, ctx);
         *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
     }
 

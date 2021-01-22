@@ -19,13 +19,13 @@ impl ThisParser for ApplyCallNode {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let pat = BracketPattern::new("(", ")");
         let (state, terms) = pat.consume(input, ignore, ApplyCallTerm::parse)?;
-        state.finish(ApplyCallNode { terms: terms.body, span: get_span(input, state) })
+        state.finish(ApplyCallNode { arguments: terms.body, span: get_span(input, state) })
     }
 
     fn lispify(&self) -> Lisp {
-        let mut lisp = Lisp::new(self.terms.len() + 2);
+        let mut lisp = Lisp::new(self.arguments.len() + 2);
         lisp += Lisp::keyword("apply");
-        for term in &self.terms {
+        for term in &self.arguments {
             lisp += term.lispify();
         }
         lisp

@@ -451,8 +451,8 @@ collection_pair
 // ===========================================================================
 slice_call: OP_AND_THEN? range_literal;
 range_literal
-    : BRACKET_L (range_axis (COMMA range_axis)* COMMA?)? BRACKET_R # Ordinal
-    | OFFSET_L (range_axis (COMMA range_axis)* COMMA?)? OFFSET_R   # Offset
+    : BRACKET_L (range_axis (COMMA range_axis)* COMMA?)? BRACKET_R
+    | OFFSET_L (range_axis (COMMA range_axis)* COMMA?)? OFFSET_R
     ;
 range_axis
     : COLON // [:]

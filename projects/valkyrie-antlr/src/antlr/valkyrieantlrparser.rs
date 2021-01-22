@@ -30236,42 +30236,7 @@ where
     }
 }
 //------------------- range_literal ----------------
-#[derive(Debug)]
-pub enum Range_literalContextAll<'input> {
-    OrdinalContext(OrdinalContext<'input>),
-    OffsetContext(OffsetContext<'input>),
-    Error(Range_literalContext<'input>),
-}
-antlr_rust::tid! {Range_literalContextAll<'a>}
-
-impl<'input> antlr_rust::parser_rule_context::DerefSeal for Range_literalContextAll<'input> {}
-
-impl<'input> ValkyrieAntlrParserContext<'input> for Range_literalContextAll<'input> {}
-
-impl<'input> Deref for Range_literalContextAll<'input> {
-    type Target = dyn Range_literalContextAttrs<'input> + 'input;
-    fn deref(&self) -> &Self::Target {
-        use Range_literalContextAll::*;
-        match self {
-            OrdinalContext(inner) => inner,
-            OffsetContext(inner) => inner,
-            Error(inner) => inner,
-        }
-    }
-}
-impl<'input, 'a> Visitable<dyn ValkyrieAntlrVisitor<'input> + 'a> for Range_literalContextAll<'input> {
-    fn accept(&self, visitor: &mut (dyn ValkyrieAntlrVisitor<'input> + 'a)) {
-        self.deref().accept(visitor)
-    }
-}
-impl<'input, 'a> Listenable<dyn ValkyrieAntlrListener<'input> + 'a> for Range_literalContextAll<'input> {
-    fn enter(&self, listener: &mut (dyn ValkyrieAntlrListener<'input> + 'a)) {
-        self.deref().enter(listener)
-    }
-    fn exit(&self, listener: &mut (dyn ValkyrieAntlrListener<'input> + 'a)) {
-        self.deref().exit(listener)
-    }
-}
+pub type Range_literalContextAll<'input> = Range_literalContext<'input>;
 
 pub type Range_literalContext<'input> = BaseParserRuleContext<'input, Range_literalContextExt<'input>>;
 
@@ -30282,9 +30247,22 @@ pub struct Range_literalContextExt<'input> {
 
 impl<'input> ValkyrieAntlrParserContext<'input> for Range_literalContext<'input> {}
 
-impl<'input, 'a> Listenable<dyn ValkyrieAntlrListener<'input> + 'a> for Range_literalContext<'input> {}
+impl<'input, 'a> Listenable<dyn ValkyrieAntlrListener<'input> + 'a> for Range_literalContext<'input> {
+    fn enter(&self, listener: &mut (dyn ValkyrieAntlrListener<'input> + 'a)) {
+        listener.enter_every_rule(self);
+        listener.enter_range_literal(self);
+    }
+    fn exit(&self, listener: &mut (dyn ValkyrieAntlrListener<'input> + 'a)) {
+        listener.exit_range_literal(self);
+        listener.exit_every_rule(self);
+    }
+}
 
-impl<'input, 'a> Visitable<dyn ValkyrieAntlrVisitor<'input> + 'a> for Range_literalContext<'input> {}
+impl<'input, 'a> Visitable<dyn ValkyrieAntlrVisitor<'input> + 'a> for Range_literalContext<'input> {
+    fn accept(&self, visitor: &mut (dyn ValkyrieAntlrVisitor<'input> + 'a)) {
+        visitor.visit_range_literal(self);
+    }
+}
 
 impl<'input> CustomRuleContext<'input> for Range_literalContextExt<'input> {
     type TF = LocalTokenFactory<'input>;
@@ -30301,24 +30279,13 @@ impl<'input> Range_literalContextExt<'input> {
         parent: Option<Rc<dyn ValkyrieAntlrParserContext<'input> + 'input>>,
         invoking_state: isize,
     ) -> Rc<Range_literalContextAll<'input>> {
-        Rc::new(Range_literalContextAll::Error(BaseParserRuleContext::new_parser_ctx(
-            parent,
-            invoking_state,
-            Range_literalContextExt { ph: PhantomData },
-        )))
+        Rc::new(BaseParserRuleContext::new_parser_ctx(parent, invoking_state, Range_literalContextExt { ph: PhantomData }))
     }
 }
 
 pub trait Range_literalContextAttrs<'input>:
     ValkyrieAntlrParserContext<'input> + BorrowMut<Range_literalContextExt<'input>>
 {
-}
-
-impl<'input> Range_literalContextAttrs<'input> for Range_literalContext<'input> {}
-
-pub type OrdinalContext<'input> = BaseParserRuleContext<'input, OrdinalContextExt<'input>>;
-
-pub trait OrdinalContextAttrs<'input>: ValkyrieAntlrParserContext<'input> {
     /// Retrieves first TerminalNode corresponding to token BRACKET_L
     /// Returns `None` if there is no child corresponding to token BRACKET_L
     fn BRACKET_L(&self) -> Option<Rc<TerminalNode<'input, ValkyrieAntlrParserContextType>>>
@@ -30362,70 +30329,6 @@ pub trait OrdinalContextAttrs<'input>: ValkyrieAntlrParserContext<'input> {
     {
         self.get_token(COMMA, i)
     }
-}
-
-impl<'input> OrdinalContextAttrs<'input> for OrdinalContext<'input> {}
-
-pub struct OrdinalContextExt<'input> {
-    base: Range_literalContextExt<'input>,
-    ph: PhantomData<&'input str>,
-}
-
-antlr_rust::tid! {OrdinalContextExt<'a>}
-
-impl<'input> ValkyrieAntlrParserContext<'input> for OrdinalContext<'input> {}
-
-impl<'input, 'a> Listenable<dyn ValkyrieAntlrListener<'input> + 'a> for OrdinalContext<'input> {
-    fn enter(&self, listener: &mut (dyn ValkyrieAntlrListener<'input> + 'a)) {
-        listener.enter_every_rule(self);
-        listener.enter_Ordinal(self);
-    }
-    fn exit(&self, listener: &mut (dyn ValkyrieAntlrListener<'input> + 'a)) {
-        listener.exit_Ordinal(self);
-        listener.exit_every_rule(self);
-    }
-}
-
-impl<'input, 'a> Visitable<dyn ValkyrieAntlrVisitor<'input> + 'a> for OrdinalContext<'input> {
-    fn accept(&self, visitor: &mut (dyn ValkyrieAntlrVisitor<'input> + 'a)) {
-        visitor.visit_Ordinal(self);
-    }
-}
-
-impl<'input> CustomRuleContext<'input> for OrdinalContextExt<'input> {
-    type TF = LocalTokenFactory<'input>;
-    type Ctx = ValkyrieAntlrParserContextType;
-    fn get_rule_index(&self) -> usize {
-        RULE_range_literal
-    }
-    //fn type_rule_index() -> usize where Self: Sized { RULE_range_literal }
-}
-
-impl<'input> Borrow<Range_literalContextExt<'input>> for OrdinalContext<'input> {
-    fn borrow(&self) -> &Range_literalContextExt<'input> {
-        &self.base
-    }
-}
-impl<'input> BorrowMut<Range_literalContextExt<'input>> for OrdinalContext<'input> {
-    fn borrow_mut(&mut self) -> &mut Range_literalContextExt<'input> {
-        &mut self.base
-    }
-}
-
-impl<'input> Range_literalContextAttrs<'input> for OrdinalContext<'input> {}
-
-impl<'input> OrdinalContextExt<'input> {
-    fn new(ctx: &dyn Range_literalContextAttrs<'input>) -> Rc<Range_literalContextAll<'input>> {
-        Rc::new(Range_literalContextAll::OrdinalContext(BaseParserRuleContext::copy_from(
-            ctx,
-            OrdinalContextExt { base: ctx.borrow().clone(), ph: PhantomData },
-        )))
-    }
-}
-
-pub type OffsetContext<'input> = BaseParserRuleContext<'input, OffsetContextExt<'input>>;
-
-pub trait OffsetContextAttrs<'input>: ValkyrieAntlrParserContext<'input> {
     /// Retrieves first TerminalNode corresponding to token OFFSET_L
     /// Returns `None` if there is no child corresponding to token OFFSET_L
     fn OFFSET_L(&self) -> Option<Rc<TerminalNode<'input, ValkyrieAntlrParserContextType>>>
@@ -30442,93 +30345,9 @@ pub trait OffsetContextAttrs<'input>: ValkyrieAntlrParserContext<'input> {
     {
         self.get_token(OFFSET_R, 0)
     }
-    fn range_axis_all(&self) -> Vec<Rc<Range_axisContextAll<'input>>>
-    where
-        Self: Sized,
-    {
-        self.children_of_type()
-    }
-    fn range_axis(&self, i: usize) -> Option<Rc<Range_axisContextAll<'input>>>
-    where
-        Self: Sized,
-    {
-        self.child_of_type(i)
-    }
-    /// Retrieves all `TerminalNode`s corresponding to token COMMA in current rule
-    fn COMMA_all(&self) -> Vec<Rc<TerminalNode<'input, ValkyrieAntlrParserContextType>>>
-    where
-        Self: Sized,
-    {
-        self.children_of_type()
-    }
-    /// Retrieves 'i's TerminalNode corresponding to token COMMA, starting from 0.
-    /// Returns `None` if number of children corresponding to token COMMA is less or equal than `i`.
-    fn COMMA(&self, i: usize) -> Option<Rc<TerminalNode<'input, ValkyrieAntlrParserContextType>>>
-    where
-        Self: Sized,
-    {
-        self.get_token(COMMA, i)
-    }
 }
 
-impl<'input> OffsetContextAttrs<'input> for OffsetContext<'input> {}
-
-pub struct OffsetContextExt<'input> {
-    base: Range_literalContextExt<'input>,
-    ph: PhantomData<&'input str>,
-}
-
-antlr_rust::tid! {OffsetContextExt<'a>}
-
-impl<'input> ValkyrieAntlrParserContext<'input> for OffsetContext<'input> {}
-
-impl<'input, 'a> Listenable<dyn ValkyrieAntlrListener<'input> + 'a> for OffsetContext<'input> {
-    fn enter(&self, listener: &mut (dyn ValkyrieAntlrListener<'input> + 'a)) {
-        listener.enter_every_rule(self);
-        listener.enter_Offset(self);
-    }
-    fn exit(&self, listener: &mut (dyn ValkyrieAntlrListener<'input> + 'a)) {
-        listener.exit_Offset(self);
-        listener.exit_every_rule(self);
-    }
-}
-
-impl<'input, 'a> Visitable<dyn ValkyrieAntlrVisitor<'input> + 'a> for OffsetContext<'input> {
-    fn accept(&self, visitor: &mut (dyn ValkyrieAntlrVisitor<'input> + 'a)) {
-        visitor.visit_Offset(self);
-    }
-}
-
-impl<'input> CustomRuleContext<'input> for OffsetContextExt<'input> {
-    type TF = LocalTokenFactory<'input>;
-    type Ctx = ValkyrieAntlrParserContextType;
-    fn get_rule_index(&self) -> usize {
-        RULE_range_literal
-    }
-    //fn type_rule_index() -> usize where Self: Sized { RULE_range_literal }
-}
-
-impl<'input> Borrow<Range_literalContextExt<'input>> for OffsetContext<'input> {
-    fn borrow(&self) -> &Range_literalContextExt<'input> {
-        &self.base
-    }
-}
-impl<'input> BorrowMut<Range_literalContextExt<'input>> for OffsetContext<'input> {
-    fn borrow_mut(&mut self) -> &mut Range_literalContextExt<'input> {
-        &mut self.base
-    }
-}
-
-impl<'input> Range_literalContextAttrs<'input> for OffsetContext<'input> {}
-
-impl<'input> OffsetContextExt<'input> {
-    fn new(ctx: &dyn Range_literalContextAttrs<'input>) -> Rc<Range_literalContextAll<'input>> {
-        Rc::new(Range_literalContextAll::OffsetContext(BaseParserRuleContext::copy_from(
-            ctx,
-            OffsetContextExt { base: ctx.borrow().clone(), ph: PhantomData },
-        )))
-    }
-}
+impl<'input> Range_literalContextAttrs<'input> for Range_literalContext<'input> {}
 
 impl<'input, I, H> ValkyrieAntlrParser<'input, I, H>
 where
@@ -30548,9 +30367,8 @@ where
             recog.err_handler.sync(&mut recog.base)?;
             match recog.base.input.la(1) {
                 BRACKET_L => {
-                    let tmp = OrdinalContextExt::new(&**_localctx);
-                    recog.base.enter_outer_alt(Some(tmp.clone()), 1);
-                    _localctx = tmp;
+                    //recog.base.enter_outer_alt(_localctx.clone(), 1);
+                    recog.base.enter_outer_alt(None, 1);
                     {
                         recog.base.set_state(2017);
                         recog.base.match_token(BRACKET_L, &mut recog.err_handler)?;
@@ -30660,9 +30478,8 @@ where
                 }
 
                 OFFSET_L => {
-                    let tmp = OffsetContextExt::new(&**_localctx);
-                    recog.base.enter_outer_alt(Some(tmp.clone()), 2);
-                    _localctx = tmp;
+                    //recog.base.enter_outer_alt(_localctx.clone(), 2);
+                    recog.base.enter_outer_alt(None, 2);
                     {
                         recog.base.set_state(2032);
                         recog.base.match_token(OFFSET_L, &mut recog.err_handler)?;

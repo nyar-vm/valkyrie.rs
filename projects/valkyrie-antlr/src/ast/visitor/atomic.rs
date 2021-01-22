@@ -1,7 +1,4 @@
 use super::*;
-use antlr_rust::token::Token;
-use std::str::FromStr;
-use valkyrie_ast::{BooleanNode, NullNode, OutputNode, StringLiteralNode, StringTextNode};
 
 impl<'i> Extractor<AtomicContextAll<'i>> for ExpressionType {
     fn take_one(node: &AtomicContextAll<'i>) -> Option<Self> {

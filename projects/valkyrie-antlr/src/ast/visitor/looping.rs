@@ -1,5 +1,4 @@
 use super::*;
-use valkyrie_ast::{TuplePatternNode, WhileConditionNode, WhileLoop, WhileLoopKind};
 
 impl<'i> Extractor<Loop_statementContextAll<'i>> for StatementNode {
     fn take_one(node: &Loop_statementContextAll<'i>) -> Option<Self> {

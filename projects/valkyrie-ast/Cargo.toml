@@ -13,6 +13,7 @@ edition = "2021"
 
 [dependencies]
 deriver = "0.0.0"
+num-bigint = "0.4.4"
 serde = { version = "1.0.188", default-features = false, optional = true }
 
 
@@ -29,7 +30,7 @@ optional = true
 [features]
 default = ["pretty-print"]
 std = ["pretty-print?/std", "serde?/std"]
-serde = ["dep:serde", "serde/derive"]
+serde = ["dep:serde", "serde/derive", "num-bigint/serde"]
 
 [package.metadata.docs.rs]
 all-features = true

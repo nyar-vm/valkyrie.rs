@@ -59,6 +59,7 @@ impl PrettyPrint for ExpressionType {
             Self::Null(node) => node.pretty(theme),
             Self::Boolean(node) => node.pretty(theme),
             Self::OutputReference(node) => node.pretty(theme),
+            Self::Array(node) => node.pretty(theme),
         }
     }
 }
@@ -107,6 +108,7 @@ impl ValkyrieNode for ExpressionType {
             Self::Null(node) => node.span.clone(),
             Self::Boolean(node) => node.span.clone(),
             Self::OutputReference(node) => node.span.clone(),
+            Self::Array(node) => node.span.clone(),
         }
     }
 }

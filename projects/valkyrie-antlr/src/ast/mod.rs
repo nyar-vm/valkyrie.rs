@@ -13,14 +13,18 @@ use antlr_rust::{
     errors::ANTLRError,
     parser::ParserNodeType,
     parser_rule_context::ParserRuleContext,
+    token::Token,
     tree::{ParseTree, ParseTreeVisitorCompat, TerminalNode, Tree, VisitChildren, VisitableDyn},
     CoerceTo, InputStream, TidExt,
 };
-use std::{ops::Range, rc::Rc};
+use std::{ops::Range, rc::Rc, str::FromStr};
 use valkyrie_ast::{
-    ClassDeclaration, ClassFieldDeclaration, ClassKind, ExpressionNode, ExpressionType, FlagsDeclaration, ForLoop,
-    IdentifierNode, InfixNode, LetPattern, LogicMatrix, ModifiersNode, NamePathNode, NamespaceDeclaration, NamespaceKind,
-    NumberLiteralNode, OperatorNode, PostfixNode, PrefixNode, ProgramRoot, StatementNode, UnionDeclaration, ValkyrieOperator,
+    ApplyCallNode, ArrayKind, ArrayNode, ArrayTermNode, BooleanNode, CallTermNode, ClassDeclaration, ClassFieldDeclaration,
+    ClassKind, ExpressionNode, ExpressionType, ExtendsStatement, FlagsDeclaration, ForLoop, FunctionDeclaration, FunctionType,
+    GuardPattern, GuardStatement, IdentifierNode, IfStatement, InfixNode, LetPattern, LogicMatrix, ModifiersNode, NamePathNode,
+    NamespaceDeclaration, NamespaceKind, NullNode, NumberLiteralNode, OperatorNode, OutputNode, PostfixNode, PrefixNode,
+    ProgramRoot, StatementNode, StringLiteralNode, StringTextNode, TupleKind, TupleNode, TuplePatternNode, TupleTermNode,
+    UnionDeclaration, ValkyrieOperator, WhileConditionNode, WhileLoop, WhileLoopKind,
 };
 
 #[derive(Clone, Debug, Default)]

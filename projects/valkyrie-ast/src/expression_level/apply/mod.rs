@@ -45,10 +45,22 @@ pub struct ApplyDotNode {
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ApplyCallNode {
+    ///
+    pub base: ExpressionType,
+
+    pub monadic:
+    ///
+    pub caller: Option<NamePathNode>,
     /// The raw string of the number.
-    pub terms: Vec<ApplyCallTerm>,
+    pub arguments: Vec<ApplyCallTerm>,
     /// The range of the number.
     pub span: Range<u32>,
+}
+
+pub enum ApplyCaller {
+    /// method
+    None,
+
 }
 
 /// `0, a: 1, ⁑args, ⁂kwargs`

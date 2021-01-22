@@ -1,10 +1,10 @@
 use super::*;
-use valkyrie_ast::{ExtendsStatement, FunctionDeclaration, FunctionType, GuardPattern, GuardStatement, IfStatement, TupleNode};
 
 mod atomic;
 mod looping;
 
 mod collection;
+mod calls;
 
 impl ParseTreeVisitorCompat<'_> for ValkyrieProgramParser {
     type Node = ValkyrieAntlrParserContextType;
@@ -195,11 +195,12 @@ impl<'i> Extractor<ExpressionContextAll<'i>> for ExpressionType {
                 todo!()
             }
             ExpressionContextAll::ETupleContext(v) => TupleNode::take(v.tuple_literal())?.into(),
-            ExpressionContextAll::ERangeContext(_) => {
-                todo!()
-            }
+            ExpressionContextAll::ERangeContext(v) => ArrayNode::take(v.range_literal())?.into(),
 
-            ExpressionContextAll::EFunctionContext(_) => {
+            ExpressionContextAll::EFunctionContext(v) => {
+                let base = ExpressionType::take(v.expression())?;
+                let apply = ApplyCallNode::take(v.function_call())
+                v.function_call()
                 todo!()
             }
             ExpressionContextAll::EClosureContext(_) => {

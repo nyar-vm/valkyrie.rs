@@ -2031,29 +2031,15 @@ pub trait ValkyrieAntlrListener<'input>: ParseTreeListener<'input, ValkyrieAntlr
      */
     fn exit_slice_call(&mut self, _ctx: &Slice_callContext<'input>) {}
     /**
-     * Enter a parse tree produced by the {@code Ordinal}
-     * labeled alternative in {@link ValkyrieAntlrParser#range_literal}.
+     * Enter a parse tree produced by {@link ValkyrieAntlrParser#range_literal}.
      * @param ctx the parse tree
      */
-    fn enter_Ordinal(&mut self, _ctx: &OrdinalContext<'input>) {}
+    fn enter_range_literal(&mut self, _ctx: &Range_literalContext<'input>) {}
     /**
-     * Exit a parse tree produced by the {@code Ordinal}
-     * labeled alternative in {@link ValkyrieAntlrParser#range_literal}.
+     * Exit a parse tree produced by {@link ValkyrieAntlrParser#range_literal}.
      * @param ctx the parse tree
      */
-    fn exit_Ordinal(&mut self, _ctx: &OrdinalContext<'input>) {}
-    /**
-     * Enter a parse tree produced by the {@code Offset}
-     * labeled alternative in {@link ValkyrieAntlrParser#range_literal}.
-     * @param ctx the parse tree
-     */
-    fn enter_Offset(&mut self, _ctx: &OffsetContext<'input>) {}
-    /**
-     * Exit a parse tree produced by the {@code Offset}
-     * labeled alternative in {@link ValkyrieAntlrParser#range_literal}.
-     * @param ctx the parse tree
-     */
-    fn exit_Offset(&mut self, _ctx: &OffsetContext<'input>) {}
+    fn exit_range_literal(&mut self, _ctx: &Range_literalContext<'input>) {}
     /**
      * Enter a parse tree produced by {@link ValkyrieAntlrParser#range_axis}.
      * @param ctx the parse tree

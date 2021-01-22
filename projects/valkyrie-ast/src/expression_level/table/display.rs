@@ -19,13 +19,34 @@ impl PrettyPrint for TupleNode {
         }
     }
 }
-
 #[cfg(feature = "lispify")]
 impl Lispify for TupleNode {
     type Output = Lisp;
 
     fn lispify(&self) -> Self::Output {
         Lisp::unit("TupleNode ???")
+    }
+}
+impl PrettyPrint for ArrayNode {
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        match self.kind {
+            ArrayKind::Ordinal => {
+                let k = KAndRBracket { head_space: false, bracket_l: "[", bracket_r: "]" };
+                k.build(&self.terms, theme, ", ".into(), PrettyTree::text(",").append(PrettyTree::Hardline))
+            }
+            ArrayKind::Offset => {
+                let k = KAndRBracket { head_space: false, bracket_l: "[", bracket_r: "]" };
+                k.build(&self.terms, theme, ", ".into(), PrettyTree::text(",").append(PrettyTree::Hardline))
+            }
+        }
+    }
+}
+#[cfg(feature = "lispify")]
+impl Lispify for ArrayNode {
+    type Output = Lisp;
+
+    fn lispify(&self) -> Self::Output {
+        Lisp::unit("ArrayNode ???")
     }
 }
 
@@ -35,7 +56,14 @@ impl PrettyPrint for TupleTermNode {
         self.pair.pretty(theme)
     }
 }
-
+impl PrettyPrint for ArrayTermNode {
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        match self {
+            ArrayTermNode::Index { index } => index.pretty(theme),
+            ArrayTermNode::Range { head, tail, step } => theme.text("ArrayTermNode::Range ???"),
+        }
+    }
+}
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for TupleKeyType {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {

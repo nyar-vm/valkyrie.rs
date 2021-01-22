@@ -18,6 +18,7 @@ impl Lispify for ExpressionType {
             Self::Binary(v) => v.lispify(),
             Self::Suffix(v) => v.lispify(),
             Self::Tuple(v) => v.lispify(),
+            Self::Array(v) => v.lispify(),
             Self::Apply(v) => todo!(),
             Self::ApplyDot(v) => todo!(),
             Self::Subscript(v) => todo!(),

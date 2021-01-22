@@ -18,7 +18,7 @@ impl PrettyPrint for ApplyCallNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(3);
         terms += "(";
-        terms += theme.join(self.terms.clone(), ", ");
+        terms += theme.join(self.arguments.clone(), ", ");
         terms += ")";
         terms.into()
     }

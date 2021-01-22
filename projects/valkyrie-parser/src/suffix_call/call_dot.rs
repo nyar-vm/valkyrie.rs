@@ -21,7 +21,7 @@ impl ThisParser for ApplyDotNode {
         let (state, caller) = state.skip(ignore).match_fn(NamePathNode::parse)?;
         let (finally, args) = state.skip(ignore).match_optional(ApplyCallNode::parse)?;
         let terms = match args {
-            Some(v) => v.terms,
+            Some(v) => v.arguments,
             None => vec![],
         };
         finally.finish(ApplyDotNode { nullable: false, caller, terms, span: get_span(input, finally) })
