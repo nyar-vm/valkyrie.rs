@@ -16,9 +16,9 @@ pub mod view;
 mod display;
 
 use crate::{
-    helper::ValkyrieNode, ApplyCallNode, ApplyDotNode, ArgumentTermNode, ArrayNode, BooleanNode, CallNode, CallTermNode,
-    CollectsNode, ExpressionFormatted, GenericCallNode, GuardStatement, IdentifierNode, IfStatement, InfixNode, LambdaCallNode,
-    LambdaDotNode, LambdaSlotNode, MatchDotStatement, MonadicDotCall, NamePathNode, NewConstructNode, NullNode,
+    helper::ValkyrieNode, ApplyCallNode, ArgumentTermNode, ArrayNode, BooleanNode, CallNode, CallTermNode, CollectsNode,
+    ExpressionFormatted, GenericCallNode, GuardStatement, IdentifierNode, IfStatement, InfixNode, LambdaCallNode,
+    LambdaDotNode, LambdaSlotNode, MatchDotStatement, ModifiersNode, MonadicDotCall, NamePathNode, NewConstructNode, NullNode,
     NumberLiteralNode, OperatorNode, OutputNode, PatternBlock, PostfixNode, PrefixNode, RaiseNode, StatementNode,
     StringLiteralNode, StringTextNode, SubscriptNode, SwitchStatement, TryStatement, TupleNode, TupleTermNode,
 };
@@ -37,8 +37,9 @@ use core::{
 use deriver::From;
 #[cfg(feature = "lispify")]
 use lispify::{Lisp, Lispify};
+use num_bigint::BigUint;
 #[cfg(feature = "pretty-print")]
-use pretty_print::{helpers::PrettySequence, PrettyPrint, PrettyProvider, PrettyTree};
+use pretty_print::{helpers::PrettySequence, PrettyBuilder, PrettyPrint, PrettyProvider, PrettyTree};
 
 /// The ast node for an expression
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
@@ -128,9 +129,7 @@ pub enum ExpressionType {
     /// - Standalone expression
     Try(Box<TryStatement>),
     /// - Postfix expression
-    Apply(Box<CallNode<ApplyCallNode>>),
-    /// - Postfix expression
-    ApplyDot(Box<CallNode<ApplyDotNode>>),
+    ApplyCall(Box<ApplyCallNode>),
     /// - Postfix expression
     LambdaCall(Box<CallNode<LambdaCallNode>>),
     /// - Postfix expression
@@ -150,8 +149,6 @@ pub enum ExpressionType {
 pub enum PostfixCallPart {
     /// - Any expression
     Apply(ApplyCallNode),
-    /// - Any expression
-    ApplyDot(ApplyDotNode),
     /// - Any expression
     View(SubscriptNode),
     /// - Any expression
@@ -212,16 +209,6 @@ impl ExpressionType {
     pub fn call_generic(base: Self, rest: GenericCallNode) -> Self {
         let span = base.get_start()..rest.span.end;
         ExpressionType::GenericCall(Box::new(CallNode { base, rest, span }))
-    }
-    /// Build a new expression with apply call
-    pub fn call_apply(base: Self, rest: ApplyCallNode) -> Self {
-        let span = base.get_start()..rest.span.end;
-        ExpressionType::Apply(Box::new(CallNode { base, rest, span }))
-    }
-    /// Build a new expression with apply dot call
-    pub fn dot_apply(base: Self, rest: ApplyDotNode) -> Self {
-        let span = base.get_start()..rest.span.end;
-        ExpressionType::ApplyDot(Box::new(CallNode { base, rest, span }))
     }
     /// Build a new expression with subscript call
     pub fn call_subscript(base: Self, rest: SubscriptNode) -> Self {

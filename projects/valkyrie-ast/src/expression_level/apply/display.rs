@@ -1,32 +1,68 @@
 use super::*;
-use pretty_print::PrettyBuilder;
 
-impl PrettyPrint for ApplyDotNode {
-    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
-        let newline = PrettyTree::Hardline;
-        let mut terms = PrettySequence::new(6);
-        terms += ".";
-        terms += self.caller.pretty(theme);
-        terms += "(";
-        terms += theme.join(self.terms.clone(), ", ");
-        terms += ")";
-        newline.append(terms.indent(4))
+impl Default for ApplyCaller {
+    fn default() -> Self {
+        Self::None
     }
 }
 
 impl PrettyPrint for ApplyCallNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(3);
+        if let Some(s) = &self.arguments {
+            terms += s.pretty(theme)
+        }
+        terms.into()
+    }
+}
+
+impl PrettyPrint for ApplyCallTerms {
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        let mut terms = PrettySequence::new(3);
         terms += "(";
-        terms += theme.join(self.arguments.clone(), ", ");
+        terms += theme.join(self.terms.clone(), ", ");
         terms += ")";
         terms.into()
     }
 }
 
-impl PrettyPrint for ApplyCallTerm {
+#[cfg(feature = "lispify")]
+impl Lispify for ApplyCallNode {
+    type Output = Lisp;
+
+    fn lispify(&self) -> Self::Output {
+        let mut lisp = Lisp::new(10);
+        lisp += Lisp::keyword("apply");
+        match &self.arguments {
+            Some(s) => {
+                lisp += s.lispify();
+            }
+            None => {}
+        }
+
+        lisp
+    }
+}
+#[cfg(feature = "lispify")]
+impl Lispify for ApplyCallTerms {
+    type Output = Lisp;
+
+    fn lispify(&self) -> Self::Output {
+        Lisp::keyword("ApplyCallTerms: ???")
+    }
+}
+impl PrettyPrint for ApplyCallItem {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
-        self.term.pretty(theme)
+        theme.text("ApplyCallTerm ???")
+    }
+}
+
+#[cfg(feature = "lispify")]
+impl Lispify for ApplyCallItem {
+    type Output = Lisp;
+
+    fn lispify(&self) -> Self::Output {
+        Lisp::keyword("ApplyCallTerm: ???")
     }
 }
 

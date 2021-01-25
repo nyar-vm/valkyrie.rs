@@ -1,5 +1,5 @@
 use super::*;
-use crate::ModifiersNode;
+
 #[cfg(feature = "pretty-print")]
 mod display;
 
@@ -28,46 +28,54 @@ pub struct ArgumentKeyNode {
     pub key: IdentifierNode,
 }
 
-/// `term.call(0, a: 1, ⁑args, ⁂kwargs)`
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ApplyDotNode {
-    pub nullable: bool,
-    /// The raw string of the number.
-    pub caller: NamePathNode,
-    /// The range of the number.
-    pub terms: Vec<ApplyCallTerm>,
-    /// The range of the number.
-    pub span: Range<u32>,
-}
-
 /// `apply(0, a: 1, ⁑args, ⁂kwargs)`
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ApplyCallNode {
     ///
     pub base: ExpressionType,
-
-    pub monadic:
-    ///
-    pub caller: Option<NamePathNode>,
+    /// Weather it is a monadic call
+    pub monadic: bool,
+    /// The caller of apply
+    pub caller: ApplyCaller,
     /// The raw string of the number.
-    pub arguments: Vec<ApplyCallTerm>,
+    pub arguments: Option<ApplyCallTerms>,
     /// The range of the number.
     pub span: Range<u32>,
 }
 
-pub enum ApplyCaller {
-    /// method
-    None,
-
-}
-
-/// `0, a: 1, ⁑args, ⁂kwargs`
+/// The key of tuple
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ApplyCallTerm {
-    pub term: CallTermNode<IdentifierNode, ExpressionNode>,
+pub enum ApplyCaller {
+    /// `object()`
+    None,
+    /// `object.1()`
+    Integer(BigUint),
+    /// `object.method()`
+    Internal(IdentifierNode),
+    /// `object.external::function()`
+    External(NamePathNode),
+}
+
+/// `(1, 2, 3, name: value, ..list)`
+#[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ApplyCallTerms {
+    /// item
+    terms: Vec<ApplyCallItem>,
+}
+
+/// `0, a: 1, ..args, ...kwargs`
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ApplyCallItem {
+    /// The modifier conditions
+    pub modifiers: ModifiersNode,
+    /// Parameters filled in according to fields
+    pub parameter: Option<IdentifierNode>,
+    /// The main body
+    pub body: ExpressionType,
 }
 
 impl<K, V> CallTermNode<K, V> {
@@ -103,5 +111,12 @@ impl<K, V, D> ArgumentTermNode<K, V, D> {
         F: FnOnce(D) -> O,
     {
         ArgumentTermNode { key: self.key, value: self.value, default: self.default.map(f) }
+    }
+}
+
+impl ApplyCallNode {
+    /// Replace placeholder with actual expression
+    pub fn with_base(self, base: ExpressionType) -> Self {
+        Self { base, ..self }
     }
 }

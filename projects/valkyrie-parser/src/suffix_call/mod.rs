@@ -6,7 +6,7 @@ use crate::{
 use lispify::Lisp;
 use pex::{BracketPair, BracketPattern, ParseResult, ParseState};
 use valkyrie_ast::{
-    ApplyArgumentTerm, ApplyCallNode, ApplyCallTerm, ApplyDotNode, ArgumentKeyNode, ArgumentTermNode, CallNode, CallTermNode,
+    ApplyArgumentTerm, ApplyCallItem, ApplyCallNode, ApplyDotNode, ArgumentKeyNode, ArgumentTermNode, CallNode, CallTermNode,
     ExpressionNode, GenericArgument, GenericArgumentTerm, GenericCallNode, GenericCallTerm, IdentifierNode, LambdaCallNode,
     LambdaDotNode, LambdaNode, NamePathNode, SubscriptNode, SubscriptSliceNode, SubscriptTermNode, TypingExpression,
 };

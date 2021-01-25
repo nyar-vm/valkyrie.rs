@@ -11,7 +11,6 @@ impl Debug for PostfixCallPart {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         match self {
             Self::Apply(call) => Debug::fmt(call, f),
-            Self::ApplyDot(call) => Debug::fmt(call, f),
             Self::View(call) => Debug::fmt(call, f),
             Self::Generic(call) => Debug::fmt(call, f),
             Self::Lambda(call) => Debug::fmt(call, f),
@@ -42,8 +41,7 @@ impl PrettyPrint for ExpressionType {
             Self::Binary(node) => node.pretty(theme),
             Self::Suffix(node) => node.pretty(theme),
             Self::Tuple(node) => node.pretty(theme),
-            Self::Apply(node) => node.pretty(theme),
-            Self::ApplyDot(node) => node.pretty(theme),
+            Self::ApplyCall(node) => node.pretty(theme),
             Self::LambdaCall(node) => node.pretty(theme),
             Self::LambdaDot(node) => node.pretty(theme),
             Self::Subscript(node) => node.pretty(theme),
@@ -68,7 +66,6 @@ impl PrettyPrint for PostfixCallPart {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         match self {
             Self::Apply(node) => node.pretty(theme),
-            Self::ApplyDot(node) => node.pretty(theme),
             Self::View(node) => node.pretty(theme),
             Self::Generic(node) => node.pretty(theme),
             Self::Lambda(node) => node.pretty(theme),
@@ -92,8 +89,7 @@ impl ValkyrieNode for ExpressionType {
             Self::Binary(node) => node.get_range(),
             Self::Suffix(node) => node.span.clone(),
             Self::Tuple(node) => node.span.clone(),
-            Self::Apply(node) => node.span.clone(),
-            Self::ApplyDot(node) => node.span.clone(),
+            Self::ApplyCall(node) => node.span.clone(),
             Self::LambdaCall(node) => node.span.clone(),
             Self::LambdaDot(node) => node.span.clone(),
             Self::Subscript(node) => node.span.clone(),

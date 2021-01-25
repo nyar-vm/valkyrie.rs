@@ -3,8 +3,8 @@ use super::*;
 mod atomic;
 mod looping;
 
-mod collection;
 mod calls;
+mod collection;
 
 impl ParseTreeVisitorCompat<'_> for ValkyrieProgramParser {
     type Node = ValkyrieAntlrParserContextType;
@@ -199,9 +199,8 @@ impl<'i> Extractor<ExpressionContextAll<'i>> for ExpressionType {
 
             ExpressionContextAll::EFunctionContext(v) => {
                 let base = ExpressionType::take(v.expression())?;
-                let apply = ApplyCallNode::take(v.function_call())
-                v.function_call()
-                todo!()
+                let apply = ApplyCallNode::take(v.function_call())?;
+                apply.with_base(base).into()
             }
             ExpressionContextAll::EClosureContext(_) => {
                 todo!()

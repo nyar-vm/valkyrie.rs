@@ -73,6 +73,7 @@ pub struct AnnotationPathNode {
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ModifiersNode {
+    /// The modifiers in group
     pub terms: Vec<IdentifierNode>,
 }
 
