@@ -12,6 +12,8 @@ pub struct SubscriptCallNode {
     pub kind: ArrayKind,
     /// base of
     pub base: ExpressionType,
+    /// object?[]
+    pub monadic: bool,
     /// The raw string of the number.
     pub terms: Vec<ArrayTermNode>,
     /// The range of the number.
@@ -19,6 +21,11 @@ pub struct SubscriptCallNode {
 }
 
 impl SubscriptCallNode {
+    /// Replace placeholder with actual expression
+    pub fn with_base(self, base: ExpressionType) -> Self {
+        Self { base, ..self }
+    }
+    /// The linked method name
     pub fn method(&self) -> &'static str {
         match self.kind {
             ArrayKind::Ordinal => "subscript1",

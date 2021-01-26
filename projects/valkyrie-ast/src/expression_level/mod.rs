@@ -133,7 +133,7 @@ pub enum ExpressionType {
     /// - Postfix expression
     LambdaCall(Box<ClosureCallNode>),
     /// - Postfix expression
-    Subscript(Box<CallNode<SubscriptCallNode>>),
+    SubscriptCall(Box<SubscriptCallNode>),
     /// - Postfix expression
     GenericCall(Box<CallNode<GenericCallNode>>),
     /// - Postfix expression
@@ -205,11 +205,6 @@ impl ExpressionType {
     pub fn call_generic(base: Self, rest: GenericCallNode) -> Self {
         let span = base.get_start()..rest.span.end;
         ExpressionType::GenericCall(Box::new(CallNode { base, rest, span }))
-    }
-    /// Build a new expression with subscript call
-    pub fn call_subscript(base: Self, rest: SubscriptCallNode) -> Self {
-        let span = base.get_start()..rest.span.end;
-        ExpressionType::Subscript(Box::new(CallNode { base, rest, span }))
     }
     /// Build a new expression with dot match
     pub fn dot_match(base: Self, rest: MatchDotStatement) -> Self {

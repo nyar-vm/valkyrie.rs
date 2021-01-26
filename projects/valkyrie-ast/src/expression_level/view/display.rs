@@ -9,3 +9,12 @@ impl PrettyPrint for SubscriptCallNode {
         theme.text("SubscriptCallNode ???")
     }
 }
+
+#[cfg(feature = "lispify")]
+impl Lispify for SubscriptCallNode {
+    type Output = Lisp;
+
+    fn lispify(&self) -> Self::Output {
+        Lisp::keyword("SubscriptCallNode ???")
+    }
+}

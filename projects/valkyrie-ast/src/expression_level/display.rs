@@ -20,7 +20,7 @@ impl Lispify for ExpressionType {
             Self::Tuple(v) => v.lispify(),
             Self::Array(v) => v.lispify(),
             Self::ApplyCall(v) => v.lispify(),
-            Self::Subscript(v) => todo!(),
+            Self::SubscriptCall(v) => v.lispify(),
             Self::GenericCall(v) => todo!(),
             Self::LambdaCall(v) => v.lispify(),
             Self::New(v) => todo!(),

@@ -44,6 +44,15 @@ impl<'i> Extractor<Closure_callContextAll<'i>> for ClosureCallNode {
     }
 }
 
+impl<'i> Extractor<Slice_callContextAll<'i>> for SubscriptCallNode {
+    fn take_one(node: &Slice_callContextAll<'i>) -> Option<Self> {
+        let monadic = node.OP_AND_THEN().is_some();
+        let array = ArrayNode::take(node.range_literal())?;
+        let span = Range { start: node.start().get_start() as u32, end: node.stop().get_stop() as u32 };
+        Some(Self { kind: array.kind, base: Default::default(), monadic, terms: array.terms, span })
+    }
+}
+
 impl<'i> Extractor<Tuple_call_bodyContextAll<'i>> for ApplyCallTerms {
     fn take_one(node: &Tuple_call_bodyContextAll<'i>) -> Option<Self> {
         let span = Range { start: node.start().get_start() as u32, end: node.stop().get_stop() as u32 };

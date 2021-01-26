@@ -1,5 +1,5 @@
 use super::*;
-use valkyrie_ast::{ClosureCallNode, FunctionBlock};
+use valkyrie_ast::{ClassMethodDeclaration, ClosureCallNode, FunctionBlock, SubscriptCallNode, TraitDeclaration};
 
 mod atomic;
 mod looping;
@@ -39,6 +39,10 @@ impl ValkyrieAntlrVisitor<'_> for ValkyrieProgramParser {
                 self.statements.push(s.into());
                 continue;
             }
+            if let Some(s) = node.downcast_ref::<Define_traitContextAll>().and_then(TraitDeclaration::take_one) {
+                self.statements.push(s.into());
+                continue;
+            }
             if let Some(s) = node.downcast_ref::<Define_extendsContextAll>().and_then(ExtendsStatement::take_one) {
                 self.statements.push(s.into());
                 continue;
@@ -69,10 +73,21 @@ impl<'i> Extractor<Function_blockContextAll<'i>> for FunctionBlock {
         Some(Self { terms: statements, range: span })
     }
 }
-
+impl<'i> Extractor<Define_traitContextAll<'i>> for TraitDeclaration {
+    fn take_one(node: &Define_traitContextAll<'i>) -> Option<Self> {
+        let name = IdentifierNode::take(node.identifier())?;
+        let block = node.trait_block()?;
+        let fields = ClassFieldDeclaration::take_many(&block.class_field_all());
+        let methods = ClassMethodDeclaration::take_many(&block.class_method_all());
+        Some(Self { name, fields, methods })
+    }
+}
 impl<'i> Extractor<Define_extendsContextAll<'i>> for ExtendsStatement {
     fn take_one(node: &Define_extendsContextAll<'i>) -> Option<Self> {
-        Some(Self { fields: vec![], methods: vec![] })
+        let block = node.extends_block()?;
+        // let fields = ClassFieldDeclaration::take_many(&block.class_field_all());
+        let methods = ClassMethodDeclaration::take_many(&block.class_method_all());
+        Some(Self { methods })
     }
 }
 
@@ -166,10 +181,7 @@ impl<'i> Extractor<ExpressionContextAll<'i>> for ExpressionType {
                 InfixNode { infix: operator, lhs, rhs }.into()
             }
             ExpressionContextAll::EGroupContext(group) => ExpressionType::take(group.expression())?,
-            ExpressionContextAll::ESliceContext(slice) => {
-                // SubscriptSliceNode::take(slice.slice_call())
-                todo!()
-            }
+
             ExpressionContextAll::EAsContext(_) => {
                 todo!()
             }
@@ -210,7 +222,11 @@ impl<'i> Extractor<ExpressionContextAll<'i>> for ExpressionType {
             }
             ExpressionContextAll::ETupleContext(v) => TupleNode::take(v.tuple_literal())?.into(),
             ExpressionContextAll::ERangeContext(v) => ArrayNode::take(v.range_literal())?.into(),
-
+            ExpressionContextAll::ESliceContext(v) => {
+                let base = ExpressionType::take(v.expression())?;
+                let call = SubscriptCallNode::take(v.slice_call())?;
+                call.with_base(base).into()
+            }
             ExpressionContextAll::EClosureContext(v) => {
                 let base = ExpressionType::take(v.expression())?;
                 let call = ClosureCallNode::take(v.closure_call())?;

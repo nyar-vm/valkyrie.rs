@@ -1,0 +1,27 @@
+trait
+trait
+trait
+ClosureCallNode ???
+( ())
+( ())
+ClosureCallNode ???
+( ())
+ArrayNode ???
+ArrayNode ???
+( ())
+T
+given
+SubscriptCallNode ???
+ClosureCallNode ???
+( ())
+ClosureCallNode ???
+( ())
+trait
+trait
+extends
+""
+extends
+ArrayNode ???
+( ())
+ArrayNode ???
+TupleNode ???
