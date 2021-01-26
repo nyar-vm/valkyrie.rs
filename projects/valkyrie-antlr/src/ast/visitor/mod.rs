@@ -1,4 +1,5 @@
 use super::*;
+use valkyrie_ast::ClosureCallNode;
 
 mod atomic;
 mod looping;
@@ -197,13 +198,10 @@ impl<'i> Extractor<ExpressionContextAll<'i>> for ExpressionType {
             ExpressionContextAll::ETupleContext(v) => TupleNode::take(v.tuple_literal())?.into(),
             ExpressionContextAll::ERangeContext(v) => ArrayNode::take(v.range_literal())?.into(),
 
-            ExpressionContextAll::EFunctionContext(v) => {
+            ExpressionContextAll::EClosureContext(v) => {
                 let base = ExpressionType::take(v.expression())?;
-                let apply = ApplyCallNode::take(v.function_call())?;
-                apply.with_base(base).into()
-            }
-            ExpressionContextAll::EClosureContext(_) => {
-                todo!()
+                let call = ClosureCallNode::take(v.closure_call())?;
+                call.with_base(base).into()
             }
             ExpressionContextAll::EMatchContext(_) => {
                 todo!()
@@ -288,8 +286,10 @@ impl<'i> Extractor<Inline_expressionContextAll<'i>> for ExpressionType {
             Inline_expressionContextAll::Error(_) => {
                 todo!()
             }
-            Inline_expressionContextAll::IFunctionContext(_) => {
-                todo!()
+            Inline_expressionContextAll::IFunctionContext(v) => {
+                let base = ExpressionType::take(v.expression())?;
+                let call = ApplyCallNode::take(v.function_call())?;
+                call.with_base(base).into()
             }
             Inline_expressionContextAll::IGroupContext(_) => {
                 todo!()

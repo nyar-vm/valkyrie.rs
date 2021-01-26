@@ -120,13 +120,22 @@ parameter_default: OP_ASSIGN expression;
 function_call
     : OP_AND_THEN? tuple_call_body // method?(b)
     | OP_AND_THEN? DOT INTEGER tuple_call_body? // value.1()
-    | OP_AND_THEN? DOT OP_AT? namepath tuple_call_body? // value?.path::method()
+    | OP_AND_THEN? DOT OP_AT? identifier tuple_call_body? // value?.path::method()
+    ;
+closure_call // Two consecutive `{ } { }` are not allowed to be connected
+    : OP_AND_THEN? (function_block | tuple_call_body function_block?)     # NormalClosure // method?(b) {}
+    | OP_AND_THEN? DOT function_block                                     # SlotClosure // value?. { lambda }
+    | OP_AND_THEN? DOT INTEGER tuple_call_body? function_block?           # IntegerClosure // value?.1() { }
+    | OP_AND_THEN? DOT OP_AT? identifier tuple_call_body? function_block? # InternalClosure // value?.@method() { }
     ;
 tuple_call_body
     : PARENTHESES_L PARENTHESES_R
     | PARENTHESES_L tuple_call_item (COMMA tuple_call_item)* COMMA? PARENTHESES_R
     ;
-tuple_call_item: annotation* (mods += identifier)* field=identifier COLON expression | annotation* expression;
+tuple_call_item
+    : annotation* (mods += identifier)* field = identifier COLON expression
+    | annotation* expression
+    ;
 // ===========================================================================
 define_lambda: annotation* KW_LAMBDA function_parameters return_type? function_block;
 // ===========================================================================
@@ -189,12 +198,10 @@ if_guard: KW_IF inline_expression;
 // ==========================================================================
 expression_root: annotation* expression OP_AND_THEN? eos?;
 expression
-    : expression op_suffix     # ESuffix
-    | expression slice_call    # ESlice
-    | expression generic_call  # EGeneric
-    | expression function_call # EFunction
-    // value?. { lambda }
-    | expression OP_AND_THEN? DOT? function_block # EClosure
+    : expression op_suffix    # ESuffix
+    | expression slice_call   # ESlice
+    | expression generic_call # EGeneric
+    | expression closure_call # EClosure
     // value?.match as i: int {}
     | expression OP_AND_THEN? DOT (KW_MATCH | KW_CATCH) (KW_AS identifier type_hint?)? match_block # EDotMatch
     // prefix

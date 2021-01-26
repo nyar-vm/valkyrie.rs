@@ -20,10 +20,11 @@ pub enum ValkyrieOperator {
     Box,
     /// prefix operator: `*`
     Unbox,
-    /// prefix operator: `**`
-    Unpack,
-    /// prefix operator: `**`
-    UnpackAll,
+    /// prefix operator: `.., ...`
+    Unpack {
+        /// unpack level
+        level: u8,
+    },
     /// prefix operator: `⅟`
     Reciprocal,
     /// prefix operator: `√`, `∛`, `∜`     
@@ -196,8 +197,7 @@ impl ValkyrieOperator {
             Self::Negative => 25000,
             Self::Box => 25000,
             Self::Unbox => 25000,
-            Self::Unpack => 25000,
-            Self::UnpackAll => 25000,
+            Self::Unpack { .. } => 25000,
             Self::Reciprocal => 25000,
             Self::Roots(_) => 25000,
             // postfix + 0
@@ -239,8 +239,10 @@ impl ValkyrieOperator {
             Self::Hermitian => "Hermitian",
             Self::Box => "&",
             Self::Unbox => "*",
-            Self::Unpack => "⁑",
-            Self::UnpackAll => "⁂",
+            Self::Unpack { level } => match level {
+                2 => "⁑",
+                _ => "⁂",
+            },
             Self::Greater { equal } => match equal {
                 true => "⩾",
                 false => ">",

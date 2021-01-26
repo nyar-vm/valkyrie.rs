@@ -16,11 +16,11 @@ pub mod view;
 mod display;
 
 use crate::{
-    helper::ValkyrieNode, ApplyCallNode, ArgumentTermNode, ArrayNode, BooleanNode, CallNode, CallTermNode, CollectsNode,
-    ExpressionFormatted, GenericCallNode, GuardStatement, IdentifierNode, IfStatement, InfixNode, LambdaCallNode,
-    LambdaDotNode, LambdaSlotNode, MatchDotStatement, ModifiersNode, MonadicDotCall, NamePathNode, NewConstructNode, NullNode,
-    NumberLiteralNode, OperatorNode, OutputNode, PatternBlock, PostfixNode, PrefixNode, RaiseNode, StatementNode,
-    StringLiteralNode, StringTextNode, SubscriptNode, SwitchStatement, TryStatement, TupleNode, TupleTermNode,
+    helper::ValkyrieNode, ApplyCallNode, ArgumentTermNode, ArrayNode, BooleanNode, CallNode, CallTermNode, ClosureCallNode,
+    CollectsNode, ExpressionFormatted, GenericCallNode, GuardStatement, IdentifierNode, IfStatement, InfixNode, LambdaSlotNode,
+    MatchDotStatement, ModifiersNode, MonadicDotCall, NamePathNode, NewConstructNode, NullNode, NumberLiteralNode,
+    OperatorNode, OutputNode, PatternBlock, PostfixNode, PrefixNode, RaiseNode, StatementNode, StringLiteralNode,
+    StringTextNode, SubscriptNode, SwitchStatement, TryStatement, TupleNode, TupleTermNode,
 };
 use alloc::{
     borrow::ToOwned,
@@ -131,9 +131,7 @@ pub enum ExpressionType {
     /// - Postfix expression
     ApplyCall(Box<ApplyCallNode>),
     /// - Postfix expression
-    LambdaCall(Box<CallNode<LambdaCallNode>>),
-    /// - Postfix expression
-    LambdaDot(Box<CallNode<LambdaDotNode>>),
+    LambdaCall(Box<ClosureCallNode>),
     /// - Postfix expression
     Subscript(Box<CallNode<SubscriptNode>>),
     /// - Postfix expression
@@ -154,9 +152,7 @@ pub enum PostfixCallPart {
     /// - Any expression
     Generic(GenericCallNode),
     /// - Standalone expression
-    Lambda(LambdaCallNode),
-    /// - Standalone expression
-    LambdaDot(LambdaDotNode),
+    Lambda(ClosureCallNode),
     /// - Standalone expression
     Match(MatchDotStatement),
 }
@@ -214,16 +210,6 @@ impl ExpressionType {
     pub fn call_subscript(base: Self, rest: SubscriptNode) -> Self {
         let span = base.get_start()..rest.span.end;
         ExpressionType::Subscript(Box::new(CallNode { base, rest, span }))
-    }
-    /// Build a new expression with lambda call
-    pub fn call_lambda(base: Self, rest: LambdaCallNode) -> Self {
-        let span = base.get_start()..rest.span.end;
-        ExpressionType::LambdaCall(Box::new(CallNode { base, rest, span }))
-    }
-    /// Build a new expression with lambda dot call
-    pub fn dot_lambda(base: Self, rest: LambdaDotNode) -> Self {
-        let span = base.get_start()..rest.span.end;
-        ExpressionType::LambdaDot(Box::new(CallNode { base, rest, span }))
     }
     /// Build a new expression with dot match
     pub fn dot_match(base: Self, rest: MatchDotStatement) -> Self {

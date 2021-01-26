@@ -29,7 +29,7 @@ pub use crate::{
         common::{ArgumentTermNode, CallNode, CallTermNode, MonadicCall, MonadicDotCall},
         ctor::{CollectsNode, NewConstructNode},
         generic::{GenericArgument, GenericArgumentTerm, GenericCallNode, GenericCallTerm},
-        lambda::{LambdaArgumentNode, LambdaCallNode, LambdaDotNode, LambdaNode},
+        lambda::{ClosureCallNode, ClosureCaller, FunctionBlock, LambdaNode},
         matches::{MatchDotStatement, MatchKind},
         number::NumberLiteralNode,
         operators::{InfixNode, LogicMatrix, OperatorNode, PostfixNode, PrefixNode, ValkyrieOperator},

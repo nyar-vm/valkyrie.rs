@@ -8,8 +8,8 @@ use pex::{helpers::CommentLine, BracketPattern, ParseResult, ParseState, Regex, 
 use std::sync::LazyLock;
 use valkyrie_ast::{
     AnnotationList, AnnotationNode, ApplyCallNode, ClassDeclaration, ControlNode, DocumentationNode, EnumerateDeclaration,
-    ExpressionContext, ExpressionNode, FlagsDeclaration, ForLoop, FunctionDeclaration, GenericCallNode, GuardLetStatement,
-    GuardStatement, IdentifierNode, ImportAliasNode, ImportGroupNode, ImportStatement, ImportTermNode, LambdaArgumentNode,
+    ExpressionContext, ExpressionNode, FlagsDeclaration, ForLoop, FunctionBlock, FunctionDeclaration, GenericCallNode,
+    GuardLetStatement, GuardStatement, IdentifierNode, ImportAliasNode, ImportGroupNode, ImportStatement, ImportTermNode,
     LambdaNode, LetBindNode, LetPattern, NamePathNode, NamespaceDeclaration, NamespaceKind, NewConstructNode, ProgramRoot,
     StatementNode, TaggedDeclaration, TupleTermNode, TypingExpression, UnionDeclaration, WhileLoop,
 };

@@ -7,7 +7,7 @@ use lispify::Lisp;
 use pex::{BracketPair, BracketPattern, ParseResult, ParseState};
 use valkyrie_ast::{
     ApplyArgumentTerm, ApplyCallItem, ApplyCallNode, ApplyDotNode, ArgumentKeyNode, ArgumentTermNode, CallNode, CallTermNode,
-    ExpressionNode, GenericArgument, GenericArgumentTerm, GenericCallNode, GenericCallTerm, IdentifierNode, LambdaCallNode,
+    ClosureCallNode, ExpressionNode, GenericArgument, GenericArgumentTerm, GenericCallNode, GenericCallTerm, IdentifierNode,
     LambdaDotNode, LambdaNode, NamePathNode, SubscriptNode, SubscriptSliceNode, SubscriptTermNode, TypingExpression,
 };
 

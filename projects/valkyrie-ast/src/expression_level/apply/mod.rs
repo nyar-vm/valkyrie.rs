@@ -54,8 +54,6 @@ pub enum ApplyCaller {
     Integer(BigUint),
     /// `object.method()`
     Internal(IdentifierNode),
-    /// `object.external::function()`
-    External(NamePathNode),
 }
 
 /// `(1, 2, 3, name: value, ..list)`
@@ -63,7 +61,9 @@ pub enum ApplyCaller {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ApplyCallTerms {
     /// item
-    terms: Vec<ApplyCallItem>,
+    pub terms: Vec<ApplyCallItem>,
+    /// The range of the number.
+    pub span: Range<u32>,
 }
 
 /// `0, a: 1, ..args, ...kwargs`
@@ -76,6 +76,8 @@ pub struct ApplyCallItem {
     pub parameter: Option<IdentifierNode>,
     /// The main body
     pub body: ExpressionType,
+    /// The range of the number.
+    pub span: Range<u32>,
 }
 
 impl<K, V> CallTermNode<K, V> {

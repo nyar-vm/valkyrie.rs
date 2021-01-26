@@ -30,6 +30,8 @@ impl<'i> Extractor<Op_prefixContextAll<'i>> for OperatorNode {
             "√" => ValkyrieOperator::Roots(2),
             "∛" => ValkyrieOperator::Roots(3),
             "∜" => ValkyrieOperator::Roots(4),
+            ".." => ValkyrieOperator::Unpack { level: 2 },
+            "..." => ValkyrieOperator::Unpack { level: 3 },
             _ => unreachable!("Missing prefix {:?}", text),
         };
         Some(Self { kind, span })

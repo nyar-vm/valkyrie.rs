@@ -14,7 +14,6 @@ impl Debug for PostfixCallPart {
             Self::View(call) => Debug::fmt(call, f),
             Self::Generic(call) => Debug::fmt(call, f),
             Self::Lambda(call) => Debug::fmt(call, f),
-            Self::LambdaDot(call) => Debug::fmt(call, f),
             Self::Match(call) => Debug::fmt(call, f),
         }
     }
@@ -43,7 +42,6 @@ impl PrettyPrint for ExpressionType {
             Self::Tuple(node) => node.pretty(theme),
             Self::ApplyCall(node) => node.pretty(theme),
             Self::LambdaCall(node) => node.pretty(theme),
-            Self::LambdaDot(node) => node.pretty(theme),
             Self::Subscript(node) => node.pretty(theme),
             Self::GenericCall(node) => node.pretty(theme),
             Self::New(node) => node.pretty(theme),
@@ -69,7 +67,6 @@ impl PrettyPrint for PostfixCallPart {
             Self::View(node) => node.pretty(theme),
             Self::Generic(node) => node.pretty(theme),
             Self::Lambda(node) => node.pretty(theme),
-            Self::LambdaDot(node) => node.pretty(theme),
             Self::Match(node) => node.pretty(theme),
         }
     }
@@ -91,7 +88,6 @@ impl ValkyrieNode for ExpressionType {
             Self::Tuple(node) => node.span.clone(),
             Self::ApplyCall(node) => node.span.clone(),
             Self::LambdaCall(node) => node.span.clone(),
-            Self::LambdaDot(node) => node.span.clone(),
             Self::Subscript(node) => node.span.clone(),
             Self::GenericCall(node) => node.span.clone(),
             Self::Resume(node) => node.span.clone(),

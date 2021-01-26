@@ -411,6 +411,54 @@ pub trait ValkyrieAntlrListener<'input>: ParseTreeListener<'input, ValkyrieAntlr
      */
     fn exit_function_call(&mut self, _ctx: &Function_callContext<'input>) {}
     /**
+     * Enter a parse tree produced by the {@code NormalClosure}
+     * labeled alternative in {@link ValkyrieAntlrParser#closure_call}.
+     * @param ctx the parse tree
+     */
+    fn enter_NormalClosure(&mut self, _ctx: &NormalClosureContext<'input>) {}
+    /**
+     * Exit a parse tree produced by the {@code NormalClosure}
+     * labeled alternative in {@link ValkyrieAntlrParser#closure_call}.
+     * @param ctx the parse tree
+     */
+    fn exit_NormalClosure(&mut self, _ctx: &NormalClosureContext<'input>) {}
+    /**
+     * Enter a parse tree produced by the {@code SlotClosure}
+     * labeled alternative in {@link ValkyrieAntlrParser#closure_call}.
+     * @param ctx the parse tree
+     */
+    fn enter_SlotClosure(&mut self, _ctx: &SlotClosureContext<'input>) {}
+    /**
+     * Exit a parse tree produced by the {@code SlotClosure}
+     * labeled alternative in {@link ValkyrieAntlrParser#closure_call}.
+     * @param ctx the parse tree
+     */
+    fn exit_SlotClosure(&mut self, _ctx: &SlotClosureContext<'input>) {}
+    /**
+     * Enter a parse tree produced by the {@code IntegerClosure}
+     * labeled alternative in {@link ValkyrieAntlrParser#closure_call}.
+     * @param ctx the parse tree
+     */
+    fn enter_IntegerClosure(&mut self, _ctx: &IntegerClosureContext<'input>) {}
+    /**
+     * Exit a parse tree produced by the {@code IntegerClosure}
+     * labeled alternative in {@link ValkyrieAntlrParser#closure_call}.
+     * @param ctx the parse tree
+     */
+    fn exit_IntegerClosure(&mut self, _ctx: &IntegerClosureContext<'input>) {}
+    /**
+     * Enter a parse tree produced by the {@code InternalClosure}
+     * labeled alternative in {@link ValkyrieAntlrParser#closure_call}.
+     * @param ctx the parse tree
+     */
+    fn enter_InternalClosure(&mut self, _ctx: &InternalClosureContext<'input>) {}
+    /**
+     * Exit a parse tree produced by the {@code InternalClosure}
+     * labeled alternative in {@link ValkyrieAntlrParser#closure_call}.
+     * @param ctx the parse tree
+     */
+    fn exit_InternalClosure(&mut self, _ctx: &InternalClosureContext<'input>) {}
+    /**
      * Enter a parse tree produced by {@link ValkyrieAntlrParser#tuple_call_body}.
      * @param ctx the parse tree
      */

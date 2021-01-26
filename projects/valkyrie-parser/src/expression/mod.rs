@@ -23,13 +23,13 @@ use std::{
     sync::LazyLock,
 };
 use valkyrie_ast::{
-    ApplyCallNode, ApplyDotNode, ArgumentKeyNode, ArrayPatternNode, CallNode, ClassPatternNode, ExpressionContext,
-    ExpressionNode, ExpressionType, GenericCallNode, IfStatement, ImplicitCaseNode, InfixNode, LambdaCallNode, LambdaDotNode,
-    LambdaSlotNode, LetPattern, MatchDotStatement, MatchKind, MonadicCall, MonadicDotCall, NamePathNode, NewConstructNode,
-    NumberLiteralNode, OperatorNode, PatternBranch, PatternCaseNode, PatternCondition, PatternElseNode, PatternGuard,
-    PatternStatements, PatternTypeNode, PatternWhenNode, PostfixCallPart, PostfixNode, PrefixNode, RaiseNode, StatementBlock,
-    StatementNode, StringLiteralNode, SubscriptNode, SwitchStatement, TryStatement, TupleNode, TuplePatternNode,
-    TypingExpression, UnionPatternNode, ValkyrieOperator,
+    ApplyCallNode, ApplyDotNode, ArgumentKeyNode, ArrayPatternNode, CallNode, ClassPatternNode, ClosureCallNode,
+    ExpressionContext, ExpressionNode, ExpressionType, GenericCallNode, IfStatement, ImplicitCaseNode, InfixNode,
+    LambdaDotNode, LambdaSlotNode, LetPattern, MatchDotStatement, MatchKind, MonadicCall, MonadicDotCall, NamePathNode,
+    NewConstructNode, NumberLiteralNode, OperatorNode, PatternBranch, PatternCaseNode, PatternCondition, PatternElseNode,
+    PatternGuard, PatternStatements, PatternTypeNode, PatternWhenNode, PostfixCallPart, PostfixNode, PrefixNode, RaiseNode,
+    StatementBlock, StatementNode, StringLiteralNode, SubscriptNode, SwitchStatement, TryStatement, TupleNode,
+    TuplePatternNode, TypingExpression, UnionPatternNode, ValkyrieOperator,
 };
 
 /// A resolver

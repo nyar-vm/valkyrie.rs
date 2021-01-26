@@ -332,6 +332,42 @@ pub trait ValkyrieAntlrVisitor<'input>: ParseTreeVisitor<'input, ValkyrieAntlrPa
     }
 
     /**
+     * Visit a parse tree produced by the {@code NormalClosure}
+     * labeled alternative in {@link ValkyrieAntlrParser#closure_call}.
+     * @param ctx the parse tree
+     */
+    fn visit_NormalClosure(&mut self, ctx: &NormalClosureContext<'input>) {
+        self.visit_children(ctx)
+    }
+
+    /**
+     * Visit a parse tree produced by the {@code SlotClosure}
+     * labeled alternative in {@link ValkyrieAntlrParser#closure_call}.
+     * @param ctx the parse tree
+     */
+    fn visit_SlotClosure(&mut self, ctx: &SlotClosureContext<'input>) {
+        self.visit_children(ctx)
+    }
+
+    /**
+     * Visit a parse tree produced by the {@code IntegerClosure}
+     * labeled alternative in {@link ValkyrieAntlrParser#closure_call}.
+     * @param ctx the parse tree
+     */
+    fn visit_IntegerClosure(&mut self, ctx: &IntegerClosureContext<'input>) {
+        self.visit_children(ctx)
+    }
+
+    /**
+     * Visit a parse tree produced by the {@code InternalClosure}
+     * labeled alternative in {@link ValkyrieAntlrParser#closure_call}.
+     * @param ctx the parse tree
+     */
+    fn visit_InternalClosure(&mut self, ctx: &InternalClosureContext<'input>) {
+        self.visit_children(ctx)
+    }
+
+    /**
      * Visit a parse tree produced by {@link ValkyrieAntlrParser#tuple_call_body}.
      * @param ctx the parse tree
      */
@@ -2024,6 +2060,42 @@ pub trait ValkyrieAntlrVisitorCompat<'input>: ParseTreeVisitorCompat<'input, Nod
     }
 
     /**
+     * Visit a parse tree produced by the {@code NormalClosure}
+     * labeled alternative in {@link ValkyrieAntlrParser#closure_call}.
+     * @param ctx the parse tree
+     */
+    fn visit_NormalClosure(&mut self, ctx: &NormalClosureContext<'input>) -> Self::Return {
+        self.visit_children(ctx)
+    }
+
+    /**
+     * Visit a parse tree produced by the {@code SlotClosure}
+     * labeled alternative in {@link ValkyrieAntlrParser#closure_call}.
+     * @param ctx the parse tree
+     */
+    fn visit_SlotClosure(&mut self, ctx: &SlotClosureContext<'input>) -> Self::Return {
+        self.visit_children(ctx)
+    }
+
+    /**
+     * Visit a parse tree produced by the {@code IntegerClosure}
+     * labeled alternative in {@link ValkyrieAntlrParser#closure_call}.
+     * @param ctx the parse tree
+     */
+    fn visit_IntegerClosure(&mut self, ctx: &IntegerClosureContext<'input>) -> Self::Return {
+        self.visit_children(ctx)
+    }
+
+    /**
+     * Visit a parse tree produced by the {@code InternalClosure}
+     * labeled alternative in {@link ValkyrieAntlrParser#closure_call}.
+     * @param ctx the parse tree
+     */
+    fn visit_InternalClosure(&mut self, ctx: &InternalClosureContext<'input>) -> Self::Return {
+        self.visit_children(ctx)
+    }
+
+    /**
      * Visit a parse tree produced by {@link ValkyrieAntlrParser#tuple_call_body}.
      * @param ctx the parse tree
      */
@@ -3592,6 +3664,26 @@ where
 
     fn visit_function_call(&mut self, ctx: &Function_callContext<'input>) {
         let result = <Self as ValkyrieAntlrVisitorCompat>::visit_function_call(self, ctx);
+        *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
+    }
+
+    fn visit_NormalClosure(&mut self, ctx: &NormalClosureContext<'input>) {
+        let result = <Self as ValkyrieAntlrVisitorCompat>::visit_NormalClosure(self, ctx);
+        *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
+    }
+
+    fn visit_SlotClosure(&mut self, ctx: &SlotClosureContext<'input>) {
+        let result = <Self as ValkyrieAntlrVisitorCompat>::visit_SlotClosure(self, ctx);
+        *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
+    }
+
+    fn visit_IntegerClosure(&mut self, ctx: &IntegerClosureContext<'input>) {
+        let result = <Self as ValkyrieAntlrVisitorCompat>::visit_IntegerClosure(self, ctx);
+        *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
+    }
+
+    fn visit_InternalClosure(&mut self, ctx: &InternalClosureContext<'input>) {
+        let result = <Self as ValkyrieAntlrVisitorCompat>::visit_InternalClosure(self, ctx);
         *<Self as ParseTreeVisitorCompat>::temp_result(self) = result;
     }
 

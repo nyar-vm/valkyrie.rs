@@ -149,7 +149,7 @@ fn parse_postfix_curly(input: ParseState) -> ParseResult<PostfixCallPart> {
         .choose(|s| ApplyDotNode::parse(s).map_into())
         .choose(|s| SubscriptNode::parse(s).map_into())
         .choose(|s| GenericCallNode::parse(s).map_into())
-        .choose(|s| LambdaCallNode::parse(s).map_into())
+        .choose(|s| ClosureCallNode::parse(s).map_into())
         .choose(|s| LambdaDotNode::parse(s).map_into())
         .end_choice()
 }

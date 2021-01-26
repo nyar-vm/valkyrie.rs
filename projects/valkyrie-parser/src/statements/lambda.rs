@@ -4,7 +4,7 @@ impl ThisParser for LambdaNode {
     /// `{ body }`
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, _) = input.match_str("{")?;
-        let (state, arguments) = state.skip(ignore).match_optional(LambdaArgumentNode::parse)?;
+        let (state, arguments) = state.skip(ignore).match_optional(FunctionBlock::parse)?;
         let (state, body) = state.skip(ignore).match_repeats(StatementNode::parse)?;
         let (finally, _) = state.skip(ignore).match_str("}")?;
         finally.finish(LambdaNode { arguments, body, span: get_span(input, finally) })
@@ -15,10 +15,10 @@ impl ThisParser for LambdaNode {
     }
 }
 
-impl ThisParser for LambdaArgumentNode {
+impl ThisParser for FunctionBlock {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, _) = input.match_str("lambda")?;
-        state.finish(LambdaArgumentNode { terms: vec![], range: get_span(input, state) })
+        state.finish(FunctionBlock { terms: vec![], range: get_span(input, state) })
     }
 
     fn lispify(&self) -> Lisp {

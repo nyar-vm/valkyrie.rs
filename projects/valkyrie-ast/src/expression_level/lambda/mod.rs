@@ -1,53 +1,65 @@
 #[cfg(feature = "pretty-print")]
 mod display;
+
 use super::*;
+use crate::ApplyCallTerms;
 
 /// `{ lambda(args), ... }`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct LambdaNode {
-    pub arguments: Option<LambdaArgumentNode>,
+    pub arguments: Option<FunctionBlock>,
     pub body: Vec<StatementNode>,
     /// The range of the node
     pub span: Range<u32>,
 }
 
-/// `.caller() { lambda(args), ... }`
+/// `object.caller() { lambda(args), ... }`
+/// `object.{ lambda(args), ... }`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct LambdaCallNode {
-    pub arguments: Option<LambdaArgumentNode>,
-    pub body: Vec<StatementNode>,
+pub struct ClosureCallNode {
+    /// called
+    pub base: ExpressionType,
+    /// Weather it is a monadic call
+    pub monadic: bool,
+    ///
+    pub caller: ClosureCaller,
+    ///
+    pub arguments: Option<ApplyCallTerms>,
+    /// trailing closure
+    pub trailing: Option<FunctionBlock>,
     /// The range of the node
     pub span: Range<u32>,
 }
 
-/// `.{ lambda(args), ... }`
+/// The key of tuple
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct LambdaDotNode {
-    pub arguments: Option<LambdaArgumentNode>,
-    pub body: Vec<StatementNode>,
-    pub span: Range<u32>,
+pub enum ClosureCaller {
+    /// `object() { }`
+    Normal,
+    /// `object.{ $1 + 1 }`
+    Lambda,
+    /// `object.1() { }`
+    Integer(BigUint),
+    /// `object.method() { }`
+    Internal(IdentifierNode),
 }
 
 /// `lambda(args)`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct LambdaArgumentNode {
+pub struct FunctionBlock {
     /// The raw string of the number.
     pub terms: Vec<StatementNode>,
     /// The range of the number.
     pub range: Range<u32>,
 }
 
-impl LambdaNode {
-    #[allow(clippy::wrong_self_convention)]
-    pub fn as_lambda_call(self) -> LambdaCallNode {
-        LambdaCallNode { arguments: self.arguments, body: self.body, span: self.span }
-    }
-    #[allow(clippy::wrong_self_convention)]
-    pub fn as_lambda_dot(self) -> LambdaDotNode {
-        LambdaDotNode { arguments: self.arguments, body: self.body, span: self.span }
+impl ClosureCallNode {
+    /// Replace placeholder with actual expression
+    pub fn with_base(self, base: ExpressionType) -> Self {
+        Self { base, ..self }
     }
 }
