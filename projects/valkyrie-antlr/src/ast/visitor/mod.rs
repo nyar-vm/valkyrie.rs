@@ -1,5 +1,5 @@
 use super::*;
-use valkyrie_ast::ClosureCallNode;
+use valkyrie_ast::{ClosureCallNode, FunctionBlock};
 
 mod atomic;
 mod looping;
@@ -54,6 +54,19 @@ impl ValkyrieAntlrVisitor<'_> for ValkyrieProgramParser {
         }
         // Function_statementContextAll::SLoopContext(v) => StatementType::take(v.loop_statement())?.into(),
         // Function_statementContextAll::SIfLetContext(s) => GuardStatement::take(s.guard_statement())?.into(),
+    }
+}
+impl<'i> Extractor<Function_blockContextAll<'i>> for FunctionBlock {
+    fn take_one(node: &Function_blockContextAll<'i>) -> Option<Self> {
+        let mut statements = vec![];
+        let span = Range { start: node.start().start as u32, end: node.stop().stop as u32 };
+        for node in node.get_children() {
+            if let Some(s) = node.downcast_ref::<Expression_rootContextAll>().and_then(ExpressionNode::take_one) {
+                statements.push(s.into());
+                continue;
+            }
+        }
+        Some(Self { terms: statements, range: span })
     }
 }
 
@@ -203,6 +216,10 @@ impl<'i> Extractor<ExpressionContextAll<'i>> for ExpressionType {
                 let call = ClosureCallNode::take(v.closure_call())?;
                 call.with_base(base).into()
             }
+            ExpressionContextAll::EFunctionContext(v) => {
+                v;
+                return None;
+            }
             ExpressionContextAll::EMatchContext(_) => {
                 todo!()
             }
@@ -287,7 +304,7 @@ impl<'i> Extractor<Inline_expressionContextAll<'i>> for ExpressionType {
                 todo!()
             }
             Inline_expressionContextAll::IFunctionContext(v) => {
-                let base = ExpressionType::take(v.expression())?;
+                let base = ExpressionType::take(v.inline_expression())?;
                 let call = ApplyCallNode::take(v.function_call())?;
                 call.with_base(base).into()
             }

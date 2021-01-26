@@ -1,6 +1,6 @@
 use super::*;
 
-impl ThisParser for CallNode<SubscriptNode> {
+impl ThisParser for CallNode<SubscriptCallNode> {
     #[track_caller]
     fn parse(_: ParseState) -> ParseResult<Self> {
         unreachable!()
@@ -8,7 +8,7 @@ impl ThisParser for CallNode<SubscriptNode> {
 
     fn lispify(&self) -> Lisp {
         let mut lisp = Lisp::new(3);
-        if self.rest.index0 {
+        if self.rest.kind {
             lisp += Lisp::keyword("call/subscript0");
         }
         else {
@@ -20,11 +20,11 @@ impl ThisParser for CallNode<SubscriptNode> {
     }
 }
 
-impl ThisParser for SubscriptNode {
+impl ThisParser for SubscriptCallNode {
     /// `[` ~ `]` | `[` [term](SubscriptTermNode::parse) ( ~ `,` ~ [term](SubscriptTermNode::parse))* `,`? `]`
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, (index0, terms)) = input.begin_choice().choose(parse_index1).choose(parse_index0).end_choice()?;
-        state.finish(SubscriptNode { index0, terms: terms.body, span: get_span(input, state) })
+        state.finish(SubscriptCallNode { kind: index0, terms: terms.body, span: get_span(input, state) })
     }
 
     fn lispify(&self) -> Lisp {
@@ -63,13 +63,6 @@ impl ThisParser for SubscriptTermNode {
             .choose(|s| SubscriptSliceNode::parse(s).map_into())
             .choose(|s| ExpressionNode::parse(s).map_into())
             .end_choice()
-    }
-
-    fn lispify(&self) -> Lisp {
-        match self {
-            SubscriptTermNode::Index(v) => v.lispify(),
-            SubscriptTermNode::Slice(v) => v.lispify(),
-        }
     }
 }
 

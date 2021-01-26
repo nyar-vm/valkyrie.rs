@@ -9,19 +9,11 @@ impl ThisParser for LambdaNode {
         let (finally, _) = state.skip(ignore).match_str("}")?;
         finally.finish(LambdaNode { arguments, body, span: get_span(input, finally) })
     }
-
-    fn lispify(&self) -> Lisp {
-        todo!()
-    }
 }
 
 impl ThisParser for FunctionBlock {
     fn parse(input: ParseState) -> ParseResult<Self> {
         let (state, _) = input.match_str("lambda")?;
         state.finish(FunctionBlock { terms: vec![], range: get_span(input, state) })
-    }
-
-    fn lispify(&self) -> Lisp {
-        todo!()
     }
 }

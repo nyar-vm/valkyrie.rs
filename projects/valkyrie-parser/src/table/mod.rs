@@ -6,6 +6,6 @@ use lispify::Lisp;
 use pex::{BracketPattern, ParseResult, ParseState};
 use std::ops::Range;
 use valkyrie_ast::{
-    CallTermNode, ExpressionType, IdentifierNode, NumberLiteralNode, StringLiteralNode, SubscriptNode, TupleKeyType, TupleKind,
-    TupleNode, TupleTermNode,
+    CallTermNode, ExpressionType, IdentifierNode, NumberLiteralNode, StringLiteralNode, SubscriptCallNode, TupleKeyType,
+    TupleKind, TupleNode, TupleTermNode,
 };

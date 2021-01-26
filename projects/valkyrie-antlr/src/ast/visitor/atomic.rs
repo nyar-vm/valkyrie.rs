@@ -1,4 +1,5 @@
 use super::*;
+use valkyrie_ast::BigUint;
 
 impl<'i> Extractor<AtomicContextAll<'i>> for ExpressionType {
     fn take_one(node: &AtomicContextAll<'i>) -> Option<Self> {
@@ -36,7 +37,11 @@ impl<'i> Extractor<TerminalNode<'i, ValkyrieAntlrParserContextType>> for isize {
         isize::from_str(&node.get_text()).ok()
     }
 }
-
+impl<'i> Extractor<TerminalNode<'i, ValkyrieAntlrParserContextType>> for BigUint {
+    fn take_one(node: &TerminalNode<'i, ValkyrieAntlrParserContextType>) -> Option<Self> {
+        BigUint::from_str(&node.get_text()).ok()
+    }
+}
 impl<'i> Extractor<Output_nameContextAll<'i>> for OutputNode {
     fn take_one(node: &Output_nameContextAll<'i>) -> Option<Self> {
         let index = match node {

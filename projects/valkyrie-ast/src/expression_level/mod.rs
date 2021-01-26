@@ -20,7 +20,7 @@ use crate::{
     CollectsNode, ExpressionFormatted, GenericCallNode, GuardStatement, IdentifierNode, IfStatement, InfixNode, LambdaSlotNode,
     MatchDotStatement, ModifiersNode, MonadicDotCall, NamePathNode, NewConstructNode, NullNode, NumberLiteralNode,
     OperatorNode, OutputNode, PatternBlock, PostfixNode, PrefixNode, RaiseNode, StatementNode, StringLiteralNode,
-    StringTextNode, SubscriptNode, SwitchStatement, TryStatement, TupleNode, TupleTermNode,
+    StringTextNode, SubscriptCallNode, SwitchStatement, TryStatement, TupleNode, TupleTermNode,
 };
 use alloc::{
     borrow::ToOwned,
@@ -133,7 +133,7 @@ pub enum ExpressionType {
     /// - Postfix expression
     LambdaCall(Box<ClosureCallNode>),
     /// - Postfix expression
-    Subscript(Box<CallNode<SubscriptNode>>),
+    Subscript(Box<CallNode<SubscriptCallNode>>),
     /// - Postfix expression
     GenericCall(Box<CallNode<GenericCallNode>>),
     /// - Postfix expression
@@ -148,7 +148,7 @@ pub enum PostfixCallPart {
     /// - Any expression
     Apply(ApplyCallNode),
     /// - Any expression
-    View(SubscriptNode),
+    View(SubscriptCallNode),
     /// - Any expression
     Generic(GenericCallNode),
     /// - Standalone expression
@@ -207,7 +207,7 @@ impl ExpressionType {
         ExpressionType::GenericCall(Box::new(CallNode { base, rest, span }))
     }
     /// Build a new expression with subscript call
-    pub fn call_subscript(base: Self, rest: SubscriptNode) -> Self {
+    pub fn call_subscript(base: Self, rest: SubscriptCallNode) -> Self {
         let span = base.get_start()..rest.span.end;
         ExpressionType::Subscript(Box::new(CallNode { base, rest, span }))
     }

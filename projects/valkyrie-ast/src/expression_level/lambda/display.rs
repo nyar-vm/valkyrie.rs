@@ -18,3 +18,12 @@ impl PrettyPrint for ClosureCallNode {
         terms.into()
     }
 }
+
+#[cfg(feature = "lispify")]
+impl Lispify for ClosureCallNode {
+    type Output = Lisp;
+
+    fn lispify(&self) -> Self::Output {
+        Lisp::keyword("ClosureCallNode ???")
+    }
+}

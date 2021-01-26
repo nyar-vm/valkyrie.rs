@@ -36,7 +36,7 @@ impl ThisParser for TupleKeyType {
             .choose(|s| IdentifierNode::parse(s).map_inner(|e| TupleKeyType::Identifier(Box::new(e))))
             .choose(|s| NumberLiteralNode::parse(s).map_inner(|e| TupleKeyType::Number(Box::new(e))))
             .choose(|s| StringLiteralNode::parse(s).map_inner(|e| TupleKeyType::String(Box::new(e))))
-            .choose(|s| SubscriptNode::parse(s).map_inner(|e| TupleKeyType::Subscript(Box::new(e))))
+            .choose(|s| SubscriptCallNode::parse(s).map_inner(|e| TupleKeyType::Subscript(Box::new(e))))
             .end_choice()
     }
 

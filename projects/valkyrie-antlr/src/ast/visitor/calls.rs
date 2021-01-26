@@ -1,5 +1,5 @@
 use super::*;
-use valkyrie_ast::{ApplyCallItem, ApplyCallTerms, ClosureCaller};
+use valkyrie_ast::{ApplyCallItem, ApplyCallTerms, BigUint, ClosureCaller, FunctionBlock};
 
 impl<'i> Extractor<Function_callContextAll<'i>> for ApplyCallNode {
     fn take_one(node: &Function_callContextAll<'i>) -> Option<Self> {
@@ -15,49 +15,30 @@ impl<'i> Extractor<Closure_callContextAll<'i>> for ClosureCallNode {
         match node {
             Closure_callContextAll::NormalClosureContext(o) => {
                 let monadic = o.OP_AND_THEN().is_some();
-                Some(Self {
-                    base: Default::default(),
-                    monadic,
-                    arguments: None,
-                    caller: ClosureCaller::Normal,
-                    span,
-                    trailing: None,
-                })
+                let arguments = ApplyCallTerms::take(o.tuple_call_body());
+                let trailing = FunctionBlock::take(o.function_block());
+                Some(Self { base: Default::default(), monadic, arguments, trailing, caller: ClosureCaller::Normal, span })
             }
             Closure_callContextAll::SlotClosureContext(o) => {
                 let monadic = o.OP_AND_THEN().is_some();
-                Some(Self {
-                    base: Default::default(),
-                    monadic,
-                    arguments: None,
-                    caller: ClosureCaller::Normal,
-                    span,
-                    trailing: None,
-                })
+                let arguments = None;
+                let trailing = FunctionBlock::take(o.function_block());
+                Some(Self { base: Default::default(), monadic, arguments, trailing, caller: ClosureCaller::Lambda, span })
             }
             Closure_callContextAll::IntegerClosureContext(o) => {
                 let monadic = o.OP_AND_THEN().is_some();
-                Some(Self {
-                    base: Default::default(),
-                    monadic,
-                    arguments: None,
-                    caller: ClosureCaller::Normal,
-                    span,
-                    trailing: None,
-                })
+                let arguments = ApplyCallTerms::take(o.tuple_call_body());
+                let trailing = FunctionBlock::take(o.function_block());
+                let int = BigUint::take(o.INTEGER())?;
+                Some(Self { base: Default::default(), monadic, arguments, trailing, caller: ClosureCaller::Integer(int), span })
             }
             Closure_callContextAll::InternalClosureContext(o) => {
                 let monadic = o.OP_AND_THEN().is_some();
-                Some(Self {
-                    base: Default::default(),
-                    monadic,
-                    arguments: None,
-                    caller: ClosureCaller::Normal,
-                    span,
-                    trailing: None,
-                })
+                let arguments = ApplyCallTerms::take(o.tuple_call_body());
+                let trailing = FunctionBlock::take(o.function_block());
+                let id = IdentifierNode::take(o.identifier())?;
+                Some(Self { base: Default::default(), monadic, arguments, trailing, caller: ClosureCaller::Internal(id), span })
             }
-
             Closure_callContextAll::Error(_) => None,
         }
     }

@@ -52,7 +52,7 @@ pub struct ArrayNode {
     pub span: Range<u32>,
 }
 
-/// The key of tuple
+/// `⁅index⁆` or `⁅start : end : step⁆`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum ArrayTermNode {
@@ -91,7 +91,7 @@ pub enum TupleKeyType {
     /// A raw string key
     String(Box<StringLiteralNode>),
     /// A subscript key
-    Subscript(Box<SubscriptNode>),
+    Subscript(Box<SubscriptCallNode>),
 }
 
 impl Default for TupleKind {

@@ -24,6 +24,6 @@ fn test_apply() {
 #[test]
 fn main2() {
     let raw = "⁅:, ::, : :, 1, :index0:, ::-1, i::j, i: :j⁆";
-    let slice = SubscriptNode::parse_text(raw).unwrap();
+    let slice = SubscriptCallNode::parse_text(raw).unwrap();
     pretty_print(&slice)
 }

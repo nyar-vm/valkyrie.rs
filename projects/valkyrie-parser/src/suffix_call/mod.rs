@@ -8,7 +8,7 @@ use pex::{BracketPair, BracketPattern, ParseResult, ParseState};
 use valkyrie_ast::{
     ApplyArgumentTerm, ApplyCallItem, ApplyCallNode, ApplyDotNode, ArgumentKeyNode, ArgumentTermNode, CallNode, CallTermNode,
     ClosureCallNode, ExpressionNode, GenericArgument, GenericArgumentTerm, GenericCallNode, GenericCallTerm, IdentifierNode,
-    LambdaDotNode, LambdaNode, NamePathNode, SubscriptNode, SubscriptSliceNode, SubscriptTermNode, TypingExpression,
+    LambdaDotNode, LambdaNode, NamePathNode, SubscriptCallNode, SubscriptSliceNode, SubscriptTermNode, TypingExpression,
 };
 
 mod args_apply;
