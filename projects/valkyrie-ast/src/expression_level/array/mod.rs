@@ -1,50 +1,24 @@
-use super::*;
 #[cfg(feature = "pretty-print")]
 mod display;
 
-#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum TupleKind {
-    /// `(a, b, ..c)`
-    Tuple,
-    /// `[a: 1, b, ..c]`
-    List,
-    /// `{a: 1, b, ..c}`
-    Dict,
-}
+use super::*;
+use crate::TupleKind;
 
+/// The literal of array
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum ArrayKind {
-    /// [1, 1]
+    /// `[1, 2:3, 4:5:6]`
     Ordinal,
-    /// [1, 1]
+    /// `⁅1, 2:3, 4:5:6⁆`
     Offset,
-}
-
-impl Default for ArrayKind {
-    fn default() -> Self {
-        Self::Ordinal
-    }
-}
-
-/// `(table, ), (named: tuple, expression)`
-#[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct TupleNode {
-    ///  The kind of table.
-    pub kind: TupleKind,
-    /// The raw string of the number.
-    pub terms: Vec<TupleTermNode>,
-    /// The range of the number.
-    pub span: Range<u32>,
 }
 
 /// `[0, [], [:], [::]]`
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ArrayNode {
-    ///  The kind of table.
+    ///  The kind of tuple.
     pub kind: ArrayKind,
     /// Terms
     pub terms: Vec<ArrayTermNode>,
@@ -52,7 +26,7 @@ pub struct ArrayNode {
     pub span: Range<u32>,
 }
 
-/// `⁅index⁆` or `⁅start : end : step⁆`
+/// `[index], ⁅start : end : step⁆`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum ArrayTermNode {
@@ -72,35 +46,30 @@ pub enum ArrayTermNode {
     },
 }
 
-/// `a: item`
+/// `array⁅index0⁆, array[index1]`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct TupleTermNode {
-    /// element in tuple
-    pub pair: CallTermNode<TupleKeyType, ExpressionType>,
+pub struct SubscriptCallNode {
+    /// kind of
+    pub kind: ArrayKind,
+    /// `array`
+    pub base: ExpressionType,
+    /// `array?[0]`
+    pub monadic: bool,
+    /// `array[1, 2:3]`
+    pub terms: Vec<ArrayTermNode>,
+    /// The range of the node.
+    pub span: Range<u32>,
 }
 
-/// The key of tuple
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum TupleKeyType {
-    /// A valid identifier key
-    Identifier(Box<IdentifierNode>),
-    /// A valid number key
-    Number(Box<NumberLiteralNode>),
-    /// A raw string key
-    String(Box<StringLiteralNode>),
-    /// A subscript key
-    Subscript(Box<SubscriptCallNode>),
-}
-
-impl Default for TupleKind {
+impl Default for ArrayKind {
     fn default() -> Self {
-        Self::Tuple
+        Self::Ordinal
     }
 }
 
 impl ArrayNode {
+    /// Convert to tuple if possible
     pub fn as_tuple(&self) -> Option<TupleNode> {
         let mut terms = Vec::with_capacity(self.terms.len());
         for term in &self.terms {
@@ -111,10 +80,25 @@ impl ArrayNode {
 }
 
 impl ArrayTermNode {
+    /// Convert to tuple item if possible
     pub fn as_tuple(&self) -> Option<TupleTermNode> {
         match self {
             ArrayTermNode::Index { index } => Some(TupleTermNode { pair: CallTermNode { key: None, value: index.clone() } }),
             ArrayTermNode::Range { .. } => None,
+        }
+    }
+}
+
+impl SubscriptCallNode {
+    /// Replace placeholder with actual expression
+    pub fn with_base(self, base: ExpressionType) -> Self {
+        Self { base, ..self }
+    }
+    /// The linked method name
+    pub fn method(&self) -> &'static str {
+        match self.kind {
+            ArrayKind::Ordinal => "subscript1",
+            ArrayKind::Offset => "subscript0",
         }
     }
 }

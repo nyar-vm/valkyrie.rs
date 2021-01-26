@@ -1,5 +1,6 @@
 pub mod annotations;
 pub mod apply;
+pub mod array;
 pub mod common;
 pub mod ctor;
 mod dispatch;
@@ -10,8 +11,7 @@ pub mod number;
 pub mod operators;
 pub mod string_template;
 pub mod symbol;
-pub mod table;
-pub mod view;
+pub mod tuple;
 
 mod display;
 
@@ -39,7 +39,10 @@ use deriver::From;
 use lispify::{Lisp, Lispify};
 use num_bigint::BigUint;
 #[cfg(feature = "pretty-print")]
-use pretty_print::{helpers::PrettySequence, PrettyBuilder, PrettyPrint, PrettyProvider, PrettyTree};
+use pretty_print::{
+    helpers::{KAndRBracket, PrettySequence},
+    PrettyPrint, PrettyProvider, PrettyTree,
+};
 
 /// The ast node for an expression
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]

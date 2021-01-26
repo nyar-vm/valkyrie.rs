@@ -26,6 +26,7 @@ pub use crate::{
     expression_level::{
         annotations::{AnnotationKind, AnnotationList, AnnotationNode, AnnotationPathNode, AnnotationTerm, ModifiersNode},
         apply::{ApplyArgument, ApplyArgumentTerm, ApplyCallItem, ApplyCallNode, ApplyCallTerms, ApplyCaller, ArgumentKeyNode},
+        array::{ArrayKind, ArrayNode, ArrayTermNode, SubscriptCallNode},
         common::{ArgumentTermNode, CallNode, CallTermNode, MonadicCall, MonadicDotCall},
         ctor::{CollectsNode, NewConstructNode},
         generic::{GenericArgument, GenericArgumentTerm, GenericCallNode, GenericCallTerm},
@@ -34,15 +35,13 @@ pub use crate::{
         number::NumberLiteralNode,
         operators::{InfixNode, LogicMatrix, OperatorNode, PostfixNode, PrefixNode, ValkyrieOperator},
         symbol::{BooleanNode, IdentifierNode, LambdaSlotNode, NamePathNode, NullNode, OutputNode},
-        table::{ArrayKind, ArrayNode, ArrayTermNode, TupleKeyType, TupleKind, TupleNode, TupleTermNode},
-        view::SubscriptCallNode,
+        tuple::{TupleKeyType, TupleKind, TupleNode, TupleTermNode},
         ExpressionContext, ExpressionNode, ExpressionType, PostfixCallPart, TypingExpression,
     },
     package_level::{
         classes::{ClassDeclaration, ClassFieldDeclaration, ClassKind, ClassMethodDeclaration},
         documentation::DocumentationNode,
         enumerates::{EnumerateDeclaration, EnumerateFieldDeclaration},
-        extends::ExtendsStatement,
         flags::{FlagsDeclaration, FlagsIterator, FlagsTerm},
         function::{
             FunctionDeclaration, FunctionDeclarationInline, FunctionEffectNode, FunctionReturnNode, FunctionType,
@@ -56,7 +55,7 @@ pub use crate::{
         program::ProgramRoot,
         statements::{StatementContext, StatementNode},
         tagged::{TaggedDeclaration, VariantDeclaration},
-        traits::TraitDeclaration,
+        traits::{ExtendsStatement, TraitDeclaration},
         try_catch::TryStatement,
         unions::{UnionDeclaration, UnionFieldDeclaration},
     },

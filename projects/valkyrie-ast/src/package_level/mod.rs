@@ -17,8 +17,6 @@ pub mod unions;
 
 pub mod traits;
 
-pub mod extends;
-
 use crate::{
     AnnotationList, AnnotationNode, ApplyArgument, ArgumentTermNode, ClassDeclaration, ClassFieldDeclaration,
     ClassMethodDeclaration, ControlNode, DocumentationNode, EnumerateDeclaration, EnumerateFieldDeclaration, ExpressionNode,

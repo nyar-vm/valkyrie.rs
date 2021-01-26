@@ -1,5 +1,4 @@
 use super::*;
-use pretty_print::PrettyBuilder;
 
 impl PrettyPrint for ClosureCallNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {

@@ -1,25 +1,5 @@
 use super::*;
 
-impl ThisParser for CallNode<SubscriptCallNode> {
-    #[track_caller]
-    fn parse(_: ParseState) -> ParseResult<Self> {
-        unreachable!()
-    }
-
-    fn lispify(&self) -> Lisp {
-        let mut lisp = Lisp::new(3);
-        if self.rest.kind {
-            lisp += Lisp::keyword("call/subscript0");
-        }
-        else {
-            lisp += Lisp::keyword("call/subscript1");
-        }
-        lisp += self.base.lispify();
-        lisp += self.rest.lispify();
-        lisp
-    }
-}
-
 impl ThisParser for SubscriptCallNode {
     /// `[` ~ `]` | `[` [term](SubscriptTermNode::parse) ( ~ `,` ~ [term](SubscriptTermNode::parse))* `,`? `]`
     fn parse(input: ParseState) -> ParseResult<Self> {

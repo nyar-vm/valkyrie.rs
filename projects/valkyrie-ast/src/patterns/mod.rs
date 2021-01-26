@@ -117,7 +117,7 @@ pub struct PatternCaseNode {
 /// for i in range;
 /// for i, j in range;
 /// for mut i, mut j in range
-/// for [table] in
+/// for [tuple] in
 /// ```
 #[derive(Clone, Debug, PartialEq, Eq, Hash, From)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
