@@ -1,6 +1,10 @@
 use crate::{encoding::IntoValkyrie, ValkyrieValue};
 use im::Vector;
 use itertools::iterate;
+use shredder::{
+    marker::{GcDrop, GcSafe},
+    Scan, Scanner,
+};
 use std::fmt::{Debug, Formatter};
 use valkyrie_error::{
     third_party::{NyarReal, ToPrimitive},
@@ -10,6 +14,14 @@ use valkyrie_error::{
 #[derive(Default)]
 pub struct ValkyrieList {
     pub raw: Vector<ValkyrieValue>,
+}
+
+unsafe impl GcSafe for ValkyrieList {}
+unsafe impl GcDrop for ValkyrieList {}
+unsafe impl Scan for ValkyrieList {
+    fn scan(&self, scanner: &mut Scanner<'_>) {
+        todo!()
+    }
 }
 
 impl Debug for ValkyrieList {
