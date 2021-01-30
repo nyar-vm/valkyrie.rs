@@ -1,102 +1,50 @@
 use super::*;
-use crate::{functions::ValkyriePartialFunction, utils::primitive_type};
+use crate::{functions::ValkyriePartialFunction, utils::primitive_type, ValkyrieList};
+use im::HashMap;
 use indexmap::IndexMap;
 use shredder::{marker::GcDrop, Scanner};
-use std::collections::{LinkedList, VecDeque};
+use std::{
+    collections::{LinkedList, VecDeque},
+    fmt::Formatter,
+};
 
-#[derive(Clone, Debug)]
-pub struct ValkyrieTable {
-    tuple: bool,
-    items: VecDeque<ValkyrieValue>,
-    pairs: IndexMap<ValkyrieValue, ValkyrieValue>,
+#[derive(Clone)]
+pub struct ValkyrieDict {
+    pub raw: HashMap<ValkyrieValue, ValkyrieValue>,
 }
 
-unsafe impl GcSafe for ValkyrieTable {}
-unsafe impl GcDrop for ValkyrieTable {}
-unsafe impl Scan for ValkyrieTable {
+impl Debug for ValkyrieDict {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        f.debug_map().finish()
+    }
+}
+
+unsafe impl GcSafe for ValkyrieDict {}
+unsafe impl GcDrop for ValkyrieDict {}
+unsafe impl Scan for ValkyrieDict {
     fn scan(&self, scanner: &mut Scanner<'_>) {
-        for item in &self.items {
-            scanner.scan(item)
+        for (key, value) in self.raw.iter() {
+            scanner.scan(key);
+            scanner.scan(value);
         }
     }
 }
 
-#[derive(Clone, Debug, Default)]
-pub struct ValkyrieList {
-    tuple: bool,
-    /// Type bound if this is a homogeneous list
-    array: Option<Gc<ValkyrieMetaType>>,
-    /// items, homogeneous or heterogeneous
-    items: LinkedList<ValkyrieValue>,
-}
-
-pub struct ValkyrieDict {
-    pairs: IndexMap<String, ValkyrieValue>,
-}
-
-impl ValkyrieList {
-    /// `[a] ++ new`
-    /// ```vk
-    /// append<T>(mut self, ..items: List<T>, <) { }
-    /// ```
-    pub fn append(&mut self, item: ValkyrieValue) {
-        self.items.push_back(item);
-    }
-    /// `[a] ++ [new]`
-    pub fn append_many<I>(&mut self, items: I)
-    where
-        I: IntoIterator<Item = ValkyrieValue>,
-    {
-        self.items.extend(items);
-    }
-    /// `new ++ [a]`
-    pub fn prepend(&mut self, item: ValkyrieValue) {
-        self.items.push_front(item);
-    }
-    /// `[new] ++ [a]`
-    pub fn prepend_many<I>(&mut self, items: I)
-    where
-        I: IntoIterator<Item = ValkyrieValue>,
-    {
-        self.items.extend(items);
-    }
-}
-
-impl ValkyrieTable {
-    pub fn list() -> Self {
-        Self { tuple: false, items: VecDeque::new(), pairs: Default::default() }
-    }
-
-    pub fn tuple() -> Self {
-        Self { tuple: true, items: VecDeque::new(), pairs: Default::default() }
-    }
-
+impl ValkyrieDict {
     pub fn clear(&mut self) {
-        self.items.clear();
-        self.pairs.clear();
-    }
-
-    pub fn extend_many<I>(&mut self, items: I)
-    where
-        I: IntoIterator<Item = ValkyrieValue>,
-    {
-        self.items.extend(items);
-    }
-
-    pub fn extend_one(&mut self, item: ValkyrieValue) {
-        self.items.push_back(item);
+        self.raw.clear();
     }
 }
 
-impl Default for ValkyrieTable {
+impl Default for ValkyrieDict {
     fn default() -> Self {
         todo!()
     }
 }
 
-impl ValkyrieType for ValkyrieTable {
+impl ValkyrieType for ValkyrieDict {
     fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::Table(Gc::new(self))
+        ValkyrieValue::Dict(self)
     }
 
     fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
@@ -109,7 +57,7 @@ impl ValkyrieType for ValkyrieTable {
 
 impl ValkyrieType for () {
     fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::Table(Gc::new(ValkyrieTable::tuple()))
+        ValkyrieValue::Dict(Default::default())
     }
 
     fn static_type() -> Gc<ValkyrieMetaType> {
@@ -125,7 +73,7 @@ where
     T1: ValkyrieType,
 {
     fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::Table(Gc::new(ValkyrieTable::tuple()))
+        ValkyrieValue::List(ValkyrieList::from_iter(vec![self.0.boxed()]))
     }
 
     fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
@@ -142,7 +90,7 @@ where
     T2: ValkyrieType,
 {
     fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::Table(Gc::new(ValkyrieTable::tuple()))
+        ValkyrieValue::List(ValkyrieList::from_iter(vec![self.0.boxed(), self.1.boxed()]))
     }
 
     fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
@@ -161,7 +109,7 @@ where
     T3: ValkyrieType,
 {
     fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::Table(Gc::new(ValkyrieTable::tuple()))
+        ValkyrieValue::List(ValkyrieList::from_iter(vec![self.0.boxed(), self.1.boxed(), self.2.boxed()]))
     }
 
     fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
@@ -182,7 +130,7 @@ where
     T4: ValkyrieType,
 {
     fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::Table(Gc::new(ValkyrieTable::tuple()))
+        ValkyrieValue::List(ValkyrieList::from_iter(vec![self.0.boxed(), self.1.boxed(), self.2.boxed(), self.3.boxed()]))
     }
 
     fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
@@ -205,7 +153,13 @@ where
     T5: ValkyrieType,
 {
     fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::Table(Gc::new(ValkyrieTable::tuple()))
+        ValkyrieValue::List(ValkyrieList::from_iter(vec![
+            self.0.boxed(),
+            self.1.boxed(),
+            self.2.boxed(),
+            self.3.boxed(),
+            self.4.boxed(),
+        ]))
     }
 
     fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {

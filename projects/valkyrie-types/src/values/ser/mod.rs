@@ -1,5 +1,5 @@
 use crate::ValkyrieValue;
-use serde::{Serialize, Serializer};
+use serde::{ser::SerializeSeq, Serialize, Serializer};
 
 impl Serialize for ValkyrieValue {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
@@ -38,9 +38,14 @@ impl Serialize for ValkyrieValue {
             Self::DataFrame(_) => {
                 todo!()
             }
-            Self::Table(_) => {
-                todo!()
+            Self::List(v) => {
+                let mut seq = serializer.serialize_seq(Some(v.raw.len()))?;
+                for element in v.raw.iter() {
+                    seq.serialize_element(element)?;
+                }
+                seq.end()
             }
+            Self::Dict(v) => serializer.collect_map(v.raw.iter()),
             Self::Html(_) => {
                 todo!()
             }

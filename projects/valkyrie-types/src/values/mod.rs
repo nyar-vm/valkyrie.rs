@@ -9,7 +9,7 @@ mod ser;
 use crate::builtin::data_frame::ValkyrieDataFrame;
 use crate::{
     builtin::{images::ValkyrieImage, ndarray::ValkyrieNDArray},
-    ValkyrieClassType, ValkyrieList, ValkyrieNumber, ValkyrieTable, ValkyrieVariantType,
+    ValkyrieClassType, ValkyrieDict, ValkyrieList, ValkyrieNumber, ValkyrieVariantType,
 };
 
 #[derive(Clone, Debug)]
@@ -37,7 +37,8 @@ pub enum ValkyrieValue {
     Image(Gc<ValkyrieImage>),
     #[cfg(feature = "polars")]
     DataFrame(Gc<ValkyrieDataFrame>),
-    Table(Gc<ValkyrieList>),
+    List(ValkyrieList),
+    Dict(ValkyrieDict),
     Class(Gc<ValkyrieClassType>),
     Variant(Gc<ValkyrieVariantType>),
 }
@@ -54,14 +55,15 @@ unsafe impl Scan for ValkyrieValue {
             ValkyrieValue::Boolean(_) => {}
             ValkyrieValue::Number(v) => scanner.scan(v),
             ValkyrieValue::Unicode(_) => {}
-            ValkyrieValue::UTF8String(_) => {}
-            ValkyrieValue::Bytes(_) => {}
+            ValkyrieValue::UTF8String(v) => scanner.scan(v),
+            ValkyrieValue::Bytes(v) => scanner.scan(v),
             ValkyrieValue::Html(_) => {}
             ValkyrieValue::NDArray(_) => {}
             ValkyrieValue::Image(_) => {}
             #[cfg(feature = "polars")]
             ValkyrieValue::DataFrame(_) => {}
-            ValkyrieValue::Table(_) => {}
+            ValkyrieValue::List(v) => scanner.scan(v),
+            ValkyrieValue::Dict(v) => scanner.scan(v),
             ValkyrieValue::Class(_) => {}
             ValkyrieValue::Variant(_) => {}
         }

@@ -1,26 +1,16 @@
-use shredder::Gc;
-use std::{
-    collections::{BTreeMap, BTreeSet},
-    sync::Arc,
-};
-
-use crate::{types::ValkyrieMetaType, ValkyrieTable, ValkyrieType, ValkyrieValue};
+use super::*;
 
 impl<T> ValkyrieType for Vec<T>
 where
     T: ValkyrieType,
 {
     fn boxed(self) -> ValkyrieValue {
-        let mut out = ValkyrieTable::list();
-        for item in self {
-            out.extend_one(item.boxed());
-        }
-        ValkyrieValue::Table(Gc::new(out))
+        ValkyrieValue::List(ValkyrieList::from_iter(self.into_iter().map(|v| v.boxed())))
     }
 
     fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
         let mut this = ValkyrieMetaType::default();
-        this.set_namepath("std.collection.Array");
+        this.set_namepath("std.collection.List");
         this.mut_generic_types().push(T::static_type());
         Gc::new(this)
     }
@@ -31,11 +21,7 @@ where
     T: ValkyrieType,
 {
     fn boxed(self) -> ValkyrieValue {
-        let mut out = ValkyrieTable::list();
-        for item in self {
-            out.extend_one(item.boxed());
-        }
-        ValkyrieValue::Table(Gc::new(out))
+        ValkyrieValue::List(ValkyrieList::from_iter(self.into_iter().map(|v| v.boxed())))
     }
 
     fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
@@ -52,11 +38,8 @@ where
     V: ValkyrieType,
 {
     fn boxed(self) -> ValkyrieValue {
-        let mut out = ValkyrieTable::list();
-        for item in self {
-            out.extend_one(item.boxed());
-        }
-        ValkyrieValue::Table(Gc::new(out))
+        todo!()
+        // ValkyrieValue::List(ValkyrieList::from_iter(self.into_iter().map(|v| v.boxed())))
     }
 
     fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {

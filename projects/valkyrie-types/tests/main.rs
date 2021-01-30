@@ -35,7 +35,7 @@ fn test_list_index() {
 #[test]
 fn test_list() {
     let value: Vec<usize> = vec![];
-    assert_type(value, "Array[Unsigned64]", "std::collection::Array[std::primitive::Unsigned64]");
+    assert_type(value, "List[Unsigned64]", "std::collection::List[std::primitive::Unsigned64]");
     // let value: Option<usize> = None;
     // assert_type(value, "Option[u64]", "std::primitive::Option[std::primitive::u64]");
     // let value: Option<Option<usize>> = Some(None);
