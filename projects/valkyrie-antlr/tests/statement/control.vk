@@ -31,8 +31,8 @@ try T? {
 .catch {
     type RuntimeError:
         print("RuntimeError")
-}
-?.match {
+}?
+.match {
     case Some(a):
         print("Some"),
 }

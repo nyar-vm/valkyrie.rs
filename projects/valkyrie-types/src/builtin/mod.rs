@@ -11,7 +11,7 @@ pub mod pointer;
 pub mod primitive;
 pub mod result;
 
-use crate::{collection::list::ValkyrieList, types::ValkyrieMetaType, ValkyrieDict, ValkyrieType, ValkyrieValue};
+use crate::{collection::list::NyarTuple, types::ValkyrieMetaType, ValkyrieDict, ValkyrieType, ValkyrieValue};
 use indexmap::IndexMap;
 use shredder::{marker::GcSafe, Gc, Scan, Scanner};
 use std::{

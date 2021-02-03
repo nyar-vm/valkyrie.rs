@@ -29,13 +29,16 @@ pub use self::{
         result::{ValkyrieFailure, ValkyrieSuccess},
         TokenType,
     },
-    collection::list::{ValkyrieList, ValkyrieOrdinal},
+    collection::{
+        dict::ValkyrieDict,
+        list::{NyarTuple, ValkyrieOrdinal},
+    },
     definitions::{classes::ValkyrieStructure, ids::ValkyrieID, interfaces::ValkyrieInterface, names::ValkyrieName},
     functions::{ValkyrieFunction, ValkyrieFunctionType, ValkyrieMonomorphicFunction},
     modifiers::{FeatureType, InitializeType, MutableType},
     types::{
         atomic_type::ValkyrieAtomicType, class_type::ValkyrieClassType, literal_type::ValkyrieLiteralType,
-        tuple_type::ValkyrieDict, union_type::ValkyrieUnionType, variant_type::ValkyrieVariantType, ValkyrieType,
+        union_type::ValkyrieUnionType, variant_type::ValkyrieVariantType, ValkyrieType,
     },
     values::ValkyrieValue,
 };

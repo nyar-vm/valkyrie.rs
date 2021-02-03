@@ -17,7 +17,7 @@ pub fn primitive_type(name: &str) -> Gc<ValkyrieMetaType> {
     Gc::new(this)
 }
 
-#[derive(Clone)]
+#[derive(Clone, Ord, PartialOrd, Eq, PartialEq, Hash)]
 pub struct Namepath {
     path: Vec<Box<str>>,
 }

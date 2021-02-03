@@ -3,7 +3,7 @@ use super::*;
 use indexmap::IndexMap;
 use shredder::Scanner;
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Eq, PartialEq, Hash)]
 pub struct ValkyrieSymbol {
     space: Vec<String>,
     name: String,
@@ -21,10 +21,20 @@ impl ValkyrieSymbol {
     }
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub struct ValkyrieClassType {
     name: ValkyrieSymbol,
     items: IndexMap<String, ValkyrieValue>,
+}
+
+impl Hash for ValkyrieClassType {
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        self.name.hash(state);
+        for (k, v) in self.items.iter() {
+            k.hash(state);
+            v.hash(state)
+        }
+    }
 }
 
 unsafe impl GcSafe for ValkyrieClassType {}

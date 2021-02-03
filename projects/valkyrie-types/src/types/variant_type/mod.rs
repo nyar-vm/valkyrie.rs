@@ -1,7 +1,7 @@
 use super::*;
 use std::str::FromStr;
 
-#[derive(Clone, Debug, Scan)]
+#[derive(Clone, Debug, Eq, PartialEq, Hash, Scan)]
 pub struct ValkyrieVariantType {
     namepath: Namepath,
     generics: Vec<Gc<ValkyrieMetaType>>,

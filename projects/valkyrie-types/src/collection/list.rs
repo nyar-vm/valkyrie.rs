@@ -1,43 +1,53 @@
 use super::*;
-use serde::{Serialize, Serializer};
+use serde::{ser::SerializeSeq, Serialize, Serializer};
 
-#[derive(Clone, Default)]
-pub struct ValkyrieList {
-    pub raw: Vector<ValkyrieValue>,
+#[derive(Clone, Default, Eq, PartialEq, Hash)]
+pub struct NyarTuple<T> {
+    pub raw: Vector<T>,
 }
 
-impl Serialize for ValkyrieList {
+impl<T> Serialize for NyarTuple<T>
+where
+    T: Serialize,
+{
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
     where
         S: Serializer,
     {
-        serializer.serialize_seq()
+        let mut seq = serializer.serialize_seq(Some(self.raw.len()))?;
+        for element in self.raw.iter() {
+            seq.serialize_element(element)?;
+        }
+        seq.end()
     }
 }
 
-unsafe impl GcSafe for ValkyrieList {}
-unsafe impl GcDrop for ValkyrieList {}
-unsafe impl Scan for ValkyrieList {
+unsafe impl<T: GcSafe> GcSafe for NyarTuple<T> {}
+unsafe impl<T: GcDrop> GcDrop for NyarTuple<T> {}
+unsafe impl<T: Scan> Scan for NyarTuple<T> {
     fn scan(&self, scanner: &mut Scanner<'_>) {
         self.raw.iter().for_each(|v| scanner.scan(v))
     }
 }
 
-impl Debug for ValkyrieList {
+impl<T> Debug for NyarTuple<T>
+where
+    T: Debug,
+{
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         f.debug_list().entries(self.raw.iter()).finish()
     }
 }
 
-impl<T> FromIterator<T> for ValkyrieList
+impl<T, U> FromIterator<U> for NyarTuple<T>
 where
-    T: Into<ValkyrieValue>,
+    U: Into<T>,
 {
     fn from_iter<I>(items: I) -> Self
     where
-        I: IntoIterator<Item = T>,
+        I: IntoIterator<Item = U>,
     {
-        let mut empty = ValkyrieList::default();
+        let mut empty = NyarTuple::default();
         for item in items.into_iter() {
             empty.raw.push_back(item.into());
         }
@@ -82,36 +92,36 @@ impl ValkyrieValue {
     }
 }
 
-impl ValkyrieList {
+impl<T> NyarTuple<T> {
     pub fn get(&self, ordinal: ValkyrieValue) -> ValkyrieResult<Option<ValkyrieValue>> {
         let index = ValkyrieOrdinal::try_from(ordinal)?.as_offset(self.raw.len());
         Ok(self.raw.get(index).cloned())
     }
-    pub fn get_range(&self, head: ValkyrieValue, tail: ValkyrieValue, step: ValkyrieValue) -> ValkyrieResult<ValkyrieList> {
+    pub fn get_range(&self, head: ValkyrieValue, tail: ValkyrieValue, step: ValkyrieValue) -> ValkyrieResult<NyarTuple> {
         let head = ValkyrieOrdinal::try_from(head)?.as_offset(self.raw.len());
         let tail = ValkyrieOrdinal::try_from(tail)?.as_offset(self.raw.len());
         // 0 is prohibited, zero does not indicate duplication
         let step = ValkyrieOrdinal::try_from(step)?.ordinal;
         if step > 0 {
-            Ok(ValkyrieList { raw: self.raw.iter().take(tail).skip(head).step_by(step as usize).cloned().collect() })
+            Ok(NyarTuple { raw: self.raw.iter().take(tail).skip(head).step_by(step as usize).cloned().collect() })
         }
         else {
-            Ok(ValkyrieList { raw: self.raw.iter().rev().take(tail).skip(head).step_by(-step as usize).cloned().collect() })
+            Ok(NyarTuple { raw: self.raw.iter().rev().take(tail).skip(head).step_by(-step as usize).cloned().collect() })
         }
     }
 
-    pub fn append_one<T: Into<ValkyrieValue>>(&mut self, item: T) {
+    pub fn append_one<U: Into<T>>(&mut self, item: U) {
         self.raw.push_back(item.into())
     }
-    pub fn append_many<I: Iterator<Item = ValkyrieValue>>(&mut self, items: I) {
+    pub fn append_many<U: Iterator<Item = T>>(&mut self, items: U) {
         for item in items {
             self.raw.push_back(item)
         }
     }
-    pub fn prepend_one<T: Into<ValkyrieValue>>(&mut self, item: T) {
+    pub fn prepend_one<U: Into<T>>(&mut self, item: U) {
         self.raw.push_front(item.into())
     }
-    pub fn prepend_many<I: Iterator<Item = ValkyrieValue>>(&mut self, items: I) {
+    pub fn prepend_many<U: Iterator<Item = T>>(&mut self, items: U) {
         for item in items {
             self.raw.push_front(item)
         }

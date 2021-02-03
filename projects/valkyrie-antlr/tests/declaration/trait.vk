@@ -16,7 +16,7 @@ trait Functor⟨F⟩ {
 }
 
 
-trait SemiGroup⟨T⟩{
+trait SemiGroup⟨T⟩ {
     combine (y: T): T
 }
 
@@ -27,6 +27,7 @@ trait Monoid⟨T⟩: SemiGroup⟨T⟩{
 trait SemiGroup {
     combine(self, rhs: Self): Self
 }
+
 trait Functor⟨F⟩ {
     map(a: F⟨A⟩, f: Function⟨A, B⟩) -> F⟨B⟩
 }
@@ -53,13 +54,13 @@ extends Option: Functor {
     map⟨A, B, F: FnMut -> B⟩(self: Option⟨A⟩, f: F) -> Option⟨B⟩ {
         match self {
             case Some(a) : Some(f(a)),
-            case  None:,
+            case None:,
         }
     }
 }
 
 
-template A {}
+generic A {}
 extends Array⟨A⟩: Functor {
     fmap⟨B⟩(self, f: A -> B) -> Array⟨B⟩ {
         return map(f, self)

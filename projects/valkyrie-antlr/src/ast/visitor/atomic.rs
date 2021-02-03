@@ -73,8 +73,15 @@ impl<'i> Extractor<String_literalContextAll<'i>> for StringLiteralNode {
 impl<'i> Extractor<StringContext<'i>> for String {
     fn take_one(node: &StringContext<'i>) -> Option<Self> {
         let mut out = String::with_capacity(node.get_text().len());
-        for item in node.STRING_TEXT_all() {
-            out.push_str(&item.get_text());
+        // for item in node.STRING_TEXT_all() {
+        //     out.push_str(&item.get_text());
+        // }
+        let all = node.get_children().count();
+        for index in 0..all {
+            match node.get_token(STRING_TEXT, index) {
+                Some(item) => out.push_str(&item.get_text()),
+                None => {}
+            }
         }
         Some(out)
     }

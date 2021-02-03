@@ -23,22 +23,26 @@ refine class Positive(like std::Integer) {
 
 }
 
+
+class A {
+    inherit base1: Base,
+    inherit base2: Base2,
+}
+
 template T, U {
 
 }
-class A {
-    inherit Base: Base,
-    inherit Base2: Base2,
-}
-
-
 class B {
-    item,
+    item1: T!,
+    item2: U!,
 }
 
 
-
-class A(B, C): C + D {
+template T, U {
+    implements Debug + Display
+    where {}
+}
+class A(B, C): Encode + Decode {
     pub static a(): Ref⟨B⟩ + D {
         return 1
     }
@@ -52,8 +56,8 @@ class A(B, C): C + D {
     set a() {
         _a = value
     }
-    into⟨Boolean⟩(){
-    
+    into⟨bool⟩(){
+
     }
 }
 

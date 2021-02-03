@@ -9,3 +9,6 @@ pub use dashu::{
 pub use nyar_number::{Num, NyarReal, One, ToPrimitive, Zero};
 #[cfg(feature = "nyar-number")]
 mod for_number;
+
+#[cfg(feature = "nyar-collection")]
+pub use nyar_collection::NyarTuple;

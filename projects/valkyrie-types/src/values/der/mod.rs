@@ -4,7 +4,7 @@ use serde::{
 };
 use shredder::Gc;
 
-use crate::{ValkyrieNumber, ValkyrieValue};
+use crate::{NyarTuple, ValkyrieDict, ValkyrieNumber, ValkyrieValue};
 
 pub struct ValueVisitor;
 
@@ -188,7 +188,7 @@ impl<'de> Visitor<'de> for ValueVisitor {
     where
         E: Error,
     {
-        todo!()
+        Ok(ValkyrieValue::Unit)
     }
 
     fn visit_newtype_struct<D>(self, deserializer: D) -> Result<Self::Value, D::Error>
@@ -198,18 +198,26 @@ impl<'de> Visitor<'de> for ValueVisitor {
         todo!()
     }
 
-    fn visit_seq<A>(self, seq: A) -> Result<Self::Value, A::Error>
+    fn visit_seq<A>(self, mut seq: A) -> Result<Self::Value, A::Error>
     where
         A: SeqAccess<'de>,
     {
-        todo!()
+        let mut dict = NyarTuple::default();
+        while let Some(item) = seq.next_element()? {
+            dict.raw.push_back(item)
+        }
+        Ok(ValkyrieValue::List(dict))
     }
 
-    fn visit_map<A>(self, map: A) -> Result<Self::Value, A::Error>
+    fn visit_map<A>(self, mut map: A) -> Result<Self::Value, A::Error>
     where
         A: MapAccess<'de>,
     {
-        todo!()
+        let mut dict = ValkyrieDict::default();
+        while let Some((key, value)) = map.next_entry()? {
+            dict.raw.insert(key, value);
+        }
+        Ok(ValkyrieValue::Dict(dict))
     }
 
     fn visit_enum<A>(self, data: A) -> Result<Self::Value, A::Error>

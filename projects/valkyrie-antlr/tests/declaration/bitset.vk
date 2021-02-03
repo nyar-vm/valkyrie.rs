@@ -17,13 +17,17 @@ test function test() {
     let e1 = Flags::A || Flags::C;
     let e2 = Flags::B || Flags::C;
     // union
-    assert_eq((e1 || e2), Flags::ABC);
+    assert {
+        e1 || e2 == Flags::ABC
+    }
     // intersection
-    assert_eq((e1 && e2), Flags::C);
+    assert {
+        e1 && e2 == Flags::ABC
+    }
     // set difference
-    assert_eq((e1 - e2), Flags::A);
+    assert((e1 - e2), Flags::A);
     // set complement
-    assert_eq(!e2, Flags::A);
+    assert(!e2, Flags::A);
     // set all bits to 1
     e1.all();
     // set all bits to 0

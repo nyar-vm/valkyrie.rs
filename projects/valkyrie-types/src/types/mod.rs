@@ -1,15 +1,18 @@
 use crate::{
     types::atomic_type::ValkyrieDocument,
     utils::{primitive_type, Namepath},
-    ValkyrieClassType, ValkyrieValue,
+    NyarTuple, ValkyrieClassType, ValkyrieDict, ValkyrieValue,
 };
+use indexmap::IndexMap;
 use itertools::Itertools;
-use shredder::{marker::GcSafe, Gc, Scan};
+use shredder::{
+    marker::{GcDrop, GcSafe},
+    Gc, Scan, Scanner,
+};
 use std::{
     any::type_name,
     fmt::{Debug, Display},
     hash::{Hash, Hasher},
-    sync::Arc,
 };
 
 pub mod atomic_type;
@@ -20,7 +23,7 @@ pub mod union_type;
 pub mod variant_type;
 
 // rtti of valkyrie type
-#[derive(Clone, Debug, Default, Scan)]
+#[derive(Clone, Debug, Default, Eq, PartialEq, Scan)]
 pub struct ValkyrieMetaType {
     namepath: Namepath,
     document: ValkyrieDocument,

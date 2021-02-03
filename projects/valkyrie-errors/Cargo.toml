@@ -14,7 +14,6 @@ diagnostic = "0.5.1"
 serde = { version = "1.0.188", optional = true }
 # Parsing
 num-traits = "0.2.16"
-nyar-number = { version = "0.3.3", optional = true, features = ["serde"] }
 dashu = { version = "0.4.0", optional = true, features = ["serde"] }
 toml = { version = "0.8.0", optional = true }
 json5 = { version = "0.4.1", optional = true, features = [] }
@@ -28,6 +27,15 @@ serde_json = { version = "1.0.105", optional = true }
 #peginator = { version = "0.6.0", optional = true }
 #pratt = { version = "0.4.0", optional = true }
 
+[dependencies.nyar-number]
+version = "0.3.3"
+optional = true
+features = ["serde"]
+
+[dependencies.nyar-collection]
+version = "0.0.0"
+optional = true
+path = 'C:\Users\Dell\CLionProjects\disk-map\projects\nyar-collection'
 
 [dev-dependencies]
 
