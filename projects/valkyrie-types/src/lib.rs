@@ -31,7 +31,7 @@ pub use self::{
     },
     collection::{
         dict::ValkyrieDict,
-        list::{NyarTuple, ValkyrieOrdinal},
+        list::{ValkyrieList, ValkyrieOrdinal},
     },
     definitions::{classes::ValkyrieStructure, ids::ValkyrieID, interfaces::ValkyrieInterface, names::ValkyrieName},
     functions::{ValkyrieFunction, ValkyrieFunctionType, ValkyrieMonomorphicFunction},

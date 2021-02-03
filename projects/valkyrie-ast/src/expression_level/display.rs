@@ -1,4 +1,5 @@
 use super::*;
+
 #[cfg(feature = "lispify")]
 impl Lispify for ExpressionNode {
     type Output = Lisp;

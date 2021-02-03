@@ -1,7 +1,7 @@
 use super::*;
 
 pub struct ValkyrieInterface {
-    /// package∷module::Interface
+    /// package∷module∷Interface
     namepath: ValkyrieID,
     /// trait or interfaces
     is_trait: bool,

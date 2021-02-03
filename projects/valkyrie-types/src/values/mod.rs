@@ -1,5 +1,8 @@
 use shredder::{marker::GcSafe, Gc, Scan, Scanner};
-use std::{fmt::Debug, sync::Arc};
+use std::{
+    fmt::{Debug, Formatter},
+    sync::Arc,
+};
 use valkyrie_ast::helper::ValkyrieNode;
 
 mod der;
@@ -9,10 +12,10 @@ mod ser;
 use crate::builtin::data_frame::ValkyrieDataFrame;
 use crate::{
     builtin::{images::ValkyrieImage, ndarray::ValkyrieNDArray},
-    NyarTuple, ValkyrieClassType, ValkyrieDict, ValkyrieNumber, ValkyrieVariantType,
+    ValkyrieClassType, ValkyrieDict, ValkyrieList, ValkyrieNumber, ValkyrieVariantType,
 };
 
-#[derive(Clone, Debug, Eq, PartialEq, Hash)]
+#[derive(Clone, Eq, PartialEq, Hash)]
 pub enum ValkyrieValue {
     /// ADT = -1
     Nothing,
@@ -37,7 +40,7 @@ pub enum ValkyrieValue {
     Image(Gc<ValkyrieImage>),
     #[cfg(feature = "polars")]
     DataFrame(Gc<ValkyrieDataFrame>),
-    List(NyarTuple<ValkyrieValue>),
+    List(ValkyrieList),
     Dict(ValkyrieDict),
     Class(Gc<ValkyrieClassType>),
     Variant(Gc<ValkyrieVariantType>),
@@ -66,6 +69,31 @@ unsafe impl Scan for ValkyrieValue {
             ValkyrieValue::Dict(v) => scanner.scan(v),
             ValkyrieValue::Class(_) => {}
             ValkyrieValue::Variant(_) => {}
+        }
+    }
+}
+
+impl Debug for ValkyrieValue {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        match self {
+            ValkyrieValue::Nothing => f.write_str("nothing"),
+            ValkyrieValue::Uninitialized => f.write_str("uninitialized"),
+            ValkyrieValue::Null => f.write_str("null"),
+            ValkyrieValue::Unit => f.write_str("()"),
+            ValkyrieValue::Boolean(v) => Debug::fmt(v, f),
+            ValkyrieValue::Number(v) => Debug::fmt(v, f),
+            ValkyrieValue::Unicode(v) => Debug::fmt(v, f),
+            ValkyrieValue::UTF8String(v) => Debug::fmt(v, f),
+            ValkyrieValue::Bytes(v) => Debug::fmt(v, f),
+            ValkyrieValue::Html(v) => Debug::fmt(v, f),
+            ValkyrieValue::NDArray(v) => Debug::fmt(v, f),
+            ValkyrieValue::Image(v) => Debug::fmt(v, f),
+            #[cfg(feature = "polars")]
+            ValkyrieValue::DataFrame(v) => Debug::fmt(v, f),
+            ValkyrieValue::List(v) => Debug::fmt(v, f),
+            ValkyrieValue::Dict(v) => Debug::fmt(v, f),
+            ValkyrieValue::Class(v) => Debug::fmt(v, f),
+            ValkyrieValue::Variant(v) => Debug::fmt(v, f),
         }
     }
 }

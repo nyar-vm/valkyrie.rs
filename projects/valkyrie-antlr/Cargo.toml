@@ -19,10 +19,10 @@ version = "0.1.*"
 features = ["pretty-print", "std", "lispify"]
 path = "../valkyrie-ast"
 
-[dependencies.valkyrie-error]
-path = "../valkyrie-errors"
+[dependencies.nyar-error]
 features = []
-version = "0.1.*"
+version = "0.1.4"
+path = 'C:\Users\Dell\CLionProjects\nyar-vm\projects\nyar-error'
 
 [dev-dependencies]
 

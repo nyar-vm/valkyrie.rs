@@ -27,10 +27,9 @@ version = "0.1.*"
 features = ["pretty-print", "std", "lispify"]
 path = "../valkyrie-ast"
 
-[dependencies.valkyrie-error]
-path = "../valkyrie-errors"
+[dependencies.nyar-error]
 features = []
-version = "0.1.*"
+version = "0.1.4"
 
 [dev-dependencies]
 

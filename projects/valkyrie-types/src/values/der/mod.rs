@@ -4,7 +4,7 @@ use serde::{
 };
 use shredder::Gc;
 
-use crate::{NyarTuple, ValkyrieDict, ValkyrieNumber, ValkyrieValue};
+use crate::{ValkyrieDict, ValkyrieList, ValkyrieNumber, ValkyrieValue};
 
 pub struct ValueVisitor;
 
@@ -202,9 +202,9 @@ impl<'de> Visitor<'de> for ValueVisitor {
     where
         A: SeqAccess<'de>,
     {
-        let mut dict = NyarTuple::default();
-        while let Some(item) = seq.next_element()? {
-            dict.raw.push_back(item)
+        let mut dict = ValkyrieList::default();
+        while let Some(item) = seq.next_element::<ValkyrieValue>()? {
+            dict.append_one(item)
         }
         Ok(ValkyrieValue::List(dict))
     }

@@ -1,7 +1,7 @@
 use crate::{
     types::atomic_type::ValkyrieDocument,
     utils::{primitive_type, Namepath},
-    NyarTuple, ValkyrieClassType, ValkyrieDict, ValkyrieValue,
+    ValkyrieClassType, ValkyrieDict, ValkyrieValue,
 };
 use indexmap::IndexMap;
 use itertools::Itertools;
@@ -14,6 +14,7 @@ use std::{
     fmt::{Debug, Display},
     hash::{Hash, Hasher},
 };
+use valkyrie_error::third_party::NyarTuple;
 
 pub mod atomic_type;
 pub mod class_type;
