@@ -1,5 +1,4 @@
 use super::*;
-use valkyrie_ast::BigUint;
 
 impl<'i> Extractor<AtomicContextAll<'i>> for ExpressionType {
     fn take_one(node: &AtomicContextAll<'i>) -> Option<Self> {
@@ -66,13 +65,15 @@ impl<'i> Extractor<String_literalContextAll<'i>> for StringLiteralNode {
     fn take_one(node: &String_literalContextAll<'i>) -> Option<Self> {
         let handler = IdentifierNode::take(node.identifier());
         let span = Range { start: node.start().start as u32, end: node.stop().stop as u32 };
-        let raw = String::take(node.string())?;
-        Some(Self { literal: raw, handler, span })
+        let raw = StringTextNode::take(node.string())?;
+        Some(Self { literal: raw.text, handler, span })
     }
 }
-impl<'i> Extractor<StringContext<'i>> for String {
+
+impl<'i> Extractor<StringContext<'i>> for StringTextNode {
     fn take_one(node: &StringContext<'i>) -> Option<Self> {
         let mut out = String::with_capacity(node.get_text().len());
+        let span = Range { start: node.start().start as u32, end: node.stop().stop as u32 };
         // for item in node.STRING_TEXT_all() {
         //     out.push_str(&item.get_text());
         // }
@@ -83,7 +84,7 @@ impl<'i> Extractor<StringContext<'i>> for String {
                 None => {}
             }
         }
-        Some(out)
+        Some(Self { text: out, span })
     }
 }
 

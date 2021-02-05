@@ -1,11 +1,7 @@
 mod extractors;
 mod visitor;
 use crate::{
-    antlr::{
-        valkyrieantlrlexer::ValkyrieAntlrLexer,
-        valkyrieantlrparser::{self, *},
-        valkyrieantlrvisitor::ValkyrieAntlrVisitor,
-    },
+    antlr::{valkyrieantlrlexer::ValkyrieAntlrLexer, valkyrieantlrparser::*, valkyrieantlrvisitor::ValkyrieAntlrVisitor},
     traits::Extractor,
 };
 use antlr_rust::{
@@ -14,17 +10,19 @@ use antlr_rust::{
     parser::ParserNodeType,
     parser_rule_context::ParserRuleContext,
     token::Token,
-    tree::{ParseTree, ParseTreeVisitorCompat, TerminalNode, Tree, VisitChildren, VisitableDyn},
+    tree::{ParseTree, ParseTreeVisitorCompat, TerminalNode, Tree, VisitableDyn},
     CoerceTo, InputStream, TidExt,
 };
 use std::{ops::Range, rc::Rc, str::FromStr};
 use valkyrie_ast::{
-    ApplyCallNode, ArrayKind, ArrayNode, ArrayTermNode, BooleanNode, CallTermNode, ClassDeclaration, ClassFieldDeclaration,
-    ClassKind, ExpressionNode, ExpressionType, ExtendsStatement, FlagsDeclaration, ForLoop, FunctionDeclaration, FunctionType,
-    GuardPattern, GuardStatement, IdentifierNode, IfStatement, InfixNode, LetPattern, LogicMatrix, ModifiersNode, NamePathNode,
+    ApplyCallItem, ApplyCallNode, ApplyCallTerms, ArrayKind, ArrayNode, ArrayTermNode, BigUint, BooleanNode, ClassDeclaration,
+    ClassFieldDeclaration, ClassKind, ClassMethodDeclaration, ClosureCallNode, ClosureCaller, ExpressionNode, ExpressionType,
+    ExtendsStatement, FlagsDeclaration, ForLoop, FunctionBlock, FunctionDeclaration, FunctionType, GuardPattern,
+    GuardStatement, IdentifierNode, IfStatement, InfixNode, LetBindNode, LetPattern, LogicMatrix, ModifiersNode, NamePathNode,
     NamespaceDeclaration, NamespaceKind, NullNode, NumberLiteralNode, OperatorNode, OutputNode, PostfixNode, PrefixNode,
-    ProgramRoot, StatementNode, StringLiteralNode, StringTextNode, TupleKind, TupleNode, TuplePatternNode, TupleTermNode,
-    UnionDeclaration, ValkyrieOperator, WhileConditionNode, WhileLoop, WhileLoopKind,
+    ProgramRoot, StatementNode, StringLiteralNode, StringTextNode, SubscriptCallNode, TraitDeclaration, TupleKeyType,
+    TupleKind, TupleNode, TuplePatternNode, TupleTermNode, UnionDeclaration, ValkyrieOperator, WhileConditionNode, WhileLoop,
+    WhileLoopKind,
 };
 
 #[derive(Clone, Debug, Default)]

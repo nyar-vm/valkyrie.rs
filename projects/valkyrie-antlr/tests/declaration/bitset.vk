@@ -1,16 +1,16 @@
 flags Bitflags: Debug + Copy + !Default {
-    A = b"01"
-    B = o"01"
-    C = x"01"
+    A = b'01'
+    B = o'01'
+    C = x'01'
     D = 8
 }
 
 public flags Flags {
-    A = 1 << 0
-    B = 1 << 1
-    C = 1 << 2
-    bitflag = A || B || C,
-    `class` = 1 >> 8,
+    A = 1 << 0;
+    B = 1 << 1;
+    C = 1 << 2;
+    bitflag = A || B || C;
+    `class` = 1 >> 8;
 }
 
 test function test() {
@@ -48,3 +48,4 @@ extends Bitflags {
 oppo function logic_or(self, rhs: Self) -> Self {
     Self::from(self.bits || rhs.bits)
 }
+

@@ -29,11 +29,23 @@ impl<'i> Extractor<Range_literalContextAll<'i>> for ArrayNode {
 
 impl<'i> Extractor<Collection_pairContextAll<'i>> for TupleTermNode {
     fn take_one(node: &Collection_pairContextAll<'i>) -> Option<Self> {
+        let key = TupleKeyType::take(node.collection_key()).unwrap_or_default();
         let expr = ExpressionType::take(node.expression())?;
-        Some(Self { pair: CallTermNode { key: None, value: expr } })
+        Some(Self { key, value: expr })
     }
 }
-
+impl<'i> Extractor<Collection_keyContextAll<'i>> for TupleKeyType {
+    fn take_one(node: &Collection_keyContextAll<'i>) -> Option<Self> {
+        match node {
+            Collection_keyContextAll::CK1Context(v) => Some(Self::Identifier(IdentifierNode::take(v.identifier())?)),
+            Collection_keyContextAll::CK3Context(v) => {
+                Some(Self::Identifier(StringTextNode::take(v.string())?.as_identifier()))
+            }
+            Collection_keyContextAll::CK2Context(v) => Some(Self::Number(BigUint::take(v.INTEGER())?)),
+            Collection_keyContextAll::Error(_) => None,
+        }
+    }
+}
 impl<'i> Extractor<Range_axisContextAll<'i>> for ArrayTermNode {
     fn take_one(node: &Range_axisContextAll<'i>) -> Option<Self> {
         if let Some(s) = &node.index {

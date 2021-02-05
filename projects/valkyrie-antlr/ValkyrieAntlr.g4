@@ -67,7 +67,9 @@ class_dsl: annotation* modified_identifier class_block;
 define_trait
     : template_call? annotation* modifiers KW_TRAIT identifier define_generic? with_implements? trait_block eos?
     ;
-trait_block:       BRACE_L (define_trait_type | class_method | class_field | eos_free)* BRACE_R;
+trait_block
+    : BRACE_L (define_trait_type | class_method | class_field | class_dsl | eos_free)* BRACE_R
+    ;
 define_trait_type: KW_TYPE identifier (OP_ASSIGN type_expression)?;
 // ===========================================================================
 define_extends
@@ -151,7 +153,7 @@ function_block
     ;
 // ===========================================================================
 let_binding:       annotation* KW_LET let_pattern type_hint? (OP_ASSIGN expression_root)?;
-let_pattern:       let_pattern_tuple | let_pattern_plain;
+let_pattern:       let_pattern_tuple #LP1 | let_pattern_plain #LP2;
 let_pattern_plain: modified_identifier (COMMA modified_identifier)* COMMA?;
 let_pattern_tuple
     : PARENTHESES_L (
@@ -207,19 +209,19 @@ expression
     // prefix
     | op_prefix expression # EPrefix
     // infix
-    | <assoc = right> lhs = expression infix_pow rhs = expression # EPow
-    | lhs = expression op_multiple rhs = expression               # EMul
-    | lhs = expression op_plus rhs = expression                   # EPlus
-    | lhs = expression op_logic rhs = expression                  # ELogic
-    | lhs = expression op_compare rhs = expression                # ECompare
-    | lhs = expression infix_range rhs = expression               # EUntil
-    | lhs = expression infix_map rhs = expression                 # EMap
-    | lhs = expression infix_is rhs = type_expression             # EIsA
-    | lhs = expression infix_as rhs = type_expression             # EAs
-    | lhs = expression infix_in rhs = expression                  # EIn
-    | lhs = expression OP_OR_ELSE rhs = op_assign                 # EOrElse
-    | lhs = expression op_pipeline rhs = expression               # EPipe
-    | lhs = expression op_assign rhs = expression                 # EAssign
+    | <assoc = right> lhs = expression infix_pow rhs = expression    # EPow
+    | lhs = expression op_multiple rhs = expression                  # EMul
+    | lhs = expression op_plus rhs = expression                      # EPlus
+    | lhs = expression op_compare rhs = expression                   # ECompare
+    | lhs = expression op_logic rhs = expression                     # ELogic
+    | lhs = expression infix_range rhs = expression                  # EUntil
+    | lhs = expression infix_map rhs = expression                    # EMap
+    | lhs = expression infix_is rhs = type_expression                # EIsA
+    | lhs = expression infix_as rhs = type_expression                # EAs
+    | lhs = expression infix_in rhs = expression                     # EIn
+    | lhs = expression OP_OR_ELSE rhs = expression                   # EOrElse
+    | lhs = expression op_pipeline rhs = expression                  # EPipe
+    | <assoc = right> lhs = expression infix_assign rhs = expression # EAssign
     // groups
     | PARENTHESES_L expression PARENTHESES_R # EGroup
     | FLOOR_L expression FLOOR_R             # EFloor
@@ -269,6 +271,7 @@ inline_expression
 type_expression
     : op_prefix type_expression                    # TPrefix
     | type_expression OP_AND_THEN                  # TOptional
+    | type_expression OP_BANG                      # TMust
     | type_expression generic_call_in_type         # TGeneric
     | type_expression op_pattern type_expression   # TPattern
     | type_expression infix_arrows type_expression # TArrows
@@ -301,6 +304,7 @@ control_expression
     ;
 op_prefix
     : OP_NOT
+    | OP_BANG
     | OP_ADD
     | OP_SUB
     | OP_AND
@@ -314,14 +318,13 @@ op_prefix
     | OP_MUL
     ;
 op_suffix
-    : OP_NOT
+    : OP_BANG
     | OP_TEMPERATURE
     | OP_TRANSPOSE
     | OP_PERCENT
     | OP_REM
     | OP_OR_DEFAULT
-    | OP_INC
-    | OP_DEC
+    | OP_PRIME
     ;
 // 中缀运算符
 op_compare:   OP_LT | OP_LEQ | OP_GT | OP_GEQ | OP_EQ | OP_NE | OP_EEE | OP_NEE;
@@ -334,7 +337,7 @@ op_multiple:  OP_MUL | OP_DIV | OP_REM | OP_DIV_REM;
 op_plus:      OP_ADD | OP_SUB;
 op_logic:     LOGIC_OR | LOGIC_AND | LOGIC_XOR | LOGIC_NOR | LOGIC_NAND | LOGIC_XAND;
 op_pipeline:  OP_LL | OP_LLE | OP_LLL | OP_GG | OP_GGG | OP_ARROW3;
-op_assign
+infix_assign
     : OP_ASSIGN
     | OP_ADD_ASSIGN
     | OP_SUB_ASSIGN
@@ -369,11 +372,15 @@ define_label: OP_LABEL identifier;
 
 // ===========================================================================
 template_call
-    : annotation* modifiers KW_TEMPLATE template_block
-    | annotation* modifiers KW_TEMPLATE identifier (COMMA identifier)* COMMA? template_block
+    : annotation* modifiers KW_TEMPLATE (
+        identifier (COMMA identifier)* COMMA?
+        | OP_LT identifier (COMMA identifier)* COMMA? OP_GT
+        | GENERIC_L identifier (COMMA identifier)* COMMA? GENERIC_R
+    )? template_block
     ;
-template_block:      BRACE_L (template_statements | eos_free)* BRACE_R;
+template_block:      BRACE_L (template_statements | template_implements | eos_free)* BRACE_R;
 template_statements: KW_WHERE where_block | RETURN type_expression | identifier require_block;
+template_implements: KW_IMPLEMENTS type_expression;
 where_block:         BRACE_L where_bound* BRACE_R;
 where_bound:         identifier COLON type_expression | eos_free;
 require_block:       BRACE_L (expression_root | eos_free)* BRACE_R;
@@ -413,7 +420,6 @@ case_pattern_item
     | bind = identifier OP_BIND case_pattern_item
     | modified_identifier COLON (bind = identifier OP_BIND)? case_pattern_item
     | (OP_DOT2 | OP_DOT3) identifier?
-    | modified_identifier
     | namepath
     | number_literal
     | string_literal
@@ -436,12 +442,13 @@ new_statement
     : KW_NEW modified_namepath generic_call_in_type? tuple_call_body? new_block
     | KW_NEW modified_namepath generic_call_in_type? tuple_call_body
     ;
-new_block: BRACE_L (new_call_item | eos_free)* BRACE_R;
-new_call_item
-    : identifier COLON expression
-    | INTEGER COLON expression
-    | range_literal COLON expression
-    | expression
+new_block:     BRACE_L (new_call_item | eos_free)* BRACE_R;
+new_call_item: new_call_key? expression;
+new_call_key
+    : identifier COLON    # NK1
+    | INTEGER COLON       # NK2
+    | string COLON        # NK3
+    | range_literal COLON # NK4
     ;
 // ===========================================================================
 tuple_literal
@@ -449,12 +456,8 @@ tuple_literal
     | PARENTHESES_L collection_pair (COMMA collection_pair)+ COMMA? PARENTHESES_R
     | PARENTHESES_L collection_pair COMMA PARENTHESES_R
     ;
-collection_pair
-    : identifier COLON expression
-    | INTEGER COLON expression
-    | string COLON expression
-    | expression
-    ;
+collection_pair: collection_key? expression;
+collection_key:  identifier COLON # CK1 | INTEGER COLON # CK2 | string COLON # CK3;
 // ===========================================================================
 slice_call: OP_AND_THEN? range_literal;
 range_literal
@@ -484,7 +487,7 @@ modified_namepath
     ;
 // namepath
 lambda_name: LAMBDA_SLOT (identifier | number)?;
-output_name: OP_REM INTEGER # PositiveOutput | OP_LAST INTEGER? # NegativeOutput;
+output_name: (OP_PERCENT|OP_LAST) INTEGER # PositiveOutput | OP_LAST INTEGER? # NegativeOutput;
 
 namepath_free: identifier ((OP_PROPORTION | DOT) identifier)*;
 namepath:      identifier (OP_PROPORTION identifier)*;

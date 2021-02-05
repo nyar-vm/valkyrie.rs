@@ -1,11 +1,11 @@
 use super::*;
-use valkyrie_ast::{ClassMethodDeclaration, ClosureCallNode, FunctionBlock, SubscriptCallNode, TraitDeclaration};
 
 mod atomic;
 mod looping;
 
 mod calls;
 mod collection;
+mod let_binding;
 
 impl ParseTreeVisitorCompat<'_> for ValkyrieProgramParser {
     type Node = ValkyrieAntlrParserContextType;
@@ -48,6 +48,10 @@ impl ValkyrieAntlrVisitor<'_> for ValkyrieProgramParser {
                 continue;
             }
             if let Some(s) = node.downcast_ref::<Define_functionContextAll>().and_then(FunctionDeclaration::take_one) {
+                self.statements.push(s.into());
+                continue;
+            }
+            if let Some(s) = node.downcast_ref::<Let_bindingContextAll>().and_then(LetBindNode::take_one) {
                 self.statements.push(s.into());
                 continue;
             }
@@ -340,6 +344,12 @@ impl<'i> Extractor<Inline_expressionContextAll<'i>> for ExpressionType {
 impl<'i> Extractor<Type_expressionContextAll<'i>> for ExpressionType {
     fn take_one(node: &Type_expressionContextAll<'i>) -> Option<Self> {
         let body = match node {
+            Type_expressionContextAll::TOptionalContext(_) => {
+                todo!()
+            }
+            Type_expressionContextAll::TMustContext(_) => {
+                todo!()
+            }
             Type_expressionContextAll::TGenericContext(_) => {
                 todo!()
             }
@@ -359,9 +369,7 @@ impl<'i> Extractor<Type_expressionContextAll<'i>> for ExpressionType {
             Type_expressionContextAll::TPrefixContext(_) => {
                 todo!()
             }
-            Type_expressionContextAll::TOptionalContext(_) => {
-                todo!()
-            }
+
             Type_expressionContextAll::Error(_) => {
                 todo!()
             }

@@ -1,16 +1,16 @@
 (namespace/shared std create test)
-i'''
+i
 x
 {1 2 3 4 5 6 7 8 9}
 {x + 2}
-'''
-json'''
+
+json
 {
     x: 1,
     y: 2
 }
-'''
-json5"""
+
+json5
 {
     // comments
     unquoted: 'and you can quote me on that',
@@ -23,4 +23,4 @@ No \\n's!",
     trailingComma: 'in objects', andIn: ['arrays',],
     "backwardsCompatible": "with JSON",
 }
-"""
+

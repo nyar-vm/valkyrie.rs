@@ -43,9 +43,9 @@ OP_DEC: '--';
 // mul
 OP_MUL:     '*';
 OP_DIV:     '⁄' | '∕' | '/';
-OP_REM:     '%' | '⁒';
+OP_REM:     '⁒';
 OP_DIV_REM: '/%' | '÷';
-OP_LAST:    '%%';
+
 // equal
 OP_EQ:  '==';
 OP_NE:  '≠' | '!=';
@@ -76,8 +76,11 @@ OP_ADD_ASSIGN: '+=';
 OP_SUB_ASSIGN: '-=';
 OP_MUL_ASSIGN: '*=';
 OP_DIV_ASSIGN: '/=';
+// not
+OP_BANG: '!';
+OP_NOT:  '¬';
+KW_NOT:  'not';
 // logical
-LOGIC_NOT:  '¬';
 LOGIC_AND:  '&&' | '∧';
 LOGIC_XAND: '⩟';
 LOGIC_NAND: '⊼';
@@ -107,15 +110,13 @@ OP_UNIMPLEMENTED: '⅏' | '⍼' | '⟁' | '???';
 OP_OR_DEFAULT:    '??';
 OP_OR_ELSE:       '?:';
 OP_AND_THEN:      '?';
-// not
-OP_NOT: '!' | '¬';
-KW_NOT: 'not';
 // in
 OP_IN:        '∈' | '∊';
 KW_IN:        'in';
 OP_NOT_IN:    '∉';
 OP_CONTINUES: '∋' | '∍';
-
+// prime
+OP_PRIME: [′″‴⁗];
 // is
 KW_IS:     'is';
 OP_IS:     '⊑' | '<:';
@@ -135,11 +136,13 @@ OP_ROOT4:   '∜';
 // suffix
 OP_TEMPERATURE: '℃' | '℉';
 OP_TRANSPOSE:   '⊤' | '†' | '⊹'; // ᵀ,ᴴ are XIDs
-OP_PERCENT:     '‰' | '‱';
+OP_PERCENT:     '%';
+OP_PERCENT2:    '‰' | '‱';
 // standalone
 OP_REFERENCE: '※';
 OP_LABEL:     '¶';
-
+OP_OUTPUT:    '⛤' | '⛥' | '⛦';
+OP_LAST:      '⛧' | '%%';
 // keywords
 KW_NAMESPACE: 'namespace' ('!' | '*' | '?')?;
 KW_IMPORT:    'using' ('!' | '*' | '?')?;
@@ -151,7 +154,7 @@ KW_UNION:    'union';
 KW_BITFLAGS: 'flags';
 KW_TYPE:     'type';
 //
-KW_TEMPLATE:   'template';
+KW_TEMPLATE:   'template' | 'generic';
 KW_EXTENDS:    'extends';
 KW_IMPLEMENTS: 'implements';
 //
@@ -197,7 +200,7 @@ CONTINUE:     'continue';
 FALL_THROUGH: 'fallthrough';
 RAISE:        'raise';
 // atom
-SPECIAL: 'true' | 'false' | 'null' | 'nil' | '∅' | '∞';
+SPECIAL: 'true' | 'false' | 'null' | 'nil' | '∅' | [∞⧝⧞];
 // atom
 RAW_ID:     '`' ~[`]+ '`';
 UNICODE_ID: [_\p{XID_start}] [\p{XID_continue}]*;

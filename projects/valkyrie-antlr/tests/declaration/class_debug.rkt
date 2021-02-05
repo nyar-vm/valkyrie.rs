@@ -1,8 +1,8 @@
 (define/class A (modifiers))
 (define/class B (modifiers value))
 (define/class Positive (modifiers refine))
-(define/class A (modifiers) (class/field Base (modifiers inherit)) (class/field Base2 (modifiers inherit)))
-(define/class B (modifiers) (class/field item (modifiers)))
+(define/class A (modifiers) (class/field base1 (modifiers inherit)) (class/field base2 (modifiers inherit)))
+(define/class B (modifiers) (class/field item1 (modifiers)) (class/field item2 (modifiers)))
 (define/class
   A
   (modifiers)

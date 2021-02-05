@@ -13,3 +13,4 @@ match a() {
 	case Int::ary(): {}
 }
 
+let a = 1 + 1; ;
