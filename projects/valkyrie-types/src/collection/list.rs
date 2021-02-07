@@ -1,6 +1,9 @@
 use super::*;
+use crate::{ValkyrieError, ValkyrieResult};
+use nyar_collection::NyarTuple;
+use nyar_number::ToPrimitive;
 use serde::{ser::SerializeSeq, Serialize, Serializer};
-use valkyrie_error::third_party::NyarTuple;
+
 pub type ValkyrieList = NyarTuple<ValkyrieValue>;
 
 pub struct ValkyrieOrdinal {

@@ -13,7 +13,11 @@ pub struct CallNode<E> {
     /// The range of the node
     pub span: Range<u32>,
 }
-
+impl<E> ValkyrieNode for CallNode<E> {
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
+    }
+}
 /// `function?(), a?[slice]`
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]

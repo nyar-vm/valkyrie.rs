@@ -1,4 +1,5 @@
 use super::*;
+use crate::helper::ValkyrieNode;
 
 mod display;
 
@@ -12,4 +13,9 @@ pub struct TryStatement {
     pub body: StatementBlock,
     /// The range of the node
     pub span: Range<u32>,
+}
+impl ValkyrieNode for TryStatement {
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
+    }
 }

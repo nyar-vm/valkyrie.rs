@@ -1,13 +1,13 @@
 use crate::{
     modifiers::{AccessType, CurryType, InlineType},
     types::ValkyrieMetaType,
-    ValkyrieValue,
+    ValkyrieResult, ValkyrieValue,
 };
 use indexmap::IndexMap;
+use nyar_error::{FileCache, FileSpan, RuntimeError};
 use shredder::Gc;
-use std::{collections::BTreeMap, sync::Arc};
+use std::{collections::BTreeMap, fs::File, sync::Arc};
 use valkyrie_ast::StatementBlock;
-use valkyrie_error::{DefinitionSpan, RuntimeError, ValkyrieResult};
 
 pub mod operators;
 
@@ -32,7 +32,7 @@ pub trait ValkyrieFunctionType {
 #[derive(Clone, Debug)]
 pub struct ValkyrieFunction {
     pub name: String,
-    pub span: DefinitionSpan,
+    pub span: FileSpan,
     pub overridable: bool,
     pub return_type: Arc<ValkyrieMonomorphicFunction>,
 }

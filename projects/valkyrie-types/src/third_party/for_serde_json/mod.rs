@@ -1,5 +1,6 @@
 use super::*;
 use crate::{ValkyrieDict, ValkyrieList, ValkyrieNumber};
+use nyar_error::third_party::JsonValue;
 use std::convert::Infallible;
 
 impl ValkyrieType for JsonValue {

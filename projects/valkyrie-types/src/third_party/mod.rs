@@ -2,7 +2,6 @@ use crate::{types::ValkyrieMetaType, ValkyrieType, ValkyrieValue};
 use shredder::Gc;
 use std::sync::Arc;
 mod for_serde_json;
-pub use valkyrie_error::JsonValue;
 
 #[cfg(feature = "pex")]
 pub use pex;

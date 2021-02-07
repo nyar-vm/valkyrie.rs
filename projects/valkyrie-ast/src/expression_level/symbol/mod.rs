@@ -25,7 +25,11 @@ pub struct BooleanNode {
     /// The range of the node
     pub span: Range<u32>,
 }
-
+impl ValkyrieNode for BooleanNode {
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
+    }
+}
 /// `null, nil`, type of null value
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -35,7 +39,11 @@ pub struct NullNode {
     /// The range of the node
     pub span: Range<u32>,
 }
-
+impl ValkyrieNode for NullNode {
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
+    }
+}
 /// `%1, %%1`, the number of the reference
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -46,13 +54,23 @@ pub struct OutputNode {
     /// The range of the node
     pub span: Range<u32>,
 }
-
+impl ValkyrieNode for OutputNode {
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
+    }
+}
 /// `$, $1, $x`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct LambdaSlotNode {
     pub name: String,
     pub span: Range<u32>,
+}
+
+impl ValkyrieNode for LambdaSlotNode {
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
+    }
 }
 
 impl LambdaSlotNode {
@@ -77,9 +95,9 @@ impl NamePathNode {
         self
     }
     /// Calculate range by first and last elements
-    pub fn get_range(&self) -> Range<u32> {
-        let head = self.names.first().map(|x| x.span.start).unwrap_or_default();
-        let tail = self.names.last().map(|x| x.span.end).unwrap_or_default();
+    pub fn get_range(&self) -> Range<usize> {
+        let head = self.names.first().map(|x| x.span.start).unwrap_or_default() as usize;
+        let tail = self.names.last().map(|x| x.span.end).unwrap_or_default() as usize;
         head..tail
     }
 }

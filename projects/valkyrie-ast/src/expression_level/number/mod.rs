@@ -9,7 +9,11 @@ pub struct NumberLiteralNode {
     /// The range of the node
     pub span: Range<u32>,
 }
-
+impl ValkyrieNode for NumberLiteralNode {
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
+    }
+}
 impl NumberLiteralNode {
     pub fn new<S: ToString>(text: S, span: Range<u32>) -> NumberLiteralNode {
         NumberLiteralNode { value: text.to_string(), unit: None, span }

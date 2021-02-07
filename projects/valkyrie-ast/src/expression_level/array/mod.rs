@@ -2,7 +2,7 @@
 mod display;
 
 use super::*;
-use crate::TupleKind;
+use crate::{TupleKeyType, TupleKind};
 
 /// The literal of array
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
@@ -25,7 +25,11 @@ pub struct ArrayNode {
     /// The range of the number.
     pub span: Range<u32>,
 }
-
+impl ValkyrieNode for ArrayNode {
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
+    }
+}
 /// `[index], ⁅start : end : step⁆`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -61,7 +65,11 @@ pub struct SubscriptCallNode {
     /// The range of the node.
     pub span: Range<u32>,
 }
-
+impl ValkyrieNode for SubscriptCallNode {
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
+    }
+}
 impl Default for ArrayKind {
     fn default() -> Self {
         Self::Ordinal
@@ -83,7 +91,7 @@ impl ArrayTermNode {
     /// Convert to tuple item if possible
     pub fn as_tuple(&self) -> Option<TupleTermNode> {
         match self {
-            ArrayTermNode::Index { index } => Some(TupleTermNode { pair: CallTermNode { key: None, value: index.clone() } }),
+            ArrayTermNode::Index { index } => Some(TupleTermNode { key: TupleKeyType::Nothing, value: index.clone() }),
             ArrayTermNode::Range { .. } => None,
         }
     }

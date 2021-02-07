@@ -348,12 +348,21 @@ pub struct OperatorNode {
     /// The range of the node
     pub span: Range<u32>,
 }
-
+impl ValkyrieNode for PrefixNode {
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
+    }
+}
 impl ValkyrieNode for InfixNode {
-    fn get_range(&self) -> Range<u32> {
+    fn get_range(&self) -> Range<usize> {
         let head = self.lhs.get_range().start;
         let tail = self.rhs.get_range().end;
         head..tail
+    }
+}
+impl ValkyrieNode for PostfixNode {
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
 }
 

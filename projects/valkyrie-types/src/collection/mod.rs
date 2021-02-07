@@ -7,10 +7,6 @@ use shredder::{
     Scan, Scanner,
 };
 use std::fmt::{Debug, Formatter};
-use valkyrie_error::{
-    third_party::{NyarReal, ToPrimitive},
-    ValkyrieError, ValkyrieResult,
-};
 
 pub mod dict;
 pub mod list;

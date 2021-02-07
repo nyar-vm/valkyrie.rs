@@ -1,4 +1,5 @@
 use super::*;
+
 #[cfg(feature = "pretty-print")]
 mod display;
 
@@ -29,24 +30,34 @@ pub struct TupleNode {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct TupleTermNode {
-    /// element in tuple
-    pub pair: CallTermNode<TupleKeyType, ExpressionType>,
+    pub key: TupleKeyType,
+    pub value: ExpressionType,
 }
 
 /// The key of tuple
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum TupleKeyType {
-    /// A valid identifier key
-    Identifier(Box<IdentifierNode>),
+    /// This expression has no key
+    Nothing,
+    /// A valid identifier key, or a string key
+    Identifier(IdentifierNode),
     /// A valid number key
-    Number(Box<NumberLiteralNode>),
-    /// A raw string key
-    String(Box<StringLiteralNode>),
+    Number(BigUint),
     /// A subscript key
-    Subscript(Box<SubscriptCallNode>),
+    Subscript(SubscriptCallNode),
 }
 
+impl Default for TupleKeyType {
+    fn default() -> Self {
+        Self::Nothing
+    }
+}
+impl ValkyrieNode for TupleNode {
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
+    }
+}
 impl Default for TupleKind {
     fn default() -> Self {
         Self::Tuple

@@ -1,7 +1,6 @@
 use shredder::Gc;
-use valkyrie_error::{third_party::NyarReal, ValkyrieError};
 
-use crate::{types::ValkyrieMetaType, utils::primitive_type, ValkyrieNumber, ValkyrieType, ValkyrieValue};
+use crate::{types::ValkyrieMetaType, utils::primitive_type, ValkyrieError, ValkyrieNumber, ValkyrieType, ValkyrieValue};
 
 impl From<char> for ValkyrieValue {
     fn from(value: char) -> Self {

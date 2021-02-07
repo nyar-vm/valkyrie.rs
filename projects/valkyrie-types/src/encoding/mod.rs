@@ -1,9 +1,10 @@
 use crate::{ValkyrieNumber, ValkyrieValue};
 
+use nyar_error::RuntimeError;
 use serde::Serializer;
 use shredder::Gc;
 use std::sync::Arc;
-use valkyrie_error::RuntimeError;
+
 /// implicit cast
 /// explicit cast
 /// implicit into

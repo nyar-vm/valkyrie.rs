@@ -18,6 +18,7 @@ mod display;
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct LetBindNode {
     pub pattern: LetPattern,
-    pub type_hint: Option<ExpressionNode>,
+    pub type_hint: Option<ExpressionType>,
     pub body: Option<ExpressionNode>,
+    pub span: Range<u32>,
 }

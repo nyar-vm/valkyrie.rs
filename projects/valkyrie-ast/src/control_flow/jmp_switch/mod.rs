@@ -8,7 +8,11 @@ pub struct SwitchStatement {
     /// The range of the node
     pub span: Range<u32>,
 }
-
+impl ValkyrieNode for SwitchStatement {
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
+    }
+}
 impl PrettyPrint for SwitchStatement {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(10);

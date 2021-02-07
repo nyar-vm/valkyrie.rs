@@ -13,7 +13,11 @@ pub struct IfStatement {
     /// The range of the node
     pub span: Range<u32>,
 }
-
+impl ValkyrieNode for IfStatement {
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
+    }
+}
 /// `a > 0 then { ... }`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]

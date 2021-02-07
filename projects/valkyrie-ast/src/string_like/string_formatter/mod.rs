@@ -22,7 +22,11 @@ pub struct ExpressionFormatted {
     /// The range of the node
     pub span: Range<u32>,
 }
-
+impl ValkyrieNode for ExpressionFormatted {
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
+    }
+}
 impl PrettyPrint for ExpressionFormatted {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         todo!()

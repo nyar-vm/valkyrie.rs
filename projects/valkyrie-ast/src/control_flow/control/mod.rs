@@ -55,7 +55,11 @@ pub enum ControlType {
     /// `yield from`
     YieldFrom,
 }
-
+impl ValkyrieNode for RaiseNode {
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
+    }
+}
 impl ControlType {
     /// Convert to keywords
     pub fn as_str(&self) -> &'static str {

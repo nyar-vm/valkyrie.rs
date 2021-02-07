@@ -56,7 +56,11 @@ pub struct FunctionBlock {
     /// The range of the number.
     pub range: Range<u32>,
 }
-
+impl ValkyrieNode for ClosureCallNode {
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
+    }
+}
 impl ClosureCallNode {
     /// Replace placeholder with actual expression
     pub fn with_base(self, base: ExpressionType) -> Self {

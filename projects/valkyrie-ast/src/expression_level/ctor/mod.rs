@@ -44,3 +44,8 @@ pub struct CollectsNode {
     /// The range of the node
     pub span: Range<u32>,
 }
+impl ValkyrieNode for NewConstructNode {
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
+    }
+}

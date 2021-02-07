@@ -29,19 +29,17 @@ impl Lispify for TupleNode {
 }
 
 #[cfg(feature = "pretty-print")]
-impl PrettyPrint for TupleKeyType {
-    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
-        match self {
-            TupleKeyType::Identifier(node) => node.pretty(theme),
-            TupleKeyType::Number(node) => node.pretty(theme),
-            TupleKeyType::String(node) => node.pretty(theme),
-            TupleKeyType::Subscript(node) => node.pretty(theme),
-        }
-    }
-}
-#[cfg(feature = "pretty-print")]
 impl PrettyPrint for TupleTermNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
-        self.pair.pretty(theme)
+        let mut terms = PrettySequence::new(3);
+        terms += match &self.key {
+            TupleKeyType::Nothing => return self.value.pretty(theme),
+            TupleKeyType::Identifier(node) => node.pretty(theme),
+            TupleKeyType::Number(node) => theme.number(node.to_string()),
+            TupleKeyType::Subscript(node) => node.pretty(theme),
+        };
+        terms += PrettyTree::text(":");
+        terms += self.value.pretty(theme);
+        terms.into()
     }
 }

@@ -196,22 +196,22 @@ impl ExpressionType {
     }
     /// Build a new prefix expression
     pub fn prefix(o: OperatorNode, rhs: Self) -> Self {
-        let span = o.span.start..rhs.get_end();
+        let span = o.span.start..rhs.get_end() as u32;
         Self::Prefix(Box::new(PrefixNode { operator: o, base: rhs, span }))
     }
     /// Build a new suffix expression
     pub fn suffix(o: OperatorNode, lhs: Self) -> Self {
-        let span = lhs.get_start()..o.span.end;
+        let span = lhs.get_start() as u32..o.span.end;
         Self::Suffix(Box::new(PostfixNode { operator: o, base: lhs, span }))
     }
     /// Build a new expression with generic call
     pub fn call_generic(base: Self, rest: GenericCallNode) -> Self {
-        let span = base.get_start()..rest.span.end;
+        let span = base.get_start() as u32..rest.span.end;
         ExpressionType::GenericCall(Box::new(CallNode { base, rest, span }))
     }
     /// Build a new expression with dot match
     pub fn dot_match(base: Self, rest: MatchDotStatement) -> Self {
-        let span = base.get_start()..rest.span.end;
+        let span = base.get_start() as u32..rest.span.end;
         ExpressionType::MatchDot(Box::new(CallNode { base, rest, span }))
     }
 }

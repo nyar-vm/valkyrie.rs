@@ -23,11 +23,24 @@ pub struct StringLiteralNode {
     /// The range of the node
     pub span: Range<u32>,
 }
-
+impl ValkyrieNode for StringTextNode {
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
+    }
+}
+impl ValkyrieNode for StringLiteralNode {
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
+    }
+}
 impl StringTextNode {
     /// Create a new raw text node
     pub fn new<S: ToString>(value: S, span: Range<u32>) -> Self {
         Self { text: value.to_string(), span }
+    }
+    /// Convert to an identifier
+    pub fn as_identifier(&self) -> IdentifierNode {
+        IdentifierNode { name: self.text.clone(), span: self.span.clone() }
     }
 }
 
@@ -43,6 +56,7 @@ impl StringLiteralNode {
     pub fn as_escaped(&self) -> String {
         self.literal.clone()
     }
+
     /// Attack a handler to the unit of the number.
     pub fn with_handler(self, handler: IdentifierNode) -> Self {
         Self { handler: Some(handler), ..self }

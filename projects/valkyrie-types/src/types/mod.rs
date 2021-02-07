@@ -5,6 +5,7 @@ use crate::{
 };
 use indexmap::IndexMap;
 use itertools::Itertools;
+use nyar_collection::NyarTuple;
 use shredder::{
     marker::{GcDrop, GcSafe},
     Gc, Scan, Scanner,
@@ -14,7 +15,6 @@ use std::{
     fmt::{Debug, Display},
     hash::{Hash, Hasher},
 };
-use valkyrie_error::third_party::NyarTuple;
 
 pub mod atomic_type;
 pub mod class_type;

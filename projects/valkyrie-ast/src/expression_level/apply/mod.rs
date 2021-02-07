@@ -79,7 +79,11 @@ pub struct ApplyCallItem {
     /// The range of the number.
     pub span: Range<u32>,
 }
-
+impl ValkyrieNode for ApplyCallNode {
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
+    }
+}
 impl<K, V> CallTermNode<K, V> {
     pub fn map_key<F, O>(self, f: F) -> CallTermNode<O, V>
     where

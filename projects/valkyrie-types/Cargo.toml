@@ -1,6 +1,6 @@
 [package]
 name = "valkyrie-types"
-version = "0.0.6"
+version = "0.0.7"
 authors = ["Aster <192607617@qq.com>"]
 description = "Shard types for valkyrie language"
 repository = "https://github.com/nyar-vm/valkyrie.rs"
@@ -21,17 +21,18 @@ polars = { version = "0.33.2", features = ["lazy"], optional = true }
 
 [dependencies.nyar-collection]
 version = "0.0.1"
-features = []
-path = 'C:\Users\Dell\CLionProjects\disk-map\projects\nyar-collection'
+features = ["serde"]
+#path = 'C:\Users\Dell\CLionProjects\disk-map\projects\nyar-collection'
 
 [dependencies.nyar-number]
-version = "0.3.3"
-#path = 'C:\Users\Dell\CLionProjects\disk-map\projects\nyar-collection'
+version = "0.3.5"
+features = ["serde"]
+#path = 'C:\Users\Dell\CLionProjects\nyar-prime\projects\nyar-number'
 
 [dependencies.nyar-error]
 version = "0.1.*"
-features = []
-path = 'C:\Users\Dell\CLionProjects\nyar-vm\projects\nyar-error'
+features = ["json5"]
+#path = 'C:\Users\Dell\CLionProjects\nyar-vm\projects\nyar-error'
 
 [dependencies.valkyrie-ast]
 version = "0.1.*"
