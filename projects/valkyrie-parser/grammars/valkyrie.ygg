@@ -1,0 +1,38 @@
+grammar Valkyrie {
+
+}
+
+entry class Program {
+    Statement*
+}
+// === statements === -----------------------------------------------------------------
+union Statement {
+    | DefineNamespace
+}
+/// Used to isolate expressions and control whether to output the expression
+union EOS ^ {
+    | [;；]    #Omit
+    | /⁏|;;/  #Show
+}
+/// Used to isolate expressions, has no practical meaning
+class EOS_FREE {
+    [,，;；⁏]
+}
+// === namespace === -----------------------------------------------------------------
+class DefineNamespace {
+    ^KW_NAMESPACE OP_NAMESPACE?
+}
+@style(keyword)
+union OP_NAMESPACE {
+    | '!' #Main
+    | '?' #Test
+    | '*' #Hide
+}
+@style(keyword)
+class KW_NAMESPACE {
+    'namespace'
+}
+
+// === statement === -----------------------------------------------------------------
+
+

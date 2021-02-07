@@ -1,37 +1,36 @@
 use super::*;
+use valkyrie_ast::IdentifierPattern;
 
 impl<'i> Extractor<Let_bindingContextAll<'i>> for LetBindNode {
     fn take_one(node: &Let_bindingContextAll<'i>) -> Option<Self> {
         let pat = LetPattern::take(node.let_pattern())?;
-        let typ = ExpressionType::take(node.type_hint());
+        let typ = ExpressionType::take(node.type_hint().and_then(|v| v.type_expression()));
         let rhs = ExpressionNode::take(node.expression_root());
         let span = Range { start: node.start().get_start() as u32, end: node.stop().get_stop() as u32 };
-        Some(Self {
-            pattern: pat,
-            type_hint: typ,
-            body: rhs,
-            span,
-        })
+        Some(Self { pattern: pat, type_hint: typ, body: rhs, span })
     }
 }
+
 impl<'i> Extractor<Let_patternContextAll<'i>> for LetPattern {
     fn take_one(node: &Let_patternContextAll<'i>) -> Option<Self> {
-
-        let mut terms = vec![];
-        let pat = LetPattern::take
-        let rhs = ExpressionNode::take(node.expression_root());
-
-        for pair in node.collection_pair_all() {
-            match TupleTermNode::take_one(&pair) {
-                Some(s) => terms.push(s),
-                None => tracing::warn!(""),
+        match node.let_pattern_plain() {
+            Some(s) => LetPattern::take_one(&*s),
+            None => {
+                unimplemented!()
             }
         }
+    }
+}
+
+impl<'i> Extractor<Let_pattern_plainContextAll<'i>> for LetPattern {
+    fn take_one(node: &Let_pattern_plainContextAll<'i>) -> Option<Self> {
         let span = Range { start: node.start().get_start() as u32, end: node.stop().get_stop() as u32 };
-        Some(Self {
-            pattern: (),
-            type_hint: None,
-            body: rhs,
-        })
+        let all = IdentifierPattern::take_many(&node.modified_identifier_all());
+        if all.len() == 1 {
+            unsafe { Some(all.first().unwrap_unchecked().clone().into()) }
+        }
+        else {
+            Some(TuplePatternNode { bind: None, name: None, terms: all.into_iter().map(Into::into).collect(), span }.into())
+        }
     }
 }

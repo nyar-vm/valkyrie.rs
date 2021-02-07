@@ -61,6 +61,7 @@ impl PrettyPrint for LetPattern {
             Self::Class(v) => v.pretty(theme),
             Self::Array(v) => v.pretty(theme),
             Self::Union(v) => v.pretty(theme),
+            Self::Atom(v) => v.pretty(theme),
         }
     }
 }
@@ -143,6 +144,14 @@ impl PrettyPrint for PatternCaseNode {
     }
 }
 
+impl PrettyPrint for IdentifierPattern {
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        let mut terms = PrettySequence::new(10);
+        terms += self.modifiers.pretty(theme);
+        terms += self.identifier.pretty(theme);
+        terms.into()
+    }
+}
 impl PrettyPrint for PatternWhenNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         theme.concat(vec![theme.keyword("when"), " ".into(), self.guard.pretty(theme)])

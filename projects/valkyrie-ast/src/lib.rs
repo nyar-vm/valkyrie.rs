@@ -24,7 +24,9 @@ pub use crate::{
         loop_while::{OtherwiseStatement, WhileConditionNode, WhileLoop, WhileLoopKind},
     },
     expression_level::{
-        annotations::{AnnotationKind, AnnotationList, AnnotationNode, AnnotationPathNode, AnnotationTerm, ModifiersNode},
+        annotations::{
+            AnnotationKind, AnnotationList, AnnotationNode, AnnotationPathNode, AnnotationTerm, ModifiedNode, ModifiersNode,
+        },
         apply::{ApplyArgument, ApplyArgumentTerm, ApplyCallItem, ApplyCallNode, ApplyCallTerms, ApplyCaller, ArgumentKeyNode},
         array::{ArrayKind, ArrayNode, ArrayTermNode, SubscriptCallNode},
         common::{ArgumentTermNode, CallNode, CallTermNode, MonadicCall, MonadicDotCall},
@@ -60,9 +62,9 @@ pub use crate::{
         unions::{UnionDeclaration, UnionFieldDeclaration},
     },
     patterns::{
-        ArrayPatternNode, ClassPatternNode, ImplicitCaseNode, LetPattern, PatternBlock, PatternBranch, PatternCaseNode,
-        PatternCondition, PatternElseNode, PatternGuard, PatternStatements, PatternTypeNode, PatternWhenNode, TuplePatternNode,
-        UnionPatternNode,
+        ArrayPatternNode, ClassPatternNode, IdentifierPattern, ImplicitCaseNode, LetPattern, PatternBlock, PatternBranch,
+        PatternCaseNode, PatternCondition, PatternElseNode, PatternGuard, PatternStatements, PatternTypeNode, PatternWhenNode,
+        TuplePatternNode, UnionPatternNode,
     },
     string_like::{
         string_formatter::{ExpressionFormatted, StringFormatter},

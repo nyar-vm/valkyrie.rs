@@ -76,6 +76,14 @@ pub struct ModifiersNode {
     /// The modifiers in group
     pub terms: Vec<IdentifierNode>,
 }
+/// Helper node
+#[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
+pub struct ModifiedNode<T> {
+    /// The modified node
+    pub base: T,
+    /// The modifiers
+    pub terms: Vec<IdentifierNode>,
+}
 
 impl From<AnnotationNode> for AnnotationList {
     fn from(value: AnnotationNode) -> Self {

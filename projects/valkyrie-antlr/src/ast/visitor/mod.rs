@@ -6,6 +6,7 @@ mod looping;
 mod calls;
 mod collection;
 mod let_binding;
+mod modifiers;
 
 impl ParseTreeVisitorCompat<'_> for ValkyrieProgramParser {
     type Node = ValkyrieAntlrParserContextType;

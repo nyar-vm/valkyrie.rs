@@ -1,6 +1,6 @@
 mod display;
 
-use crate::{ArgumentKeyNode, ExpressionNode, IdentifierNode, NamePathNode, StatementNode};
+use crate::{ArgumentKeyNode, ExpressionNode, IdentifierNode, ModifiersNode, NamePathNode, StatementNode};
 use alloc::{boxed::Box, vec, vec::Vec};
 use core::ops::Range;
 use deriver::From;
@@ -132,6 +132,18 @@ pub enum LetPattern {
     Union(Box<UnionPatternNode>),
     /// `[a, b, **]`
     Array(Box<ArrayPatternNode>),
+    /// `#macro mod id`
+    Atom(Box<IdentifierPattern>),
+}
+
+/// `#macro mod id`
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct IdentifierPattern {
+    /// modifiers
+    pub modifiers: ModifiersNode,
+    /// identifiers
+    pub identifier: IdentifierNode,
 }
 
 /// `case Some(a) | Success { value: a }:`
@@ -146,11 +158,11 @@ pub struct UnionPatternNode {
     pub span: Range<u32>,
 }
 
-/// `case a <- Named(ref a, mut b, c)`
+/// `bind := module∷Named(ref a, mut b, ..c)`
 ///
 /// ```vk
 /// match term {
-///     case bind@module::Name(ref a, mut b, c) if a > 0:
+///     case bind: module::Name(ref a, mut b, c) if a > 0:
 ///         body
 /// }
 /// ```
@@ -172,17 +184,17 @@ pub struct UnionPatternNode {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct TuplePatternNode {
-    /// `bind <- ...`
+    /// `bind := ...`
     pub bind: Option<IdentifierNode>,
-    /// `case namespace::Name()`
+    /// `namespace::Name(...)`
     pub name: Option<NamePathNode>,
-    /// `case (ref a, mut b)`
+    /// `(ref a, mut b, ..c)`
     pub terms: Vec<LetPattern>,
     /// The range of the node
     pub span: Range<u32>,
 }
 
-/// `case a <- Named { a: b, c: d }`
+/// `a := Named { a: b, c: d }`
 ///
 ///
 /// ```vk

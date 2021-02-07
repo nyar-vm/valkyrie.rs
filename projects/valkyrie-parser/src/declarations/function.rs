@@ -19,8 +19,6 @@ impl ThisParser for FunctionDeclaration {
             body,
         })
     }
-
-
 }
 
 impl ThisParser for FunctionType {

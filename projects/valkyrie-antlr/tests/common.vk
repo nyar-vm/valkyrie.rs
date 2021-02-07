@@ -1,3 +1,7 @@
+namespace test;
+let a = 1⁏
+let mut ma = 1⁏
+
 function test(
     // 1
     #[nice(#boat args: what)]
@@ -10,4 +14,3 @@ function test(
         return a
     }
 }
-

@@ -1,0 +1,344 @@
+GrammarInfo {
+    url: None,
+    name: Identifier("Valkyrie", 8..16),
+    extensions: [],
+    imports: {},
+    exports: [],
+    rules: {
+        "Program": GrammarRule {
+            name: Identifier("Program", 35..42),
+            redirect: None,
+            document: "",
+            derives: RuleDerive {
+                derives: {},
+            },
+            atomic: Optimized,
+            auto_inline: false,
+            entry: true,
+            hide: false,
+            ignored: false,
+            captures: GrammarCaptures {
+                text: false,
+                auto: true,
+                range: "usize",
+            },
+            body: Class {
+                term: Expression {
+                    tag: None,
+                    remark: false,
+                    body: UnaryExpression {
+                        base: Expression {
+                            tag: None,
+                            remark: false,
+                            body: ConcatExpression {
+                                sequence: [
+                                    Expression {
+                                        tag: None,
+                                        remark: false,
+                                        body: IGNORED,
+                                    },
+                                    Expression {
+                                        tag: Identifier("Statement", 49..58),
+                                        remark: false,
+                                        body: RuleReference {
+                                            name: Identifier("Statement", 49..58),
+                                            boxed: false,
+                                            inline: false,
+                                        },
+                                    },
+                                ],
+                            },
+                        },
+                        operators: [
+                            RepeatsBetween(
+                                YggdrasilCounter {
+                                    min: 0,
+                                    max: 4294967295,
+                                },
+                            ),
+                        ],
+                    },
+                },
+            },
+            range: 23..61,
+        },
+        "Statement": GrammarRule {
+            name: Identifier("Statement", 156..165),
+            redirect: None,
+            document: "",
+            derives: RuleDerive {
+                derives: {},
+            },
+            atomic: Optimized,
+            auto_inline: false,
+            entry: false,
+            hide: false,
+            ignored: false,
+            captures: GrammarCaptures {
+                text: false,
+                auto: true,
+                range: "usize",
+            },
+            body: Union {
+                branches: [
+                    YggdrasilVariant {
+                        tag: Some(
+                            Identifier("DefineNamespace", 174..189),
+                        ),
+                        branch: Expression {
+                            tag: Identifier("DefineNamespace", 174..189),
+                            remark: false,
+                            body: RuleReference {
+                                name: Identifier("DefineNamespace", 174..189),
+                                boxed: false,
+                                inline: false,
+                            },
+                        },
+                    },
+                ],
+            },
+            range: 150..191,
+        },
+        "EOS": GrammarRule {
+            name: Identifier("EOS", 275..278),
+            redirect: None,
+            document: "",
+            derives: RuleDerive {
+                derives: {},
+            },
+            atomic: Optimized,
+            auto_inline: false,
+            entry: false,
+            hide: false,
+            ignored: false,
+            captures: GrammarCaptures {
+                text: false,
+                auto: false,
+                range: "usize",
+            },
+            body: Union {
+                branches: [
+                    YggdrasilVariant {
+                        tag: Some(
+                            Identifier("Omit", 300..304),
+                        ),
+                        branch: Expression {
+                            tag: Identifier("Omit", 300..304),
+                            remark: false,
+                            body: YggdrasilRegex {
+                                raw: "[;；]",
+                                span: 289..295,
+                            },
+                        },
+                    },
+                    YggdrasilVariant {
+                        tag: Some(
+                            Identifier("Show", 322..326),
+                        ),
+                        branch: Expression {
+                            tag: Identifier("Show", 322..326),
+                            remark: false,
+                            body: YggdrasilRegex {
+                                raw: "⁏|;;",
+                                span: 311..319,
+                            },
+                        },
+                    },
+                ],
+            },
+            range: 269..328,
+        },
+        "EOS_FREE": GrammarRule {
+            name: Identifier("EOS_FREE", 393..401),
+            redirect: None,
+            document: "",
+            derives: RuleDerive {
+                derives: {},
+            },
+            atomic: Optimized,
+            auto_inline: false,
+            entry: false,
+            hide: false,
+            ignored: false,
+            captures: GrammarCaptures {
+                text: false,
+                auto: true,
+                range: "usize",
+            },
+            body: Class {
+                term: Expression {
+                    tag: None,
+                    remark: false,
+                    body: YggdrasilRegex {
+                        raw: "[,，;；⁏]",
+                        span: 408..421,
+                    },
+                },
+            },
+            range: 387..423,
+        },
+        "DefineNamespace": GrammarRule {
+            name: Identifier("DefineNamespace", 517..532),
+            redirect: None,
+            document: "",
+            derives: RuleDerive {
+                derives: {},
+            },
+            atomic: Optimized,
+            auto_inline: false,
+            entry: false,
+            hide: false,
+            ignored: false,
+            captures: GrammarCaptures {
+                text: false,
+                auto: true,
+                range: "usize",
+            },
+            body: Class {
+                term: Expression {
+                    tag: None,
+                    remark: false,
+                    body: ConcatExpression {
+                        sequence: [
+                            Expression {
+                                tag: None,
+                                remark: false,
+                                body: RuleReference {
+                                    name: Identifier("KW_NAMESPACE", 540..552),
+                                    boxed: false,
+                                    inline: false,
+                                },
+                            },
+                            Expression {
+                                tag: None,
+                                remark: false,
+                                body: IGNORED,
+                            },
+                            Expression {
+                                tag: None,
+                                remark: false,
+                                body: UnaryExpression {
+                                    base: Expression {
+                                        tag: Identifier("OP_NAMESPACE", 553..565),
+                                        remark: false,
+                                        body: RuleReference {
+                                            name: Identifier("OP_NAMESPACE", 553..565),
+                                            boxed: false,
+                                            inline: false,
+                                        },
+                                    },
+                                    operators: [
+                                        RepeatsBetween(
+                                            YggdrasilCounter {
+                                                min: 0,
+                                                max: 1,
+                                            },
+                                        ),
+                                    ],
+                                },
+                            },
+                        ],
+                    },
+                },
+            },
+            range: 511..568,
+        },
+        "OP_NAMESPACE": GrammarRule {
+            name: Identifier("OP_NAMESPACE", 591..603),
+            redirect: None,
+            document: "",
+            derives: RuleDerive {
+                derives: {},
+            },
+            atomic: Optimized,
+            auto_inline: false,
+            entry: false,
+            hide: false,
+            ignored: false,
+            captures: GrammarCaptures {
+                text: false,
+                auto: true,
+                range: "usize",
+            },
+            body: Union {
+                branches: [
+                    YggdrasilVariant {
+                        tag: Some(
+                            Identifier("Main", 617..621),
+                        ),
+                        branch: Expression {
+                            tag: Identifier("Main", 617..621),
+                            remark: false,
+                            body: YggdrasilText {
+                                text: "!",
+                                insensitive: false,
+                                range: 612..615,
+                            },
+                        },
+                    },
+                    YggdrasilVariant {
+                        tag: Some(
+                            Identifier("Test", 633..637),
+                        ),
+                        branch: Expression {
+                            tag: Identifier("Test", 633..637),
+                            remark: false,
+                            body: YggdrasilText {
+                                text: "?",
+                                insensitive: false,
+                                range: 628..631,
+                            },
+                        },
+                    },
+                    YggdrasilVariant {
+                        tag: Some(
+                            Identifier("Hide", 649..653),
+                        ),
+                        branch: Expression {
+                            tag: Identifier("Hide", 649..653),
+                            remark: false,
+                            body: YggdrasilText {
+                                text: "*",
+                                insensitive: false,
+                                range: 644..647,
+                            },
+                        },
+                    },
+                ],
+            },
+            range: 569..655,
+        },
+        "KW_NAMESPACE": GrammarRule {
+            name: Identifier("KW_NAMESPACE", 678..690),
+            redirect: None,
+            document: "",
+            derives: RuleDerive {
+                derives: {},
+            },
+            atomic: Optimized,
+            auto_inline: false,
+            entry: false,
+            hide: false,
+            ignored: false,
+            captures: GrammarCaptures {
+                text: false,
+                auto: true,
+                range: "usize",
+            },
+            body: Class {
+                term: Expression {
+                    tag: None,
+                    remark: false,
+                    body: YggdrasilText {
+                        text: "namespace",
+                        insensitive: false,
+                        range: 697..708,
+                    },
+                },
+            },
+            range: 656..710,
+        },
+    },
+    token_sets: {},
+    functions: {},
+}
