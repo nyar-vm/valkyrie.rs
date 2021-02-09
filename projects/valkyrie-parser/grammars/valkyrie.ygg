@@ -20,7 +20,7 @@ class EOS_FREE {
 }
 // === namespace === -----------------------------------------------------------------
 class DefineNamespace {
-    ^KW_NAMESPACE OP_NAMESPACE?
+    ^KW_NAMESPACE OP_NAMESPACE? NamepathFree EOS?
 }
 @style(keyword)
 union OP_NAMESPACE {
@@ -35,4 +35,65 @@ class KW_NAMESPACE {
 
 // === statement === -----------------------------------------------------------------
 
-
+// === identifier === --------------------------------------------------------------------------------------------------
+class NamepathFree -> Namepath {
+    Identifier (/[.]|::/ Identifier)*
+}
+class Namepath {
+    Identifier ('::' Identifier)*
+}
+text class Identifier {
+    /[_\p{XID_start}]\p{XID_continue}*/
+}
+union Boolean {
+    | 'true'  #True
+    | 'false' #False
+}
+// === number === ----------------------------------------------------------------------------------------------------
+text class Integer {
+    /0|[1-9][0-9]*/
+}
+class RangeExact {
+    '{' Integer '}'
+}
+class Range {
+    '{' (min:Integer)? ',' (max:Integer)? '}'
+}
+// === keywords === ----------------------------------------------------------------------------------------------------
+atomic class ModifierCall ^ {
+    !(KW_CLASS | KW_UNION | KW_GROUP | KW_MACRO | KW_CLIMB) ^Identifier
+}
+@railroad(false)
+@style(keyword)
+group {
+    OP_CATEGORY: /\\p/
+}
+@railroad(false)
+@style(keyword)
+union KW_EXTERNAL {
+    | 'parser'    #Parser
+    | 'inspector' #Inspector
+    | 'external'  #External
+}
+@railroad(false)
+@style(keyword)
+group {
+    KW_GRAMMAR: /grammar/
+    KW_IMPORT: /using|use|import/
+    KW_CLASS: /class|struct/
+    KW_UNION: /union|enum/
+    KW_GROUP: /group|token/
+    KW_CLIMB: /climb/
+    KW_MACRO: /macro|def|function|func|fun|fn/
+}
+// === ignores === -----------------------------------------------------------------------------------------------------
+@railroad(false)
+ignore class WhiteSpace {
+    /\p{White_Space}+/
+}
+@style(comment)
+@railroad(false)
+ignore class Comment {
+    | '//' /[^\n\r]*/
+    | '/*'  '*/'
+}

@@ -1,0 +1,89 @@
+ProgramNode {
+    statement: [
+        DefineNamespace(
+            DefineNamespaceNode {
+                eos: Some(
+                    Omit,
+                ),
+                namepath_free: NamepathFreeNode {
+                    identifier: [
+                        IdentifierNode {
+                            text: "std",
+                            span: 10..13,
+                        },
+                    ],
+                    span: 10..13,
+                },
+                op_namespace: None,
+                span: 0..14,
+            },
+        ),
+        DefineNamespace(
+            DefineNamespaceNode {
+                eos: Some(
+                    Omit,
+                ),
+                namepath_free: NamepathFreeNode {
+                    identifier: [
+                        IdentifierNode {
+                            text: "std",
+                            span: 27..30,
+                        },
+                        IdentifierNode {
+                            text: "string",
+                            span: 31..37,
+                        },
+                    ],
+                    span: 27..37,
+                },
+                op_namespace: Some(
+                    Main,
+                ),
+                span: 16..38,
+            },
+        ),
+        DefineNamespace(
+            DefineNamespaceNode {
+                eos: Some(
+                    Omit,
+                ),
+                namepath_free: NamepathFreeNode {
+                    identifier: [
+                        IdentifierNode {
+                            text: "std",
+                            span: 51..54,
+                        },
+                        IdentifierNode {
+                            text: "integer",
+                            span: 56..63,
+                        },
+                    ],
+                    span: 51..63,
+                },
+                op_namespace: Some(
+                    Test,
+                ),
+                span: 40..64,
+            },
+        ),
+        DefineNamespace(
+            DefineNamespaceNode {
+                eos: None,
+                namepath_free: NamepathFreeNode {
+                    identifier: [
+                        IdentifierNode {
+                            text: "std",
+                            span: 77..80,
+                        },
+                    ],
+                    span: 77..80,
+                },
+                op_namespace: Some(
+                    Hide,
+                ),
+                span: 66..80,
+            },
+        ),
+    ],
+    span: 0..80,
+}

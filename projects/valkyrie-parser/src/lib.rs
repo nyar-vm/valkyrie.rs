@@ -2,6 +2,9 @@
 #![feature(const_trait_impl)]
 
 mod codegen;
+
+pub use crate::codegen::*;
+
 // mod atomic;
 // mod control_flow;
 // mod declarations;

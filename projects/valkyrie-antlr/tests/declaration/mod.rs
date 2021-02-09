@@ -8,7 +8,7 @@ fn antlr_declarations() {
     // top_debug(include_str!("function.vk"), "declaration/function_debug.rkt").expect("function");
     top_debug(include_str!("let.vk"), "declaration/let_debug.rkt").expect("let");
     // top_debug(include_str!("macro.vk"), "declaration/macro_debug.rkt").expect("macro");
-    top_debug(include_str!("namespaces.vk"), "declaration/namespaces_debug.rkt").expect("namespaces");
+    top_debug(include_str!("namespaces.vk"), "declaration/namespaces.ron").expect("namespaces");
     top_debug(include_str!("trait.vk"), "declaration/trait_debug.rkt").expect("trait");
     // top_debug(include_str!("type.vk"), "declaration/type_debug.rkt").expect("type");
     top_debug(include_str!("union.vk"), "declaration/union_debug.rkt").expect("unions");
