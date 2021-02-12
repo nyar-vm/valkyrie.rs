@@ -30,7 +30,7 @@ program
 eos:      SEMICOLON | FAKE_COLON;
 eos_free: COMMA | SEMICOLON | FAKE_COLON;
 // ===========================================================================
-define_namespace: KW_NAMESPACE namepath_free eos?;
+
 // ===========================================================================
 import_statement: KW_IMPORT import_term;
 import_as:        KW_AS (OP_AT | OP_HASH)? identifier;
@@ -489,8 +489,6 @@ modified_namepath
 lambda_name: LAMBDA_SLOT (identifier | number)?;
 output_name: (OP_PERCENT|OP_LAST) INTEGER # PositiveOutput | OP_LAST INTEGER? # NegativeOutput;
 
-namepath_free: identifier ((OP_PROPORTION | DOT) identifier)*;
-namepath:      identifier (OP_PROPORTION identifier)*;
 // identifier
 identifier: UNICODE_ID | RAW_ID;
 // number

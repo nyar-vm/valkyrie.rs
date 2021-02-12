@@ -20,7 +20,11 @@ class EOS_FREE {
 }
 // === namespace === -----------------------------------------------------------------
 class DefineNamespace {
-    ^KW_NAMESPACE OP_NAMESPACE? NamepathFree EOS?
+    ^KW_NAMESPACE OP_NAMESPACE? NamepathFree ^EOS?
+}
+@style(keyword)
+class KW_NAMESPACE {
+    'namespace'
 }
 @style(keyword)
 union OP_NAMESPACE {
@@ -28,23 +32,79 @@ union OP_NAMESPACE {
     | '?' #Test
     | '*' #Hide
 }
+// === import === -----------------------------------------------------------------
+atomic class DefineImport {
+    | ^KW_IMPORT ~ ImportTerm ~ ^EOS?
+    | ^KW_IMPORT ~ '{' (IGNORED (ImportTerm|^EOS_FREE))* ~ '}' ~ ^EOS?
+}
+union ImportTerm {
+    | ImportAs
+    | ImportAll
+    | ImportMacro
+    | ImportBlock
+    | NamepathFree
+}
+/// `import package∷module∷item as alias`
+class ImportAs { NamepathFree ^KW_AS alias:Identifier }
+/// `import package∷module∷*`
+class ImportAll { NamepathFree /[.∷]|::/ OP_IMPORT_ALL }
+/// `import package∷module { ... }`
+atomic class ImportBlock  {
+    NamepathFree ~ /[.∷]|::/? ~ '{' (IGNORED (ImportTerm|^EOS_FREE))* ~ '}'
+}
+/// `import package::module::#macro as @macro`
+class ImportMacro  {
+    NamepathFree /[.∷]|::/ ImportMacroItem ^KW_AS alias:ImportMacroItem
+}
+atomic union ImportMacroItem {
+    | '#' Identifier #Capture
+    | '@' Identifier #Instant
+}
+
 @style(keyword)
-class KW_NAMESPACE {
-    'namespace'
+group {
+    KW_IMPORT: 'using'
+    OP_IMPORT_ALL: '*'
 }
-
-// === statement === -----------------------------------------------------------------
-
 // === identifier === --------------------------------------------------------------------------------------------------
-class NamepathFree -> Namepath {
-    Identifier (/[.]|::/ Identifier)*
+
+@style(keyword)
+class KW_CLASS {
+    'class'
 }
-class Namepath {
-    Identifier ('::' Identifier)*
+// === identifier === --------------------------------------------------------------------------------------------------
+
+@style(keyword)
+class KW_UNION {
+    'union'
 }
-text class Identifier {
+// === identifier === --------------------------------------------------------------------------------------------------
+
+@style(keyword)
+class KW_TRAIT {
+    'trait'
+}
+// === identifier === --------------------------------------------------------------------------------------------------
+atomic class NamepathFree -> Namepath {
+    Identifier (IGNORED /[.∷]|::/ ~ Identifier)*
+}
+atomic class Namepath {
+    Identifier (IGNORED /∷|::/ ~ Identifier)*
+}
+atomic union Identifier {
+    | IdentifierBare
+    | IdentifierRaw
+}
+text class IdentifierBare {
     /[_\p{XID_start}]\p{XID_continue}*/
 }
+atomic class IdentifierRaw {
+    '`' IdentifierRawText '`'
+}
+text class IdentifierRawText {
+    [^`]+
+}
+
 union Boolean {
     | 'true'  #True
     | 'false' #False
@@ -61,30 +121,10 @@ class Range {
 }
 // === keywords === ----------------------------------------------------------------------------------------------------
 atomic class ModifierCall ^ {
-    !(KW_CLASS | KW_UNION | KW_GROUP | KW_MACRO | KW_CLIMB) ^Identifier
+    !(KW_CLASS | KW_UNION | KW_TRAIT) ^Identifier
 }
-@railroad(false)
-@style(keyword)
 group {
-    OP_CATEGORY: /\\p/
-}
-@railroad(false)
-@style(keyword)
-union KW_EXTERNAL {
-    | 'parser'    #Parser
-    | 'inspector' #Inspector
-    | 'external'  #External
-}
-@railroad(false)
-@style(keyword)
-group {
-    KW_GRAMMAR: /grammar/
-    KW_IMPORT: /using|use|import/
-    KW_CLASS: /class|struct/
-    KW_UNION: /union|enum/
-    KW_GROUP: /group|token/
-    KW_CLIMB: /climb/
-    KW_MACRO: /macro|def|function|func|fun|fn/
+    KW_AS: 'as'
 }
 // === ignores === -----------------------------------------------------------------------------------------------------
 @railroad(false)

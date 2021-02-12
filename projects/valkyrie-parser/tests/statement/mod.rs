@@ -2,7 +2,7 @@ use super::*;
 
 #[test]
 fn lex_statements() {
-    top_debug(include_str!("import.vk"), "statement/import_debug.rkt").expect("import");
+    top_debug(include_str!("../declaration/import.vk"), "statement/import_debug.rkt").expect("import");
     top_debug(include_str!("define_flags.vk"), "statement/define_flags_debug.rkt").expect("flags");
     top_debug(include_str!("define_class.vk"), "statement/define_class_debug.rkt").expect("class");
     top_debug(include_str!("loop_for.vk"), "statement/loop_for_debug.rkt").expect("for");

@@ -35,25 +35,32 @@ pub enum ValkyrieRule {
     EOS,
     EOS_FREE,
     DefineNamespace,
-    OP_NAMESPACE,
     KW_NAMESPACE,
+    OP_NAMESPACE,
+    DefineImport,
+    ImportTerm,
+    ImportAs,
+    ImportAll,
+    ImportBlock,
+    ImportMacro,
+    ImportMacroItem,
+    KW_IMPORT,
+    OP_IMPORT_ALL,
+    KW_CLASS,
+    KW_UNION,
+    KW_TRAIT,
     NamepathFree,
     Namepath,
     Identifier,
+    IdentifierBare,
+    IdentifierRaw,
+    IdentifierRawText,
     Boolean,
     Integer,
     RangeExact,
     Range,
     ModifierCall,
-    OP_CATEGORY,
-    KW_EXTERNAL,
-    KW_GRAMMAR,
-    KW_IMPORT,
-    KW_CLASS,
-    KW_UNION,
-    KW_GROUP,
-    KW_CLIMB,
-    KW_MACRO,
+    KW_AS,
     WhiteSpace,
     Comment,
     /// Label for text literal
@@ -74,25 +81,32 @@ impl YggdrasilRule for ValkyrieRule {
             Self::EOS => "",
             Self::EOS_FREE => "",
             Self::DefineNamespace => "",
-            Self::OP_NAMESPACE => "",
             Self::KW_NAMESPACE => "",
+            Self::OP_NAMESPACE => "",
+            Self::DefineImport => "",
+            Self::ImportTerm => "",
+            Self::ImportAs => "",
+            Self::ImportAll => "",
+            Self::ImportBlock => "",
+            Self::ImportMacro => "",
+            Self::ImportMacroItem => "",
+            Self::KW_IMPORT => "",
+            Self::OP_IMPORT_ALL => "",
+            Self::KW_CLASS => "",
+            Self::KW_UNION => "",
+            Self::KW_TRAIT => "",
             Self::NamepathFree => "",
             Self::Namepath => "",
             Self::Identifier => "",
+            Self::IdentifierBare => "",
+            Self::IdentifierRaw => "",
+            Self::IdentifierRawText => "",
             Self::Boolean => "",
             Self::Integer => "",
             Self::RangeExact => "",
             Self::Range => "",
             Self::ModifierCall => "",
-            Self::OP_CATEGORY => "",
-            Self::KW_EXTERNAL => "",
-            Self::KW_GRAMMAR => "",
-            Self::KW_IMPORT => "",
-            Self::KW_CLASS => "",
-            Self::KW_UNION => "",
-            Self::KW_GROUP => "",
-            Self::KW_CLIMB => "",
-            Self::KW_MACRO => "",
+            Self::KW_AS => "",
             Self::WhiteSpace => "",
             Self::Comment => "",
             _ => "",
@@ -124,9 +138,13 @@ pub struct EosFreeNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct DefineNamespaceNode {
-    pub eos: Option<EosNode>,
     pub namepath_free: NamepathFreeNode,
     pub op_namespace: Option<OpNamespaceNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct KwNamespaceNode {
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -138,7 +156,77 @@ pub enum OpNamespaceNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct KwNamespaceNode {
+pub struct DefineImportNode {
+    pub import_term: Vec<ImportTermNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum ImportTermNode {
+    ImportAll(ImportAllNode),
+    ImportAs(ImportAsNode),
+    ImportBlock(ImportBlockNode),
+    ImportMacro(ImportMacroNode),
+    NamepathFree(NamepathFreeNode),
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ImportAsNode {
+    pub namepath_free: NamepathFreeNode,
+    pub alias: IdentifierNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ImportAllNode {
+    pub namepath_free: NamepathFreeNode,
+    pub op_import_all: OpImportAllNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ImportBlockNode {
+    pub import_term: Vec<ImportTermNode>,
+    pub namepath_free: NamepathFreeNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ImportMacroNode {
+    pub import_macro_item: ImportMacroItemNode,
+    pub namepath_free: NamepathFreeNode,
+    pub alias: ImportMacroItemNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum ImportMacroItemNode {
+    Capture(IdentifierNode),
+    Instant(IdentifierNode),
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct KwImportNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct OpImportAllNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct KwClassNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct KwUnionNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct KwTraitNode {
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -155,7 +243,25 @@ pub struct NamepathNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct IdentifierNode {
+pub enum IdentifierNode {
+    IdentifierBare(IdentifierBareNode),
+    IdentifierRaw(IdentifierRawNode),
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct IdentifierBareNode {
+    pub text: String,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct IdentifierRawNode {
+    pub identifier_raw_text: IdentifierRawTextNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct IdentifierRawTextNode {
     pub text: String,
     pub span: Range<u32>,
 }
@@ -192,49 +298,7 @@ pub struct ModifierCallNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct OpCategoryNode {
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum KwExternalNode {
-    External,
-    Inspector,
-    Parser,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct KwGrammarNode {
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct KwImportNode {
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct KwClassNode {
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct KwUnionNode {
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct KwGroupNode {
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct KwClimbNode {
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct KwMacroNode {
+pub struct KwAsNode {
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]

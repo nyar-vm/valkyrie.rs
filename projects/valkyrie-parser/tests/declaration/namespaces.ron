@@ -2,15 +2,14 @@ ProgramNode {
     statement: [
         DefineNamespace(
             DefineNamespaceNode {
-                eos: Some(
-                    Omit,
-                ),
                 namepath_free: NamepathFreeNode {
                     identifier: [
-                        IdentifierNode {
-                            text: "std",
-                            span: 10..13,
-                        },
+                        IdentifierBare(
+                            IdentifierBareNode {
+                                text: "std",
+                                span: 10..13,
+                            },
+                        ),
                     ],
                     span: 10..13,
                 },
@@ -20,19 +19,20 @@ ProgramNode {
         ),
         DefineNamespace(
             DefineNamespaceNode {
-                eos: Some(
-                    Omit,
-                ),
                 namepath_free: NamepathFreeNode {
                     identifier: [
-                        IdentifierNode {
-                            text: "std",
-                            span: 27..30,
-                        },
-                        IdentifierNode {
-                            text: "string",
-                            span: 31..37,
-                        },
+                        IdentifierBare(
+                            IdentifierBareNode {
+                                text: "std",
+                                span: 27..30,
+                            },
+                        ),
+                        IdentifierBare(
+                            IdentifierBareNode {
+                                text: "string",
+                                span: 31..37,
+                            },
+                        ),
                     ],
                     span: 27..37,
                 },
@@ -44,19 +44,20 @@ ProgramNode {
         ),
         DefineNamespace(
             DefineNamespaceNode {
-                eos: Some(
-                    Omit,
-                ),
                 namepath_free: NamepathFreeNode {
                     identifier: [
-                        IdentifierNode {
-                            text: "std",
-                            span: 51..54,
-                        },
-                        IdentifierNode {
-                            text: "integer",
-                            span: 56..63,
-                        },
+                        IdentifierBare(
+                            IdentifierBareNode {
+                                text: "std",
+                                span: 51..54,
+                            },
+                        ),
+                        IdentifierBare(
+                            IdentifierBareNode {
+                                text: "integer",
+                                span: 56..63,
+                            },
+                        ),
                     ],
                     span: 51..63,
                 },
@@ -68,22 +69,29 @@ ProgramNode {
         ),
         DefineNamespace(
             DefineNamespaceNode {
-                eos: None,
                 namepath_free: NamepathFreeNode {
                     identifier: [
-                        IdentifierNode {
-                            text: "std",
-                            span: 77..80,
-                        },
+                        IdentifierBare(
+                            IdentifierBareNode {
+                                text: "std",
+                                span: 77..80,
+                            },
+                        ),
+                        IdentifierBare(
+                            IdentifierBareNode {
+                                text: "decimal",
+                                span: 83..90,
+                            },
+                        ),
                     ],
-                    span: 77..80,
+                    span: 77..90,
                 },
                 op_namespace: Some(
                     Hide,
                 ),
-                span: 66..80,
+                span: 66..91,
             },
         ),
     ],
-    span: 0..80,
+    span: 0..91,
 }

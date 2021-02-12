@@ -1,0 +1,28 @@
+ProgramNode {
+    statement: [
+        DefineNamespace(
+            DefineNamespaceNode {
+                namepath_free: NamepathFreeNode {
+                    identifier: [
+                        IdentifierBare(
+                            IdentifierBareNode {
+                                text: "test",
+                                span: 10..14,
+                            },
+                        ),
+                        IdentifierBare(
+                            IdentifierBareNode {
+                                text: "import",
+                                span: 15..21,
+                            },
+                        ),
+                    ],
+                    span: 10..21,
+                },
+                op_namespace: None,
+                span: 0..22,
+            },
+        ),
+    ],
+    span: 0..22,
+}

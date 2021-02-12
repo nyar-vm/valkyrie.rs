@@ -1,5 +1,8 @@
 #![allow(unused, dead_code)]
 mod declaration;
+use std::{fs::File, io::Write, path::Path, str::FromStr};
+use valkyrie_parser::{ProgramNode, ValkyrieParser, ValkyrieRule};
+use yggdrasil_rt::YggdrasilParser;
 // mod expression;
 // mod literal;
 // mod statement;
@@ -31,20 +34,15 @@ fn ready() {
 //     println!("{}", value.pretty_colorful(&arena));
 // }
 
-// fn top_debug(text: &str, output: &str) -> std::io::Result<()> {
-//     let mut file = File::create(here().join(output))?;
-//     let apply = ProgramRoot::parse_text(text).unwrap();
-//     let mut theme = PrettyProvider::new(128);
-//     for expr in &apply.statements {
-//         println!("=================================================================");
-//         pretty_print(expr);
-//         let text = expr.pretty_colorful(&theme);
-//         let lisp = expr.lispify();
-//         writeln!(file, "{}", lisp.pretty_string(&theme))?;
-//         println!("{}", lisp.pretty_colorful(&theme));
-//     }
-//     Ok(())
-// }
+fn parse_program(input: &str, output: &str) -> std::io::Result<()> {
+    let here = Path::new(env!("CARGO_MANIFEST_DIR")).join("tests").canonicalize()?;
+    let cst = ValkyrieParser::parse_cst(input, ValkyrieRule::Program).unwrap();
+    println!("Short Form:\n{}", cst);
+    let ast = ProgramNode::from_str(input).unwrap();
+    let mut file = File::create(here.join(output))?;
+    file.write_all(format!("{:#?}", ast).as_bytes())
+}
+
 //
 // fn repl_debug(text: &str, output: &str) -> std::io::Result<()> {
 //     let mut file = File::create(here().join(output))?;
