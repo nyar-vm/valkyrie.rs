@@ -122,6 +122,7 @@ pub struct ProgramNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum StatementNode {
+    DefineImport(DefineImportNode),
     DefineNamespace(DefineNamespaceNode),
 }
 #[derive(Clone, Debug, Hash)]

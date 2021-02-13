@@ -30,23 +30,6 @@ program
 eos:      SEMICOLON | FAKE_COLON;
 eos_free: COMMA | SEMICOLON | FAKE_COLON;
 // ===========================================================================
-
-// ===========================================================================
-import_statement: KW_IMPORT import_term;
-import_as:        KW_AS (OP_AT | OP_HASH)? identifier;
-import_term
-    : import_block
-    | OP_AT import_name import_as?
-    | OP_AT import_name ((OP_PROPORTION | DOT)? import_block)?
-    | OP_HASH import_name import_as?
-    | OP_HASH import_name ((OP_PROPORTION | DOT)? import_block)?
-    | import_name import_as?
-    | import_name ((OP_PROPORTION | DOT)? import_block)?
-    | eos_free
-    ;
-import_name:  identifier ((OP_PROPORTION | DOT) identifier)* ((OP_PROPORTION | DOT) (OP_MUL));
-import_block: BRACE_L BRACE_R | BRACE_L import_term* BRACE_R;
-// ===========================================================================
 define_extension: KW_EXTENSION;
 // ===========================================================================
 define_class

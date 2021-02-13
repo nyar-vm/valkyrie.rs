@@ -52,7 +52,9 @@ fn parse_program(state: Input) -> Output {
 #[inline]
 fn parse_statement(state: Input) -> Output {
     state.rule(ValkyrieRule::Statement, |s| {
-        Err(s).or_else(|s| parse_define_namespace(s).and_then(|s| s.tag_node("define_namespace")))
+        Err(s)
+            .or_else(|s| parse_define_namespace(s).and_then(|s| s.tag_node("define_namespace")))
+            .or_else(|s| parse_define_import(s).and_then(|s| s.tag_node("define_import")))
     })
 }
 #[inline]
@@ -121,7 +123,7 @@ fn parse_define_import(state: Input) -> Output {
                     Ok(s)
                         .and_then(|s| parse_kw_import(s))
                         .and_then(|s| builtin_ignore(s))
-                        .and_then(|s| parse_import_term(s).and_then(|s| s.tag_node("import_term")))
+                        .and_then(|s| s.optional(|s| parse_import_term(s).and_then(|s| s.tag_node("import_term"))))
                         .and_then(|s| builtin_ignore(s))
                         .and_then(|s| s.optional(|s| parse_eos(s)))
                 })

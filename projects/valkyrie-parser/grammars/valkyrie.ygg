@@ -8,10 +8,11 @@ entry class Program {
 // === statements === -----------------------------------------------------------------
 union Statement {
     | DefineNamespace
+    | DefineImport
 }
 /// Used to isolate expressions and control whether to output the expression
 union EOS ^ {
-    | [;；]    #Omit
+    | [;；]   #Omit
     | /⁏|;;/  #Show
 }
 /// Used to isolate expressions, has no practical meaning
@@ -34,7 +35,7 @@ union OP_NAMESPACE {
 }
 // === import === -----------------------------------------------------------------
 atomic class DefineImport {
-    | ^KW_IMPORT ~ ImportTerm ~ ^EOS?
+    | ^KW_IMPORT ~ ImportTerm? ~ ^EOS?
     | ^KW_IMPORT ~ '{' (IGNORED (ImportTerm|^EOS_FREE))* ~ '}' ~ ^EOS?
 }
 union ImportTerm {
@@ -66,6 +67,25 @@ group {
     KW_IMPORT: 'using'
     OP_IMPORT_ALL: '*'
 }
+// === classes ===
+
+
+//define_class
+//    : template_call? annotation* modifiers KW_CLASS identifier define_generic? class_inherit? type_hint? class_block eos?
+//    ;
+//class_block: BRACE_L (class_dsl | class_method | class_field | eos_free)* BRACE_R;
+//class_inherit
+//    : PARENTHESES_L PARENTHESES_R
+//    | PARENTHESES_L class_inherit_item (COMMA class_inherit_item)* COMMA? PARENTHESES_R
+//    ;
+//class_inherit_item: modified_namepath;
+//class_field:        annotation* modified_identifier type_hint? parameter_default?;
+//class_method
+//    : annotation* modified_namepath define_generic? function_parameters return_type? function_block?
+//    ;
+//class_dsl: annotation* modified_identifier class_block;
+
+
 // === identifier === --------------------------------------------------------------------------------------------------
 
 @style(keyword)

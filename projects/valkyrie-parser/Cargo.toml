@@ -30,6 +30,7 @@ features = []
 version = "0.1.4"
 
 [dev-dependencies]
+anyhow = "1.0.75"
 
 
 [build-dependencies]
