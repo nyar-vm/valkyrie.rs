@@ -285,53 +285,7 @@ control_expression
     | YIELD KW_WITH expression                 # CWith
     | FALL_THROUGH (OP_LABEL identifier)?      # CFall
     ;
-op_prefix
-    : OP_NOT
-    | OP_BANG
-    | OP_ADD
-    | OP_SUB
-    | OP_AND
-    | OP_REFERENCE
-    | OP_DOT2
-    | OP_DOT3
-    | OP_INVERSE
-    | OP_ROOT2
-    | OP_ROOT3
-    | OP_ROOT4
-    | OP_MUL
-    ;
-op_suffix
-    : OP_BANG
-    | OP_TEMPERATURE
-    | OP_TRANSPOSE
-    | OP_PERCENT
-    | OP_REM
-    | OP_OR_DEFAULT
-    | OP_PRIME
-    ;
-// 中缀运算符
-op_compare:   OP_LT | OP_LEQ | OP_GT | OP_GEQ | OP_EQ | OP_NE | OP_EEE | OP_NEE;
-op_pattern:   OP_AND | OP_OR;
-infix_map:    OP_MAP | OP_APPLY2 | OP_APPLY3;
-infix_pow:    OP_POW | OP_ROOT2;
-infix_range:  OP_UNTIL;
-infix_arrows: OP_ARROW | OP_ARROW2;
-op_multiple:  OP_MUL | OP_DIV | OP_REM | OP_DIV_REM;
-op_plus:      OP_ADD | OP_SUB;
-op_logic:     LOGIC_OR | LOGIC_AND | LOGIC_XOR | LOGIC_NOR | LOGIC_NAND | LOGIC_XAND;
-op_pipeline:  OP_LL | OP_LLE | OP_LLL | OP_GG | OP_GGG | OP_ARROW3;
-infix_assign
-    : OP_ASSIGN
-    | OP_ADD_ASSIGN
-    | OP_SUB_ASSIGN
-    | OP_MUL_ASSIGN
-    | OP_DIV_ASSIGN
-    | OP_MAY_ASSIGN
-    | OP_GGE
-    ;
-infix_is: KW_IS | KW_IS KW_NOT | OP_IS | OP_IS_NOT | OP_CONTINUES;
-infix_as: KW_AS;
-infix_in: KW_IN | KW_NOT KW_IN | OP_IN | OP_NOT_IN;
+
 // ===========================================================================
 define_generic
     : GENERIC_L GENERIC_R

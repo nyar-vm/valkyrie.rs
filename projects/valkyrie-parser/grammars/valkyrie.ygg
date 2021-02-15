@@ -58,10 +58,7 @@ atomic union ImportMacroItem {
     | '#' Identifier #Capture
     | '@' Identifier #Instant
 }
-@style(keyword)
-token {
-    OP_IMPORT_ALL: '*'
-}
+
 // === classes === -----------------------------------------------------------------------------------------------------
 class DefineClass {
     DefineTemplate? //Annotation* ModifiedIdentifier DefineGeneric? TypeHint?
@@ -151,47 +148,70 @@ class KW_TRAIT {
 atomic class MainExpression {
     MainTerm (IGNORED MainInfix ~ MainTerm)*
 }
-@style(operator)
-union MainInfix {
-    | '+' #Add
+atomic class MainTerm {
+    (MainPrefix IGNORED)* MainFactor (IGNORED MainSuffix)*
 }
-// op_prefix
-//    : OP_NOT
-//    | OP_BANG
-//    | OP_ADD
-//    | OP_SUB
-//    | OP_AND
-//    | OP_REFERENCE
-//    | OP_DOT2
-//    | OP_DOT3
-//    | OP_INVERSE
-//    | OP_ROOT2
-//    | OP_ROOT3
-//    | OP_ROOT4
-//    | OP_MUL
-//    ;
-//op_suffix
-//    : OP_BANG
-//    | OP_TEMPERATURE
-//    | OP_TRANSPOSE
-//    | OP_PERCENT
-//    | OP_REM
-//    | OP_OR_DEFAULT
-//    | OP_PRIME
-//    ;
-
+atomic union MainFactor {
+    | '(' MainExpression ')'
+    | Namepath
+    | Integer
+    | Boolean
+}
+@style(operator)
+atomic union MainInfix ^ {
+    | '+'  #Plus
+    | '+=' #PlusAssign
+    | '-'  #Minus
+    | '-=' #MinusAssign
+    | '*'  #Multiply
+    | '*=' #MultiplyAssign
+    | '/'  #Divide
+    | '/=' #DivideAssign
+    | '%'  #Remainder
+    | '%=' #RemainderAssign
+    | '^'  #Power
+    | '√'  #Surd
+    // start with `<, >`
+    | /⋘|<<</   #LLL
+    | /<<=/      #LLE
+    | /≪|<</     #LL
+    | /[⩽≤]|<=/  #LEQ
+    | /</        #LE
+    | /⋙|>>>/   #GGG
+    | />>=/      #GGE
+    | /≫|>>/     #GG
+    | /[⩾≥]|>=/  #GEQ
+    | />/ #GE
+    // start with `=, !`
+    | /≡|===/     #EEE
+    | /≢|!==|=!=/ #NEE
+    | /≠|!=/      #NE
+    | /=/         #EQ
+    // start with `.`
+    | '..<'       #UpTo
+    | '..='       #Until
+    // start with `&`
+    | (KW_IN | [∈∊])       #In
+    | (KW_NOT ~ KW_IN|'∉') #NotIn
+    | [∋∍]                 #Contains
+    | '∌'                  #NotContains
+    // start with `@`
+    | ('/@'|[⇴⨵]) #Map
+    | (/@{3}|⟴/)  #Apply3
+    | (/@{2}|⊕/)  #Apply2
+}
 atomic union MainPrefix {
-    | [¬!]     #Not
-    | [+]      #Positive
-    | [-]      #Negative
-    | [&]      #Reference
-    | /[.]{3}/ #Deconstruct
-    | /[.]{2}/ #DeconstructAll
-    | '⅟'      #Inverse
-    | '√'      #Root2
-    | '∛'      #Root3
-    | '∜'      #Root4
-    | [*]      #Dereference
+    | [¬!]       #Not
+    | [+]        #Positive
+    | [-]        #Negative
+    | [&]        #Reference
+    | /…|[.]{3}/ #DeconstructAll
+    | /‥|[.]{2}/ #Deconstruct
+    | '⅟'        #Inverse
+    | '√'        #Root2
+    | '∛'        #Root3
+    | '∜'        #Root4
+    | [*]        #Dereference
 }
 union MainSuffix {
     | '!'  #Raise
@@ -202,6 +222,8 @@ union MainSuffix {
     | '″'  #Prime2
     | '‴'  #Prime3
     | '⁗'  #Prime4
+    | '℃'  #Celsius
+    | '℉'  #Fahrenheit
 }
 // === identifier === --------------------------------------------------------------------------------------------------
 atomic class NamepathFree  {
@@ -242,19 +264,37 @@ class Range {
 atomic class ModifierCall ^ {
     !(KW_CLASS | KW_UNION | KW_TRAIT) ^Identifier
 }
-group {
+token {
     COMMA: [,，]
 }
+@style(keyword)
+token {
+    OP_IMPORT_ALL: '*'
+    OP_BIND: /≔|:=/
+}
+@railway(false)
 @style(keyword)
 token {
     KW_NAMESPACE: /namespace/
     KW_IMPORT: /using/
     KW_TEMPLATE: /template|generic/
     KW_WHERE: /where/
-    KW_IMPLEMENTS: 'implements'
+    KW_TRAIT: /trait|interface/
+    KW_IMPLEMENTS: /implements?/
+    KW_EXTENDS: /extends?/
+    KW_INHERITS: /inherits?/
+    // control
+    KW_IF: /if/
+    KW_ELSE: /else/
+    KW_WHILE: /while/
+    KW_FOR: /for/
+    KW_RETURN: /return/
+    KW_BREAK: /break/
+    KW_CONTINUE: /continue/
     // === operators === -----------------------------------------------------------------------------------------------
     KW_AS: 'as'
     KW_IN: 'in'
+    KW_NOT: 'not'
 }
 // === ignores === -----------------------------------------------------------------------------------------------------
 @railroad(false)

@@ -1,5 +1,6 @@
 #![allow(unused, dead_code)]
 mod declaration;
+mod expression;
 use std::{fs::File, io::Write, path::Path, str::FromStr};
 use valkyrie_parser::{ProgramNode, ValkyrieParser, ValkyrieRule};
 use yggdrasil_rt::YggdrasilParser;

@@ -46,22 +46,6 @@ OP_DIV:     '⁄' | '∕' | '/';
 OP_REM:     '⁒';
 OP_DIV_REM: '/%' | '÷';
 
-// equal
-OP_EQ:  '==';
-OP_NE:  '≠' | '!=';
-OP_NEE: '≢' | '!==' | '=!=';
-OP_EEE: '≡' | '===';
-// compare
-OP_LEQ: '⩽' | '≤' | '<=';
-OP_LLE: '<<=';
-OP_LLL: '⋘' | '<' '<' '<';
-OP_LL:  '≪' | '<' '<';
-OP_LT:  '<';
-OP_GEQ: '⩾' | '≥' | '>=';
-OP_GGE: '>>=';
-OP_GGG: '⋙' | '>' '>' '>';
-OP_GG:  '≫' | '>' '>';
-OP_GT:  '>';
 // arrow
 OP_LEFT:   '←' | '<-';
 OP_ARROW:  '⟶' | '->';
@@ -70,12 +54,8 @@ OP_ARROW3: '==>';
 
 // assign
 OP_ASSIGN:     '=';
-OP_BIND:       '≔' | ':=';
 OP_MAY_ASSIGN: '?=';
-OP_ADD_ASSIGN: '+=';
-OP_SUB_ASSIGN: '-=';
-OP_MUL_ASSIGN: '*=';
-OP_DIV_ASSIGN: '/=';
+
 // not
 OP_BANG: '!';
 OP_NOT:  '¬';
@@ -95,9 +75,6 @@ OP_AND:    '&';
 OP_OR:     '|';
 OP_IMPL:   '‽';
 OP_IFF:    '⇔';
-OP_MAP:    '/@' | '⇴' | '⨵';
-OP_APPLY2: '@@' | '⊕';
-OP_APPLY3: '@@@' | '⟴';
 
 // macro call
 OP_AT:   '@';
@@ -110,42 +87,21 @@ OP_UNIMPLEMENTED: '⅏' | '⍼' | '⟁' | '???';
 OP_OR_DEFAULT:    '??';
 OP_OR_ELSE:       '?:';
 OP_AND_THEN:      '?';
-// in
-OP_IN:        '∈' | '∊';
-KW_IN:        'in';
-OP_NOT_IN:    '∉';
-OP_CONTINUES: '∋' | '∍';
-// prime
-OP_PRIME: [′″‴⁗];
+
 // is
 KW_IS:     'is';
 OP_IS:     '⊑' | '<:';
 OP_IS_NOT: '⋢' | '<!';
 // as
 KW_AS: 'as' | 'as!' | 'as*';
-// until
-OP_DOT3:  '…' | '...';
-OP_DOT2:  '‥' | '..';
-OP_UNTIL: '..<' | '..=';
-OP_POW:   '^';
-// prefix
-OP_INVERSE: '⅟';
-OP_ROOT2:   '√';
-OP_ROOT3:   '∛';
-OP_ROOT4:   '∜';
 // suffix
-OP_TEMPERATURE: '℃' | '℉';
 OP_TRANSPOSE:   '⊤' | '†' | '⊹'; // ᵀ,ᴴ are XIDs
-OP_PERCENT:     '%';
-OP_PERCENT2:    '‰' | '‱';
 // standalone
 OP_REFERENCE: '※';
 OP_LABEL:     '¶';
 OP_OUTPUT:    '⛤' | '⛥' | '⛦';
 OP_LAST:      '⛧' | '%%';
 // keywords
-KW_NAMESPACE: 'namespace' ('!' | '*' | '?')?;
-KW_IMPORT:    'using' ('!' | '*' | '?')?;
 KW_EXTENSION: 'extension';
 // 
 KW_CLASS:    'class' | 'structure';

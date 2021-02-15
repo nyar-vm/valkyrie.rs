@@ -35,7 +35,6 @@ pub enum ValkyrieRule {
     EOS,
     EOS_FREE,
     DefineNamespace,
-    KW_NAMESPACE,
     OP_NAMESPACE,
     DefineImport,
     ImportTerm,
@@ -44,8 +43,6 @@ pub enum ValkyrieRule {
     ImportBlock,
     ImportMacro,
     ImportMacroItem,
-    KW_IMPORT,
-    OP_IMPORT_ALL,
     DefineClass,
     ClassBlock,
     ClassBlockItem,
@@ -64,6 +61,12 @@ pub enum ValkyrieRule {
     KW_CLASS,
     KW_UNION,
     KW_TRAIT,
+    MainExpression,
+    MainTerm,
+    MainFactor,
+    MainInfix,
+    MainPrefix,
+    MainSuffix,
     NamepathFree,
     Namepath,
     Identifier,
@@ -76,11 +79,25 @@ pub enum ValkyrieRule {
     Range,
     ModifierCall,
     COMMA,
+    OP_IMPORT_ALL,
+    OP_BIND,
+    KW_NAMESPACE,
+    KW_IMPORT,
     KW_TEMPLATE,
     KW_WHERE,
     KW_IMPLEMENTS,
+    KW_EXTENDS,
+    KW_INHERITS,
+    KW_IF,
+    KW_ELSE,
+    KW_WHILE,
+    KW_FOR,
+    KW_RETURN,
+    KW_BREAK,
+    KW_CONTINUE,
     KW_AS,
     KW_IN,
+    KW_NOT,
     WhiteSpace,
     Comment,
     /// Label for text literal
@@ -101,7 +118,6 @@ impl YggdrasilRule for ValkyrieRule {
             Self::EOS => "",
             Self::EOS_FREE => "",
             Self::DefineNamespace => "",
-            Self::KW_NAMESPACE => "",
             Self::OP_NAMESPACE => "",
             Self::DefineImport => "",
             Self::ImportTerm => "",
@@ -110,8 +126,6 @@ impl YggdrasilRule for ValkyrieRule {
             Self::ImportBlock => "",
             Self::ImportMacro => "",
             Self::ImportMacroItem => "",
-            Self::KW_IMPORT => "",
-            Self::OP_IMPORT_ALL => "",
             Self::DefineClass => "",
             Self::ClassBlock => "",
             Self::ClassBlockItem => "",
@@ -130,6 +144,12 @@ impl YggdrasilRule for ValkyrieRule {
             Self::KW_CLASS => "",
             Self::KW_UNION => "",
             Self::KW_TRAIT => "",
+            Self::MainExpression => "",
+            Self::MainTerm => "",
+            Self::MainFactor => "",
+            Self::MainInfix => "",
+            Self::MainPrefix => "",
+            Self::MainSuffix => "",
             Self::NamepathFree => "",
             Self::Namepath => "",
             Self::Identifier => "",
@@ -142,11 +162,25 @@ impl YggdrasilRule for ValkyrieRule {
             Self::Range => "",
             Self::ModifierCall => "",
             Self::COMMA => "",
+            Self::OP_IMPORT_ALL => "",
+            Self::OP_BIND => "",
+            Self::KW_NAMESPACE => "",
+            Self::KW_IMPORT => "",
             Self::KW_TEMPLATE => "",
             Self::KW_WHERE => "",
             Self::KW_IMPLEMENTS => "",
+            Self::KW_EXTENDS => "",
+            Self::KW_INHERITS => "",
+            Self::KW_IF => "",
+            Self::KW_ELSE => "",
+            Self::KW_WHILE => "",
+            Self::KW_FOR => "",
+            Self::KW_RETURN => "",
+            Self::KW_BREAK => "",
+            Self::KW_CONTINUE => "",
             Self::KW_AS => "",
             Self::KW_IN => "",
+            Self::KW_NOT => "",
             Self::WhiteSpace => "",
             Self::Comment => "",
             _ => "",
@@ -181,11 +215,6 @@ pub struct EosFreeNode {
 pub struct DefineNamespaceNode {
     pub namepath_free: NamepathFreeNode,
     pub op_namespace: Option<OpNamespaceNode>,
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct KwNamespaceNode {
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -244,16 +273,6 @@ pub struct ImportMacroNode {
 pub enum ImportMacroItemNode {
     Capture(IdentifierNode),
     Instant(IdentifierNode),
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct KwImportNode {
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct OpImportAllNode {
-    pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -375,6 +394,97 @@ pub struct KwTraitNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct MainExpressionNode {
+    pub main_infix: Vec<MainInfixNode>,
+    pub main_term: Vec<MainTermNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct MainTermNode {
+    pub main_factor: MainFactorNode,
+    pub main_prefix: Vec<MainPrefixNode>,
+    pub main_suffix: Vec<MainSuffixNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum MainFactorNode {
+    Boolean(BooleanNode),
+    Integer(IntegerNode),
+    MainFactor0(MainExpressionNode),
+    Namepath(NamepathNode),
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum MainInfixNode {
+    Apply2,
+    Apply3,
+    Contains,
+    Divide,
+    DivideAssign,
+    EEE,
+    EQ,
+    GE,
+    GEQ,
+    GG,
+    GGE,
+    GGG,
+    In,
+    LE,
+    LEQ,
+    LL,
+    LLE,
+    LLL,
+    Map,
+    Minus,
+    MinusAssign,
+    Multiply,
+    MultiplyAssign,
+    NE,
+    NEE,
+    NotContains,
+    NotIn,
+    Plus,
+    PlusAssign,
+    Power,
+    Remainder,
+    RemainderAssign,
+    Surd,
+    Until,
+    UpTo,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum MainPrefixNode {
+    Deconstruct,
+    DeconstructAll,
+    Dereference,
+    Inverse,
+    Negative,
+    Not,
+    Positive,
+    Reference,
+    Root2,
+    Root3,
+    Root4,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum MainSuffixNode {
+    Celsius,
+    Fahrenheit,
+    Percent2,
+    Percent3,
+    Percent4,
+    Prime1,
+    Prime2,
+    Prime3,
+    Prime4,
+    Raise,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct NamepathFreeNode {
     pub identifier: Vec<IdentifierNode>,
     pub span: Range<u32>,
@@ -447,6 +557,26 @@ pub struct CommaNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct OpImportAllNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct OpBindNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct KwNamespaceNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct KwImportNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct KwTemplateNode {
     pub span: Range<u32>,
 }
@@ -462,12 +592,62 @@ pub struct KwImplementsNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct KwExtendsNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct KwInheritsNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct KwIfNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct KwElseNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct KwWhileNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct KwForNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct KwReturnNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct KwBreakNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct KwContinueNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct KwAsNode {
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct KwInNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct KwNotNode {
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]

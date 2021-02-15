@@ -7,7 +7,6 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::EOS => parse_eos(state),
         ValkyrieRule::EOS_FREE => parse_eos_free(state),
         ValkyrieRule::DefineNamespace => parse_define_namespace(state),
-        ValkyrieRule::KW_NAMESPACE => parse_kw_namespace(state),
         ValkyrieRule::OP_NAMESPACE => parse_op_namespace(state),
         ValkyrieRule::DefineImport => parse_define_import(state),
         ValkyrieRule::ImportTerm => parse_import_term(state),
@@ -16,8 +15,6 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::ImportBlock => parse_import_block(state),
         ValkyrieRule::ImportMacro => parse_import_macro(state),
         ValkyrieRule::ImportMacroItem => parse_import_macro_item(state),
-        ValkyrieRule::KW_IMPORT => parse_kw_import(state),
-        ValkyrieRule::OP_IMPORT_ALL => parse_op_import_all(state),
         ValkyrieRule::DefineClass => parse_define_class(state),
         ValkyrieRule::ClassBlock => parse_class_block(state),
         ValkyrieRule::ClassBlockItem => parse_class_block_item(state),
@@ -36,6 +33,12 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::KW_CLASS => parse_kw_class(state),
         ValkyrieRule::KW_UNION => parse_kw_union(state),
         ValkyrieRule::KW_TRAIT => parse_kw_trait(state),
+        ValkyrieRule::MainExpression => parse_main_expression(state),
+        ValkyrieRule::MainTerm => parse_main_term(state),
+        ValkyrieRule::MainFactor => parse_main_factor(state),
+        ValkyrieRule::MainInfix => parse_main_infix(state),
+        ValkyrieRule::MainPrefix => parse_main_prefix(state),
+        ValkyrieRule::MainSuffix => parse_main_suffix(state),
         ValkyrieRule::NamepathFree => parse_namepath_free(state),
         ValkyrieRule::Namepath => parse_namepath(state),
         ValkyrieRule::Identifier => parse_identifier(state),
@@ -48,11 +51,25 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::Range => parse_range(state),
         ValkyrieRule::ModifierCall => parse_modifier_call(state),
         ValkyrieRule::COMMA => parse_comma(state),
+        ValkyrieRule::OP_IMPORT_ALL => parse_op_import_all(state),
+        ValkyrieRule::OP_BIND => parse_op_bind(state),
+        ValkyrieRule::KW_NAMESPACE => parse_kw_namespace(state),
+        ValkyrieRule::KW_IMPORT => parse_kw_import(state),
         ValkyrieRule::KW_TEMPLATE => parse_kw_template(state),
         ValkyrieRule::KW_WHERE => parse_kw_where(state),
         ValkyrieRule::KW_IMPLEMENTS => parse_kw_implements(state),
+        ValkyrieRule::KW_EXTENDS => parse_kw_extends(state),
+        ValkyrieRule::KW_INHERITS => parse_kw_inherits(state),
+        ValkyrieRule::KW_IF => parse_kw_if(state),
+        ValkyrieRule::KW_ELSE => parse_kw_else(state),
+        ValkyrieRule::KW_WHILE => parse_kw_while(state),
+        ValkyrieRule::KW_FOR => parse_kw_for(state),
+        ValkyrieRule::KW_RETURN => parse_kw_return(state),
+        ValkyrieRule::KW_BREAK => parse_kw_break(state),
+        ValkyrieRule::KW_CONTINUE => parse_kw_continue(state),
         ValkyrieRule::KW_AS => parse_kw_as(state),
         ValkyrieRule::KW_IN => parse_kw_in(state),
+        ValkyrieRule::KW_NOT => parse_kw_not(state),
         ValkyrieRule::WhiteSpace => parse_white_space(state),
         ValkyrieRule::Comment => parse_comment(state),
         ValkyrieRule::IgnoreText => unreachable!(),
@@ -120,10 +137,6 @@ fn parse_define_namespace(state: Input) -> Output {
                 .and_then(|s| s.optional(|s| parse_eos(s)))
         })
     })
-}
-#[inline]
-fn parse_kw_namespace(state: Input) -> Output {
-    state.rule(ValkyrieRule::KW_NAMESPACE, |s| s.match_string("namespace", false))
 }
 #[inline]
 fn parse_op_namespace(state: Input) -> Output {
@@ -304,14 +317,6 @@ fn parse_import_macro_item(state: Input) -> Output {
                 .and_then(|s| s.tag_node("instant"))
             })
     })
-}
-#[inline]
-fn parse_kw_import(state: Input) -> Output {
-    state.rule(ValkyrieRule::KW_IMPORT, |s| s.match_string("using", false))
-}
-#[inline]
-fn parse_op_import_all(state: Input) -> Output {
-    state.rule(ValkyrieRule::OP_IMPORT_ALL, |s| s.match_string("*", false))
 }
 #[inline]
 fn parse_define_class(state: Input) -> Output {
@@ -593,7 +598,322 @@ fn parse_kw_union(state: Input) -> Output {
 }
 #[inline]
 fn parse_kw_trait(state: Input) -> Output {
-    state.rule(ValkyrieRule::KW_TRAIT, |s| s.match_string("trait", false))
+    state.rule(ValkyrieRule::KW_TRAIT, |s| {
+        s.match_regex({
+            static REGEX: OnceLock<Regex> = OnceLock::new();
+            REGEX.get_or_init(|| Regex::new("^(trait|interface)").unwrap())
+        })
+    })
+}
+#[inline]
+fn parse_main_expression(state: Input) -> Output {
+    state.rule(ValkyrieRule::MainExpression, |s| {
+        s.sequence(|s| {
+            Ok(s).and_then(|s| parse_main_term(s).and_then(|s| s.tag_node("main_term"))).and_then(|s| {
+                s.repeat(0..4294967295, |s| {
+                    s.sequence(|s| {
+                        Ok(s)
+                            .and_then(|s| builtin_ignore(s))
+                            .and_then(|s| parse_main_infix(s).and_then(|s| s.tag_node("main_infix")))
+                            .and_then(|s| builtin_ignore(s))
+                            .and_then(|s| parse_main_term(s).and_then(|s| s.tag_node("main_term")))
+                    })
+                })
+            })
+        })
+    })
+}
+#[inline]
+fn parse_main_term(state: Input) -> Output {
+    state.rule(ValkyrieRule::MainTerm, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| {
+                    s.repeat(0..4294967295, |s| {
+                        s.sequence(|s| {
+                            Ok(s)
+                                .and_then(|s| parse_main_prefix(s).and_then(|s| s.tag_node("main_prefix")))
+                                .and_then(|s| builtin_ignore(s))
+                        })
+                    })
+                })
+                .and_then(|s| parse_main_factor(s).and_then(|s| s.tag_node("main_factor")))
+                .and_then(|s| {
+                    s.repeat(0..4294967295, |s| {
+                        s.sequence(|s| {
+                            Ok(s)
+                                .and_then(|s| builtin_ignore(s))
+                                .and_then(|s| parse_main_suffix(s).and_then(|s| s.tag_node("main_suffix")))
+                        })
+                    })
+                })
+        })
+    })
+}
+#[inline]
+fn parse_main_factor(state: Input) -> Output {
+    state.rule(ValkyrieRule::MainFactor, |s| {
+        Err(s)
+            .or_else(|s| {
+                s.sequence(|s| {
+                    Ok(s)
+                        .and_then(|s| builtin_text(s, "(", false))
+                        .and_then(|s| parse_main_expression(s).and_then(|s| s.tag_node("main_expression")))
+                        .and_then(|s| builtin_text(s, ")", false))
+                })
+                .and_then(|s| s.tag_node("main_factor_0"))
+            })
+            .or_else(|s| parse_namepath(s).and_then(|s| s.tag_node("namepath")))
+            .or_else(|s| parse_integer(s).and_then(|s| s.tag_node("integer")))
+            .or_else(|s| parse_boolean(s).and_then(|s| s.tag_node("boolean")))
+    })
+}
+#[inline]
+fn parse_main_infix(state: Input) -> Output {
+    state.rule(ValkyrieRule::MainInfix, |s| {
+        Err(s)
+            .or_else(|s| builtin_text(s, "+", false).and_then(|s| s.tag_node("plus")))
+            .or_else(|s| builtin_text(s, "+=", false).and_then(|s| s.tag_node("plus_assign")))
+            .or_else(|s| builtin_text(s, "-", false).and_then(|s| s.tag_node("minus")))
+            .or_else(|s| builtin_text(s, "-=", false).and_then(|s| s.tag_node("minus_assign")))
+            .or_else(|s| builtin_text(s, "*", false).and_then(|s| s.tag_node("multiply")))
+            .or_else(|s| builtin_text(s, "*=", false).and_then(|s| s.tag_node("multiply_assign")))
+            .or_else(|s| builtin_text(s, "/", false).and_then(|s| s.tag_node("divide")))
+            .or_else(|s| builtin_text(s, "/=", false).and_then(|s| s.tag_node("divide_assign")))
+            .or_else(|s| builtin_text(s, "%", false).and_then(|s| s.tag_node("remainder")))
+            .or_else(|s| builtin_text(s, "%=", false).and_then(|s| s.tag_node("remainder_assign")))
+            .or_else(|s| builtin_text(s, "^", false).and_then(|s| s.tag_node("power")))
+            .or_else(|s| builtin_text(s, "√", false).and_then(|s| s.tag_node("surd")))
+            .or_else(|s| {
+                builtin_regex(s, {
+                    static REGEX: OnceLock<Regex> = OnceLock::new();
+                    REGEX.get_or_init(|| Regex::new("^(⋘|<<<)").unwrap())
+                })
+                .and_then(|s| s.tag_node("lll"))
+            })
+            .or_else(|s| {
+                builtin_regex(s, {
+                    static REGEX: OnceLock<Regex> = OnceLock::new();
+                    REGEX.get_or_init(|| Regex::new("^(<<=)").unwrap())
+                })
+                .and_then(|s| s.tag_node("lle"))
+            })
+            .or_else(|s| {
+                builtin_regex(s, {
+                    static REGEX: OnceLock<Regex> = OnceLock::new();
+                    REGEX.get_or_init(|| Regex::new("^(≪|<<)").unwrap())
+                })
+                .and_then(|s| s.tag_node("ll"))
+            })
+            .or_else(|s| {
+                builtin_regex(s, {
+                    static REGEX: OnceLock<Regex> = OnceLock::new();
+                    REGEX.get_or_init(|| Regex::new("^([⩽≤]|<=)").unwrap())
+                })
+                .and_then(|s| s.tag_node("leq"))
+            })
+            .or_else(|s| {
+                builtin_regex(s, {
+                    static REGEX: OnceLock<Regex> = OnceLock::new();
+                    REGEX.get_or_init(|| Regex::new("^(<)").unwrap())
+                })
+                .and_then(|s| s.tag_node("le"))
+            })
+            .or_else(|s| {
+                builtin_regex(s, {
+                    static REGEX: OnceLock<Regex> = OnceLock::new();
+                    REGEX.get_or_init(|| Regex::new("^(⋙|>>>)").unwrap())
+                })
+                .and_then(|s| s.tag_node("ggg"))
+            })
+            .or_else(|s| {
+                builtin_regex(s, {
+                    static REGEX: OnceLock<Regex> = OnceLock::new();
+                    REGEX.get_or_init(|| Regex::new("^(>>=)").unwrap())
+                })
+                .and_then(|s| s.tag_node("gge"))
+            })
+            .or_else(|s| {
+                builtin_regex(s, {
+                    static REGEX: OnceLock<Regex> = OnceLock::new();
+                    REGEX.get_or_init(|| Regex::new("^(≫|>>)").unwrap())
+                })
+                .and_then(|s| s.tag_node("gg"))
+            })
+            .or_else(|s| {
+                builtin_regex(s, {
+                    static REGEX: OnceLock<Regex> = OnceLock::new();
+                    REGEX.get_or_init(|| Regex::new("^([⩾≥]|>=)").unwrap())
+                })
+                .and_then(|s| s.tag_node("geq"))
+            })
+            .or_else(|s| {
+                builtin_regex(s, {
+                    static REGEX: OnceLock<Regex> = OnceLock::new();
+                    REGEX.get_or_init(|| Regex::new("^(>)").unwrap())
+                })
+                .and_then(|s| s.tag_node("ge"))
+            })
+            .or_else(|s| {
+                builtin_regex(s, {
+                    static REGEX: OnceLock<Regex> = OnceLock::new();
+                    REGEX.get_or_init(|| Regex::new("^(≡|===)").unwrap())
+                })
+                .and_then(|s| s.tag_node("eee"))
+            })
+            .or_else(|s| {
+                builtin_regex(s, {
+                    static REGEX: OnceLock<Regex> = OnceLock::new();
+                    REGEX.get_or_init(|| Regex::new("^(≢|!==|=!=)").unwrap())
+                })
+                .and_then(|s| s.tag_node("nee"))
+            })
+            .or_else(|s| {
+                builtin_regex(s, {
+                    static REGEX: OnceLock<Regex> = OnceLock::new();
+                    REGEX.get_or_init(|| Regex::new("^(≠|!=)").unwrap())
+                })
+                .and_then(|s| s.tag_node("ne"))
+            })
+            .or_else(|s| {
+                builtin_regex(s, {
+                    static REGEX: OnceLock<Regex> = OnceLock::new();
+                    REGEX.get_or_init(|| Regex::new("^(=)").unwrap())
+                })
+                .and_then(|s| s.tag_node("eq"))
+            })
+            .or_else(|s| builtin_text(s, "..<", false).and_then(|s| s.tag_node("up_to")))
+            .or_else(|s| builtin_text(s, "..=", false).and_then(|s| s.tag_node("until")))
+            .or_else(|s| {
+                Err(s)
+                    .or_else(|s| parse_kw_in(s))
+                    .or_else(|s| {
+                        builtin_regex(s, {
+                            static REGEX: OnceLock<Regex> = OnceLock::new();
+                            REGEX.get_or_init(|| Regex::new("^([∈∊])").unwrap())
+                        })
+                    })
+                    .and_then(|s| s.tag_node("in"))
+            })
+            .or_else(|s| {
+                Err(s)
+                    .or_else(|s| {
+                        s.sequence(|s| {
+                            Ok(s).and_then(|s| parse_kw_not(s)).and_then(|s| builtin_ignore(s)).and_then(|s| parse_kw_in(s))
+                        })
+                    })
+                    .or_else(|s| builtin_text(s, "∉", false))
+                    .and_then(|s| s.tag_node("not_in"))
+            })
+            .or_else(|s| {
+                builtin_regex(s, {
+                    static REGEX: OnceLock<Regex> = OnceLock::new();
+                    REGEX.get_or_init(|| Regex::new("^([∋∍])").unwrap())
+                })
+                .and_then(|s| s.tag_node("contains"))
+            })
+            .or_else(|s| builtin_text(s, "∌", false).and_then(|s| s.tag_node("not_contains")))
+            .or_else(|s| {
+                Err(s)
+                    .or_else(|s| builtin_text(s, "/@", false))
+                    .or_else(|s| {
+                        builtin_regex(s, {
+                            static REGEX: OnceLock<Regex> = OnceLock::new();
+                            REGEX.get_or_init(|| Regex::new("^([⇴⨵])").unwrap())
+                        })
+                    })
+                    .and_then(|s| s.tag_node("map"))
+            })
+            .or_else(|s| {
+                builtin_regex(s, {
+                    static REGEX: OnceLock<Regex> = OnceLock::new();
+                    REGEX.get_or_init(|| Regex::new("^(@{3}|⟴)").unwrap())
+                })
+                .and_then(|s| s.tag_node("apply_3"))
+            })
+            .or_else(|s| {
+                builtin_regex(s, {
+                    static REGEX: OnceLock<Regex> = OnceLock::new();
+                    REGEX.get_or_init(|| Regex::new("^(@{2}|⊕)").unwrap())
+                })
+                .and_then(|s| s.tag_node("apply_2"))
+            })
+    })
+}
+#[inline]
+fn parse_main_prefix(state: Input) -> Output {
+    state.rule(ValkyrieRule::MainPrefix, |s| {
+        Err(s)
+            .or_else(|s| {
+                builtin_regex(s, {
+                    static REGEX: OnceLock<Regex> = OnceLock::new();
+                    REGEX.get_or_init(|| Regex::new("^([¬!])").unwrap())
+                })
+                .and_then(|s| s.tag_node("not"))
+            })
+            .or_else(|s| {
+                builtin_regex(s, {
+                    static REGEX: OnceLock<Regex> = OnceLock::new();
+                    REGEX.get_or_init(|| Regex::new("^([+])").unwrap())
+                })
+                .and_then(|s| s.tag_node("positive"))
+            })
+            .or_else(|s| {
+                builtin_regex(s, {
+                    static REGEX: OnceLock<Regex> = OnceLock::new();
+                    REGEX.get_or_init(|| Regex::new("^([-])").unwrap())
+                })
+                .and_then(|s| s.tag_node("negative"))
+            })
+            .or_else(|s| {
+                builtin_regex(s, {
+                    static REGEX: OnceLock<Regex> = OnceLock::new();
+                    REGEX.get_or_init(|| Regex::new("^([&])").unwrap())
+                })
+                .and_then(|s| s.tag_node("reference"))
+            })
+            .or_else(|s| {
+                builtin_regex(s, {
+                    static REGEX: OnceLock<Regex> = OnceLock::new();
+                    REGEX.get_or_init(|| Regex::new("^(…|[.]{3})").unwrap())
+                })
+                .and_then(|s| s.tag_node("deconstruct_all"))
+            })
+            .or_else(|s| {
+                builtin_regex(s, {
+                    static REGEX: OnceLock<Regex> = OnceLock::new();
+                    REGEX.get_or_init(|| Regex::new("^(‥|[.]{2})").unwrap())
+                })
+                .and_then(|s| s.tag_node("deconstruct"))
+            })
+            .or_else(|s| builtin_text(s, "⅟", false).and_then(|s| s.tag_node("inverse")))
+            .or_else(|s| builtin_text(s, "√", false).and_then(|s| s.tag_node("root_2")))
+            .or_else(|s| builtin_text(s, "∛", false).and_then(|s| s.tag_node("root_3")))
+            .or_else(|s| builtin_text(s, "∜", false).and_then(|s| s.tag_node("root_4")))
+            .or_else(|s| {
+                builtin_regex(s, {
+                    static REGEX: OnceLock<Regex> = OnceLock::new();
+                    REGEX.get_or_init(|| Regex::new("^([*])").unwrap())
+                })
+                .and_then(|s| s.tag_node("dereference"))
+            })
+    })
+}
+#[inline]
+fn parse_main_suffix(state: Input) -> Output {
+    state.rule(ValkyrieRule::MainSuffix, |s| {
+        Err(s)
+            .or_else(|s| builtin_text(s, "!", false).and_then(|s| s.tag_node("raise")))
+            .or_else(|s| builtin_text(s, "%", false).and_then(|s| s.tag_node("percent_2")))
+            .or_else(|s| builtin_text(s, "‰", false).and_then(|s| s.tag_node("percent_3")))
+            .or_else(|s| builtin_text(s, "‱", false).and_then(|s| s.tag_node("percent_4")))
+            .or_else(|s| builtin_text(s, "′", false).and_then(|s| s.tag_node("prime_1")))
+            .or_else(|s| builtin_text(s, "″", false).and_then(|s| s.tag_node("prime_2")))
+            .or_else(|s| builtin_text(s, "‴", false).and_then(|s| s.tag_node("prime_3")))
+            .or_else(|s| builtin_text(s, "⁗", false).and_then(|s| s.tag_node("prime_4")))
+            .or_else(|s| builtin_text(s, "℃", false).and_then(|s| s.tag_node("celsius")))
+            .or_else(|s| builtin_text(s, "℉", false).and_then(|s| s.tag_node("fahrenheit")))
+    })
 }
 #[inline]
 fn parse_namepath_free(state: Input) -> Output {
@@ -755,6 +1075,37 @@ fn parse_comma(state: Input) -> Output {
     })
 }
 #[inline]
+fn parse_op_import_all(state: Input) -> Output {
+    state.rule(ValkyrieRule::OP_IMPORT_ALL, |s| s.match_string("*", false))
+}
+#[inline]
+fn parse_op_bind(state: Input) -> Output {
+    state.rule(ValkyrieRule::OP_BIND, |s| {
+        s.match_regex({
+            static REGEX: OnceLock<Regex> = OnceLock::new();
+            REGEX.get_or_init(|| Regex::new("^(≔|:=)").unwrap())
+        })
+    })
+}
+#[inline]
+fn parse_kw_namespace(state: Input) -> Output {
+    state.rule(ValkyrieRule::KW_NAMESPACE, |s| {
+        s.match_regex({
+            static REGEX: OnceLock<Regex> = OnceLock::new();
+            REGEX.get_or_init(|| Regex::new("^(namespace)").unwrap())
+        })
+    })
+}
+#[inline]
+fn parse_kw_import(state: Input) -> Output {
+    state.rule(ValkyrieRule::KW_IMPORT, |s| {
+        s.match_regex({
+            static REGEX: OnceLock<Regex> = OnceLock::new();
+            REGEX.get_or_init(|| Regex::new("^(using)").unwrap())
+        })
+    })
+}
+#[inline]
 fn parse_kw_template(state: Input) -> Output {
     state.rule(ValkyrieRule::KW_TEMPLATE, |s| {
         s.match_regex({
@@ -774,7 +1125,93 @@ fn parse_kw_where(state: Input) -> Output {
 }
 #[inline]
 fn parse_kw_implements(state: Input) -> Output {
-    state.rule(ValkyrieRule::KW_IMPLEMENTS, |s| s.match_string("implements", false))
+    state.rule(ValkyrieRule::KW_IMPLEMENTS, |s| {
+        s.match_regex({
+            static REGEX: OnceLock<Regex> = OnceLock::new();
+            REGEX.get_or_init(|| Regex::new("^(implements?)").unwrap())
+        })
+    })
+}
+#[inline]
+fn parse_kw_extends(state: Input) -> Output {
+    state.rule(ValkyrieRule::KW_EXTENDS, |s| {
+        s.match_regex({
+            static REGEX: OnceLock<Regex> = OnceLock::new();
+            REGEX.get_or_init(|| Regex::new("^(extends?)").unwrap())
+        })
+    })
+}
+#[inline]
+fn parse_kw_inherits(state: Input) -> Output {
+    state.rule(ValkyrieRule::KW_INHERITS, |s| {
+        s.match_regex({
+            static REGEX: OnceLock<Regex> = OnceLock::new();
+            REGEX.get_or_init(|| Regex::new("^(inherits?)").unwrap())
+        })
+    })
+}
+#[inline]
+fn parse_kw_if(state: Input) -> Output {
+    state.rule(ValkyrieRule::KW_IF, |s| {
+        s.match_regex({
+            static REGEX: OnceLock<Regex> = OnceLock::new();
+            REGEX.get_or_init(|| Regex::new("^(if)").unwrap())
+        })
+    })
+}
+#[inline]
+fn parse_kw_else(state: Input) -> Output {
+    state.rule(ValkyrieRule::KW_ELSE, |s| {
+        s.match_regex({
+            static REGEX: OnceLock<Regex> = OnceLock::new();
+            REGEX.get_or_init(|| Regex::new("^(else)").unwrap())
+        })
+    })
+}
+#[inline]
+fn parse_kw_while(state: Input) -> Output {
+    state.rule(ValkyrieRule::KW_WHILE, |s| {
+        s.match_regex({
+            static REGEX: OnceLock<Regex> = OnceLock::new();
+            REGEX.get_or_init(|| Regex::new("^(while)").unwrap())
+        })
+    })
+}
+#[inline]
+fn parse_kw_for(state: Input) -> Output {
+    state.rule(ValkyrieRule::KW_FOR, |s| {
+        s.match_regex({
+            static REGEX: OnceLock<Regex> = OnceLock::new();
+            REGEX.get_or_init(|| Regex::new("^(for)").unwrap())
+        })
+    })
+}
+#[inline]
+fn parse_kw_return(state: Input) -> Output {
+    state.rule(ValkyrieRule::KW_RETURN, |s| {
+        s.match_regex({
+            static REGEX: OnceLock<Regex> = OnceLock::new();
+            REGEX.get_or_init(|| Regex::new("^(return)").unwrap())
+        })
+    })
+}
+#[inline]
+fn parse_kw_break(state: Input) -> Output {
+    state.rule(ValkyrieRule::KW_BREAK, |s| {
+        s.match_regex({
+            static REGEX: OnceLock<Regex> = OnceLock::new();
+            REGEX.get_or_init(|| Regex::new("^(break)").unwrap())
+        })
+    })
+}
+#[inline]
+fn parse_kw_continue(state: Input) -> Output {
+    state.rule(ValkyrieRule::KW_CONTINUE, |s| {
+        s.match_regex({
+            static REGEX: OnceLock<Regex> = OnceLock::new();
+            REGEX.get_or_init(|| Regex::new("^(continue)").unwrap())
+        })
+    })
 }
 #[inline]
 fn parse_kw_as(state: Input) -> Output {
@@ -782,7 +1219,11 @@ fn parse_kw_as(state: Input) -> Output {
 }
 #[inline]
 fn parse_kw_in(state: Input) -> Output {
-    state.rule(ValkyrieRule::KW_IN, |s| s.match_string("as", false))
+    state.rule(ValkyrieRule::KW_IN, |s| s.match_string("in", false))
+}
+#[inline]
+fn parse_kw_not(state: Input) -> Output {
+    state.rule(ValkyrieRule::KW_NOT, |s| s.match_string("not", false))
 }
 #[inline]
 fn parse_white_space(state: Input) -> Output {
