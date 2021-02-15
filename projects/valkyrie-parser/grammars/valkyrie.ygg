@@ -63,35 +63,83 @@ atomic union ImportMacroItem {
 }
 
 @style(keyword)
-group {
+token {
     KW_IMPORT: 'using'
     OP_IMPORT_ALL: '*'
 }
-// === classes ===
-
-
-//define_class
-//    : template_call? annotation* modifiers KW_CLASS identifier define_generic? class_inherit? type_hint? class_block eos?
-//    ;
-//class_block: BRACE_L (class_dsl | class_method | class_field | eos_free)* BRACE_R;
-//class_inherit
-//    : PARENTHESES_L PARENTHESES_R
-//    | PARENTHESES_L class_inherit_item (COMMA class_inherit_item)* COMMA? PARENTHESES_R
-//    ;
-//class_inherit_item: modified_namepath;
-//class_field:        annotation* modified_identifier type_hint? parameter_default?;
-//class_method
-//    : annotation* modified_namepath define_generic? function_parameters return_type? function_block?
-//    ;
-//class_dsl: annotation* modified_identifier class_block;
-
-
+// === classes === -----------------------------------------------------------------------------------------------------
+class DefineClass {
+    DefineTemplate? //Annotation* ModifiedIdentifier
+    KW_CLASS Identifier DefineGeneric? ClassInherit? TypeHint? ClassBlock ^EOS?
+}
+class ClassBlock {
+    '{' ClassBlockItem* '}'
+}
+union ClassBlockItem {
+    | ClassDomain
+    | ClassMethod
+    | ClassField
+    | EOS_FREE
+}
+class ClassInherit {
+    '(' (ClassInheritItem (',' ClassInheritItem)* ','?)? ')'
+}
+class ClassInheritItem {
+    Namepath
+}
+class ClassField {
+    Identifier
+    //Annotation* ModifiedIdentifier
+    //    TypeHint? ParameterDefault?
+}
+class ClassMethod {
+    //Annotation* ModifiedNamepath
+    //    DefineGeneric? FunctionParameters Return? FunctionBlock?
+    Identifier '(' ')'
+}
+class ClassDomain {
+    //Annotation* ModifiedIdentifier
+    Identifier ClassBlock
+}
+// === template === ----------------------------------------------------------------------------------------------------
+class DefineTemplate {
+    // annotation* modifiers
+    KW_TEMPLATE TemplateParameters? TemplateBlock
+}
+class TemplateParameters {
+    | Identifier (COMMA Identifier)* COMMA?
+    | '<' Identifier (COMMA Identifier)* COMMA? '>'
+    | '⟨' Identifier (COMMA Identifier)* COMMA? '⟩'
+}
+class TemplateBlock {
+    '{' (TemplateStatement | TemplateImplements | EOS_FREE)* '}'
+}
+class TemplateStatement {
+    WhereBlock
+    //  | KW_RETURN TypeExpression
+    //  | Identifier RequireBlock
+}
+class TemplateImplements {
+    //  KW_IMPLEMENTS TypeExpression
+}
+class WhereBlock {
+    KW_WHERE '{' WhereBound* '}'
+}
+class WhereBound {
+    //    | Identifier COLON TypeExpression
+    | EOS_FREE
+}
+//class RequireBlock {
+//    '{' (ExpressionRoot | EOS_FREE)* '}'
+//}
 // === identifier === --------------------------------------------------------------------------------------------------
-
 @style(keyword)
 class KW_CLASS {
-    'class'
+    | 'class'
+    | 'structure'
 }
+
+
 // === identifier === --------------------------------------------------------------------------------------------------
 
 @style(keyword)
@@ -105,7 +153,7 @@ class KW_TRAIT {
     'trait'
 }
 // === identifier === --------------------------------------------------------------------------------------------------
-atomic class NamepathFree -> Namepath {
+atomic class NamepathFree  {
     Identifier (IGNORED /[.∷]|::/ ~ Identifier)*
 }
 atomic class Namepath {
@@ -144,7 +192,16 @@ atomic class ModifierCall ^ {
     !(KW_CLASS | KW_UNION | KW_TRAIT) ^Identifier
 }
 group {
+    COMMA: [,，]
+}
+@style(keyword)
+token {
+    KW_TEMPLATE: /template|generic/
+    KW_WHERE: /where/
+    KW_IMPLEMENTS: 'implements'
+    // === operators === -----------------------------------------------------------------------------------------------
     KW_AS: 'as'
+    KW_IN: 'as'
 }
 // === ignores === -----------------------------------------------------------------------------------------------------
 @railroad(false)
