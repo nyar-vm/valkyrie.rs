@@ -58,6 +58,31 @@ pub enum ValkyrieRule {
     TemplateParameters,
     TemplateBlock,
     TemplateStatement,
+    TemplateImplements,
+    WhereBlock,
+    WhereBound,
+    KW_CLASS,
+    KW_UNION,
+    KW_TRAIT,
+    NamepathFree,
+    Namepath,
+    Identifier,
+    IdentifierBare,
+    IdentifierRaw,
+    IdentifierRawText,
+    Boolean,
+    Integer,
+    RangeExact,
+    Range,
+    ModifierCall,
+    COMMA,
+    KW_TEMPLATE,
+    KW_WHERE,
+    KW_IMPLEMENTS,
+    KW_AS,
+    KW_IN,
+    WhiteSpace,
+    Comment,
     /// Label for text literal
     IgnoreText,
     /// Label for regex literal
@@ -66,7 +91,7 @@ pub enum ValkyrieRule {
 
 impl YggdrasilRule for ValkyrieRule {
     fn is_ignore(&self) -> bool {
-        matches!(self, Self::IgnoreText | Self::IgnoreRegex)
+        matches!(self, Self::IgnoreText | Self::IgnoreRegex | Self::WhiteSpace | Self::Comment)
     }
 
     fn get_style(&self) -> &'static str {
@@ -99,6 +124,31 @@ impl YggdrasilRule for ValkyrieRule {
             Self::TemplateParameters => "",
             Self::TemplateBlock => "",
             Self::TemplateStatement => "",
+            Self::TemplateImplements => "",
+            Self::WhereBlock => "",
+            Self::WhereBound => "",
+            Self::KW_CLASS => "",
+            Self::KW_UNION => "",
+            Self::KW_TRAIT => "",
+            Self::NamepathFree => "",
+            Self::Namepath => "",
+            Self::Identifier => "",
+            Self::IdentifierBare => "",
+            Self::IdentifierRaw => "",
+            Self::IdentifierRawText => "",
+            Self::Boolean => "",
+            Self::Integer => "",
+            Self::RangeExact => "",
+            Self::Range => "",
+            Self::ModifierCall => "",
+            Self::COMMA => "",
+            Self::KW_TEMPLATE => "",
+            Self::KW_WHERE => "",
+            Self::KW_IMPLEMENTS => "",
+            Self::KW_AS => "",
+            Self::KW_IN => "",
+            Self::WhiteSpace => "",
+            Self::Comment => "",
             _ => "",
         }
     }
@@ -129,7 +179,7 @@ pub struct EosFreeNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct DefineNamespaceNode {
-    // Missing rule NamepathFree
+    pub namepath_free: NamepathFreeNode,
     pub op_namespace: Option<OpNamespaceNode>,
     pub span: Range<u32>,
 }
@@ -158,19 +208,19 @@ pub enum ImportTermNode {
     ImportAs(ImportAsNode),
     ImportBlock(ImportBlockNode),
     ImportMacro(ImportMacroNode),
-    NamepathFree(),
+    NamepathFree(NamepathFreeNode),
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ImportAsNode {
-    // Missing rule NamepathFree
-    // Missing rule Identifier
+    pub namepath_free: NamepathFreeNode,
+    pub alias: IdentifierNode,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ImportAllNode {
-    // Missing rule NamepathFree
+    pub namepath_free: NamepathFreeNode,
     pub op_import_all: OpImportAllNode,
     pub span: Range<u32>,
 }
@@ -178,22 +228,22 @@ pub struct ImportAllNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ImportBlockNode {
     pub import_term: Vec<ImportTermNode>,
-    // Missing rule NamepathFree
+    pub namepath_free: NamepathFreeNode,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ImportMacroNode {
     pub import_macro_item: ImportMacroItemNode,
-    // Missing rule NamepathFree
+    pub namepath_free: NamepathFreeNode,
     pub alias: ImportMacroItemNode,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum ImportMacroItemNode {
-    Capture(),
-    Instant(),
+    Capture(IdentifierNode),
+    Instant(IdentifierNode),
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -210,11 +260,9 @@ pub struct OpImportAllNode {
 pub struct DefineClassNode {
     pub class_block: ClassBlockNode,
     pub class_inherit: Option<ClassInheritNode>,
-    // Missing rule DefineGeneric
     pub define_template: Option<DefineTemplateNode>,
-    // Missing rule Identifier
-    // Missing rule KW_CLASS
-    // Missing rule TypeHint
+    pub identifier: IdentifierNode,
+    pub kw_class: KwClassNode,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -240,32 +288,32 @@ pub struct ClassInheritNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ClassInheritItemNode {
-    // Missing rule Namepath
+    pub namepath: NamepathNode,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ClassFieldNode {
-    // Missing rule Identifier
+    pub identifier: IdentifierNode,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ClassMethodNode {
-    // Missing rule Identifier
+    pub identifier: IdentifierNode,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ClassDomainNode {
     pub class_block: ClassBlockNode,
-    // Missing rule Identifier
+    pub identifier: IdentifierNode,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct DefineTemplateNode {
-    // Missing rule KW_TEMPLATE
+    pub kw_template: KwTemplateNode,
     pub template_block: TemplateBlockNode,
     pub template_parameters: Option<TemplateParametersNode>,
     pub span: Range<u32>,
@@ -273,21 +321,162 @@ pub struct DefineTemplateNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct TemplateParametersNode {
-    // Missing rule COMMA
-    // Missing rule Identifier
+    pub comma: Vec<CommaNode>,
+    pub identifier: Vec<IdentifierNode>,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct TemplateBlockNode {
     pub eos_free: Vec<EosFreeNode>,
-    // Missing rule TemplateImplements
+    pub template_implements: Vec<TemplateImplementsNode>,
     pub template_statement: Vec<TemplateStatementNode>,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct TemplateStatementNode {
-    // Missing rule WhereBlock
+    pub where_block: WhereBlockNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct TemplateImplementsNode {
+    pub kw_implements: KwImplementsNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct WhereBlockNode {
+    pub kw_where: KwWhereNode,
+    pub where_bound: Vec<WhereBoundNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct WhereBoundNode {
+    pub eos_free: EosFreeNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct KwClassNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct KwUnionNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct KwTraitNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct NamepathFreeNode {
+    pub identifier: Vec<IdentifierNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct NamepathNode {
+    pub identifier: Vec<IdentifierNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum IdentifierNode {
+    IdentifierBare(IdentifierBareNode),
+    IdentifierRaw(IdentifierRawNode),
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct IdentifierBareNode {
+    pub text: String,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct IdentifierRawNode {
+    pub identifier_raw_text: IdentifierRawTextNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct IdentifierRawTextNode {
+    pub text: String,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum BooleanNode {
+    False,
+    True,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct IntegerNode {
+    pub text: String,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct RangeExactNode {
+    pub integer: IntegerNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct RangeNode {
+    pub max: Option<IntegerNode>,
+    pub min: Option<IntegerNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ModifierCallNode {
+    pub identifier: IdentifierNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct CommaNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct KwTemplateNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct KwWhereNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct KwImplementsNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct KwAsNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct KwInNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct WhiteSpaceNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct CommentNode {
     pub span: Range<u32>,
 }

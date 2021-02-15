@@ -23,10 +23,7 @@ class EOS_FREE {
 class DefineNamespace {
     ^KW_NAMESPACE OP_NAMESPACE? NamepathFree ^EOS?
 }
-@style(keyword)
-class KW_NAMESPACE {
-    'namespace'
-}
+
 @style(keyword)
 union OP_NAMESPACE {
     | '!' #Main
@@ -61,16 +58,14 @@ atomic union ImportMacroItem {
     | '#' Identifier #Capture
     | '@' Identifier #Instant
 }
-
 @style(keyword)
 token {
-    KW_IMPORT: 'using'
     OP_IMPORT_ALL: '*'
 }
 // === classes === -----------------------------------------------------------------------------------------------------
 class DefineClass {
-    DefineTemplate? //Annotation* ModifiedIdentifier
-    KW_CLASS Identifier DefineGeneric? ClassInherit? TypeHint? ClassBlock ^EOS?
+    DefineTemplate? //Annotation* ModifiedIdentifier DefineGeneric? TypeHint?
+    KW_CLASS Identifier ClassInherit? ClassBlock ^EOS?
 }
 class ClassBlock {
     '{' ClassBlockItem* '}'
@@ -120,7 +115,7 @@ class TemplateStatement {
     //  | Identifier RequireBlock
 }
 class TemplateImplements {
-    //  KW_IMPLEMENTS TypeExpression
+      KW_IMPLEMENTS // TypeExpression
 }
 class WhereBlock {
     KW_WHERE '{' WhereBound* '}'
@@ -151,6 +146,62 @@ class KW_UNION {
 @style(keyword)
 class KW_TRAIT {
     'trait'
+}
+// === identifier === --------------------------------------------------------------------------------------------------
+atomic class MainExpression {
+    MainTerm (IGNORED MainInfix ~ MainTerm)*
+}
+@style(operator)
+union MainInfix {
+    | '+' #Add
+}
+// op_prefix
+//    : OP_NOT
+//    | OP_BANG
+//    | OP_ADD
+//    | OP_SUB
+//    | OP_AND
+//    | OP_REFERENCE
+//    | OP_DOT2
+//    | OP_DOT3
+//    | OP_INVERSE
+//    | OP_ROOT2
+//    | OP_ROOT3
+//    | OP_ROOT4
+//    | OP_MUL
+//    ;
+//op_suffix
+//    : OP_BANG
+//    | OP_TEMPERATURE
+//    | OP_TRANSPOSE
+//    | OP_PERCENT
+//    | OP_REM
+//    | OP_OR_DEFAULT
+//    | OP_PRIME
+//    ;
+
+atomic union MainPrefix {
+    | [¬!]     #Not
+    | [+]      #Positive
+    | [-]      #Negative
+    | [&]      #Reference
+    | /[.]{3}/ #Deconstruct
+    | /[.]{2}/ #DeconstructAll
+    | '⅟'      #Inverse
+    | '√'      #Root2
+    | '∛'      #Root3
+    | '∜'      #Root4
+    | [*]      #Dereference
+}
+union MainSuffix {
+    | '!'  #Raise
+    | '%'  #Percent2
+    | '‰'  #Percent3
+    | '‱' #Percent4
+    | '′'  #Prime1
+    | '″'  #Prime2
+    | '‴'  #Prime3
+    | '⁗'  #Prime4
 }
 // === identifier === --------------------------------------------------------------------------------------------------
 atomic class NamepathFree  {
@@ -196,12 +247,14 @@ group {
 }
 @style(keyword)
 token {
+    KW_NAMESPACE: /namespace/
+    KW_IMPORT: /using/
     KW_TEMPLATE: /template|generic/
     KW_WHERE: /where/
     KW_IMPLEMENTS: 'implements'
     // === operators === -----------------------------------------------------------------------------------------------
     KW_AS: 'as'
-    KW_IN: 'as'
+    KW_IN: 'in'
 }
 // === ignores === -----------------------------------------------------------------------------------------------------
 @railroad(false)
