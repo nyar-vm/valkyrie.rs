@@ -1,5 +1,5 @@
 use super::*;
-use valkyrie_parser::MainExpressionNode;
+use valkyrie_parser::{MainExpressionNode, MainStatementNode, ValkyrieRule::MainStatement};
 
 #[test]
 fn lex_expression() {
@@ -14,16 +14,16 @@ fn lex_expression() {
 
 fn parse_expression(input: &str) -> std::io::Result<()> {
     let here = Path::new(env!("CARGO_MANIFEST_DIR")).join("tests").canonicalize()?;
-    let cst = ValkyrieParser::parse_cst(input, ValkyrieRule::MainExpression).unwrap();
+    let cst = ValkyrieParser::parse_cst(input, ValkyrieRule::MainStatement).unwrap();
     println!("Short Form:\n{}", cst);
-    let ast = MainExpressionNode::from_str(input).unwrap();
+    let ast = MainStatementNode::from_str(input).unwrap();
     println!("Long Form:\n{:#?}", ast);
     Ok(())
 }
 
 #[test]
 fn test_apply() {
-    let raw = "1 + +2";
+    let raw = "1 in +2";
     parse_expression(raw).unwrap();
 }
 

@@ -2,8 +2,11 @@
 mod declaration;
 mod expression;
 use std::{fs::File, io::Write, path::Path, str::FromStr};
-use valkyrie_parser::{ProgramNode, ValkyrieParser, ValkyrieRule};
-use yggdrasil_rt::YggdrasilParser;
+use valkyrie_parser::{
+    MainExpressionNode, MainStatementNode, ProgramNode, StatementNode, ValkyrieParser, ValkyrieRule,
+    ValkyrieRule::MainStatement,
+};
+use yggdrasil_rt::{YggdrasilError, YggdrasilParser};
 // mod expression;
 // mod literal;
 // mod statement;
@@ -44,18 +47,21 @@ fn parse_program(input: &str, output: &str) -> std::io::Result<()> {
     file.write_all(format!("{:#?}", ast).as_bytes())
 }
 
-//
-// fn repl_debug(text: &str, output: &str) -> std::io::Result<()> {
-//     let mut file = File::create(here().join(output))?;
-//     let apply = ReplRoot::parse_text(text).unwrap();
-//     let mut theme = PrettyProvider::new(128);
-//     for expr in &apply.statements {
-//         println!("=================================================================");
-//         pretty_print(expr);
-//         let text = expr.pretty_colorful(&theme);
-//         let lisp = expr.lispify();
-//         writeln!(file, "{}", lisp.pretty_string(&theme))?;
-//         println!("{}", lisp.pretty_colorful(&theme));
-//     }
-//     Ok(())
-// }
+fn parse_expression(input: &str, output: &str) -> std::io::Result<()> {
+    let here = Path::new(env!("CARGO_MANIFEST_DIR")).join("tests").canonicalize()?;
+    let cst = ValkyrieParser::parse_cst(input, ValkyrieRule::Program).unwrap();
+    println!("Short Form:\n{}", cst);
+    let ast = match ProgramNode::from_str(input) {
+        Ok(s) => s.statement,
+        Err(_) => {}
+    };
+    let mut file = File::create(here.join(output))?;
+    file.write_all(format!("{:#?}", ast).as_bytes())
+}
+
+fn take_expression(input: StatementNode) -> Option<MainExpressionNode> {
+    match input {
+        StatementNode::DefineImport(_) => {}
+        StatementNode::DefineNamespace(_) => {}
+    }
+}

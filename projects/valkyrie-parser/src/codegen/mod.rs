@@ -61,12 +61,20 @@ pub enum ValkyrieRule {
     KW_CLASS,
     KW_UNION,
     KW_TRAIT,
+    WhileStatement,
+    KW_WHILE,
+    ForStatement,
+    MainStatement,
     MainExpression,
     MainTerm,
     MainFactor,
     MainInfix,
     MainPrefix,
     MainSuffix,
+    InlineExpression,
+    InlineTerm,
+    InlineFactor,
+    Atomic,
     NamepathFree,
     Namepath,
     Identifier,
@@ -90,7 +98,6 @@ pub enum ValkyrieRule {
     KW_INHERITS,
     KW_IF,
     KW_ELSE,
-    KW_WHILE,
     KW_FOR,
     KW_RETURN,
     KW_BREAK,
@@ -144,12 +151,20 @@ impl YggdrasilRule for ValkyrieRule {
             Self::KW_CLASS => "",
             Self::KW_UNION => "",
             Self::KW_TRAIT => "",
+            Self::WhileStatement => "",
+            Self::KW_WHILE => "",
+            Self::ForStatement => "",
+            Self::MainStatement => "",
             Self::MainExpression => "",
             Self::MainTerm => "",
             Self::MainFactor => "",
             Self::MainInfix => "",
             Self::MainPrefix => "",
             Self::MainSuffix => "",
+            Self::InlineExpression => "",
+            Self::InlineTerm => "",
+            Self::InlineFactor => "",
+            Self::Atomic => "",
             Self::NamepathFree => "",
             Self::Namepath => "",
             Self::Identifier => "",
@@ -173,7 +188,6 @@ impl YggdrasilRule for ValkyrieRule {
             Self::KW_INHERITS => "",
             Self::KW_IF => "",
             Self::KW_ELSE => "",
-            Self::KW_WHILE => "",
             Self::KW_FOR => "",
             Self::KW_RETURN => "",
             Self::KW_BREAK => "",
@@ -394,6 +408,36 @@ pub struct KwTraitNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct WhileStatementNode {
+    pub inline_expression: Option<InlineExpressionNode>,
+    pub kw_while: KwWhileNode,
+    pub main_statement: Vec<MainStatementNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct KwWhileNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ForStatementNode {
+    pub identifier: IdentifierNode,
+    pub inline_expression: Option<InlineExpressionNode>,
+    pub kw_for: KwForNode,
+    pub kw_in: KwInNode,
+    pub main_statement: Vec<MainStatementNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum MainStatementNode {
+    ForStatement(ForStatementNode),
+    MainExpression(MainExpressionNode),
+    WhileStatement(WhileStatementNode),
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct MainExpressionNode {
     pub main_infix: Vec<MainInfixNode>,
     pub main_term: Vec<MainTermNode>,
@@ -410,10 +454,8 @@ pub struct MainTermNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum MainFactorNode {
-    Boolean(BooleanNode),
-    Integer(IntegerNode),
+    Atomic(AtomicNode),
     MainFactor0(MainExpressionNode),
-    Namepath(NamepathNode),
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -482,6 +524,34 @@ pub enum MainSuffixNode {
     Prime3,
     Prime4,
     Raise,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct InlineExpressionNode {
+    pub inline_term: Vec<InlineTermNode>,
+    pub main_infix: Vec<MainInfixNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct InlineTermNode {
+    pub inline_factor: InlineFactorNode,
+    pub main_prefix: Vec<MainPrefixNode>,
+    pub main_suffix: Vec<MainSuffixNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum InlineFactorNode {
+    Atomic(AtomicNode),
+    InlineFactor0(MainExpressionNode),
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum AtomicNode {
+    Boolean(BooleanNode),
+    Integer(IntegerNode),
+    Namepath(NamepathNode),
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -608,11 +678,6 @@ pub struct KwIfNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct KwElseNode {
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct KwWhileNode {
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]

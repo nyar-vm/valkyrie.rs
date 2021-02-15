@@ -114,7 +114,6 @@ KW_TEMPLATE:   'template' | 'generic';
 KW_EXTENDS:    'extends';
 KW_IMPLEMENTS: 'implements';
 //
-KW_WHILE: 'while' | 'until';
 KW_FOR:   'for';
 //
 KW_LET:      'let';

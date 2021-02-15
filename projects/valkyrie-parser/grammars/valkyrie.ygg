@@ -9,6 +9,10 @@ entry class Program {
 union Statement {
     | DefineNamespace
     | DefineImport
+    | DefineClass
+    | DefineUnion
+    | DefineTrait
+    | MainStatement
 }
 /// Used to isolate expressions and control whether to output the expression
 union EOS ^ {
@@ -125,26 +129,50 @@ class WhereBound {
 //    '{' (ExpressionRoot | EOS_FREE)* '}'
 //}
 // === identifier === --------------------------------------------------------------------------------------------------
+class DefineClass {
+    KW_CLASS
+}
 @style(keyword)
 class KW_CLASS {
     | 'class'
     | 'structure'
 }
-
-
 // === identifier === --------------------------------------------------------------------------------------------------
-
+class DefineUnion {
+    KW_UNION
+}
 @style(keyword)
 class KW_UNION {
     'union'
 }
 // === identifier === --------------------------------------------------------------------------------------------------
-
+class DefineTrait {
+    KW_TRAIT
+}
 @style(keyword)
 class KW_TRAIT {
     'trait'
 }
-// === identifier === --------------------------------------------------------------------------------------------------
+// === while loop === --------------------------------------------------------------------------------------------------
+class WhileStatement {
+    KW_WHILE InlineExpression? '{' MainStatement* '}' ^EOS?
+}
+@style(keyword)
+union KW_WHILE {
+    | 'while' #While
+    | 'until' #Until
+}
+// === for loop === ----------------------------------------------------------------------------------------------------
+class ForStatement {
+    KW_FOR Identifier KW_IN InlineExpression? '{' MainStatement* '}' ^EOS?
+}
+// === expression === --------------------------------------------------------------------------------------------------
+atomic union MainStatement {
+    | WhileStatement
+    | ForStatement
+    | MainExpression
+}
+// === expression === --------------------------------------------------------------------------------------------------
 atomic class MainExpression {
     MainTerm (IGNORED MainInfix ~ MainTerm)*
 }
@@ -153,9 +181,7 @@ atomic class MainTerm {
 }
 atomic union MainFactor {
     | '(' MainExpression ')'
-    | Namepath
-    | Integer
-    | Boolean
+    | Atomic
 }
 @style(operator)
 atomic union MainInfix ^ {
@@ -225,6 +251,24 @@ union MainSuffix {
     | '℃'  #Celsius
     | '℉'  #Fahrenheit
 }
+// === identifier === --------------------------------------------------------------------------------------------------
+atomic class InlineExpression {
+    InlineTerm (IGNORED MainInfix ~ InlineTerm)*
+}
+atomic class InlineTerm {
+    (MainPrefix IGNORED)* InlineFactor (IGNORED MainSuffix)*
+}
+atomic union InlineFactor {
+    | '(' MainExpression ')'
+    | Atomic
+}
+// === atomic === --------------------------------------------------------------------------------------------------
+union Atomic {
+    | Namepath
+    | Integer
+    | Boolean
+}
+
 // === identifier === --------------------------------------------------------------------------------------------------
 atomic class NamepathFree  {
     Identifier (IGNORED /[.∷]|::/ ~ Identifier)*
