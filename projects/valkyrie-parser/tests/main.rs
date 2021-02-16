@@ -1,12 +1,16 @@
 #![allow(unused, dead_code)]
-mod declaration;
-mod expression;
+
 use std::{fs::File, io::Write, path::Path, str::FromStr};
+
+use yggdrasil_rt::{YggdrasilError, YggdrasilParser};
+
 use valkyrie_parser::{
     MainExpressionNode, MainStatementNode, ProgramNode, StatementNode, ValkyrieParser, ValkyrieRule,
     ValkyrieRule::MainStatement,
 };
-use yggdrasil_rt::{YggdrasilError, YggdrasilParser};
+
+mod declaration;
+mod expression;
 // mod expression;
 // mod literal;
 // mod statement;
@@ -52,8 +56,10 @@ fn parse_expression(input: &str, output: &str) -> std::io::Result<()> {
     let cst = ValkyrieParser::parse_cst(input, ValkyrieRule::Program).unwrap();
     println!("Short Form:\n{}", cst);
     let ast = match ProgramNode::from_str(input) {
-        Ok(s) => s.statement,
-        Err(_) => {}
+        Ok(s) => s.statement.into_iter().flat_map(|v| take_expression(v)).collect(),
+        Err(_) => {
+            vec![]
+        }
     };
     let mut file = File::create(here.join(output))?;
     file.write_all(format!("{:#?}", ast).as_bytes())
@@ -61,7 +67,7 @@ fn parse_expression(input: &str, output: &str) -> std::io::Result<()> {
 
 fn take_expression(input: StatementNode) -> Option<MainExpressionNode> {
     match input {
-        StatementNode::DefineImport(_) => {}
-        StatementNode::DefineNamespace(_) => {}
+        StatementNode::MainStatement(MainStatementNode::MainExpression(e)) => Some(e),
+        _ => None,
     }
 }

@@ -31,7 +31,9 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::WhereBlock => parse_where_block(state),
         ValkyrieRule::WhereBound => parse_where_bound(state),
         ValkyrieRule::KW_CLASS => parse_kw_class(state),
+        ValkyrieRule::DefineUnion => parse_define_union(state),
         ValkyrieRule::KW_UNION => parse_kw_union(state),
+        ValkyrieRule::DefineTrait => parse_define_trait(state),
         ValkyrieRule::KW_TRAIT => parse_kw_trait(state),
         ValkyrieRule::WhileStatement => parse_while_statement(state),
         ValkyrieRule::KW_WHILE => parse_kw_while(state),
@@ -99,6 +101,10 @@ fn parse_statement(state: Input) -> Output {
         Err(s)
             .or_else(|s| parse_define_namespace(s).and_then(|s| s.tag_node("define_namespace")))
             .or_else(|s| parse_define_import(s).and_then(|s| s.tag_node("define_import")))
+            .or_else(|s| parse_define_class(s).and_then(|s| s.tag_node("define_class")))
+            .or_else(|s| parse_define_union(s).and_then(|s| s.tag_node("define_union")))
+            .or_else(|s| parse_define_trait(s).and_then(|s| s.tag_node("define_trait")))
+            .or_else(|s| parse_main_statement(s).and_then(|s| s.tag_node("main_statement")))
     })
 }
 #[inline]
@@ -327,22 +333,7 @@ fn parse_import_macro_item(state: Input) -> Output {
 }
 #[inline]
 fn parse_define_class(state: Input) -> Output {
-    state.rule(ValkyrieRule::DefineClass, |s| {
-        s.sequence(|s| {
-            Ok(s)
-                .and_then(|s| s.optional(|s| parse_define_template(s).and_then(|s| s.tag_node("define_template"))))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| parse_kw_class(s).and_then(|s| s.tag_node("kw_class")))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| s.optional(|s| parse_class_inherit(s).and_then(|s| s.tag_node("class_inherit"))))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| parse_class_block(s).and_then(|s| s.tag_node("class_block")))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| s.optional(|s| parse_eos(s)))
-        })
-    })
+    state.rule(ValkyrieRule::DefineClass, |s| parse_kw_class(s).and_then(|s| s.tag_node("kw_class")))
 }
 #[inline]
 fn parse_class_block(state: Input) -> Output {
@@ -600,8 +591,16 @@ fn parse_kw_class(state: Input) -> Output {
     })
 }
 #[inline]
+fn parse_define_union(state: Input) -> Output {
+    state.rule(ValkyrieRule::DefineUnion, |s| parse_kw_union(s).and_then(|s| s.tag_node("kw_union")))
+}
+#[inline]
 fn parse_kw_union(state: Input) -> Output {
     state.rule(ValkyrieRule::KW_UNION, |s| s.match_string("union", false))
+}
+#[inline]
+fn parse_define_trait(state: Input) -> Output {
+    state.rule(ValkyrieRule::DefineTrait, |s| parse_kw_trait(s).and_then(|s| s.tag_node("kw_trait")))
 }
 #[inline]
 fn parse_kw_trait(state: Input) -> Output {
@@ -692,17 +691,20 @@ fn parse_main_statement(state: Input) -> Output {
 fn parse_main_expression(state: Input) -> Output {
     state.rule(ValkyrieRule::MainExpression, |s| {
         s.sequence(|s| {
-            Ok(s).and_then(|s| parse_main_term(s).and_then(|s| s.tag_node("main_term"))).and_then(|s| {
-                s.repeat(0..4294967295, |s| {
-                    s.sequence(|s| {
-                        Ok(s)
-                            .and_then(|s| builtin_ignore(s))
-                            .and_then(|s| parse_main_infix(s).and_then(|s| s.tag_node("main_infix")))
-                            .and_then(|s| builtin_ignore(s))
-                            .and_then(|s| parse_main_term(s).and_then(|s| s.tag_node("main_term")))
+            Ok(s)
+                .and_then(|s| parse_main_term(s).and_then(|s| s.tag_node("main_term")))
+                .and_then(|s| {
+                    s.repeat(0..4294967295, |s| {
+                        s.sequence(|s| {
+                            Ok(s)
+                                .and_then(|s| builtin_ignore(s))
+                                .and_then(|s| parse_main_infix(s).and_then(|s| s.tag_node("main_infix")))
+                                .and_then(|s| builtin_ignore(s))
+                                .and_then(|s| parse_main_term(s).and_then(|s| s.tag_node("main_term")))
+                        })
                     })
                 })
-            })
+                .and_then(|s| s.optional(|s| parse_eos(s).and_then(|s| s.tag_node("eos"))))
         })
     })
 }

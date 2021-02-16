@@ -174,7 +174,7 @@ atomic union MainStatement {
 }
 // === expression === --------------------------------------------------------------------------------------------------
 atomic class MainExpression {
-    MainTerm (IGNORED MainInfix ~ MainTerm)*
+    MainTerm (IGNORED MainInfix ~ MainTerm)* EOS?
 }
 atomic class MainTerm {
     (MainPrefix IGNORED)* MainFactor (IGNORED MainSuffix)*

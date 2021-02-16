@@ -59,7 +59,9 @@ pub enum ValkyrieRule {
     WhereBlock,
     WhereBound,
     KW_CLASS,
+    DefineUnion,
     KW_UNION,
+    DefineTrait,
     KW_TRAIT,
     WhileStatement,
     KW_WHILE,
@@ -149,7 +151,9 @@ impl YggdrasilRule for ValkyrieRule {
             Self::WhereBlock => "",
             Self::WhereBound => "",
             Self::KW_CLASS => "",
+            Self::DefineUnion => "",
             Self::KW_UNION => "",
+            Self::DefineTrait => "",
             Self::KW_TRAIT => "",
             Self::WhileStatement => "",
             Self::KW_WHILE => "",
@@ -210,8 +214,12 @@ pub struct ProgramNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum StatementNode {
+    DefineClass(DefineClassNode),
     DefineImport(DefineImportNode),
     DefineNamespace(DefineNamespaceNode),
+    DefineTrait(DefineTraitNode),
+    DefineUnion(DefineUnionNode),
+    MainStatement(MainStatementNode),
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -291,10 +299,6 @@ pub enum ImportMacroItemNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct DefineClassNode {
-    pub class_block: ClassBlockNode,
-    pub class_inherit: Option<ClassInheritNode>,
-    pub define_template: Option<DefineTemplateNode>,
-    pub identifier: IdentifierNode,
     pub kw_class: KwClassNode,
     pub span: Range<u32>,
 }
@@ -398,7 +402,19 @@ pub struct KwClassNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct DefineUnionNode {
+    pub kw_union: KwUnionNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct KwUnionNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct DefineTraitNode {
+    pub kw_trait: KwTraitNode,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -439,6 +455,7 @@ pub enum MainStatementNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct MainExpressionNode {
+    pub eos: Option<EosNode>,
     pub main_infix: Vec<MainInfixNode>,
     pub main_term: Vec<MainTermNode>,
     pub span: Range<u32>,

@@ -3,8 +3,9 @@ use valkyrie_parser::{MainExpressionNode, MainStatementNode, ValkyrieRule::MainS
 
 #[test]
 fn lex_expression() {
-    // top_debug(include_str!("infix.vk"), "expression/infix_debug.rkt").expect("infix");
-    // top_debug(include_str!("unary.vk"), "expression/unary_debug.rkt").expect("unary");
+    parse_expression(include_str!("unary.vk"), "expression/unary.ron").expect("unary");
+    parse_expression(include_str!("infix.vk"), "expression/infix.ron").expect("infix");
+
     // top_debug(include_str!("table.vk"), "expression/table_debug.rkt").expect("table");
     // top_debug(include_str!("apply.vk"), "expression/apply_debug.rkt").expect("apply");
     // top_debug(include_str!("slice.vk"), "expression/slice_debug.rkt").expect("slice");
@@ -12,7 +13,7 @@ fn lex_expression() {
     // top_debug(include_str!("new.vk"), "expression/new_debug.rkt").expect("new");
 }
 
-fn parse_expression(input: &str) -> std::io::Result<()> {
+fn debug_expression(input: &str) -> std::io::Result<()> {
     let here = Path::new(env!("CARGO_MANIFEST_DIR")).join("tests").canonicalize()?;
     let cst = ValkyrieParser::parse_cst(input, ValkyrieRule::MainStatement).unwrap();
     println!("Short Form:\n{}", cst);
@@ -24,7 +25,7 @@ fn parse_expression(input: &str) -> std::io::Result<()> {
 #[test]
 fn test_apply() {
     let raw = "1 in +2";
-    parse_expression(raw).unwrap();
+    debug_expression(raw).unwrap();
 }
 
 // #[test]
