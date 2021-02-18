@@ -76,9 +76,10 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::KW_RETURN => parse_kw_return(state),
         ValkyrieRule::KW_BREAK => parse_kw_break(state),
         ValkyrieRule::KW_CONTINUE => parse_kw_continue(state),
-        ValkyrieRule::KW_AS => parse_kw_as(state),
-        ValkyrieRule::KW_IN => parse_kw_in(state),
         ValkyrieRule::KW_NOT => parse_kw_not(state),
+        ValkyrieRule::KW_IN => parse_kw_in(state),
+        ValkyrieRule::KW_IS => parse_kw_is(state),
+        ValkyrieRule::KW_AS => parse_kw_as(state),
         ValkyrieRule::WhiteSpace => parse_white_space(state),
         ValkyrieRule::Comment => parse_comment(state),
         ValkyrieRule::IgnoreText => unreachable!(),
@@ -770,6 +771,41 @@ fn parse_main_infix(state: Input) -> Output {
             .or_else(|s| {
                 builtin_regex(s, {
                     static REGEX: OnceLock<Regex> = OnceLock::new();
+                    REGEX.get_or_init(|| Regex::new("^(≡|===)").unwrap())
+                })
+                .and_then(|s| s.tag_node("eee"))
+            })
+            .or_else(|s| {
+                builtin_regex(s, {
+                    static REGEX: OnceLock<Regex> = OnceLock::new();
+                    REGEX.get_or_init(|| Regex::new("^(≢|!==|=!=)").unwrap())
+                })
+                .and_then(|s| s.tag_node("nee"))
+            })
+            .or_else(|s| {
+                builtin_regex(s, {
+                    static REGEX: OnceLock<Regex> = OnceLock::new();
+                    REGEX.get_or_init(|| Regex::new("^(≠|!=)").unwrap())
+                })
+                .and_then(|s| s.tag_node("ne"))
+            })
+            .or_else(|s| {
+                builtin_regex(s, {
+                    static REGEX: OnceLock<Regex> = OnceLock::new();
+                    REGEX.get_or_init(|| Regex::new("^(==)").unwrap())
+                })
+                .and_then(|s| s.tag_node("ee"))
+            })
+            .or_else(|s| {
+                builtin_regex(s, {
+                    static REGEX: OnceLock<Regex> = OnceLock::new();
+                    REGEX.get_or_init(|| Regex::new("^(=)").unwrap())
+                })
+                .and_then(|s| s.tag_node("eq"))
+            })
+            .or_else(|s| {
+                builtin_regex(s, {
+                    static REGEX: OnceLock<Regex> = OnceLock::new();
                     REGEX.get_or_init(|| Regex::new("^(⋘|<<<)").unwrap())
                 })
                 .and_then(|s| s.tag_node("lll"))
@@ -840,30 +876,44 @@ fn parse_main_infix(state: Input) -> Output {
             .or_else(|s| {
                 builtin_regex(s, {
                     static REGEX: OnceLock<Regex> = OnceLock::new();
-                    REGEX.get_or_init(|| Regex::new("^(≡|===)").unwrap())
+                    REGEX.get_or_init(|| Regex::new("^(&&|∧)").unwrap())
                 })
-                .and_then(|s| s.tag_node("eee"))
+                .and_then(|s| s.tag_node("and"))
             })
             .or_else(|s| {
                 builtin_regex(s, {
                     static REGEX: OnceLock<Regex> = OnceLock::new();
-                    REGEX.get_or_init(|| Regex::new("^(≢|!==|=!=)").unwrap())
+                    REGEX.get_or_init(|| Regex::new("^(⊼)").unwrap())
                 })
-                .and_then(|s| s.tag_node("nee"))
+                .and_then(|s| s.tag_node("nand"))
             })
             .or_else(|s| {
                 builtin_regex(s, {
                     static REGEX: OnceLock<Regex> = OnceLock::new();
-                    REGEX.get_or_init(|| Regex::new("^(≠|!=)").unwrap())
+                    REGEX.get_or_init(|| Regex::new("^(⩟)").unwrap())
                 })
-                .and_then(|s| s.tag_node("ne"))
+                .and_then(|s| s.tag_node("xand"))
             })
             .or_else(|s| {
                 builtin_regex(s, {
                     static REGEX: OnceLock<Regex> = OnceLock::new();
-                    REGEX.get_or_init(|| Regex::new("^(=)").unwrap())
+                    REGEX.get_or_init(|| Regex::new("^(\\|\\||∨)").unwrap())
                 })
-                .and_then(|s| s.tag_node("eq"))
+                .and_then(|s| s.tag_node("or"))
+            })
+            .or_else(|s| {
+                builtin_regex(s, {
+                    static REGEX: OnceLock<Regex> = OnceLock::new();
+                    REGEX.get_or_init(|| Regex::new("^(⊽)").unwrap())
+                })
+                .and_then(|s| s.tag_node("nor"))
+            })
+            .or_else(|s| {
+                builtin_regex(s, {
+                    static REGEX: OnceLock<Regex> = OnceLock::new();
+                    REGEX.get_or_init(|| Regex::new("^(⊻)").unwrap())
+                })
+                .and_then(|s| s.tag_node("xor"))
             })
             .or_else(|s| builtin_text(s, "..<", false).and_then(|s| s.tag_node("up_to")))
             .or_else(|s| builtin_text(s, "..=", false).and_then(|s| s.tag_node("until")))
@@ -896,6 +946,11 @@ fn parse_main_infix(state: Input) -> Output {
                 .and_then(|s| s.tag_node("contains"))
             })
             .or_else(|s| builtin_text(s, "∌", false).and_then(|s| s.tag_node("not_contains")))
+            .or_else(|s| parse_kw_is(s).and_then(|s| s.tag_node("is")))
+            .or_else(|s| {
+                s.sequence(|s| Ok(s).and_then(|s| parse_kw_is(s)).and_then(|s| builtin_ignore(s)).and_then(|s| parse_kw_not(s)))
+                    .and_then(|s| s.tag_node("not_is"))
+            })
             .or_else(|s| {
                 Err(s)
                     .or_else(|s| builtin_text(s, "/@", false))
@@ -1358,16 +1413,20 @@ fn parse_kw_continue(state: Input) -> Output {
     })
 }
 #[inline]
-fn parse_kw_as(state: Input) -> Output {
-    state.rule(ValkyrieRule::KW_AS, |s| s.match_string("as", false))
+fn parse_kw_not(state: Input) -> Output {
+    state.rule(ValkyrieRule::KW_NOT, |s| s.match_string("not", false))
 }
 #[inline]
 fn parse_kw_in(state: Input) -> Output {
     state.rule(ValkyrieRule::KW_IN, |s| s.match_string("in", false))
 }
 #[inline]
-fn parse_kw_not(state: Input) -> Output {
-    state.rule(ValkyrieRule::KW_NOT, |s| s.match_string("not", false))
+fn parse_kw_is(state: Input) -> Output {
+    state.rule(ValkyrieRule::KW_IS, |s| s.match_string("is", false))
+}
+#[inline]
+fn parse_kw_as(state: Input) -> Output {
+    state.rule(ValkyrieRule::KW_AS, |s| s.match_string("as", false))
 }
 #[inline]
 fn parse_white_space(state: Input) -> Output {

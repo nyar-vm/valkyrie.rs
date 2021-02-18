@@ -197,6 +197,12 @@ atomic union MainInfix ^ {
     | '%=' #RemainderAssign
     | '^'  #Power
     | '√'  #Surd
+    // start with `=, !`
+    | /≡|===/     #EEE
+    | /≢|!==|=!=/ #NEE
+    | /≠|!=/      #NE
+    | /==/        #EE
+    | /=/         #EQ
     // start with `<, >`
     | /⋘|<<</   #LLL
     | /<<=/      #LLE
@@ -208,23 +214,30 @@ atomic union MainInfix ^ {
     | /≫|>>/     #GG
     | /[⩾≥]|>=/  #GEQ
     | />/ #GE
-    // start with `=, !`
-    | /≡|===/     #EEE
-    | /≢|!==|=!=/ #NEE
-    | /≠|!=/      #NE
-    | /=/         #EQ
+    // logical
+    | /&&|∧/ #And
+    | /⊼/ #Nand
+    | /⩟/ #Xand // xnor
+    | /\|\||∨/ #Or
+    | /⊽/ #Nor
+    | /⊻/ #Xor
     // start with `.`
     | '..<'       #UpTo
     | '..='       #Until
-    // start with `&`
+    // in, not in
     | (KW_IN | [∈∊])       #In
     | (KW_NOT ~ KW_IN|'∉') #NotIn
     | [∋∍]                 #Contains
     | '∌'                  #NotContains
+    // is, is not
+    | (KW_IS)          #Is
+    | (KW_IS ~ KW_NOT) #NotIs
     // start with `@`
     | ('/@'|[⇴⨵]) #Map
     | (/@{3}|⟴/)  #Apply3
     | (/@{2}|⊕/)  #Apply2
+
+
 }
 atomic union MainPrefix {
     | [¬!]       #Not
@@ -336,9 +349,10 @@ token {
     KW_BREAK: /break/
     KW_CONTINUE: /continue/
     // === operators === -----------------------------------------------------------------------------------------------
-    KW_AS: 'as'
-    KW_IN: 'in'
     KW_NOT: 'not'
+    KW_IN: 'in'
+    KW_IS: 'is'
+    KW_AS: 'as'
 }
 // === ignores === -----------------------------------------------------------------------------------------------------
 @railroad(false)

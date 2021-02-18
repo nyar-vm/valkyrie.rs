@@ -358,4 +358,1390 @@
         ],
         span: 75..95,
     },
+    MainExpressionNode {
+        eos: Some(
+            Omit,
+        ),
+        main_infix: [
+            EE,
+        ],
+        main_term: [
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "a",
+                                        span: 112..113,
+                                    },
+                                ),
+                            ],
+                            span: 112..113,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [],
+                span: 112..113,
+            },
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "c",
+                                        span: 117..118,
+                                    },
+                                ),
+                            ],
+                            span: 117..118,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [],
+                span: 117..118,
+            },
+        ],
+        span: 112..119,
+    },
+    MainExpressionNode {
+        eos: Some(
+            Omit,
+        ),
+        main_infix: [
+            NE,
+            EQ,
+        ],
+        main_term: [
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "a",
+                                        span: 121..122,
+                                    },
+                                ),
+                            ],
+                            span: 121..122,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [],
+                span: 121..122,
+            },
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "b",
+                                        span: 127..128,
+                                    },
+                                ),
+                            ],
+                            span: 127..128,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [
+                    Raise,
+                ],
+                span: 127..130,
+            },
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "c",
+                                        span: 132..133,
+                                    },
+                                ),
+                            ],
+                            span: 132..133,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [],
+                span: 132..133,
+            },
+        ],
+        span: 121..134,
+    },
+    MainExpressionNode {
+        eos: Some(
+            Omit,
+        ),
+        main_infix: [
+            EEE,
+            EEE,
+        ],
+        main_term: [
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "a",
+                                        span: 136..137,
+                                    },
+                                ),
+                            ],
+                            span: 136..137,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [],
+                span: 136..137,
+            },
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "b",
+                                        span: 142..143,
+                                    },
+                                ),
+                            ],
+                            span: 142..143,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [],
+                span: 142..143,
+            },
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "c",
+                                        span: 148..149,
+                                    },
+                                ),
+                            ],
+                            span: 148..149,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [],
+                span: 148..149,
+            },
+        ],
+        span: 136..150,
+    },
+    MainExpressionNode {
+        eos: Some(
+            Omit,
+        ),
+        main_infix: [
+            NEE,
+            EE,
+            NEE,
+        ],
+        main_term: [
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "a",
+                                        span: 152..153,
+                                    },
+                                ),
+                            ],
+                            span: 152..153,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [],
+                span: 152..153,
+            },
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "b",
+                                        span: 158..159,
+                                    },
+                                ),
+                            ],
+                            span: 158..159,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [
+                    Raise,
+                ],
+                span: 158..161,
+            },
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "c",
+                                        span: 164..165,
+                                    },
+                                ),
+                            ],
+                            span: 164..165,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [],
+                span: 164..165,
+            },
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "c",
+                                        span: 170..171,
+                                    },
+                                ),
+                            ],
+                            span: 170..171,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [],
+                span: 170..171,
+            },
+        ],
+        span: 152..172,
+    },
+    MainExpressionNode {
+        eos: Some(
+            Omit,
+        ),
+        main_infix: [
+            NEE,
+            NEE,
+        ],
+        main_term: [
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "a",
+                                        span: 174..175,
+                                    },
+                                ),
+                            ],
+                            span: 174..175,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [],
+                span: 174..175,
+            },
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "b",
+                                        span: 180..181,
+                                    },
+                                ),
+                            ],
+                            span: 180..181,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [],
+                span: 180..181,
+            },
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "c",
+                                        span: 186..187,
+                                    },
+                                ),
+                            ],
+                            span: 186..187,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [],
+                span: 186..187,
+            },
+        ],
+        span: 174..188,
+    },
+    MainExpressionNode {
+        eos: Some(
+            Omit,
+        ),
+        main_infix: [
+            GE,
+            GE,
+        ],
+        main_term: [
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "a",
+                                        span: 207..208,
+                                    },
+                                ),
+                            ],
+                            span: 207..208,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [],
+                span: 207..208,
+            },
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "b",
+                                        span: 211..212,
+                                    },
+                                ),
+                            ],
+                            span: 211..212,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [],
+                span: 211..212,
+            },
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "c",
+                                        span: 215..216,
+                                    },
+                                ),
+                            ],
+                            span: 215..216,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [],
+                span: 215..216,
+            },
+        ],
+        span: 207..217,
+    },
+    MainExpressionNode {
+        eos: Some(
+            Omit,
+        ),
+        main_infix: [
+            LE,
+            LE,
+        ],
+        main_term: [
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "a",
+                                        span: 247..248,
+                                    },
+                                ),
+                            ],
+                            span: 247..248,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [],
+                span: 247..248,
+            },
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "b",
+                                        span: 251..252,
+                                    },
+                                ),
+                            ],
+                            span: 251..252,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [],
+                span: 251..252,
+            },
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "c",
+                                        span: 255..256,
+                                    },
+                                ),
+                            ],
+                            span: 255..256,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [],
+                span: 255..256,
+            },
+        ],
+        span: 247..257,
+    },
+    MainExpressionNode {
+        eos: Some(
+            Omit,
+        ),
+        main_infix: [
+            GG,
+            GG,
+        ],
+        main_term: [
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "a",
+                                        span: 292..293,
+                                    },
+                                ),
+                            ],
+                            span: 292..293,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [],
+                span: 292..293,
+            },
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "b",
+                                        span: 298..299,
+                                    },
+                                ),
+                            ],
+                            span: 298..299,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [],
+                span: 298..299,
+            },
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "c",
+                                        span: 303..304,
+                                    },
+                                ),
+                            ],
+                            span: 303..304,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [],
+                span: 303..304,
+            },
+        ],
+        span: 292..305,
+    },
+    MainExpressionNode {
+        eos: Some(
+            Omit,
+        ),
+        main_infix: [
+            GGG,
+            GGG,
+        ],
+        main_term: [
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "a",
+                                        span: 307..308,
+                                    },
+                                ),
+                            ],
+                            span: 307..308,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [],
+                span: 307..308,
+            },
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "b",
+                                        span: 313..314,
+                                    },
+                                ),
+                            ],
+                            span: 313..314,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [],
+                span: 313..314,
+            },
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "c",
+                                        span: 319..320,
+                                    },
+                                ),
+                            ],
+                            span: 319..320,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [],
+                span: 319..320,
+            },
+        ],
+        span: 307..321,
+    },
+    MainExpressionNode {
+        eos: Some(
+            Omit,
+        ),
+        main_infix: [
+            LL,
+            LL,
+        ],
+        main_term: [
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "a",
+                                        span: 323..324,
+                                    },
+                                ),
+                            ],
+                            span: 323..324,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [],
+                span: 323..324,
+            },
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "b",
+                                        span: 329..330,
+                                    },
+                                ),
+                            ],
+                            span: 329..330,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [],
+                span: 329..330,
+            },
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "c",
+                                        span: 334..335,
+                                    },
+                                ),
+                            ],
+                            span: 334..335,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [],
+                span: 334..335,
+            },
+        ],
+        span: 323..336,
+    },
+    MainExpressionNode {
+        eos: Some(
+            Omit,
+        ),
+        main_infix: [
+            LLL,
+            LLL,
+        ],
+        main_term: [
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "a",
+                                        span: 338..339,
+                                    },
+                                ),
+                            ],
+                            span: 338..339,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [],
+                span: 338..339,
+            },
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "b",
+                                        span: 344..345,
+                                    },
+                                ),
+                            ],
+                            span: 344..345,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [],
+                span: 344..345,
+            },
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "c",
+                                        span: 350..351,
+                                    },
+                                ),
+                            ],
+                            span: 350..351,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [],
+                span: 350..351,
+            },
+        ],
+        span: 338..352,
+    },
+    MainExpressionNode {
+        eos: Some(
+            Omit,
+        ),
+        main_infix: [
+            In,
+        ],
+        main_term: [
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "a",
+                                        span: 371..372,
+                                    },
+                                ),
+                            ],
+                            span: 371..372,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [],
+                span: 371..372,
+            },
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "list",
+                                        span: 377..381,
+                                    },
+                                ),
+                            ],
+                            span: 377..381,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [],
+                span: 377..381,
+            },
+        ],
+        span: 371..382,
+    },
+    MainExpressionNode {
+        eos: Some(
+            Omit,
+        ),
+        main_infix: [
+            In,
+        ],
+        main_term: [
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "a",
+                                        span: 384..385,
+                                    },
+                                ),
+                            ],
+                            span: 384..385,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [],
+                span: 384..385,
+            },
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "list",
+                                        span: 390..394,
+                                    },
+                                ),
+                            ],
+                            span: 390..394,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [],
+                span: 390..394,
+            },
+        ],
+        span: 384..395,
+    },
+    MainExpressionNode {
+        eos: Some(
+            Omit,
+        ),
+        main_infix: [
+            NotIn,
+        ],
+        main_term: [
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "a",
+                                        span: 397..398,
+                                    },
+                                ),
+                            ],
+                            span: 397..398,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [],
+                span: 397..398,
+            },
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "list",
+                                        span: 403..407,
+                                    },
+                                ),
+                            ],
+                            span: 403..407,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [],
+                span: 403..407,
+            },
+        ],
+        span: 397..408,
+    },
+    MainExpressionNode {
+        eos: Some(
+            Omit,
+        ),
+        main_infix: [
+            In,
+        ],
+        main_term: [
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "a",
+                                        span: 410..411,
+                                    },
+                                ),
+                            ],
+                            span: 410..411,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [],
+                span: 410..411,
+            },
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "list",
+                                        span: 415..419,
+                                    },
+                                ),
+                            ],
+                            span: 415..419,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [],
+                span: 415..419,
+            },
+        ],
+        span: 410..420,
+    },
+    MainExpressionNode {
+        eos: Some(
+            Omit,
+        ),
+        main_infix: [
+            NotIn,
+        ],
+        main_term: [
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "a",
+                                        span: 422..423,
+                                    },
+                                ),
+                            ],
+                            span: 422..423,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [],
+                span: 422..423,
+            },
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "list",
+                                        span: 431..435,
+                                    },
+                                ),
+                            ],
+                            span: 431..435,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [],
+                span: 431..435,
+            },
+        ],
+        span: 422..436,
+    },
+    MainExpressionNode {
+        eos: Some(
+            Omit,
+        ),
+        main_infix: [
+            Is(
+                KwIsNode {
+                    span: 456..458,
+                },
+            ),
+        ],
+        main_term: [
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "a",
+                                        span: 454..455,
+                                    },
+                                ),
+                            ],
+                            span: 454..455,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [],
+                span: 454..455,
+            },
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "String",
+                                        span: 459..465,
+                                    },
+                                ),
+                            ],
+                            span: 459..465,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [],
+                span: 459..465,
+            },
+        ],
+        span: 454..466,
+    },
+    MainExpressionNode {
+        eos: None,
+        main_infix: [
+            Is(
+                KwIsNode {
+                    span: 470..472,
+                },
+            ),
+        ],
+        main_term: [
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "b",
+                                        span: 468..469,
+                                    },
+                                ),
+                            ],
+                            span: 468..469,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [],
+                span: 468..469,
+            },
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "not",
+                                        span: 473..476,
+                                    },
+                                ),
+                            ],
+                            span: 473..476,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [],
+                span: 473..476,
+            },
+        ],
+        span: 468..476,
+    },
+    MainExpressionNode {
+        eos: Some(
+            Omit,
+        ),
+        main_infix: [],
+        main_term: [
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "String",
+                                        span: 477..483,
+                                    },
+                                ),
+                            ],
+                            span: 477..483,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [],
+                span: 477..483,
+            },
+        ],
+        span: 477..484,
+    },
+    MainExpressionNode {
+        eos: Some(
+            Omit,
+        ),
+        main_infix: [
+            And,
+            Or,
+            Or,
+            Nor,
+            Xor,
+            And,
+            Nand,
+            Xand,
+        ],
+        main_term: [
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "a",
+                                        span: 488..489,
+                                    },
+                                ),
+                            ],
+                            span: 488..489,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [],
+                span: 488..489,
+            },
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "b",
+                                        span: 493..494,
+                                    },
+                                ),
+                            ],
+                            span: 493..494,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [],
+                span: 493..494,
+            },
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "c",
+                                        span: 498..499,
+                                    },
+                                ),
+                            ],
+                            span: 498..499,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [],
+                span: 498..499,
+            },
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "d",
+                                        span: 504..505,
+                                    },
+                                ),
+                            ],
+                            span: 504..505,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [],
+                span: 504..505,
+            },
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "e",
+                                        span: 510..511,
+                                    },
+                                ),
+                            ],
+                            span: 510..511,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [],
+                span: 510..511,
+            },
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "f",
+                                        span: 516..517,
+                                    },
+                                ),
+                            ],
+                            span: 516..517,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [],
+                span: 516..517,
+            },
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "g",
+                                        span: 522..523,
+                                    },
+                                ),
+                            ],
+                            span: 522..523,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [],
+                span: 522..523,
+            },
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "h",
+                                        span: 528..529,
+                                    },
+                                ),
+                            ],
+                            span: 528..529,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [],
+                span: 528..529,
+            },
+            MainTermNode {
+                main_factor: Atomic(
+                    Namepath(
+                        NamepathNode {
+                            identifier: [
+                                IdentifierBare(
+                                    IdentifierBareNode {
+                                        text: "i",
+                                        span: 534..535,
+                                    },
+                                ),
+                            ],
+                            span: 534..535,
+                        },
+                    ),
+                ),
+                main_prefix: [],
+                main_suffix: [],
+                span: 534..535,
+            },
+        ],
+        span: 488..536,
+    },
 ]

@@ -1047,11 +1047,13 @@ impl YggdrasilNode for MainInfixNode {
 
     fn get_range(&self) -> Option<Range<usize>> {
         match self {
+            Self::And => None,
             Self::Apply2 => None,
             Self::Apply3 => None,
             Self::Contains => None,
             Self::Divide => None,
             Self::DivideAssign => None,
+            Self::EE => None,
             Self::EEE => None,
             Self::EQ => None,
             Self::GE => None,
@@ -1060,6 +1062,7 @@ impl YggdrasilNode for MainInfixNode {
             Self::GGE => None,
             Self::GGG => None,
             Self::In => None,
+            Self::Is(s) => s.get_range(),
             Self::LE => None,
             Self::LEQ => None,
             Self::LL => None,
@@ -1072,8 +1075,12 @@ impl YggdrasilNode for MainInfixNode {
             Self::MultiplyAssign => None,
             Self::NE => None,
             Self::NEE => None,
+            Self::Nand => None,
+            Self::Nor => None,
             Self::NotContains => None,
             Self::NotIn => None,
+            Self::NotIs => None,
+            Self::Or => None,
             Self::Plus => None,
             Self::PlusAssign => None,
             Self::Power => None,
@@ -1082,10 +1089,15 @@ impl YggdrasilNode for MainInfixNode {
             Self::Surd => None,
             Self::Until => None,
             Self::UpTo => None,
+            Self::Xand => None,
+            Self::Xor => None,
         }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
+        if let Some(_) = pair.find_first_tag("and") {
+            return Ok(Self::And);
+        }
         if let Some(_) = pair.find_first_tag("apply_2") {
             return Ok(Self::Apply2);
         }
@@ -1100,6 +1112,9 @@ impl YggdrasilNode for MainInfixNode {
         }
         if let Some(_) = pair.find_first_tag("divide_assign") {
             return Ok(Self::DivideAssign);
+        }
+        if let Some(_) = pair.find_first_tag("ee") {
+            return Ok(Self::EE);
         }
         if let Some(_) = pair.find_first_tag("eee") {
             return Ok(Self::EEE);
@@ -1124,6 +1139,9 @@ impl YggdrasilNode for MainInfixNode {
         }
         if let Some(_) = pair.find_first_tag("in") {
             return Ok(Self::In);
+        }
+        if let Ok(s) = pair.take_tagged_one::<KwIsNode>(Cow::Borrowed("is")) {
+            return Ok(Self::Is(s));
         }
         if let Some(_) = pair.find_first_tag("le") {
             return Ok(Self::LE);
@@ -1161,11 +1179,23 @@ impl YggdrasilNode for MainInfixNode {
         if let Some(_) = pair.find_first_tag("nee") {
             return Ok(Self::NEE);
         }
+        if let Some(_) = pair.find_first_tag("nand") {
+            return Ok(Self::Nand);
+        }
+        if let Some(_) = pair.find_first_tag("nor") {
+            return Ok(Self::Nor);
+        }
         if let Some(_) = pair.find_first_tag("not_contains") {
             return Ok(Self::NotContains);
         }
         if let Some(_) = pair.find_first_tag("not_in") {
             return Ok(Self::NotIn);
+        }
+        if let Some(_) = pair.find_first_tag("not_is") {
+            return Ok(Self::NotIs);
+        }
+        if let Some(_) = pair.find_first_tag("or") {
+            return Ok(Self::Or);
         }
         if let Some(_) = pair.find_first_tag("plus") {
             return Ok(Self::Plus);
@@ -1190,6 +1220,12 @@ impl YggdrasilNode for MainInfixNode {
         }
         if let Some(_) = pair.find_first_tag("up_to") {
             return Ok(Self::UpTo);
+        }
+        if let Some(_) = pair.find_first_tag("xand") {
+            return Ok(Self::Xand);
+        }
+        if let Some(_) = pair.find_first_tag("xor") {
+            return Ok(Self::Xor);
         }
         Err(YggdrasilError::invalid_node(ValkyrieRule::MainInfix, _span))
     }
@@ -2023,7 +2059,7 @@ impl FromStr for KwContinueNode {
     }
 }
 #[automatically_derived]
-impl YggdrasilNode for KwAsNode {
+impl YggdrasilNode for KwNotNode {
     type Rule = ValkyrieRule;
 
     fn get_range(&self) -> Option<Range<usize>> {
@@ -2035,11 +2071,11 @@ impl YggdrasilNode for KwAsNode {
     }
 }
 #[automatically_derived]
-impl FromStr for KwAsNode {
+impl FromStr for KwNotNode {
     type Err = YggdrasilError<ValkyrieRule>;
 
     fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
-        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::KW_AS)?)
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::KW_NOT)?)
     }
 }
 #[automatically_derived]
@@ -2063,7 +2099,7 @@ impl FromStr for KwInNode {
     }
 }
 #[automatically_derived]
-impl YggdrasilNode for KwNotNode {
+impl YggdrasilNode for KwIsNode {
     type Rule = ValkyrieRule;
 
     fn get_range(&self) -> Option<Range<usize>> {
@@ -2075,11 +2111,31 @@ impl YggdrasilNode for KwNotNode {
     }
 }
 #[automatically_derived]
-impl FromStr for KwNotNode {
+impl FromStr for KwIsNode {
     type Err = YggdrasilError<ValkyrieRule>;
 
     fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
-        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::KW_NOT)?)
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::KW_IS)?)
+    }
+}
+#[automatically_derived]
+impl YggdrasilNode for KwAsNode {
+    type Rule = ValkyrieRule;
+
+    fn get_range(&self) -> Option<Range<usize>> {
+        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    }
+    fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
+        let _span = pair.get_span();
+        Ok(Self { span: Range { start: _span.start() as u32, end: _span.end() as u32 } })
+    }
+}
+#[automatically_derived]
+impl FromStr for KwAsNode {
+    type Err = YggdrasilError<ValkyrieRule>;
+
+    fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::KW_AS)?)
     }
 }
 #[automatically_derived]

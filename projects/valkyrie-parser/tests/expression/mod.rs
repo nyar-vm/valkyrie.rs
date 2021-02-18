@@ -1,11 +1,45 @@
+use nyar_error::third_party::Url;
+use std::path::PathBuf;
+use valkyrie_parser::MainStatementNode;
+
 use super::*;
-use valkyrie_parser::{MainExpressionNode, MainStatementNode, ValkyrieRule::MainStatement};
+
+fn parse_expression(file: &str) -> anyhow::Result<Vec<MainExpressionNode>> {
+    let (input, output, path) = read_io("expression", file)?;
+    let cst = ValkyrieParser::parse_cst(&input, ValkyrieRule::Program).unwrap();
+    println!("Short Form:\n{}", cst);
+    let ast = match ProgramNode::from_str(&input) {
+        Ok(s) => s.statement.into_iter().flat_map(|v| take_expression(v)).collect(),
+        Err(_) => {
+            vec![]
+        }
+    };
+    let mut file = File::create(path)?;
+    let new = format!("{:#?}", ast);
+    file.write_all(new.as_bytes());
+    assert_eq!(new, output);
+    Ok(ast)
+}
+
+fn take_expression(input: StatementNode) -> Option<MainExpressionNode> {
+    match input {
+        StatementNode::MainStatement(MainStatementNode::MainExpression(e)) => Some(e),
+        _ => None,
+    }
+}
+
+#[test]
+fn test_unary() {
+    parse_expression("unary").unwrap();
+}
+
+#[test]
+fn test_infix() {
+    parse_expression("infix").unwrap();
+}
 
 #[test]
 fn lex_expression() {
-    parse_expression(include_str!("unary.vk"), "expression/unary.ron").expect("unary");
-    parse_expression(include_str!("infix.vk"), "expression/infix.ron").expect("infix");
-
     // top_debug(include_str!("table.vk"), "expression/table_debug.rkt").expect("table");
     // top_debug(include_str!("apply.vk"), "expression/apply_debug.rkt").expect("apply");
     // top_debug(include_str!("slice.vk"), "expression/slice_debug.rkt").expect("slice");
@@ -24,7 +58,7 @@ fn debug_expression(input: &str) -> std::io::Result<()> {
 
 #[test]
 fn test_apply() {
-    let raw = "1 in +2";
+    let raw = "a == c";
     debug_expression(raw).unwrap();
 }
 

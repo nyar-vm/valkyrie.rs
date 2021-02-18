@@ -104,9 +104,10 @@ pub enum ValkyrieRule {
     KW_RETURN,
     KW_BREAK,
     KW_CONTINUE,
-    KW_AS,
-    KW_IN,
     KW_NOT,
+    KW_IN,
+    KW_IS,
+    KW_AS,
     WhiteSpace,
     Comment,
     /// Label for text literal
@@ -196,9 +197,10 @@ impl YggdrasilRule for ValkyrieRule {
             Self::KW_RETURN => "",
             Self::KW_BREAK => "",
             Self::KW_CONTINUE => "",
-            Self::KW_AS => "",
-            Self::KW_IN => "",
             Self::KW_NOT => "",
+            Self::KW_IN => "",
+            Self::KW_IS => "",
+            Self::KW_AS => "",
             Self::WhiteSpace => "",
             Self::Comment => "",
             _ => "",
@@ -477,11 +479,13 @@ pub enum MainFactorNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum MainInfixNode {
+    And,
     Apply2,
     Apply3,
     Contains,
     Divide,
     DivideAssign,
+    EE,
     EEE,
     EQ,
     GE,
@@ -490,6 +494,7 @@ pub enum MainInfixNode {
     GGE,
     GGG,
     In,
+    Is(KwIsNode),
     LE,
     LEQ,
     LL,
@@ -502,8 +507,12 @@ pub enum MainInfixNode {
     MultiplyAssign,
     NE,
     NEE,
+    Nand,
+    Nor,
     NotContains,
     NotIn,
+    NotIs,
+    Or,
     Plus,
     PlusAssign,
     Power,
@@ -512,6 +521,8 @@ pub enum MainInfixNode {
     Surd,
     Until,
     UpTo,
+    Xand,
+    Xor,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -719,7 +730,7 @@ pub struct KwContinueNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct KwAsNode {
+pub struct KwNotNode {
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -729,7 +740,12 @@ pub struct KwInNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct KwNotNode {
+pub struct KwIsNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct KwAsNode {
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
