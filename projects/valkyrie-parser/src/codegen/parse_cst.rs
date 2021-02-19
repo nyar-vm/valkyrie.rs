@@ -48,6 +48,9 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::InlineExpression => parse_inline_expression(state),
         ValkyrieRule::InlineTerm => parse_inline_term(state),
         ValkyrieRule::InlineFactor => parse_inline_factor(state),
+        ValkyrieRule::RangeCall => parse_range_call(state),
+        ValkyrieRule::RangeLiteral => parse_range_literal(state),
+        ValkyrieRule::RangeAxis => parse_range_axis(state),
         ValkyrieRule::Atomic => parse_atomic(state),
         ValkyrieRule::NamepathFree => parse_namepath_free(state),
         ValkyrieRule::Namepath => parse_namepath(state),
@@ -61,7 +64,10 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::Range => parse_range(state),
         ValkyrieRule::ModifierCall => parse_modifier_call(state),
         ValkyrieRule::COMMA => parse_comma(state),
+        ValkyrieRule::COLON => parse_colon(state),
+        ValkyrieRule::DOT => parse_dot(state),
         ValkyrieRule::OP_IMPORT_ALL => parse_op_import_all(state),
+        ValkyrieRule::OP_AND_THEN => parse_op_and_then(state),
         ValkyrieRule::OP_BIND => parse_op_bind(state),
         ValkyrieRule::KW_NAMESPACE => parse_kw_namespace(state),
         ValkyrieRule::KW_IMPORT => parse_kw_import(state),
@@ -1112,6 +1118,207 @@ fn parse_inline_factor(state: Input) -> Output {
                 .and_then(|s| s.tag_node("inline_factor_0"))
             })
             .or_else(|s| parse_atomic(s).and_then(|s| s.tag_node("atomic")))
+            .or_else(|s| parse_atomic(s).and_then(|s| s.tag_node("atomic")))
+    })
+}
+#[inline]
+fn parse_range_call(state: Input) -> Output {
+    state.rule(ValkyrieRule::RangeCall, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| s.optional(|s| parse_op_and_then(s).and_then(|s| s.tag_node("op_and_then"))))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_range_literal(s).and_then(|s| s.tag_node("range_literal")))
+        })
+    })
+}
+#[inline]
+fn parse_range_literal(state: Input) -> Output {
+    state.rule(ValkyrieRule::RangeLiteral, |s| {
+        Err(s)
+            .or_else(|s| {
+                s.sequence(|s| {
+                    Ok(s)
+                        .and_then(|s| builtin_text(s, "[", false))
+                        .and_then(|s| builtin_ignore(s))
+                        .and_then(|s| {
+                            s.optional(|s| {
+                                s.sequence(|s| {
+                                    Ok(s)
+                                        .and_then(|s| parse_range_axis(s).and_then(|s| s.tag_node("range_axis")))
+                                        .and_then(|s| builtin_ignore(s))
+                                        .and_then(|s| {
+                                            s.repeat(0..4294967295, |s| {
+                                                s.sequence(|s| {
+                                                    Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| {
+                                                        s.sequence(|s| {
+                                                            Ok(s)
+                                                                .and_then(|s| parse_comma(s).and_then(|s| s.tag_node("comma")))
+                                                                .and_then(|s| builtin_ignore(s))
+                                                                .and_then(|s| {
+                                                                    parse_range_axis(s).and_then(|s| s.tag_node("range_axis"))
+                                                                })
+                                                        })
+                                                    })
+                                                })
+                                            })
+                                        })
+                                        .and_then(|s| builtin_ignore(s))
+                                        .and_then(|s| s.optional(|s| parse_comma(s).and_then(|s| s.tag_node("comma"))))
+                                })
+                            })
+                        })
+                        .and_then(|s| builtin_ignore(s))
+                        .and_then(|s| builtin_text(s, "]", false))
+                })
+            })
+            .or_else(|s| {
+                s.sequence(|s| {
+                    Ok(s)
+                        .and_then(|s| builtin_text(s, "⁅", false))
+                        .and_then(|s| builtin_ignore(s))
+                        .and_then(|s| {
+                            s.optional(|s| {
+                                s.sequence(|s| {
+                                    Ok(s)
+                                        .and_then(|s| parse_range_axis(s).and_then(|s| s.tag_node("range_axis")))
+                                        .and_then(|s| builtin_ignore(s))
+                                        .and_then(|s| {
+                                            s.repeat(0..4294967295, |s| {
+                                                s.sequence(|s| {
+                                                    Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| {
+                                                        s.sequence(|s| {
+                                                            Ok(s)
+                                                                .and_then(|s| parse_comma(s).and_then(|s| s.tag_node("comma")))
+                                                                .and_then(|s| builtin_ignore(s))
+                                                                .and_then(|s| {
+                                                                    parse_range_axis(s).and_then(|s| s.tag_node("range_axis"))
+                                                                })
+                                                        })
+                                                    })
+                                                })
+                                            })
+                                        })
+                                        .and_then(|s| builtin_ignore(s))
+                                        .and_then(|s| s.optional(|s| parse_comma(s).and_then(|s| s.tag_node("comma"))))
+                                })
+                            })
+                        })
+                        .and_then(|s| builtin_ignore(s))
+                        .and_then(|s| builtin_text(s, "⁆", false))
+                })
+            })
+    })
+}
+#[inline]
+fn parse_range_axis(state: Input) -> Output {
+    state.rule(ValkyrieRule::RangeAxis, |s| {
+        Err(s)
+            .or_else(|s| builtin_text(s, ":", false))
+            .or_else(|s| parse_expression(s).and_then(|s| s.tag_node("index")))
+            .or_else(|s| parse_expression(s).and_then(|s| s.tag_node("head")))
+            .or_else(|s| builtin_text(s, ":", false))
+            .or_else(|s| builtin_text(s, ":", false))
+            .or_else(|s| parse_expression(s).and_then(|s| s.tag_node("tail")))
+            .or_else(|s| {
+                s.sequence(|s| {
+                    Ok(s)
+                        .and_then(|s| parse_expression(s).and_then(|s| s.tag_node("head")))
+                        .and_then(|s| builtin_ignore(s))
+                        .and_then(|s| builtin_text(s, ":", false))
+                })
+            })
+            .or_else(|s| parse_expression(s).and_then(|s| s.tag_node("tail")))
+            .or_else(|s| {
+                Err(s).or_else(|s| parse_op_proportion(s).and_then(|s| s.tag_node("op_proportion"))).or_else(|s| {
+                    builtin_regex(s, {
+                        static REGEX: OnceLock<Regex> = OnceLock::new();
+                        REGEX.get_or_init(|| Regex::new("^(::)").unwrap())
+                    })
+                })
+            })
+            .or_else(|s| parse_expression(s).and_then(|s| s.tag_node("head")))
+            .or_else(|s| {
+                Err(s).or_else(|s| parse_op_proportion(s).and_then(|s| s.tag_node("op_proportion"))).or_else(|s| {
+                    s.sequence(|s| {
+                        Ok(s)
+                            .and_then(|s| builtin_text(s, ":", false))
+                            .and_then(|s| builtin_ignore(s))
+                            .and_then(|s| builtin_text(s, ":", false))
+                    })
+                })
+            })
+            .or_else(|s| builtin_text(s, ":", false))
+            .or_else(|s| parse_expression(s).and_then(|s| s.tag_node("tail")))
+            .or_else(|s| builtin_text(s, ":", false))
+            .or_else(|s| {
+                Err(s).or_else(|s| parse_op_proportion(s).and_then(|s| s.tag_node("op_proportion"))).or_else(|s| {
+                    s.sequence(|s| {
+                        Ok(s)
+                            .and_then(|s| builtin_text(s, ":", false))
+                            .and_then(|s| builtin_ignore(s))
+                            .and_then(|s| builtin_text(s, ":", false))
+                    })
+                })
+            })
+            .or_else(|s| parse_expression(s).and_then(|s| s.tag_node("step")))
+            .or_else(|s| {
+                s.sequence(|s| {
+                    Ok(s)
+                        .and_then(|s| parse_expression(s).and_then(|s| s.tag_node("head")))
+                        .and_then(|s| builtin_ignore(s))
+                        .and_then(|s| builtin_text(s, ":", false))
+                })
+            })
+            .or_else(|s| parse_expression(s).and_then(|s| s.tag_node("tail")))
+            .or_else(|s| builtin_text(s, ":", false))
+            .or_else(|s| {
+                s.sequence(|s| {
+                    Ok(s)
+                        .and_then(|s| builtin_text(s, ":", false))
+                        .and_then(|s| builtin_ignore(s))
+                        .and_then(|s| parse_expression(s).and_then(|s| s.tag_node("tail")))
+                        .and_then(|s| builtin_ignore(s))
+                        .and_then(|s| builtin_text(s, ":", false))
+                })
+            })
+            .or_else(|s| parse_expression(s).and_then(|s| s.tag_node("step")))
+            .or_else(|s| {
+                s.sequence(|s| {
+                    Ok(s)
+                        .and_then(|s| parse_expression(s).and_then(|s| s.tag_node("head")))
+                        .and_then(|s| builtin_ignore(s))
+                        .and_then(|s| {
+                            Err(s).or_else(|s| parse_op_proportion(s).and_then(|s| s.tag_node("op_proportion"))).or_else(|s| {
+                                s.sequence(|s| {
+                                    Ok(s)
+                                        .and_then(|s| builtin_text(s, ":", false))
+                                        .and_then(|s| builtin_ignore(s))
+                                        .and_then(|s| builtin_text(s, ":", false))
+                                })
+                            })
+                        })
+                })
+            })
+            .or_else(|s| parse_expression(s).and_then(|s| s.tag_node("step")))
+            .or_else(|s| {
+                s.sequence(|s| {
+                    Ok(s)
+                        .and_then(|s| {
+                            s.sequence(|s| {
+                                Ok(s)
+                                    .and_then(|s| parse_expression(s).and_then(|s| s.tag_node("head")))
+                                    .and_then(|s| builtin_ignore(s))
+                                    .and_then(|s| builtin_text(s, ":", false))
+                            })
+                        })
+                        .and_then(|s| builtin_ignore(s))
+                        .and_then(|s| parse_expression(s).and_then(|s| s.tag_node("tail")))
+                        .and_then(|s| builtin_ignore(s))
+                        .and_then(|s| builtin_text(s, ":", false))
+                })
+            })
+            .or_else(|s| parse_expression(s).and_then(|s| s.tag_node("step")))
     })
 }
 #[inline]
@@ -1283,8 +1490,30 @@ fn parse_comma(state: Input) -> Output {
     })
 }
 #[inline]
+fn parse_colon(state: Input) -> Output {
+    state.rule(ValkyrieRule::COLON, |s| {
+        s.match_regex({
+            static REGEX: OnceLock<Regex> = OnceLock::new();
+            REGEX.get_or_init(|| Regex::new("^([:：])").unwrap())
+        })
+    })
+}
+#[inline]
+fn parse_dot(state: Input) -> Output {
+    state.rule(ValkyrieRule::DOT, |s| {
+        s.match_regex({
+            static REGEX: OnceLock<Regex> = OnceLock::new();
+            REGEX.get_or_init(|| Regex::new("^([.．])").unwrap())
+        })
+    })
+}
+#[inline]
 fn parse_op_import_all(state: Input) -> Output {
     state.rule(ValkyrieRule::OP_IMPORT_ALL, |s| s.match_string("*", false))
+}
+#[inline]
+fn parse_op_and_then(state: Input) -> Output {
+    state.rule(ValkyrieRule::OP_AND_THEN, |s| s.match_string("?", false))
 }
 #[inline]
 fn parse_op_bind(state: Input) -> Output {

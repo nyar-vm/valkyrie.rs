@@ -274,6 +274,30 @@ atomic class InlineTerm {
 atomic union InlineFactor {
     | '(' MainExpression ')'
     | Atomic
+    | Atomic
+}
+// === range === --------------------------------------------------------------------------------------------------
+class RangeCall {
+    OP_AND_THEN? RangeLiteral
+}
+class RangeLiteral {
+    | '[' (RangeAxis (COMMA RangeAxis)* COMMA?)? ']'
+    | '⁅' (RangeAxis (COMMA RangeAxis)* COMMA?)? '⁆'
+}
+class RangeAxis {
+    | ':' // [:]
+    | index:Expression // [s]
+    | head:Expression ':' // [s:]
+    | ':' tail:Expression // [:s]
+    | head:Expression ':' tail:Expression //[s:s]
+    | (OP_PROPORTION | /::/) // [::] + [: :]
+    | head:Expression (OP_PROPORTION | ':' ':') // [s::]
+    | ':' tail:Expression ':' // [:s:]
+    | (OP_PROPORTION | ':' ':') step:Expression // [::s]
+    | head:Expression ':' tail:Expression ':' // [s:s:]
+    | ':' tail:Expression ':' step:Expression // [:s:s]
+    | head:Expression (OP_PROPORTION | ':' ':') step:Expression // [s::s]
+    | head:Expression ':' tail:Expression ':' step:Expression // [s:s:s]
 }
 // === atomic === --------------------------------------------------------------------------------------------------
 union Atomic {
@@ -323,10 +347,13 @@ atomic class ModifierCall ^ {
 }
 token {
     COMMA: [,，]
+    COLON: [:：]
+    DOT:   [.．]
 }
 @style(keyword)
 token {
     OP_IMPORT_ALL: '*'
+    OP_AND_THEN: '?'
     OP_BIND: /≔|:=/
 }
 @railway(false)

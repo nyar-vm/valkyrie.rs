@@ -76,6 +76,9 @@ pub enum ValkyrieRule {
     InlineExpression,
     InlineTerm,
     InlineFactor,
+    RangeCall,
+    RangeLiteral,
+    RangeAxis,
     Atomic,
     NamepathFree,
     Namepath,
@@ -89,7 +92,10 @@ pub enum ValkyrieRule {
     Range,
     ModifierCall,
     COMMA,
+    COLON,
+    DOT,
     OP_IMPORT_ALL,
+    OP_AND_THEN,
     OP_BIND,
     KW_NAMESPACE,
     KW_IMPORT,
@@ -169,6 +175,9 @@ impl YggdrasilRule for ValkyrieRule {
             Self::InlineExpression => "",
             Self::InlineTerm => "",
             Self::InlineFactor => "",
+            Self::RangeCall => "",
+            Self::RangeLiteral => "",
+            Self::RangeAxis => "",
             Self::Atomic => "",
             Self::NamepathFree => "",
             Self::Namepath => "",
@@ -182,7 +191,10 @@ impl YggdrasilRule for ValkyrieRule {
             Self::Range => "",
             Self::ModifierCall => "",
             Self::COMMA => "",
+            Self::COLON => "",
+            Self::DOT => "",
             Self::OP_IMPORT_ALL => "",
+            Self::OP_AND_THEN => "",
             Self::OP_BIND => "",
             Self::KW_NAMESPACE => "",
             Self::KW_IMPORT => "",
@@ -576,6 +588,30 @@ pub enum InlineFactorNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct RangeCallNode {
+    pub op_and_then: Option<OpAndThenNode>,
+    pub range_literal: RangeLiteralNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct RangeLiteralNode {
+    pub comma: Vec<CommaNode>,
+    pub range_axis: Vec<RangeAxisNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct RangeAxisNode {
+    // Missing rule OP_PROPORTION
+    // Missing rule Expression
+    // Missing rule Expression
+    // Missing rule Expression
+    // Missing rule Expression
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum AtomicNode {
     Boolean(BooleanNode),
     Integer(IntegerNode),
@@ -655,7 +691,22 @@ pub struct CommaNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ColonNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct DotNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct OpImportAllNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct OpAndThenNode {
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
