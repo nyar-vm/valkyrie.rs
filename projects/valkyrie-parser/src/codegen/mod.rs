@@ -3,8 +3,8 @@
 #![allow(clippy::unnecessary_cast)]
 #![doc = include_str!("readme.md")]
 
-mod parse_ast;
 mod parse_cst;
+mod parse_ast;
 
 use core::str::FromStr;
 use std::{borrow::Cow, ops::Range, sync::OnceLock};
@@ -79,6 +79,7 @@ pub enum ValkyrieRule {
     RangeCall,
     RangeLiteral,
     RangeAxis,
+    RangeOmit,
     Atomic,
     NamepathFree,
     Namepath,
@@ -93,6 +94,7 @@ pub enum ValkyrieRule {
     ModifierCall,
     COMMA,
     COLON,
+    PROPORTION,
     DOT,
     OP_IMPORT_ALL,
     OP_AND_THEN,
@@ -178,6 +180,7 @@ impl YggdrasilRule for ValkyrieRule {
             Self::RangeCall => "",
             Self::RangeLiteral => "",
             Self::RangeAxis => "",
+            Self::RangeOmit => "",
             Self::Atomic => "",
             Self::NamepathFree => "",
             Self::Namepath => "",
@@ -192,6 +195,7 @@ impl YggdrasilRule for ValkyrieRule {
             Self::ModifierCall => "",
             Self::COMMA => "",
             Self::COLON => "",
+            Self::PROPORTION => "",
             Self::DOT => "",
             Self::OP_IMPORT_ALL => "",
             Self::OP_AND_THEN => "",
@@ -603,11 +607,17 @@ pub struct RangeLiteralNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct RangeAxisNode {
-    // Missing rule OP_PROPORTION
-    // Missing rule Expression
-    // Missing rule Expression
-    // Missing rule Expression
-    // Missing rule Expression
+    pub head: MainExpressionNode,
+    pub index: MainExpressionNode,
+    pub step: MainExpressionNode,
+    pub tail: MainExpressionNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct RangeOmitNode {
+    pub colon: Vec<ColonNode>,
+    pub proportion: ProportionNode,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -692,6 +702,11 @@ pub struct CommaNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ColonNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ProportionNode {
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]

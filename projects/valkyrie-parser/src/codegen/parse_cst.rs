@@ -51,6 +51,7 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::RangeCall => parse_range_call(state),
         ValkyrieRule::RangeLiteral => parse_range_literal(state),
         ValkyrieRule::RangeAxis => parse_range_axis(state),
+        ValkyrieRule::RangeOmit => parse_range_omit(state),
         ValkyrieRule::Atomic => parse_atomic(state),
         ValkyrieRule::NamepathFree => parse_namepath_free(state),
         ValkyrieRule::Namepath => parse_namepath(state),
@@ -65,6 +66,7 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::ModifierCall => parse_modifier_call(state),
         ValkyrieRule::COMMA => parse_comma(state),
         ValkyrieRule::COLON => parse_colon(state),
+        ValkyrieRule::PROPORTION => parse_proportion(state),
         ValkyrieRule::DOT => parse_dot(state),
         ValkyrieRule::OP_IMPORT_ALL => parse_op_import_all(state),
         ValkyrieRule::OP_AND_THEN => parse_op_and_then(state),
@@ -1214,111 +1216,90 @@ fn parse_range_literal(state: Input) -> Output {
 fn parse_range_axis(state: Input) -> Output {
     state.rule(ValkyrieRule::RangeAxis, |s| {
         Err(s)
-            .or_else(|s| builtin_text(s, ":", false))
-            .or_else(|s| parse_expression(s).and_then(|s| s.tag_node("index")))
-            .or_else(|s| parse_expression(s).and_then(|s| s.tag_node("head")))
-            .or_else(|s| builtin_text(s, ":", false))
-            .or_else(|s| builtin_text(s, ":", false))
-            .or_else(|s| parse_expression(s).and_then(|s| s.tag_node("tail")))
+            .or_else(|s| parse_colon(s))
+            .or_else(|s| parse_main_expression(s).and_then(|s| s.tag_node("index")))
+            .or_else(|s| parse_main_expression(s).and_then(|s| s.tag_node("head")))
+            .or_else(|s| parse_colon(s))
+            .or_else(|s| parse_colon(s))
+            .or_else(|s| parse_main_expression(s).and_then(|s| s.tag_node("tail")))
             .or_else(|s| {
                 s.sequence(|s| {
                     Ok(s)
-                        .and_then(|s| parse_expression(s).and_then(|s| s.tag_node("head")))
+                        .and_then(|s| parse_main_expression(s).and_then(|s| s.tag_node("head")))
                         .and_then(|s| builtin_ignore(s))
-                        .and_then(|s| builtin_text(s, ":", false))
+                        .and_then(|s| parse_colon(s))
                 })
             })
-            .or_else(|s| parse_expression(s).and_then(|s| s.tag_node("tail")))
-            .or_else(|s| {
-                Err(s).or_else(|s| parse_op_proportion(s).and_then(|s| s.tag_node("op_proportion"))).or_else(|s| {
-                    builtin_regex(s, {
-                        static REGEX: OnceLock<Regex> = OnceLock::new();
-                        REGEX.get_or_init(|| Regex::new("^(::)").unwrap())
-                    })
-                })
-            })
-            .or_else(|s| parse_expression(s).and_then(|s| s.tag_node("head")))
-            .or_else(|s| {
-                Err(s).or_else(|s| parse_op_proportion(s).and_then(|s| s.tag_node("op_proportion"))).or_else(|s| {
-                    s.sequence(|s| {
-                        Ok(s)
-                            .and_then(|s| builtin_text(s, ":", false))
-                            .and_then(|s| builtin_ignore(s))
-                            .and_then(|s| builtin_text(s, ":", false))
-                    })
-                })
-            })
-            .or_else(|s| builtin_text(s, ":", false))
-            .or_else(|s| parse_expression(s).and_then(|s| s.tag_node("tail")))
-            .or_else(|s| builtin_text(s, ":", false))
-            .or_else(|s| {
-                Err(s).or_else(|s| parse_op_proportion(s).and_then(|s| s.tag_node("op_proportion"))).or_else(|s| {
-                    s.sequence(|s| {
-                        Ok(s)
-                            .and_then(|s| builtin_text(s, ":", false))
-                            .and_then(|s| builtin_ignore(s))
-                            .and_then(|s| builtin_text(s, ":", false))
-                    })
-                })
-            })
-            .or_else(|s| parse_expression(s).and_then(|s| s.tag_node("step")))
+            .or_else(|s| parse_main_expression(s).and_then(|s| s.tag_node("tail")))
+            .or_else(|s| parse_range_omit(s))
+            .or_else(|s| parse_main_expression(s).and_then(|s| s.tag_node("head")))
+            .or_else(|s| parse_range_omit(s))
+            .or_else(|s| parse_colon(s))
+            .or_else(|s| parse_main_expression(s).and_then(|s| s.tag_node("tail")))
+            .or_else(|s| parse_colon(s))
+            .or_else(|s| parse_range_omit(s))
+            .or_else(|s| parse_main_expression(s).and_then(|s| s.tag_node("step")))
             .or_else(|s| {
                 s.sequence(|s| {
                     Ok(s)
-                        .and_then(|s| parse_expression(s).and_then(|s| s.tag_node("head")))
+                        .and_then(|s| parse_main_expression(s).and_then(|s| s.tag_node("head")))
                         .and_then(|s| builtin_ignore(s))
-                        .and_then(|s| builtin_text(s, ":", false))
+                        .and_then(|s| parse_colon(s))
                 })
             })
-            .or_else(|s| parse_expression(s).and_then(|s| s.tag_node("tail")))
-            .or_else(|s| builtin_text(s, ":", false))
+            .or_else(|s| parse_main_expression(s).and_then(|s| s.tag_node("tail")))
+            .or_else(|s| parse_colon(s))
             .or_else(|s| {
                 s.sequence(|s| {
                     Ok(s)
-                        .and_then(|s| builtin_text(s, ":", false))
+                        .and_then(|s| parse_colon(s))
                         .and_then(|s| builtin_ignore(s))
-                        .and_then(|s| parse_expression(s).and_then(|s| s.tag_node("tail")))
+                        .and_then(|s| parse_main_expression(s).and_then(|s| s.tag_node("tail")))
                         .and_then(|s| builtin_ignore(s))
-                        .and_then(|s| builtin_text(s, ":", false))
+                        .and_then(|s| parse_colon(s))
                 })
             })
-            .or_else(|s| parse_expression(s).and_then(|s| s.tag_node("step")))
+            .or_else(|s| parse_main_expression(s).and_then(|s| s.tag_node("step")))
             .or_else(|s| {
                 s.sequence(|s| {
                     Ok(s)
-                        .and_then(|s| parse_expression(s).and_then(|s| s.tag_node("head")))
+                        .and_then(|s| parse_main_expression(s).and_then(|s| s.tag_node("head")))
                         .and_then(|s| builtin_ignore(s))
-                        .and_then(|s| {
-                            Err(s).or_else(|s| parse_op_proportion(s).and_then(|s| s.tag_node("op_proportion"))).or_else(|s| {
-                                s.sequence(|s| {
-                                    Ok(s)
-                                        .and_then(|s| builtin_text(s, ":", false))
-                                        .and_then(|s| builtin_ignore(s))
-                                        .and_then(|s| builtin_text(s, ":", false))
-                                })
-                            })
-                        })
+                        .and_then(|s| parse_range_omit(s))
                 })
             })
-            .or_else(|s| parse_expression(s).and_then(|s| s.tag_node("step")))
+            .or_else(|s| parse_main_expression(s).and_then(|s| s.tag_node("step")))
             .or_else(|s| {
                 s.sequence(|s| {
                     Ok(s)
                         .and_then(|s| {
                             s.sequence(|s| {
                                 Ok(s)
-                                    .and_then(|s| parse_expression(s).and_then(|s| s.tag_node("head")))
+                                    .and_then(|s| parse_main_expression(s).and_then(|s| s.tag_node("head")))
                                     .and_then(|s| builtin_ignore(s))
-                                    .and_then(|s| builtin_text(s, ":", false))
+                                    .and_then(|s| parse_colon(s))
                             })
                         })
                         .and_then(|s| builtin_ignore(s))
-                        .and_then(|s| parse_expression(s).and_then(|s| s.tag_node("tail")))
+                        .and_then(|s| parse_main_expression(s).and_then(|s| s.tag_node("tail")))
                         .and_then(|s| builtin_ignore(s))
-                        .and_then(|s| builtin_text(s, ":", false))
+                        .and_then(|s| parse_colon(s))
                 })
             })
-            .or_else(|s| parse_expression(s).and_then(|s| s.tag_node("step")))
+            .or_else(|s| parse_main_expression(s).and_then(|s| s.tag_node("step")))
+    })
+}
+#[inline]
+fn parse_range_omit(state: Input) -> Output {
+    state.rule(ValkyrieRule::RangeOmit, |s| {
+        Err(s).or_else(|s| parse_proportion(s).and_then(|s| s.tag_node("proportion"))).or_else(|s| {
+            s.sequence(|s| {
+                Ok(s)
+                    .and_then(|s| parse_colon(s).and_then(|s| s.tag_node("colon")))
+                    .and_then(|s| builtin_ignore(s))
+                    .and_then(|s| parse_colon(s).and_then(|s| s.tag_node("colon")))
+            })
+        })
     })
 }
 #[inline]
@@ -1362,12 +1343,7 @@ fn parse_namepath(state: Input) -> Output {
                     s.sequence(|s| {
                         Ok(s)
                             .and_then(|s| builtin_ignore(s))
-                            .and_then(|s| {
-                                builtin_regex(s, {
-                                    static REGEX: OnceLock<Regex> = OnceLock::new();
-                                    REGEX.get_or_init(|| Regex::new("^(∷|::)").unwrap())
-                                })
-                            })
+                            .and_then(|s| parse_proportion(s))
                             .and_then(|s| builtin_ignore(s))
                             .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
                     })
@@ -1495,6 +1471,15 @@ fn parse_colon(state: Input) -> Output {
         s.match_regex({
             static REGEX: OnceLock<Regex> = OnceLock::new();
             REGEX.get_or_init(|| Regex::new("^([:：])").unwrap())
+        })
+    })
+}
+#[inline]
+fn parse_proportion(state: Input) -> Output {
+    state.rule(ValkyrieRule::PROPORTION, |s| {
+        s.match_regex({
+            static REGEX: OnceLock<Regex> = OnceLock::new();
+            REGEX.get_or_init(|| Regex::new("^(∷|::)").unwrap())
         })
     })
 }

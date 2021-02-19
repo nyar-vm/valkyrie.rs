@@ -284,20 +284,23 @@ class RangeLiteral {
     | '[' (RangeAxis (COMMA RangeAxis)* COMMA?)? ']'
     | '⁅' (RangeAxis (COMMA RangeAxis)* COMMA?)? '⁆'
 }
-class RangeAxis {
-    | ':' // [:]
-    | index:Expression // [s]
-    | head:Expression ':' // [s:]
-    | ':' tail:Expression // [:s]
-    | head:Expression ':' tail:Expression //[s:s]
-    | (OP_PROPORTION | /::/) // [::] + [: :]
-    | head:Expression (OP_PROPORTION | ':' ':') // [s::]
-    | ':' tail:Expression ':' // [:s:]
-    | (OP_PROPORTION | ':' ':') step:Expression // [::s]
-    | head:Expression ':' tail:Expression ':' // [s:s:]
-    | ':' tail:Expression ':' step:Expression // [:s:s]
-    | head:Expression (OP_PROPORTION | ':' ':') step:Expression // [s::s]
-    | head:Expression ':' tail:Expression ':' step:Expression // [s:s:s]
+class RangeAxis ^ {
+    | COLON // [:]
+    | index:MainExpression // [s]
+    | head:MainExpression COLON // [s:]
+    | COLON tail:MainExpression // [:s]
+    | head:MainExpression COLON tail:MainExpression //[s:s]
+    | RangeOmit // [::] + [: :]
+    | head:MainExpression RangeOmit // [s::]
+    | COLON tail:MainExpression COLON // [:s:]
+    | RangeOmit step:MainExpression // [::s]
+    | head:MainExpression COLON tail:MainExpression COLON // [s:s:]
+    | COLON tail:MainExpression COLON step:MainExpression // [:s:s]
+    | head:MainExpression RangeOmit step:MainExpression // [s::s]
+    | head:MainExpression COLON tail:MainExpression COLON step:MainExpression // [s:s:s]
+}
+atomic inline class RangeOmit {
+    PROPORTION | COLON ~ COLON
 }
 // === atomic === --------------------------------------------------------------------------------------------------
 union Atomic {
@@ -305,13 +308,12 @@ union Atomic {
     | Integer
     | Boolean
 }
-
 // === identifier === --------------------------------------------------------------------------------------------------
 atomic class NamepathFree  {
     Identifier (IGNORED /[.∷]|::/ ~ Identifier)*
 }
 atomic class Namepath {
-    Identifier (IGNORED /∷|::/ ~ Identifier)*
+    Identifier (IGNORED ^PROPORTION ~ Identifier)*
 }
 atomic union Identifier {
     | IdentifierBare
@@ -348,6 +350,7 @@ atomic class ModifierCall ^ {
 token {
     COMMA: [,，]
     COLON: [:：]
+    PROPORTION: /∷|::/
     DOT:   [.．]
 }
 @style(keyword)

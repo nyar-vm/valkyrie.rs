@@ -1,26 +1,15 @@
 [package]
 name = "valkyrie-parser"
-version = "0.2.3"
+version = "0.2.4"
 authors = ["192608617@qq.com"]
-edition = "2018"
 description = "The hand write parser of valkyrie language"
 repository = "https://github.com/nyar-lang/NyarNative"
 documentation = "https://docs.rs/valkyrie-parser"
 license = "MPL-2.0"
+edition = "2021"
 
 [dependencies]
-fancy-regex = "0.11.0"
 pratt = "0.4.0"
-bit-set = "0.5.3"
-
-[dependencies.pex]
-version = "0.2.3"
-features = ["regex"]
-#path = 'C:\Users\Dell\CLionProjects\pex\projects\pex-core'
-
-[dependencies.lispify]
-version = "0.1.0"
-#path = 'C:\Users\Dell\CLionProjects\pex-lisp\projects\lispify'
 
 [dependencies.yggdrasil-rt]
 version = "0.0.13"
