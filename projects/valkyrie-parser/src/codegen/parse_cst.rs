@@ -47,7 +47,9 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::MainSuffix => parse_main_suffix(state),
         ValkyrieRule::InlineExpression => parse_inline_expression(state),
         ValkyrieRule::InlineTerm => parse_inline_term(state),
-        ValkyrieRule::InlineFactor => parse_inline_factor(state),
+        ValkyrieRule::InlineSuffix => parse_inline_suffix(state),
+        ValkyrieRule::TupleCall => parse_tuple_call(state),
+        ValkyrieRule::TupleCallBody => parse_tuple_call_body(state),
         ValkyrieRule::RangeCall => parse_range_call(state),
         ValkyrieRule::RangeLiteral => parse_range_literal(state),
         ValkyrieRule::RangeAxis => parse_range_axis(state),
@@ -732,15 +734,7 @@ fn parse_main_term(state: Input) -> Output {
                     })
                 })
                 .and_then(|s| parse_main_factor(s).and_then(|s| s.tag_node("main_factor")))
-                .and_then(|s| {
-                    s.repeat(0..4294967295, |s| {
-                        s.sequence(|s| {
-                            Ok(s)
-                                .and_then(|s| builtin_ignore(s))
-                                .and_then(|s| parse_main_suffix(s).and_then(|s| s.tag_node("main_suffix")))
-                        })
-                    })
-                })
+                .and_then(|s| s.repeat(0..4294967295, |s| parse_main_suffix(s).and_then(|s| s.tag_node("main_suffix"))))
         })
     })
 }
@@ -1048,17 +1042,7 @@ fn parse_main_prefix(state: Input) -> Output {
 #[inline]
 fn parse_main_suffix(state: Input) -> Output {
     state.rule(ValkyrieRule::MainSuffix, |s| {
-        Err(s)
-            .or_else(|s| builtin_text(s, "!", false).and_then(|s| s.tag_node("raise")))
-            .or_else(|s| builtin_text(s, "%", false).and_then(|s| s.tag_node("percent_2")))
-            .or_else(|s| builtin_text(s, "‰", false).and_then(|s| s.tag_node("percent_3")))
-            .or_else(|s| builtin_text(s, "‱", false).and_then(|s| s.tag_node("percent_4")))
-            .or_else(|s| builtin_text(s, "′", false).and_then(|s| s.tag_node("prime_1")))
-            .or_else(|s| builtin_text(s, "″", false).and_then(|s| s.tag_node("prime_2")))
-            .or_else(|s| builtin_text(s, "‴", false).and_then(|s| s.tag_node("prime_3")))
-            .or_else(|s| builtin_text(s, "⁗", false).and_then(|s| s.tag_node("prime_4")))
-            .or_else(|s| builtin_text(s, "℃", false).and_then(|s| s.tag_node("celsius")))
-            .or_else(|s| builtin_text(s, "℉", false).and_then(|s| s.tag_node("fahrenheit")))
+        Err(s).or_else(|s| parse_inline_suffix(s).and_then(|s| s.tag_node("inline_suffix")))
     })
 }
 #[inline]
@@ -1093,34 +1077,110 @@ fn parse_inline_term(state: Input) -> Output {
                         })
                     })
                 })
-                .and_then(|s| parse_inline_factor(s).and_then(|s| s.tag_node("inline_factor")))
-                .and_then(|s| {
-                    s.repeat(0..4294967295, |s| {
-                        s.sequence(|s| {
-                            Ok(s)
-                                .and_then(|s| builtin_ignore(s))
-                                .and_then(|s| parse_main_suffix(s).and_then(|s| s.tag_node("main_suffix")))
-                        })
-                    })
-                })
+                .and_then(|s| parse_main_factor(s).and_then(|s| s.tag_node("main_factor")))
+                .and_then(|s| s.repeat(0..4294967295, |s| parse_inline_suffix(s).and_then(|s| s.tag_node("inline_suffix"))))
         })
     })
 }
+
 #[inline]
-fn parse_inline_factor(state: Input) -> Output {
-    state.rule(ValkyrieRule::InlineFactor, |s| {
+fn parse_inline_suffix(state: Input) -> Output {
+    state.rule(ValkyrieRule::InlineSuffix, |s| {
         Err(s)
             .or_else(|s| {
-                s.sequence(|s| {
-                    Ok(s)
-                        .and_then(|s| builtin_text(s, "(", false))
-                        .and_then(|s| parse_main_expression(s).and_then(|s| s.tag_node("main_expression")))
-                        .and_then(|s| builtin_text(s, ")", false))
-                })
-                .and_then(|s| s.tag_node("inline_factor_0"))
+                s.sequence(|s| Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| builtin_text(s, "!", false)))
+                    .and_then(|s| s.tag_node("raise"))
             })
-            .or_else(|s| parse_atomic(s).and_then(|s| s.tag_node("atomic")))
-            .or_else(|s| parse_atomic(s).and_then(|s| s.tag_node("atomic")))
+            .or_else(|s| {
+                s.sequence(|s| Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| builtin_text(s, "%", false)))
+                    .and_then(|s| s.tag_node("percent_2"))
+            })
+            .or_else(|s| {
+                s.sequence(|s| Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| builtin_text(s, "‰", false)))
+                    .and_then(|s| s.tag_node("percent_3"))
+            })
+            .or_else(|s| {
+                s.sequence(|s| Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| builtin_text(s, "‱", false)))
+                    .and_then(|s| s.tag_node("percent_4"))
+            })
+            .or_else(|s| {
+                s.sequence(|s| Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| builtin_text(s, "′", false)))
+                    .and_then(|s| s.tag_node("prime_1"))
+            })
+            .or_else(|s| {
+                s.sequence(|s| Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| builtin_text(s, "″", false)))
+                    .and_then(|s| s.tag_node("prime_2"))
+            })
+            .or_else(|s| {
+                s.sequence(|s| Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| builtin_text(s, "‴", false)))
+                    .and_then(|s| s.tag_node("prime_3"))
+            })
+            .or_else(|s| {
+                s.sequence(|s| Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| builtin_text(s, "⁗", false)))
+                    .and_then(|s| s.tag_node("prime_4"))
+            })
+            .or_else(|s| {
+                s.sequence(|s| Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| builtin_text(s, "℃", false)))
+                    .and_then(|s| s.tag_node("celsius"))
+            })
+            .or_else(|s| {
+                s.sequence(|s| Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| builtin_text(s, "℉", false)))
+                    .and_then(|s| s.tag_node("fahrenheit"))
+            })
+            .or_else(|s| parse_tuple_call(s).and_then(|s| s.tag_node("tuple_call")))
+            .or_else(|s| parse_range_call(s).and_then(|s| s.tag_node("range_call")))
+    })
+}
+#[inline]
+fn parse_tuple_call(state: Input) -> Output {
+    state.rule(ValkyrieRule::TupleCall, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| s.optional(|s| parse_white_space(s).and_then(|s| s.tag_node("white_space"))))
+                .and_then(|s| s.optional(|s| parse_op_and_then(s).and_then(|s| s.tag_node("op_and_then"))))
+                .and_then(|s| s.optional(|s| parse_white_space(s).and_then(|s| s.tag_node("white_space"))))
+                .and_then(|s| parse_tuple_call_body(s).and_then(|s| s.tag_node("tuple_call_body")))
+        })
+    })
+}
+
+#[inline]
+fn parse_tuple_call_body(state: Input) -> Output {
+    state.rule(ValkyrieRule::TupleCallBody, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| builtin_text(s, "(", false))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| {
+                    s.optional(|s| {
+                        s.sequence(|s| {
+                            Ok(s)
+                                .and_then(|s| parse_main_expression(s).and_then(|s| s.tag_node("main_expression")))
+                                .and_then(|s| builtin_ignore(s))
+                                .and_then(|s| {
+                                    s.repeat(0..4294967295, |s| {
+                                        s.sequence(|s| {
+                                            Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| {
+                                                s.sequence(|s| {
+                                                    Ok(s)
+                                                        .and_then(|s| parse_comma(s).and_then(|s| s.tag_node("comma")))
+                                                        .and_then(|s| builtin_ignore(s))
+                                                        .and_then(|s| {
+                                                            parse_main_expression(s).and_then(|s| s.tag_node("main_expression"))
+                                                        })
+                                                })
+                                            })
+                                        })
+                                    })
+                                })
+                                .and_then(|s| builtin_ignore(s))
+                                .and_then(|s| s.optional(|s| parse_comma(s).and_then(|s| s.tag_node("comma"))))
+                        })
+                    })
+                })
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| builtin_text(s, ")", false))
+        })
     })
 }
 #[inline]
@@ -1128,8 +1188,9 @@ fn parse_range_call(state: Input) -> Output {
     state.rule(ValkyrieRule::RangeCall, |s| {
         s.sequence(|s| {
             Ok(s)
+                .and_then(|s| s.optional(|s| parse_white_space(s).and_then(|s| s.tag_node("white_space"))))
                 .and_then(|s| s.optional(|s| parse_op_and_then(s).and_then(|s| s.tag_node("op_and_then"))))
-                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| s.optional(|s| parse_white_space(s).and_then(|s| s.tag_node("white_space"))))
                 .and_then(|s| parse_range_literal(s).and_then(|s| s.tag_node("range_literal")))
         })
     })

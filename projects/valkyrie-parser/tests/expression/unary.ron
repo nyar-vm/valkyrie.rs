@@ -288,7 +288,9 @@
                 ),
                 main_prefix: [],
                 main_suffix: [
-                    Celsius,
+                    InlineSuffix(
+                        Celsius,
+                    ),
                 ],
                 span: 228..233,
             },
@@ -303,7 +305,9 @@
                 ),
                 main_prefix: [],
                 main_suffix: [
-                    Fahrenheit,
+                    InlineSuffix(
+                        Fahrenheit,
+                    ),
                 ],
                 span: 236..241,
             },
@@ -330,7 +334,9 @@
                 ),
                 main_prefix: [],
                 main_suffix: [
-                    Percent2,
+                    InlineSuffix(
+                        Percent2,
+                    ),
                 ],
                 span: 261..263,
             },
@@ -345,7 +351,9 @@
                 ),
                 main_prefix: [],
                 main_suffix: [
-                    Percent3,
+                    InlineSuffix(
+                        Percent3,
+                    ),
                 ],
                 span: 266..270,
             },
@@ -360,7 +368,9 @@
                 ),
                 main_prefix: [],
                 main_suffix: [
-                    Percent4,
+                    InlineSuffix(
+                        Percent4,
+                    ),
                 ],
                 span: 273..277,
             },
@@ -384,7 +394,9 @@
                 ),
                 main_prefix: [],
                 main_suffix: [
-                    Percent4,
+                    InlineSuffix(
+                        Percent4,
+                    ),
                 ],
                 span: 280..300,
             },
@@ -415,9 +427,15 @@
                 ),
                 main_prefix: [],
                 main_suffix: [
-                    Percent2,
-                    Percent3,
-                    Percent4,
+                    InlineSuffix(
+                        Percent2,
+                    ),
+                    InlineSuffix(
+                        Percent3,
+                    ),
+                    InlineSuffix(
+                        Percent4,
+                    ),
                 ],
                 span: 303..311,
             },

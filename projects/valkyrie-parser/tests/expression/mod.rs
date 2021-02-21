@@ -61,8 +61,8 @@ fn debug_expression(input: &str) -> std::io::Result<()> {
 }
 
 #[test]
-fn test_apply() {
-    let raw = "a == c";
+fn debug() {
+    let raw = "a[]";
     debug_expression(raw).unwrap();
 }
 

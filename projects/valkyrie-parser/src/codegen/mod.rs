@@ -3,8 +3,8 @@
 #![allow(clippy::unnecessary_cast)]
 #![doc = include_str!("readme.md")]
 
-mod parse_cst;
 mod parse_ast;
+mod parse_cst;
 
 use core::str::FromStr;
 use std::{borrow::Cow, ops::Range, sync::OnceLock};
@@ -75,7 +75,9 @@ pub enum ValkyrieRule {
     MainSuffix,
     InlineExpression,
     InlineTerm,
-    InlineFactor,
+    InlineSuffix,
+    TupleCall,
+    TupleCallBody,
     RangeCall,
     RangeLiteral,
     RangeAxis,
@@ -176,7 +178,9 @@ impl YggdrasilRule for ValkyrieRule {
             Self::MainSuffix => "",
             Self::InlineExpression => "",
             Self::InlineTerm => "",
-            Self::InlineFactor => "",
+            Self::InlineSuffix => "",
+            Self::TupleCall => "",
+            Self::TupleCallBody => "",
             Self::RangeCall => "",
             Self::RangeLiteral => "",
             Self::RangeAxis => "",
@@ -558,6 +562,29 @@ pub enum MainPrefixNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum MainSuffixNode {
+    InlineSuffix(InlineSuffixNode),
+}
+
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct InlineExpressionNode {
+    pub inline_term: Vec<InlineTermNode>,
+    pub main_infix: Vec<MainInfixNode>,
+    pub span: Range<u32>,
+}
+
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct InlineTermNode {
+    pub inline_suffix: Vec<InlineSuffixNode>,
+    pub main_factor: MainFactorNode,
+    pub main_prefix: Vec<MainPrefixNode>,
+    pub span: Range<u32>,
+}
+
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum InlineSuffixNode {
     Celsius,
     Fahrenheit,
     Percent2,
@@ -568,33 +595,30 @@ pub enum MainSuffixNode {
     Prime3,
     Prime4,
     Raise,
+    RangeCall(RangeCallNode),
+    TupleCall(TupleCallNode),
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct InlineExpressionNode {
-    pub inline_term: Vec<InlineTermNode>,
-    pub main_infix: Vec<MainInfixNode>,
+pub struct TupleCallNode {
+    pub op_and_then: Option<OpAndThenNode>,
+    pub tuple_call_body: TupleCallBodyNode,
+    pub white_space: Vec<WhiteSpaceNode>,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct InlineTermNode {
-    pub inline_factor: InlineFactorNode,
-    pub main_prefix: Vec<MainPrefixNode>,
-    pub main_suffix: Vec<MainSuffixNode>,
+pub struct TupleCallBodyNode {
+    pub comma: Vec<CommaNode>,
+    pub main_expression: Vec<MainExpressionNode>,
     pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum InlineFactorNode {
-    Atomic(AtomicNode),
-    InlineFactor0(MainExpressionNode),
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct RangeCallNode {
     pub op_and_then: Option<OpAndThenNode>,
     pub range_literal: RangeLiteralNode,
+    pub white_space: Vec<WhiteSpaceNode>,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]

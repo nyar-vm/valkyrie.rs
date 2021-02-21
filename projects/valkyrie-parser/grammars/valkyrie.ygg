@@ -177,7 +177,7 @@ atomic class MainExpression {
     MainTerm (IGNORED MainInfix ~ MainTerm)* EOS?
 }
 atomic class MainTerm {
-    (MainPrefix IGNORED)* MainFactor (IGNORED MainSuffix)*
+    (MainPrefix IGNORED)* MainFactor MainSuffix*
 }
 atomic union MainFactor {
     | '(' MainExpression ')'
@@ -236,8 +236,6 @@ atomic union MainInfix ^ {
     | ('/@'|[⇴⨵]) #Map
     | (/@{3}|⟴/)  #Apply3
     | (/@{2}|⊕/)  #Apply2
-
-
 }
 atomic union MainPrefix {
     | [¬!]       #Not
@@ -252,33 +250,44 @@ atomic union MainPrefix {
     | '∜'        #Root4
     | [*]        #Dereference
 }
-union MainSuffix {
-    | '!'  #Raise
-    | '%'  #Percent2
-    | '‰'  #Percent3
-    | '‱' #Percent4
-    | '′'  #Prime1
-    | '″'  #Prime2
-    | '‴'  #Prime3
-    | '⁗'  #Prime4
-    | '℃'  #Celsius
-    | '℉'  #Fahrenheit
+atomic union MainSuffix {
+    | InlineSuffix
 }
 // === identifier === --------------------------------------------------------------------------------------------------
 atomic class InlineExpression {
     InlineTerm (IGNORED MainInfix ~ InlineTerm)*
 }
 atomic class InlineTerm {
-    (MainPrefix IGNORED)* InlineFactor (IGNORED MainSuffix)*
+    (MainPrefix IGNORED)* MainFactor InlineSuffix*
 }
-atomic union InlineFactor {
+atomic union InlineSuffix {
     | '(' MainExpression ')'
     | Atomic
-    | Atomic
+}
+atomic union InlineSuffix {
+    | IGNORED '!'  #Raise
+    | IGNORED '%'  #Percent2
+    | IGNORED '‰'  #Percent3
+    | IGNORED '‱' #Percent4
+    | IGNORED '′'  #Prime1
+    | IGNORED '″'  #Prime2
+    | IGNORED '‴'  #Prime3
+    | IGNORED '⁗'  #Prime4
+    | IGNORED '℃'  #Celsius
+    | IGNORED '℉'  #Fahrenheit
+    | TupleCall
+    | RangeCall
+}
+// === tuple === --------------------------------------------------------------------------------------------------
+atomic class TupleCall {
+     WhiteSpace? OP_AND_THEN? WhiteSpace? TupleCallBody
+}
+class TupleCallBody {
+    '(' (MainExpression (COMMA MainExpression)* COMMA?)? ')'
 }
 // === range === --------------------------------------------------------------------------------------------------
-class RangeCall {
-    OP_AND_THEN? RangeLiteral
+atomic class RangeCall {
+    WhiteSpace? OP_AND_THEN? WhiteSpace? RangeLiteral
 }
 class RangeLiteral {
     | '[' (RangeAxis (COMMA RangeAxis)* COMMA?)? ']'
