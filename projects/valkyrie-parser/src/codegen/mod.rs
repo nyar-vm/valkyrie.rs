@@ -77,7 +77,9 @@ pub enum ValkyrieRule {
     InlineTerm,
     InlineSuffix,
     TupleCall,
-    TupleCallBody,
+    TupleLiteral,
+    TuplePair,
+    TupleKey,
     RangeCall,
     RangeLiteral,
     RangeAxis,
@@ -180,7 +182,9 @@ impl YggdrasilRule for ValkyrieRule {
             Self::InlineTerm => "",
             Self::InlineSuffix => "",
             Self::TupleCall => "",
-            Self::TupleCallBody => "",
+            Self::TupleLiteral => "",
+            Self::TuplePair => "",
+            Self::TupleKey => "",
             Self::RangeCall => "",
             Self::RangeLiteral => "",
             Self::RangeAxis => "",
@@ -564,7 +568,6 @@ pub enum MainPrefixNode {
 pub enum MainSuffixNode {
     InlineSuffix(InlineSuffixNode),
 }
-
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct InlineExpressionNode {
@@ -572,7 +575,6 @@ pub struct InlineExpressionNode {
     pub main_infix: Vec<MainInfixNode>,
     pub span: Range<u32>,
 }
-
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct InlineTermNode {
@@ -581,7 +583,6 @@ pub struct InlineTermNode {
     pub main_prefix: Vec<MainPrefixNode>,
     pub span: Range<u32>,
 }
-
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum InlineSuffixNode {
@@ -602,16 +603,31 @@ pub enum InlineSuffixNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct TupleCallNode {
     pub op_and_then: Option<OpAndThenNode>,
-    pub tuple_call_body: TupleCallBodyNode,
+    pub tuple_literal: TupleLiteralNode,
     pub white_space: Vec<WhiteSpaceNode>,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct TupleCallBodyNode {
+pub struct TupleLiteralNode {
     pub comma: Vec<CommaNode>,
-    pub main_expression: Vec<MainExpressionNode>,
+    pub tuple_pair: Vec<TuplePairNode>,
     pub span: Range<u32>,
+}
+
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct TuplePairNode {
+    // Missing rule Colon
+    pub main_expression: MainExpressionNode,
+    pub tuple_key: Option<TupleKeyNode>,
+    pub span: Range<u32>,
+}
+
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum TupleKeyNode {
+    Identifier(IdentifierNode),
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -650,6 +666,8 @@ pub enum AtomicNode {
     Boolean(BooleanNode),
     Integer(IntegerNode),
     Namepath(NamepathNode),
+    RangeLiteral(RangeLiteralNode),
+    TupleLiteral(TupleLiteralNode),
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]

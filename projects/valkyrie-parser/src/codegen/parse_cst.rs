@@ -49,7 +49,9 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::InlineTerm => parse_inline_term(state),
         ValkyrieRule::InlineSuffix => parse_inline_suffix(state),
         ValkyrieRule::TupleCall => parse_tuple_call(state),
-        ValkyrieRule::TupleCallBody => parse_tuple_call_body(state),
+        ValkyrieRule::TupleLiteral => parse_tuple_literal(state),
+        ValkyrieRule::TuplePair => parse_tuple_pair(state),
+        ValkyrieRule::TupleKey => parse_tuple_key(state),
         ValkyrieRule::RangeCall => parse_range_call(state),
         ValkyrieRule::RangeLiteral => parse_range_literal(state),
         ValkyrieRule::RangeAxis => parse_range_axis(state),
@@ -1082,7 +1084,6 @@ fn parse_inline_term(state: Input) -> Output {
         })
     })
 }
-
 #[inline]
 fn parse_inline_suffix(state: Input) -> Output {
     state.rule(ValkyrieRule::InlineSuffix, |s| {
@@ -1139,14 +1140,14 @@ fn parse_tuple_call(state: Input) -> Output {
                 .and_then(|s| s.optional(|s| parse_white_space(s).and_then(|s| s.tag_node("white_space"))))
                 .and_then(|s| s.optional(|s| parse_op_and_then(s).and_then(|s| s.tag_node("op_and_then"))))
                 .and_then(|s| s.optional(|s| parse_white_space(s).and_then(|s| s.tag_node("white_space"))))
-                .and_then(|s| parse_tuple_call_body(s).and_then(|s| s.tag_node("tuple_call_body")))
+                .and_then(|s| parse_tuple_literal(s).and_then(|s| s.tag_node("tuple_literal")))
         })
     })
 }
 
 #[inline]
-fn parse_tuple_call_body(state: Input) -> Output {
-    state.rule(ValkyrieRule::TupleCallBody, |s| {
+fn parse_tuple_literal(state: Input) -> Output {
+    state.rule(ValkyrieRule::TupleLiteral, |s| {
         s.sequence(|s| {
             Ok(s)
                 .and_then(|s| builtin_text(s, "(", false))
@@ -1155,7 +1156,7 @@ fn parse_tuple_call_body(state: Input) -> Output {
                     s.optional(|s| {
                         s.sequence(|s| {
                             Ok(s)
-                                .and_then(|s| parse_main_expression(s).and_then(|s| s.tag_node("main_expression")))
+                                .and_then(|s| parse_tuple_pair(s).and_then(|s| s.tag_node("tuple_pair")))
                                 .and_then(|s| builtin_ignore(s))
                                 .and_then(|s| {
                                     s.repeat(0..4294967295, |s| {
@@ -1166,7 +1167,7 @@ fn parse_tuple_call_body(state: Input) -> Output {
                                                         .and_then(|s| parse_comma(s).and_then(|s| s.tag_node("comma")))
                                                         .and_then(|s| builtin_ignore(s))
                                                         .and_then(|s| {
-                                                            parse_main_expression(s).and_then(|s| s.tag_node("main_expression"))
+                                                            parse_tuple_pair(s).and_then(|s| s.tag_node("tuple_pair"))
                                                         })
                                                 })
                                             })
@@ -1182,6 +1183,31 @@ fn parse_tuple_call_body(state: Input) -> Output {
                 .and_then(|s| builtin_text(s, ")", false))
         })
     })
+}
+#[inline]
+fn parse_tuple_pair(state: Input) -> Output {
+    state.rule(ValkyrieRule::TuplePair, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| {
+                    s.optional(|s| {
+                        s.sequence(|s| {
+                            Ok(s)
+                                .and_then(|s| parse_tuple_key(s).and_then(|s| s.tag_node("tuple_key")))
+                                .and_then(|s| builtin_ignore(s))
+                                .and_then(|s| parse_colon(s).and_then(|s| s.tag_node("colon")))
+                        })
+                    })
+                })
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_main_expression(s).and_then(|s| s.tag_node("main_expression")))
+        })
+    })
+}
+
+#[inline]
+fn parse_tuple_key(state: Input) -> Output {
+    state.rule(ValkyrieRule::TupleKey, |s| Err(s).or_else(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier"))))
 }
 #[inline]
 fn parse_range_call(state: Input) -> Output {
@@ -1367,6 +1393,8 @@ fn parse_range_omit(state: Input) -> Output {
 fn parse_atomic(state: Input) -> Output {
     state.rule(ValkyrieRule::Atomic, |s| {
         Err(s)
+            .or_else(|s| parse_tuple_literal(s).and_then(|s| s.tag_node("tuple_literal")))
+            .or_else(|s| parse_range_literal(s).and_then(|s| s.tag_node("range_literal")))
             .or_else(|s| parse_namepath(s).and_then(|s| s.tag_node("namepath")))
             .or_else(|s| parse_integer(s).and_then(|s| s.tag_node("integer")))
             .or_else(|s| parse_boolean(s).and_then(|s| s.tag_node("boolean")))

@@ -280,10 +280,16 @@ atomic union InlineSuffix {
 }
 // === tuple === --------------------------------------------------------------------------------------------------
 atomic class TupleCall {
-     WhiteSpace? OP_AND_THEN? WhiteSpace? TupleCallBody
+     WhiteSpace? OP_AND_THEN? WhiteSpace? TupleLiteral
 }
-class TupleCallBody {
-    '(' (MainExpression (COMMA MainExpression)* COMMA?)? ')'
+class TupleLiteral {
+    '(' (TuplePair (COMMA TuplePair)* COMMA?)? ')'
+}
+class TuplePair {
+    (TupleKey Colon)? MainExpression
+}
+union TupleKey {
+    | Identifier
 }
 // === range === --------------------------------------------------------------------------------------------------
 atomic class RangeCall {
@@ -313,6 +319,8 @@ atomic inline class RangeOmit {
 }
 // === atomic === --------------------------------------------------------------------------------------------------
 union Atomic {
+    | TupleLiteral
+    | RangeLiteral
     | Namepath
     | Integer
     | Boolean

@@ -39,7 +39,8 @@ fn test_infix() {
 }
 
 #[test]
-fn test_slice() {
+fn test_range() {
+    parse_expression("range").unwrap();
     parse_expression("slice").unwrap();
 }
 
