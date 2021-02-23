@@ -1,5 +1,7 @@
 use super::*;
-use valkyrie_parser::{DefineImportNode, DefineNamespaceNode};
+use valkyrie_parser::{
+    ClassBlockItemNode, ClassBlockNode, ClassFieldNode, ClassMethodNode, DefineImportNode, DefineNamespaceNode,
+};
 
 #[test]
 fn debug_declarations() {
@@ -10,14 +12,14 @@ fn debug_declarations() {
 
 #[test]
 fn debug_import() {
-    parse_import("using;").expect("namespaces");
+    parse_import("{id field}").expect("class method");
 }
 
 fn parse_import(input: &str) -> std::io::Result<()> {
     let here = Path::new(env!("CARGO_MANIFEST_DIR")).join("tests").canonicalize()?;
-    let cst = ValkyrieParser::parse_cst(input, ValkyrieRule::DefineImport).unwrap();
+    let cst = ValkyrieParser::parse_cst(input, ValkyrieRule::ClassBlock).unwrap();
     println!("Short Form:\n{}", cst);
-    let ast = DefineImportNode::from_str(input).unwrap();
+    let ast = ClassBlockNode::from_str(input).unwrap();
     println!("Long Form:\n{:#?}", ast);
     Ok(())
 }

@@ -43,14 +43,6 @@ pub enum ValkyrieRule {
     ImportBlock,
     ImportMacro,
     ImportMacroItem,
-    DefineClass,
-    ClassBlock,
-    ClassBlockItem,
-    ClassInherit,
-    ClassInheritItem,
-    ClassField,
-    ClassMethod,
-    ClassDomain,
     DefineTemplate,
     TemplateParameters,
     TemplateBlock,
@@ -58,9 +50,20 @@ pub enum ValkyrieRule {
     TemplateImplements,
     WhereBlock,
     WhereBound,
+    DefineClass,
+    ClassBlock,
+    ClassBlockItem,
+    ClassInherit,
+    ClassInheritItem,
+    ClassField,
+    ClassMethod,
+    method_modifier,
+    ClassDomain,
     KW_CLASS,
     DefineUnion,
     KW_UNION,
+    DefineFlags,
+    KW_FLAGS,
     DefineTrait,
     KW_TRAIT,
     WhileStatement,
@@ -68,15 +71,22 @@ pub enum ValkyrieRule {
     ForStatement,
     MainStatement,
     MainExpression,
-    InlineExpression,
     MainTerm,
-    InlineTerm,
     MainFactor,
     Atomic,
     MainInfix,
     MainPrefix,
     MainSuffix,
+    InlineExpression,
+    InlineTerm,
     InlineSuffix,
+    TypeHint,
+    TypeExpression,
+    TypeTerm,
+    TypeFactor,
+    TypeInfix,
+    TypePrefix,
+    TypeSuffix,
     TupleCall,
     TupleLiteral,
     TuplePair,
@@ -87,6 +97,11 @@ pub enum ValkyrieRule {
     SubscriptOnly,
     SubscriptRange,
     RangeOmit,
+    AttributeCall,
+    ProceduralCall,
+    ModifierCall,
+    AttributePath,
+    ProceduralPath,
     NamepathFree,
     Namepath,
     Identifier,
@@ -95,13 +110,13 @@ pub enum ValkyrieRule {
     IdentifierRawText,
     Boolean,
     Integer,
-    ModifierCall,
-    COMMA,
-    COLON,
     PROPORTION,
+    COLON,
+    COMMA,
     DOT,
     OFFSET_L,
     OFFSET_R,
+    PROPORTION2,
     OP_IMPORT_ALL,
     OP_AND_THEN,
     OP_BIND,
@@ -150,14 +165,6 @@ impl YggdrasilRule for ValkyrieRule {
             Self::ImportBlock => "",
             Self::ImportMacro => "",
             Self::ImportMacroItem => "",
-            Self::DefineClass => "",
-            Self::ClassBlock => "",
-            Self::ClassBlockItem => "",
-            Self::ClassInherit => "",
-            Self::ClassInheritItem => "",
-            Self::ClassField => "",
-            Self::ClassMethod => "",
-            Self::ClassDomain => "",
             Self::DefineTemplate => "",
             Self::TemplateParameters => "",
             Self::TemplateBlock => "",
@@ -165,9 +172,20 @@ impl YggdrasilRule for ValkyrieRule {
             Self::TemplateImplements => "",
             Self::WhereBlock => "",
             Self::WhereBound => "",
+            Self::DefineClass => "",
+            Self::ClassBlock => "",
+            Self::ClassBlockItem => "",
+            Self::ClassInherit => "",
+            Self::ClassInheritItem => "",
+            Self::ClassField => "",
+            Self::ClassMethod => "",
+            Self::method_modifier => "",
+            Self::ClassDomain => "",
             Self::KW_CLASS => "",
             Self::DefineUnion => "",
             Self::KW_UNION => "",
+            Self::DefineFlags => "",
+            Self::KW_FLAGS => "",
             Self::DefineTrait => "",
             Self::KW_TRAIT => "",
             Self::WhileStatement => "",
@@ -175,15 +193,22 @@ impl YggdrasilRule for ValkyrieRule {
             Self::ForStatement => "",
             Self::MainStatement => "",
             Self::MainExpression => "",
-            Self::InlineExpression => "",
             Self::MainTerm => "",
-            Self::InlineTerm => "",
             Self::MainFactor => "",
             Self::Atomic => "",
             Self::MainInfix => "",
             Self::MainPrefix => "",
             Self::MainSuffix => "",
+            Self::InlineExpression => "",
+            Self::InlineTerm => "",
             Self::InlineSuffix => "",
+            Self::TypeHint => "",
+            Self::TypeExpression => "",
+            Self::TypeTerm => "",
+            Self::TypeFactor => "",
+            Self::TypeInfix => "",
+            Self::TypePrefix => "",
+            Self::TypeSuffix => "",
             Self::TupleCall => "",
             Self::TupleLiteral => "",
             Self::TuplePair => "",
@@ -194,6 +219,11 @@ impl YggdrasilRule for ValkyrieRule {
             Self::SubscriptOnly => "",
             Self::SubscriptRange => "",
             Self::RangeOmit => "",
+            Self::AttributeCall => "",
+            Self::ProceduralCall => "",
+            Self::ModifierCall => "",
+            Self::AttributePath => "",
+            Self::ProceduralPath => "",
             Self::NamepathFree => "",
             Self::Namepath => "",
             Self::Identifier => "",
@@ -202,13 +232,13 @@ impl YggdrasilRule for ValkyrieRule {
             Self::IdentifierRawText => "",
             Self::Boolean => "",
             Self::Integer => "",
-            Self::ModifierCall => "",
-            Self::COMMA => "",
-            Self::COLON => "",
             Self::PROPORTION => "",
+            Self::COLON => "",
+            Self::COMMA => "",
             Self::DOT => "",
             Self::OFFSET_L => "",
             Self::OFFSET_R => "",
+            Self::PROPORTION2 => "",
             Self::OP_IMPORT_ALL => "",
             Self::OP_AND_THEN => "",
             Self::OP_BIND => "",
@@ -328,59 +358,10 @@ pub enum ImportMacroItemNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct DefineClassNode {
-    pub kw_class: KwClassNode,
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ClassBlockNode {
-    pub class_block_item: Vec<ClassBlockItemNode>,
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum ClassBlockItemNode {
-    ClassDomain(ClassDomainNode),
-    ClassField(ClassFieldNode),
-    ClassMethod(ClassMethodNode),
-    EosFree(EosFreeNode),
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ClassInheritNode {
-    pub class_inherit_item: Vec<ClassInheritItemNode>,
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ClassInheritItemNode {
-    pub namepath: NamepathNode,
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ClassFieldNode {
-    pub identifier: IdentifierNode,
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ClassMethodNode {
-    pub identifier: IdentifierNode,
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ClassDomainNode {
-    pub class_block: ClassBlockNode,
-    pub identifier: IdentifierNode,
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct DefineTemplateNode {
+    pub attribute_call: Vec<AttributeCallNode>,
     pub kw_template: KwTemplateNode,
+    pub modifier_call: Vec<ModifierCallNode>,
     pub template_block: TemplateBlockNode,
     pub template_parameters: Option<TemplateParametersNode>,
     pub span: Range<u32>,
@@ -426,8 +407,75 @@ pub struct WhereBoundNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct KwClassNode {
+pub struct DefineClassNode {
+    pub attribute_call: Vec<AttributeCallNode>,
+    pub class_block: ClassBlockNode,
+    pub class_inherit: Option<ClassInheritNode>,
+    pub define_template: Option<DefineTemplateNode>,
+    pub identifier: IdentifierNode,
+    pub kw_class: KwClassNode,
+    pub modifier_call: Vec<ModifierCallNode>,
     pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ClassBlockNode {
+    pub class_block_item: Vec<ClassBlockItemNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum ClassBlockItemNode {
+    ClassDomain(ClassDomainNode),
+    ClassField(ClassFieldNode),
+    ClassMethod(ClassMethodNode),
+    EosFree(EosFreeNode),
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ClassInheritNode {
+    pub class_inherit_item: Vec<ClassInheritItemNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ClassInheritItemNode {
+    pub namepath: NamepathNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ClassFieldNode {
+    pub attribute_call: Vec<AttributeCallNode>,
+    pub modifier_call: Vec<ModifierCallNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ClassMethodNode {
+    pub attribute_call: Vec<AttributeCallNode>,
+    pub namepath: NamepathNode,
+    pub method_modifier: Vec<MethodModifierNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct MethodModifierNode {
+    pub modifier_call: ModifierCallNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ClassDomainNode {
+    pub class_block: ClassBlockNode,
+    pub identifier: IdentifierNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum KwClassNode {
+    Class,
+    Structure,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -438,6 +486,18 @@ pub struct DefineUnionNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct KwUnionNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct DefineFlagsNode {
+    pub attribute_call: Vec<AttributeCallNode>,
+    pub kw_flags: KwFlagsNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct KwFlagsNode {
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -491,25 +551,10 @@ pub struct MainExpressionNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct InlineExpressionNode {
-    pub inline_term: Vec<InlineTermNode>,
-    pub main_infix: Vec<MainInfixNode>,
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct MainTermNode {
     pub main_factor: MainFactorNode,
     pub main_prefix: Vec<MainPrefixNode>,
     pub main_suffix: Vec<MainSuffixNode>,
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct InlineTermNode {
-    pub inline_suffix: Vec<InlineSuffixNode>,
-    pub main_factor: MainFactorNode,
-    pub main_prefix: Vec<MainPrefixNode>,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -524,6 +569,7 @@ pub enum AtomicNode {
     Boolean(BooleanNode),
     Integer(IntegerNode),
     Namepath(NamepathNode),
+    ProceduralCall(ProceduralCallNode),
     RangeLiteral(RangeLiteralNode),
     TupleLiteral(TupleLiteralNode),
 }
@@ -597,6 +643,21 @@ pub enum MainSuffixNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct InlineExpressionNode {
+    pub inline_term: Vec<InlineTermNode>,
+    pub main_infix: Vec<MainInfixNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct InlineTermNode {
+    pub inline_suffix: Vec<InlineSuffixNode>,
+    pub main_factor: MainFactorNode,
+    pub main_prefix: Vec<MainPrefixNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum InlineSuffixNode {
     Celsius,
     Fahrenheit,
@@ -610,6 +671,50 @@ pub enum InlineSuffixNode {
     Raise,
     RangeCall(RangeCallNode),
     TupleCall(TupleCallNode),
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct TypeHintNode {
+    pub colon: ColonNode,
+    pub type_expression: TypeExpressionNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct TypeExpressionNode {
+    pub type_infix: Vec<TypeInfixNode>,
+    pub type_term: Vec<TypeTermNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct TypeTermNode {
+    pub main_factor: MainFactorNode,
+    pub type_prefix: Vec<TypePrefixNode>,
+    pub type_suffix: Vec<TypeSuffixNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum TypeFactorNode {
+    Atomic(AtomicNode),
+    TypeFactor0(TypeExpressionNode),
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum TypeInfixNode {
+    Plus,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum TypePrefixNode {
+    Negative,
+    Positive,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum TypeSuffixNode {
+    Option,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -681,6 +786,38 @@ pub struct RangeOmitNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct AttributeCallNode {
+    pub attribute_path: AttributePathNode,
+    pub tuple_literal: Option<TupleLiteralNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ProceduralCallNode {
+    pub procedural_path: ProceduralPathNode,
+    pub tuple_literal: Option<TupleLiteralNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ModifierCallNode {
+    pub identifier: IdentifierNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct AttributePathNode {
+    pub namepath: NamepathNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ProceduralPathNode {
+    pub namepath: NamepathNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct NamepathFreeNode {
     pub identifier: Vec<IdentifierNode>,
     pub span: Range<u32>,
@@ -729,13 +866,7 @@ pub struct IntegerNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ModifierCallNode {
-    pub identifier: IdentifierNode,
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct CommaNode {
+pub struct ProportionNode {
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -745,7 +876,7 @@ pub struct ColonNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ProportionNode {
+pub struct CommaNode {
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -761,6 +892,11 @@ pub struct OffsetLNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct OffsetRNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct Proportion2Node {
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]

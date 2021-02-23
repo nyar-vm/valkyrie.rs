@@ -62,44 +62,9 @@ atomic union ImportMacroItem {
     | '#' Identifier #Capture
     | '@' Identifier #Instant
 }
-
-// === classes === -----------------------------------------------------------------------------------------------------
-class DefineClass {
-    DefineTemplate? //Annotation* ModifiedIdentifier DefineGeneric? TypeHint?
-    KW_CLASS Identifier ClassInherit? ClassBlock ^EOS?
-}
-class ClassBlock {
-    '{' ClassBlockItem* '}'
-}
-union ClassBlockItem {
-    | ClassDomain
-    | ClassMethod
-    | ClassField
-    | EOS_FREE
-}
-class ClassInherit {
-    '(' (ClassInheritItem (',' ClassInheritItem)* ','?)? ')'
-}
-class ClassInheritItem {
-    Namepath
-}
-class ClassField {
-    Identifier
-    //Annotation* ModifiedIdentifier
-    //    TypeHint? ParameterDefault?
-}
-class ClassMethod {
-    //Annotation* ModifiedNamepath
-    //    DefineGeneric? FunctionParameters Return? FunctionBlock?
-    Identifier '(' ')'
-}
-class ClassDomain {
-    //Annotation* ModifiedIdentifier
-    Identifier ClassBlock
-}
 // === template === ----------------------------------------------------------------------------------------------------
 class DefineTemplate {
-    // annotation* modifiers
+    AttributeCall* ModifierCall*
     KW_TEMPLATE TemplateParameters? TemplateBlock
 }
 class TemplateParameters {
@@ -128,14 +93,46 @@ class WhereBound {
 //class RequireBlock {
 //    '{' (ExpressionRoot | EOS_FREE)* '}'
 //}
-// === identifier === --------------------------------------------------------------------------------------------------
+// === classes === -----------------------------------------------------------------------------------------------------
 class DefineClass {
-    AnnotationCall* KW_CLASS
+    DefineTemplate? AttributeCall* ModifierCall*
+    KW_CLASS Identifier ClassInherit? ClassBlock ^EOS?
+}
+class ClassBlock {
+    '{' ClassBlockItem* '}'
+}
+union ClassBlockItem {
+    | ClassDomain
+    | ClassMethod
+    | ClassField
+    | EOS_FREE
+}
+class ClassInherit {
+    '(' (ClassInheritItem (',' ClassInheritItem)* ','?)? ')'
+}
+class ClassInheritItem {
+    Namepath
+}
+class ClassField {
+    AttributeCall* ModifierCall+
+    //    TypeHint? ParameterDefault?
+}
+class ClassMethod {
+    AttributeCall* method_modifier+ Namepath
+    //    DefineGeneric? FunctionParameters Return? FunctionBlock?
+    '(' ')'
+}
+atomic inline class method_modifier {
+    !(^Namepath ~ [(<:}]) ModifierCall
+}
+class ClassDomain {
+    //Annotation* ModifiedIdentifier
+    Identifier ClassBlock
 }
 @style(keyword)
-class KW_CLASS {
-    | 'class'
-    | 'structure'
+union KW_CLASS {
+    | 'class'     #Class
+    | 'structure' #Structure
 }
 // === identifier === --------------------------------------------------------------------------------------------------
 class DefineUnion {
@@ -146,12 +143,21 @@ class KW_UNION {
     'union'
 }
 // === identifier === --------------------------------------------------------------------------------------------------
+class DefineFlags {
+    AttributeCall* KW_FLAGS
+}
+@style(keyword)
+class KW_FLAGS {
+    'flags'
+}
+// === identifier === --------------------------------------------------------------------------------------------------
 class DefineTrait {
     KW_TRAIT
 }
 @style(keyword)
-class KW_TRAIT {
-    'trait'
+union KW_TRAIT {
+    | 'trait'     #Trait
+    | 'interface' #Interface
 }
 // === while loop === --------------------------------------------------------------------------------------------------
 class WhileStatement {
@@ -176,15 +182,10 @@ atomic union MainStatement {
 atomic class MainExpression {
     MainTerm (IGNORED MainInfix ~ MainTerm)* EOS?
 }
-atomic class InlineExpression {
-    InlineTerm (IGNORED MainInfix ~ InlineTerm)*
-}
 atomic class MainTerm {
     (MainPrefix IGNORED)* MainFactor MainSuffix*
 }
-atomic class InlineTerm {
-    (MainPrefix IGNORED)* MainFactor InlineSuffix*
-}
+
 atomic union MainFactor {
     | '(' ~ MainExpression ~ ')'
     | Atomic
@@ -267,6 +268,13 @@ atomic union MainPrefix {
 atomic union MainSuffix {
     | InlineSuffix
 }
+// === inline expression === --------------------------------------------------------------------------------------------------
+atomic class InlineExpression {
+    InlineTerm (IGNORED MainInfix ~ InlineTerm)*
+}
+atomic class InlineTerm {
+    (MainPrefix IGNORED)* MainFactor InlineSuffix*
+}
 atomic union InlineSuffix {
     | IGNORED '!'  #Raise
     | IGNORED '%'  #Percent2
@@ -280,6 +288,31 @@ atomic union InlineSuffix {
     | IGNORED '℉'  #Fahrenheit
     | TupleCall
     | RangeCall
+}
+// === identifier === --------------------------------------------------------------------------------------------------
+class TypeHint {
+    COLON TypeExpression
+}
+atomic class TypeExpression {
+    TypeTerm (IGNORED TypeInfix ~ TypeTerm)*
+}
+atomic class TypeTerm {
+    (TypePrefix IGNORED)* MainFactor TypeSuffix*
+}
+union TypeFactor {
+    | '(' ~ TypeExpression ~ ')'
+    | Atomic
+}
+@style(operator)
+atomic union TypeInfix ^ {
+    | '|'  #Union
+}
+atomic union TypePrefix {
+    | [+]        #Positive
+    | [-]        #Negative
+}
+atomic union TypeSuffix {
+    | '?' #Option
 }
 // === tuple === --------------------------------------------------------------------------------------------------
 atomic class TupleCall {
@@ -328,6 +361,9 @@ class ProceduralCall {
     ProceduralPath TupleLiteral?
 }
 // === identifier === --------------------------------------------------------------------------------------------------
+atomic class ModifierCall ^ {
+    !(KW_CLASS | KW_UNION | KW_TRAIT) ^Identifier
+}
 atomic class AttributePath {
     '#' Namepath
 }
@@ -362,9 +398,6 @@ text class Integer {
     /0|[1-9][0-9]*/
 }
 // === keywords === ----------------------------------------------------------------------------------------------------
-atomic class ModifierCall ^ {
-    !(KW_CLASS | KW_UNION | KW_TRAIT) ^Identifier
-}
 token {
     PROPORTION: /∷|::/
     COLON: [:：]
