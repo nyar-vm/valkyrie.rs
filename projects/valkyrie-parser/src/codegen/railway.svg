@@ -3608,53 +3608,56 @@ IGNORED</text>
         </text>
         <g class="sequence">
             <g class="optional">
-                <path d=" M 153 6052 h 24 m -24 0 a 12 12 0 0 0 12 -12 v 0 a 12 12 0 0 1 12 -12 h 132 m -63 0 l -5 -5 m 0 10 l 5 -5 m 63 0 a 12 12 0 0 1 12 12 v 0 a 12 12 0 0 0 12 12 h -24"/>
-                <a class="link" xlink:href="#MainExpression">
-                    <g class="symbol">
-                        <rect height="22" width="132" x="177" y="6041"/>
-                        <text x="243" y="6057">
-                            MainExpression
+                <path d=" M 153 6052 h 24 m -24 0 a 12 12 0 0 0 12 -12 v 0 a 12 12 0 0 1 12 -12 h 218 m -106 0 l -5 -5 m 0 10 l 5 -5 m 106 0 a 12 12 0 0 1 12 12 v 0 a 12 12 0 0 0 12 12 h -24"/>
+                <g class="sequence">
+                    <a class="link" xlink:href="#MainExpression">
+                        <g class="symbol">
+                            <rect height="22" width="132" x="177" y="6041"/>
+                            <text x="243" y="6057">
+                                MainExpression
+                            </text>
+</g>
+                    </a>
+                    <g class="character">
+                        <rect height="22" rx="10" ry="10" width="76" x="319" y="6041"/>
+                        <text x="357" y="6057">
+                            IGNORED
                         </text>
-</g>
-                </a>
-</g>
-            <g class="character">
-                <rect height="22" rx="10" ry="10" width="76" x="343" y="6041"/>
-                <text x="381" y="6057">
-                    IGNORED
-                </text>
+                    </g>
+                    <path d=" M 309 6052 h 10"/>
+                </g>
 </g>
             <g class="choice">
                 <path d=" M 429 6052 h 24 m 368 0 h 472 m -233 0 l -5 -5 m 0 10 l 5 -5 m 233 0"/>
                 <g class="sequence">
-                    <g class="sequence">
-                        <a class="link" xlink:href="#RangeOmit">
-                            <g class="symbol">
-                                <rect height="22" width="92" x="453" y="6041"/>
-                                <text x="499" y="6057">
-                                    RangeOmit
-                                </text>
+                    <a class="link" xlink:href="#RangeOmit">
+                        <g class="symbol">
+                            <rect height="22" width="92" x="453" y="6041"/>
+                            <text x="499" y="6057">
+                                RangeOmit
+                            </text>
 </g>
-                        </a>
+                    </a>
+                    <g class="optional">
+                        <path d=" M 555 6052 h 24 m -24 0 a 12 12 0 0 0 12 -12 v 0 a 12 12 0 0 1 12 -12 h 218 m -106 0 l -5 -5 m 0 10 l 5 -5 m 106 0 a 12 12 0 0 1 12 12 v 0 a 12 12 0 0 0 12 12 h -24"/>
+                        <g class="sequence">
 <g class="character">
-    <rect height="22" rx="10" ry="10" width="76" x="555" y="6041"/>
-    <text x="593" y="6057">
+    <rect height="22" rx="10" ry="10" width="76" x="579" y="6041"/>
+    <text x="617" y="6057">
 IGNORED</text>
 </g>
-                        <path d=" M 545 6052 h 10"/>
+                            <a class="link" xlink:href="#MainExpression">
+                                <g class="symbol">
+                                    <rect height="22" width="132" x="665" y="6041"/>
+                                    <text x="731" y="6057">
+                                        MainExpression
+                                    </text>
 </g>
-                    <g class="optional">
-                        <path d=" M 641 6052 h 24 m -24 0 a 12 12 0 0 0 12 -12 v 0 a 12 12 0 0 1 12 -12 h 132 m -63 0 l -5 -5 m 0 10 l 5 -5 m 63 0 a 12 12 0 0 1 12 12 v 0 a 12 12 0 0 0 12 12 h -24"/>
-                        <a class="link" xlink:href="#MainExpression">
-                            <g class="symbol">
-                                <rect height="22" width="132" x="665" y="6041"/>
-                                <text x="731" y="6057">
-                                    MainExpression
-                                </text>
-</g>
-                        </a>
+                            </a>
+                            <path d=" M 655 6052 h 10"/>
+                        </g>
                     </g>
-                    <path d=" M 631 6052 h 10"/>
+                    <path d=" M 545 6052 h 10"/>
 </g>
                 <path d=" M 429 6052 a 12 12 0 0 1 12 12 v 9 m 840 0 v -9 a 12 12 0 0 1 12 -12"/>
                 <path d=" M 441 6073 v 36 a 12 12 0 0 0 12 12 m 816 0 h 0 a 12 12 0 0 0 12 -12 v -36"/>
@@ -3667,14 +3670,14 @@ IGNORED</text>
     </text>
 </g>
 </a>
+    <g class="optional">
+        <path d=" M 523 6121 h 24 m -24 0 a 12 12 0 0 0 12 -12 v -24 a 12 12 0 0 1 12 -12 h 698 m -346 0 l -5 -5 m 0 10 l 5 -5 m 346 0 a 12 12 0 0 1 12 12 v 24 a 12 12 0 0 0 12 12 h -24"/>
+        <g class="sequence">
 <g class="character">
-    <rect height="22" rx="10" ry="10" width="76" x="523" y="6110"/>
-    <text x="561" y="6126">
+    <rect height="22" rx="10" ry="10" width="76" x="547" y="6110"/>
+    <text x="585" y="6126">
 IGNORED</text>
 </g>
-    <g class="optional">
-        <path d=" M 609 6121 h 24 m -24 0 a 12 12 0 0 0 12 -12 v -24 a 12 12 0 0 1 12 -12 h 612 m -303 0 l -5 -5 m 0 10 l 5 -5 m 303 0 a 12 12 0 0 1 12 12 v 24 a 12 12 0 0 0 12 12 h -24"/>
-        <g class="sequence">
             <a class="link" xlink:href="#MainExpression">
 <g class="symbol">
     <rect height="22" width="132" x="633" y="6110"/>
@@ -3683,16 +3686,15 @@ IGNORED</text>
     </text>
 </g>
 </a>
+            <g class="optional">
+                <path d=" M 775 6121 h 24 m -24 0 a 12 12 0 0 0 12 -12 v -12 a 12 12 0 0 1 12 -12 h 422 m -208 0 l -5 -5 m 0 10 l 5 -5 m 208 0 a 12 12 0 0 1 12 12 v 12 a 12 12 0 0 0 12 12 h -24"/>
+                <g class="sequence">
 <g class="character">
-    <rect height="22" rx="10" ry="10" width="76" x="775" y="6110"/>
-    <text x="813" y="6126">
+    <rect height="22" rx="10" ry="10" width="76" x="799" y="6110"/>
+    <text x="837" y="6126">
 IGNORED</text>
 </g>
-            <g class="optional">
-                <path d=" M 861 6121 h 24 m -24 0 a 12 12 0 0 0 12 -12 v -12 a 12 12 0 0 1 12 -12 h 336 m -165 0 l -5 -5 m 0 10 l 5 -5 m 165 0 a 12 12 0 0 1 12 12 v 12 a 12 12 0 0 0 12 12 h -24"/>
-                <g class="sequence">
-                    <g class="sequence">
-                        <a class="link" xlink:href="#COLON">
+                    <a class="link" xlink:href="#COLON">
 <g class="symbol">
     <rect height="22" width="60" x="885" y="6110"/>
     <text x="915" y="6126">
@@ -3700,16 +3702,15 @@ IGNORED</text>
     </text>
 </g>
 </a>
+                    <g class="optional">
+                        <path d=" M 955 6121 h 24 m -24 0 a 12 12 0 0 0 12 -12 v 0 a 12 12 0 0 1 12 -12 h 218 m -106 0 l -5 -5 m 0 10 l 5 -5 m 106 0 a 12 12 0 0 1 12 12 v 0 a 12 12 0 0 0 12 12 h -24"/>
+                        <g class="sequence">
 <g class="character">
-    <rect height="22" rx="10" ry="10" width="76" x="955" y="6110"/>
-    <text x="993" y="6126">
+    <rect height="22" rx="10" ry="10" width="76" x="979" y="6110"/>
+    <text x="1017" y="6126">
 IGNORED</text>
 </g>
-                        <path d=" M 945 6121 h 10"/>
-</g>
-                    <g class="optional">
-                        <path d=" M 1041 6121 h 24 m -24 0 a 12 12 0 0 0 12 -12 v 0 a 12 12 0 0 1 12 -12 h 132 m -63 0 l -5 -5 m 0 10 l 5 -5 m 63 0 a 12 12 0 0 1 12 12 v 0 a 12 12 0 0 0 12 12 h -24"/>
-                        <a class="link" xlink:href="#MainExpression">
+                            <a class="link" xlink:href="#MainExpression">
 <g class="symbol">
     <rect height="22" width="132" x="1065" y="6110"/>
     <text x="1131" y="6126">
@@ -3717,19 +3718,20 @@ IGNORED</text>
     </text>
 </g>
 </a>
+                            <path d=" M 1055 6121 h 10"/>
 </g>
-                    <path d=" M 1031 6121 h 10"/>
 </g>
+                    <path d=" M 875 6121 h 10"/>
+                    <path d=" M 945 6121 h 10"/>
 </g>
+            </g>
+            <path d=" M 623 6121 h 10"/>
             <path d=" M 765 6121 h 10"/>
-            <path d=" M 851 6121 h 10"/>
 </g>
 </g>
     <path d=" M 513 6121 h 10"/>
-    <path d=" M 599 6121 h 10"/>
 </g>
 </g>
-            <path d=" M 333 6052 h 10"/>
             <path d=" M 419 6052 h 10"/>
 </g>
         <path d=" M 1303 6052 h 5 a 5 5 0 0 1 5 -5 a 5 5 0 0 1 5 5 a 5 5 0 0 1 -5 5 a 5 5 0 0 1 -5 -5"/>

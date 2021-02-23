@@ -489,7 +489,6 @@ pub struct MainExpressionNode {
     pub main_term: Vec<MainTermNode>,
     pub span: Range<u32>,
 }
-
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct InlineExpressionNode {
@@ -505,7 +504,6 @@ pub struct MainTermNode {
     pub main_suffix: Vec<MainSuffixNode>,
     pub span: Range<u32>,
 }
-
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct InlineTermNode {
@@ -520,7 +518,6 @@ pub enum MainFactorNode {
     Atomic(AtomicNode),
     MainFactor0(MainExpressionNode),
 }
-
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum AtomicNode {
@@ -661,7 +658,6 @@ pub enum SubscriptAxisNode {
     SubscriptOnly(SubscriptOnlyNode),
     SubscriptRange(SubscriptRangeNode),
 }
-
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct SubscriptOnlyNode {
@@ -671,6 +667,8 @@ pub struct SubscriptOnlyNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct SubscriptRangeNode {
+    pub head: Option<MainExpressionNode>,
+    pub step: Option<MainExpressionNode>,
     pub tail: Option<MainExpressionNode>,
     pub span: Range<u32>,
 }
@@ -755,13 +753,11 @@ pub struct ProportionNode {
 pub struct DotNode {
     pub span: Range<u32>,
 }
-
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct OffsetLNode {
     pub span: Range<u32>,
 }
-
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct OffsetRNode {

@@ -130,7 +130,7 @@ class WhereBound {
 //}
 // === identifier === --------------------------------------------------------------------------------------------------
 class DefineClass {
-    KW_CLASS
+    AnnotationCall* KW_CLASS
 }
 @style(keyword)
 class KW_CLASS {
@@ -190,6 +190,7 @@ atomic union MainFactor {
     | Atomic
 }
 union Atomic {
+    | ProceduralCall
     | TupleLiteral
     | RangeLiteral
     | Namepath
@@ -305,41 +306,36 @@ union SubscriptAxis {
     | SubscriptRange
     | SubscriptOnly
 }
-
 class SubscriptOnly {
-    index:MainExpression // [s]
+    index:MainExpression
 }
-
-class SubscriptRange ^ {
-    | head:MainExpression (
-        // [s::] + [s::s]
-        | RangeOmit step:MainExpression?
-        // [s:]
-        | COLON (
-            // [s:s:s]
-            | tail:MainExpression COLON step:MainExpression
-            // [s:s] + [s:s:]
-            | tail:MainExpression COLON
-            | tail:MainExpression
-
-        )?
+atomic class SubscriptRange ^ {
+    (head:MainExpression IGNORED)? (
+        | RangeOmit (IGNORED step:MainExpression)?
+        | COLON (IGNORED tail:MainExpression (IGNORED COLON (IGNORED step:MainExpression)?)?)?
     )
-    // [::] + [: :] + [::s]
-    | RangeOmit step:MainExpression?
-    // [:]
-    | COLON (
-        //[:s:s]
-        | tail:MainExpression COLON step:MainExpression
-        // [:s] + [:s:]
-        | tail:MainExpression COLON?
-    )?
 }
 atomic inline class RangeOmit {
     PROPORTION | COLON ~ COLON
 }
+// === annotation === --------------------------------------------------------------------------------------------------
+class AttributeCall {
+    // #call(...)
+    AttributePath TupleLiteral?
+}
+class ProceduralCall {
+    // @call(...)
+    ProceduralPath TupleLiteral?
+}
 // === identifier === --------------------------------------------------------------------------------------------------
+atomic class AttributePath {
+    '#' Namepath
+}
+atomic class ProceduralPath {
+    '@' Namepath
+}
 atomic class NamepathFree  {
-    Identifier (IGNORED /[.∷]|::/ ~ Identifier)*
+    Identifier (IGNORED ^PROPORTION2 ~ Identifier)*
 }
 atomic class Namepath {
     Identifier (IGNORED ^PROPORTION ~ Identifier)*
@@ -357,7 +353,6 @@ atomic class IdentifierRaw {
 text class IdentifierRawText {
     [^`]+
 }
-
 union Boolean {
     | 'true'  #True
     | 'false' #False
@@ -371,16 +366,16 @@ atomic class ModifierCall ^ {
     !(KW_CLASS | KW_UNION | KW_TRAIT) ^Identifier
 }
 token {
-    COMMA: [,，]
-    COLON: [:：]
     PROPORTION: /∷|::/
+    COLON: [:：]
+    COMMA: [,，]
     DOT:   [.．]
     OFFSET_L: '⁅'
     OFFSET_R: '⁆'
 }
-
-
-
+class PROPORTION2 -> PROPORTION {
+    /[.．∷]|::/
+}
 @style(keyword)
 token {
     OP_IMPORT_ALL: '*'

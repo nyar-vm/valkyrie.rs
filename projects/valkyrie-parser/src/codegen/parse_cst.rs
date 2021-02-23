@@ -729,7 +729,6 @@ fn parse_main_expression(state: Input) -> Output {
         })
     })
 }
-
 #[inline]
 fn parse_inline_expression(state: Input) -> Output {
     state.rule(ValkyrieRule::InlineExpression, |s| {
@@ -767,7 +766,6 @@ fn parse_main_term(state: Input) -> Output {
         })
     })
 }
-
 #[inline]
 fn parse_inline_term(state: Input) -> Output {
     state.rule(ValkyrieRule::InlineTerm, |s| {
@@ -805,7 +803,6 @@ fn parse_main_factor(state: Input) -> Output {
             .or_else(|s| parse_atomic(s).and_then(|s| s.tag_node("atomic")))
     })
 }
-
 #[inline]
 fn parse_atomic(state: Input) -> Output {
     state.rule(ValkyrieRule::Atomic, |s| {
@@ -1318,52 +1315,64 @@ fn parse_subscript_axis(state: Input) -> Output {
             .or_else(|s| parse_subscript_only(s).and_then(|s| s.tag_node("subscript_only")))
     })
 }
-
 #[inline]
 fn parse_subscript_only(state: Input) -> Output {
     state.rule(ValkyrieRule::SubscriptOnly, |s| parse_main_expression(s).and_then(|s| s.tag_node("index")))
 }
-
 #[inline]
 fn parse_subscript_range(state: Input) -> Output {
     state.rule(ValkyrieRule::SubscriptRange, |s| {
         s.sequence(|s| {
             Ok(s)
-                .and_then(|s| s.optional(|s| parse_main_expression(s)).and_then(|s| s.tag_node("head")))
-                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| {
+                    s.optional(|s| {
+                        s.sequence(|s| {
+                            Ok(s)
+                                .and_then(|s| parse_main_expression(s).and_then(|s| s.tag_node("head")))
+                                .and_then(|s| builtin_ignore(s))
+                        })
+                    })
+                })
                 .and_then(|s| {
                     Err(s)
                         .or_else(|s| {
                             s.sequence(|s| {
-                                Ok(s)
-                                    .and_then(|s| {
-                                        s.sequence(|s| Ok(s).and_then(|s| parse_range_omit(s)).and_then(|s| builtin_ignore(s)))
+                                Ok(s).and_then(|s| parse_range_omit(s)).and_then(|s| {
+                                    s.optional(|s| {
+                                        s.sequence(|s| {
+                                            Ok(s)
+                                                .and_then(|s| builtin_ignore(s))
+                                                .and_then(|s| parse_main_expression(s).and_then(|s| s.tag_node("step")))
+                                        })
                                     })
-                                    .and_then(|s| s.optional(|s| parse_main_expression(s)).and_then(|s| s.tag_node("step")))
+                                })
                             })
                         })
                         .or_else(|s| {
                             s.sequence(|s| {
-                                Ok(s).and_then(|s| parse_colon(s)).and_then(|s| builtin_ignore(s)).and_then(|s| {
+                                Ok(s).and_then(|s| parse_colon(s)).and_then(|s| {
                                     s.optional(|s| {
                                         s.sequence(|s| {
                                             Ok(s)
-                                                .and_then(|s| parse_main_expression(s).and_then(|s| s.tag_node("tail")))
                                                 .and_then(|s| builtin_ignore(s))
+                                                .and_then(|s| parse_main_expression(s).and_then(|s| s.tag_node("tail")))
                                                 .and_then(|s| {
                                                     s.optional(|s| {
                                                         s.sequence(|s| {
                                                             Ok(s)
+                                                                .and_then(|s| builtin_ignore(s))
+                                                                .and_then(|s| parse_colon(s))
                                                                 .and_then(|s| {
-                                                                    s.sequence(|s| {
-                                                                        Ok(s)
-                                                                            .and_then(|s| parse_colon(s))
-                                                                            .and_then(|s| builtin_ignore(s))
+                                                                    s.optional(|s| {
+                                                                        s.sequence(|s| {
+                                                                            Ok(s).and_then(|s| builtin_ignore(s)).and_then(
+                                                                                |s| {
+                                                                                    parse_main_expression(s)
+                                                                                        .and_then(|s| s.tag_node("step"))
+                                                                                },
+                                                                            )
+                                                                        })
                                                                     })
-                                                                })
-                                                                .and_then(|s| {
-                                                                    s.optional(|s| parse_main_expression(s))
-                                                                        .and_then(|s| s.tag_node("step"))
                                                                 })
                                                         })
                                                     })
@@ -1541,12 +1550,10 @@ fn parse_dot(state: Input) -> Output {
         })
     })
 }
-
 #[inline]
 fn parse_offset_l(state: Input) -> Output {
     state.rule(ValkyrieRule::OFFSET_L, |s| s.match_string("⁅", false))
 }
-
 #[inline]
 fn parse_offset_r(state: Input) -> Output {
     state.rule(ValkyrieRule::OFFSET_R, |s| s.match_string("⁆", false))
