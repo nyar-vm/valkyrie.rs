@@ -1,64 +1,9 @@
 new A();
-
 new B {};
-
-new C() {
-
-};
-
-object(Base) {
-
-}
-
-
-object: Super {
-    offset: int = a() {
-
-    }
-
-    override get() {
-        64
-    }
-}
-
-object⟨SUPER⟩(Super): Super {
-    super;
-    super
-    super: SUPER = super {
-        get super()
-        super = super
-    };
-    #[super, super(super: super)]
-    super super {
-        super super;
-        super super {
-            get super()
-            super = super
-        }
-    }
-}
-
-
-
-
-
-E⟨⟩(){};
-
-new
-Integer
-⟨
-A
-⟩
-(
-    A
-)
-{
-    A
-}
+new C() { };
 
 new stack List⟨Any⟩(10)
 {
-    "term",
     0, 1, 2, 3, 4, 5, 6, 7, 8, 9
 }
 
@@ -66,7 +11,6 @@ new stack List⟨T: Integer⟩(capacity: 10)
 {
     0, 1, 2, 3, 4, 5, 6, 7, 8, 9
 }
-
 new stack List {
     ..item1,
     ..item2,
@@ -74,8 +18,6 @@ new stack List {
     ...(key: key, value),
     key: value
 }
-
-
 new keywords BaseballTeam⟨T⟩(args) {
     name: "object one",
     Size: Math::PI,
@@ -95,5 +37,68 @@ new keywords BaseballTeam⟨T⟩(args) {
         ['C', 'A', 0]: "C above A above C above middle C",
     },
     [4]: "Jose Altuve",
+}
+
+object: Super {
+    offset: int = a() {
+
+    }
+
+    override get() {
+        64
+    }
+}
+
+
+object(Base) {
+
+}
+
+
+
+
+object⟨SUPER⟩(Super): Super {
+    super;
+    super
+    super: SUPER = super {
+        get super()
+        super = super
+    };
+    #[super, super(super: super)]
+    super super {
+        super super;
+        super super {
+            get super()
+            super = super
+        }
+    }
+}
+
+class This {
+    public {
+        int: int,
+    }
+    private {
+        bool: bool,
+    }
+    custom {
+
+    }
+}
+
+
+
+E⟨⟩(){};
+
+new
+Integer
+⟨
+A
+⟩
+(
+    A
+)
+{
+    A
 }
 

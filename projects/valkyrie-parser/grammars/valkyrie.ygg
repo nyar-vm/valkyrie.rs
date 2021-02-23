@@ -103,9 +103,9 @@ class DefineTemplate {
     KW_TEMPLATE TemplateParameters? TemplateBlock
 }
 class TemplateParameters {
-    | Identifier (COMMA Identifier)* COMMA?
-    | '<' Identifier (COMMA Identifier)* COMMA? '>'
-    | '⟨' Identifier (COMMA Identifier)* COMMA? '⟩'
+    | Identifier (^COMMA Identifier)* ^COMMA?
+    | '<' Identifier (^COMMA Identifier)* ^COMMA? '>'
+    | '⟨' Identifier (^COMMA Identifier)* ^COMMA? '⟩'
 }
 class TemplateBlock {
     '{' (TemplateStatement | TemplateImplements | EOS_FREE)* '}'
@@ -176,12 +176,25 @@ atomic union MainStatement {
 atomic class MainExpression {
     MainTerm (IGNORED MainInfix ~ MainTerm)* EOS?
 }
+atomic class InlineExpression {
+    InlineTerm (IGNORED MainInfix ~ InlineTerm)*
+}
 atomic class MainTerm {
     (MainPrefix IGNORED)* MainFactor MainSuffix*
 }
+atomic class InlineTerm {
+    (MainPrefix IGNORED)* MainFactor InlineSuffix*
+}
 atomic union MainFactor {
-    | '(' MainExpression ')'
+    | '(' ~ MainExpression ~ ')'
     | Atomic
+}
+union Atomic {
+    | TupleLiteral
+    | RangeLiteral
+    | Namepath
+    | Integer
+    | Boolean
 }
 @style(operator)
 atomic union MainInfix ^ {
@@ -253,17 +266,6 @@ atomic union MainPrefix {
 atomic union MainSuffix {
     | InlineSuffix
 }
-// === identifier === --------------------------------------------------------------------------------------------------
-atomic class InlineExpression {
-    InlineTerm (IGNORED MainInfix ~ InlineTerm)*
-}
-atomic class InlineTerm {
-    (MainPrefix IGNORED)* MainFactor InlineSuffix*
-}
-atomic union InlineSuffix {
-    | '(' MainExpression ')'
-    | Atomic
-}
 atomic union InlineSuffix {
     | IGNORED '!'  #Raise
     | IGNORED '%'  #Percent2
@@ -283,7 +285,7 @@ atomic class TupleCall {
      WhiteSpace? OP_AND_THEN? WhiteSpace? TupleLiteral
 }
 class TupleLiteral {
-    '(' (TuplePair (COMMA TuplePair)* COMMA?)? ')'
+    '(' (TuplePair (^COMMA TuplePair)* ^COMMA?)? ')'
 }
 class TuplePair {
     (TupleKey Colon)? MainExpression
@@ -295,35 +297,45 @@ union TupleKey {
 atomic class RangeCall {
     WhiteSpace? OP_AND_THEN? WhiteSpace? RangeLiteral
 }
-class RangeLiteral {
-    | '[' (RangeAxis (COMMA RangeAxis)* COMMA?)? ']'
-    | '⁅' (RangeAxis (COMMA RangeAxis)* COMMA?)? '⁆'
+atomic class RangeLiteral {
+    | '[' ~ (SubscriptAxis (IGNORED ^COMMA ~ SubscriptAxis)* ~ ^COMMA?)? ~ ']'
+    | '⁅' ~ (SubscriptAxis (IGNORED ^COMMA ~ SubscriptAxis)* ~ ^COMMA?)? ~ '⁆'
 }
-class RangeAxis ^ {
-    | COLON // [:]
-    | index:MainExpression // [s]
-    | head:MainExpression COLON // [s:]
-    | COLON tail:MainExpression // [:s]
-    | head:MainExpression COLON tail:MainExpression //[s:s]
-    | RangeOmit // [::] + [: :]
-    | head:MainExpression RangeOmit // [s::]
-    | COLON tail:MainExpression COLON // [:s:]
-    | RangeOmit step:MainExpression // [::s]
-    | head:MainExpression COLON tail:MainExpression COLON // [s:s:]
-    | COLON tail:MainExpression COLON step:MainExpression // [:s:s]
-    | head:MainExpression RangeOmit step:MainExpression // [s::s]
-    | head:MainExpression COLON tail:MainExpression COLON step:MainExpression // [s:s:s]
+union SubscriptAxis {
+    | SubscriptRange
+    | SubscriptOnly
+}
+
+class SubscriptOnly {
+    index:MainExpression // [s]
+}
+
+class SubscriptRange ^ {
+    | head:MainExpression (
+        // [s::] + [s::s]
+        | RangeOmit step:MainExpression?
+        // [s:]
+        | COLON (
+            // [s:s:s]
+            | tail:MainExpression COLON step:MainExpression
+            // [s:s] + [s:s:]
+            | tail:MainExpression COLON
+            | tail:MainExpression
+
+        )?
+    )
+    // [::] + [: :] + [::s]
+    | RangeOmit step:MainExpression?
+    // [:]
+    | COLON (
+        //[:s:s]
+        | tail:MainExpression COLON step:MainExpression
+        // [:s] + [:s:]
+        | tail:MainExpression COLON?
+    )?
 }
 atomic inline class RangeOmit {
     PROPORTION | COLON ~ COLON
-}
-// === atomic === --------------------------------------------------------------------------------------------------
-union Atomic {
-    | TupleLiteral
-    | RangeLiteral
-    | Namepath
-    | Integer
-    | Boolean
 }
 // === identifier === --------------------------------------------------------------------------------------------------
 atomic class NamepathFree  {
@@ -354,12 +366,6 @@ union Boolean {
 text class Integer {
     /0|[1-9][0-9]*/
 }
-class RangeExact {
-    '{' Integer '}'
-}
-class Range {
-    '{' (min:Integer)? ',' (max:Integer)? '}'
-}
 // === keywords === ----------------------------------------------------------------------------------------------------
 atomic class ModifierCall ^ {
     !(KW_CLASS | KW_UNION | KW_TRAIT) ^Identifier
@@ -369,7 +375,12 @@ token {
     COLON: [:：]
     PROPORTION: /∷|::/
     DOT:   [.．]
+    OFFSET_L: '⁅'
+    OFFSET_R: '⁆'
 }
+
+
+
 @style(keyword)
 token {
     OP_IMPORT_ALL: '*'

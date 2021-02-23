@@ -68,13 +68,14 @@ pub enum ValkyrieRule {
     ForStatement,
     MainStatement,
     MainExpression,
+    InlineExpression,
     MainTerm,
+    InlineTerm,
     MainFactor,
+    Atomic,
     MainInfix,
     MainPrefix,
     MainSuffix,
-    InlineExpression,
-    InlineTerm,
     InlineSuffix,
     TupleCall,
     TupleLiteral,
@@ -82,9 +83,10 @@ pub enum ValkyrieRule {
     TupleKey,
     RangeCall,
     RangeLiteral,
-    RangeAxis,
+    SubscriptAxis,
+    SubscriptOnly,
+    SubscriptRange,
     RangeOmit,
-    Atomic,
     NamepathFree,
     Namepath,
     Identifier,
@@ -93,13 +95,13 @@ pub enum ValkyrieRule {
     IdentifierRawText,
     Boolean,
     Integer,
-    RangeExact,
-    Range,
     ModifierCall,
     COMMA,
     COLON,
     PROPORTION,
     DOT,
+    OFFSET_L,
+    OFFSET_R,
     OP_IMPORT_ALL,
     OP_AND_THEN,
     OP_BIND,
@@ -173,13 +175,14 @@ impl YggdrasilRule for ValkyrieRule {
             Self::ForStatement => "",
             Self::MainStatement => "",
             Self::MainExpression => "",
+            Self::InlineExpression => "",
             Self::MainTerm => "",
+            Self::InlineTerm => "",
             Self::MainFactor => "",
+            Self::Atomic => "",
             Self::MainInfix => "",
             Self::MainPrefix => "",
             Self::MainSuffix => "",
-            Self::InlineExpression => "",
-            Self::InlineTerm => "",
             Self::InlineSuffix => "",
             Self::TupleCall => "",
             Self::TupleLiteral => "",
@@ -187,9 +190,10 @@ impl YggdrasilRule for ValkyrieRule {
             Self::TupleKey => "",
             Self::RangeCall => "",
             Self::RangeLiteral => "",
-            Self::RangeAxis => "",
+            Self::SubscriptAxis => "",
+            Self::SubscriptOnly => "",
+            Self::SubscriptRange => "",
             Self::RangeOmit => "",
-            Self::Atomic => "",
             Self::NamepathFree => "",
             Self::Namepath => "",
             Self::Identifier => "",
@@ -198,13 +202,13 @@ impl YggdrasilRule for ValkyrieRule {
             Self::IdentifierRawText => "",
             Self::Boolean => "",
             Self::Integer => "",
-            Self::RangeExact => "",
-            Self::Range => "",
             Self::ModifierCall => "",
             Self::COMMA => "",
             Self::COLON => "",
             Self::PROPORTION => "",
             Self::DOT => "",
+            Self::OFFSET_L => "",
+            Self::OFFSET_R => "",
             Self::OP_IMPORT_ALL => "",
             Self::OP_AND_THEN => "",
             Self::OP_BIND => "",
@@ -384,7 +388,6 @@ pub struct DefineTemplateNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct TemplateParametersNode {
-    pub comma: Vec<CommaNode>,
     pub identifier: Vec<IdentifierNode>,
     pub span: Range<u32>,
 }
@@ -486,6 +489,14 @@ pub struct MainExpressionNode {
     pub main_term: Vec<MainTermNode>,
     pub span: Range<u32>,
 }
+
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct InlineExpressionNode {
+    pub inline_term: Vec<InlineTermNode>,
+    pub main_infix: Vec<MainInfixNode>,
+    pub span: Range<u32>,
+}
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct MainTermNode {
@@ -494,11 +505,30 @@ pub struct MainTermNode {
     pub main_suffix: Vec<MainSuffixNode>,
     pub span: Range<u32>,
 }
+
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct InlineTermNode {
+    pub inline_suffix: Vec<InlineSuffixNode>,
+    pub main_factor: MainFactorNode,
+    pub main_prefix: Vec<MainPrefixNode>,
+    pub span: Range<u32>,
+}
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum MainFactorNode {
     Atomic(AtomicNode),
     MainFactor0(MainExpressionNode),
+}
+
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum AtomicNode {
+    Boolean(BooleanNode),
+    Integer(IntegerNode),
+    Namepath(NamepathNode),
+    RangeLiteral(RangeLiteralNode),
+    TupleLiteral(TupleLiteralNode),
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -570,21 +600,6 @@ pub enum MainSuffixNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct InlineExpressionNode {
-    pub inline_term: Vec<InlineTermNode>,
-    pub main_infix: Vec<MainInfixNode>,
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct InlineTermNode {
-    pub inline_suffix: Vec<InlineSuffixNode>,
-    pub main_factor: MainFactorNode,
-    pub main_prefix: Vec<MainPrefixNode>,
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum InlineSuffixNode {
     Celsius,
     Fahrenheit,
@@ -610,11 +625,9 @@ pub struct TupleCallNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct TupleLiteralNode {
-    pub comma: Vec<CommaNode>,
     pub tuple_pair: Vec<TuplePairNode>,
     pub span: Range<u32>,
 }
-
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct TuplePairNode {
@@ -623,7 +636,6 @@ pub struct TuplePairNode {
     pub tuple_key: Option<TupleKeyNode>,
     pub span: Range<u32>,
 }
-
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum TupleKeyNode {
@@ -640,34 +652,34 @@ pub struct RangeCallNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct RangeLiteralNode {
-    pub comma: Vec<CommaNode>,
-    pub range_axis: Vec<RangeAxisNode>,
+    pub subscript_axis: Vec<SubscriptAxisNode>,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct RangeAxisNode {
-    pub head: MainExpressionNode,
+pub enum SubscriptAxisNode {
+    SubscriptOnly(SubscriptOnlyNode),
+    SubscriptRange(SubscriptRangeNode),
+}
+
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct SubscriptOnlyNode {
     pub index: MainExpressionNode,
-    pub step: MainExpressionNode,
-    pub tail: MainExpressionNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct SubscriptRangeNode {
+    pub tail: Option<MainExpressionNode>,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct RangeOmitNode {
     pub colon: Vec<ColonNode>,
-    pub proportion: ProportionNode,
+    pub proportion: Option<ProportionNode>,
     pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum AtomicNode {
-    Boolean(BooleanNode),
-    Integer(IntegerNode),
-    Namepath(NamepathNode),
-    RangeLiteral(RangeLiteralNode),
-    TupleLiteral(TupleLiteralNode),
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -719,19 +731,6 @@ pub struct IntegerNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct RangeExactNode {
-    pub integer: IntegerNode,
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct RangeNode {
-    pub max: Option<IntegerNode>,
-    pub min: Option<IntegerNode>,
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ModifierCallNode {
     pub identifier: IdentifierNode,
     pub span: Range<u32>,
@@ -754,6 +753,18 @@ pub struct ProportionNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct DotNode {
+    pub span: Range<u32>,
+}
+
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct OffsetLNode {
+    pub span: Range<u32>,
+}
+
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct OffsetRNode {
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]

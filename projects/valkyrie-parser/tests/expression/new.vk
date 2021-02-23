@@ -6,9 +6,7 @@ new C {
 
 };
 
-
 new D::();
-
 
 new E::()(){};
 
@@ -17,12 +15,11 @@ new stack List
     "term"
 }
 
-
-new Integer::(A)() {
+new Integer::<A>() {
 
 }
 
-new stack List::(A) () {
+new stack List::<A> () {
 
 }
 
@@ -43,8 +40,6 @@ new stack Object {
     (key, value),
     key: value
 }
-
-
 
 new keywords BaseballTeam::(T) (args) {
     name: "object one",

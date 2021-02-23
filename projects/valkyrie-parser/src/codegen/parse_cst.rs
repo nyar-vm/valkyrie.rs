@@ -40,13 +40,14 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::ForStatement => parse_for_statement(state),
         ValkyrieRule::MainStatement => parse_main_statement(state),
         ValkyrieRule::MainExpression => parse_main_expression(state),
+        ValkyrieRule::InlineExpression => parse_inline_expression(state),
         ValkyrieRule::MainTerm => parse_main_term(state),
+        ValkyrieRule::InlineTerm => parse_inline_term(state),
         ValkyrieRule::MainFactor => parse_main_factor(state),
+        ValkyrieRule::Atomic => parse_atomic(state),
         ValkyrieRule::MainInfix => parse_main_infix(state),
         ValkyrieRule::MainPrefix => parse_main_prefix(state),
         ValkyrieRule::MainSuffix => parse_main_suffix(state),
-        ValkyrieRule::InlineExpression => parse_inline_expression(state),
-        ValkyrieRule::InlineTerm => parse_inline_term(state),
         ValkyrieRule::InlineSuffix => parse_inline_suffix(state),
         ValkyrieRule::TupleCall => parse_tuple_call(state),
         ValkyrieRule::TupleLiteral => parse_tuple_literal(state),
@@ -54,9 +55,10 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::TupleKey => parse_tuple_key(state),
         ValkyrieRule::RangeCall => parse_range_call(state),
         ValkyrieRule::RangeLiteral => parse_range_literal(state),
-        ValkyrieRule::RangeAxis => parse_range_axis(state),
+        ValkyrieRule::SubscriptAxis => parse_subscript_axis(state),
+        ValkyrieRule::SubscriptOnly => parse_subscript_only(state),
+        ValkyrieRule::SubscriptRange => parse_subscript_range(state),
         ValkyrieRule::RangeOmit => parse_range_omit(state),
-        ValkyrieRule::Atomic => parse_atomic(state),
         ValkyrieRule::NamepathFree => parse_namepath_free(state),
         ValkyrieRule::Namepath => parse_namepath(state),
         ValkyrieRule::Identifier => parse_identifier(state),
@@ -65,13 +67,13 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::IdentifierRawText => parse_identifier_raw_text(state),
         ValkyrieRule::Boolean => parse_boolean(state),
         ValkyrieRule::Integer => parse_integer(state),
-        ValkyrieRule::RangeExact => parse_range_exact(state),
-        ValkyrieRule::Range => parse_range(state),
         ValkyrieRule::ModifierCall => parse_modifier_call(state),
         ValkyrieRule::COMMA => parse_comma(state),
         ValkyrieRule::COLON => parse_colon(state),
         ValkyrieRule::PROPORTION => parse_proportion(state),
         ValkyrieRule::DOT => parse_dot(state),
+        ValkyrieRule::OFFSET_L => parse_offset_l(state),
+        ValkyrieRule::OFFSET_R => parse_offset_r(state),
         ValkyrieRule::OP_IMPORT_ALL => parse_op_import_all(state),
         ValkyrieRule::OP_AND_THEN => parse_op_and_then(state),
         ValkyrieRule::OP_BIND => parse_op_bind(state),
@@ -192,17 +194,14 @@ fn parse_define_import(state: Input) -> Output {
                     Ok(s)
                         .and_then(|s| parse_kw_import(s))
                         .and_then(|s| builtin_ignore(s))
+                        .and_then(|s| builtin_text(s, "{", false))
                         .and_then(|s| {
-                            s.sequence(|s| {
-                                Ok(s).and_then(|s| builtin_text(s, "{", false)).and_then(|s| {
-                                    s.repeat(0..4294967295, |s| {
-                                        s.sequence(|s| {
-                                            Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| {
-                                                Err(s)
-                                                    .or_else(|s| parse_import_term(s).and_then(|s| s.tag_node("import_term")))
-                                                    .or_else(|s| parse_eos_free(s))
-                                            })
-                                        })
+                            s.repeat(0..4294967295, |s| {
+                                s.sequence(|s| {
+                                    Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| {
+                                        Err(s)
+                                            .or_else(|s| parse_import_term(s).and_then(|s| s.tag_node("import_term")))
+                                            .or_else(|s| parse_eos_free(s))
                                     })
                                 })
                             })
@@ -237,9 +236,9 @@ fn parse_import_as(state: Input) -> Output {
                             .and_then(|s| parse_namepath_free(s).and_then(|s| s.tag_node("namepath_free")))
                             .and_then(|s| builtin_ignore(s))
                             .and_then(|s| parse_kw_as(s))
+                            .and_then(|s| builtin_ignore(s))
                     })
                 })
-                .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("alias")))
         })
     })
@@ -315,9 +314,9 @@ fn parse_import_macro(state: Input) -> Output {
                             .and_then(|s| parse_import_macro_item(s).and_then(|s| s.tag_node("import_macro_item")))
                             .and_then(|s| builtin_ignore(s))
                             .and_then(|s| parse_kw_as(s))
+                            .and_then(|s| builtin_ignore(s))
                     })
                 })
-                .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_import_macro_item(s).and_then(|s| s.tag_node("alias")))
         })
     })
@@ -479,7 +478,7 @@ fn parse_template_parameters(state: Input) -> Output {
                                     Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| {
                                         s.sequence(|s| {
                                             Ok(s)
-                                                .and_then(|s| parse_comma(s).and_then(|s| s.tag_node("comma")))
+                                                .and_then(|s| parse_comma(s))
                                                 .and_then(|s| builtin_ignore(s))
                                                 .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
                                         })
@@ -488,7 +487,7 @@ fn parse_template_parameters(state: Input) -> Output {
                             })
                         })
                         .and_then(|s| builtin_ignore(s))
-                        .and_then(|s| s.optional(|s| parse_comma(s).and_then(|s| s.tag_node("comma"))))
+                        .and_then(|s| s.optional(|s| parse_comma(s)))
                 })
             })
             .or_else(|s| {
@@ -504,7 +503,7 @@ fn parse_template_parameters(state: Input) -> Output {
                                     Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| {
                                         s.sequence(|s| {
                                             Ok(s)
-                                                .and_then(|s| parse_comma(s).and_then(|s| s.tag_node("comma")))
+                                                .and_then(|s| parse_comma(s))
                                                 .and_then(|s| builtin_ignore(s))
                                                 .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
                                         })
@@ -513,29 +512,38 @@ fn parse_template_parameters(state: Input) -> Output {
                             })
                         })
                         .and_then(|s| builtin_ignore(s))
-                        .and_then(|s| s.optional(|s| parse_comma(s).and_then(|s| s.tag_node("comma"))))
+                        .and_then(|s| s.optional(|s| parse_comma(s)))
                         .and_then(|s| builtin_ignore(s))
                         .and_then(|s| builtin_text(s, ">", false))
                 })
             })
-            .or_else(|s| builtin_text(s, "⟨", false))
-            .or_else(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
             .or_else(|s| {
-                s.repeat(0..4294967295, |s| {
-                    s.sequence(|s| {
-                        Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| {
-                            s.sequence(|s| {
-                                Ok(s)
-                                    .and_then(|s| parse_comma(s).and_then(|s| s.tag_node("comma")))
-                                    .and_then(|s| builtin_ignore(s))
-                                    .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
+                s.sequence(|s| {
+                    Ok(s)
+                        .and_then(|s| builtin_text(s, "⟨", false))
+                        .and_then(|s| builtin_ignore(s))
+                        .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
+                        .and_then(|s| builtin_ignore(s))
+                        .and_then(|s| {
+                            s.repeat(0..4294967295, |s| {
+                                s.sequence(|s| {
+                                    Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| {
+                                        s.sequence(|s| {
+                                            Ok(s)
+                                                .and_then(|s| parse_comma(s))
+                                                .and_then(|s| builtin_ignore(s))
+                                                .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
+                                        })
+                                    })
+                                })
                             })
                         })
-                    })
+                        .and_then(|s| builtin_ignore(s))
+                        .and_then(|s| s.optional(|s| parse_comma(s)))
+                        .and_then(|s| builtin_ignore(s))
+                        .and_then(|s| builtin_text(s, "⟩", false))
                 })
             })
-            .or_else(|s| s.optional(|s| parse_comma(s).and_then(|s| s.tag_node("comma"))))
-            .or_else(|s| builtin_text(s, "⟩", false))
     })
 }
 #[inline]
@@ -721,6 +729,25 @@ fn parse_main_expression(state: Input) -> Output {
         })
     })
 }
+
+#[inline]
+fn parse_inline_expression(state: Input) -> Output {
+    state.rule(ValkyrieRule::InlineExpression, |s| {
+        s.sequence(|s| {
+            Ok(s).and_then(|s| parse_inline_term(s).and_then(|s| s.tag_node("inline_term"))).and_then(|s| {
+                s.repeat(0..4294967295, |s| {
+                    s.sequence(|s| {
+                        Ok(s)
+                            .and_then(|s| builtin_ignore(s))
+                            .and_then(|s| parse_main_infix(s).and_then(|s| s.tag_node("main_infix")))
+                            .and_then(|s| builtin_ignore(s))
+                            .and_then(|s| parse_inline_term(s).and_then(|s| s.tag_node("inline_term")))
+                    })
+                })
+            })
+        })
+    })
+}
 #[inline]
 fn parse_main_term(state: Input) -> Output {
     state.rule(ValkyrieRule::MainTerm, |s| {
@@ -740,6 +767,26 @@ fn parse_main_term(state: Input) -> Output {
         })
     })
 }
+
+#[inline]
+fn parse_inline_term(state: Input) -> Output {
+    state.rule(ValkyrieRule::InlineTerm, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| {
+                    s.repeat(0..4294967295, |s| {
+                        s.sequence(|s| {
+                            Ok(s)
+                                .and_then(|s| parse_main_prefix(s).and_then(|s| s.tag_node("main_prefix")))
+                                .and_then(|s| builtin_ignore(s))
+                        })
+                    })
+                })
+                .and_then(|s| parse_main_factor(s).and_then(|s| s.tag_node("main_factor")))
+                .and_then(|s| s.repeat(0..4294967295, |s| parse_inline_suffix(s).and_then(|s| s.tag_node("inline_suffix"))))
+        })
+    })
+}
 #[inline]
 fn parse_main_factor(state: Input) -> Output {
     state.rule(ValkyrieRule::MainFactor, |s| {
@@ -748,12 +795,26 @@ fn parse_main_factor(state: Input) -> Output {
                 s.sequence(|s| {
                     Ok(s)
                         .and_then(|s| builtin_text(s, "(", false))
+                        .and_then(|s| builtin_ignore(s))
                         .and_then(|s| parse_main_expression(s).and_then(|s| s.tag_node("main_expression")))
+                        .and_then(|s| builtin_ignore(s))
                         .and_then(|s| builtin_text(s, ")", false))
                 })
                 .and_then(|s| s.tag_node("main_factor_0"))
             })
             .or_else(|s| parse_atomic(s).and_then(|s| s.tag_node("atomic")))
+    })
+}
+
+#[inline]
+fn parse_atomic(state: Input) -> Output {
+    state.rule(ValkyrieRule::Atomic, |s| {
+        Err(s)
+            .or_else(|s| parse_tuple_literal(s).and_then(|s| s.tag_node("tuple_literal")))
+            .or_else(|s| parse_range_literal(s).and_then(|s| s.tag_node("range_literal")))
+            .or_else(|s| parse_namepath(s).and_then(|s| s.tag_node("namepath")))
+            .or_else(|s| parse_integer(s).and_then(|s| s.tag_node("integer")))
+            .or_else(|s| parse_boolean(s).and_then(|s| s.tag_node("boolean")))
     })
 }
 #[inline]
@@ -1048,43 +1109,6 @@ fn parse_main_suffix(state: Input) -> Output {
     })
 }
 #[inline]
-fn parse_inline_expression(state: Input) -> Output {
-    state.rule(ValkyrieRule::InlineExpression, |s| {
-        s.sequence(|s| {
-            Ok(s).and_then(|s| parse_inline_term(s).and_then(|s| s.tag_node("inline_term"))).and_then(|s| {
-                s.repeat(0..4294967295, |s| {
-                    s.sequence(|s| {
-                        Ok(s)
-                            .and_then(|s| builtin_ignore(s))
-                            .and_then(|s| parse_main_infix(s).and_then(|s| s.tag_node("main_infix")))
-                            .and_then(|s| builtin_ignore(s))
-                            .and_then(|s| parse_inline_term(s).and_then(|s| s.tag_node("inline_term")))
-                    })
-                })
-            })
-        })
-    })
-}
-#[inline]
-fn parse_inline_term(state: Input) -> Output {
-    state.rule(ValkyrieRule::InlineTerm, |s| {
-        s.sequence(|s| {
-            Ok(s)
-                .and_then(|s| {
-                    s.repeat(0..4294967295, |s| {
-                        s.sequence(|s| {
-                            Ok(s)
-                                .and_then(|s| parse_main_prefix(s).and_then(|s| s.tag_node("main_prefix")))
-                                .and_then(|s| builtin_ignore(s))
-                        })
-                    })
-                })
-                .and_then(|s| parse_main_factor(s).and_then(|s| s.tag_node("main_factor")))
-                .and_then(|s| s.repeat(0..4294967295, |s| parse_inline_suffix(s).and_then(|s| s.tag_node("inline_suffix"))))
-        })
-    })
-}
-#[inline]
 fn parse_inline_suffix(state: Input) -> Output {
     state.rule(ValkyrieRule::InlineSuffix, |s| {
         Err(s)
@@ -1144,7 +1168,6 @@ fn parse_tuple_call(state: Input) -> Output {
         })
     })
 }
-
 #[inline]
 fn parse_tuple_literal(state: Input) -> Output {
     state.rule(ValkyrieRule::TupleLiteral, |s| {
@@ -1163,19 +1186,16 @@ fn parse_tuple_literal(state: Input) -> Output {
                                         s.sequence(|s| {
                                             Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| {
                                                 s.sequence(|s| {
-                                                    Ok(s)
-                                                        .and_then(|s| parse_comma(s).and_then(|s| s.tag_node("comma")))
-                                                        .and_then(|s| builtin_ignore(s))
-                                                        .and_then(|s| {
-                                                            parse_tuple_pair(s).and_then(|s| s.tag_node("tuple_pair"))
-                                                        })
+                                                    Ok(s).and_then(|s| parse_comma(s)).and_then(|s| builtin_ignore(s)).and_then(
+                                                        |s| parse_tuple_pair(s).and_then(|s| s.tag_node("tuple_pair")),
+                                                    )
                                                 })
                                             })
                                         })
                                     })
                                 })
                                 .and_then(|s| builtin_ignore(s))
-                                .and_then(|s| s.optional(|s| parse_comma(s).and_then(|s| s.tag_node("comma"))))
+                                .and_then(|s| s.optional(|s| parse_comma(s)))
                         })
                     })
                 })
@@ -1204,7 +1224,6 @@ fn parse_tuple_pair(state: Input) -> Output {
         })
     })
 }
-
 #[inline]
 fn parse_tuple_key(state: Input) -> Output {
     state.rule(ValkyrieRule::TupleKey, |s| Err(s).or_else(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier"))))
@@ -1234,26 +1253,22 @@ fn parse_range_literal(state: Input) -> Output {
                             s.optional(|s| {
                                 s.sequence(|s| {
                                     Ok(s)
-                                        .and_then(|s| parse_range_axis(s).and_then(|s| s.tag_node("range_axis")))
-                                        .and_then(|s| builtin_ignore(s))
+                                        .and_then(|s| parse_subscript_axis(s).and_then(|s| s.tag_node("subscript_axis")))
                                         .and_then(|s| {
                                             s.repeat(0..4294967295, |s| {
                                                 s.sequence(|s| {
-                                                    Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| {
-                                                        s.sequence(|s| {
-                                                            Ok(s)
-                                                                .and_then(|s| parse_comma(s).and_then(|s| s.tag_node("comma")))
-                                                                .and_then(|s| builtin_ignore(s))
-                                                                .and_then(|s| {
-                                                                    parse_range_axis(s).and_then(|s| s.tag_node("range_axis"))
-                                                                })
+                                                    Ok(s)
+                                                        .and_then(|s| builtin_ignore(s))
+                                                        .and_then(|s| parse_comma(s))
+                                                        .and_then(|s| builtin_ignore(s))
+                                                        .and_then(|s| {
+                                                            parse_subscript_axis(s).and_then(|s| s.tag_node("subscript_axis"))
                                                         })
-                                                    })
                                                 })
                                             })
                                         })
                                         .and_then(|s| builtin_ignore(s))
-                                        .and_then(|s| s.optional(|s| parse_comma(s).and_then(|s| s.tag_node("comma"))))
+                                        .and_then(|s| s.optional(|s| parse_comma(s)))
                                 })
                             })
                         })
@@ -1270,26 +1285,22 @@ fn parse_range_literal(state: Input) -> Output {
                             s.optional(|s| {
                                 s.sequence(|s| {
                                     Ok(s)
-                                        .and_then(|s| parse_range_axis(s).and_then(|s| s.tag_node("range_axis")))
-                                        .and_then(|s| builtin_ignore(s))
+                                        .and_then(|s| parse_subscript_axis(s).and_then(|s| s.tag_node("subscript_axis")))
                                         .and_then(|s| {
                                             s.repeat(0..4294967295, |s| {
                                                 s.sequence(|s| {
-                                                    Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| {
-                                                        s.sequence(|s| {
-                                                            Ok(s)
-                                                                .and_then(|s| parse_comma(s).and_then(|s| s.tag_node("comma")))
-                                                                .and_then(|s| builtin_ignore(s))
-                                                                .and_then(|s| {
-                                                                    parse_range_axis(s).and_then(|s| s.tag_node("range_axis"))
-                                                                })
+                                                    Ok(s)
+                                                        .and_then(|s| builtin_ignore(s))
+                                                        .and_then(|s| parse_comma(s))
+                                                        .and_then(|s| builtin_ignore(s))
+                                                        .and_then(|s| {
+                                                            parse_subscript_axis(s).and_then(|s| s.tag_node("subscript_axis"))
                                                         })
-                                                    })
                                                 })
                                             })
                                         })
                                         .and_then(|s| builtin_ignore(s))
-                                        .and_then(|s| s.optional(|s| parse_comma(s).and_then(|s| s.tag_node("comma"))))
+                                        .and_then(|s| s.optional(|s| parse_comma(s)))
                                 })
                             })
                         })
@@ -1300,80 +1311,70 @@ fn parse_range_literal(state: Input) -> Output {
     })
 }
 #[inline]
-fn parse_range_axis(state: Input) -> Output {
-    state.rule(ValkyrieRule::RangeAxis, |s| {
+fn parse_subscript_axis(state: Input) -> Output {
+    state.rule(ValkyrieRule::SubscriptAxis, |s| {
         Err(s)
-            .or_else(|s| parse_colon(s))
-            .or_else(|s| parse_main_expression(s).and_then(|s| s.tag_node("index")))
-            .or_else(|s| parse_main_expression(s).and_then(|s| s.tag_node("head")))
-            .or_else(|s| parse_colon(s))
-            .or_else(|s| parse_colon(s))
-            .or_else(|s| parse_main_expression(s).and_then(|s| s.tag_node("tail")))
-            .or_else(|s| {
-                s.sequence(|s| {
-                    Ok(s)
-                        .and_then(|s| parse_main_expression(s).and_then(|s| s.tag_node("head")))
-                        .and_then(|s| builtin_ignore(s))
-                        .and_then(|s| parse_colon(s))
-                })
-            })
-            .or_else(|s| parse_main_expression(s).and_then(|s| s.tag_node("tail")))
-            .or_else(|s| parse_range_omit(s))
-            .or_else(|s| parse_main_expression(s).and_then(|s| s.tag_node("head")))
-            .or_else(|s| parse_range_omit(s))
-            .or_else(|s| parse_colon(s))
-            .or_else(|s| parse_main_expression(s).and_then(|s| s.tag_node("tail")))
-            .or_else(|s| parse_colon(s))
-            .or_else(|s| parse_range_omit(s))
-            .or_else(|s| parse_main_expression(s).and_then(|s| s.tag_node("step")))
-            .or_else(|s| {
-                s.sequence(|s| {
-                    Ok(s)
-                        .and_then(|s| parse_main_expression(s).and_then(|s| s.tag_node("head")))
-                        .and_then(|s| builtin_ignore(s))
-                        .and_then(|s| parse_colon(s))
-                })
-            })
-            .or_else(|s| parse_main_expression(s).and_then(|s| s.tag_node("tail")))
-            .or_else(|s| parse_colon(s))
-            .or_else(|s| {
-                s.sequence(|s| {
-                    Ok(s)
-                        .and_then(|s| parse_colon(s))
-                        .and_then(|s| builtin_ignore(s))
-                        .and_then(|s| parse_main_expression(s).and_then(|s| s.tag_node("tail")))
-                        .and_then(|s| builtin_ignore(s))
-                        .and_then(|s| parse_colon(s))
-                })
-            })
-            .or_else(|s| parse_main_expression(s).and_then(|s| s.tag_node("step")))
-            .or_else(|s| {
-                s.sequence(|s| {
-                    Ok(s)
-                        .and_then(|s| parse_main_expression(s).and_then(|s| s.tag_node("head")))
-                        .and_then(|s| builtin_ignore(s))
-                        .and_then(|s| parse_range_omit(s))
-                })
-            })
-            .or_else(|s| parse_main_expression(s).and_then(|s| s.tag_node("step")))
-            .or_else(|s| {
-                s.sequence(|s| {
-                    Ok(s)
-                        .and_then(|s| {
+            .or_else(|s| parse_subscript_range(s).and_then(|s| s.tag_node("subscript_range")))
+            .or_else(|s| parse_subscript_only(s).and_then(|s| s.tag_node("subscript_only")))
+    })
+}
+
+#[inline]
+fn parse_subscript_only(state: Input) -> Output {
+    state.rule(ValkyrieRule::SubscriptOnly, |s| parse_main_expression(s).and_then(|s| s.tag_node("index")))
+}
+
+#[inline]
+fn parse_subscript_range(state: Input) -> Output {
+    state.rule(ValkyrieRule::SubscriptRange, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| s.optional(|s| parse_main_expression(s)).and_then(|s| s.tag_node("head")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| {
+                    Err(s)
+                        .or_else(|s| {
                             s.sequence(|s| {
                                 Ok(s)
-                                    .and_then(|s| parse_main_expression(s).and_then(|s| s.tag_node("head")))
-                                    .and_then(|s| builtin_ignore(s))
-                                    .and_then(|s| parse_colon(s))
+                                    .and_then(|s| {
+                                        s.sequence(|s| Ok(s).and_then(|s| parse_range_omit(s)).and_then(|s| builtin_ignore(s)))
+                                    })
+                                    .and_then(|s| s.optional(|s| parse_main_expression(s)).and_then(|s| s.tag_node("step")))
                             })
                         })
-                        .and_then(|s| builtin_ignore(s))
-                        .and_then(|s| parse_main_expression(s).and_then(|s| s.tag_node("tail")))
-                        .and_then(|s| builtin_ignore(s))
-                        .and_then(|s| parse_colon(s))
+                        .or_else(|s| {
+                            s.sequence(|s| {
+                                Ok(s).and_then(|s| parse_colon(s)).and_then(|s| builtin_ignore(s)).and_then(|s| {
+                                    s.optional(|s| {
+                                        s.sequence(|s| {
+                                            Ok(s)
+                                                .and_then(|s| parse_main_expression(s).and_then(|s| s.tag_node("tail")))
+                                                .and_then(|s| builtin_ignore(s))
+                                                .and_then(|s| {
+                                                    s.optional(|s| {
+                                                        s.sequence(|s| {
+                                                            Ok(s)
+                                                                .and_then(|s| {
+                                                                    s.sequence(|s| {
+                                                                        Ok(s)
+                                                                            .and_then(|s| parse_colon(s))
+                                                                            .and_then(|s| builtin_ignore(s))
+                                                                    })
+                                                                })
+                                                                .and_then(|s| {
+                                                                    s.optional(|s| parse_main_expression(s))
+                                                                        .and_then(|s| s.tag_node("step"))
+                                                                })
+                                                        })
+                                                    })
+                                                })
+                                        })
+                                    })
+                                })
+                            })
+                        })
                 })
-            })
-            .or_else(|s| parse_main_expression(s).and_then(|s| s.tag_node("step")))
+        })
     })
 }
 #[inline]
@@ -1387,17 +1388,6 @@ fn parse_range_omit(state: Input) -> Output {
                     .and_then(|s| parse_colon(s).and_then(|s| s.tag_node("colon")))
             })
         })
-    })
-}
-#[inline]
-fn parse_atomic(state: Input) -> Output {
-    state.rule(ValkyrieRule::Atomic, |s| {
-        Err(s)
-            .or_else(|s| parse_tuple_literal(s).and_then(|s| s.tag_node("tuple_literal")))
-            .or_else(|s| parse_range_literal(s).and_then(|s| s.tag_node("range_literal")))
-            .or_else(|s| parse_namepath(s).and_then(|s| s.tag_node("namepath")))
-            .or_else(|s| parse_integer(s).and_then(|s| s.tag_node("integer")))
-            .or_else(|s| parse_boolean(s).and_then(|s| s.tag_node("boolean")))
     })
 }
 #[inline]
@@ -1502,36 +1492,6 @@ fn parse_integer(state: Input) -> Output {
     })
 }
 #[inline]
-fn parse_range_exact(state: Input) -> Output {
-    state.rule(ValkyrieRule::RangeExact, |s| {
-        s.sequence(|s| {
-            Ok(s)
-                .and_then(|s| builtin_text(s, "{", false))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| parse_integer(s).and_then(|s| s.tag_node("integer")))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| builtin_text(s, "}", false))
-        })
-    })
-}
-#[inline]
-fn parse_range(state: Input) -> Output {
-    state.rule(ValkyrieRule::Range, |s| {
-        s.sequence(|s| {
-            Ok(s)
-                .and_then(|s| builtin_text(s, "{", false))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| s.optional(|s| parse_integer(s).and_then(|s| s.tag_node("min"))))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| builtin_text(s, ",", false))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| s.optional(|s| parse_integer(s).and_then(|s| s.tag_node("max"))))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| builtin_text(s, "}", false))
-        })
-    })
-}
-#[inline]
 fn parse_modifier_call(state: Input) -> Output {
     state.rule(ValkyrieRule::ModifierCall, |s| {
         s.sequence(|s| {
@@ -1580,6 +1540,16 @@ fn parse_dot(state: Input) -> Output {
             REGEX.get_or_init(|| Regex::new("^([.．])").unwrap())
         })
     })
+}
+
+#[inline]
+fn parse_offset_l(state: Input) -> Output {
+    state.rule(ValkyrieRule::OFFSET_L, |s| s.match_string("⁅", false))
+}
+
+#[inline]
+fn parse_offset_r(state: Input) -> Output {
+    state.rule(ValkyrieRule::OFFSET_R, |s| s.match_string("⁆", false))
 }
 #[inline]
 fn parse_op_import_all(state: Input) -> Output {
