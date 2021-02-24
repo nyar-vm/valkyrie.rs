@@ -56,6 +56,8 @@ pub enum ValkyrieRule {
     ClassInherit,
     ClassInheritItem,
     ClassField,
+    field_modifier,
+    ParameterDefault,
     ClassMethod,
     method_modifier,
     ClassDomain,
@@ -66,6 +68,8 @@ pub enum ValkyrieRule {
     KW_FLAGS,
     DefineTrait,
     KW_TRAIT,
+    DefineFunction,
+    KW_FUNCTION,
     WhileStatement,
     KW_WHILE,
     ForStatement,
@@ -80,6 +84,7 @@ pub enum ValkyrieRule {
     InlineExpression,
     InlineTerm,
     InlineSuffix,
+    SuffixOperator,
     TypeHint,
     TypeExpression,
     TypeTerm,
@@ -139,15 +144,13 @@ pub enum ValkyrieRule {
     KW_AS,
     WhiteSpace,
     Comment,
-    /// Label for text literal
-    IgnoreText,
-    /// Label for regex literal
-    IgnoreRegex,
+    /// Label for unnamed text literal
+    HiddenText,
 }
 
 impl YggdrasilRule for ValkyrieRule {
     fn is_ignore(&self) -> bool {
-        matches!(self, Self::IgnoreText | Self::IgnoreRegex | Self::WhiteSpace | Self::Comment)
+        matches!(self, Self::HiddenText | Self::WhiteSpace | Self::Comment)
     }
 
     fn get_style(&self) -> &'static str {
@@ -178,6 +181,8 @@ impl YggdrasilRule for ValkyrieRule {
             Self::ClassInherit => "",
             Self::ClassInheritItem => "",
             Self::ClassField => "",
+            Self::field_modifier => "",
+            Self::ParameterDefault => "",
             Self::ClassMethod => "",
             Self::method_modifier => "",
             Self::ClassDomain => "",
@@ -188,6 +193,8 @@ impl YggdrasilRule for ValkyrieRule {
             Self::KW_FLAGS => "",
             Self::DefineTrait => "",
             Self::KW_TRAIT => "",
+            Self::DefineFunction => "",
+            Self::KW_FUNCTION => "",
             Self::WhileStatement => "",
             Self::KW_WHILE => "",
             Self::ForStatement => "",
@@ -202,6 +209,7 @@ impl YggdrasilRule for ValkyrieRule {
             Self::InlineExpression => "",
             Self::InlineTerm => "",
             Self::InlineSuffix => "",
+            Self::SuffixOperator => "",
             Self::TypeHint => "",
             Self::TypeExpression => "",
             Self::TypeTerm => "",
@@ -275,6 +283,8 @@ pub struct ProgramNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum StatementNode {
     DefineClass(DefineClassNode),
+    DefineFlags(DefineFlagsNode),
+    DefineFunction(DefineFunctionNode),
     DefineImport(DefineImportNode),
     DefineNamespace(DefineNamespaceNode),
     DefineTrait(DefineTraitNode),
@@ -447,7 +457,22 @@ pub struct ClassInheritItemNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ClassFieldNode {
     pub attribute_call: Vec<AttributeCallNode>,
-    pub modifier_call: Vec<ModifierCallNode>,
+    pub identifier: IdentifierNode,
+    pub parameter_default: Option<ParameterDefaultNode>,
+    pub type_hint: Option<TypeHintNode>,
+    pub field_modifier: Vec<FieldModifierNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct FieldModifierNode {
+    pub modifier_call: ModifierCallNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ParameterDefaultNode {
+    pub main_expression: MainExpressionNode,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -467,8 +492,10 @@ pub struct MethodModifierNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ClassDomainNode {
+    pub attribute_call: Vec<AttributeCallNode>,
     pub class_block: ClassBlockNode,
     pub identifier: IdentifierNode,
+    pub field_modifier: Vec<FieldModifierNode>,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -480,6 +507,8 @@ pub enum KwClassNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct DefineUnionNode {
+    pub attribute_call: Vec<AttributeCallNode>,
+    pub identifier: IdentifierNode,
     pub kw_union: KwUnionNode,
     pub span: Range<u32>,
 }
@@ -492,6 +521,7 @@ pub struct KwUnionNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct DefineFlagsNode {
     pub attribute_call: Vec<AttributeCallNode>,
+    pub identifier: IdentifierNode,
     pub kw_flags: KwFlagsNode,
     pub span: Range<u32>,
 }
@@ -510,6 +540,19 @@ pub struct DefineTraitNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct KwTraitNode {
     pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct DefineFunctionNode {
+    pub kw_function: KwFunctionNode,
+    pub namepath: NamepathNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum KwFunctionNode {
+    Macro,
+    Micro,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -659,6 +702,13 @@ pub struct InlineTermNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum InlineSuffixNode {
+    InlineSuffix0(SuffixOperatorNode),
+    RangeCall(RangeCallNode),
+    TupleCall(TupleCallNode),
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum SuffixOperatorNode {
     Celsius,
     Fahrenheit,
     Percent2,
@@ -669,8 +719,6 @@ pub enum InlineSuffixNode {
     Prime3,
     Prime4,
     Raise,
-    RangeCall(RangeCallNode),
-    TupleCall(TupleCallNode),
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -703,7 +751,7 @@ pub enum TypeFactorNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum TypeInfixNode {
-    Plus,
+    Union,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]

@@ -11,7 +11,9 @@ union Statement {
     | DefineImport
     | DefineClass
     | DefineUnion
+    | DefineFlags
     | DefineTrait
+    | DefineFunction
     | MainStatement
 }
 /// Used to isolate expressions and control whether to output the expression
@@ -37,7 +39,7 @@ union OP_NAMESPACE {
 // === import === -----------------------------------------------------------------
 atomic class DefineImport {
     | ^KW_IMPORT ~ ImportTerm? ~ ^EOS?
-    | ^KW_IMPORT ~ '{' (IGNORED (ImportTerm|^EOS_FREE))* ~ '}' ~ ^EOS?
+    | ^KW_IMPORT ~ '{' (HIDE (ImportTerm|^EOS_FREE))* ~ '}' ~ ^EOS?
 }
 union ImportTerm {
     | ImportAs
@@ -52,7 +54,7 @@ class ImportAs { NamepathFree ^KW_AS alias:Identifier }
 class ImportAll { NamepathFree /[.∷]|::/ OP_IMPORT_ALL }
 /// `import package∷module { ... }`
 atomic class ImportBlock  {
-    NamepathFree ~ /[.∷]|::/? ~ '{' (IGNORED (ImportTerm|^EOS_FREE))* ~ '}'
+    NamepathFree ~ /[.∷]|::/? ~ '{' (HIDE (ImportTerm|^EOS_FREE))* ~ '}'
 }
 /// `import package::module::#macro as @macro`
 class ImportMacro  {
@@ -114,19 +116,25 @@ class ClassInheritItem {
     Namepath
 }
 class ClassField {
-    AttributeCall* ModifierCall+
-    //    TypeHint? ParameterDefault?
+    AttributeCall* field_modifier*
+    Identifier TypeHint? ParameterDefault?
+}
+atomic inline class field_modifier {
+    !(^Namepath ~ [:=};]) ModifierCall
+}
+class ParameterDefault {
+    '=' MainExpression
 }
 class ClassMethod {
-    AttributeCall* method_modifier+ Namepath
-    //    DefineGeneric? FunctionParameters Return? FunctionBlock?
+    AttributeCall* method_modifier* Namepath
     '(' ')'
+    // DefineGeneric? FunctionParameters ReturnType? FunctionBlock?
 }
 atomic inline class method_modifier {
     !(^Namepath ~ [(<:}]) ModifierCall
 }
 class ClassDomain {
-    //Annotation* ModifiedIdentifier
+    AttributeCall* field_modifier*
     Identifier ClassBlock
 }
 @style(keyword)
@@ -136,7 +144,7 @@ union KW_CLASS {
 }
 // === identifier === --------------------------------------------------------------------------------------------------
 class DefineUnion {
-    KW_UNION
+    AttributeCall* KW_UNION Identifier
 }
 @style(keyword)
 class KW_UNION {
@@ -144,7 +152,7 @@ class KW_UNION {
 }
 // === identifier === --------------------------------------------------------------------------------------------------
 class DefineFlags {
-    AttributeCall* KW_FLAGS
+    AttributeCall* KW_FLAGS Identifier
 }
 @style(keyword)
 class KW_FLAGS {
@@ -158,6 +166,15 @@ class DefineTrait {
 union KW_TRAIT {
     | 'trait'     #Trait
     | 'interface' #Interface
+}
+// === identifier === --------------------------------------------------------------------------------------------------
+class DefineFunction {
+    KW_FUNCTION Namepath
+}
+@style(keyword)
+union KW_FUNCTION {
+    | /micro|function/ #Micro
+    | 'macro'          #Macro
 }
 // === while loop === --------------------------------------------------------------------------------------------------
 class WhileStatement {
@@ -180,10 +197,10 @@ atomic union MainStatement {
 }
 // === expression === --------------------------------------------------------------------------------------------------
 atomic class MainExpression {
-    MainTerm (IGNORED MainInfix ~ MainTerm)* EOS?
+    MainTerm (HIDE MainInfix ~ MainTerm)* EOS?
 }
 atomic class MainTerm {
-    (MainPrefix IGNORED)* MainFactor MainSuffix*
+    (MainPrefix HIDE)* MainFactor MainSuffix*
 }
 
 atomic union MainFactor {
@@ -198,6 +215,7 @@ union Atomic {
     | Integer
     | Boolean
 }
+@railway(false)
 @style(operator)
 atomic union MainInfix ^ {
     | '+'  #Plus
@@ -252,6 +270,7 @@ atomic union MainInfix ^ {
     | (/@{3}|⟴/)  #Apply3
     | (/@{2}|⊕/)  #Apply2
 }
+@railway(false)
 atomic union MainPrefix {
     | [¬!]       #Not
     | [+]        #Positive
@@ -265,39 +284,45 @@ atomic union MainPrefix {
     | '∜'        #Root4
     | [*]        #Dereference
 }
+@railway(false)
 atomic union MainSuffix {
     | InlineSuffix
 }
 // === inline expression === --------------------------------------------------------------------------------------------------
 atomic class InlineExpression {
-    InlineTerm (IGNORED MainInfix ~ InlineTerm)*
+    InlineTerm (HIDE MainInfix ~ InlineTerm)*
 }
 atomic class InlineTerm {
-    (MainPrefix IGNORED)* MainFactor InlineSuffix*
+    (MainPrefix HIDE)* MainFactor InlineSuffix*
 }
 atomic union InlineSuffix {
-    | IGNORED '!'  #Raise
-    | IGNORED '%'  #Percent2
-    | IGNORED '‰'  #Percent3
-    | IGNORED '‱' #Percent4
-    | IGNORED '′'  #Prime1
-    | IGNORED '″'  #Prime2
-    | IGNORED '‴'  #Prime3
-    | IGNORED '⁗'  #Prime4
-    | IGNORED '℃'  #Celsius
-    | IGNORED '℉'  #Fahrenheit
+    | HIDE SuffixOperator
     | TupleCall
     | RangeCall
 }
+@railway(false)
+union SuffixOperator {
+    | '!'  #Raise
+    | '%'  #Percent2
+    | '‰'  #Percent3
+    | '‱' #Percent4
+    | '′'  #Prime1
+    | '″'  #Prime2
+    | '‴'  #Prime3
+    | '⁗'  #Prime4
+    | '℃'  #Celsius
+    | '℉'  #Fahrenheit
+}
+
 // === identifier === --------------------------------------------------------------------------------------------------
 class TypeHint {
     COLON TypeExpression
 }
 atomic class TypeExpression {
-    TypeTerm (IGNORED TypeInfix ~ TypeTerm)*
+    TypeTerm (HIDE TypeInfix ~ TypeTerm)*
 }
 atomic class TypeTerm {
-    (TypePrefix IGNORED)* MainFactor TypeSuffix*
+    (TypePrefix HIDE)* MainFactor TypeSuffix*
 }
 union TypeFactor {
     | '(' ~ TypeExpression ~ ')'
@@ -332,8 +357,8 @@ atomic class RangeCall {
     WhiteSpace? OP_AND_THEN? WhiteSpace? RangeLiteral
 }
 atomic class RangeLiteral {
-    | '[' ~ (SubscriptAxis (IGNORED ^COMMA ~ SubscriptAxis)* ~ ^COMMA?)? ~ ']'
-    | '⁅' ~ (SubscriptAxis (IGNORED ^COMMA ~ SubscriptAxis)* ~ ^COMMA?)? ~ '⁆'
+    | '[' ~ (SubscriptAxis (HIDE ^COMMA ~ SubscriptAxis)* ~ ^COMMA?)? ~ ']'
+    | '⁅' ~ (SubscriptAxis (HIDE ^COMMA ~ SubscriptAxis)* ~ ^COMMA?)? ~ '⁆'
 }
 union SubscriptAxis {
     | SubscriptRange
@@ -343,9 +368,9 @@ class SubscriptOnly {
     index:MainExpression
 }
 atomic class SubscriptRange ^ {
-    (head:MainExpression IGNORED)? (
-        | RangeOmit (IGNORED step:MainExpression)?
-        | COLON (IGNORED tail:MainExpression (IGNORED COLON (IGNORED step:MainExpression)?)?)?
+    (head:MainExpression HIDE)? (
+        | RangeOmit (HIDE step:MainExpression)?
+        | COLON (HIDE tail:MainExpression (HIDE COLON (HIDE step:MainExpression)?)?)?
     )
 }
 atomic inline class RangeOmit {
@@ -371,10 +396,10 @@ atomic class ProceduralPath {
     '@' Namepath
 }
 atomic class NamepathFree  {
-    Identifier (IGNORED ^PROPORTION2 ~ Identifier)*
+    Identifier (HIDE ^PROPORTION2 ~ Identifier)*
 }
 atomic class Namepath {
-    Identifier (IGNORED ^PROPORTION ~ Identifier)*
+    Identifier (HIDE ^PROPORTION ~ Identifier)*
 }
 atomic union Identifier {
     | IdentifierBare
@@ -398,6 +423,7 @@ text class Integer {
     /0|[1-9][0-9]*/
 }
 // === keywords === ----------------------------------------------------------------------------------------------------
+@railway(false)
 token {
     PROPORTION: /∷|::/
     COLON: [:：]
@@ -409,6 +435,7 @@ token {
 class PROPORTION2 -> PROPORTION {
     /[.．∷]|::/
 }
+@railway(false)
 @style(keyword)
 token {
     OP_IMPORT_ALL: '*'
@@ -441,13 +468,13 @@ token {
     KW_AS: 'as'
 }
 // === ignores === -----------------------------------------------------------------------------------------------------
-@railroad(false)
-ignore class WhiteSpace {
+@railway(false)
+hide class WhiteSpace {
     /\p{White_Space}+/
 }
 @style(comment)
-@railroad(false)
-ignore class Comment {
+@railway(false)
+hide class Comment {
     | '//' /[^\n\r]*/
     | '/*'  '*/'
 }

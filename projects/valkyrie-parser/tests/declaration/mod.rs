@@ -12,7 +12,7 @@ fn debug_declarations() {
 
 #[test]
 fn debug_import() {
-    parse_import("{id field}").expect("class method");
+    parse_import("{id field; yes method() }").expect("class method");
 }
 
 fn parse_import(input: &str) -> std::io::Result<()> {

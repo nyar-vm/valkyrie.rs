@@ -28,6 +28,8 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::ClassInherit => parse_class_inherit(state),
         ValkyrieRule::ClassInheritItem => parse_class_inherit_item(state),
         ValkyrieRule::ClassField => parse_class_field(state),
+        ValkyrieRule::field_modifier => parse_field_modifier(state),
+        ValkyrieRule::ParameterDefault => parse_parameter_default(state),
         ValkyrieRule::ClassMethod => parse_class_method(state),
         ValkyrieRule::method_modifier => parse_method_modifier(state),
         ValkyrieRule::ClassDomain => parse_class_domain(state),
@@ -38,6 +40,8 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::KW_FLAGS => parse_kw_flags(state),
         ValkyrieRule::DefineTrait => parse_define_trait(state),
         ValkyrieRule::KW_TRAIT => parse_kw_trait(state),
+        ValkyrieRule::DefineFunction => parse_define_function(state),
+        ValkyrieRule::KW_FUNCTION => parse_kw_function(state),
         ValkyrieRule::WhileStatement => parse_while_statement(state),
         ValkyrieRule::KW_WHILE => parse_kw_while(state),
         ValkyrieRule::ForStatement => parse_for_statement(state),
@@ -52,6 +56,7 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::InlineExpression => parse_inline_expression(state),
         ValkyrieRule::InlineTerm => parse_inline_term(state),
         ValkyrieRule::InlineSuffix => parse_inline_suffix(state),
+        ValkyrieRule::SuffixOperator => parse_suffix_operator(state),
         ValkyrieRule::TypeHint => parse_type_hint(state),
         ValkyrieRule::TypeExpression => parse_type_expression(state),
         ValkyrieRule::TypeTerm => parse_type_term(state),
@@ -111,8 +116,7 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::KW_AS => parse_kw_as(state),
         ValkyrieRule::WhiteSpace => parse_white_space(state),
         ValkyrieRule::Comment => parse_comment(state),
-        ValkyrieRule::IgnoreText => unreachable!(),
-        ValkyrieRule::IgnoreRegex => unreachable!(),
+        ValkyrieRule::HiddenText => unreachable!(),
     })
 }
 #[inline]
@@ -133,7 +137,9 @@ fn parse_statement(state: Input) -> Output {
             .or_else(|s| parse_define_import(s).and_then(|s| s.tag_node("define_import")))
             .or_else(|s| parse_define_class(s).and_then(|s| s.tag_node("define_class")))
             .or_else(|s| parse_define_union(s).and_then(|s| s.tag_node("define_union")))
+            .or_else(|s| parse_define_flags(s).and_then(|s| s.tag_node("define_flags")))
             .or_else(|s| parse_define_trait(s).and_then(|s| s.tag_node("define_trait")))
+            .or_else(|s| parse_define_function(s).and_then(|s| s.tag_node("define_function")))
             .or_else(|s| parse_main_statement(s).and_then(|s| s.tag_node("main_statement")))
     })
 }
@@ -663,14 +669,52 @@ fn parse_class_field(state: Input) -> Output {
                 })
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| {
-                    s.repeat(1..4294967295, |s| {
+                    s.repeat(0..4294967295, |s| {
                         s.sequence(|s| {
                             Ok(s)
                                 .and_then(|s| builtin_ignore(s))
-                                .and_then(|s| parse_modifier_call(s).and_then(|s| s.tag_node("modifier_call")))
+                                .and_then(|s| parse_field_modifier(s).and_then(|s| s.tag_node("field_modifier")))
                         })
                     })
                 })
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| s.optional(|s| parse_type_hint(s).and_then(|s| s.tag_node("type_hint"))))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| s.optional(|s| parse_parameter_default(s).and_then(|s| s.tag_node("parameter_default"))))
+        })
+    })
+}
+#[inline]
+fn parse_field_modifier(state: Input) -> Output {
+    state.rule(ValkyrieRule::field_modifier, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| {
+                    s.lookahead(false, |s| {
+                        s.sequence(|s| {
+                            Ok(s).and_then(|s| parse_namepath(s)).and_then(|s| builtin_ignore(s)).and_then(|s| {
+                                builtin_regex(s, {
+                                    static REGEX: OnceLock<Regex> = OnceLock::new();
+                                    REGEX.get_or_init(|| Regex::new("^([:=};])").unwrap())
+                                })
+                            })
+                        })
+                    })
+                })
+                .and_then(|s| parse_modifier_call(s).and_then(|s| s.tag_node("modifier_call")))
+        })
+    })
+}
+#[inline]
+fn parse_parameter_default(state: Input) -> Output {
+    state.rule(ValkyrieRule::ParameterDefault, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| builtin_text(s, "=", false))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_main_expression(s).and_then(|s| s.tag_node("main_expression")))
         })
     })
 }
@@ -690,7 +734,7 @@ fn parse_class_method(state: Input) -> Output {
                 })
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| {
-                    s.repeat(1..4294967295, |s| {
+                    s.repeat(0..4294967295, |s| {
                         s.sequence(|s| {
                             Ok(s)
                                 .and_then(|s| builtin_ignore(s))
@@ -733,6 +777,26 @@ fn parse_class_domain(state: Input) -> Output {
     state.rule(ValkyrieRule::ClassDomain, |s| {
         s.sequence(|s| {
             Ok(s)
+                .and_then(|s| {
+                    s.repeat(0..4294967295, |s| {
+                        s.sequence(|s| {
+                            Ok(s)
+                                .and_then(|s| builtin_ignore(s))
+                                .and_then(|s| parse_attribute_call(s).and_then(|s| s.tag_node("attribute_call")))
+                        })
+                    })
+                })
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| {
+                    s.repeat(0..4294967295, |s| {
+                        s.sequence(|s| {
+                            Ok(s)
+                                .and_then(|s| builtin_ignore(s))
+                                .and_then(|s| parse_field_modifier(s).and_then(|s| s.tag_node("field_modifier")))
+                        })
+                    })
+                })
+                .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_class_block(s).and_then(|s| s.tag_node("class_block")))
@@ -749,7 +813,24 @@ fn parse_kw_class(state: Input) -> Output {
 }
 #[inline]
 fn parse_define_union(state: Input) -> Output {
-    state.rule(ValkyrieRule::DefineUnion, |s| parse_kw_union(s).and_then(|s| s.tag_node("kw_union")))
+    state.rule(ValkyrieRule::DefineUnion, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| {
+                    s.repeat(0..4294967295, |s| {
+                        s.sequence(|s| {
+                            Ok(s)
+                                .and_then(|s| builtin_ignore(s))
+                                .and_then(|s| parse_attribute_call(s).and_then(|s| s.tag_node("attribute_call")))
+                        })
+                    })
+                })
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_kw_union(s).and_then(|s| s.tag_node("kw_union")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
+        })
+    })
 }
 #[inline]
 fn parse_kw_union(state: Input) -> Output {
@@ -771,6 +852,8 @@ fn parse_define_flags(state: Input) -> Output {
                 })
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_kw_flags(s).and_then(|s| s.tag_node("kw_flags")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
         })
     })
 }
@@ -789,6 +872,31 @@ fn parse_kw_trait(state: Input) -> Output {
             static REGEX: OnceLock<Regex> = OnceLock::new();
             REGEX.get_or_init(|| Regex::new("^(trait|interface)").unwrap())
         })
+    })
+}
+#[inline]
+fn parse_define_function(state: Input) -> Output {
+    state.rule(ValkyrieRule::DefineFunction, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| parse_kw_function(s).and_then(|s| s.tag_node("kw_function")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_namepath(s).and_then(|s| s.tag_node("namepath")))
+        })
+    })
+}
+#[inline]
+fn parse_kw_function(state: Input) -> Output {
+    state.rule(ValkyrieRule::KW_FUNCTION, |s| {
+        Err(s)
+            .or_else(|s| {
+                builtin_regex(s, {
+                    static REGEX: OnceLock<Regex> = OnceLock::new();
+                    REGEX.get_or_init(|| Regex::new("^(micro|function)").unwrap())
+                })
+                .and_then(|s| s.tag_node("micro"))
+            })
+            .or_else(|s| builtin_text(s, "macro", false).and_then(|s| s.tag_node("macro")))
     })
 }
 #[inline]
@@ -1270,47 +1378,31 @@ fn parse_inline_suffix(state: Input) -> Output {
     state.rule(ValkyrieRule::InlineSuffix, |s| {
         Err(s)
             .or_else(|s| {
-                s.sequence(|s| Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| builtin_text(s, "!", false)))
-                    .and_then(|s| s.tag_node("raise"))
-            })
-            .or_else(|s| {
-                s.sequence(|s| Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| builtin_text(s, "%", false)))
-                    .and_then(|s| s.tag_node("percent_2"))
-            })
-            .or_else(|s| {
-                s.sequence(|s| Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| builtin_text(s, "‰", false)))
-                    .and_then(|s| s.tag_node("percent_3"))
-            })
-            .or_else(|s| {
-                s.sequence(|s| Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| builtin_text(s, "‱", false)))
-                    .and_then(|s| s.tag_node("percent_4"))
-            })
-            .or_else(|s| {
-                s.sequence(|s| Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| builtin_text(s, "′", false)))
-                    .and_then(|s| s.tag_node("prime_1"))
-            })
-            .or_else(|s| {
-                s.sequence(|s| Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| builtin_text(s, "″", false)))
-                    .and_then(|s| s.tag_node("prime_2"))
-            })
-            .or_else(|s| {
-                s.sequence(|s| Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| builtin_text(s, "‴", false)))
-                    .and_then(|s| s.tag_node("prime_3"))
-            })
-            .or_else(|s| {
-                s.sequence(|s| Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| builtin_text(s, "⁗", false)))
-                    .and_then(|s| s.tag_node("prime_4"))
-            })
-            .or_else(|s| {
-                s.sequence(|s| Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| builtin_text(s, "℃", false)))
-                    .and_then(|s| s.tag_node("celsius"))
-            })
-            .or_else(|s| {
-                s.sequence(|s| Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| builtin_text(s, "℉", false)))
-                    .and_then(|s| s.tag_node("fahrenheit"))
+                s.sequence(|s| {
+                    Ok(s)
+                        .and_then(|s| builtin_ignore(s))
+                        .and_then(|s| parse_suffix_operator(s).and_then(|s| s.tag_node("suffix_operator")))
+                })
+                .and_then(|s| s.tag_node("inline_suffix_0"))
             })
             .or_else(|s| parse_tuple_call(s).and_then(|s| s.tag_node("tuple_call")))
             .or_else(|s| parse_range_call(s).and_then(|s| s.tag_node("range_call")))
+    })
+}
+#[inline]
+fn parse_suffix_operator(state: Input) -> Output {
+    state.rule(ValkyrieRule::SuffixOperator, |s| {
+        Err(s)
+            .or_else(|s| builtin_text(s, "!", false).and_then(|s| s.tag_node("raise")))
+            .or_else(|s| builtin_text(s, "%", false).and_then(|s| s.tag_node("percent_2")))
+            .or_else(|s| builtin_text(s, "‰", false).and_then(|s| s.tag_node("percent_3")))
+            .or_else(|s| builtin_text(s, "‱", false).and_then(|s| s.tag_node("percent_4")))
+            .or_else(|s| builtin_text(s, "′", false).and_then(|s| s.tag_node("prime_1")))
+            .or_else(|s| builtin_text(s, "″", false).and_then(|s| s.tag_node("prime_2")))
+            .or_else(|s| builtin_text(s, "‴", false).and_then(|s| s.tag_node("prime_3")))
+            .or_else(|s| builtin_text(s, "⁗", false).and_then(|s| s.tag_node("prime_4")))
+            .or_else(|s| builtin_text(s, "℃", false).and_then(|s| s.tag_node("celsius")))
+            .or_else(|s| builtin_text(s, "℉", false).and_then(|s| s.tag_node("fahrenheit")))
     })
 }
 #[inline]
@@ -1385,7 +1477,7 @@ fn parse_type_factor(state: Input) -> Output {
 }
 #[inline]
 fn parse_type_infix(state: Input) -> Output {
-    state.rule(ValkyrieRule::TypeInfix, |s| Err(s).or_else(|s| builtin_text(s, "|", false).and_then(|s| s.tag_node("plus"))))
+    state.rule(ValkyrieRule::TypeInfix, |s| Err(s).or_else(|s| builtin_text(s, "|", false).and_then(|s| s.tag_node("union"))))
 }
 #[inline]
 fn parse_type_prefix(state: Input) -> Output {
@@ -2043,13 +2135,13 @@ fn builtin_ignore(state: Input) -> Output {
 }
 
 fn builtin_any(state: Input) -> Output {
-    state.rule(ValkyrieRule::IgnoreText, |s| s.match_char_if(|_| true))
+    state.rule(ValkyrieRule::HiddenText, |s| s.match_char_if(|_| true))
 }
 
 fn builtin_text<'i>(state: Input<'i>, text: &'static str, case: bool) -> Output<'i> {
-    state.rule(ValkyrieRule::IgnoreText, |s| s.match_string(text, case))
+    state.rule(ValkyrieRule::HiddenText, |s| s.match_string(text, case))
 }
 
 fn builtin_regex<'i, 'r>(state: Input<'i>, regex: &'r Regex) -> Output<'i> {
-    state.rule(ValkyrieRule::IgnoreRegex, |s| s.match_regex(regex))
+    state.rule(ValkyrieRule::HiddenText, |s| s.match_regex(regex))
 }
