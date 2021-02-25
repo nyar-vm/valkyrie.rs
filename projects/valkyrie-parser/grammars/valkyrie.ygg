@@ -263,12 +263,12 @@ atomic union MainInfix ^ {
     | [∋∍]                 #Contains
     | '∌'                  #NotContains
     // is, is not
-    | (KW_IS)          #Is
-    | (KW_IS ~ KW_NOT) #NotIs
+    | KW_IS          #Is
+    | KW_IS ~ KW_NOT #NotIs
     // start with `@`
     | ('/@'|[⇴⨵]) #Map
-    | (/@{3}|⟴/)  #Apply3
-    | (/@{2}|⊕/)  #Apply2
+    | /@{3}|⟴/  #Apply3
+    | /@{2}|⊕/  #Apply2
 }
 @railway(false)
 atomic union MainPrefix {
@@ -313,7 +313,6 @@ union SuffixOperator {
     | '℃'  #Celsius
     | '℉'  #Fahrenheit
 }
-
 // === identifier === --------------------------------------------------------------------------------------------------
 class TypeHint {
     COLON TypeExpression
@@ -324,7 +323,7 @@ atomic class TypeExpression {
 atomic class TypeTerm {
     (TypePrefix HIDE)* MainFactor TypeSuffix*
 }
-union TypeFactor {
+atomic union TypeFactor {
     | '(' ~ TypeExpression ~ ')'
     | Atomic
 }

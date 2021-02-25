@@ -1,0 +1,50 @@
+ProgramNode {
+    statement: [
+        DefineClass(
+            DefineClassNode {
+                attribute_call: [],
+                class_block: ClassBlockNode {
+                    class_block_item: [],
+                    span: 8..10,
+                },
+                class_inherit: None,
+                define_template: None,
+                identifier: IdentifierBare(
+                    IdentifierBareNode {
+                        text: "A",
+                        span: 6..7,
+                    },
+                ),
+                kw_class: Class,
+                modifier_call: [],
+                span: 0..14,
+            },
+        ),
+        DefineClass(
+            DefineClassNode {
+                attribute_call: [],
+                class_block: ClassBlockNode {
+                    class_block_item: [],
+                    span: 24..26,
+                },
+                class_inherit: Some(
+                    ClassInheritNode {
+                        class_inherit_item: [],
+                        span: 21..23,
+                    },
+                ),
+                define_template: None,
+                identifier: IdentifierBare(
+                    IdentifierBareNode {
+                        text: "B",
+                        span: 20..21,
+                    },
+                ),
+                kw_class: Class,
+                modifier_call: [],
+                span: 14..26,
+            },
+        ),
+    ],
+    span: 0..26,
+}
