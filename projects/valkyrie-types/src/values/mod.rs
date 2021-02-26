@@ -1,18 +1,14 @@
-use shredder::{marker::GcSafe, Gc, Scan, Scanner};
-use std::{
-    fmt::{Debug, Formatter},
-    sync::Arc,
-};
-use valkyrie_ast::helper::ValkyrieNode;
+// mod der;
+// mod ser;
 
-mod der;
-mod ser;
-
-#[cfg(feature = "polars")]
-use crate::builtin::data_frame::ValkyrieDataFrame;
-use crate::{
-    builtin::{images::ValkyrieImage, ndarray::ValkyrieNDArray},
-    ValkyrieClassType, ValkyrieDict, ValkyrieList, ValkyrieNumber, ValkyrieVariantType,
+use crate::ValkyrieNumber;
+use std::mem::MaybeUninit;
+use wasmtime::{
+    component::{
+        ComponentNamedList, ComponentType, Lift, Lower,
+        __internal::{CanonicalAbiInfo, InstanceType, InterfaceType, LiftContext, LowerContext},
+    },
+    ValRaw,
 };
 
 #[derive(Clone, Eq, PartialEq, Hash)]
@@ -22,78 +18,51 @@ pub enum ValkyrieValue {
     /// An uninitialized value, null for pointer types, and default for value types
     ///
     /// Trying to read from an uninitialized value is a fatal error.
-    Uninitialized,
-    /// ADT = 0
-    Null,
-    /// ADT = 1
     Unit,
     /// ADT = 2
     ///
     /// Native boolean type, 8bit
     Boolean(bool),
     Number(ValkyrieNumber),
-    Unicode(char),
-    UTF8String(Gc<String>),
-    Bytes(Gc<Vec<u8>>),
-    Html(Gc<String>),
-    NDArray(Gc<ValkyrieNDArray>),
-    Image(Gc<ValkyrieImage>),
-    #[cfg(feature = "polars")]
-    DataFrame(Gc<ValkyrieDataFrame>),
-    List(ValkyrieList),
-    Dict(ValkyrieDict),
-    Class(Gc<ValkyrieClassType>),
-    Variant(Gc<ValkyrieVariantType>),
 }
 
-unsafe impl GcSafe for ValkyrieValue {}
+unsafe impl ComponentNamedList for ValkyrieValue {}
 
-unsafe impl Scan for ValkyrieValue {
-    fn scan(&self, scanner: &mut Scanner<'_>) {
-        match self {
-            ValkyrieValue::Nothing => {}
-            ValkyrieValue::Uninitialized => {}
-            ValkyrieValue::Null => {}
-            ValkyrieValue::Unit => {}
-            ValkyrieValue::Boolean(_) => {}
-            ValkyrieValue::Number(v) => scanner.scan(v),
-            ValkyrieValue::Unicode(_) => {}
-            ValkyrieValue::UTF8String(v) => scanner.scan(v),
-            ValkyrieValue::Bytes(v) => scanner.scan(v),
-            ValkyrieValue::Html(_) => {}
-            ValkyrieValue::NDArray(_) => {}
-            ValkyrieValue::Image(_) => {}
-            #[cfg(feature = "polars")]
-            ValkyrieValue::DataFrame(_) => {}
-            ValkyrieValue::List(v) => scanner.scan(v),
-            ValkyrieValue::Dict(v) => scanner.scan(v),
-            ValkyrieValue::Class(_) => {}
-            ValkyrieValue::Variant(_) => {}
-        }
+unsafe impl ComponentType for ValkyrieValue {
+    type Lower = ValRaw;
+    const ABI: CanonicalAbiInfo = Default::default();
+
+    fn typecheck(ty: &InterfaceType, types: &InstanceType<'_>) -> wasmtime::Result<()> {
+        todo!()
     }
 }
 
-impl Debug for ValkyrieValue {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+unsafe impl Lift for ValkyrieValue {
+    fn lift(cx: &mut LiftContext<'_>, ty: InterfaceType, src: &Self::Lower) -> wasmtime::Result<Self> {
+        todo!()
+    }
+
+    fn load(cx: &mut LiftContext<'_>, ty: InterfaceType, bytes: &[u8]) -> wasmtime::Result<Self> {
+        todo!()
+    }
+}
+
+unsafe impl Lower for ValkyrieValue {
+    fn lower<T>(
+        &self,
+        cx: &mut LowerContext<'_, T>,
+        ty: InterfaceType,
+        dst: &mut MaybeUninit<Self::Lower>,
+    ) -> wasmtime::Result<()> {
         match self {
-            ValkyrieValue::Nothing => f.write_str("nothing"),
-            ValkyrieValue::Uninitialized => f.write_str("uninitialized"),
-            ValkyrieValue::Null => f.write_str("null"),
-            ValkyrieValue::Unit => f.write_str("()"),
-            ValkyrieValue::Boolean(v) => Debug::fmt(v, f),
-            ValkyrieValue::Number(v) => Debug::fmt(v, f),
-            ValkyrieValue::Unicode(v) => Debug::fmt(v, f),
-            ValkyrieValue::UTF8String(v) => Debug::fmt(v, f),
-            ValkyrieValue::Bytes(v) => Debug::fmt(v, f),
-            ValkyrieValue::Html(v) => Debug::fmt(v, f),
-            ValkyrieValue::NDArray(v) => Debug::fmt(v, f),
-            ValkyrieValue::Image(v) => Debug::fmt(v, f),
-            #[cfg(feature = "polars")]
-            ValkyrieValue::DataFrame(v) => Debug::fmt(v, f),
-            ValkyrieValue::List(v) => Debug::fmt(v, f),
-            ValkyrieValue::Dict(v) => Debug::fmt(v, f),
-            ValkyrieValue::Class(v) => Debug::fmt(v, f),
-            ValkyrieValue::Variant(v) => Debug::fmt(v, f),
+            ValkyrieValue::Nothing => {}
+            ValkyrieValue::Unit => {}
+            ValkyrieValue::Boolean(v) => v.lower(cx, ty, dst),
+            ValkyrieValue::Number(v) => {}
         }
+    }
+
+    fn store<T>(&self, cx: &mut LowerContext<'_, T>, ty: InterfaceType, offset: usize) -> wasmtime::Result<()> {
+        todo!()
     }
 }

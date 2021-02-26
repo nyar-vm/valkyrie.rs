@@ -10,24 +10,13 @@ license = "MPL-2.0"
 edition = "2021"
 
 [dependencies]
+heck = "0.4.1"
 serde = "1.0.188"
-im = "15.1.0"
 shredder = "0.2.0"
 indexmap = "2.0.0"
 itertools = "0.11.0"
-image = { version = "0.24.7", features = [] }
-ndarray = { version = "0.15.6", features = [] }
-polars = { version = "0.33.2", features = ["lazy"], optional = true }
-
-[dependencies.nyar-collection]
-version = "0.0.1"
-features = ["serde"]
-#path = 'C:\Users\Dell\CLionProjects\disk-map\projects\nyar-collection'
-
-[dependencies.nyar-number]
-version = "0.3.5"
-features = ["serde"]
-#path = 'C:\Users\Dell\CLionProjects\nyar-prime\projects\nyar-number'
+wasmtime = { version = "14.0.4", features = ["component-model"] }
+wit-bindgen-core = "0.13.1"
 
 [dependencies.nyar-error]
 version = "0.1.*"
