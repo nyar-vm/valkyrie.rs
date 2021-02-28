@@ -1,4 +1,4 @@
-use crate::values::ValkyrieValue;
+use crate::values::ValkyrieValueType;
 use std::mem::MaybeUninit;
 use wasmtime::{
     component::{
@@ -28,7 +28,7 @@ impl From<u8> for ValkyrieNumber {
     }
 }
 
-impl From<u8> for ValkyrieValue {
+impl From<u8> for ValkyrieValueType {
     #[inline]
     fn from(value: u8) -> Self {
         Self::Number(ValkyrieNumber::from(value))
@@ -40,8 +40,8 @@ macro_rules! map_value {
 }
 
 
-map_value! {
-    u8 => Unsigned8,
-    u16 => Unsigned16,
-
-}
+// map_value! {
+//     u8 => Unsigned8,
+//     u16 => Unsigned16,
+//
+// }
