@@ -10,6 +10,7 @@ license = "MPL-2.0"
 edition = "2021"
 
 [dependencies]
+ordered-float = "4.1.1"
 heck = "0.4.1"
 serde = "1.0.188"
 shredder = "0.2.0"

@@ -1,64 +1,26 @@
 use super::*;
+use crate::values::ValkyrieType;
 
-impl ValkyrieType for bool {
-    fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::Boolean(self)
+impl ValkyrieValueType for bool {
+    fn as_valkyrie(&self) -> ValkyrieValue {
+        ValkyrieValue::Boolean(*self)
     }
-
-    fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
-        let mut meta = ValkyrieMetaType::default();
-        meta.set_namepath("std.primitive.Boolean");
-        Gc::new(meta)
+    fn as_type(&self) -> ValkyrieType {
+        ValkyrieType::Boolean
     }
 }
 
-pub struct TypeManager {
-    types: IndexMap<u64, Gc<ValkyrieMetaType>>,
-}
-
-impl TypeManager {
-    pub fn get_or_insert(&mut self, info: Gc<ValkyrieMetaType>) -> Gc<ValkyrieMetaType> {
-        let mut hasher = DefaultHasher::new();
-        info.hash(&mut hasher);
-        let hash = hasher.finish();
-        match self.types.get(&hash) {
-            Some(t) => t.clone(),
-            None => {
-                self.types.insert(hash, info.clone());
-                info
-            }
-        }
-    }
-}
-
-pub struct ValkyrieFunction {
-    document: String,
-    parameters: Vec<ValkyrieMetaType>,
-    return_type: ValkyrieMetaType,
-    function_ptr: ValkyrieFunctionInstance,
-}
-
-pub enum ValkyrieFunctionInstance {
-    Normal { apply: fn(Vec<ValkyrieValue>) -> ValkyrieValue },
-    Curry { apply: fn(Vec<ValkyrieValue>) -> ValkyrieValue, parameters: Vec<ValkyrieValue> },
-}
-
-impl From<bool> for ValkyrieValue {
-    fn from(value: bool) -> Self {
-        ValkyrieValue::Boolean(value)
-    }
-}
-
-// std.primitive.Boolean
-pub fn not(args: Vec<ValkyrieValue>, kws: IndexMap<String, ValkyrieValue>) -> ValkyrieValue {
-    if !kws.is_empty() {
-        panic!("Invalid keyword arguments");
-    }
-    match args.get(0) {
-        Some(ValkyrieValue::Boolean(p)) => return ValkyrieValue::from(p.not()),
-        _ => panic!("Invalid type"),
-    }
-}
+// pub struct ValkyrieFunction {
+//     document: String,
+//     parameters: Vec<ValkyrieMetaType>,
+//     return_type: ValkyrieMetaType,
+//     function_ptr: ValkyrieFunctionInstance,
+// }
+//
+// pub enum ValkyrieFunctionInstance {
+//     Normal { apply: fn(Vec<ValkyrieValue>) -> ValkyrieValue },
+//     Curry { apply: fn(Vec<ValkyrieValue>) -> ValkyrieValue, parameters: Vec<ValkyrieValue> },
+// }
 
 pub fn and(p: bool, q: bool) -> bool {
     p && q

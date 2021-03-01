@@ -5,21 +5,21 @@ use crate::ValkyrieNumber;
 use std::rc::Rc;
 use wasmtime::component::{types, types::OptionType, Type, Val};
 
-pub trait ValkyrieValue {
-    fn as_valkyrie(&self) -> ValkyrieValueType;
-    fn to_valkyrie(self) -> ValkyrieValueType {
+pub trait ValkyrieValueType {
+    fn as_valkyrie(&self) -> ValkyrieValue;
+    fn to_valkyrie(self) -> ValkyrieValue
+    where
+        Self: Sized,
+    {
         self.as_valkyrie()
     }
-}
-pub trait ValkyrieType {
-    fn as_valkyrie(&self) -> ValkyrieValueType;
-    fn to_valkyrie(self) -> ValkyrieValueType {
-        self.as_valkyrie()
+    fn as_type(&self) -> ValkyrieType {
+        self.as_valkyrie().as_type()
     }
 }
 
 #[derive(Clone, Eq, PartialEq, Hash)]
-pub enum ValkyrieValueType {
+pub enum ValkyrieValue {
     /// ADT = -1
     Nothing,
     /// An uninitialized value, null for pointer types, and default for value types
@@ -29,33 +29,42 @@ pub enum ValkyrieValueType {
     /// ADT = 2
     ///
     /// Native boolean type, 8bit
-    Boolean(Option<bool>),
+    Boolean(bool),
     Number(ValkyrieNumber),
     Result(Rc<MaybeType>),
 }
 
-impl ValkyrieValue for ValkyrieValueType {
-    fn as_valkyrie(&self) -> ValkyrieValueType {
+#[derive(Clone, Eq, PartialEq, Hash)]
+pub enum ValkyrieType {
+    Boolean,
+    SmallDecimal { float: bool, bits: u32 },
+    SmallInteger { sign: bool, bits: u32 },
+    Text { character: bool, encoding: String },
+    Literal(Box<ValkyrieValue>),
+}
+
+impl ValkyrieValueType for ValkyrieValue {
+    fn as_valkyrie(&self) -> ValkyrieValue {
         self.clone()
     }
-    fn to_valkyrie(self) -> ValkyrieValueType {
+    fn to_valkyrie(self) -> ValkyrieValue {
         self
     }
     fn as_type(&self) -> ValkyrieType {
         match self {
-            ValkyrieValueType::Nothing => {
+            ValkyrieValue::Nothing => {
                 todo!()
             }
-            ValkyrieValueType::Unit => {
+            ValkyrieValue::Unit => {
                 todo!()
             }
-            ValkyrieValueType::Boolean(_) => {
+            ValkyrieValue::Boolean(_) => {
                 todo!()
             }
-            ValkyrieValueType::Number(_) => {
+            ValkyrieValue::Number(_) => {
                 todo!()
             }
-            ValkyrieValueType::Result(_) => {
+            ValkyrieValue::Result(_) => {
                 todo!()
             }
         }
@@ -65,57 +74,106 @@ impl ValkyrieValue for ValkyrieValueType {
 #[derive(Clone, Eq, PartialEq, Hash)]
 pub struct MaybeType {
     left: bool,
-    value: ValkyrieValueType,
+    value: ValkyrieValue,
 }
 
 impl MaybeType {
     pub fn some<V>(v: V) -> MaybeType
     where
-        V: ValkyrieValue,
+        V: ValkyrieValueType,
     {
-        Self { left: false, value: ValkyrieValueType::Nothing }
+        Self { left: false, value: ValkyrieValue::Nothing }
     }
     pub fn error<V>(v: V) -> MaybeType
     where
-        V: ValkyrieValue,
+        V: ValkyrieValueType,
     {
-        Self::Right(Box::new(v.to_valkyrie()))
+        todo!()
     }
-    pub fn none(ty: &OptionType) -> MaybeType {
-        match ty.ty() {
-            Type::Bool => {
+    pub fn none(ty: &Type) -> MaybeType {
+        todo!()
+    }
+    pub fn null() -> MaybeType {
+        todo!()
+    }
+    pub fn never() -> MaybeType {
+        todo!()
+    }
+}
+
+impl ValkyrieValueType for MaybeType {
+    fn as_valkyrie(&self) -> ValkyrieValue {
+        self.clone().to_valkyrie()
+    }
+    fn to_valkyrie(self) -> ValkyrieValue {
+        ValkyrieValue::Result(Rc::new(self))
+    }
+}
+
+impl ValkyrieValueType for Val {
+    fn as_valkyrie(&self) -> ValkyrieValue {
+        match self {
+            Val::Bool(v) => v.as_valkyrie(),
+            Val::S8(v) => v.as_valkyrie(),
+            Val::U8(v) => v.as_valkyrie(),
+            Val::S16(v) => v.as_valkyrie(),
+            Val::U16(v) => v.as_valkyrie(),
+            Val::S32(v) => v.as_valkyrie(),
+            Val::U32(v) => v.as_valkyrie(),
+            Val::S64(v) => v.as_valkyrie(),
+            Val::U64(v) => v.as_valkyrie(),
+            Val::Float32(v) => v.as_valkyrie(),
+            Val::Float64(v) => v.as_valkyrie(),
+            Val::Char(_) => {
                 todo!()
             }
-            Type::S8 => {
+            Val::String(_) => {
                 todo!()
             }
-            Type::U8 => {
+            Val::List(_) => {
                 todo!()
             }
-            Type::S16 => {
+            Val::Record(_) => {
                 todo!()
             }
-            Type::U16 => {
+            Val::Tuple(_) => {
                 todo!()
             }
-            Type::S32 => {
+            Val::Variant(_) => {
                 todo!()
             }
-            Type::U32 => {
+            Val::Enum(_) => {
                 todo!()
             }
-            Type::S64 => {
+            Val::Option(v) => todo!(),
+            Val::Result(v) => todo!(),
+            Val::Flags(_) => {
                 todo!()
             }
-            Type::U64 => {
+            Val::Resource(_) => {
                 todo!()
             }
-            Type::Float32 => {
-                todo!()
-            }
-            Type::Float64 => {
-                todo!()
-            }
+        }
+    }
+}
+
+impl ValkyrieValueType for Type {
+    fn as_valkyrie(&self) -> ValkyrieValue {
+        unreachable!()
+    }
+    fn as_type(&self) -> ValkyrieType {
+        match self {
+            Type::Bool => ValkyrieType::Boolean,
+            Type::S8 => ValkyrieType::SmallInteger { sign: true, bits: 8 },
+            Type::U8 => ValkyrieType::SmallInteger { sign: false, bits: 8 },
+            Type::S16 => ValkyrieType::SmallInteger { sign: true, bits: 16 },
+            Type::U16 => ValkyrieType::SmallInteger { sign: false, bits: 16 },
+            Type::S32 => ValkyrieType::SmallInteger { sign: true, bits: 32 },
+            Type::U32 => ValkyrieType::SmallInteger { sign: false, bits: 32 },
+            Type::S64 => ValkyrieType::SmallInteger { sign: true, bits: 64 },
+            Type::U64 => ValkyrieType::SmallInteger { sign: false, bits: 64 },
+            Type::Float32 => ValkyrieType::SmallDecimal { bits: 32 },
+            Type::Float64 => ValkyrieType::SmallDecimal { bits: 64 },
             Type::Char => {
                 todo!()
             }
@@ -150,74 +208,6 @@ impl MaybeType {
                 todo!()
             }
             Type::Borrow(_) => {
-                todo!()
-            }
-        }
-    }
-    pub fn null() -> MaybeType {
-        todo!()
-    }
-    pub fn never() -> MaybeType {
-        todo!()
-    }
-}
-
-impl ValkyrieValue for MaybeType {
-    fn as_valkyrie(&self) -> ValkyrieValueType {
-        self.clone().to_valkyrie()
-    }
-    fn to_valkyrie(self) -> ValkyrieValueType {
-        ValkyrieValueType::Result(Rc::new(self))
-    }
-}
-
-impl ValkyrieValue for Val {
-    fn as_valkyrie(&self) -> ValkyrieValueType {
-        match self {
-            Val::Bool(v) => v.into(),
-            Val::S8(v) => v.into(),
-            Val::U8(v) => v.into(),
-            Val::S16(v) => v.into(),
-            Val::U16(v) => v.into(),
-            Val::S32(v) => v.into(),
-            Val::U32(v) => v.into(),
-            Val::S64(v) => v.into(),
-            Val::U64(v) => v.into(),
-            Val::Float32(v) => v.into(),
-            Val::Float64(v) => v.into(),
-            Val::Char(_) => {
-                todo!()
-            }
-            Val::String(_) => {
-                todo!()
-            }
-            Val::List(_) => {
-                todo!()
-            }
-            Val::Record(_) => {
-                todo!()
-            }
-            Val::Tuple(_) => {
-                todo!()
-            }
-            Val::Variant(_) => {
-                todo!()
-            }
-            Val::Enum(_) => {
-                todo!()
-            }
-            Val::Option(v) => match v.value() {
-                Some(s) => {}
-                None => MaybeType::none(v.ty()).to_valkyrie(),
-            },
-            Val::Result(v) => match v.value() {
-                Some(s) => {}
-                None => MaybeType::none(v.ty()).to_valkyrie(),
-            },
-            Val::Flags(_) => {
-                todo!()
-            }
-            Val::Resource(_) => {
                 todo!()
             }
         }

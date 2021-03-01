@@ -5,13 +5,17 @@
 // pub mod json_like;
 // pub mod list;
 // pub mod module_name;
-// pub mod ndarray;
+pub mod text;
 // pub mod option;
 // pub mod pointer;
 // pub mod primitive;
 // pub mod result;
 //
+pub mod boolean;
 pub mod number;
+
+use crate::values::{ValkyrieValue, ValkyrieValueType};
+
 //
 // use crate::{
 //     collection::list::{ValkyrieList, ValkyrieOrdinal},

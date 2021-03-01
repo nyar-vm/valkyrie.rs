@@ -24,7 +24,7 @@ mod builtin;
 mod values;
 //
 
-pub use self::builtin::number::ValkyrieNumber;
+pub use self::builtin::{number::ValkyrieNumber, text::ValkyrieText};
 // pub use self::{
 //     builtin::{
 //         images::ValkyrieImage,
