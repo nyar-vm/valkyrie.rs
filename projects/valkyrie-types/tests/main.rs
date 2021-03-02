@@ -2,7 +2,7 @@
 // use valkyrie_types::{testing::assert_type, ValkyrieID, ValkyrieInterface, ValkyrieList, ValkyrieNumber, ValkyrieValue};
 //
 #[test]
-fn ready() {
+fn ready2() {
     println!("it works!")
 }
 

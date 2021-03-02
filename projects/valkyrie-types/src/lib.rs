@@ -24,7 +24,10 @@ mod builtin;
 mod values;
 //
 
-pub use self::builtin::{number::ValkyrieNumber, text::ValkyrieText};
+pub use crate::{
+    builtin::{maybe::ValkyrieMaybe, number::ValkyrieNumber, text::ValkyrieText},
+    values::{ValkyrieType, ValkyrieValue, ValkyrieValueType},
+};
 // pub use self::{
 //     builtin::{
 //         images::ValkyrieImage,

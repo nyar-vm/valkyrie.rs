@@ -21,16 +21,16 @@ impl ValkyrieValueType for ValkyrieNumber {
     }
     fn as_type(&self) -> ValkyrieType {
         match self {
-            Self::Unsigned8(_) => ValkyrieType::SmallInteger { sign: false, bits: 8 },
-            Self::Unsigned16(_) => ValkyrieType::SmallInteger { sign: false, bits: 16 },
-            Self::Unsigned32(_) => ValkyrieType::SmallInteger { sign: false, bits: 32 },
-            Self::Unsigned64(_) => ValkyrieType::SmallInteger { sign: false, bits: 64 },
-            Self::Integer8(_) => ValkyrieType::SmallInteger { sign: true, bits: 8 },
-            Self::Integer16(_) => ValkyrieType::SmallInteger { sign: true, bits: 16 },
-            Self::Integer32(_) => ValkyrieType::SmallInteger { sign: true, bits: 32 },
-            Self::Integer64(_) => ValkyrieType::SmallInteger { sign: true, bits: 64 },
-            Self::Float32(_) => ValkyrieType::SmallDecimal { float: true, bits: 32 },
-            Self::Float64(_) => ValkyrieType::SmallDecimal { float: true, bits: 64 },
+            Self::Unsigned8(_) => ValkyrieType::Integer { sign: false, bits: 8 },
+            Self::Unsigned16(_) => ValkyrieType::Integer { sign: false, bits: 16 },
+            Self::Unsigned32(_) => ValkyrieType::Integer { sign: false, bits: 32 },
+            Self::Unsigned64(_) => ValkyrieType::Integer { sign: false, bits: 64 },
+            Self::Integer8(_) => ValkyrieType::Integer { sign: true, bits: 8 },
+            Self::Integer16(_) => ValkyrieType::Integer { sign: true, bits: 16 },
+            Self::Integer32(_) => ValkyrieType::Integer { sign: true, bits: 32 },
+            Self::Integer64(_) => ValkyrieType::Integer { sign: true, bits: 64 },
+            Self::Float32(_) => ValkyrieType::Decimal { float: true, bits: 32 },
+            Self::Float64(_) => ValkyrieType::Decimal { float: true, bits: 64 },
         }
     }
 }
@@ -40,7 +40,7 @@ impl ValkyrieValueType for u8 {
         ValkyrieValue::Number(ValkyrieNumber::Unsigned8(*self))
     }
     fn as_type(&self) -> ValkyrieType {
-        ValkyrieType::SmallInteger { sign: false, bits: 8 }
+        ValkyrieType::Integer { sign: false, bits: 8 }
     }
 }
 
@@ -49,7 +49,7 @@ impl ValkyrieValueType for u16 {
         ValkyrieValue::Number(ValkyrieNumber::Unsigned16(*self))
     }
     fn as_type(&self) -> ValkyrieType {
-        ValkyrieType::SmallInteger { sign: false, bits: 16 }
+        ValkyrieType::Integer { sign: false, bits: 16 }
     }
 }
 
@@ -58,7 +58,7 @@ impl ValkyrieValueType for u32 {
         ValkyrieValue::Number(ValkyrieNumber::Unsigned32(*self))
     }
     fn as_type(&self) -> ValkyrieType {
-        ValkyrieType::SmallInteger { sign: false, bits: 32 }
+        ValkyrieType::Integer { sign: false, bits: 32 }
     }
 }
 
@@ -67,7 +67,7 @@ impl ValkyrieValueType for u64 {
         ValkyrieValue::Number(ValkyrieNumber::Unsigned64(*self))
     }
     fn as_type(&self) -> ValkyrieType {
-        ValkyrieType::SmallInteger { sign: false, bits: 64 }
+        ValkyrieType::Integer { sign: false, bits: 64 }
     }
 }
 
@@ -76,7 +76,7 @@ impl ValkyrieValueType for i8 {
         ValkyrieValue::Number(ValkyrieNumber::Integer8(*self))
     }
     fn as_type(&self) -> ValkyrieType {
-        ValkyrieType::SmallInteger { sign: true, bits: 8 }
+        ValkyrieType::Integer { sign: true, bits: 8 }
     }
 }
 
@@ -85,7 +85,7 @@ impl ValkyrieValueType for i16 {
         ValkyrieValue::Number(ValkyrieNumber::Integer16(*self))
     }
     fn as_type(&self) -> ValkyrieType {
-        ValkyrieType::SmallInteger { sign: true, bits: 16 }
+        ValkyrieType::Integer { sign: true, bits: 16 }
     }
 }
 
@@ -94,7 +94,7 @@ impl ValkyrieValueType for i32 {
         ValkyrieValue::Number(ValkyrieNumber::Integer32(*self))
     }
     fn as_type(&self) -> ValkyrieType {
-        ValkyrieType::SmallInteger { sign: true, bits: 32 }
+        ValkyrieType::Integer { sign: true, bits: 32 }
     }
 }
 
@@ -103,7 +103,7 @@ impl ValkyrieValueType for i64 {
         ValkyrieValue::Number(ValkyrieNumber::Integer64(*self))
     }
     fn as_type(&self) -> ValkyrieType {
-        ValkyrieType::SmallInteger { sign: true, bits: 64 }
+        ValkyrieType::Integer { sign: true, bits: 64 }
     }
 }
 impl ValkyrieValueType for f32 {
@@ -111,7 +111,7 @@ impl ValkyrieValueType for f32 {
         ValkyrieValue::Number(ValkyrieNumber::Float32(OrderedFloat(*self)))
     }
     fn as_type(&self) -> ValkyrieType {
-        ValkyrieType::SmallDecimal { float: true, bits: 32 }
+        ValkyrieType::Decimal { float: true, bits: 32 }
     }
 }
 
@@ -120,6 +120,6 @@ impl ValkyrieValueType for f64 {
         ValkyrieValue::Number(ValkyrieNumber::Float64(OrderedFloat(*self)))
     }
     fn as_type(&self) -> ValkyrieType {
-        ValkyrieType::SmallDecimal { float: true, bits: 64 }
+        ValkyrieType::Decimal { float: true, bits: 64 }
     }
 }

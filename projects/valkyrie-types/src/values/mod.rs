@@ -1,9 +1,9 @@
 // mod der;
 // mod ser;
 
-use crate::ValkyrieNumber;
+use crate::{ValkyrieMaybe, ValkyrieNumber, ValkyrieText};
 use std::rc::Rc;
-use wasmtime::component::{types, types::OptionType, Type, Val};
+use wasmtime::component::{types::OptionType, Type, Val};
 
 pub trait ValkyrieValueType {
     fn as_valkyrie(&self) -> ValkyrieValue;
@@ -31,15 +31,16 @@ pub enum ValkyrieValue {
     /// Native boolean type, 8bit
     Boolean(bool),
     Number(ValkyrieNumber),
-    Result(Rc<MaybeType>),
+    Text(ValkyrieText),
+    Maybe(Box<ValkyrieMaybe>),
 }
 
 #[derive(Clone, Eq, PartialEq, Hash)]
 pub enum ValkyrieType {
     Boolean,
-    SmallDecimal { float: bool, bits: u32 },
-    SmallInteger { sign: bool, bits: u32 },
-    Text { character: bool, encoding: String },
+    Decimal { float: bool, bits: u32 },
+    Integer { sign: bool, bits: u32 },
+    Text { character: bool, encoding: &'static str },
     Literal(Box<ValkyrieValue>),
 }
 
@@ -61,52 +62,12 @@ impl ValkyrieValueType for ValkyrieValue {
             ValkyrieValue::Boolean(_) => {
                 todo!()
             }
-            ValkyrieValue::Number(_) => {
-                todo!()
-            }
-            ValkyrieValue::Result(_) => {
+            ValkyrieValue::Number(v) => v.as_type(),
+            ValkyrieValue::Text(v) => v.as_type(),
+            ValkyrieValue::Maybe(_) => {
                 todo!()
             }
         }
-    }
-}
-
-#[derive(Clone, Eq, PartialEq, Hash)]
-pub struct MaybeType {
-    left: bool,
-    value: ValkyrieValue,
-}
-
-impl MaybeType {
-    pub fn some<V>(v: V) -> MaybeType
-    where
-        V: ValkyrieValueType,
-    {
-        Self { left: false, value: ValkyrieValue::Nothing }
-    }
-    pub fn error<V>(v: V) -> MaybeType
-    where
-        V: ValkyrieValueType,
-    {
-        todo!()
-    }
-    pub fn none(ty: &Type) -> MaybeType {
-        todo!()
-    }
-    pub fn null() -> MaybeType {
-        todo!()
-    }
-    pub fn never() -> MaybeType {
-        todo!()
-    }
-}
-
-impl ValkyrieValueType for MaybeType {
-    fn as_valkyrie(&self) -> ValkyrieValue {
-        self.clone().to_valkyrie()
-    }
-    fn to_valkyrie(self) -> ValkyrieValue {
-        ValkyrieValue::Result(Rc::new(self))
     }
 }
 
@@ -124,10 +85,8 @@ impl ValkyrieValueType for Val {
             Val::U64(v) => v.as_valkyrie(),
             Val::Float32(v) => v.as_valkyrie(),
             Val::Float64(v) => v.as_valkyrie(),
-            Val::Char(_) => {
-                todo!()
-            }
-            Val::String(_) => {
+            Val::Char(v) => v.as_valkyrie(),
+            Val::String(v) => {
                 todo!()
             }
             Val::List(_) => {
@@ -145,7 +104,10 @@ impl ValkyrieValueType for Val {
             Val::Enum(_) => {
                 todo!()
             }
-            Val::Option(v) => todo!(),
+            Val::Option(v) => match v.value() {
+                Some(s) => ValkyrieMaybe::some(s).as_valkyrie(),
+                None => ValkyrieMaybe::none(v.ty().ty().as_type()).as_valkyrie(),
+            },
             Val::Result(v) => todo!(),
             Val::Flags(_) => {
                 todo!()
@@ -164,22 +126,18 @@ impl ValkyrieValueType for Type {
     fn as_type(&self) -> ValkyrieType {
         match self {
             Type::Bool => ValkyrieType::Boolean,
-            Type::S8 => ValkyrieType::SmallInteger { sign: true, bits: 8 },
-            Type::U8 => ValkyrieType::SmallInteger { sign: false, bits: 8 },
-            Type::S16 => ValkyrieType::SmallInteger { sign: true, bits: 16 },
-            Type::U16 => ValkyrieType::SmallInteger { sign: false, bits: 16 },
-            Type::S32 => ValkyrieType::SmallInteger { sign: true, bits: 32 },
-            Type::U32 => ValkyrieType::SmallInteger { sign: false, bits: 32 },
-            Type::S64 => ValkyrieType::SmallInteger { sign: true, bits: 64 },
-            Type::U64 => ValkyrieType::SmallInteger { sign: false, bits: 64 },
-            Type::Float32 => ValkyrieType::SmallDecimal { bits: 32 },
-            Type::Float64 => ValkyrieType::SmallDecimal { bits: 64 },
-            Type::Char => {
-                todo!()
-            }
-            Type::String => {
-                todo!()
-            }
+            Type::S8 => ValkyrieType::Integer { sign: true, bits: 8 },
+            Type::U8 => ValkyrieType::Integer { sign: false, bits: 8 },
+            Type::S16 => ValkyrieType::Integer { sign: true, bits: 16 },
+            Type::U16 => ValkyrieType::Integer { sign: false, bits: 16 },
+            Type::S32 => ValkyrieType::Integer { sign: true, bits: 32 },
+            Type::U32 => ValkyrieType::Integer { sign: false, bits: 32 },
+            Type::S64 => ValkyrieType::Integer { sign: true, bits: 64 },
+            Type::U64 => ValkyrieType::Integer { sign: false, bits: 64 },
+            Type::Float32 => ValkyrieType::Decimal { float: true, bits: 32 },
+            Type::Float64 => ValkyrieType::Decimal { float: true, bits: 64 },
+            Type::Char => ValkyrieType::Text { character: true, encoding: "Unicode" },
+            Type::String => ValkyrieType::Text { character: false, encoding: "Utf8Text" },
             Type::List(_) => {
                 todo!()
             }
