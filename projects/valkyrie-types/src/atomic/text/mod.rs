@@ -26,3 +26,21 @@ impl ValkyrieValueType for char {
         ValkyrieType::Text { character: true, encoding: "Unicode" }
     }
 }
+
+impl<'a> ValkyrieValueType for &'a str {
+    fn as_valkyrie(&self) -> ValkyrieValue {
+        ValkyrieValue::Text(ValkyrieText { character: false, encoding: "Utf8Text", buffer: self.as_bytes().to_vec() })
+    }
+    fn as_type(&self) -> ValkyrieType {
+        ValkyrieType::Text { character: false, encoding: "Utf8Text" }
+    }
+}
+
+impl ValkyrieValueType for String {
+    fn as_valkyrie(&self) -> ValkyrieValue {
+        ValkyrieValue::Text(ValkyrieText { character: false, encoding: "Utf8Text", buffer: self.as_bytes().to_vec() })
+    }
+    fn as_type(&self) -> ValkyrieType {
+        ValkyrieType::Text { character: false, encoding: "Utf8Text" }
+    }
+}

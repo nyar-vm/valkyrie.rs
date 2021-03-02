@@ -7,13 +7,13 @@
 
 extern crate core;
 
-mod builtin;
+mod atomic;
 // mod codegen;
 // mod collection;
 // mod functions;
 // mod modifiers;
 // // #[cfg(test)]
-// mod definitions;
+mod combine;
 // mod encoding;
 // mod singletons;
 // pub mod testing;
@@ -25,7 +25,8 @@ mod values;
 //
 
 pub use crate::{
-    builtin::{maybe::ValkyrieMaybe, number::ValkyrieNumber, text::ValkyrieText},
+    atomic::{id::ValkyrieID, maybe::ValkyrieMaybe, number::ValkyrieNumber, text::ValkyrieText},
+    combine::unions::ValkyrieUnion,
     values::{ValkyrieType, ValkyrieValue, ValkyrieValueType},
 };
 // pub use self::{

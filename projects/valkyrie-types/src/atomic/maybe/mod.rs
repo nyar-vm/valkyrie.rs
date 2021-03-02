@@ -9,13 +9,13 @@ pub struct ValkyrieMaybe {
 }
 
 impl ValkyrieMaybe {
-    pub fn value<V>(v: V, rhs: ValkyrieType) -> ValkyrieMaybe
+    pub fn value<V>(v: &V, rhs: ValkyrieType) -> ValkyrieMaybe
     where
         V: ValkyrieValueType,
     {
         Self { ok: true, value: Some(v.as_valkyrie()), lhs_type: Some(v.as_type()), rhs_type: Some(rhs) }
     }
-    pub fn error<V>(v: V, lhs: ValkyrieType) -> ValkyrieMaybe
+    pub fn error<V>(v: &V, lhs: ValkyrieType) -> ValkyrieMaybe
     where
         V: ValkyrieValueType,
     {
