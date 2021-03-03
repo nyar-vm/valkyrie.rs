@@ -289,7 +289,9 @@
                 main_prefix: [],
                 main_suffix: [
                     InlineSuffix(
-                        Celsius,
+                        InlineSuffix0(
+                            Celsius,
+                        ),
                     ),
                 ],
                 span: 228..233,
@@ -306,7 +308,9 @@
                 main_prefix: [],
                 main_suffix: [
                     InlineSuffix(
-                        Fahrenheit,
+                        InlineSuffix0(
+                            Fahrenheit,
+                        ),
                     ),
                 ],
                 span: 236..241,
@@ -335,7 +339,9 @@
                 main_prefix: [],
                 main_suffix: [
                     InlineSuffix(
-                        Percent2,
+                        InlineSuffix0(
+                            Percent2,
+                        ),
                     ),
                 ],
                 span: 261..263,
@@ -352,7 +358,9 @@
                 main_prefix: [],
                 main_suffix: [
                     InlineSuffix(
-                        Percent3,
+                        InlineSuffix0(
+                            Percent3,
+                        ),
                     ),
                 ],
                 span: 266..270,
@@ -369,7 +377,9 @@
                 main_prefix: [],
                 main_suffix: [
                     InlineSuffix(
-                        Percent4,
+                        InlineSuffix0(
+                            Percent4,
+                        ),
                     ),
                 ],
                 span: 273..277,
@@ -395,7 +405,9 @@
                 main_prefix: [],
                 main_suffix: [
                     InlineSuffix(
-                        Percent4,
+                        InlineSuffix0(
+                            Percent4,
+                        ),
                     ),
                 ],
                 span: 280..300,
@@ -428,13 +440,19 @@
                 main_prefix: [],
                 main_suffix: [
                     InlineSuffix(
-                        Percent2,
+                        InlineSuffix0(
+                            Percent2,
+                        ),
                     ),
                     InlineSuffix(
-                        Percent3,
+                        InlineSuffix0(
+                            Percent3,
+                        ),
                     ),
                     InlineSuffix(
-                        Percent4,
+                        InlineSuffix0(
+                            Percent4,
+                        ),
                     ),
                 ],
                 span: 303..311,

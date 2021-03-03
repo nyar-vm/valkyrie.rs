@@ -7,7 +7,7 @@ impl Serialize for ValkyrieValue {
         S: Serializer,
     {
         match self {
-            Self::Result => {
+            Self::Uninitialized => {
                 todo!()
             }
             Self::Nothing => {

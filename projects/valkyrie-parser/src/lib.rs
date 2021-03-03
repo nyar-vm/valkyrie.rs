@@ -5,12 +5,12 @@ mod codegen;
 
 pub use crate::codegen::*;
 
-// mod atomic;
+mod atomic;
 // mod control_flow;
 // mod declarations;
-// mod expression;
+mod expression;
 // mod helpers;
-// mod statements;
+mod statements;
 // mod string_like;
 // mod suffix_call;
 // mod table;

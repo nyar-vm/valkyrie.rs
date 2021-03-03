@@ -1,159 +1,239 @@
-mod expression_kind;
-mod infix;
-mod patterns;
-mod prefix;
-mod suffix;
-mod try_statement;
+use crate::{MainExpressionNode, MainInfixNode, MainPrefixNode, MainSuffixNode, MainTermNode};
+use nyar_error::{NyarError, Validation};
+use pratt::{Affix, Associativity, PrattParser, Precedence};
+use valkyrie_ast::{ExpressionNode, ExpressionType, InfixNode, OperatorNode, PrefixNode, StatementNode, ValkyrieOperator};
 
-use crate::{
-    helpers::{ignore, parse_bind, parse_when},
-    table::TupleNode,
-    traits::ThisParser,
-    utils::{get_span, parse_expression_body, parse_expression_node},
-};
-use lispify::Lisp;
-use pex::{
-    helpers::{char, str},
-    BracketPattern, ParseResult, ParseState, Regex, StopBecause,
-};
-use pratt::{Affix, Associativity, PrattError, PrattParser, Precedence};
-use std::{
-    fmt::{Debug, Formatter},
-    ops::Range,
-    sync::LazyLock,
-};
-use valkyrie_ast::{
-    ApplyCallNode, ApplyDotNode, ArgumentKeyNode, ArrayPatternNode, CallNode, ClassPatternNode, ClosureCallNode,
-    ExpressionContext, ExpressionNode, ExpressionType, GenericCallNode, IfStatement, ImplicitCaseNode, InfixNode,
-    LambdaDotNode, LambdaSlotNode, LetPattern, MatchDotStatement, MatchKind, MonadicCall, MonadicDotCall, NamePathNode,
-    NewConstructNode, NumberLiteralNode, OperatorNode, PatternBranch, PatternCaseNode, PatternCondition, PatternElseNode,
-    PatternGuard, PatternStatements, PatternTypeNode, PatternWhenNode, PostfixCallPart, PostfixNode, PrefixNode, RaiseNode,
-    StatementBlock, StatementNode, StringLiteralNode, SubscriptCallNode, SwitchStatement, TryStatement, TupleNode,
-    TuplePatternNode, TypingExpression, UnionPatternNode, ValkyrieOperator,
-};
-
-/// A resolver
-#[derive(Default)]
-pub struct ExpressionResolver {}
-
-#[derive(Clone, Debug)]
-pub enum ExpressionStream {
-    Prefix(ValkyriePrefix),
-    Postfix(ValkyrieSuffix),
-    Infix(ValkyrieInfix),
-    Term(ExpressionType),
-    Group(Vec<ExpressionStream>),
-}
-
-#[derive(Clone)]
-pub struct ValkyrieInfix {
-    pub normalized: String,
-    pub span: Range<u32>,
-}
-
-#[derive(Clone)]
-pub struct ValkyriePrefix {
-    pub normalized: String,
-    pub span: Range<u32>,
-}
-
-#[derive(Clone)]
-pub struct ValkyrieSuffix {
-    pub normalized: String,
-    pub span: Range<u32>,
-}
-
-impl ThisParser for TypingExpression {
-    fn parse(input: ParseState) -> ParseResult<Self> {
-        let (state, out) = parse_expression_node(input, ExpressionContext::in_type())?;
-        state.finish(TypingExpression { body: out.body, span: get_span(input, state) })
-    }
-
-    fn lispify(&self) -> Lisp {
-        unreachable!()
+impl MainExpressionNode {
+    pub fn build(&self) -> Validation<StatementNode> {
+        if self.main_infix.is_empty() { todo!() } else { todo!() }
     }
 }
 
-impl ExpressionResolver {
-    pub fn resolve(&self, stream: Vec<ExpressionStream>) -> Result<ExpressionType, StopBecause> {
-        // println!("stream: {stream:#?}");
-        let mut effect = ExpressionResolver {};
-        match effect.parse(stream.into_iter()) {
-            Ok(o) => Ok(o),
-            Err(e) => say_stop_reason(e),
-        }
-    }
-}
+struct ExpressionResolver;
 
-fn say_stop_reason<T>(e: PrattError<ExpressionStream, StopBecause>) -> Result<T, StopBecause> {
-    match e {
-        PrattError::UserError(e) => Err(e),
-        PrattError::EmptyInput => Err(StopBecause::ShouldNotBe { message: "EOF", position: 0 }),
-        PrattError::UnexpectedNilfix(_) => unreachable!(),
-        PrattError::UnexpectedPrefix(_) => unreachable!(),
-        PrattError::UnexpectedInfix(_) => unreachable!(),
-        PrattError::UnexpectedPostfix(_) => unreachable!(),
-    }
+enum TokenStream {
+    Prefix(ValkyrieOperator),
+    Postfix(ValkyrieOperator),
+    Infix(ValkyrieOperator),
+    Term(MainTermNode),
+    Group(Vec<TokenStream>),
 }
 
 impl<I> PrattParser<I> for ExpressionResolver
 where
-    I: Iterator<Item = ExpressionStream>,
+    I: Iterator<Item = TokenStream>,
 {
-    type Error = StopBecause;
-    type Input = ExpressionStream;
+    type Error = NyarError;
+    type Input = TokenStream;
     type Output = ExpressionType;
 
-    // Query information about an operator (Affix, Precedence, Associativity)
-    fn query(&mut self, tree: &ExpressionStream) -> Result<Affix, StopBecause> {
-        let affix = match tree {
-            ExpressionStream::Infix(o) => Affix::Infix(o.precedence(), o.associativity()),
-            ExpressionStream::Postfix(o) => Affix::Postfix(o.precedence()),
-            ExpressionStream::Prefix(o) => Affix::Prefix(o.precedence()),
-            ExpressionStream::Group(_) => Affix::Nilfix,
-            ExpressionStream::Term(_) => Affix::Nilfix,
+    fn query(&mut self, input: &Self::Input) -> Result<Affix, Self::Error> {
+        let affix = match input {
+            TokenStream::Prefix(v) => Affix::Prefix(Precedence(100u32)),
+            TokenStream::Postfix(v) => Affix::Postfix(Precedence(100u32)),
+            TokenStream::Infix(v) => Affix::Infix(Precedence(100u32), Associativity::Left),
+            TokenStream::Term(_) => Affix::Nilfix,
+            TokenStream::Group(_) => Affix::Nilfix,
         };
         Ok(affix)
     }
 
-    // Construct a primary expression, e.g. a number
-    fn primary(&mut self, tree: ExpressionStream) -> Result<ExpressionType, StopBecause> {
-        match tree {
-            ExpressionStream::Term(term) => Ok(term),
-            ExpressionStream::Group(group) => match self.parse(&mut group.into_iter()) {
-                Ok(o) => Ok(o),
-                Err(e) => say_stop_reason(e),
-            },
-            _ => unreachable!(),
-        }
+    fn primary(&mut self, input: Self::Input) -> Result<Self::Output, Self::Error> {
+        todo!()
     }
 
-    // Construct a binary infix expression, e.g. 1+1
-    fn infix(
-        &mut self,
-        lhs: ExpressionType,
-        tree: ExpressionStream,
-        rhs: ExpressionType,
-    ) -> Result<ExpressionType, StopBecause> {
-        match tree {
-            ExpressionStream::Infix(o) => Ok(ExpressionType::binary(o.as_operator(), lhs, rhs)),
-            _ => unreachable!(),
-        }
+    fn infix(&mut self, lhs: Self::Output, op: Self::Input, rhs: Self::Output) -> Result<Self::Output, Self::Error> {
+        todo!()
     }
 
-    // Construct a unary prefix expression, e.g. !1
-    fn prefix(&mut self, tree: ExpressionStream, rhs: ExpressionType) -> Result<ExpressionType, StopBecause> {
-        match tree {
-            ExpressionStream::Prefix(o) => Ok(ExpressionType::prefix(o.as_operator(), rhs)),
-            _ => unreachable!(),
-        }
+    fn prefix(&mut self, op: Self::Input, rhs: Self::Output) -> Result<Self::Output, Self::Error> {
+        todo!()
     }
 
-    // Construct a unary postfix expression, e.g. 1?
-    fn postfix(&mut self, lhs: ExpressionType, tree: ExpressionStream) -> Result<ExpressionType, StopBecause> {
-        match tree {
-            ExpressionStream::Postfix(o) => Ok(ExpressionType::suffix(o.as_operator(), lhs)),
-            _ => unreachable!(),
+    fn postfix(&mut self, lhs: Self::Output, op: Self::Input) -> Result<Self::Output, Self::Error> {
+        todo!()
+    }
+}
+
+impl MainPrefixNode {
+    pub fn as_operator(&self) -> ValkyrieOperator {
+        match self {
+            Self::Deconstruct => {
+                todo!()
+            }
+            Self::DeconstructAll => {
+                todo!()
+            }
+            Self::Dereference => {
+                todo!()
+            }
+            Self::Inverse => {
+                todo!()
+            }
+            Self::Negative => {
+                todo!()
+            }
+            Self::Not => {
+                todo!()
+            }
+            Self::Positive => {
+                todo!()
+            }
+            Self::Reference => {
+                todo!()
+            }
+            Self::Root2 => {
+                todo!()
+            }
+            Self::Root3 => {
+                todo!()
+            }
+            Self::Root4 => {
+                todo!()
+            }
         }
+    }
+}
+
+impl MainInfixNode {
+    pub fn as_operator(&self) -> ValkyrieOperator {
+        match self {
+            Self::And => {
+                todo!()
+            }
+            Self::Apply2 => {
+                todo!()
+            }
+            Self::Apply3 => {
+                todo!()
+            }
+            Self::Contains => {
+                todo!()
+            }
+            Self::Divide => {
+                todo!()
+            }
+            Self::DivideAssign => {
+                todo!()
+            }
+            Self::EE => {
+                todo!()
+            }
+            Self::EEE => {
+                todo!()
+            }
+            Self::EQ => {
+                todo!()
+            }
+            Self::GE => {
+                todo!()
+            }
+            Self::GEQ => {
+                todo!()
+            }
+            Self::GG => {
+                todo!()
+            }
+            Self::GGE => {
+                todo!()
+            }
+            Self::GGG => {
+                todo!()
+            }
+            Self::In => {
+                todo!()
+            }
+            Self::Is(_) => {
+                todo!()
+            }
+            Self::LE => {
+                todo!()
+            }
+            Self::LEQ => {
+                todo!()
+            }
+            Self::LL => {
+                todo!()
+            }
+            Self::LLE => {
+                todo!()
+            }
+            Self::LLL => {
+                todo!()
+            }
+            Self::Map => {
+                todo!()
+            }
+            Self::Minus => {
+                todo!()
+            }
+            Self::MinusAssign => {
+                todo!()
+            }
+            Self::Multiply => {
+                todo!()
+            }
+            Self::MultiplyAssign => {
+                todo!()
+            }
+            Self::NE => {
+                todo!()
+            }
+            Self::NEE => {
+                todo!()
+            }
+            Self::Nand => {
+                todo!()
+            }
+            Self::Nor => {
+                todo!()
+            }
+            Self::NotContains => {
+                todo!()
+            }
+            Self::NotIn => {
+                todo!()
+            }
+            Self::NotIs => {
+                todo!()
+            }
+            Self::Or => {
+                todo!()
+            }
+            Self::Plus => ValkyrieOperator::Plus,
+            Self::PlusAssign => {
+                todo!()
+            }
+            Self::Power => {
+                todo!()
+            }
+            Self::Remainder => {
+                todo!()
+            }
+            Self::RemainderAssign => {
+                todo!()
+            }
+            Self::Surd => {
+                todo!()
+            }
+            Self::Until => {
+                todo!()
+            }
+            Self::UpTo => {
+                todo!()
+            }
+            Self::Xand => {
+                todo!()
+            }
+            Self::Xor => {
+                todo!()
+            }
+        }
+    }
+}
+
+impl MainSuffixNode {
+    pub fn as_operator(&self) -> ValkyrieOperator {
+        todo!()
     }
 }

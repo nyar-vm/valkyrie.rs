@@ -17,10 +17,10 @@ impl ThisParser for ExpressionType {
     }
 }
 
-impl ExpressionStream {
+impl TokenStream {
     /// term (~ infix ~ term)*
     /// 1 + (1 + +3? + 4)
-    pub fn parse(input: ParseState, ctx: ExpressionContext) -> ParseResult<Vec<ExpressionStream>> {
+    pub fn parse(input: ParseState, ctx: ExpressionContext) -> ParseResult<Vec<TokenStream>> {
         let mut stream = Vec::with_capacity(4);
         let (state, _) = input.match_fn(|s| parse_term(s, &mut stream, ctx))?;
         let (state, _) = state.match_repeats(|s| parse_infix_term(s, &mut stream, ctx))?;
@@ -30,28 +30,24 @@ impl ExpressionStream {
 
 /// `~ infix ~ term`
 #[inline(always)]
-fn parse_infix_term<'i>(
-    input: ParseState<'i>,
-    stream: &mut Vec<ExpressionStream>,
-    ctx: ExpressionContext,
-) -> ParseResult<'i, ()> {
+fn parse_infix_term<'i>(input: ParseState<'i>, stream: &mut Vec<TokenStream>, ctx: ExpressionContext) -> ParseResult<'i, ()> {
     let (state, infix) = ValkyrieInfix::parse(input.skip(ignore), ctx.type_level)?;
-    stream.push(ExpressionStream::Infix(infix));
+    stream.push(TokenStream::Infix(infix));
     let (state, _) = state.skip(ignore).match_fn(|s| parse_term(s, stream, ctx))?;
     state.finish(())
 }
 
 /// `( ~ term ~ )`
-pub fn parse_group(input: ParseState, ctx: ExpressionContext) -> ParseResult<Vec<ExpressionStream>> {
+pub fn parse_group(input: ParseState, ctx: ExpressionContext) -> ParseResult<Vec<TokenStream>> {
     let (state, _) = input.match_char('(')?;
-    let (state, group) = state.skip(ignore).match_fn(|s| ExpressionStream::parse(s, ctx))?;
+    let (state, group) = state.skip(ignore).match_fn(|s| TokenStream::parse(s, ctx))?;
     let (state, _) = state.skip(ignore).match_char(')')?;
     // Only join the global stream after all success
     state.finish(group)
 }
 
 /// `(~ prefix)* ~ value (~ suffix)*`
-fn parse_term<'i>(state: ParseState<'i>, stream: &mut Vec<ExpressionStream>, ctx: ExpressionContext) -> ParseResult<'i, ()> {
+fn parse_term<'i>(state: ParseState<'i>, stream: &mut Vec<TokenStream>, ctx: ExpressionContext) -> ParseResult<'i, ()> {
     let (state, _) = state.match_repeats(|s| parse_prefix(s, stream))?;
     let (state, _) = parse_expr_value(state, stream, ctx)?;
     let (state, _) = state.match_repeats(|s| parse_suffix(s, stream, ctx))?;
@@ -59,30 +55,26 @@ fn parse_term<'i>(state: ParseState<'i>, stream: &mut Vec<ExpressionStream>, ctx
 }
 
 #[inline(always)]
-fn parse_prefix<'a>(input: ParseState<'a>, stream: &mut Vec<ExpressionStream>) -> ParseResult<'a, ()> {
+fn parse_prefix<'a>(input: ParseState<'a>, stream: &mut Vec<TokenStream>) -> ParseResult<'a, ()> {
     let (state, prefix) = input.skip(ignore).match_fn(ValkyriePrefix::parse)?;
-    stream.push(ExpressionStream::Prefix(prefix));
+    stream.push(TokenStream::Prefix(prefix));
     state.finish(())
 }
 
 #[inline(always)]
-fn parse_suffix<'a>(input: ParseState<'a>, stream: &mut Vec<ExpressionStream>, ctx: ExpressionContext) -> ParseResult<'a, ()> {
+fn parse_suffix<'a>(input: ParseState<'a>, stream: &mut Vec<TokenStream>, ctx: ExpressionContext) -> ParseResult<'a, ()> {
     let (state, suffix) = input.skip(ignore).match_fn(|s| ValkyrieSuffix::parse(s, ctx.type_level))?;
-    stream.push(ExpressionStream::Postfix(suffix));
+    stream.push(TokenStream::Postfix(suffix));
     state.finish(())
 }
 
 #[inline]
-fn parse_expr_value<'a>(
-    input: ParseState<'a>,
-    stream: &mut Vec<ExpressionStream>,
-    ctx: ExpressionContext,
-) -> ParseResult<'a, ()> {
+fn parse_expr_value<'a>(input: ParseState<'a>, stream: &mut Vec<TokenStream>, ctx: ExpressionContext) -> ParseResult<'a, ()> {
     let (state, term) = input
         .skip(ignore)
         .begin_choice()
-        .choose(|s| parse_group(s, ctx).map_inner(ExpressionStream::Group))
-        .choose(|s| parse_expression(s, ctx.allow_curly).map_inner(ExpressionStream::Term))
+        .choose(|s| parse_group(s, ctx).map_inner(TokenStream::Group))
+        .choose(|s| parse_expression(s, ctx.allow_curly).map_inner(TokenStream::Term))
         .end_choice()?;
 
     stream.push(term);

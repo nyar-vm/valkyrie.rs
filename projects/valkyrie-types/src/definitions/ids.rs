@@ -1,22 +1,21 @@
-use super::*;
-use nyar_error::FileSpan;
+use shredder::Scan;
+use std::fmt::{Debug, Display, Formatter};
 
 /// A unique identifier used to query the valkyrie object
-#[derive(Clone, PartialEq, Eq, Hash)]
+#[derive(Clone, PartialEq, Eq, Hash, Scan)]
 pub struct ValkyrieID {
-    name: Vec<String>,
-    file: FileSpan,
+    path: Vec<String>,
 }
 
 impl Debug for ValkyrieID {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        f.debug_tuple("ValkyrieID").field(&self.name).finish()
+        f.debug_tuple("ValkyrieID").field(&self.path).finish()
     }
 }
 
 impl Display for ValkyrieID {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        f.write_str(&self.name.join("∷"))
+        f.write_str(&self.path.join("∷"))
     }
 }
 
@@ -25,22 +24,22 @@ impl ValkyrieID {
     where
         I: IntoIterator<Item = String>,
     {
-        Self { name: path.into_iter().collect(), file: Default::default() }
+        Self { path: path.into_iter().collect() }
     }
     pub fn name(&self) -> &str {
-        match self.name.last() {
+        match self.path.last() {
             Some(s) => s.as_str(),
             None => panic!("Empty namepath"),
         }
     }
     pub fn full_name(&self) -> &[String] {
-        self.name.as_slice()
+        self.path.as_slice()
     }
     pub fn namespace(&self) -> &[String] {
-        match self.name.len() {
+        match self.path.len() {
             0 => panic!("Empty namepath"),
             1 => &[],
-            _ => &self.name[0..self.name.len() - 1],
+            _ => &self.path[0..self.path.len() - 1],
         }
     }
 }

@@ -16,8 +16,6 @@ deriver = "0.0.0"
 num-bigint = "0.4.4"
 serde = { version = "1.0.188", default-features = false, optional = true }
 
-
-
 [dependencies.pretty-print]
 version = "0.1.9"
 optional = true

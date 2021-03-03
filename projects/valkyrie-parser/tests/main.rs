@@ -17,7 +17,7 @@ use yggdrasil_rt::{YggdrasilError, YggdrasilParser};
 mod declaration;
 mod expression;
 
-// mod literal;
+mod literal;
 // mod statement;
 
 #[test]

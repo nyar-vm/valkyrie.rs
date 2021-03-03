@@ -1,6 +1,7 @@
 use super::*;
 
 mod display;
+mod parser;
 
 /// The top level elements in script mode.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]

@@ -129,5 +129,3 @@ class A⟬T <: Trait⟭ {
 extends<T> A<T> {
 
 }
-
-

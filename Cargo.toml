@@ -3,7 +3,7 @@ resolver = "2"
 members = ["projects/*"]
 default-members = [
     "projects/valkyrie-ast",
-    "projects/valkyrie-antlr",
+    "projects/valkyrie-parser",
     "projects/valkyrie-types",
 ]
 exclude = [

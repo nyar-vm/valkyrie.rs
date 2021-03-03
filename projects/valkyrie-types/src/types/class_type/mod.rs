@@ -1,23 +1,25 @@
 use super::*;
 
 use indexmap::IndexMap;
+use nyar_error::FileSpan;
 use shredder::Scanner;
 
 #[derive(Clone, Debug, Eq, PartialEq, Hash)]
 pub struct ValkyrieSymbol {
-    space: Vec<String>,
-    name: String,
+    namepath: Vec<String>,
+    location: FileSpan,
 }
 
 impl ValkyrieSymbol {
-    pub fn as_namepath(&self) -> String {
-        let mut path = String::new();
-        for item in &self.space {
-            path.push_str(item);
-            path.push('∷');
-        }
-        path.push_str(&self.name);
-        path
+    pub fn namepath(&self) -> &[String] {
+        &self.namepath
+    }
+    pub fn namespace(&self) -> &[String] {
+        assert!(self.namepath.len() > 0);
+        unsafe { self.namepath.get_unchecked(..self.namepath.len() - 1) }
+    }
+    pub fn name(&self) -> &str {
+        self.namepath.last().unwrap_or_default()
     }
 }
 
@@ -48,13 +50,13 @@ impl ValkyrieClassType {
     where
         S: Into<String>,
     {
-        Self { name: ValkyrieSymbol { space: Vec::new(), name: name.into() }, items: IndexMap::new() }
+        Self { name: ValkyrieSymbol { namepath: Vec::new(), location: name.into() }, items: IndexMap::new() }
     }
     pub fn set_namespace<I>(&mut self, space: I)
     where
         I: IntoIterator<Item = String>,
     {
-        self.name.space = space.into_iter().collect();
+        self.name.namepath = space.into_iter().collect();
     }
     pub fn with_namespace<I>(mut self, space: I) -> Self
     where

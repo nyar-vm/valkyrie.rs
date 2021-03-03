@@ -1,23 +1,19 @@
-// mod der;
-// mod ser;
+use shredder::{marker::GcSafe, Gc, Scan, Scanner};
+use std::{
+    fmt::{Debug, Formatter},
+    sync::Arc,
+};
+use valkyrie_ast::helper::ValkyrieNode;
 
-use crate::{ValkyrieMaybe, ValkyrieNumber, ValkyrieText};
-use std::rc::Rc;
+mod der;
+mod ser;
 
-mod wasm_abi;
-
-pub trait ValkyrieValueType {
-    fn as_valkyrie(&self) -> ValkyrieValue;
-    fn to_valkyrie(self) -> ValkyrieValue
-    where
-        Self: Sized,
-    {
-        self.as_valkyrie()
-    }
-    fn as_type(&self) -> ValkyrieType {
-        self.as_valkyrie().as_type()
-    }
-}
+#[cfg(feature = "polars")]
+use crate::builtin::data_frame::ValkyrieDataFrame;
+use crate::{
+    builtin::{images::ValkyrieImage, ndarray::ValkyrieNDArray},
+    ValkyrieClassType, ValkyrieDict, ValkyrieList, ValkyrieNumber, ValkyrieVariantType,
+};
 
 #[derive(Clone, Eq, PartialEq, Hash)]
 pub enum ValkyrieValue {
@@ -26,48 +22,78 @@ pub enum ValkyrieValue {
     /// An uninitialized value, null for pointer types, and default for value types
     ///
     /// Trying to read from an uninitialized value is a fatal error.
+    Uninitialized,
+    /// ADT = 0
+    Null,
+    /// ADT = 1
     Unit,
     /// ADT = 2
     ///
     /// Native boolean type, 8bit
     Boolean(bool),
     Number(ValkyrieNumber),
-    Text(ValkyrieText),
-    Maybe(Box<ValkyrieMaybe>),
+    Unicode(char),
+    UTF8String(Gc<String>),
+    Bytes(Gc<Vec<u8>>),
+    Html(Gc<String>),
+    NDArray(Gc<ValkyrieNDArray>),
+    Image(Gc<ValkyrieImage>),
+    #[cfg(feature = "polars")]
+    DataFrame(Gc<ValkyrieDataFrame>),
+    List(ValkyrieList),
+    Dict(ValkyrieDict),
+    Class(Gc<ValkyrieClassType>),
+    Variant(Gc<ValkyrieVariantType>),
 }
 
-#[derive(Clone, Eq, PartialEq, Hash)]
-pub enum ValkyrieType {
-    Boolean,
-    Decimal { float: bool, bits: u32 },
-    Integer { sign: bool, bits: u32 },
-    Text { character: bool, encoding: &'static str },
-    Literal(Box<ValkyrieValue>),
-}
+unsafe impl GcSafe for ValkyrieValue {}
 
-impl ValkyrieValueType for ValkyrieValue {
-    fn as_valkyrie(&self) -> ValkyrieValue {
-        self.clone()
-    }
-    fn to_valkyrie(self) -> ValkyrieValue {
-        self
-    }
-    fn as_type(&self) -> ValkyrieType {
+unsafe impl Scan for ValkyrieValue {
+    fn scan(&self, scanner: &mut Scanner<'_>) {
         match self {
-            ValkyrieValue::Nothing => {
-                todo!()
-            }
-            ValkyrieValue::Unit => {
-                todo!()
-            }
-            ValkyrieValue::Boolean(_) => {
-                todo!()
-            }
-            ValkyrieValue::Number(v) => v.as_type(),
-            ValkyrieValue::Text(v) => v.as_type(),
-            ValkyrieValue::Maybe(_) => {
-                todo!()
-            }
+            ValkyrieValue::Nothing => {}
+            ValkyrieValue::Uninitialized => {}
+            ValkyrieValue::Null => {}
+            ValkyrieValue::Unit => {}
+            ValkyrieValue::Boolean(_) => {}
+            ValkyrieValue::Number(v) => scanner.scan(v),
+            ValkyrieValue::Unicode(_) => {}
+            ValkyrieValue::UTF8String(v) => scanner.scan(v),
+            ValkyrieValue::Bytes(v) => scanner.scan(v),
+            ValkyrieValue::Html(_) => {}
+            ValkyrieValue::NDArray(_) => {}
+            ValkyrieValue::Image(_) => {}
+            #[cfg(feature = "polars")]
+            ValkyrieValue::DataFrame(_) => {}
+            ValkyrieValue::List(v) => scanner.scan(v),
+            ValkyrieValue::Dict(v) => scanner.scan(v),
+            ValkyrieValue::Class(_) => {}
+            ValkyrieValue::Variant(_) => {}
+        }
+    }
+}
+
+impl Debug for ValkyrieValue {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        match self {
+            ValkyrieValue::Nothing => f.write_str("nothing"),
+            ValkyrieValue::Uninitialized => f.write_str("uninitialized"),
+            ValkyrieValue::Null => f.write_str("null"),
+            ValkyrieValue::Unit => f.write_str("()"),
+            ValkyrieValue::Boolean(v) => Debug::fmt(v, f),
+            ValkyrieValue::Number(v) => Debug::fmt(v, f),
+            ValkyrieValue::Unicode(v) => Debug::fmt(v, f),
+            ValkyrieValue::UTF8String(v) => Debug::fmt(v, f),
+            ValkyrieValue::Bytes(v) => Debug::fmt(v, f),
+            ValkyrieValue::Html(v) => Debug::fmt(v, f),
+            ValkyrieValue::NDArray(v) => Debug::fmt(v, f),
+            ValkyrieValue::Image(v) => Debug::fmt(v, f),
+            #[cfg(feature = "polars")]
+            ValkyrieValue::DataFrame(v) => Debug::fmt(v, f),
+            ValkyrieValue::List(v) => Debug::fmt(v, f),
+            ValkyrieValue::Dict(v) => Debug::fmt(v, f),
+            ValkyrieValue::Class(v) => Debug::fmt(v, f),
+            ValkyrieValue::Variant(v) => Debug::fmt(v, f),
         }
     }
 }

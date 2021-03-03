@@ -457,7 +457,9 @@
                 main_prefix: [],
                 main_suffix: [
                     InlineSuffix(
-                        Raise,
+                        InlineSuffix0(
+                            Raise,
+                        ),
                     ),
                 ],
                 span: 127..130,
@@ -606,7 +608,9 @@
                 main_prefix: [],
                 main_suffix: [
                     InlineSuffix(
-                        Raise,
+                        InlineSuffix0(
+                            Raise,
+                        ),
                     ),
                 ],
                 span: 158..161,
