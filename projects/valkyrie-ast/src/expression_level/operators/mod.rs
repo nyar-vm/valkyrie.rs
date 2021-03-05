@@ -365,9 +365,3 @@ impl ValkyrieNode for PostfixNode {
         Range { start: self.span.start as usize, end: self.span.end as usize }
     }
 }
-
-impl OperatorNode {
-    pub fn new(kind: ValkyrieOperator, span: Range<u32>) -> Self {
-        Self { kind, span }
-    }
-}

@@ -11,6 +11,7 @@ impl MainExpressionNode {
 
 struct ExpressionResolver;
 
+#[derive(Debug)]
 enum TokenStream {
     Prefix(ValkyrieOperator),
     Postfix(ValkyrieOperator),
@@ -56,42 +57,12 @@ where
 }
 
 impl MainPrefixNode {
-    pub fn as_operator(&self) -> ValkyrieOperator {
-        match self {
-            Self::Deconstruct => {
-                todo!()
-            }
-            Self::DeconstructAll => {
-                todo!()
-            }
-            Self::Dereference => {
-                todo!()
-            }
-            Self::Inverse => {
-                todo!()
-            }
-            Self::Negative => {
-                todo!()
-            }
-            Self::Not => {
-                todo!()
-            }
-            Self::Positive => {
-                todo!()
-            }
-            Self::Reference => {
-                todo!()
-            }
-            Self::Root2 => {
-                todo!()
-            }
-            Self::Root3 => {
-                todo!()
-            }
-            Self::Root4 => {
-                todo!()
-            }
-        }
+    pub fn as_operator(&self) -> OperatorNode {
+        let o = match self.text.as_str() {
+            "!" => ValkyrieOperator::Not,
+            _ => unimplemented!("{} is not a valid prefix operator", self.text),
+        };
+        OperatorNode { kind: o, span: self.span.clone() }
     }
 }
 

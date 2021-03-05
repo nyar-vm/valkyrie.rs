@@ -271,18 +271,14 @@ atomic union MainInfix ^ {
     | /@{2}|⊕/  #Apply2
 }
 @railway(false)
-atomic union MainPrefix {
-    | [¬!]       #Not
-    | [+]        #Positive
-    | [-]        #Negative
-    | [&]        #Reference
-    | /…|[.]{3}/ #DeconstructAll
-    | /‥|[.]{2}/ #Deconstruct
-    | '⅟'        #Inverse
-    | '√'        #Root2
-    | '∛'        #Root3
-    | '∜'        #Root4
-    | [*]        #Dereference
+text class MainPrefix {
+    / [¬!+]
+    | [-]
+    | [.]{2,3}
+    | [⅟]
+    | [√∛∜]
+    | [&*]
+    /
 }
 @railway(false)
 atomic union MainSuffix {
@@ -301,17 +297,12 @@ atomic union InlineSuffix {
     | RangeCall
 }
 @railway(false)
-union SuffixOperator {
-    | '!'  #Raise
-    | '%'  #Percent2
-    | '‰'  #Percent3
-    | '‱' #Percent4
-    | '′'  #Prime1
-    | '″'  #Prime2
-    | '‴'  #Prime3
-    | '⁗'  #Prime4
-    | '℃'  #Celsius
-    | '℉'  #Fahrenheit
+text class SuffixOperator {
+    / [!]
+    | [%‰‱]
+    | [′″‴⁗]
+    | [℃℉]
+    /
 }
 // === identifier === --------------------------------------------------------------------------------------------------
 class TypeHint {
