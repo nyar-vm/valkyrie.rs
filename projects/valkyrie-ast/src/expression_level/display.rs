@@ -15,8 +15,8 @@ impl Lispify for ExpressionType {
     fn lispify(&self) -> Self::Output {
         match self {
             Self::Placeholder => Lisp::keyword("placeholder"),
-            Self::Prefix(v) => v.lispify(),
-            Self::Binary(v) => v.lispify(),
+            Self::Unary(v) => v.lispify(),
+            Self::Infix(v) => v.lispify(),
             Self::Suffix(v) => v.lispify(),
             Self::Tuple(v) => v.lispify(),
             Self::Array(v) => v.lispify(),

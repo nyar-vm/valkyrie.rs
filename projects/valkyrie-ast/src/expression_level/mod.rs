@@ -16,11 +16,11 @@ pub mod tuple;
 mod display;
 
 use crate::{
-    helper::ValkyrieNode, ApplyCallNode, ArgumentTermNode, ArrayNode, BooleanNode, CallNode, CallTermNode, ClosureCallNode,
-    CollectsNode, ExpressionFormatted, GenericCallNode, GuardStatement, IdentifierNode, IfStatement, InfixNode, LambdaSlotNode,
-    MatchDotStatement, ModifiersNode, MonadicDotCall, NamePathNode, NewConstructNode, NullNode, NumberLiteralNode,
-    OperatorNode, OutputNode, PatternBlock, PostfixNode, PrefixNode, RaiseNode, StatementNode, StringLiteralNode,
-    StringTextNode, SubscriptCallNode, SwitchStatement, TryStatement, TupleNode, TupleTermNode,
+    helper::ValkyrieNode, ApplyCallNode, ArgumentTermNode, ArrayNode, BinaryNode, BooleanNode, CallNode, CallTermNode,
+    ClosureCallNode, CollectsNode, ExpressionFormatted, GenericCallNode, GuardStatement, IdentifierNode, IfStatement,
+    LambdaSlotNode, MatchDotStatement, ModifiersNode, MonadicDotCall, NamePathNode, NewConstructNode, NullNode,
+    NumberLiteralNode, OperatorNode, OutputNode, PatternBlock, RaiseNode, StatementNode, StringLiteralNode, StringTextNode,
+    SubscriptCallNode, SwitchStatement, TryStatement, TupleNode, TupleTermNode, UnaryNode,
 };
 use alloc::{
     borrow::ToOwned,
@@ -112,11 +112,9 @@ pub enum ExpressionType {
     /// - Atomic expression
     New(Box<NewConstructNode>),
     /// - Compound expression
-    Prefix(Box<PrefixNode>),
+    Unary(Box<UnaryNode>),
     /// - Compound expression
-    Binary(Box<InfixNode>),
-    /// - Compound expression
-    Suffix(Box<PostfixNode>),
+    Infix(Box<BinaryNode>),
     /// - Compound expression
     Tuple(Box<TupleNode>),
     /// - Compound expression
@@ -192,17 +190,15 @@ impl TypingExpression {
 impl ExpressionType {
     /// Build a new binary expression
     pub fn binary(o: OperatorNode, lhs: Self, rhs: Self) -> Self {
-        Self::Binary(Box::new(InfixNode { infix: o, lhs, rhs }))
+        Self::Infix(Box::new(BinaryNode { infix: o, lhs, rhs }))
     }
     /// Build a new prefix expression
     pub fn prefix(o: OperatorNode, rhs: Self) -> Self {
-        let span = o.span.start..rhs.get_end() as u32;
-        Self::Prefix(Box::new(PrefixNode { operator: o, base: rhs, span }))
+        Self::Unary(Box::new(UnaryNode { operator: o, base: rhs }))
     }
     /// Build a new suffix expression
     pub fn suffix(o: OperatorNode, lhs: Self) -> Self {
-        let span = lhs.get_start() as u32..o.span.end;
-        Self::Suffix(Box::new(PostfixNode { operator: o, base: lhs, span }))
+        Self::Suffix(Box::new(PostfixNode { operator: o, base: lhs }))
     }
     /// Build a new expression with generic call
     pub fn call_generic(base: Self, rest: GenericCallNode) -> Self {

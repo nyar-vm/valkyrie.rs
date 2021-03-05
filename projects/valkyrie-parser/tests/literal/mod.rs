@@ -1,5 +1,6 @@
 use nyar_error::third_party::Url;
 use std::path::PathBuf;
+use valkyrie_ast::ProgramRoot;
 use valkyrie_parser::{BooleanNode, MainStatementNode, RangeLiteralNode};
 
 use super::*;
@@ -35,16 +36,16 @@ fn test_number() {
 
 fn debug_literal(input: &str) -> std::io::Result<()> {
     let here = Path::new(env!("CARGO_MANIFEST_DIR")).join("tests").canonicalize()?;
-    let cst = ValkyrieParser::parse_cst(input, ValkyrieRule::MainExpression).unwrap();
+    let cst = ValkyrieParser::parse_cst(input, ValkyrieRule::Program).unwrap();
     println!("Short Form:\n{}", cst);
-    let ast = MainExpressionNode::from_str(input).unwrap();
+    let ast = ProgramNode::from_str(input).unwrap().build().unwrap();
     println!("Long Form:\n{:#?}", ast);
     Ok(())
 }
 
 #[test]
 fn debug() {
-    let raw = "true";
+    let raw = "+1+2";
     debug_literal(raw).unwrap();
 }
 

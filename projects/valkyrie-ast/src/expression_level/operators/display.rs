@@ -6,13 +6,13 @@ impl PrettyPrint for OperatorNode {
     }
 }
 
-impl PrettyPrint for PrefixNode {
+impl PrettyPrint for UnaryNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         self.operator.pretty(theme).append(self.base.pretty(theme))
     }
 }
 
-impl PrettyPrint for InfixNode {
+impl PrettyPrint for BinaryNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut items = PrettySequence::new(5);
         items.push(self.lhs.pretty(theme));
@@ -31,7 +31,7 @@ impl PrettyPrint for PostfixNode {
 }
 
 #[cfg(feature = "lispify")]
-impl Lispify for PrefixNode {
+impl Lispify for UnaryNode {
     type Output = Lisp;
 
     fn lispify(&self) -> Self::Output {
@@ -39,7 +39,7 @@ impl Lispify for PrefixNode {
     }
 }
 #[cfg(feature = "lispify")]
-impl Lispify for InfixNode {
+impl Lispify for BinaryNode {
     type Output = Lisp;
 
     fn lispify(&self) -> Self::Output {

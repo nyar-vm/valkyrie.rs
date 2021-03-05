@@ -309,18 +309,16 @@ impl ValkyrieOperator {
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct PrefixNode {
+pub struct UnaryNode {
     ///   The operator of the node
     pub operator: OperatorNode,
     ///   The expression that the operator is applied to
     pub base: ExpressionType,
-    ///    The span of the operator
-    pub span: Range<u32>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct InfixNode {
+pub struct BinaryNode {
     ///  The operator of the node
     pub infix: OperatorNode,
     ///  The left hand side of the node
@@ -331,29 +329,18 @@ pub struct InfixNode {
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct PostfixNode {
-    ///  The operator of the node
-    pub operator: OperatorNode,
-    ///  The base of the node
-    pub base: ExpressionType,
-    /// The range of the node
-    pub span: Range<u32>,
-}
-
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct OperatorNode {
     /// The valid kind of operator
     pub kind: ValkyrieOperator,
     /// The range of the node
     pub span: Range<u32>,
 }
-impl ValkyrieNode for PrefixNode {
+impl ValkyrieNode for UnaryNode {
     fn get_range(&self) -> Range<usize> {
-        Range { start: self.span.start as usize, end: self.span.end as usize }
+        Range { start: self.operator.span.start as usize, end: self.base.get_end() }
     }
 }
-impl ValkyrieNode for InfixNode {
+impl ValkyrieNode for BinaryNode {
     fn get_range(&self) -> Range<usize> {
         let head = self.lhs.get_range().start;
         let tail = self.rhs.get_range().end;
@@ -362,6 +349,6 @@ impl ValkyrieNode for InfixNode {
 }
 impl ValkyrieNode for PostfixNode {
     fn get_range(&self) -> Range<usize> {
-        Range { start: self.span.start as usize, end: self.span.end as usize }
+        Range { start: self.base.get_start(), end: self.operator.span.end as usize }
     }
 }

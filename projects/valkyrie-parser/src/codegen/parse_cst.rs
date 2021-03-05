@@ -1048,227 +1048,31 @@ fn parse_atomic(state: Input) -> Output {
 #[inline]
 fn parse_main_infix(state: Input) -> Output {
     state.rule(ValkyrieRule::MainInfix, |s| {
-        Err(s)
-            .or_else(|s| builtin_text(s, "+", false).and_then(|s| s.tag_node("plus")))
-            .or_else(|s| builtin_text(s, "+=", false).and_then(|s| s.tag_node("plus_assign")))
-            .or_else(|s| builtin_text(s, "-", false).and_then(|s| s.tag_node("minus")))
-            .or_else(|s| builtin_text(s, "-=", false).and_then(|s| s.tag_node("minus_assign")))
-            .or_else(|s| builtin_text(s, "*", false).and_then(|s| s.tag_node("multiply")))
-            .or_else(|s| builtin_text(s, "*=", false).and_then(|s| s.tag_node("multiply_assign")))
-            .or_else(|s| builtin_text(s, "/", false).and_then(|s| s.tag_node("divide")))
-            .or_else(|s| builtin_text(s, "/=", false).and_then(|s| s.tag_node("divide_assign")))
-            .or_else(|s| builtin_text(s, "%", false).and_then(|s| s.tag_node("remainder")))
-            .or_else(|s| builtin_text(s, "%=", false).and_then(|s| s.tag_node("remainder_assign")))
-            .or_else(|s| builtin_text(s, "^", false).and_then(|s| s.tag_node("power")))
-            .or_else(|s| builtin_text(s, "√", false).and_then(|s| s.tag_node("surd")))
-            .or_else(|s| {
-                builtin_regex(s, {
-                    static REGEX: OnceLock<Regex> = OnceLock::new();
-                    REGEX.get_or_init(|| Regex::new("^(?x)(≡|===)").unwrap())
-                })
-                .and_then(|s| s.tag_node("eee"))
+        s.match_regex({
+            static REGEX: OnceLock<Regex> = OnceLock::new();
+            REGEX.get_or_init(|| {
+                Regex::new(
+                    "^(?x)([+\\-*/%]=?
+    | [\\^√]
+    # start with !, =
+    | !==|=!=|===|==|=|[!≢≡]
+    # start with `<, >`
+    | <<<|<<=|<<|[⋘≪⩽≤<]
+    | >>>|>>=|>>|[⋙≫⩾≥>]
+    # start with &, |
+    | [&|]{1,3}
+    | [∧⊼⩟∨⊽⊻]
+    # range, contains
+    | [.]{1,2}[<=]
+    | [∈∊∉∋∍∌]
+    | (not\\s+)?in
+    | is(\\s+not)?
+    # map, apply
+    | /@ | [⇴⨵⊕⟴] | @{2,3})",
+                )
+                .unwrap()
             })
-            .or_else(|s| {
-                builtin_regex(s, {
-                    static REGEX: OnceLock<Regex> = OnceLock::new();
-                    REGEX.get_or_init(|| Regex::new("^(?x)(≢|!==|=!=)").unwrap())
-                })
-                .and_then(|s| s.tag_node("nee"))
-            })
-            .or_else(|s| {
-                builtin_regex(s, {
-                    static REGEX: OnceLock<Regex> = OnceLock::new();
-                    REGEX.get_or_init(|| Regex::new("^(?x)(≠|!=)").unwrap())
-                })
-                .and_then(|s| s.tag_node("ne"))
-            })
-            .or_else(|s| {
-                builtin_regex(s, {
-                    static REGEX: OnceLock<Regex> = OnceLock::new();
-                    REGEX.get_or_init(|| Regex::new("^(?x)(==)").unwrap())
-                })
-                .and_then(|s| s.tag_node("ee"))
-            })
-            .or_else(|s| {
-                builtin_regex(s, {
-                    static REGEX: OnceLock<Regex> = OnceLock::new();
-                    REGEX.get_or_init(|| Regex::new("^(?x)(=)").unwrap())
-                })
-                .and_then(|s| s.tag_node("eq"))
-            })
-            .or_else(|s| {
-                builtin_regex(s, {
-                    static REGEX: OnceLock<Regex> = OnceLock::new();
-                    REGEX.get_or_init(|| Regex::new("^(?x)(⋘|<<<)").unwrap())
-                })
-                .and_then(|s| s.tag_node("lll"))
-            })
-            .or_else(|s| {
-                builtin_regex(s, {
-                    static REGEX: OnceLock<Regex> = OnceLock::new();
-                    REGEX.get_or_init(|| Regex::new("^(?x)(<<=)").unwrap())
-                })
-                .and_then(|s| s.tag_node("lle"))
-            })
-            .or_else(|s| {
-                builtin_regex(s, {
-                    static REGEX: OnceLock<Regex> = OnceLock::new();
-                    REGEX.get_or_init(|| Regex::new("^(?x)(≪|<<)").unwrap())
-                })
-                .and_then(|s| s.tag_node("ll"))
-            })
-            .or_else(|s| {
-                builtin_regex(s, {
-                    static REGEX: OnceLock<Regex> = OnceLock::new();
-                    REGEX.get_or_init(|| Regex::new("^(?x)([⩽≤]|<=)").unwrap())
-                })
-                .and_then(|s| s.tag_node("leq"))
-            })
-            .or_else(|s| {
-                builtin_regex(s, {
-                    static REGEX: OnceLock<Regex> = OnceLock::new();
-                    REGEX.get_or_init(|| Regex::new("^(?x)(<)").unwrap())
-                })
-                .and_then(|s| s.tag_node("le"))
-            })
-            .or_else(|s| {
-                builtin_regex(s, {
-                    static REGEX: OnceLock<Regex> = OnceLock::new();
-                    REGEX.get_or_init(|| Regex::new("^(?x)(⋙|>>>)").unwrap())
-                })
-                .and_then(|s| s.tag_node("ggg"))
-            })
-            .or_else(|s| {
-                builtin_regex(s, {
-                    static REGEX: OnceLock<Regex> = OnceLock::new();
-                    REGEX.get_or_init(|| Regex::new("^(?x)(>>=)").unwrap())
-                })
-                .and_then(|s| s.tag_node("gge"))
-            })
-            .or_else(|s| {
-                builtin_regex(s, {
-                    static REGEX: OnceLock<Regex> = OnceLock::new();
-                    REGEX.get_or_init(|| Regex::new("^(?x)(≫|>>)").unwrap())
-                })
-                .and_then(|s| s.tag_node("gg"))
-            })
-            .or_else(|s| {
-                builtin_regex(s, {
-                    static REGEX: OnceLock<Regex> = OnceLock::new();
-                    REGEX.get_or_init(|| Regex::new("^(?x)([⩾≥]|>=)").unwrap())
-                })
-                .and_then(|s| s.tag_node("geq"))
-            })
-            .or_else(|s| {
-                builtin_regex(s, {
-                    static REGEX: OnceLock<Regex> = OnceLock::new();
-                    REGEX.get_or_init(|| Regex::new("^(?x)(>)").unwrap())
-                })
-                .and_then(|s| s.tag_node("ge"))
-            })
-            .or_else(|s| {
-                builtin_regex(s, {
-                    static REGEX: OnceLock<Regex> = OnceLock::new();
-                    REGEX.get_or_init(|| Regex::new("^(?x)(&&|∧)").unwrap())
-                })
-                .and_then(|s| s.tag_node("and"))
-            })
-            .or_else(|s| {
-                builtin_regex(s, {
-                    static REGEX: OnceLock<Regex> = OnceLock::new();
-                    REGEX.get_or_init(|| Regex::new("^(?x)(⊼)").unwrap())
-                })
-                .and_then(|s| s.tag_node("nand"))
-            })
-            .or_else(|s| {
-                builtin_regex(s, {
-                    static REGEX: OnceLock<Regex> = OnceLock::new();
-                    REGEX.get_or_init(|| Regex::new("^(?x)(⩟)").unwrap())
-                })
-                .and_then(|s| s.tag_node("xand"))
-            })
-            .or_else(|s| {
-                builtin_regex(s, {
-                    static REGEX: OnceLock<Regex> = OnceLock::new();
-                    REGEX.get_or_init(|| Regex::new("^(?x)(|||∨)").unwrap())
-                })
-                .and_then(|s| s.tag_node("or"))
-            })
-            .or_else(|s| {
-                builtin_regex(s, {
-                    static REGEX: OnceLock<Regex> = OnceLock::new();
-                    REGEX.get_or_init(|| Regex::new("^(?x)(⊽)").unwrap())
-                })
-                .and_then(|s| s.tag_node("nor"))
-            })
-            .or_else(|s| {
-                builtin_regex(s, {
-                    static REGEX: OnceLock<Regex> = OnceLock::new();
-                    REGEX.get_or_init(|| Regex::new("^(?x)(⊻)").unwrap())
-                })
-                .and_then(|s| s.tag_node("xor"))
-            })
-            .or_else(|s| builtin_text(s, "..<", false).and_then(|s| s.tag_node("up_to")))
-            .or_else(|s| builtin_text(s, "..=", false).and_then(|s| s.tag_node("until")))
-            .or_else(|s| {
-                Err(s)
-                    .or_else(|s| parse_kw_in(s))
-                    .or_else(|s| {
-                        builtin_regex(s, {
-                            static REGEX: OnceLock<Regex> = OnceLock::new();
-                            REGEX.get_or_init(|| Regex::new("^(?x)([∈∊])").unwrap())
-                        })
-                    })
-                    .and_then(|s| s.tag_node("in"))
-            })
-            .or_else(|s| {
-                Err(s)
-                    .or_else(|s| {
-                        s.sequence(|s| {
-                            Ok(s).and_then(|s| parse_kw_not(s)).and_then(|s| builtin_ignore(s)).and_then(|s| parse_kw_in(s))
-                        })
-                    })
-                    .or_else(|s| builtin_text(s, "∉", false))
-                    .and_then(|s| s.tag_node("not_in"))
-            })
-            .or_else(|s| {
-                builtin_regex(s, {
-                    static REGEX: OnceLock<Regex> = OnceLock::new();
-                    REGEX.get_or_init(|| Regex::new("^(?x)([∋∍])").unwrap())
-                })
-                .and_then(|s| s.tag_node("contains"))
-            })
-            .or_else(|s| builtin_text(s, "∌", false).and_then(|s| s.tag_node("not_contains")))
-            .or_else(|s| parse_kw_is(s).and_then(|s| s.tag_node("is")))
-            .or_else(|s| {
-                s.sequence(|s| Ok(s).and_then(|s| parse_kw_is(s)).and_then(|s| builtin_ignore(s)).and_then(|s| parse_kw_not(s)))
-                    .and_then(|s| s.tag_node("not_is"))
-            })
-            .or_else(|s| {
-                Err(s)
-                    .or_else(|s| builtin_text(s, "/@", false))
-                    .or_else(|s| {
-                        builtin_regex(s, {
-                            static REGEX: OnceLock<Regex> = OnceLock::new();
-                            REGEX.get_or_init(|| Regex::new("^(?x)([⇴⨵])").unwrap())
-                        })
-                    })
-                    .and_then(|s| s.tag_node("map"))
-            })
-            .or_else(|s| {
-                builtin_regex(s, {
-                    static REGEX: OnceLock<Regex> = OnceLock::new();
-                    REGEX.get_or_init(|| Regex::new("^(?x)(@{3}|⟴)").unwrap())
-                })
-                .and_then(|s| s.tag_node("apply_3"))
-            })
-            .or_else(|s| {
-                builtin_regex(s, {
-                    static REGEX: OnceLock<Regex> = OnceLock::new();
-                    REGEX.get_or_init(|| Regex::new("^(?x)(@{2}|⊕)").unwrap())
-                })
-                .and_then(|s| s.tag_node("apply_2"))
-            })
+        })
     })
 }
 #[inline]
