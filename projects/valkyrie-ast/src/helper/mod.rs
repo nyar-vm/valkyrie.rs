@@ -1,3 +1,4 @@
+use core::fmt::{Debug, Display, Formatter};
 #[doc = include_str!("readme.md")]
 use core::ops::Range;
 
@@ -18,5 +19,13 @@ pub trait ValkyrieNode {
     /// Get the end of the node
     fn get_end(&self) -> usize {
         self.get_range().end
+    }
+}
+
+pub(crate) struct WrapDisplay<T>(pub T);
+
+impl<T: Display> Debug for WrapDisplay<T> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        Display::fmt(&self.0, f)
     }
 }

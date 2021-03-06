@@ -1,5 +1,11 @@
 use super::*;
 
+impl Display for BooleanNode {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        Display::fmt(&self.value, f)
+    }
+}
+
 impl Display for IdentifierNode {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         f.write_str(self.name.as_str())

@@ -1,5 +1,37 @@
 use super::*;
 
+impl Debug for ExpressionType {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        match self {
+            Self::Placeholder => f.write_str("Placeholder"),
+            Self::Null(v) => Debug::fmt(v, f),
+            Self::Boolean(v) => Display::fmt(v, f),
+            Self::Slot(v) => Debug::fmt(v, f),
+            Self::Symbol(v) => Debug::fmt(v, f),
+            Self::Number(v) => Display::fmt(v, f),
+            Self::Text(v) => Debug::fmt(v, f),
+            Self::String(v) => Debug::fmt(v, f),
+            Self::Formatted(v) => Debug::fmt(v, f),
+            Self::New(v) => Debug::fmt(v, f),
+            Self::Unary(v) => Debug::fmt(v, f),
+            Self::Infix(v) => Debug::fmt(v, f),
+            Self::Tuple(v) => Debug::fmt(v, f),
+            Self::Array(v) => Debug::fmt(v, f),
+            Self::Resume(v) => Debug::fmt(v, f),
+            Self::If(v) => Debug::fmt(v, f),
+            Self::IfLet(v) => Debug::fmt(v, f),
+            Self::Switch(v) => Debug::fmt(v, f),
+            Self::Try(v) => Debug::fmt(v, f),
+            Self::ApplyCall(v) => Debug::fmt(v, f),
+            Self::LambdaCall(v) => Debug::fmt(v, f),
+            Self::SubscriptCall(v) => Debug::fmt(v, f),
+            Self::GenericCall(v) => Debug::fmt(v, f),
+            Self::MatchDot(v) => Debug::fmt(v, f),
+            Self::OutputReference(v) => Debug::fmt(v, f),
+        }
+    }
+}
+
 #[cfg(feature = "lispify")]
 impl Lispify for ExpressionNode {
     type Output = Lisp;
@@ -17,7 +49,6 @@ impl Lispify for ExpressionType {
             Self::Placeholder => Lisp::keyword("placeholder"),
             Self::Unary(v) => v.lispify(),
             Self::Infix(v) => v.lispify(),
-            Self::Suffix(v) => v.lispify(),
             Self::Tuple(v) => v.lispify(),
             Self::Array(v) => v.lispify(),
             Self::ApplyCall(v) => Lisp::keyword(format!("{v:#?}")),

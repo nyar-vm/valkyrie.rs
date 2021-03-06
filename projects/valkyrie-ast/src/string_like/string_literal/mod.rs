@@ -1,4 +1,5 @@
 use super::*;
+use nyar_error::FileSpan;
 #[cfg(feature = "pretty-print")]
 mod display;
 
@@ -40,7 +41,7 @@ impl StringTextNode {
     }
     /// Convert to an identifier
     pub fn as_identifier(&self) -> IdentifierNode {
-        IdentifierNode { name: self.text.clone(), span: self.span.clone() }
+        IdentifierNode { name: self.text.clone(), span: FileSpan::default().with_range(self.get_range()) }
     }
 }
 

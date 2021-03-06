@@ -1,5 +1,6 @@
 use super::*;
 
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for ClosureCallNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(6);

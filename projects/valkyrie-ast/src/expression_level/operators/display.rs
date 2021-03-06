@@ -1,4 +1,25 @@
 use super::*;
+use crate::helper::WrapDisplay;
+
+impl Debug for BinaryNode {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        f.debug_struct("InfixNode")
+            .field("infix", &WrapDisplay(self.infix.kind))
+            .field("lhs", &self.lhs)
+            .field("rhs", &self.rhs)
+            .finish()
+    }
+}
+impl Debug for UnaryNode {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        f.debug_struct("UnaryNode").field("prefix", &WrapDisplay(self.operator.kind)).field("base", &self.base).finish()
+    }
+}
+impl Display for ValkyrieOperator {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        f.write_str(self.as_str())
+    }
+}
 
 impl PrettyPrint for OperatorNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
@@ -24,12 +45,6 @@ impl PrettyPrint for BinaryNode {
     }
 }
 
-impl PrettyPrint for PostfixNode {
-    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
-        self.base.pretty(theme).append(self.operator.pretty(theme))
-    }
-}
-
 #[cfg(feature = "lispify")]
 impl Lispify for UnaryNode {
     type Output = Lisp;
@@ -44,14 +59,5 @@ impl Lispify for BinaryNode {
 
     fn lispify(&self) -> Self::Output {
         Lisp::operator(self.infix.kind.as_str(), vec![self.lhs.lispify(), self.rhs.lispify()])
-    }
-}
-
-#[cfg(feature = "lispify")]
-impl Lispify for PostfixNode {
-    type Output = Lisp;
-
-    fn lispify(&self) -> Self::Output {
-        Lisp::operator(self.operator.kind.as_str(), vec![self.base.lispify()])
     }
 }

@@ -290,6 +290,14 @@ impl ValkyrieOperator {
             Self::LogicMatrix { mask } => mask.as_str(),
         }
     }
+    pub fn associativity(&self) -> Alignment {
+        match self {
+            ValkyrieOperator::Power => Alignment::Right,
+            ValkyrieOperator::Surd => Alignment::Right,
+            _ => Alignment::Left,
+        }
+    }
+
     /// user input arguments
     pub fn accept_arguments(&self) -> usize {
         match self {
@@ -307,7 +315,7 @@ impl ValkyrieOperator {
     }
 }
 
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Clone, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct UnaryNode {
     ///   The operator of the node
@@ -316,7 +324,7 @@ pub struct UnaryNode {
     pub base: ExpressionType,
 }
 
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Clone, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct BinaryNode {
     ///  The operator of the node
@@ -345,10 +353,5 @@ impl ValkyrieNode for BinaryNode {
         let head = self.lhs.get_range().start;
         let tail = self.rhs.get_range().end;
         head..tail
-    }
-}
-impl ValkyrieNode for PostfixNode {
-    fn get_range(&self) -> Range<usize> {
-        Range { start: self.base.get_start(), end: self.operator.span.end as usize }
     }
 }

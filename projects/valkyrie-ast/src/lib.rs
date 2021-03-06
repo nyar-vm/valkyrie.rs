@@ -35,7 +35,7 @@ pub use crate::{
         lambda::{ClosureCallNode, ClosureCaller, FunctionBlock, LambdaNode},
         matches::{MatchDotStatement, MatchKind},
         number::NumberLiteralNode,
-        operators::{BinaryNode, LogicMatrix, OperatorNode, PostfixNode, UnaryNode, ValkyrieOperator},
+        operators::{BinaryNode, LogicMatrix, OperatorNode, UnaryNode, ValkyrieOperator},
         symbol::{BooleanNode, IdentifierNode, LambdaSlotNode, NamePathNode, NullNode, OutputNode},
         tuple::{TupleKeyType, TupleKind, TupleNode, TupleTermNode},
         ExpressionContext, ExpressionNode, ExpressionType, PostfixCallPart, TypingExpression,

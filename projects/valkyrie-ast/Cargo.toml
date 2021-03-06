@@ -12,10 +12,11 @@ license = "MPL-2.0"
 edition = "2021"
 
 [dependencies]
-pratt = "0.4.0"
+#pratt = "0.4.0"
 deriver = "0.0.0"
 num-bigint = "0.4.4"
 serde = { version = "1.0.188", default-features = false, optional = true }
+nyar-error = "0.1.*"
 
 [dependencies.pretty-print]
 version = "0.1.9"

@@ -4,7 +4,7 @@ use crate::{ExtendsStatement, TraitDeclaration};
 mod display;
 
 /// The top level elements in script mode.
-#[derive(Clone, Debug, PartialEq, Eq, Hash, From)]
+#[derive(Clone, PartialEq, Eq, Hash, From)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum StatementNode {
     /// Placeholder for when the parser fails to parse a statement.

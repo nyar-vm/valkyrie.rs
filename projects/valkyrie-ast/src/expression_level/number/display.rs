@@ -1,5 +1,11 @@
 use super::*;
 
+impl Display for NumberLiteralNode {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        Display::fmt(&self.value, f)
+    }
+}
+
 impl PrettyPrint for NumberLiteralNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let num = theme.number(self.value.to_string());

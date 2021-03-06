@@ -1,12 +1,13 @@
+use crate::helpers::ProgramContext;
 use nyar_error::{Failure, Success, Validation};
 use valkyrie_ast::{ProgramRoot, StatementNode};
 
 impl crate::ProgramNode {
-    pub fn build(&self) -> Validation<ProgramRoot> {
+    pub fn build(&self, ctx: &ProgramContext) -> Validation<ProgramRoot> {
         let mut errors = vec![];
         let mut statements = vec![];
         for node in &self.statement {
-            match node.build() {
+            match node.build(ctx) {
                 Success { value, diagnostics } => {
                     statements.push(value);
                     errors.extend(diagnostics)
@@ -22,7 +23,7 @@ impl crate::ProgramNode {
 }
 
 impl crate::StatementNode {
-    pub fn build(&self) -> Validation<StatementNode> {
+    pub fn build(&self, ctx: &ProgramContext) -> Validation<StatementNode> {
         match self {
             Self::DefineClass(_) => {
                 todo!()
@@ -45,17 +46,17 @@ impl crate::StatementNode {
             Self::DefineUnion(_) => {
                 todo!()
             }
-            Self::MainStatement(v) => v.build(),
+            Self::MainStatement(v) => v.build(ctx),
         }
     }
 }
 impl crate::MainStatementNode {
-    pub fn build(&self) -> Validation<StatementNode> {
+    pub fn build(&self, ctx: &ProgramContext) -> Validation<StatementNode> {
         match self {
             Self::ForStatement(_) => {
                 todo!()
             }
-            Self::MainExpression(v) => v.build().map(|v| v.into()),
+            Self::MainExpression(v) => v.build(ctx).map(|v| v.into()),
             Self::WhileStatement(_) => {
                 todo!()
             }

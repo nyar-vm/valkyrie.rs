@@ -3,13 +3,12 @@
 
 mod codegen;
 
-pub use crate::codegen::*;
-
+pub use crate::{codegen::*, helpers::ProgramContext};
 mod atomic;
 // mod control_flow;
 // mod declarations;
 mod expression;
-// mod helpers;
+mod helpers;
 mod statements;
 // mod string_like;
 // mod suffix_call;

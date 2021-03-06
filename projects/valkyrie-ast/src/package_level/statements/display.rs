@@ -1,4 +1,34 @@
 use super::*;
+use core::fmt::Debug;
+
+impl Debug for StatementNode {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        match self {
+            Self::Nothing => f.write_str("Statement::Nothing"),
+            Self::Document(v) => Debug::fmt(v, f),
+            Self::Annotation(v) => Debug::fmt(v, f),
+            Self::Namespace(v) => Debug::fmt(v, f),
+            Self::Import(v) => Debug::fmt(v, f),
+            Self::Class(v) => Debug::fmt(v, f),
+            Self::Union(v) => Debug::fmt(v, f),
+            Self::UnionField(v) => Debug::fmt(v, f),
+            Self::Enumerate(v) => Debug::fmt(v, f),
+            Self::EnumerateField(v) => Debug::fmt(v, f),
+            Self::Flags(v) => Debug::fmt(v, f),
+            Self::Tagged(v) => Debug::fmt(v, f),
+            Self::Variant(v) => Debug::fmt(v, f),
+            Self::Trait(v) => Debug::fmt(v, f),
+            Self::Extends(v) => Debug::fmt(v, f),
+            Self::Function(v) => Debug::fmt(v, f),
+            Self::While(v) => Debug::fmt(v, f),
+            Self::For(v) => Debug::fmt(v, f),
+            Self::LetBind(v) => Debug::fmt(v, f),
+            Self::Guard(v) => Debug::fmt(v, f),
+            Self::Control(v) => Debug::fmt(v, f),
+            Self::Expression(v) => Debug::fmt(v, f),
+        }
+    }
+}
 
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for StatementNode {

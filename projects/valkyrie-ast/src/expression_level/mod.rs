@@ -31,13 +31,14 @@ use alloc::{
     vec::Vec,
 };
 use core::{
-    fmt::{Debug, Display, Formatter, Write},
+    fmt::{Alignment, Debug, Display, Formatter, Write},
     ops::Range,
 };
 use deriver::From;
 #[cfg(feature = "lispify")]
 use lispify::{Lisp, Lispify};
 use num_bigint::BigUint;
+use nyar_error::{FileID, FileSpan};
 #[cfg(feature = "pretty-print")]
 use pretty_print::{
     helpers::{KAndRBracket, PrettySequence},
@@ -88,7 +89,7 @@ pub struct ExpressionContext {
 }
 
 /// The base expression type
-#[derive(Clone, Debug, PartialEq, Eq, Hash, From)]
+#[derive(Clone, PartialEq, Eq, Hash, From)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum ExpressionType {
     /// - Placeholder expression
@@ -198,7 +199,7 @@ impl ExpressionType {
     }
     /// Build a new suffix expression
     pub fn suffix(o: OperatorNode, lhs: Self) -> Self {
-        Self::Suffix(Box::new(PostfixNode { operator: o, base: lhs }))
+        Self::Unary(Box::new(UnaryNode { operator: o, base: lhs }))
     }
     /// Build a new expression with generic call
     pub fn call_generic(base: Self, rest: GenericCallNode) -> Self {

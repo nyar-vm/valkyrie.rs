@@ -1,7 +1,7 @@
-use nyar_error::third_party::Url;
+use nyar_error::{third_party::Url, FileID};
 use std::path::PathBuf;
 use valkyrie_ast::ProgramRoot;
-use valkyrie_parser::{BooleanNode, MainStatementNode, RangeLiteralNode};
+use valkyrie_parser::{BooleanNode, MainStatementNode, ProgramContext, RangeLiteralNode};
 
 use super::*;
 
@@ -38,14 +38,15 @@ fn debug_literal(input: &str) -> std::io::Result<()> {
     let here = Path::new(env!("CARGO_MANIFEST_DIR")).join("tests").canonicalize()?;
     let cst = ValkyrieParser::parse_cst(input, ValkyrieRule::Program).unwrap();
     println!("Short Form:\n{}", cst);
-    let ast = ProgramNode::from_str(input).unwrap().build().unwrap();
+    let context = ProgramContext { file: unsafe { FileID::new(0) } };
+    let ast = ProgramNode::from_str(input).unwrap().build(&context).unwrap();
     println!("Long Form:\n{:#?}", ast);
     Ok(())
 }
 
 #[test]
 fn debug() {
-    let raw = "+1+2";
+    let raw = "a + !x!";
     debug_literal(raw).unwrap();
 }
 

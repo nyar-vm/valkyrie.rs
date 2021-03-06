@@ -1,4 +1,5 @@
 use super::*;
+
 #[cfg(feature = "pretty-print")]
 mod display;
 
@@ -6,8 +7,8 @@ mod display;
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct IdentifierNode {
     pub name: String,
-    /// The range of the node
-    pub span: Range<u32>,
+    /// The location of the file
+    pub span: FileSpan,
 }
 
 /// `package∷module∷name`
@@ -96,15 +97,25 @@ impl NamePathNode {
     }
     /// Calculate range by first and last elements
     pub fn get_range(&self) -> Range<usize> {
-        let head = self.names.first().map(|x| x.span.start).unwrap_or_default() as usize;
-        let tail = self.names.last().map(|x| x.span.end).unwrap_or_default() as usize;
+        let head = self.names.first().map(|x| x.span.get_start()).unwrap_or_default() as usize;
+        let tail = self.names.last().map(|x| x.span.get_end()).unwrap_or_default() as usize;
         head..tail
     }
 }
 
 impl IdentifierNode {
-    pub fn new<S: ToString>(s: S, span: Range<u32>) -> Self {
-        Self { name: s.to_string(), span }
+    pub fn new<S: ToString>(s: S) -> Self {
+        Self { name: s.to_string(), span: Default::default() }
+    }
+    /// Set the file for namepath
+    pub fn with_file(mut self, file: FileID) -> Self {
+        self.span.set_file(file);
+        self
+    }
+    /// Set the
+    pub fn with_span<I>(mut self, range: Range<usize>) -> Self {
+        self.span.set_range(range);
+        self
     }
     pub fn is_normal(&self) -> bool {
         self.name.starts_with(|c: char| c.is_ascii_lowercase())
