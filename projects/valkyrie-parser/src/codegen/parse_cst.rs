@@ -86,7 +86,7 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::IdentifierBare => parse_identifier_bare(state),
         ValkyrieRule::IdentifierRaw => parse_identifier_raw(state),
         ValkyrieRule::IdentifierRawText => parse_identifier_raw_text(state),
-        ValkyrieRule::Boolean => parse_boolean(state),
+        ValkyrieRule::Special => parse_special(state),
         ValkyrieRule::Integer => parse_integer(state),
         ValkyrieRule::PROPORTION => parse_proportion(state),
         ValkyrieRule::COLON => parse_colon(state),
@@ -1046,7 +1046,7 @@ fn parse_atomic(state: Input) -> Output {
             .or_else(|s| parse_range_literal(s).and_then(|s| s.tag_node("range_literal")))
             .or_else(|s| parse_namepath(s).and_then(|s| s.tag_node("namepath")))
             .or_else(|s| parse_integer(s).and_then(|s| s.tag_node("integer")))
-            .or_else(|s| parse_boolean(s).and_then(|s| s.tag_node("boolean")))
+            .or_else(|s| parse_special(s).and_then(|s| s.tag_node("special")))
     })
 }
 #[inline]
@@ -1646,11 +1646,12 @@ fn parse_identifier_raw_text(state: Input) -> Output {
     })
 }
 #[inline]
-fn parse_boolean(state: Input) -> Output {
-    state.rule(ValkyrieRule::Boolean, |s| {
-        Err(s)
-            .or_else(|s| builtin_text(s, "true", false).and_then(|s| s.tag_node("true")))
-            .or_else(|s| builtin_text(s, "false", false).and_then(|s| s.tag_node("false")))
+fn parse_special(state: Input) -> Output {
+    state.rule(ValkyrieRule::Special, |s| {
+        s.match_regex({
+            static REGEX: OnceLock<Regex> = OnceLock::new();
+            REGEX.get_or_init(|| Regex::new("^(?x)([∅∞]|true|false)").unwrap())
+        })
     })
 }
 #[inline]

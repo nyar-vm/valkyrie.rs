@@ -1,4 +1,4 @@
-<svg class="railroad" viewBox="0 0 1803 5622" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg class="railroad" viewBox="0 0 1803 5589" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <style type="text/css">
 svg.railroad {
     background-color: hsl(30, 20%, 95%);
@@ -2890,11 +2890,11 @@ Integer</text>
 </g>
 </a>
 <path d=" M 109 3549 v 0 a 12 12 0 0 0 12 12 m 76 0 h 56 m -25 0 l -5 -5 m 0 10 l 5 -5 m 25 0 a 12 12 0 0 0 12 -12 v 0"/>
-<a class="link" xlink:href="#Boolean">
+<a class="link" xlink:href="#Special">
 <g class="symbol">
 <rect height="22" width="76" x="121" y="3550"/>
 <text x="159" y="3566">
-Boolean</text>
+Special</text>
 </g>
 </a>
 </g>
@@ -4364,55 +4364,45 @@ HIDE</text>
 </g>
 <g class="sequence">
 <path d=" M 10 5500 a 5 5 0 0 1 5 -5 a 5 5 0 0 1 5 5 a 5 5 0 0 1 -5 5 a 5 5 0 0 1 -5 -5 m 10 0 h 5"/>
-<text class="comment" id="Boolean" x="64" y="5505">
-Boolean</text>
-<g class="choice">
-<path d=" M 104 5500 h 24 m 52 0 h 32"/>
+<text class="comment" id="Special" x="64" y="5505">
+Special</text>
 <g class="string">
-<rect height="22" rx="10" ry="10" width="52" x="128" y="5489"/>
-<text x="154" y="5505">
-true</text>
+<rect height="22" rx="10" ry="10" width="140" x="104" y="5489"/>
+<text x="174" y="5505">
+[∅∞]|true|false</text>
 </g>
-<path d=" M 104 5500 a 12 12 0 0 1 12 12 v 9 m 84 0 v -9 a 12 12 0 0 1 12 -12"/>
-<path d=" M 116 5521 v 0 a 12 12 0 0 0 12 12 m 60 0 h 0 a 12 12 0 0 0 12 -12 v 0"/>
-<g class="string">
-<rect height="22" rx="10" ry="10" width="60" x="128" y="5522"/>
-<text x="158" y="5538">
-false</text>
-</g>
-</g>
-<path d=" M 222 5500 h 5 a 5 5 0 0 1 5 -5 a 5 5 0 0 1 5 5 a 5 5 0 0 1 -5 5 a 5 5 0 0 1 -5 -5"/>
+<path d=" M 254 5500 h 5 a 5 5 0 0 1 5 -5 a 5 5 0 0 1 5 5 a 5 5 0 0 1 -5 5 a 5 5 0 0 1 -5 -5"/>
 <path d=" M 25 5500 h 10"/>
 <path d=" M 94 5500 h 10"/>
-<path d=" M 212 5500 h 10"/>
+<path d=" M 244 5500 h 10"/>
 </g>
 <g class="sequence">
-<path d=" M 10 5567 a 5 5 0 0 1 5 -5 a 5 5 0 0 1 5 5 a 5 5 0 0 1 -5 5 a 5 5 0 0 1 -5 -5 m 10 0 h 5"/>
-<text class="comment" id="Integer" x="64" y="5572">
+<path d=" M 10 5534 a 5 5 0 0 1 5 -5 a 5 5 0 0 1 5 5 a 5 5 0 0 1 -5 5 a 5 5 0 0 1 -5 -5 m 10 0 h 5"/>
+<text class="comment" id="Integer" x="64" y="5539">
 Integer</text>
 <g class="string">
-<rect height="22" rx="10" ry="10" width="124" x="104" y="5556"/>
-<text x="166" y="5572">
+<rect height="22" rx="10" ry="10" width="124" x="104" y="5523"/>
+<text x="166" y="5539">
 0|[1-9][0-9]*</text>
 </g>
-<path d=" M 238 5567 h 5 a 5 5 0 0 1 5 -5 a 5 5 0 0 1 5 5 a 5 5 0 0 1 -5 5 a 5 5 0 0 1 -5 -5"/>
-<path d=" M 25 5567 h 10"/>
-<path d=" M 94 5567 h 10"/>
-<path d=" M 228 5567 h 10"/>
+<path d=" M 238 5534 h 5 a 5 5 0 0 1 5 -5 a 5 5 0 0 1 5 5 a 5 5 0 0 1 -5 5 a 5 5 0 0 1 -5 -5"/>
+<path d=" M 25 5534 h 10"/>
+<path d=" M 94 5534 h 10"/>
+<path d=" M 228 5534 h 10"/>
 </g>
 <g class="sequence">
-<path d=" M 10 5601 a 5 5 0 0 1 5 -5 a 5 5 0 0 1 5 5 a 5 5 0 0 1 -5 5 a 5 5 0 0 1 -5 -5 m 10 0 h 5"/>
-<text class="comment" id="PROPORTION2" x="78" y="5606">
+<path d=" M 10 5568 a 5 5 0 0 1 5 -5 a 5 5 0 0 1 5 5 a 5 5 0 0 1 -5 5 a 5 5 0 0 1 -5 -5 m 10 0 h 5"/>
+<text class="comment" id="PROPORTION2" x="78" y="5573">
 PROPORTION2</text>
 <g class="string">
-<rect height="22" rx="10" ry="10" width="92" x="132" y="5590"/>
-<text x="178" y="5606">
+<rect height="22" rx="10" ry="10" width="92" x="132" y="5557"/>
+<text x="178" y="5573">
 [.．∷]|::</text>
 </g>
-<path d=" M 234 5601 h 5 a 5 5 0 0 1 5 -5 a 5 5 0 0 1 5 5 a 5 5 0 0 1 -5 5 a 5 5 0 0 1 -5 -5"/>
-<path d=" M 25 5601 h 10"/>
-<path d=" M 122 5601 h 10"/>
-<path d=" M 224 5601 h 10"/>
+<path d=" M 234 5568 h 5 a 5 5 0 0 1 5 -5 a 5 5 0 0 1 5 5 a 5 5 0 0 1 -5 5 a 5 5 0 0 1 -5 -5"/>
+<path d=" M 25 5568 h 10"/>
+<path d=" M 122 5568 h 10"/>
+<path d=" M 224 5568 h 10"/>
 </g>
 </g>
 </svg>

@@ -1295,19 +1295,16 @@ impl YggdrasilNode for AtomicNode {
 
     fn get_range(&self) -> Option<Range<usize>> {
         match self {
-            Self::Boolean(s) => s.get_range(),
             Self::Integer(s) => s.get_range(),
             Self::Namepath(s) => s.get_range(),
             Self::ProceduralCall(s) => s.get_range(),
             Self::RangeLiteral(s) => s.get_range(),
+            Self::Special(s) => s.get_range(),
             Self::TupleLiteral(s) => s.get_range(),
         }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
-        if let Ok(s) = pair.take_tagged_one::<BooleanNode>(Cow::Borrowed("boolean")) {
-            return Ok(Self::Boolean(s));
-        }
         if let Ok(s) = pair.take_tagged_one::<IntegerNode>(Cow::Borrowed("integer")) {
             return Ok(Self::Integer(s));
         }
@@ -1319,6 +1316,9 @@ impl YggdrasilNode for AtomicNode {
         }
         if let Ok(s) = pair.take_tagged_one::<RangeLiteralNode>(Cow::Borrowed("range_literal")) {
             return Ok(Self::RangeLiteral(s));
+        }
+        if let Ok(s) = pair.take_tagged_one::<SpecialNode>(Cow::Borrowed("special")) {
+            return Ok(Self::Special(s));
         }
         if let Ok(s) = pair.take_tagged_one::<TupleLiteralNode>(Cow::Borrowed("tuple_literal")) {
             return Ok(Self::TupleLiteral(s));
@@ -2201,32 +2201,23 @@ impl FromStr for IdentifierRawTextNode {
     }
 }
 #[automatically_derived]
-impl YggdrasilNode for BooleanNode {
+impl YggdrasilNode for SpecialNode {
     type Rule = ValkyrieRule;
 
     fn get_range(&self) -> Option<Range<usize>> {
-        match self {
-            Self::False => None,
-            Self::True => None,
-        }
+        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
-        if let Some(_) = pair.find_first_tag("false") {
-            return Ok(Self::False);
-        }
-        if let Some(_) = pair.find_first_tag("true") {
-            return Ok(Self::True);
-        }
-        Err(YggdrasilError::invalid_node(ValkyrieRule::Boolean, _span))
+        Ok(Self { text: pair.get_string(), span: Range { start: _span.start() as u32, end: _span.end() as u32 } })
     }
 }
 #[automatically_derived]
-impl FromStr for BooleanNode {
+impl FromStr for SpecialNode {
     type Err = YggdrasilError<ValkyrieRule>;
 
     fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
-        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::Boolean)?)
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::Special)?)
     }
 }
 #[automatically_derived]

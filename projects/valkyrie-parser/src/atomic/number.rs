@@ -1,4 +1,5 @@
 use super::*;
+use crate::SpecialNode;
 
 // A number literal.
 // #[derive(Debug, Clone, Eq, Hash)]
@@ -8,13 +9,14 @@ use super::*;
 // |   ⍙(_*[0-7])*       # octal
 // |   ⍜(_*[01])*        # binary
 
-impl crate::BooleanNode {
+impl SpecialNode {
     pub fn build(&self) -> BooleanNode {
-        let value = match self {
-            Self::False => false,
-            Self::True => true,
+        let value = match self.text.as_str() {
+            "false" => false,
+            "true" => true,
+            _ => unimplemented!("Unknown boolean value: {}", self.text),
         };
-        BooleanNode { value, span: Default::default() }
+        BooleanNode { value, span: self.span.clone() }
     }
 }
 

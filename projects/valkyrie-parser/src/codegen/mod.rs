@@ -114,7 +114,7 @@ pub enum ValkyrieRule {
     IdentifierBare,
     IdentifierRaw,
     IdentifierRawText,
-    Boolean,
+    Special,
     Integer,
     PROPORTION,
     COLON,
@@ -240,7 +240,7 @@ impl YggdrasilRule for ValkyrieRule {
             Self::IdentifierBare => "",
             Self::IdentifierRaw => "",
             Self::IdentifierRawText => "",
-            Self::Boolean => "",
+            Self::Special => "",
             Self::Integer => "",
             Self::PROPORTION => "",
             Self::COLON => "",
@@ -617,11 +617,11 @@ pub struct GroupFactorNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum AtomicNode {
-    Boolean(BooleanNode),
     Integer(IntegerNode),
     Namepath(NamepathNode),
     ProceduralCall(ProceduralCallNode),
     RangeLiteral(RangeLiteralNode),
+    Special(SpecialNode),
     TupleLiteral(TupleLiteralNode),
 }
 #[derive(Clone, Debug, Hash)]
@@ -851,9 +851,9 @@ pub struct IdentifierRawTextNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum BooleanNode {
-    False,
-    True,
+pub struct SpecialNode {
+    pub text: String,
+    pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]

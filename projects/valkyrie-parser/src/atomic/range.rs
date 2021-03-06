@@ -1,14 +1,8 @@
-use crate::{helpers::ProgramContext, AtomicNode, RangeCallNode, RangeLiteralNode};
-use nyar_error::{Success, Validation};
-use valkyrie_ast::{BooleanNode, ExpressionNode, ExpressionType, NumberLiteralNode};
+use super::*;
+use valkyrie_ast::TupleKeyType;
 
-mod bytes;
-mod identifier;
-mod number;
-mod range;
-
-impl AtomicNode {
-    pub fn build(&self, ctx: &ProgramContext) -> Validation<ExpressionType> {
+impl RangeLiteralNode {
+    pub fn build(&self, ctx: &ProgramContext) -> Validation<TupleKeyType> {
         let value = match self {
             AtomicNode::Special(v) => v.build().into(),
             AtomicNode::Integer(v) => v.build().into(),

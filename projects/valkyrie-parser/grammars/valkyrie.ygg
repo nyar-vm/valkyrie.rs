@@ -217,7 +217,7 @@ union Atomic {
     | RangeLiteral
     | Namepath
     | Integer
-    | Boolean
+    | Special
 }
 
 @railway(false)
@@ -376,9 +376,8 @@ atomic class IdentifierRaw {
 text class IdentifierRawText {
     [^`]+
 }
-union Boolean {
-    | 'true'  #True
-    | 'false' #False
+text class Special {
+    /[∅∞]|true|false/
 }
 // === number === ----------------------------------------------------------------------------------------------------
 text class Integer {
