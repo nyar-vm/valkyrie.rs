@@ -56,16 +56,9 @@ where
 
     fn query(&mut self, input: &Self::Input) -> Result<Affix, Self::Error> {
         let affix = match input {
-            TokenStream::Prefix(v) => Affix::Prefix(Precedence(v.kind.precedence())),
-            TokenStream::Postfix(v) => Affix::Postfix(Precedence(v.kind.precedence())),
-            TokenStream::Infix(v) => {
-                let ass = match v.kind.associativity() {
-                    Alignment::Left => Associativity::Left,
-                    Alignment::Right => Associativity::Right,
-                    Alignment::Center => Associativity::Neither,
-                };
-                Affix::Infix(Precedence(v.kind.precedence()), ass)
-            }
+            TokenStream::Prefix(v) => Affix::Prefix(v.kind.precedence()),
+            TokenStream::Postfix(v) => Affix::Postfix(v.kind.precedence()),
+            TokenStream::Infix(v) => Affix::Infix(v.kind.precedence(), v.kind.associativity()),
             TokenStream::Term(_) => Affix::Nilfix,
         };
         Ok(affix)
@@ -104,7 +97,7 @@ impl MainFactorNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<ExpressionType> {
         match self {
             MainFactorNode::Atomic(v) => v.build(ctx),
-            MainFactorNode::MainFactor0(v) => v.build(ctx).map(|v| v.body),
+            MainFactorNode::GroupFactor(v) => v.main_expression.build(ctx).map(|v| v.body),
         }
     }
 }

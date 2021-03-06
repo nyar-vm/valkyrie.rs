@@ -46,7 +46,7 @@ fn debug_literal(input: &str) -> std::io::Result<()> {
 
 #[test]
 fn debug() {
-    let raw = "a + !x!";
+    let raw = "a?.x";
     debug_literal(raw).unwrap();
 }
 

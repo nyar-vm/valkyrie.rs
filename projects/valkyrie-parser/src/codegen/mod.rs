@@ -77,6 +77,7 @@ pub enum ValkyrieRule {
     MainExpression,
     MainTerm,
     MainFactor,
+    GroupFactor,
     Atomic,
     MainInfix,
     MainPrefix,
@@ -202,6 +203,7 @@ impl YggdrasilRule for ValkyrieRule {
             Self::MainExpression => "",
             Self::MainTerm => "",
             Self::MainFactor => "",
+            Self::GroupFactor => "",
             Self::Atomic => "",
             Self::MainInfix => "",
             Self::MainPrefix => "",
@@ -604,7 +606,13 @@ pub struct MainTermNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum MainFactorNode {
     Atomic(AtomicNode),
-    MainFactor0(MainExpressionNode),
+    GroupFactor(GroupFactorNode),
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct GroupFactorNode {
+    pub main_expression: MainExpressionNode,
+    pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]

@@ -1244,7 +1244,7 @@ impl YggdrasilNode for MainFactorNode {
     fn get_range(&self) -> Option<Range<usize>> {
         match self {
             Self::Atomic(s) => s.get_range(),
-            Self::MainFactor0(s) => s.get_range(),
+            Self::GroupFactor(s) => s.get_range(),
         }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
@@ -1252,8 +1252,8 @@ impl YggdrasilNode for MainFactorNode {
         if let Ok(s) = pair.take_tagged_one::<AtomicNode>(Cow::Borrowed("atomic")) {
             return Ok(Self::Atomic(s));
         }
-        if let Ok(s) = pair.take_tagged_one::<MainExpressionNode>(Cow::Borrowed("main_factor_0")) {
-            return Ok(Self::MainFactor0(s));
+        if let Ok(s) = pair.take_tagged_one::<GroupFactorNode>(Cow::Borrowed("group_factor")) {
+            return Ok(Self::GroupFactor(s));
         }
         Err(YggdrasilError::invalid_node(ValkyrieRule::MainFactor, _span))
     }
@@ -1264,6 +1264,29 @@ impl FromStr for MainFactorNode {
 
     fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
         Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::MainFactor)?)
+    }
+}
+#[automatically_derived]
+impl YggdrasilNode for GroupFactorNode {
+    type Rule = ValkyrieRule;
+
+    fn get_range(&self) -> Option<Range<usize>> {
+        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    }
+    fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
+        let _span = pair.get_span();
+        Ok(Self {
+            main_expression: pair.take_tagged_one::<MainExpressionNode>(Cow::Borrowed("main_expression"))?,
+            span: Range { start: _span.start() as u32, end: _span.end() as u32 },
+        })
+    }
+}
+#[automatically_derived]
+impl FromStr for GroupFactorNode {
+    type Err = YggdrasilError<ValkyrieRule>;
+
+    fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::GroupFactor)?)
     }
 }
 #[automatically_derived]

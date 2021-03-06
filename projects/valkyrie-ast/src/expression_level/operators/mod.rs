@@ -154,8 +154,8 @@ pub enum LogicMatrix {
 }
 
 impl ValkyrieOperator {
-    pub fn precedence(&self) -> u32 {
-        match self {
+    pub fn precedence(&self) -> Precedence {
+        let n = match self {
             Self::Placeholder => 0,
             //
             Self::Concat => 14000,
@@ -209,7 +209,8 @@ impl ValkyrieOperator {
             Self::Transjugate => 45000,
             Self::Hermitian => 45000,
             Self::DivideByDecimalPower(_) => 45000,
-        }
+        };
+        Precedence(n)
     }
     /// Get the normalised string representation of the operator.
     pub fn as_str(&self) -> &'static str {
@@ -290,11 +291,11 @@ impl ValkyrieOperator {
             Self::LogicMatrix { mask } => mask.as_str(),
         }
     }
-    pub fn associativity(&self) -> Alignment {
+    pub fn associativity(&self) -> Associativity {
         match self {
-            ValkyrieOperator::Power => Alignment::Right,
-            ValkyrieOperator::Surd => Alignment::Right,
-            _ => Alignment::Left,
+            ValkyrieOperator::Power => Associativity::Right,
+            ValkyrieOperator::Surd => Associativity::Right,
+            _ => Associativity::Left,
         }
     }
 

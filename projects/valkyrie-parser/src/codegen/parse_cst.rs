@@ -49,6 +49,7 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::MainExpression => parse_main_expression(state),
         ValkyrieRule::MainTerm => parse_main_term(state),
         ValkyrieRule::MainFactor => parse_main_factor(state),
+        ValkyrieRule::GroupFactor => parse_group_factor(state),
         ValkyrieRule::Atomic => parse_atomic(state),
         ValkyrieRule::MainInfix => parse_main_infix(state),
         ValkyrieRule::MainPrefix => parse_main_prefix(state),
@@ -1019,18 +1020,21 @@ fn parse_main_term(state: Input) -> Output {
 fn parse_main_factor(state: Input) -> Output {
     state.rule(ValkyrieRule::MainFactor, |s| {
         Err(s)
-            .or_else(|s| {
-                s.sequence(|s| {
-                    Ok(s)
-                        .and_then(|s| builtin_text(s, "(", false))
-                        .and_then(|s| builtin_ignore(s))
-                        .and_then(|s| parse_main_expression(s).and_then(|s| s.tag_node("main_expression")))
-                        .and_then(|s| builtin_ignore(s))
-                        .and_then(|s| builtin_text(s, ")", false))
-                })
-                .and_then(|s| s.tag_node("main_factor_0"))
-            })
+            .or_else(|s| parse_group_factor(s).and_then(|s| s.tag_node("group_factor")))
             .or_else(|s| parse_atomic(s).and_then(|s| s.tag_node("atomic")))
+    })
+}
+#[inline]
+fn parse_group_factor(state: Input) -> Output {
+    state.rule(ValkyrieRule::GroupFactor, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| builtin_text(s, "(", false))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_main_expression(s).and_then(|s| s.tag_node("main_expression")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| builtin_text(s, ")", false))
+        })
     })
 }
 #[inline]

@@ -38,13 +38,15 @@ use deriver::From;
 #[cfg(feature = "lispify")]
 use lispify::{Lisp, Lispify};
 use num_bigint::BigUint;
-use nyar_error::{FileID, FileSpan};
+use nyar_error::{
+    third_party::{Associativity, Precedence},
+    FileID, FileSpan,
+};
 #[cfg(feature = "pretty-print")]
 use pretty_print::{
     helpers::{KAndRBracket, PrettySequence},
     PrettyPrint, PrettyProvider, PrettyTree,
 };
-
 /// The ast node for an expression
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]

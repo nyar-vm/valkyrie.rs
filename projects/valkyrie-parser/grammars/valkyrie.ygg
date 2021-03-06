@@ -204,9 +204,13 @@ atomic class MainTerm {
 }
 
 atomic union MainFactor {
-    | '(' ~ MainExpression ~ ')'
+    | GroupFactor
     | Atomic
 }
+atomic class GroupFactor {
+    '(' ~ MainExpression ~ ')'
+}
+
 union Atomic {
     | ProceduralCall
     | TupleLiteral

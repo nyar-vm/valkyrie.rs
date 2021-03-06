@@ -7,7 +7,7 @@ impl Debug for ExpressionType {
             Self::Null(v) => Debug::fmt(v, f),
             Self::Boolean(v) => Display::fmt(v, f),
             Self::Slot(v) => Debug::fmt(v, f),
-            Self::Symbol(v) => Debug::fmt(v, f),
+            Self::Symbol(v) => Display::fmt(v, f),
             Self::Number(v) => Display::fmt(v, f),
             Self::Text(v) => Debug::fmt(v, f),
             Self::String(v) => Debug::fmt(v, f),

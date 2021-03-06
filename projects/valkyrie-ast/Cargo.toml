@@ -16,7 +16,9 @@ edition = "2021"
 deriver = "0.0.0"
 num-bigint = "0.4.4"
 serde = { version = "1.0.188", default-features = false, optional = true }
-nyar-error = "0.1.*"
+
+[dependencies.nyar-error]
+version = "0.1.*"
 
 [dependencies.pretty-print]
 version = "0.1.9"
