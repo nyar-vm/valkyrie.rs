@@ -13,8 +13,6 @@ pub mod string_template;
 pub mod symbol;
 pub mod tuple;
 
-pub mod range;
-
 mod display;
 
 use crate::{

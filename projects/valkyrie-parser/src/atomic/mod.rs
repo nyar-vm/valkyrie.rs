@@ -6,6 +6,8 @@ mod bytes;
 mod identifier;
 mod number;
 mod range;
+mod string;
+mod tuple;
 
 impl AtomicNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<ExpressionType> {
@@ -16,9 +18,7 @@ impl AtomicNode {
             AtomicNode::ProceduralCall(_) => {
                 todo!()
             }
-            AtomicNode::RangeLiteral(v) => {
-                todo!()
-            }
+            AtomicNode::RangeLiteral(v) => v.build(ctx)?.into(),
             AtomicNode::TupleLiteral(_) => {
                 todo!()
             }

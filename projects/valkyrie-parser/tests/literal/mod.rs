@@ -47,16 +47,15 @@ fn debug_literal(input: &str) -> std::io::Result<()> {
 #[test]
 fn debug() {
     let raw = r#"
-[];
-[0, [], [[]]];
-[1: 2, 3: 4];
-[a: 1, z: 26];
-[啊: 1, 吧: 2, "啊": 3, "吧": 4];
+();
+(0, (), (()));
+(1: 2, 3: 4);
+(a: 1, z: 26);
+(啊: 1, 吧: 2, 啊: 3, 吧: 4);
 
-
-[
-    [key: 1, value: 2]: 3
-]
+(
+    (key: 1, value: 2),
+)
 "#;
     debug_literal(raw).unwrap();
 }
