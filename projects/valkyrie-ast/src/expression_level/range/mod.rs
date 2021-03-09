@@ -7,7 +7,7 @@ use crate::{TupleKeyType, TupleKind};
 /// The literal of array
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum ArrayKind {
+pub enum RangeKind {
     /// `[1, 2:3, 4:5:6]`
     Ordinal,
     /// `⁅1, 2:3, 4:5:6⁆`
@@ -17,15 +17,15 @@ pub enum ArrayKind {
 /// `[0, [], [:], [::]]`
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ArrayNode {
+pub struct RangeNode {
     ///  The kind of tuple.
-    pub kind: ArrayKind,
+    pub kind: RangeKind,
     /// Terms
-    pub terms: Vec<ArrayTermNode>,
+    pub terms: Vec<RangeTermNode>,
     /// The range of the number.
     pub span: Range<u32>,
 }
-impl ValkyrieNode for ArrayNode {
+impl ValkyrieNode for RangeNode {
     fn get_range(&self) -> Range<usize> {
         Range { start: self.span.start as usize, end: self.span.end as usize }
     }
@@ -33,7 +33,7 @@ impl ValkyrieNode for ArrayNode {
 /// `[index], ⁅start : end : step⁆`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum ArrayTermNode {
+pub enum RangeTermNode {
     /// The index kind
     Index {
         /// The index of range
@@ -55,13 +55,13 @@ pub enum ArrayTermNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct SubscriptCallNode {
     /// kind of
-    pub kind: ArrayKind,
+    pub kind: RangeKind,
     /// `array`
     pub base: ExpressionType,
     /// `array?[0]`
     pub monadic: bool,
     /// `array[1, 2:3]`
-    pub terms: Vec<ArrayTermNode>,
+    pub terms: Vec<RangeTermNode>,
     /// The range of the node.
     pub span: Range<u32>,
 }
@@ -70,13 +70,13 @@ impl ValkyrieNode for SubscriptCallNode {
         Range { start: self.span.start as usize, end: self.span.end as usize }
     }
 }
-impl Default for ArrayKind {
+impl Default for RangeKind {
     fn default() -> Self {
         Self::Ordinal
     }
 }
 
-impl ArrayNode {
+impl RangeNode {
     /// Convert to tuple if possible
     pub fn as_tuple(&self) -> Option<TupleNode> {
         let mut terms = Vec::with_capacity(self.terms.len());
@@ -87,12 +87,12 @@ impl ArrayNode {
     }
 }
 
-impl ArrayTermNode {
+impl RangeTermNode {
     /// Convert to tuple item if possible
     pub fn as_tuple(&self) -> Option<TupleTermNode> {
         match self {
-            ArrayTermNode::Index { index } => Some(TupleTermNode { key: TupleKeyType::Nothing, value: index.clone() }),
-            ArrayTermNode::Range { .. } => None,
+            RangeTermNode::Index { index } => Some(TupleTermNode { key: TupleKeyType::Nothing, value: index.clone() }),
+            RangeTermNode::Range { .. } => None,
         }
     }
 }
@@ -105,8 +105,8 @@ impl SubscriptCallNode {
     /// The linked method name
     pub fn method(&self) -> &'static str {
         match self.kind {
-            ArrayKind::Ordinal => "subscript1",
-            ArrayKind::Offset => "subscript0",
+            RangeKind::Ordinal => "subscript1",
+            RangeKind::Offset => "subscript0",
         }
     }
 }

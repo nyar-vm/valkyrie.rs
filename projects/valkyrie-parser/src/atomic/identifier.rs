@@ -1,6 +1,4 @@
 use super::*;
-use valkyrie_ast::{IdentifierNode, NamePathNode};
-use yggdrasil_rt::YggdrasilNode;
 
 impl crate::NamepathNode {
     pub fn build(&self, ctx: &ProgramContext) -> NamePathNode {

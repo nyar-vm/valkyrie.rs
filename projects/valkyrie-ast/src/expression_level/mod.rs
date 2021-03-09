@@ -1,6 +1,5 @@
 pub mod annotations;
 pub mod apply;
-pub mod array;
 pub mod common;
 pub mod ctor;
 mod dispatch;
@@ -9,6 +8,7 @@ pub mod lambda;
 pub mod matches;
 pub mod number;
 pub mod operators;
+pub mod range;
 pub mod string_template;
 pub mod symbol;
 pub mod tuple;
@@ -16,10 +16,10 @@ pub mod tuple;
 mod display;
 
 use crate::{
-    helper::ValkyrieNode, ApplyCallNode, ArgumentTermNode, ArrayNode, BinaryNode, BooleanNode, CallNode, CallTermNode,
-    ClosureCallNode, CollectsNode, ExpressionFormatted, GenericCallNode, GuardStatement, IdentifierNode, IfStatement,
-    LambdaSlotNode, MatchDotStatement, ModifiersNode, MonadicDotCall, NamePathNode, NewConstructNode, NullNode,
-    NumberLiteralNode, OperatorNode, OutputNode, PatternBlock, RaiseNode, StatementNode, StringLiteralNode, StringTextNode,
+    helper::ValkyrieNode, ApplyCallNode, ArgumentTermNode, BinaryNode, BooleanNode, CallNode, CallTermNode, ClosureCallNode,
+    CollectsNode, ExpressionFormatted, GenericCallNode, GuardStatement, IdentifierNode, IfStatement, LambdaSlotNode,
+    MatchDotStatement, ModifiersNode, MonadicDotCall, NamePathNode, NewConstructNode, NullNode, NumberLiteralNode,
+    OperatorNode, OutputNode, PatternBlock, RaiseNode, RangeNode, StatementNode, StringLiteralNode, StringTextNode,
     SubscriptCallNode, SwitchStatement, TryStatement, TupleNode, TupleTermNode, UnaryNode,
 };
 use alloc::{
@@ -121,7 +121,7 @@ pub enum ExpressionType {
     /// - Compound expression
     Tuple(Box<TupleNode>),
     /// - Compound expression
-    Array(Box<ArrayNode>),
+    Array(Box<RangeNode>),
     /// - Standalone expression
     Resume(Box<RaiseNode>),
     /// - Standalone expression

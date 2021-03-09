@@ -1,5 +1,4 @@
 use super::*;
-use crate::SpecialNode;
 
 // A number literal.
 // #[derive(Debug, Clone, Eq, Hash)]

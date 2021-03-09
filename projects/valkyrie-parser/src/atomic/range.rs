@@ -1,10 +1,7 @@
 use super::*;
-use crate::{MainExpressionNode, SubscriptAxisNode, SubscriptOnlyNode, SubscriptRangeNode};
-use nyar_error::{Failure, Validate};
-use valkyrie_ast::{ArgumentTermNode, ArrayKind, ArrayNode, ArrayTermNode, TupleKeyType};
 
 impl RangeLiteralNode {
-    pub fn build(&self, ctx: &ProgramContext) -> Validation<ArrayNode> {
+    pub fn build(&self, ctx: &ProgramContext) -> Validation<RangeNode> {
         let mut errors = vec![];
         let mut terms = vec![];
         for x in &self.subscript_axis {
@@ -19,12 +16,12 @@ impl RangeLiteralNode {
                 }
             }
         }
-        Success { value: ArrayNode { kind: ArrayKind::Ordinal, terms, span: self.span.clone() }, diagnostics: errors }
+        Success { value: RangeNode { kind: RangeKind::Ordinal, terms, span: self.span.clone() }, diagnostics: errors }
     }
 }
 
 impl SubscriptAxisNode {
-    pub fn build(&self, ctx: &ProgramContext) -> Validation<ArrayTermNode> {
+    pub fn build(&self, ctx: &ProgramContext) -> Validation<RangeTermNode> {
         match self {
             SubscriptAxisNode::SubscriptOnly(v) => v.build(ctx),
             SubscriptAxisNode::SubscriptRange(v) => v.build(ctx),
@@ -33,13 +30,13 @@ impl SubscriptAxisNode {
 }
 
 impl SubscriptOnlyNode {
-    pub fn build(&self, ctx: &ProgramContext) -> Validation<ArrayTermNode> {
-        self.index.build(ctx).map(|v| ArrayTermNode::Index { index: v.body })
+    pub fn build(&self, ctx: &ProgramContext) -> Validation<RangeTermNode> {
+        self.index.build(ctx).map(|v| RangeTermNode::Index { index: v.body })
     }
 }
 
 impl SubscriptRangeNode {
-    pub fn build(&self, ctx: &ProgramContext) -> Validation<ArrayTermNode> {
+    pub fn build(&self, ctx: &ProgramContext) -> Validation<RangeTermNode> {
         let head = match &self.head {
             Some(s) => Some(s.build(ctx)?.body),
             None => None,
@@ -52,6 +49,6 @@ impl SubscriptRangeNode {
             Some(s) => Some(s.build(ctx)?.body),
             None => None,
         };
-        Success { value: ArrayTermNode::Range { head, tail, step }, diagnostics: vec![] }
+        Success { value: RangeTermNode::Range { head, tail, step }, diagnostics: vec![] }
     }
 }

@@ -1,13 +1,13 @@
 use super::*;
 
-impl PrettyPrint for ArrayNode {
+impl PrettyPrint for RangeNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         match self.kind {
-            ArrayKind::Ordinal => {
+            RangeKind::Ordinal => {
                 let k = KAndRBracket { head_space: false, bracket_l: "[", bracket_r: "]" };
                 k.build(&self.terms, theme, ", ".into(), PrettyTree::text(",").append(PrettyTree::Hardline))
             }
-            ArrayKind::Offset => {
+            RangeKind::Offset => {
                 let k = KAndRBracket { head_space: false, bracket_l: "[", bracket_r: "]" };
                 k.build(&self.terms, theme, ", ".into(), PrettyTree::text(",").append(PrettyTree::Hardline))
             }
@@ -15,7 +15,7 @@ impl PrettyPrint for ArrayNode {
     }
 }
 #[cfg(feature = "lispify")]
-impl Lispify for ArrayNode {
+impl Lispify for RangeNode {
     type Output = Lisp;
 
     fn lispify(&self) -> Self::Output {
@@ -23,11 +23,11 @@ impl Lispify for ArrayNode {
     }
 }
 
-impl PrettyPrint for ArrayTermNode {
+impl PrettyPrint for RangeTermNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         match self {
-            ArrayTermNode::Index { index } => index.pretty(theme),
-            ArrayTermNode::Range { head, tail, step } => {
+            RangeTermNode::Index { index } => index.pretty(theme),
+            RangeTermNode::Range { head, tail, step } => {
                 let mut terms = PrettySequence::new(5);
                 terms += match head {
                     Some(s) => s.pretty(theme),
@@ -53,11 +53,11 @@ impl PrettyPrint for SubscriptCallNode {
         let mut terms = PrettySequence::new(2);
         terms += self.base.pretty(theme);
         match self.kind {
-            ArrayKind::Ordinal => {
+            RangeKind::Ordinal => {
                 let k = KAndRBracket { head_space: false, bracket_l: "[", bracket_r: "]" };
                 terms += k.build(&self.terms, theme, ", ".into(), PrettyTree::text(",").append(PrettyTree::Hardline))
             }
-            ArrayKind::Offset => {
+            RangeKind::Offset => {
                 let k = KAndRBracket { head_space: false, bracket_l: "[", bracket_r: "]" };
                 terms += k.build(&self.terms, theme, ", ".into(), PrettyTree::text(",").append(PrettyTree::Hardline))
             }

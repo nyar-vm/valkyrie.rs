@@ -48,15 +48,11 @@ fn debug_literal(input: &str) -> std::io::Result<()> {
 fn debug() {
     let raw = r#"
 ();
-(0, (), (()));
-(1: 2, 3: 4);
-(a: 1, z: 26);
-(啊: 1, 吧: 2, 啊: 3, 吧: 4);
-
-(
-    (key: 1, value: 2),
-)
-"#;
+(0);
+(1, );
+(1, 2, );
+(true, (true, ), ((true, (()))));
+    "#;
     debug_literal(raw).unwrap();
 }
 
