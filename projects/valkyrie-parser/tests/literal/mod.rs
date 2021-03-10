@@ -5,35 +5,6 @@ use valkyrie_parser::{MainStatementNode, ProgramContext, RangeLiteralNode};
 
 use super::*;
 
-fn parse_literal(file: &str) -> anyhow::Result<Vec<MainExpressionNode>> {
-    let (input, output, path) = read_io("literal", file)?;
-    let cst = ValkyrieParser::parse_cst(&input, ValkyrieRule::Program).unwrap();
-    println!("Short Form:\n{}", cst);
-    let ast = match ProgramNode::from_str(&input) {
-        Ok(s) => s.statement.into_iter().flat_map(|v| take_expression(v)).collect(),
-        Err(_) => {
-            vec![]
-        }
-    };
-    let mut file = File::create(path)?;
-    let new = format!("{:#?}", ast);
-    file.write_all(new.as_bytes());
-    assert_eq!(new, output);
-    Ok(ast)
-}
-
-fn take_expression(input: StatementNode) -> Option<MainExpressionNode> {
-    match input {
-        StatementNode::MainStatement(MainStatementNode::MainExpression(e)) => Some(e),
-        _ => None,
-    }
-}
-
-#[test]
-fn test_number() {
-    parse_literal("number").unwrap();
-}
-
 fn debug_literal(input: &str) -> std::io::Result<()> {
     let here = Path::new(env!("CARGO_MANIFEST_DIR")).join("tests").canonicalize()?;
     let cst = ValkyrieParser::parse_cst(input, ValkyrieRule::Program).unwrap();

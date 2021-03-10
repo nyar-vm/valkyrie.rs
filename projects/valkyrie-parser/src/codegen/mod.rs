@@ -74,6 +74,7 @@ pub enum ValkyrieRule {
     KW_WHILE,
     ForStatement,
     MainStatement,
+    ExpressionStatement,
     MainExpression,
     MainTerm,
     MainFactor,
@@ -200,6 +201,7 @@ impl YggdrasilRule for ValkyrieRule {
             Self::KW_WHILE => "",
             Self::ForStatement => "",
             Self::MainStatement => "",
+            Self::ExpressionStatement => "",
             Self::MainExpression => "",
             Self::MainTerm => "",
             Self::MainFactor => "",
@@ -582,14 +584,20 @@ pub struct ForStatementNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum MainStatementNode {
+    ExpressionStatement(ExpressionStatementNode),
     ForStatement(ForStatementNode),
-    MainExpression(MainExpressionNode),
     WhileStatement(WhileStatementNode),
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct MainExpressionNode {
+pub struct ExpressionStatementNode {
     pub eos: Option<EosNode>,
+    pub main_expression: MainExpressionNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct MainExpressionNode {
     pub main_infix: Vec<MainInfixNode>,
     pub main_term: Vec<MainTermNode>,
     pub span: Range<u32>,

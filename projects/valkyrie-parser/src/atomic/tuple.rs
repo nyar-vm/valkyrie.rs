@@ -28,7 +28,7 @@ impl TuplePairNode {
             Some(v) => v.build(ctx),
         };
         let value = self.main_expression.build(ctx)?;
-        Success { value: TupleTermNode { key, value: value.body }, diagnostics: vec![] }
+        Success { value: TupleTermNode { key, value }, diagnostics: vec![] }
     }
 }
 

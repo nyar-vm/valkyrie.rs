@@ -56,7 +56,7 @@ impl crate::MainStatementNode {
             Self::ForStatement(_) => {
                 todo!()
             }
-            Self::MainExpression(v) => v.build(ctx).map(|v| v.into()),
+            Self::ExpressionStatement(v) => v.build(ctx).map(|v| v.into()),
             Self::WhileStatement(_) => {
                 todo!()
             }

@@ -1,24 +1,31 @@
 use crate::{
-    helpers::ProgramContext, InlineSuffixNode, MainExpressionNode, MainFactorNode, MainInfixNode, MainPrefixNode,
-    MainSuffixNode, MainTermNode, SuffixOperatorNode,
+    helpers::ProgramContext, ExpressionStatementNode, InlineSuffixNode, MainExpressionNode, MainFactorNode, MainInfixNode,
+    MainPrefixNode, MainSuffixNode, MainTermNode, SuffixOperatorNode,
 };
 use nyar_error::{NyarError, Success, Validate, Validation};
-use pratt::{Affix, Associativity, PrattParser, Precedence};
-use std::fmt::Alignment;
-use valkyrie_ast::{BinaryNode, ExpressionNode, ExpressionType, OperatorNode, UnaryNode, ValkyrieOperator};
+use pratt::{Affix, PrattParser, Precedence};
+use valkyrie_ast::{BinaryNode, ExpressionNode, ExpressionType, OperatorNode, SubscriptCallNode, UnaryNode, ValkyrieOperator};
+
+impl ExpressionStatementNode {
+    pub fn build(&self, ctx: &ProgramContext) -> Validation<ExpressionNode> {
+        let expr = self.main_expression.build(ctx)?;
+        let eos = self.eos.is_some();
+        Success { value: ExpressionNode { omit: eos, body: expr, span: self.span.clone() }, diagnostics: vec![] }
+    }
+}
 
 impl MainExpressionNode {
-    pub fn build(&self, ctx: &ProgramContext) -> Validation<ExpressionNode> {
+    pub fn build(&self, ctx: &ProgramContext) -> Validation<ExpressionType> {
         let mut stream = vec![];
         let (head, rest) = self.main_term.split_first().expect("at least one term");
-        head.push_tokens(&mut stream, ctx).valid()?;
+        head.push_tokens(&mut stream, ctx)?;
         for (infix, rhs) in self.main_infix.iter().zip(rest.iter()) {
             stream.push(TokenStream::Infix(infix.as_operator()));
             rhs.push_tokens(&mut stream, ctx).valid()?;
         }
         let mut parser = ExpressionResolver;
         let expr = parser.parse(stream.into_iter()).valid()?;
-        Success { value: ExpressionNode { type_level: false, body: expr, span: self.span.clone() }, diagnostics: vec![] }
+        Success { value: expr, diagnostics: vec![] }
     }
 }
 
@@ -30,7 +37,7 @@ impl MainTermNode {
         let main = self.main_factor.build(ctx).valid()?;
         stream.push(TokenStream::Term(main));
         for i in &self.main_suffix {
-            stream.push(i.as_token()?)
+            stream.push(i.as_token(ctx)?)
         }
         Success { value: (), diagnostics: vec![] }
     }
@@ -41,9 +48,10 @@ struct ExpressionResolver;
 #[derive(Debug)]
 enum TokenStream {
     Prefix(OperatorNode),
-    Postfix(OperatorNode),
     Infix(OperatorNode),
     Term(ExpressionType),
+    Postfix(OperatorNode),
+    Subscript(SubscriptCallNode),
 }
 
 impl<I> PrattParser<I> for ExpressionResolver
@@ -57,9 +65,10 @@ where
     fn query(&mut self, input: &Self::Input) -> Result<Affix, Self::Error> {
         let affix = match input {
             TokenStream::Prefix(v) => Affix::Prefix(v.kind.precedence()),
-            TokenStream::Postfix(v) => Affix::Postfix(v.kind.precedence()),
             TokenStream::Infix(v) => Affix::Infix(v.kind.precedence(), v.kind.associativity()),
             TokenStream::Term(_) => Affix::Nilfix,
+            TokenStream::Postfix(v) => Affix::Postfix(v.kind.precedence()),
+            TokenStream::Subscript(_) => Affix::Postfix(Precedence(u32::MAX)),
         };
         Ok(affix)
     }
@@ -88,6 +97,7 @@ where
     fn postfix(&mut self, lhs: Self::Output, op: Self::Input) -> Result<Self::Output, Self::Error> {
         match op {
             TokenStream::Postfix(v) => Ok(UnaryNode { operator: v, base: lhs }.into()),
+            TokenStream::Subscript(call) => Ok(call.with_base(lhs).into()),
             _ => unreachable!(),
         }
     }
@@ -97,7 +107,7 @@ impl MainFactorNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<ExpressionType> {
         match self {
             MainFactorNode::Atomic(v) => v.build(ctx),
-            MainFactorNode::GroupFactor(v) => v.main_expression.build(ctx).map(|v| v.body),
+            MainFactorNode::GroupFactor(v) => v.main_expression.build(ctx),
         }
     }
 }
@@ -130,14 +140,12 @@ impl MainInfixNode {
 }
 
 impl MainSuffixNode {
-    pub fn as_token(&self) -> Validation<TokenStream> {
+    pub fn as_token(&self, ctx: &ProgramContext) -> Validation<TokenStream> {
         let token = match self {
             MainSuffixNode::InlineSuffix(v) => match v {
                 InlineSuffixNode::InlineSuffix0(v) => TokenStream::Postfix(v.as_operator()),
-                InlineSuffixNode::RangeCall(_) => {
-                    todo!()
-                }
-                InlineSuffixNode::TupleCall(_) => {
+                InlineSuffixNode::RangeCall(v) => TokenStream::Subscript(v.build(ctx)?),
+                InlineSuffixNode::TupleCall(v) => {
                     todo!()
                 }
             },

@@ -193,11 +193,14 @@ class ForStatement {
 atomic union MainStatement {
     | WhileStatement
     | ForStatement
-    | MainExpression
+    | ExpressionStatement
+}
+class ExpressionStatement {
+    MainExpression EOS?
 }
 // === expression === --------------------------------------------------------------------------------------------------
 atomic class MainExpression {
-    MainTerm (HIDE MainInfix ~ MainTerm)* EOS?
+    MainTerm (HIDE MainInfix ~ MainTerm)*
 }
 atomic class MainTerm {
     (MainPrefix HIDE)* MainFactor MainSuffix*

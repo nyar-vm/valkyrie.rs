@@ -46,6 +46,7 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::KW_WHILE => parse_kw_while(state),
         ValkyrieRule::ForStatement => parse_for_statement(state),
         ValkyrieRule::MainStatement => parse_main_statement(state),
+        ValkyrieRule::ExpressionStatement => parse_expression_statement(state),
         ValkyrieRule::MainExpression => parse_main_expression(state),
         ValkyrieRule::MainTerm => parse_main_term(state),
         ValkyrieRule::MainFactor => parse_main_factor(state),
@@ -973,27 +974,35 @@ fn parse_main_statement(state: Input) -> Output {
         Err(s)
             .or_else(|s| parse_while_statement(s).and_then(|s| s.tag_node("while_statement")))
             .or_else(|s| parse_for_statement(s).and_then(|s| s.tag_node("for_statement")))
-            .or_else(|s| parse_main_expression(s).and_then(|s| s.tag_node("main_expression")))
+            .or_else(|s| parse_expression_statement(s).and_then(|s| s.tag_node("expression_statement")))
+    })
+}
+#[inline]
+fn parse_expression_statement(state: Input) -> Output {
+    state.rule(ValkyrieRule::ExpressionStatement, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| parse_main_expression(s).and_then(|s| s.tag_node("main_expression")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| s.optional(|s| parse_eos(s).and_then(|s| s.tag_node("eos"))))
+        })
     })
 }
 #[inline]
 fn parse_main_expression(state: Input) -> Output {
     state.rule(ValkyrieRule::MainExpression, |s| {
         s.sequence(|s| {
-            Ok(s)
-                .and_then(|s| parse_main_term(s).and_then(|s| s.tag_node("main_term")))
-                .and_then(|s| {
-                    s.repeat(0..4294967295, |s| {
-                        s.sequence(|s| {
-                            Ok(s)
-                                .and_then(|s| builtin_ignore(s))
-                                .and_then(|s| parse_main_infix(s).and_then(|s| s.tag_node("main_infix")))
-                                .and_then(|s| builtin_ignore(s))
-                                .and_then(|s| parse_main_term(s).and_then(|s| s.tag_node("main_term")))
-                        })
+            Ok(s).and_then(|s| parse_main_term(s).and_then(|s| s.tag_node("main_term"))).and_then(|s| {
+                s.repeat(0..4294967295, |s| {
+                    s.sequence(|s| {
+                        Ok(s)
+                            .and_then(|s| builtin_ignore(s))
+                            .and_then(|s| parse_main_infix(s).and_then(|s| s.tag_node("main_infix")))
+                            .and_then(|s| builtin_ignore(s))
+                            .and_then(|s| parse_main_term(s).and_then(|s| s.tag_node("main_term")))
                     })
                 })
-                .and_then(|s| s.optional(|s| parse_eos(s).and_then(|s| s.tag_node("eos"))))
+            })
         })
     })
 }

@@ -1,6 +1,8 @@
 #![allow(unused, dead_code)]
 
+use nyar_error::{Failure, FileCache, Success, Validation};
 use std::{
+    ffi::OsStr,
     fs::File,
     io::Write,
     path::{Path, PathBuf},
@@ -9,7 +11,7 @@ use std::{
 
 use nyar_error::third_party::Url;
 use valkyrie_parser::{
-    MainExpressionNode, MainStatementNode, ProgramNode, StatementNode, ValkyrieParser, ValkyrieRule,
+    MainExpressionNode, MainStatementNode, ProgramContext, ProgramNode, StatementNode, ValkyrieParser, ValkyrieRule,
     ValkyrieRule::MainStatement,
 };
 use yggdrasil_rt::{YggdrasilError, YggdrasilParser};
@@ -53,4 +55,52 @@ fn read_io(dir: &str, file: &str) -> std::io::Result<(String, String, PathBuf)> 
     let in_text = std::fs::read_to_string(&input)?;
     let out_text = std::fs::read_to_string(&output)?;
     Ok((in_text, out_text, output))
+}
+
+fn find_all(dir: &str) -> anyhow::Result<()> {
+    let mut cache = FileCache::default();
+    let path = here().join(dir).canonicalize()?;
+    if !path.is_dir() {
+        panic!("{} must a directory", path.display())
+    }
+    for file in path.read_dir()? {
+        let path = file?.path();
+        match path.extension() {
+            Some(s) if s.eq("vk") => {}
+            _ => continue,
+        }
+        match Url::from_file_path(&path) {
+            Ok(o) => {
+                println!("{}", o)
+            }
+            Err(_) => {}
+        }
+        let file = cache.load_local(path.canonicalize()?)?;
+        let text = cache.fetch(&file)?.to_string();
+        let cst = ValkyrieParser::parse_cst(&text, ValkyrieRule::Program).unwrap();
+        println!("Short Form:\n{}", cst);
+        let ast = match ProgramNode::from_str(&text) {
+            Ok(o) => o,
+            Err(e) => {
+                eprintln!("{}", e);
+                continue;
+            }
+        };
+        match ast.build(&ProgramContext { file }) {
+            Success { value, diagnostics } => {
+                for error in diagnostics {
+                    error.as_report().eprint(&cache)?
+                }
+                let mut out = File::create(path.with_extension("ron"))?;
+                out.write_all(format!("{:#?}", value).as_bytes())?;
+            }
+            Failure { fatal, diagnostics } => {
+                for error in diagnostics {
+                    error.as_report().eprint(&cache)?
+                }
+                fatal.as_report().eprint(&cache)?
+            }
+        }
+    }
+    Ok(())
 }

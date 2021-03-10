@@ -50,19 +50,9 @@ use pretty_print::{
 /// The ast node for an expression
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ExpressionRoot {
-    /// Weather it is a type level expression
-    pub type_level: bool,
-    /// The expression body
-    pub body: ExpressionNode,
-}
-
-/// The ast node for an expression
-#[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ExpressionNode {
-    /// Weather it is a type level expression
-    pub type_level: bool,
+    /// Weather to omit to results
+    pub omit: bool,
     /// The expression body
     pub body: ExpressionType,
     /// The range of the node
@@ -186,7 +176,7 @@ impl TypingExpression {
     /// Convert this node into a full expression node
     #[allow(clippy::wrong_self_convention)]
     pub fn as_normal(self) -> ExpressionNode {
-        ExpressionNode { type_level: true, body: self.body, span: self.span }
+        ExpressionNode { omit: true, body: self.body, span: self.span }
     }
 }
 

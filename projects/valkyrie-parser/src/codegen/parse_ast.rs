@@ -1156,18 +1156,18 @@ impl YggdrasilNode for MainStatementNode {
 
     fn get_range(&self) -> Option<Range<usize>> {
         match self {
+            Self::ExpressionStatement(s) => s.get_range(),
             Self::ForStatement(s) => s.get_range(),
-            Self::MainExpression(s) => s.get_range(),
             Self::WhileStatement(s) => s.get_range(),
         }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
+        if let Ok(s) = pair.take_tagged_one::<ExpressionStatementNode>(Cow::Borrowed("expression_statement")) {
+            return Ok(Self::ExpressionStatement(s));
+        }
         if let Ok(s) = pair.take_tagged_one::<ForStatementNode>(Cow::Borrowed("for_statement")) {
             return Ok(Self::ForStatement(s));
-        }
-        if let Ok(s) = pair.take_tagged_one::<MainExpressionNode>(Cow::Borrowed("main_expression")) {
-            return Ok(Self::MainExpression(s));
         }
         if let Ok(s) = pair.take_tagged_one::<WhileStatementNode>(Cow::Borrowed("while_statement")) {
             return Ok(Self::WhileStatement(s));
@@ -1184,7 +1184,7 @@ impl FromStr for MainStatementNode {
     }
 }
 #[automatically_derived]
-impl YggdrasilNode for MainExpressionNode {
+impl YggdrasilNode for ExpressionStatementNode {
     type Rule = ValkyrieRule;
 
     fn get_range(&self) -> Option<Range<usize>> {
@@ -1194,6 +1194,29 @@ impl YggdrasilNode for MainExpressionNode {
         let _span = pair.get_span();
         Ok(Self {
             eos: pair.take_tagged_option::<EosNode>(Cow::Borrowed("eos")),
+            main_expression: pair.take_tagged_one::<MainExpressionNode>(Cow::Borrowed("main_expression"))?,
+            span: Range { start: _span.start() as u32, end: _span.end() as u32 },
+        })
+    }
+}
+#[automatically_derived]
+impl FromStr for ExpressionStatementNode {
+    type Err = YggdrasilError<ValkyrieRule>;
+
+    fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::ExpressionStatement)?)
+    }
+}
+#[automatically_derived]
+impl YggdrasilNode for MainExpressionNode {
+    type Rule = ValkyrieRule;
+
+    fn get_range(&self) -> Option<Range<usize>> {
+        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    }
+    fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
+        let _span = pair.get_span();
+        Ok(Self {
             main_infix: pair.take_tagged_items::<MainInfixNode>(Cow::Borrowed("main_infix")).collect::<Result<Vec<_>, _>>()?,
             main_term: pair.take_tagged_items::<MainTermNode>(Cow::Borrowed("main_term")).collect::<Result<Vec<_>, _>>()?,
             span: Range { start: _span.start() as u32, end: _span.end() as u32 },
