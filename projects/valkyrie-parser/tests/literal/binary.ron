@@ -1,0 +1,134 @@
+ProgramRoot {
+    statements: [
+        NamespaceDeclaration {
+            kind: Unique,
+            path: [
+                IdentifierNode {
+                    name: "tests",
+                    span: FileSpan {
+                        start: 11,
+                        end: 16,
+                        file: FileID(0x93C10A59F2E8B90D),
+                    },
+                },
+                IdentifierNode {
+                    name: "literal",
+                    span: FileSpan {
+                        start: 17,
+                        end: 24,
+                        file: FileID(0x93C10A59F2E8B90D),
+                    },
+                },
+                IdentifierNode {
+                    name: "number",
+                    span: FileSpan {
+                        start: 25,
+                        end: 31,
+                        file: FileID(0x93C10A59F2E8B90D),
+                    },
+                },
+            ],
+            span: 0..32,
+        },
+        ExpressionNode {
+            omit: false,
+            body: 0,
+            span: 35..36,
+        },
+        ExpressionNode {
+            omit: true,
+            body: b0,
+            span: 36..39,
+        },
+        ExpressionNode {
+            omit: false,
+            body: 0,
+            span: 40..41,
+        },
+        ExpressionNode {
+            omit: true,
+            body: b1,
+            span: 41..44,
+        },
+        ExpressionNode {
+            omit: false,
+            body: 0,
+            span: 45..46,
+        },
+        ExpressionNode {
+            omit: true,
+            body: b10,
+            span: 46..50,
+        },
+        ExpressionNode {
+            omit: false,
+            body: 0,
+            span: 51..52,
+        },
+        ExpressionNode {
+            omit: true,
+            body: b11,
+            span: 52..56,
+        },
+        ExpressionNode {
+            omit: false,
+            body: 0,
+            span: 58..59,
+        },
+        ExpressionNode {
+            omit: true,
+            body: x0,
+            span: 59..62,
+        },
+        ExpressionNode {
+            omit: false,
+            body: 0,
+            span: 63..64,
+        },
+        ExpressionNode {
+            omit: true,
+            body: x1,
+            span: 64..67,
+        },
+        ExpressionNode {
+            omit: false,
+            body: 0,
+            span: 68..69,
+        },
+        ExpressionNode {
+            omit: true,
+            body: xF,
+            span: 69..72,
+        },
+        ExpressionNode {
+            omit: false,
+            body: 0,
+            span: 73..74,
+        },
+        ExpressionNode {
+            omit: true,
+            body: xFF,
+            span: 74..78,
+        },
+        ExpressionNode {
+            omit: false,
+            body: 0,
+            span: 79..80,
+        },
+        ExpressionNode {
+            omit: true,
+            body: xFFF,
+            span: 80..85,
+        },
+        ExpressionNode {
+            omit: false,
+            body: 0,
+            span: 90..91,
+        },
+        ExpressionNode {
+            omit: true,
+            body: a_b_c_d,
+            span: 91..99,
+        },
+    ],
+}

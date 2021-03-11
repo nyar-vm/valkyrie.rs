@@ -1,0 +1,9 @@
+ProgramRoot {
+    statements: [
+        ExpressionNode {
+            omit: false,
+            body: a,
+            span: 0..1,
+        },
+    ],
+}

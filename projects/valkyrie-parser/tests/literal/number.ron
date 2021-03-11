@@ -1,0 +1,79 @@
+ProgramRoot {
+    statements: [
+        ExpressionNode {
+            omit: true,
+            body: 0,
+            span: 16..18,
+        },
+        ExpressionNode {
+            omit: true,
+            body: UnaryNode {
+                prefix: +,
+                base: 1,
+            },
+            span: 19..22,
+        },
+        ExpressionNode {
+            omit: true,
+            body: UnaryNode {
+                prefix: -,
+                base: 1,
+            },
+            span: 23..26,
+        },
+        ExpressionNode {
+            omit: false,
+            body: 65536,
+            span: 27..32,
+        },
+        ExpressionNode {
+            omit: true,
+            body: _i16,
+            span: 32..37,
+        },
+        ExpressionNode {
+            omit: false,
+            body: 4294967296,
+            span: 38..48,
+        },
+        ExpressionNode {
+            omit: false,
+            body: _u32,
+            span: 48..53,
+        },
+        ExpressionNode {
+            omit: false,
+            body: 18446744073709551616,
+            span: 53..73,
+        },
+        ExpressionNode {
+            omit: false,
+            body: _i64,
+            span: 73..78,
+        },
+        ExpressionNode {
+            omit: false,
+            body: 340282366920938463463374607431768211456,
+            span: 78..117,
+        },
+        ExpressionNode {
+            omit: false,
+            body: _i128,
+            span: 117..123,
+        },
+        ExpressionNode {
+            omit: false,
+            body: 115792089237316195423570985008687907853269984665640564039457584007913129639936,
+            span: 123..201,
+        },
+        ExpressionNode {
+            omit: false,
+            body: InfixNode {
+                infix: -,
+                lhs: _i256,
+                rhs: 0,
+            },
+            span: 201..226,
+        },
+    ],
+}

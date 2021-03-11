@@ -56,9 +56,15 @@ pub enum ValkyrieOperator {
     /// binary operator:
     VeryMuchLess,
     /// binary operator: `≡`, `≢`
-    Equal(bool),
-    /// binary operator:
-    StrictlyEqual(bool),
+    Equal {
+        /// negative operator `!=`
+        negative: bool,
+    },
+    /// binary operator: `≡`, `≢`
+    StrictlyEqual {
+        /// negative operator `=!=`
+        negative: bool,
+    },
     /// binary operator: `⊑, ⋢, is, is not`
     Is {
         /// negative operator: `⋢, is not`
@@ -169,8 +175,8 @@ impl ValkyrieOperator {
 
             // infix - 3
             Self::LogicMatrix { .. } => 14700,
-            Self::Equal(_) => 14700,
-            Self::StrictlyEqual(_) => 14700,
+            Self::Equal { .. } => 14700,
+            Self::StrictlyEqual { .. } => 14700,
             // infix - 2
             Self::Greater { .. } => 14800,
             Self::Less { .. } => 14800,
@@ -268,13 +274,13 @@ impl ValkyrieOperator {
                 true => "∌",
                 false => "∋",
             },
-            Self::Equal(v) => match v {
-                true => "≖",
-                false => "≠",
+            Self::Equal { negative } => match negative {
+                true => "≠",
+                false => "==",
             },
-            Self::StrictlyEqual(v) => match v {
-                true => "≡",
-                false => "≢",
+            Self::StrictlyEqual { negative } => match negative {
+                true => "≢",
+                false => "≡",
             },
             Self::Reciprocal => "⅟",
             Self::Roots(v) => match v {
@@ -309,8 +315,8 @@ impl ValkyrieOperator {
     /// if this operatr can be override
     pub fn overrideable(&self) -> bool {
         match self {
-            Self::Equal(false) => false,
-            Self::StrictlyEqual(false) => false,
+            Self::Equal { negative: true } => false,
+            Self::StrictlyEqual { negative: true } => false,
             _ => true,
         }
     }

@@ -32,7 +32,7 @@ pub struct ArgumentKeyNode {
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ApplyCallNode {
-    ///
+    /// The call basement
     pub base: ExpressionType,
     /// Weather it is a monadic call
     pub monadic: bool,

@@ -6,6 +6,11 @@ impl crate::NamepathNode {
     }
 }
 
+impl crate::NamepathFreeNode {
+    pub fn build(&self, ctx: &ProgramContext) -> NamePathNode {
+        NamePathNode { names: self.identifier.iter().map(|v| v.build(ctx)).collect() }
+    }
+}
 impl crate::IdentifierNode {
     pub fn build(&self, ctx: &ProgramContext) -> IdentifierNode {
         match self {

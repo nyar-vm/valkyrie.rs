@@ -1,0 +1,25 @@
+ProgramRoot {
+    statements: [
+        ExpressionNode {
+            omit: false,
+            body: a∷b∷c,
+            span: 0..8,
+        },
+        ExpressionNode {
+            omit: false,
+            body: ApplyCallNode {
+                base: a∷b∷c,
+                monadic: false,
+                caller: None,
+                arguments: None,
+                span: 15..17,
+            },
+            span: 8..19,
+        },
+        ExpressionNode {
+            omit: false,
+            body: a∷b,
+            span: 19..23,
+        },
+    ],
+}

@@ -1,0 +1,82 @@
+ProgramRoot {
+    statements: [
+        ExpressionNode {
+            omit: false,
+            body: SubscriptCallNode {
+                kind: Ordinal,
+                base: a,
+                monadic: false,
+                terms: [
+                    Index {
+                        index: 1,
+                    },
+                ],
+                span: 1..4,
+            },
+            span: 0..6,
+        },
+        ExpressionNode {
+            omit: false,
+            body: SubscriptCallNode {
+                kind: Ordinal,
+                base: a,
+                monadic: false,
+                terms: [
+                    Index {
+                        index: 2,
+                    },
+                ],
+                span: 7..23,
+            },
+            span: 6..25,
+        },
+        ExpressionNode {
+            omit: false,
+            body: SubscriptCallNode {
+                kind: Ordinal,
+                base: a,
+                monadic: false,
+                terms: [
+                    Index {
+                        index: 3,
+                    },
+                    Index {
+                        index: 4,
+                    },
+                ],
+                span: 26..32,
+            },
+            span: 25..34,
+        },
+        ExpressionNode {
+            omit: false,
+            body: SubscriptCallNode {
+                kind: Ordinal,
+                base: SubscriptCallNode {
+                    kind: Ordinal,
+                    base: a,
+                    monadic: false,
+                    terms: [
+                        Index {
+                            index: 5,
+                        },
+                    ],
+                    span: 35..39,
+                },
+                monadic: false,
+                terms: [
+                    Index {
+                        index: 6,
+                    },
+                ],
+                span: 39..43,
+            },
+            span: 34..45,
+        },
+        ExpressionNode {
+            omit: false,
+            body: a,
+            span: 45..46,
+        },
+    ],
+}

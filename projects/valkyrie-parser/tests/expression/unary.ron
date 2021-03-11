@@ -1,463 +1,178 @@
-[
-    MainExpressionNode {
-        eos: Some(
-            Omit,
-        ),
-        main_infix: [],
-        main_term: [
-            MainTermNode {
-                main_factor: Atomic(
-                    Namepath(
-                        NamepathNode {
-                            identifier: [
-                                IdentifierBare(
-                                    IdentifierBareNode {
-                                        text: "a",
-                                        span: 10..11,
-                                    },
-                                ),
-                            ],
-                            span: 10..11,
-                        },
-                    ),
-                ),
-                main_prefix: [
-                    Positive,
-                ],
-                main_suffix: [],
-                span: 9..11,
+ProgramRoot {
+    statements: [
+        ExpressionNode {
+            omit: true,
+            body: UnaryNode {
+                prefix: +,
+                base: a,
             },
-        ],
-        span: 9..12,
-    },
-    MainExpressionNode {
-        eos: Some(
-            Omit,
-        ),
-        main_infix: [],
-        main_term: [
-            MainTermNode {
-                main_factor: Atomic(
-                    Namepath(
-                        NamepathNode {
-                            identifier: [
-                                IdentifierBare(
-                                    IdentifierBareNode {
-                                        text: "a",
-                                        span: 15..16,
-                                    },
-                                ),
-                            ],
-                            span: 15..16,
-                        },
-                    ),
-                ),
-                main_prefix: [
-                    Negative,
-                ],
-                main_suffix: [],
-                span: 14..16,
+            span: 8..11,
+        },
+        ExpressionNode {
+            omit: true,
+            body: UnaryNode {
+                prefix: -,
+                base: a,
             },
-        ],
-        span: 14..17,
-    },
-    MainExpressionNode {
-        eos: Some(
-            Omit,
-        ),
-        main_infix: [],
-        main_term: [
-            MainTermNode {
-                main_factor: Atomic(
-                    Namepath(
-                        NamepathNode {
-                            identifier: [
-                                IdentifierBare(
-                                    IdentifierBareNode {
-                                        text: "var",
-                                        span: 52..55,
-                                    },
-                                ),
-                            ],
-                            span: 52..55,
-                        },
-                    ),
-                ),
-                main_prefix: [
-                    Dereference,
-                ],
-                main_suffix: [],
-                span: 51..55,
+            span: 12..15,
+        },
+        ExpressionNode {
+            omit: true,
+            body: UnaryNode {
+                prefix: *,
+                base: var,
             },
-        ],
-        span: 51..56,
-    },
-    MainExpressionNode {
-        eos: Some(
-            Omit,
-        ),
-        main_infix: [],
-        main_term: [
-            MainTermNode {
-                main_factor: Atomic(
-                    Namepath(
-                        NamepathNode {
-                            identifier: [
-                                IdentifierBare(
-                                    IdentifierBareNode {
-                                        text: "var",
-                                        span: 60..63,
-                                    },
-                                ),
-                            ],
-                            span: 60..63,
-                        },
-                    ),
-                ),
-                main_prefix: [
-                    Dereference,
-                    Dereference,
-                ],
-                main_suffix: [],
-                span: 58..63,
+            span: 46..51,
+        },
+        ExpressionNode {
+            omit: true,
+            body: UnaryNode {
+                prefix: *,
+                base: UnaryNode {
+                    prefix: *,
+                    base: var,
+                },
             },
-        ],
-        span: 58..64,
-    },
-    MainExpressionNode {
-        eos: Some(
-            Omit,
-        ),
-        main_infix: [],
-        main_term: [
-            MainTermNode {
-                main_factor: Atomic(
-                    Namepath(
-                        NamepathNode {
-                            identifier: [
-                                IdentifierBare(
-                                    IdentifierBareNode {
-                                        text: "a",
-                                        span: 136..137,
-                                    },
-                                ),
-                            ],
-                            span: 136..137,
-                        },
-                    ),
-                ),
-                main_prefix: [
-                    Inverse,
-                ],
-                main_suffix: [],
-                span: 133..137,
+            span: 52..58,
+        },
+        ExpressionNode {
+            omit: true,
+            body: UnaryNode {
+                prefix: ⅟,
+                base: a,
             },
-        ],
-        span: 133..138,
-    },
-    MainExpressionNode {
-        eos: Some(
-            Omit,
-        ),
-        main_infix: [
-            Plus,
-            Plus,
-        ],
-        main_term: [
-            MainTermNode {
-                main_factor: Atomic(
-                    Integer(
-                        IntegerNode {
-                            text: "2",
-                            span: 154..155,
-                        },
-                    ),
-                ),
-                main_prefix: [
-                    Root2,
-                ],
-                main_suffix: [],
-                span: 151..155,
-            },
-            MainTermNode {
-                main_factor: Atomic(
-                    Integer(
-                        IntegerNode {
-                            text: "3",
-                            span: 161..162,
-                        },
-                    ),
-                ),
-                main_prefix: [
-                    Root3,
-                ],
-                main_suffix: [],
-                span: 158..162,
-            },
-            MainTermNode {
-                main_factor: Atomic(
-                    Integer(
-                        IntegerNode {
-                            text: "5",
-                            span: 168..169,
-                        },
-                    ),
-                ),
-                main_prefix: [
-                    Root4,
-                ],
-                main_suffix: [],
-                span: 165..169,
-            },
-        ],
-        span: 151..170,
-    },
-    MainExpressionNode {
-        eos: Some(
-            Omit,
-        ),
-        main_infix: [],
-        main_term: [
-            MainTermNode {
-                main_factor: MainFactor0(
-                    MainExpressionNode {
-                        eos: None,
-                        main_infix: [],
-                        main_term: [],
-                        span: 193..194,
+            span: 119..124,
+        },
+        ExpressionNode {
+            omit: true,
+            body: InfixNode {
+                infix: +,
+                lhs: InfixNode {
+                    infix: +,
+                    lhs: UnaryNode {
+                        prefix: √,
+                        base: 2,
                     },
-                ),
-                main_prefix: [
-                    Root2,
-                ],
-                main_suffix: [],
-                span: 172..194,
-            },
-        ],
-        span: 172..195,
-    },
-    MainExpressionNode {
-        eos: Some(
-            Omit,
-        ),
-        main_infix: [],
-        main_term: [
-            MainTermNode {
-                main_factor: Atomic(
-                    Namepath(
-                        NamepathNode {
-                            identifier: [
-                                IdentifierBare(
-                                    IdentifierBareNode {
-                                        text: "x",
-                                        span: 206..207,
-                                    },
-                                ),
-                            ],
-                            span: 206..207,
-                        },
-                    ),
-                ),
-                main_prefix: [
-                    Root2,
-                    Root3,
-                    Root4,
-                ],
-                main_suffix: [],
-                span: 197..207,
-            },
-        ],
-        span: 197..208,
-    },
-    MainExpressionNode {
-        eos: Some(
-            Omit,
-        ),
-        main_infix: [
-            Plus,
-        ],
-        main_term: [
-            MainTermNode {
-                main_factor: Atomic(
-                    Integer(
-                        IntegerNode {
-                            text: "20",
-                            span: 228..230,
-                        },
-                    ),
-                ),
-                main_prefix: [],
-                main_suffix: [
-                    InlineSuffix(
-                        InlineSuffix0(
-                            Celsius,
-                        ),
-                    ),
-                ],
-                span: 228..233,
-            },
-            MainTermNode {
-                main_factor: Atomic(
-                    Integer(
-                        IntegerNode {
-                            text: "30",
-                            span: 236..238,
-                        },
-                    ),
-                ),
-                main_prefix: [],
-                main_suffix: [
-                    InlineSuffix(
-                        InlineSuffix0(
-                            Fahrenheit,
-                        ),
-                    ),
-                ],
-                span: 236..241,
-            },
-        ],
-        span: 228..242,
-    },
-    MainExpressionNode {
-        eos: Some(
-            Omit,
-        ),
-        main_infix: [
-            Plus,
-            Plus,
-        ],
-        main_term: [
-            MainTermNode {
-                main_factor: Atomic(
-                    Integer(
-                        IntegerNode {
-                            text: "2",
-                            span: 261..262,
-                        },
-                    ),
-                ),
-                main_prefix: [],
-                main_suffix: [
-                    InlineSuffix(
-                        InlineSuffix0(
-                            Percent2,
-                        ),
-                    ),
-                ],
-                span: 261..263,
-            },
-            MainTermNode {
-                main_factor: Atomic(
-                    Integer(
-                        IntegerNode {
-                            text: "3",
-                            span: 266..267,
-                        },
-                    ),
-                ),
-                main_prefix: [],
-                main_suffix: [
-                    InlineSuffix(
-                        InlineSuffix0(
-                            Percent3,
-                        ),
-                    ),
-                ],
-                span: 266..270,
-            },
-            MainTermNode {
-                main_factor: Atomic(
-                    Integer(
-                        IntegerNode {
-                            text: "5",
-                            span: 273..274,
-                        },
-                    ),
-                ),
-                main_prefix: [],
-                main_suffix: [
-                    InlineSuffix(
-                        InlineSuffix0(
-                            Percent4,
-                        ),
-                    ),
-                ],
-                span: 273..277,
-            },
-        ],
-        span: 261..278,
-    },
-    MainExpressionNode {
-        eos: Some(
-            Omit,
-        ),
-        main_infix: [],
-        main_term: [
-            MainTermNode {
-                main_factor: MainFactor0(
-                    MainExpressionNode {
-                        eos: None,
-                        main_infix: [],
-                        main_term: [],
-                        span: 296..297,
+                    rhs: UnaryNode {
+                        prefix: ∛,
+                        base: 3,
                     },
-                ),
-                main_prefix: [],
-                main_suffix: [
-                    InlineSuffix(
-                        InlineSuffix0(
-                            Percent4,
-                        ),
-                    ),
-                ],
-                span: 280..300,
+                },
+                rhs: UnaryNode {
+                    prefix: ∜,
+                    base: 5,
+                },
             },
-        ],
-        span: 280..301,
-    },
-    MainExpressionNode {
-        eos: Some(
-            Omit,
-        ),
-        main_infix: [],
-        main_term: [
-            MainTermNode {
-                main_factor: Atomic(
-                    Namepath(
-                        NamepathNode {
-                            identifier: [
-                                IdentifierBare(
-                                    IdentifierBareNode {
-                                        text: "x",
-                                        span: 303..304,
-                                    },
-                                ),
-                            ],
-                            span: 303..304,
+            span: 134..153,
+        },
+        ExpressionNode {
+            omit: true,
+            body: UnaryNode {
+                prefix: √,
+                base: InfixNode {
+                    infix: +,
+                    lhs: 2,
+                    rhs: UnaryNode {
+                        prefix: ∛,
+                        base: InfixNode {
+                            infix: +,
+                            lhs: 3,
+                            rhs: UnaryNode {
+                                prefix: ∜,
+                                base: 5,
+                            },
                         },
-                    ),
-                ),
-                main_prefix: [],
-                main_suffix: [
-                    InlineSuffix(
-                        InlineSuffix0(
-                            Percent2,
-                        ),
-                    ),
-                    InlineSuffix(
-                        InlineSuffix0(
-                            Percent3,
-                        ),
-                    ),
-                    InlineSuffix(
-                        InlineSuffix0(
-                            Percent4,
-                        ),
-                    ),
-                ],
-                span: 303..311,
+                    },
+                },
             },
-        ],
-        span: 303..312,
-    },
-]
+            span: 154..177,
+        },
+        ExpressionNode {
+            omit: true,
+            body: UnaryNode {
+                prefix: √,
+                base: UnaryNode {
+                    prefix: ∛,
+                    base: UnaryNode {
+                        prefix: ∜,
+                        base: x,
+                    },
+                },
+            },
+            span: 178..189,
+        },
+        ExpressionNode {
+            omit: true,
+            body: InfixNode {
+                infix: +,
+                lhs: UnaryNode {
+                    prefix: ℃,
+                    base: 20,
+                },
+                rhs: UnaryNode {
+                    prefix: ℉,
+                    base: 30,
+                },
+            },
+            span: 206..220,
+        },
+        ExpressionNode {
+            omit: true,
+            body: InfixNode {
+                infix: +,
+                lhs: InfixNode {
+                    infix: +,
+                    lhs: UnaryNode {
+                        prefix: %,
+                        base: 2,
+                    },
+                    rhs: UnaryNode {
+                        prefix: ‰,
+                        base: 3,
+                    },
+                },
+                rhs: UnaryNode {
+                    prefix: ‱,
+                    base: 5,
+                },
+            },
+            span: 236..253,
+        },
+        ExpressionNode {
+            omit: true,
+            body: UnaryNode {
+                prefix: ‱,
+                base: InfixNode {
+                    infix: +,
+                    lhs: UnaryNode {
+                        prefix: %,
+                        base: 2,
+                    },
+                    rhs: InfixNode {
+                        infix: +,
+                        lhs: UnaryNode {
+                            prefix: ‰,
+                            base: 3,
+                        },
+                        rhs: 5,
+                    },
+                },
+            },
+            span: 254..275,
+        },
+        ExpressionNode {
+            omit: true,
+            body: UnaryNode {
+                prefix: ‱,
+                base: UnaryNode {
+                    prefix: ‰,
+                    base: UnaryNode {
+                        prefix: %,
+                        base: x,
+                    },
+                },
+            },
+            span: 276..285,
+        },
+    ],
+}

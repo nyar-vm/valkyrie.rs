@@ -1,6 +1,6 @@
 use super::*;
 use crate::{TupleKeyNode, TuplePairNode};
-use valkyrie_ast::{TupleKeyType, TupleTermNode};
+use valkyrie_ast::{ApplyArgument, ApplyCallNode, SubscriptCallNode, TupleKeyType, TupleTermNode};
 
 impl TupleLiteralNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<TupleNode> {
@@ -36,6 +36,23 @@ impl TupleKeyNode {
     pub fn build(&self, ctx: &ProgramContext) -> TupleKeyType {
         match self {
             TupleKeyNode::Identifier(v) => TupleKeyType::Identifier(v.build(ctx)),
+        }
+    }
+}
+
+impl crate::TupleCallNode {
+    pub fn build(&self, ctx: &ProgramContext) -> Validation<ApplyCallNode> {
+        let monadic = self.op_and_then.is_some();
+        // let terms = self.tuple_literal.build(ctx)?.terms;
+        Success {
+            value: ApplyCallNode {
+                base: Default::default(),
+                monadic,
+                caller: Default::default(),
+                arguments: None,
+                span: self.span.clone(),
+            },
+            diagnostics: vec![],
         }
     }
 }

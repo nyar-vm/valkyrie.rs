@@ -1,0 +1,25 @@
+ProgramRoot {
+    statements: [
+        ExpressionNode {
+            omit: false,
+            body: SubscriptCallNode {
+                kind: Ordinal,
+                base: ApplyCallNode {
+                    base: a,
+                    monadic: false,
+                    caller: None,
+                    arguments: None,
+                    span: 1..4,
+                },
+                monadic: false,
+                terms: [
+                    Index {
+                        index: 2,
+                    },
+                ],
+                span: 4..7,
+            },
+            span: 0..7,
+        },
+    ],
+}

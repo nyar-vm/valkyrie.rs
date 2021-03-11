@@ -9,11 +9,6 @@ fn take_expression(input: StatementNode) -> Option<MainExpressionNode> {
 }
 
 #[test]
-fn test_unary() {
-    find_all("expression");
-}
-
-#[test]
 fn lex_expression() {
     // top_debug(include_str!("table.vk"), "expression/table_debug.rkt").expect("table");
     // top_debug(include_str!("apply.vk"), "expression/apply_debug.rkt").expect("apply");

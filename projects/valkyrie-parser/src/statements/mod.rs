@@ -1,7 +1,8 @@
 use crate::helpers::ProgramContext;
 use nyar_error::{Failure, Success, Validation};
-use valkyrie_ast::{ProgramRoot, StatementNode};
+use valkyrie_ast::{NamespaceDeclaration, ProgramRoot, StatementNode};
 
+mod namespace;
 impl crate::ProgramNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<ProgramRoot> {
         let mut errors = vec![];
@@ -24,7 +25,7 @@ impl crate::ProgramNode {
 
 impl crate::StatementNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<StatementNode> {
-        match self {
+        let value = match self {
             Self::DefineClass(_) => {
                 todo!()
             }
@@ -37,19 +38,19 @@ impl crate::StatementNode {
             Self::DefineImport(_) => {
                 todo!()
             }
-            Self::DefineNamespace(_) => {
-                todo!()
-            }
+            Self::DefineNamespace(v) => v.build(ctx).into(),
             Self::DefineTrait(_) => {
                 todo!()
             }
             Self::DefineUnion(_) => {
                 todo!()
             }
-            Self::MainStatement(v) => v.build(ctx),
-        }
+            Self::MainStatement(v) => v.build(ctx)?,
+        };
+        Success { value, diagnostics: vec![] }
     }
 }
+
 impl crate::MainStatementNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<StatementNode> {
         match self {

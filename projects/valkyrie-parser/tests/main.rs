@@ -57,6 +57,12 @@ fn read_io(dir: &str, file: &str) -> std::io::Result<(String, String, PathBuf)> 
     Ok((in_text, out_text, output))
 }
 
+#[test]
+fn reexport_all() {
+    find_all("literal").ok();
+    find_all("expression").ok();
+}
+
 fn find_all(dir: &str) -> anyhow::Result<()> {
     let mut cache = FileCache::default();
     let path = here().join(dir).canonicalize()?;
@@ -69,16 +75,13 @@ fn find_all(dir: &str) -> anyhow::Result<()> {
             Some(s) if s.eq("vk") => {}
             _ => continue,
         }
-        match Url::from_file_path(&path) {
-            Ok(o) => {
-                println!("{}", o)
-            }
-            Err(_) => {}
+        if let Ok(o) = Url::from_file_path(&path) {
+            println!("Short Form: {}", o)
         }
         let file = cache.load_local(path.canonicalize()?)?;
         let text = cache.fetch(&file)?.to_string();
         let cst = ValkyrieParser::parse_cst(&text, ValkyrieRule::Program).unwrap();
-        println!("Short Form:\n{}", cst);
+        println!("{}", cst);
         let ast = match ProgramNode::from_str(&text) {
             Ok(o) => o,
             Err(e) => {

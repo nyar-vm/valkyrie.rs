@@ -1,11 +1,82 @@
-(call/apply f (apply))
-(call/apply f (apply 1))
-(call/apply f (apply (k 1)))
-(call/apply f (apply null (a 1) (⁑ args) (⁂ kwargs)))
-(call/apply (call/apply (call/apply (call/apply f (apply)) (apply 1)) (apply 1 2)) (apply 1 2 3))
-(call/apply-dot a (b))
-(call/apply-dot a (b))
-(call/apply-dot (call/apply-dot a (b)) (c))
-(call/apply
-  (call/apply (call/apply-dot (call/apply (call/apply-dot (call/apply a (apply 1)) (b 1)) (apply 2)) (b 1)) (apply 2))
-  (apply 3))
+ProgramRoot {
+    statements: [
+        ExpressionNode {
+            omit: true,
+            body: ApplyCallNode {
+                base: f,
+                monadic: false,
+                caller: None,
+                arguments: None,
+                span: 21..23,
+            },
+            span: 20..24,
+        },
+        ExpressionNode {
+            omit: true,
+            body: ApplyCallNode {
+                base: f,
+                monadic: false,
+                caller: None,
+                arguments: None,
+                span: 26..29,
+            },
+            span: 25..30,
+        },
+        ExpressionNode {
+            omit: true,
+            body: ApplyCallNode {
+                base: f,
+                monadic: false,
+                caller: None,
+                arguments: None,
+                span: 32..38,
+            },
+            span: 31..39,
+        },
+        ExpressionNode {
+            omit: false,
+            body: ApplyCallNode {
+                base: f,
+                monadic: false,
+                caller: None,
+                arguments: None,
+                span: 41..72,
+            },
+            span: 40..92,
+        },
+        ExpressionNode {
+            omit: true,
+            body: ApplyCallNode {
+                base: ApplyCallNode {
+                    base: ApplyCallNode {
+                        base: ApplyCallNode {
+                            base: f,
+                            monadic: false,
+                            caller: None,
+                            arguments: None,
+                            span: 93..95,
+                        },
+                        monadic: false,
+                        caller: None,
+                        arguments: None,
+                        span: 95..98,
+                    },
+                    monadic: false,
+                    caller: None,
+                    arguments: None,
+                    span: 98..104,
+                },
+                monadic: false,
+                caller: None,
+                arguments: None,
+                span: 104..113,
+            },
+            span: 92..114,
+        },
+        ExpressionNode {
+            omit: false,
+            body: a,
+            span: 128..129,
+        },
+    ],
+}

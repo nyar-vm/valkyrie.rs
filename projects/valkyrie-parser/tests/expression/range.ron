@@ -1,1351 +1,330 @@
-[
-    MainExpressionNode {
-        eos: Some(
-            Omit,
-        ),
-        main_infix: [],
-        main_term: [
-            MainTermNode {
-                main_factor: Atomic(
-                    RangeLiteral(
-                        RangeLiteralNode {
-                            subscript_axis: [
-                                SubscriptOnly(
-                                    SubscriptOnlyNode {
-                                        index: MainExpressionNode {
-                                            eos: None,
-                                            main_infix: [],
-                                            main_term: [
-                                                MainTermNode {
-                                                    main_factor: Atomic(
-                                                        Integer(
-                                                            IntegerNode {
-                                                                text: "1",
-                                                                span: 11..12,
-                                                            },
-                                                        ),
-                                                    ),
-                                                    main_prefix: [],
-                                                    main_suffix: [],
-                                                    span: 11..12,
-                                                },
-                                            ],
-                                            span: 11..12,
-                                        },
-                                        span: 11..12,
-                                    },
-                                ),
+ProgramRoot {
+    statements: [
+        ExpressionNode {
+            omit: true,
+            body: RangeNode {
+                kind: Ordinal,
+                terms: [
+                    Index {
+                        index: 1,
+                    },
+                ],
+                span: 9..12,
+            },
+            span: 9..13,
+        },
+        ExpressionNode {
+            omit: true,
+            body: RangeNode {
+                kind: Ordinal,
+                terms: [
+                    Index {
+                        index: RangeNode {
+                            kind: Ordinal,
+                            terms: [
+                                Index {
+                                    index: 1,
+                                },
                             ],
-                            span: 10..13,
+                            span: 15..18,
                         },
-                    ),
-                ),
-                main_prefix: [],
-                main_suffix: [],
-                span: 10..13,
+                    },
+                ],
+                span: 14..19,
             },
-        ],
-        span: 10..14,
-    },
-    MainExpressionNode {
-        eos: Some(
-            Omit,
-        ),
-        main_infix: [],
-        main_term: [
-            MainTermNode {
-                main_factor: Atomic(
-                    RangeLiteral(
-                        RangeLiteralNode {
-                            subscript_axis: [
-                                SubscriptOnly(
-                                    SubscriptOnlyNode {
-                                        index: MainExpressionNode {
-                                            eos: None,
-                                            main_infix: [],
-                                            main_term: [
-                                                MainTermNode {
-                                                    main_factor: Atomic(
-                                                        RangeLiteral(
-                                                            RangeLiteralNode {
-                                                                subscript_axis: [
-                                                                    SubscriptOnly(
-                                                                        SubscriptOnlyNode {
-                                                                            index: MainExpressionNode {
-                                                                                eos: None,
-                                                                                main_infix: [],
-                                                                                main_term: [
-                                                                                    MainTermNode {
-                                                                                        main_factor: Atomic(
-                                                                                            Integer(
-                                                                                                IntegerNode {
-                                                                                                    text: "1",
-                                                                                                    span: 18..19,
-                                                                                                },
-                                                                                            ),
-                                                                                        ),
-                                                                                        main_prefix: [],
-                                                                                        main_suffix: [],
-                                                                                        span: 18..19,
-                                                                                    },
-                                                                                ],
-                                                                                span: 18..19,
-                                                                            },
-                                                                            span: 18..19,
-                                                                        },
-                                                                    ),
-                                                                ],
-                                                                span: 17..20,
-                                                            },
-                                                        ),
-                                                    ),
-                                                    main_prefix: [],
-                                                    main_suffix: [],
-                                                    span: 17..20,
-                                                },
-                                            ],
-                                            span: 17..20,
-                                        },
-                                        span: 17..20,
-                                    },
-                                ),
+            span: 14..20,
+        },
+        ExpressionNode {
+            omit: true,
+            body: RangeNode {
+                kind: Ordinal,
+                terms: [
+                    Index {
+                        index: 2,
+                    },
+                    Index {
+                        index: InfixNode {
+                            infix: +,
+                            lhs: 1,
+                            rhs: 1,
+                        },
+                    },
+                ],
+                span: 21..31,
+            },
+            span: 21..32,
+        },
+        ExpressionNode {
+            omit: true,
+            body: RangeNode {
+                kind: Ordinal,
+                terms: [
+                    Range {
+                        head: Some(
+                            1,
+                        ),
+                        tail: Some(
+                            1,
+                        ),
+                        step: None,
+                    },
+                ],
+                span: 33..38,
+            },
+            span: 33..39,
+        },
+        ExpressionNode {
+            omit: true,
+            body: RangeNode {
+                kind: Ordinal,
+                terms: [
+                    Range {
+                        head: Some(
+                            2,
+                        ),
+                        tail: Some(
+                            2,
+                        ),
+                        step: None,
+                    },
+                    Range {
+                        head: Some(
+                            InfixNode {
+                                infix: +,
+                                lhs: 1,
+                                rhs: 1,
+                            },
+                        ),
+                        tail: Some(
+                            InfixNode {
+                                infix: +,
+                                lhs: 1,
+                                rhs: 1,
+                            },
+                        ),
+                        step: None,
+                    },
+                ],
+                span: 40..59,
+            },
+            span: 40..60,
+        },
+        ExpressionNode {
+            omit: true,
+            body: RangeNode {
+                kind: Ordinal,
+                terms: [
+                    Range {
+                        head: Some(
+                            1,
+                        ),
+                        tail: Some(
+                            2,
+                        ),
+                        step: Some(
+                            3,
+                        ),
+                    },
+                    Index {
+                        index: RangeNode {
+                            kind: Ordinal,
+                            terms: [
+                                Index {
+                                    index: 1,
+                                },
+                                Index {
+                                    index: 2,
+                                },
+                                Index {
+                                    index: 3,
+                                },
                             ],
-                            span: 16..21,
+                            span: 69..76,
                         },
-                    ),
-                ),
-                main_prefix: [],
-                main_suffix: [],
-                span: 16..21,
+                    },
+                ],
+                span: 61..77,
             },
-        ],
-        span: 16..22,
-    },
-    MainExpressionNode {
-        eos: Some(
-            Omit,
-        ),
-        main_infix: [],
-        main_term: [
-            MainTermNode {
-                main_factor: Atomic(
-                    RangeLiteral(
-                        RangeLiteralNode {
-                            subscript_axis: [
-                                SubscriptOnly(
-                                    SubscriptOnlyNode {
-                                        index: MainExpressionNode {
-                                            eos: None,
-                                            main_infix: [],
-                                            main_term: [
-                                                MainTermNode {
-                                                    main_factor: Atomic(
-                                                        Integer(
-                                                            IntegerNode {
-                                                                text: "2",
-                                                                span: 25..26,
-                                                            },
-                                                        ),
-                                                    ),
-                                                    main_prefix: [],
-                                                    main_suffix: [],
-                                                    span: 25..26,
-                                                },
-                                            ],
-                                            span: 25..26,
-                                        },
-                                        span: 25..26,
-                                    },
-                                ),
-                                SubscriptOnly(
-                                    SubscriptOnlyNode {
-                                        index: MainExpressionNode {
-                                            eos: None,
-                                            main_infix: [
-                                                Plus,
-                                            ],
-                                            main_term: [
-                                                MainTermNode {
-                                                    main_factor: Atomic(
-                                                        Integer(
-                                                            IntegerNode {
-                                                                text: "1",
-                                                                span: 28..29,
-                                                            },
-                                                        ),
-                                                    ),
-                                                    main_prefix: [],
-                                                    main_suffix: [],
-                                                    span: 28..29,
-                                                },
-                                                MainTermNode {
-                                                    main_factor: Atomic(
-                                                        Integer(
-                                                            IntegerNode {
-                                                                text: "1",
-                                                                span: 32..33,
-                                                            },
-                                                        ),
-                                                    ),
-                                                    main_prefix: [],
-                                                    main_suffix: [],
-                                                    span: 32..33,
-                                                },
-                                            ],
-                                            span: 28..33,
-                                        },
-                                        span: 28..33,
-                                    },
-                                ),
+            span: 61..78,
+        },
+        ExpressionNode {
+            omit: true,
+            body: RangeNode {
+                kind: Ordinal,
+                terms: [
+                    Range {
+                        head: None,
+                        tail: None,
+                        step: Some(
+                            UnaryNode {
+                                prefix: -,
+                                base: 1,
+                            },
+                        ),
+                    },
+                ],
+                span: 79..85,
+            },
+            span: 79..86,
+        },
+        ExpressionNode {
+            omit: true,
+            body: RangeNode {
+                kind: Ordinal,
+                terms: [
+                    Range {
+                        head: None,
+                        tail: Some(
+                            UnaryNode {
+                                prefix: -,
+                                base: 2,
+                            },
+                        ),
+                        step: None,
+                    },
+                ],
+                span: 87..93,
+            },
+            span: 87..94,
+        },
+        ExpressionNode {
+            omit: true,
+            body: RangeNode {
+                kind: Ordinal,
+                terms: [
+                    Range {
+                        head: Some(
+                            2,
+                        ),
+                        tail: None,
+                        step: None,
+                    },
+                ],
+                span: 95..100,
+            },
+            span: 95..101,
+        },
+        ExpressionNode {
+            omit: true,
+            body: RangeNode {
+                kind: Ordinal,
+                terms: [
+                    Index {
+                        index: InfixNode {
+                            infix: +,
+                            lhs: 1,
+                            rhs: 1,
+                        },
+                    },
+                ],
+                span: 102..109,
+            },
+            span: 102..110,
+        },
+        ExpressionNode {
+            omit: true,
+            body: InfixNode {
+                infix: +,
+                lhs: RangeNode {
+                    kind: Ordinal,
+                    terms: [
+                        Index {
+                            index: InfixNode {
+                                infix: +,
+                                lhs: 1,
+                                rhs: 1,
+                            },
+                        },
+                    ],
+                    span: 111..118,
+                },
+                rhs: 1,
+            },
+            span: 111..123,
+        },
+        ExpressionNode {
+            omit: true,
+            body: RangeNode {
+                kind: Ordinal,
+                terms: [
+                    Index {
+                        index: 1,
+                    },
+                    Index {
+                        index: 2,
+                    },
+                    Index {
+                        index: 3,
+                    },
+                ],
+                span: 124..131,
+            },
+            span: 124..132,
+        },
+        ExpressionNode {
+            omit: true,
+            body: RangeNode {
+                kind: Ordinal,
+                terms: [
+                    Index {
+                        index: RangeNode {
+                            kind: Ordinal,
+                            terms: [
+                                Index {
+                                    index: 1,
+                                },
+                                Index {
+                                    index: 2,
+                                },
+                                Index {
+                                    index: 3,
+                                },
                             ],
-                            span: 24..34,
+                            span: 134..141,
                         },
-                    ),
-                ),
-                main_prefix: [],
-                main_suffix: [],
-                span: 24..34,
+                    },
+                ],
+                span: 133..142,
             },
-        ],
-        span: 24..35,
-    },
-    MainExpressionNode {
-        eos: Some(
-            Omit,
-        ),
-        main_infix: [],
-        main_term: [
-            MainTermNode {
-                main_factor: Atomic(
-                    RangeLiteral(
-                        RangeLiteralNode {
-                            subscript_axis: [
-                                SubscriptRange(
-                                    SubscriptRangeNode {
-                                        head: Some(
-                                            MainExpressionNode {
-                                                eos: None,
-                                                main_infix: [],
-                                                main_term: [
-                                                    MainTermNode {
-                                                        main_factor: Atomic(
-                                                            Integer(
-                                                                IntegerNode {
-                                                                    text: "1",
-                                                                    span: 38..39,
-                                                                },
-                                                            ),
-                                                        ),
-                                                        main_prefix: [],
-                                                        main_suffix: [],
-                                                        span: 38..39,
-                                                    },
-                                                ],
-                                                span: 38..39,
-                                            },
-                                        ),
-                                        step: None,
-                                        tail: Some(
-                                            MainExpressionNode {
-                                                eos: None,
-                                                main_infix: [],
-                                                main_term: [
-                                                    MainTermNode {
-                                                        main_factor: Atomic(
-                                                            Integer(
-                                                                IntegerNode {
-                                                                    text: "1",
-                                                                    span: 40..41,
-                                                                },
-                                                            ),
-                                                        ),
-                                                        main_prefix: [],
-                                                        main_suffix: [],
-                                                        span: 40..41,
-                                                    },
-                                                ],
-                                                span: 40..41,
-                                            },
-                                        ),
-                                        span: 38..41,
-                                    },
-                                ),
+            span: 133..143,
+        },
+        ExpressionNode {
+            omit: true,
+            body: RangeNode {
+                kind: Ordinal,
+                terms: [
+                    Range {
+                        head: Some(
+                            1,
+                        ),
+                        tail: Some(
+                            2,
+                        ),
+                        step: Some(
+                            3,
+                        ),
+                    },
+                    Index {
+                        index: RangeNode {
+                            kind: Ordinal,
+                            terms: [
+                                Index {
+                                    index: 1,
+                                },
+                                Index {
+                                    index: 2,
+                                },
+                                Index {
+                                    index: 3,
+                                },
                             ],
-                            span: 37..42,
+                            span: 151..158,
                         },
-                    ),
-                ),
-                main_prefix: [],
-                main_suffix: [],
-                span: 37..42,
+                    },
+                ],
+                span: 144..159,
             },
-        ],
-        span: 37..43,
-    },
-    MainExpressionNode {
-        eos: Some(
-            Omit,
-        ),
-        main_infix: [],
-        main_term: [
-            MainTermNode {
-                main_factor: Atomic(
-                    RangeLiteral(
-                        RangeLiteralNode {
-                            subscript_axis: [
-                                SubscriptRange(
-                                    SubscriptRangeNode {
-                                        head: Some(
-                                            MainExpressionNode {
-                                                eos: None,
-                                                main_infix: [],
-                                                main_term: [
-                                                    MainTermNode {
-                                                        main_factor: Atomic(
-                                                            Integer(
-                                                                IntegerNode {
-                                                                    text: "2",
-                                                                    span: 46..47,
-                                                                },
-                                                            ),
-                                                        ),
-                                                        main_prefix: [],
-                                                        main_suffix: [],
-                                                        span: 46..47,
-                                                    },
-                                                ],
-                                                span: 46..47,
-                                            },
-                                        ),
-                                        step: None,
-                                        tail: Some(
-                                            MainExpressionNode {
-                                                eos: None,
-                                                main_infix: [],
-                                                main_term: [
-                                                    MainTermNode {
-                                                        main_factor: Atomic(
-                                                            Integer(
-                                                                IntegerNode {
-                                                                    text: "2",
-                                                                    span: 48..49,
-                                                                },
-                                                            ),
-                                                        ),
-                                                        main_prefix: [],
-                                                        main_suffix: [],
-                                                        span: 48..49,
-                                                    },
-                                                ],
-                                                span: 48..49,
-                                            },
-                                        ),
-                                        span: 46..49,
-                                    },
-                                ),
-                                SubscriptRange(
-                                    SubscriptRangeNode {
-                                        head: Some(
-                                            MainExpressionNode {
-                                                eos: None,
-                                                main_infix: [
-                                                    Plus,
-                                                ],
-                                                main_term: [
-                                                    MainTermNode {
-                                                        main_factor: Atomic(
-                                                            Integer(
-                                                                IntegerNode {
-                                                                    text: "1",
-                                                                    span: 51..52,
-                                                                },
-                                                            ),
-                                                        ),
-                                                        main_prefix: [],
-                                                        main_suffix: [],
-                                                        span: 51..52,
-                                                    },
-                                                    MainTermNode {
-                                                        main_factor: Atomic(
-                                                            Integer(
-                                                                IntegerNode {
-                                                                    text: "1",
-                                                                    span: 55..56,
-                                                                },
-                                                            ),
-                                                        ),
-                                                        main_prefix: [],
-                                                        main_suffix: [],
-                                                        span: 55..56,
-                                                    },
-                                                ],
-                                                span: 51..56,
-                                            },
-                                        ),
-                                        step: None,
-                                        tail: Some(
-                                            MainExpressionNode {
-                                                eos: None,
-                                                main_infix: [
-                                                    Plus,
-                                                ],
-                                                main_term: [
-                                                    MainTermNode {
-                                                        main_factor: Atomic(
-                                                            Integer(
-                                                                IntegerNode {
-                                                                    text: "1",
-                                                                    span: 58..59,
-                                                                },
-                                                            ),
-                                                        ),
-                                                        main_prefix: [],
-                                                        main_suffix: [],
-                                                        span: 58..59,
-                                                    },
-                                                    MainTermNode {
-                                                        main_factor: Atomic(
-                                                            Integer(
-                                                                IntegerNode {
-                                                                    text: "1",
-                                                                    span: 62..63,
-                                                                },
-                                                            ),
-                                                        ),
-                                                        main_prefix: [],
-                                                        main_suffix: [],
-                                                        span: 62..63,
-                                                    },
-                                                ],
-                                                span: 58..63,
-                                            },
-                                        ),
-                                        span: 51..63,
-                                    },
-                                ),
-                            ],
-                            span: 45..64,
-                        },
-                    ),
-                ),
-                main_prefix: [],
-                main_suffix: [],
-                span: 45..64,
-            },
-        ],
-        span: 45..65,
-    },
-    MainExpressionNode {
-        eos: Some(
-            Omit,
-        ),
-        main_infix: [],
-        main_term: [
-            MainTermNode {
-                main_factor: Atomic(
-                    RangeLiteral(
-                        RangeLiteralNode {
-                            subscript_axis: [
-                                SubscriptRange(
-                                    SubscriptRangeNode {
-                                        head: Some(
-                                            MainExpressionNode {
-                                                eos: None,
-                                                main_infix: [],
-                                                main_term: [
-                                                    MainTermNode {
-                                                        main_factor: Atomic(
-                                                            Integer(
-                                                                IntegerNode {
-                                                                    text: "1",
-                                                                    span: 68..69,
-                                                                },
-                                                            ),
-                                                        ),
-                                                        main_prefix: [],
-                                                        main_suffix: [],
-                                                        span: 68..69,
-                                                    },
-                                                ],
-                                                span: 68..69,
-                                            },
-                                        ),
-                                        step: Some(
-                                            MainExpressionNode {
-                                                eos: None,
-                                                main_infix: [],
-                                                main_term: [
-                                                    MainTermNode {
-                                                        main_factor: Atomic(
-                                                            Integer(
-                                                                IntegerNode {
-                                                                    text: "3",
-                                                                    span: 72..73,
-                                                                },
-                                                            ),
-                                                        ),
-                                                        main_prefix: [],
-                                                        main_suffix: [],
-                                                        span: 72..73,
-                                                    },
-                                                ],
-                                                span: 72..73,
-                                            },
-                                        ),
-                                        tail: Some(
-                                            MainExpressionNode {
-                                                eos: None,
-                                                main_infix: [],
-                                                main_term: [
-                                                    MainTermNode {
-                                                        main_factor: Atomic(
-                                                            Integer(
-                                                                IntegerNode {
-                                                                    text: "2",
-                                                                    span: 70..71,
-                                                                },
-                                                            ),
-                                                        ),
-                                                        main_prefix: [],
-                                                        main_suffix: [],
-                                                        span: 70..71,
-                                                    },
-                                                ],
-                                                span: 70..71,
-                                            },
-                                        ),
-                                        span: 68..73,
-                                    },
-                                ),
-                                SubscriptOnly(
-                                    SubscriptOnlyNode {
-                                        index: MainExpressionNode {
-                                            eos: None,
-                                            main_infix: [],
-                                            main_term: [
-                                                MainTermNode {
-                                                    main_factor: Atomic(
-                                                        RangeLiteral(
-                                                            RangeLiteralNode {
-                                                                subscript_axis: [
-                                                                    SubscriptOnly(
-                                                                        SubscriptOnlyNode {
-                                                                            index: MainExpressionNode {
-                                                                                eos: None,
-                                                                                main_infix: [],
-                                                                                main_term: [
-                                                                                    MainTermNode {
-                                                                                        main_factor: Atomic(
-                                                                                            Integer(
-                                                                                                IntegerNode {
-                                                                                                    text: "1",
-                                                                                                    span: 76..77,
-                                                                                                },
-                                                                                            ),
-                                                                                        ),
-                                                                                        main_prefix: [],
-                                                                                        main_suffix: [],
-                                                                                        span: 76..77,
-                                                                                    },
-                                                                                ],
-                                                                                span: 76..77,
-                                                                            },
-                                                                            span: 76..77,
-                                                                        },
-                                                                    ),
-                                                                    SubscriptOnly(
-                                                                        SubscriptOnlyNode {
-                                                                            index: MainExpressionNode {
-                                                                                eos: None,
-                                                                                main_infix: [],
-                                                                                main_term: [
-                                                                                    MainTermNode {
-                                                                                        main_factor: Atomic(
-                                                                                            Integer(
-                                                                                                IntegerNode {
-                                                                                                    text: "2",
-                                                                                                    span: 78..79,
-                                                                                                },
-                                                                                            ),
-                                                                                        ),
-                                                                                        main_prefix: [],
-                                                                                        main_suffix: [],
-                                                                                        span: 78..79,
-                                                                                    },
-                                                                                ],
-                                                                                span: 78..79,
-                                                                            },
-                                                                            span: 78..79,
-                                                                        },
-                                                                    ),
-                                                                    SubscriptOnly(
-                                                                        SubscriptOnlyNode {
-                                                                            index: MainExpressionNode {
-                                                                                eos: None,
-                                                                                main_infix: [],
-                                                                                main_term: [
-                                                                                    MainTermNode {
-                                                                                        main_factor: Atomic(
-                                                                                            Integer(
-                                                                                                IntegerNode {
-                                                                                                    text: "3",
-                                                                                                    span: 80..81,
-                                                                                                },
-                                                                                            ),
-                                                                                        ),
-                                                                                        main_prefix: [],
-                                                                                        main_suffix: [],
-                                                                                        span: 80..81,
-                                                                                    },
-                                                                                ],
-                                                                                span: 80..81,
-                                                                            },
-                                                                            span: 80..81,
-                                                                        },
-                                                                    ),
-                                                                ],
-                                                                span: 75..82,
-                                                            },
-                                                        ),
-                                                    ),
-                                                    main_prefix: [],
-                                                    main_suffix: [],
-                                                    span: 75..82,
-                                                },
-                                            ],
-                                            span: 75..82,
-                                        },
-                                        span: 75..82,
-                                    },
-                                ),
-                            ],
-                            span: 67..83,
-                        },
-                    ),
-                ),
-                main_prefix: [],
-                main_suffix: [],
-                span: 67..83,
-            },
-        ],
-        span: 67..84,
-    },
-    MainExpressionNode {
-        eos: Some(
-            Omit,
-        ),
-        main_infix: [],
-        main_term: [
-            MainTermNode {
-                main_factor: Atomic(
-                    RangeLiteral(
-                        RangeLiteralNode {
-                            subscript_axis: [
-                                SubscriptRange(
-                                    SubscriptRangeNode {
-                                        head: None,
-                                        step: Some(
-                                            MainExpressionNode {
-                                                eos: None,
-                                                main_infix: [],
-                                                main_term: [
-                                                    MainTermNode {
-                                                        main_factor: Atomic(
-                                                            Integer(
-                                                                IntegerNode {
-                                                                    text: "1",
-                                                                    span: 90..91,
-                                                                },
-                                                            ),
-                                                        ),
-                                                        main_prefix: [
-                                                            Negative,
-                                                        ],
-                                                        main_suffix: [],
-                                                        span: 89..91,
-                                                    },
-                                                ],
-                                                span: 89..91,
-                                            },
-                                        ),
-                                        tail: None,
-                                        span: 87..91,
-                                    },
-                                ),
-                            ],
-                            span: 86..92,
-                        },
-                    ),
-                ),
-                main_prefix: [],
-                main_suffix: [],
-                span: 86..92,
-            },
-        ],
-        span: 86..93,
-    },
-    MainExpressionNode {
-        eos: Some(
-            Omit,
-        ),
-        main_infix: [],
-        main_term: [
-            MainTermNode {
-                main_factor: Atomic(
-                    RangeLiteral(
-                        RangeLiteralNode {
-                            subscript_axis: [
-                                SubscriptRange(
-                                    SubscriptRangeNode {
-                                        head: None,
-                                        step: None,
-                                        tail: Some(
-                                            MainExpressionNode {
-                                                eos: None,
-                                                main_infix: [],
-                                                main_term: [
-                                                    MainTermNode {
-                                                        main_factor: Atomic(
-                                                            Integer(
-                                                                IntegerNode {
-                                                                    text: "2",
-                                                                    span: 98..99,
-                                                                },
-                                                            ),
-                                                        ),
-                                                        main_prefix: [
-                                                            Negative,
-                                                        ],
-                                                        main_suffix: [],
-                                                        span: 97..99,
-                                                    },
-                                                ],
-                                                span: 97..99,
-                                            },
-                                        ),
-                                        span: 96..100,
-                                    },
-                                ),
-                            ],
-                            span: 95..101,
-                        },
-                    ),
-                ),
-                main_prefix: [],
-                main_suffix: [],
-                span: 95..101,
-            },
-        ],
-        span: 95..102,
-    },
-    MainExpressionNode {
-        eos: Some(
-            Omit,
-        ),
-        main_infix: [],
-        main_term: [
-            MainTermNode {
-                main_factor: Atomic(
-                    RangeLiteral(
-                        RangeLiteralNode {
-                            subscript_axis: [
-                                SubscriptRange(
-                                    SubscriptRangeNode {
-                                        head: Some(
-                                            MainExpressionNode {
-                                                eos: None,
-                                                main_infix: [],
-                                                main_term: [
-                                                    MainTermNode {
-                                                        main_factor: Atomic(
-                                                            Integer(
-                                                                IntegerNode {
-                                                                    text: "2",
-                                                                    span: 105..106,
-                                                                },
-                                                            ),
-                                                        ),
-                                                        main_prefix: [],
-                                                        main_suffix: [],
-                                                        span: 105..106,
-                                                    },
-                                                ],
-                                                span: 105..106,
-                                            },
-                                        ),
-                                        step: None,
-                                        tail: None,
-                                        span: 105..108,
-                                    },
-                                ),
-                            ],
-                            span: 104..109,
-                        },
-                    ),
-                ),
-                main_prefix: [],
-                main_suffix: [],
-                span: 104..109,
-            },
-        ],
-        span: 104..110,
-    },
-    MainExpressionNode {
-        eos: Some(
-            Omit,
-        ),
-        main_infix: [],
-        main_term: [
-            MainTermNode {
-                main_factor: Atomic(
-                    RangeLiteral(
-                        RangeLiteralNode {
-                            subscript_axis: [
-                                SubscriptOnly(
-                                    SubscriptOnlyNode {
-                                        index: MainExpressionNode {
-                                            eos: None,
-                                            main_infix: [
-                                                Plus,
-                                            ],
-                                            main_term: [
-                                                MainTermNode {
-                                                    main_factor: Atomic(
-                                                        Integer(
-                                                            IntegerNode {
-                                                                text: "1",
-                                                                span: 113..114,
-                                                            },
-                                                        ),
-                                                    ),
-                                                    main_prefix: [],
-                                                    main_suffix: [],
-                                                    span: 113..114,
-                                                },
-                                                MainTermNode {
-                                                    main_factor: Atomic(
-                                                        Integer(
-                                                            IntegerNode {
-                                                                text: "1",
-                                                                span: 117..118,
-                                                            },
-                                                        ),
-                                                    ),
-                                                    main_prefix: [],
-                                                    main_suffix: [],
-                                                    span: 117..118,
-                                                },
-                                            ],
-                                            span: 113..118,
-                                        },
-                                        span: 113..118,
-                                    },
-                                ),
-                            ],
-                            span: 112..119,
-                        },
-                    ),
-                ),
-                main_prefix: [],
-                main_suffix: [],
-                span: 112..119,
-            },
-        ],
-        span: 112..120,
-    },
-    MainExpressionNode {
-        eos: Some(
-            Omit,
-        ),
-        main_infix: [
-            Plus,
-        ],
-        main_term: [
-            MainTermNode {
-                main_factor: Atomic(
-                    RangeLiteral(
-                        RangeLiteralNode {
-                            subscript_axis: [
-                                SubscriptOnly(
-                                    SubscriptOnlyNode {
-                                        index: MainExpressionNode {
-                                            eos: None,
-                                            main_infix: [
-                                                Plus,
-                                            ],
-                                            main_term: [
-                                                MainTermNode {
-                                                    main_factor: Atomic(
-                                                        Integer(
-                                                            IntegerNode {
-                                                                text: "1",
-                                                                span: 123..124,
-                                                            },
-                                                        ),
-                                                    ),
-                                                    main_prefix: [],
-                                                    main_suffix: [],
-                                                    span: 123..124,
-                                                },
-                                                MainTermNode {
-                                                    main_factor: Atomic(
-                                                        Integer(
-                                                            IntegerNode {
-                                                                text: "1",
-                                                                span: 127..128,
-                                                            },
-                                                        ),
-                                                    ),
-                                                    main_prefix: [],
-                                                    main_suffix: [],
-                                                    span: 127..128,
-                                                },
-                                            ],
-                                            span: 123..128,
-                                        },
-                                        span: 123..128,
-                                    },
-                                ),
-                            ],
-                            span: 122..129,
-                        },
-                    ),
-                ),
-                main_prefix: [],
-                main_suffix: [],
-                span: 122..129,
-            },
-            MainTermNode {
-                main_factor: Atomic(
-                    Integer(
-                        IntegerNode {
-                            text: "1",
-                            span: 132..133,
-                        },
-                    ),
-                ),
-                main_prefix: [],
-                main_suffix: [],
-                span: 132..133,
-            },
-        ],
-        span: 122..134,
-    },
-    MainExpressionNode {
-        eos: Some(
-            Omit,
-        ),
-        main_infix: [],
-        main_term: [
-            MainTermNode {
-                main_factor: Atomic(
-                    RangeLiteral(
-                        RangeLiteralNode {
-                            subscript_axis: [
-                                SubscriptOnly(
-                                    SubscriptOnlyNode {
-                                        index: MainExpressionNode {
-                                            eos: None,
-                                            main_infix: [],
-                                            main_term: [
-                                                MainTermNode {
-                                                    main_factor: Atomic(
-                                                        Integer(
-                                                            IntegerNode {
-                                                                text: "1",
-                                                                span: 137..138,
-                                                            },
-                                                        ),
-                                                    ),
-                                                    main_prefix: [],
-                                                    main_suffix: [],
-                                                    span: 137..138,
-                                                },
-                                            ],
-                                            span: 137..138,
-                                        },
-                                        span: 137..138,
-                                    },
-                                ),
-                                SubscriptOnly(
-                                    SubscriptOnlyNode {
-                                        index: MainExpressionNode {
-                                            eos: None,
-                                            main_infix: [],
-                                            main_term: [
-                                                MainTermNode {
-                                                    main_factor: Atomic(
-                                                        Integer(
-                                                            IntegerNode {
-                                                                text: "2",
-                                                                span: 139..140,
-                                                            },
-                                                        ),
-                                                    ),
-                                                    main_prefix: [],
-                                                    main_suffix: [],
-                                                    span: 139..140,
-                                                },
-                                            ],
-                                            span: 139..140,
-                                        },
-                                        span: 139..140,
-                                    },
-                                ),
-                                SubscriptOnly(
-                                    SubscriptOnlyNode {
-                                        index: MainExpressionNode {
-                                            eos: None,
-                                            main_infix: [],
-                                            main_term: [
-                                                MainTermNode {
-                                                    main_factor: Atomic(
-                                                        Integer(
-                                                            IntegerNode {
-                                                                text: "3",
-                                                                span: 141..142,
-                                                            },
-                                                        ),
-                                                    ),
-                                                    main_prefix: [],
-                                                    main_suffix: [],
-                                                    span: 141..142,
-                                                },
-                                            ],
-                                            span: 141..142,
-                                        },
-                                        span: 141..142,
-                                    },
-                                ),
-                            ],
-                            span: 136..143,
-                        },
-                    ),
-                ),
-                main_prefix: [],
-                main_suffix: [],
-                span: 136..143,
-            },
-        ],
-        span: 136..144,
-    },
-    MainExpressionNode {
-        eos: Some(
-            Omit,
-        ),
-        main_infix: [],
-        main_term: [
-            MainTermNode {
-                main_factor: Atomic(
-                    RangeLiteral(
-                        RangeLiteralNode {
-                            subscript_axis: [
-                                SubscriptOnly(
-                                    SubscriptOnlyNode {
-                                        index: MainExpressionNode {
-                                            eos: None,
-                                            main_infix: [],
-                                            main_term: [
-                                                MainTermNode {
-                                                    main_factor: Atomic(
-                                                        RangeLiteral(
-                                                            RangeLiteralNode {
-                                                                subscript_axis: [
-                                                                    SubscriptOnly(
-                                                                        SubscriptOnlyNode {
-                                                                            index: MainExpressionNode {
-                                                                                eos: None,
-                                                                                main_infix: [],
-                                                                                main_term: [
-                                                                                    MainTermNode {
-                                                                                        main_factor: Atomic(
-                                                                                            Integer(
-                                                                                                IntegerNode {
-                                                                                                    text: "1",
-                                                                                                    span: 148..149,
-                                                                                                },
-                                                                                            ),
-                                                                                        ),
-                                                                                        main_prefix: [],
-                                                                                        main_suffix: [],
-                                                                                        span: 148..149,
-                                                                                    },
-                                                                                ],
-                                                                                span: 148..149,
-                                                                            },
-                                                                            span: 148..149,
-                                                                        },
-                                                                    ),
-                                                                    SubscriptOnly(
-                                                                        SubscriptOnlyNode {
-                                                                            index: MainExpressionNode {
-                                                                                eos: None,
-                                                                                main_infix: [],
-                                                                                main_term: [
-                                                                                    MainTermNode {
-                                                                                        main_factor: Atomic(
-                                                                                            Integer(
-                                                                                                IntegerNode {
-                                                                                                    text: "2",
-                                                                                                    span: 150..151,
-                                                                                                },
-                                                                                            ),
-                                                                                        ),
-                                                                                        main_prefix: [],
-                                                                                        main_suffix: [],
-                                                                                        span: 150..151,
-                                                                                    },
-                                                                                ],
-                                                                                span: 150..151,
-                                                                            },
-                                                                            span: 150..151,
-                                                                        },
-                                                                    ),
-                                                                    SubscriptOnly(
-                                                                        SubscriptOnlyNode {
-                                                                            index: MainExpressionNode {
-                                                                                eos: None,
-                                                                                main_infix: [],
-                                                                                main_term: [
-                                                                                    MainTermNode {
-                                                                                        main_factor: Atomic(
-                                                                                            Integer(
-                                                                                                IntegerNode {
-                                                                                                    text: "3",
-                                                                                                    span: 152..153,
-                                                                                                },
-                                                                                            ),
-                                                                                        ),
-                                                                                        main_prefix: [],
-                                                                                        main_suffix: [],
-                                                                                        span: 152..153,
-                                                                                    },
-                                                                                ],
-                                                                                span: 152..153,
-                                                                            },
-                                                                            span: 152..153,
-                                                                        },
-                                                                    ),
-                                                                ],
-                                                                span: 147..154,
-                                                            },
-                                                        ),
-                                                    ),
-                                                    main_prefix: [],
-                                                    main_suffix: [],
-                                                    span: 147..154,
-                                                },
-                                            ],
-                                            span: 147..154,
-                                        },
-                                        span: 147..154,
-                                    },
-                                ),
-                            ],
-                            span: 146..155,
-                        },
-                    ),
-                ),
-                main_prefix: [],
-                main_suffix: [],
-                span: 146..155,
-            },
-        ],
-        span: 146..156,
-    },
-    MainExpressionNode {
-        eos: Some(
-            Omit,
-        ),
-        main_infix: [],
-        main_term: [
-            MainTermNode {
-                main_factor: Atomic(
-                    RangeLiteral(
-                        RangeLiteralNode {
-                            subscript_axis: [
-                                SubscriptRange(
-                                    SubscriptRangeNode {
-                                        head: Some(
-                                            MainExpressionNode {
-                                                eos: None,
-                                                main_infix: [],
-                                                main_term: [
-                                                    MainTermNode {
-                                                        main_factor: Atomic(
-                                                            Integer(
-                                                                IntegerNode {
-                                                                    text: "1",
-                                                                    span: 159..160,
-                                                                },
-                                                            ),
-                                                        ),
-                                                        main_prefix: [],
-                                                        main_suffix: [],
-                                                        span: 159..160,
-                                                    },
-                                                ],
-                                                span: 159..160,
-                                            },
-                                        ),
-                                        step: Some(
-                                            MainExpressionNode {
-                                                eos: None,
-                                                main_infix: [],
-                                                main_term: [
-                                                    MainTermNode {
-                                                        main_factor: Atomic(
-                                                            Integer(
-                                                                IntegerNode {
-                                                                    text: "3",
-                                                                    span: 163..164,
-                                                                },
-                                                            ),
-                                                        ),
-                                                        main_prefix: [],
-                                                        main_suffix: [],
-                                                        span: 163..164,
-                                                    },
-                                                ],
-                                                span: 163..164,
-                                            },
-                                        ),
-                                        tail: Some(
-                                            MainExpressionNode {
-                                                eos: None,
-                                                main_infix: [],
-                                                main_term: [
-                                                    MainTermNode {
-                                                        main_factor: Atomic(
-                                                            Integer(
-                                                                IntegerNode {
-                                                                    text: "2",
-                                                                    span: 161..162,
-                                                                },
-                                                            ),
-                                                        ),
-                                                        main_prefix: [],
-                                                        main_suffix: [],
-                                                        span: 161..162,
-                                                    },
-                                                ],
-                                                span: 161..162,
-                                            },
-                                        ),
-                                        span: 159..164,
-                                    },
-                                ),
-                                SubscriptOnly(
-                                    SubscriptOnlyNode {
-                                        index: MainExpressionNode {
-                                            eos: None,
-                                            main_infix: [],
-                                            main_term: [
-                                                MainTermNode {
-                                                    main_factor: Atomic(
-                                                        RangeLiteral(
-                                                            RangeLiteralNode {
-                                                                subscript_axis: [
-                                                                    SubscriptOnly(
-                                                                        SubscriptOnlyNode {
-                                                                            index: MainExpressionNode {
-                                                                                eos: None,
-                                                                                main_infix: [],
-                                                                                main_term: [
-                                                                                    MainTermNode {
-                                                                                        main_factor: Atomic(
-                                                                                            Integer(
-                                                                                                IntegerNode {
-                                                                                                    text: "1",
-                                                                                                    span: 166..167,
-                                                                                                },
-                                                                                            ),
-                                                                                        ),
-                                                                                        main_prefix: [],
-                                                                                        main_suffix: [],
-                                                                                        span: 166..167,
-                                                                                    },
-                                                                                ],
-                                                                                span: 166..167,
-                                                                            },
-                                                                            span: 166..167,
-                                                                        },
-                                                                    ),
-                                                                    SubscriptOnly(
-                                                                        SubscriptOnlyNode {
-                                                                            index: MainExpressionNode {
-                                                                                eos: None,
-                                                                                main_infix: [],
-                                                                                main_term: [
-                                                                                    MainTermNode {
-                                                                                        main_factor: Atomic(
-                                                                                            Integer(
-                                                                                                IntegerNode {
-                                                                                                    text: "2",
-                                                                                                    span: 168..169,
-                                                                                                },
-                                                                                            ),
-                                                                                        ),
-                                                                                        main_prefix: [],
-                                                                                        main_suffix: [],
-                                                                                        span: 168..169,
-                                                                                    },
-                                                                                ],
-                                                                                span: 168..169,
-                                                                            },
-                                                                            span: 168..169,
-                                                                        },
-                                                                    ),
-                                                                    SubscriptOnly(
-                                                                        SubscriptOnlyNode {
-                                                                            index: MainExpressionNode {
-                                                                                eos: None,
-                                                                                main_infix: [],
-                                                                                main_term: [
-                                                                                    MainTermNode {
-                                                                                        main_factor: Atomic(
-                                                                                            Integer(
-                                                                                                IntegerNode {
-                                                                                                    text: "3",
-                                                                                                    span: 170..171,
-                                                                                                },
-                                                                                            ),
-                                                                                        ),
-                                                                                        main_prefix: [],
-                                                                                        main_suffix: [],
-                                                                                        span: 170..171,
-                                                                                    },
-                                                                                ],
-                                                                                span: 170..171,
-                                                                            },
-                                                                            span: 170..171,
-                                                                        },
-                                                                    ),
-                                                                ],
-                                                                span: 165..172,
-                                                            },
-                                                        ),
-                                                    ),
-                                                    main_prefix: [],
-                                                    main_suffix: [],
-                                                    span: 165..172,
-                                                },
-                                            ],
-                                            span: 165..172,
-                                        },
-                                        span: 165..172,
-                                    },
-                                ),
-                            ],
-                            span: 158..173,
-                        },
-                    ),
-                ),
-                main_prefix: [],
-                main_suffix: [],
-                span: 158..173,
-            },
-        ],
-        span: 158..174,
-    },
-]
+            span: 144..160,
+        },
+    ],
+}
