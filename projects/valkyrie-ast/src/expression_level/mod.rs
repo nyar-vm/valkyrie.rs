@@ -31,7 +31,7 @@ use alloc::{
     vec::Vec,
 };
 use core::{
-    fmt::{Alignment, Debug, Display, Formatter, Write},
+    fmt::{Debug, Display, Formatter, Write},
     ops::Range,
 };
 use deriver::From;

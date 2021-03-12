@@ -26,6 +26,7 @@ impl Default for AnnotationKind {
 pub struct AnnotationNode {
     pub kind: AnnotationKind,
     pub term: AnnotationTerm,
+    /// The range of the node
     pub span: Range<u32>,
 }
 
@@ -123,9 +124,7 @@ impl AnnotationList {
 }
 
 impl ModifiersNode {
-    pub fn new(modifiers: Vec<IdentifierNode>) -> Self {
-        Self { terms: modifiers }
-    }
+    /// Check if the modifier is present.
     pub fn contains(&self, modifier: &str) -> bool {
         self.terms.iter().any(|x| x.name.eq(modifier))
     }

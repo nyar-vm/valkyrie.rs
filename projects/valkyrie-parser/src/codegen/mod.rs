@@ -106,6 +106,13 @@ pub enum ValkyrieRule {
     RangeOmit,
     AttributeCall,
     ProceduralCall,
+    TextLiteral,
+    TEXT_CONTENT1,
+    TEXT_CONTENT2,
+    TEXT_CONTENT3,
+    TEXT_CONTENT4,
+    TEXT_CONTENT5,
+    TEXT_CONTENT6,
     ModifierCall,
     AttributePath,
     ProceduralPath,
@@ -233,6 +240,13 @@ impl YggdrasilRule for ValkyrieRule {
             Self::RangeOmit => "",
             Self::AttributeCall => "",
             Self::ProceduralCall => "",
+            Self::TextLiteral => "",
+            Self::TEXT_CONTENT1 => "",
+            Self::TEXT_CONTENT2 => "",
+            Self::TEXT_CONTENT3 => "",
+            Self::TEXT_CONTENT4 => "",
+            Self::TEXT_CONTENT5 => "",
+            Self::TEXT_CONTENT6 => "",
             Self::ModifierCall => "",
             Self::AttributePath => "",
             Self::ProceduralPath => "",
@@ -630,6 +644,7 @@ pub enum AtomicNode {
     ProceduralCall(ProceduralCallNode),
     RangeLiteral(RangeLiteralNode),
     Special(SpecialNode),
+    TextLiteral(TextLiteralNode),
     TupleLiteral(TupleLiteralNode),
 }
 #[derive(Clone, Debug, Hash)]
@@ -801,6 +816,53 @@ pub struct AttributeCallNode {
 pub struct ProceduralCallNode {
     pub procedural_path: ProceduralPathNode,
     pub tuple_literal: Option<TupleLiteralNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct TextLiteralNode {
+    pub text_content_1: Option<TextContent1Node>,
+    pub text_content_2: Option<TextContent2Node>,
+    pub text_content_3: Option<TextContent3Node>,
+    pub text_content_4: Option<TextContent4Node>,
+    pub text_content_5: Option<TextContent5Node>,
+    pub text_content_6: Option<TextContent6Node>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct TextContent1Node {
+    pub text: String,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct TextContent2Node {
+    pub text: String,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct TextContent3Node {
+    pub text: String,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct TextContent4Node {
+    pub text: String,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct TextContent5Node {
+    pub text: String,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct TextContent6Node {
+    pub text: String,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]

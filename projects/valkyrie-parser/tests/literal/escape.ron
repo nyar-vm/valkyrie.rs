@@ -1,3 +1,60 @@
 ProgramRoot {
-    statements: [],
+    statements: [
+        ExpressionNode {
+            omit: true,
+            body: StringTextNode {
+                text: "\\u{24}",
+                span: 0..8,
+            },
+            span: 0..9,
+        },
+        ExpressionNode {
+            omit: true,
+            body: StringTextNode {
+                text: "\\u{03D6}",
+                span: 10..20,
+            },
+            span: 10..21,
+        },
+        ExpressionNode {
+            omit: true,
+            body: StringTextNode {
+                text: "\\u{000024}",
+                span: 22..34,
+            },
+            span: 22..35,
+        },
+        ExpressionNode {
+            omit: true,
+            body: StringTextNode {
+                text: "\\u{99999999}",
+                span: 36..50,
+            },
+            span: 36..51,
+        },
+        ExpressionNode {
+            omit: true,
+            body: StringTextNode {
+                text: "\\n",
+                span: 52..56,
+            },
+            span: 52..57,
+        },
+        ExpressionNode {
+            omit: true,
+            body: StringTextNode {
+                text: "\\a",
+                span: 58..62,
+            },
+            span: 58..63,
+        },
+        ExpressionNode {
+            omit: true,
+            body: StringTextNode {
+                text: "\\\n",
+                span: 64..68,
+            },
+            span: 64..69,
+        },
+    ],
 }

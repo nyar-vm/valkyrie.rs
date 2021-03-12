@@ -1323,6 +1323,7 @@ impl YggdrasilNode for AtomicNode {
             Self::ProceduralCall(s) => s.get_range(),
             Self::RangeLiteral(s) => s.get_range(),
             Self::Special(s) => s.get_range(),
+            Self::TextLiteral(s) => s.get_range(),
             Self::TupleLiteral(s) => s.get_range(),
         }
     }
@@ -1342,6 +1343,9 @@ impl YggdrasilNode for AtomicNode {
         }
         if let Ok(s) = pair.take_tagged_one::<SpecialNode>(Cow::Borrowed("special")) {
             return Ok(Self::Special(s));
+        }
+        if let Ok(s) = pair.take_tagged_one::<TextLiteralNode>(Cow::Borrowed("text_literal")) {
+            return Ok(Self::TextLiteral(s));
         }
         if let Ok(s) = pair.take_tagged_one::<TupleLiteralNode>(Cow::Borrowed("tuple_literal")) {
             return Ok(Self::TupleLiteral(s));
@@ -2014,6 +2018,154 @@ impl FromStr for ProceduralCallNode {
 
     fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
         Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::ProceduralCall)?)
+    }
+}
+#[automatically_derived]
+impl YggdrasilNode for TextLiteralNode {
+    type Rule = ValkyrieRule;
+
+    fn get_range(&self) -> Option<Range<usize>> {
+        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    }
+    fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
+        let _span = pair.get_span();
+        Ok(Self {
+            text_content_1: pair.take_tagged_option::<TextContent1Node>(Cow::Borrowed("text_content_1")),
+            text_content_2: pair.take_tagged_option::<TextContent2Node>(Cow::Borrowed("text_content_2")),
+            text_content_3: pair.take_tagged_option::<TextContent3Node>(Cow::Borrowed("text_content_3")),
+            text_content_4: pair.take_tagged_option::<TextContent4Node>(Cow::Borrowed("text_content_4")),
+            text_content_5: pair.take_tagged_option::<TextContent5Node>(Cow::Borrowed("text_content_5")),
+            text_content_6: pair.take_tagged_option::<TextContent6Node>(Cow::Borrowed("text_content_6")),
+            span: Range { start: _span.start() as u32, end: _span.end() as u32 },
+        })
+    }
+}
+#[automatically_derived]
+impl FromStr for TextLiteralNode {
+    type Err = YggdrasilError<ValkyrieRule>;
+
+    fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::TextLiteral)?)
+    }
+}
+#[automatically_derived]
+impl YggdrasilNode for TextContent1Node {
+    type Rule = ValkyrieRule;
+
+    fn get_range(&self) -> Option<Range<usize>> {
+        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    }
+    fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
+        let _span = pair.get_span();
+        Ok(Self { text: pair.get_string(), span: Range { start: _span.start() as u32, end: _span.end() as u32 } })
+    }
+}
+#[automatically_derived]
+impl FromStr for TextContent1Node {
+    type Err = YggdrasilError<ValkyrieRule>;
+
+    fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::TEXT_CONTENT1)?)
+    }
+}
+#[automatically_derived]
+impl YggdrasilNode for TextContent2Node {
+    type Rule = ValkyrieRule;
+
+    fn get_range(&self) -> Option<Range<usize>> {
+        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    }
+    fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
+        let _span = pair.get_span();
+        Ok(Self { text: pair.get_string(), span: Range { start: _span.start() as u32, end: _span.end() as u32 } })
+    }
+}
+#[automatically_derived]
+impl FromStr for TextContent2Node {
+    type Err = YggdrasilError<ValkyrieRule>;
+
+    fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::TEXT_CONTENT2)?)
+    }
+}
+#[automatically_derived]
+impl YggdrasilNode for TextContent3Node {
+    type Rule = ValkyrieRule;
+
+    fn get_range(&self) -> Option<Range<usize>> {
+        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    }
+    fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
+        let _span = pair.get_span();
+        Ok(Self { text: pair.get_string(), span: Range { start: _span.start() as u32, end: _span.end() as u32 } })
+    }
+}
+#[automatically_derived]
+impl FromStr for TextContent3Node {
+    type Err = YggdrasilError<ValkyrieRule>;
+
+    fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::TEXT_CONTENT3)?)
+    }
+}
+#[automatically_derived]
+impl YggdrasilNode for TextContent4Node {
+    type Rule = ValkyrieRule;
+
+    fn get_range(&self) -> Option<Range<usize>> {
+        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    }
+    fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
+        let _span = pair.get_span();
+        Ok(Self { text: pair.get_string(), span: Range { start: _span.start() as u32, end: _span.end() as u32 } })
+    }
+}
+#[automatically_derived]
+impl FromStr for TextContent4Node {
+    type Err = YggdrasilError<ValkyrieRule>;
+
+    fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::TEXT_CONTENT4)?)
+    }
+}
+#[automatically_derived]
+impl YggdrasilNode for TextContent5Node {
+    type Rule = ValkyrieRule;
+
+    fn get_range(&self) -> Option<Range<usize>> {
+        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    }
+    fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
+        let _span = pair.get_span();
+        Ok(Self { text: pair.get_string(), span: Range { start: _span.start() as u32, end: _span.end() as u32 } })
+    }
+}
+#[automatically_derived]
+impl FromStr for TextContent5Node {
+    type Err = YggdrasilError<ValkyrieRule>;
+
+    fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::TEXT_CONTENT5)?)
+    }
+}
+#[automatically_derived]
+impl YggdrasilNode for TextContent6Node {
+    type Rule = ValkyrieRule;
+
+    fn get_range(&self) -> Option<Range<usize>> {
+        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    }
+    fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
+        let _span = pair.get_span();
+        Ok(Self { text: pair.get_string(), span: Range { start: _span.start() as u32, end: _span.end() as u32 } })
+    }
+}
+#[automatically_derived]
+impl FromStr for TextContent6Node {
+    type Err = YggdrasilError<ValkyrieRule>;
+
+    fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::TEXT_CONTENT6)?)
     }
 }
 #[automatically_derived]

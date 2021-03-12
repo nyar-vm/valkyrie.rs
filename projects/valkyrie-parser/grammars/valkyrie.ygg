@@ -218,6 +218,7 @@ union Atomic {
     | ProceduralCall
     | TupleLiteral
     | RangeLiteral
+    | TextLiteral
     | Namepath
     | Integer
     | Special
@@ -350,6 +351,21 @@ class ProceduralCall {
     // @call(...)
     ProceduralPath TupleLiteral?
 }
+// === text === ------------------------------------------------------------------------------------------------------
+atomic class TextLiteral {
+    | '""""' TEXT_CONTENT5 '""""'
+    | "''''" TEXT_CONTENT6 "''''"
+    | '"""' TEXT_CONTENT3 '"""'
+    | "'''" TEXT_CONTENT4 "'''"
+    | '"' TEXT_CONTENT1 '"'
+    | "'" TEXT_CONTENT2 "'"
+}
+text atomic class TEXT_CONTENT1 { [^"]* }
+text atomic class TEXT_CONTENT2 { [^']* }
+text atomic class TEXT_CONTENT3 { (!'"""' ANY)+ }
+text atomic class TEXT_CONTENT4 { (!"'''" ANY)+ }
+text atomic class TEXT_CONTENT5 { (!'""""' ANY)+ }
+text atomic class TEXT_CONTENT6 { (!"''''" ANY)+ }
 // === identifier === --------------------------------------------------------------------------------------------------
 atomic class ModifierCall ^ {
     !(KW_CLASS | KW_UNION | KW_TRAIT) ^Identifier
@@ -382,7 +398,7 @@ text class IdentifierRawText {
 text class Special {
     /[∅∞]|true|false/
 }
-// === number === ----------------------------------------------------------------------------------------------------
+// === number === ------------------------------------------------------------------------------------------------------
 text class Integer {
     /0|[1-9][0-9]*/
 }

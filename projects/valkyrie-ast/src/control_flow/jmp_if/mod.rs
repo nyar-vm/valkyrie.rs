@@ -22,7 +22,9 @@ impl ValkyrieNode for IfStatement {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct IfBranchNode {
+    /// The condition to check
     pub condition: ExpressionNode,
+    /// The body of the statement
     pub body: StatementBlock,
     /// The range of the node
     pub span: Range<u32>,

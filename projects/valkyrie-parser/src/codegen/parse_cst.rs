@@ -78,6 +78,13 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::RangeOmit => parse_range_omit(state),
         ValkyrieRule::AttributeCall => parse_attribute_call(state),
         ValkyrieRule::ProceduralCall => parse_procedural_call(state),
+        ValkyrieRule::TextLiteral => parse_text_literal(state),
+        ValkyrieRule::TEXT_CONTENT1 => parse_text_content_1(state),
+        ValkyrieRule::TEXT_CONTENT2 => parse_text_content_2(state),
+        ValkyrieRule::TEXT_CONTENT3 => parse_text_content_3(state),
+        ValkyrieRule::TEXT_CONTENT4 => parse_text_content_4(state),
+        ValkyrieRule::TEXT_CONTENT5 => parse_text_content_5(state),
+        ValkyrieRule::TEXT_CONTENT6 => parse_text_content_6(state),
         ValkyrieRule::ModifierCall => parse_modifier_call(state),
         ValkyrieRule::AttributePath => parse_attribute_path(state),
         ValkyrieRule::ProceduralPath => parse_procedural_path(state),
@@ -1053,6 +1060,7 @@ fn parse_atomic(state: Input) -> Output {
             .or_else(|s| parse_procedural_call(s).and_then(|s| s.tag_node("procedural_call")))
             .or_else(|s| parse_tuple_literal(s).and_then(|s| s.tag_node("tuple_literal")))
             .or_else(|s| parse_range_literal(s).and_then(|s| s.tag_node("range_literal")))
+            .or_else(|s| parse_text_literal(s).and_then(|s| s.tag_node("text_literal")))
             .or_else(|s| parse_namepath(s).and_then(|s| s.tag_node("namepath")))
             .or_else(|s| parse_integer(s).and_then(|s| s.tag_node("integer")))
             .or_else(|s| parse_special(s).and_then(|s| s.tag_node("special")))
@@ -1542,6 +1550,122 @@ fn parse_procedural_call(state: Input) -> Output {
                 .and_then(|s| parse_procedural_path(s).and_then(|s| s.tag_node("procedural_path")))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| s.optional(|s| parse_tuple_literal(s).and_then(|s| s.tag_node("tuple_literal"))))
+        })
+    })
+}
+#[inline]
+fn parse_text_literal(state: Input) -> Output {
+    state.rule(ValkyrieRule::TextLiteral, |s| {
+        Err(s)
+            .or_else(|s| {
+                s.sequence(|s| {
+                    Ok(s)
+                        .and_then(|s| builtin_text(s, "\"\"\"\"", false))
+                        .and_then(|s| parse_text_content_5(s).and_then(|s| s.tag_node("text_content_5")))
+                        .and_then(|s| builtin_text(s, "\"\"\"\"", false))
+                })
+            })
+            .or_else(|s| {
+                s.sequence(|s| {
+                    Ok(s)
+                        .and_then(|s| builtin_text(s, "''''", false))
+                        .and_then(|s| parse_text_content_6(s).and_then(|s| s.tag_node("text_content_6")))
+                        .and_then(|s| builtin_text(s, "''''", false))
+                })
+            })
+            .or_else(|s| {
+                s.sequence(|s| {
+                    Ok(s)
+                        .and_then(|s| builtin_text(s, "\"\"\"", false))
+                        .and_then(|s| parse_text_content_3(s).and_then(|s| s.tag_node("text_content_3")))
+                        .and_then(|s| builtin_text(s, "\"\"\"", false))
+                })
+            })
+            .or_else(|s| {
+                s.sequence(|s| {
+                    Ok(s)
+                        .and_then(|s| builtin_text(s, "'''", false))
+                        .and_then(|s| parse_text_content_4(s).and_then(|s| s.tag_node("text_content_4")))
+                        .and_then(|s| builtin_text(s, "'''", false))
+                })
+            })
+            .or_else(|s| {
+                s.sequence(|s| {
+                    Ok(s)
+                        .and_then(|s| builtin_text(s, "\"", false))
+                        .and_then(|s| parse_text_content_1(s).and_then(|s| s.tag_node("text_content_1")))
+                        .and_then(|s| builtin_text(s, "\"", false))
+                })
+            })
+            .or_else(|s| {
+                s.sequence(|s| {
+                    Ok(s)
+                        .and_then(|s| builtin_text(s, "'", false))
+                        .and_then(|s| parse_text_content_2(s).and_then(|s| s.tag_node("text_content_2")))
+                        .and_then(|s| builtin_text(s, "'", false))
+                })
+            })
+    })
+}
+#[inline]
+fn parse_text_content_1(state: Input) -> Output {
+    state.rule(ValkyrieRule::TEXT_CONTENT1, |s| {
+        s.repeat(0..4294967295, |s| {
+            builtin_regex(s, {
+                static REGEX: OnceLock<Regex> = OnceLock::new();
+                REGEX.get_or_init(|| Regex::new("^(?x)([^\"])").unwrap())
+            })
+        })
+    })
+}
+#[inline]
+fn parse_text_content_2(state: Input) -> Output {
+    state.rule(ValkyrieRule::TEXT_CONTENT2, |s| {
+        s.repeat(0..4294967295, |s| {
+            builtin_regex(s, {
+                static REGEX: OnceLock<Regex> = OnceLock::new();
+                REGEX.get_or_init(|| Regex::new("^(?x)([^'])").unwrap())
+            })
+        })
+    })
+}
+#[inline]
+fn parse_text_content_3(state: Input) -> Output {
+    state.rule(ValkyrieRule::TEXT_CONTENT3, |s| {
+        s.repeat(1..4294967295, |s| {
+            s.sequence(|s| {
+                Ok(s).and_then(|s| s.lookahead(false, |s| builtin_text(s, "\"\"\"", false))).and_then(|s| builtin_any(s))
+            })
+        })
+    })
+}
+#[inline]
+fn parse_text_content_4(state: Input) -> Output {
+    state.rule(ValkyrieRule::TEXT_CONTENT4, |s| {
+        s.repeat(1..4294967295, |s| {
+            s.sequence(|s| {
+                Ok(s).and_then(|s| s.lookahead(false, |s| builtin_text(s, "'''", false))).and_then(|s| builtin_any(s))
+            })
+        })
+    })
+}
+#[inline]
+fn parse_text_content_5(state: Input) -> Output {
+    state.rule(ValkyrieRule::TEXT_CONTENT5, |s| {
+        s.repeat(1..4294967295, |s| {
+            s.sequence(|s| {
+                Ok(s).and_then(|s| s.lookahead(false, |s| builtin_text(s, "\"\"\"\"", false))).and_then(|s| builtin_any(s))
+            })
+        })
+    })
+}
+#[inline]
+fn parse_text_content_6(state: Input) -> Output {
+    state.rule(ValkyrieRule::TEXT_CONTENT6, |s| {
+        s.repeat(1..4294967295, |s| {
+            s.sequence(|s| {
+                Ok(s).and_then(|s| s.lookahead(false, |s| builtin_text(s, "''''", false))).and_then(|s| builtin_any(s))
+            })
         })
     })
 }

@@ -1,11 +1,11 @@
 use crate::{
     helpers::ProgramContext, AtomicNode, RangeLiteralNode, SpecialNode, SubscriptAxisNode, SubscriptOnlyNode,
-    SubscriptRangeNode, TupleLiteralNode,
+    SubscriptRangeNode, TextLiteralNode, TupleLiteralNode,
 };
 use nyar_error::{Failure, Success, Validate, Validation};
 use valkyrie_ast::{
     BooleanNode, ExpressionType, IdentifierNode, NamePathNode, NumberLiteralNode, RangeKind, RangeNode, RangeTermNode,
-    TupleNode,
+    StringTextNode, TupleNode,
 };
 use yggdrasil_rt::YggdrasilNode;
 
@@ -27,6 +27,7 @@ impl AtomicNode {
             }
             AtomicNode::RangeLiteral(v) => v.build(ctx)?.into(),
             AtomicNode::TupleLiteral(v) => v.build(ctx)?.into(),
+            AtomicNode::TextLiteral(v) => v.build().into(),
         };
         Success { value, diagnostics: vec![] }
     }
