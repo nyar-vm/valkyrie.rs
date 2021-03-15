@@ -27,10 +27,10 @@ pub use crate::{
         annotations::{
             AnnotationKind, AnnotationList, AnnotationNode, AnnotationPathNode, AnnotationTerm, ModifiedNode, ModifiersNode,
         },
-        apply::{ApplyArgument, ApplyArgumentTerm, ApplyCallItem, ApplyCallNode, ApplyCallTerms, ApplyCaller, ArgumentKeyNode},
+        argument::{ApplyCallItem, ApplyCallNode, ApplyCallTerms, ApplyCaller, ArgumentKey, ArgumentNode, ArgumentTerm},
         common::{ArgumentTermNode, CallNode, CallTermNode, MonadicCall, MonadicDotCall},
         ctor::{CollectsNode, NewConstructNode},
-        generic::{GenericArgument, GenericArgumentTerm, GenericCallNode, GenericCallTerm},
+        generic::{GenericCallNode, GenericCallTerm, ParameterArgument, ParameterTerm},
         lambda::{ClosureCallNode, ClosureCaller, FunctionBlock, LambdaNode},
         matches::{MatchDotStatement, MatchKind},
         number::NumberLiteralNode,

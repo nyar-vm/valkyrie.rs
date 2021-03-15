@@ -3,14 +3,33 @@ mod display;
 
 use super::*;
 
+/// The kind of the parameter node
+pub enum ParameterKind {
+    /// `a: Type = null`
+    Expression,
+    /// `T: Trait = ()`
+    Generic,
+}
+
 /// `class A⦓T: S = K⦔` or `class A::(T: S = K)`
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct GenericArgument {
+pub struct ParameterArgument {
+    /// The kind of the parameter node
+    pub kind: ParameterKind,
     /// The raw string of the number.
-    pub terms: Vec<GenericArgumentTerm>,
+    pub terms: Vec<ParameterTerm>,
     /// The range of the node
     pub span: Range<u32>,
+}
+
+/// `T: Type = type_expression`
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ParameterTerm {
+    pub key: IdentifierNode,
+    pub value: Option<ExpressionNode>,
+    pub default: Option<ExpressionNode>,
 }
 
 /// `A⦓T⦔` or `A::(T)` or `A(G: T)`
@@ -21,14 +40,6 @@ pub struct GenericCallNode {
     pub terms: Vec<GenericCallTerm>,
     /// The range of the node
     pub span: Range<u32>,
-}
-
-/// `T: Type = type_expression`
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct GenericArgumentTerm {
-    /// Typed generic argument term
-    pub term: ArgumentTermNode<IdentifierNode, ExpressionNode, ExpressionNode>,
 }
 
 /// `T: Type + Trait`

@@ -21,8 +21,8 @@ pub struct FunctionDeclaration {
     pub namepath: NamePathNode,
     pub modifiers: Vec<IdentifierNode>,
     pub attributes: Option<String>,
-    pub generic: Option<GenericArgument>,
-    pub arguments: ApplyArgument,
+    pub generic: Option<ParameterArgument>,
+    pub arguments: ArgumentNode,
     pub r#return: Option<FunctionReturnNode>,
     pub body: StatementBlock,
 }
@@ -31,9 +31,9 @@ pub struct FunctionDeclaration {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct FunctionDeclarationInline {
-    pub generic: GenericArgument,
+    pub generic: ParameterArgument,
     /// The range of the number.
-    pub arguments: ApplyArgument,
+    pub arguments: ArgumentNode,
     pub r#return: Option<ExpressionNode>,
     pub body: StatementBlock,
 }

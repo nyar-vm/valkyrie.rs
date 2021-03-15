@@ -26,6 +26,7 @@ impl Display for StringLiteralNode {
     }
 }
 
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for StringLiteralNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         theme.string(self.to_string())

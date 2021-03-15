@@ -1,6 +1,6 @@
 use super::*;
 use nyar_error::FileSpan;
-#[cfg(feature = "pretty-print")]
+
 mod display;
 
 /// Pure text of a string literal.

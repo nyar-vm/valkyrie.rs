@@ -1,5 +1,5 @@
 pub mod annotations;
-pub mod apply;
+pub mod argument;
 pub mod common;
 pub mod ctor;
 mod dispatch;

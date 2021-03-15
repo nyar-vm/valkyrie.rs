@@ -168,31 +168,21 @@ impl SuffixOperatorNode {
 }
 
 impl MainSuffixNode {
-    pub fn as_token(&self, ctx: &ProgramContext) -> Validation<TokenStream> {
+    fn as_token(&self, ctx: &ProgramContext) -> Validation<TokenStream> {
         let token = match self {
-            MainSuffixNode::InlineSuffix(v) => match v {
-                InlineSuffixNode::InlineSuffix0(v) => TokenStream::Postfix(v.as_operator()),
-                InlineSuffixNode::RangeCall(v) => TokenStream::Subscript(v.build(ctx)?),
-                InlineSuffixNode::TupleCall(v) => TokenStream::Apply(v.build(ctx)?),
-            },
+            MainSuffixNode::InlineSuffix(v) => v.as_token(ctx)?,
         };
         Success { value: token, diagnostics: vec![] }
     }
 }
 
 impl InlineSuffixNode {
-    pub fn as_operator(&self) -> OperatorNode {
-        match self {
-            InlineSuffixNode::InlineSuffix0(v) => {}
-            InlineSuffixNode::RangeCall(_) => {}
-            InlineSuffixNode::TupleCall(_) => {}
-        }
-
-        todo!()
-        // let o = match self.text.as_str() {
-        //     "!" => ValkyrieOperator::Not,
-        //     _ => unimplemented!("{} is not a valid prefix operator", self.text),
-        // };
-        // OperatorNode { kind: o, span: self.span.clone() }
+    pub fn as_token(&self, ctx: &ProgramContext) -> Validation<TokenStream> {
+        let token = match self {
+            InlineSuffixNode::InlineSuffix0(v) => TokenStream::Postfix(v.as_operator()),
+            InlineSuffixNode::RangeCall(v) => TokenStream::Subscript(v.build(ctx)?),
+            InlineSuffixNode::TupleCall(v) => TokenStream::Apply(v.build(ctx)?),
+        };
+        Success { value: token, diagnostics: vec![] }
     }
 }

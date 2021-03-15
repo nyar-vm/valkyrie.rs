@@ -8,7 +8,7 @@ impl ThisParser for CallNode<ApplyDotNode> {
 
     fn lispify(&self) -> Lisp {
         let mut lisp = Lisp::new(3);
-        lisp += Lisp::keyword("call/apply-dot");
+        lisp += Lisp::keyword("call/argument-dot");
         lisp += self.base.lispify();
         lisp += self.rest.lispify();
         lisp

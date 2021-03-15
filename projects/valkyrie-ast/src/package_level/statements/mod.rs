@@ -46,9 +46,9 @@ pub enum StatementNode {
     LetBind(Box<LetBindNode>),
     /// The guard statement node.
     Guard(Box<GuardStatement>),
-    /// The apply argument node.
+    /// The argument argument node.
     Control(Box<ControlNode>),
-    /// The apply argument node.
+    /// The argument argument node.
     Expression(Box<ExpressionNode>),
 }
 

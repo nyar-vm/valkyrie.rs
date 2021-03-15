@@ -1089,7 +1089,7 @@ fn parse_main_infix(state: Input) -> Output {
     | [∈∊∉∋∍∌]
     | (not\\s+)?in
     | is(\\s+not)?
-    # map, apply
+    # map, argument
     | /@ | [⇴⨵⊕⟴] | @{2,3})",
                 )
                 .unwrap()

@@ -1,6 +1,6 @@
 use super::*;
 use crate::{TupleKeyNode, TuplePairNode};
-use valkyrie_ast::{ApplyArgument, ApplyCallNode, SubscriptCallNode, TupleKeyType, TupleTermNode};
+use valkyrie_ast::{ApplyCallNode, ArgumentNode, SubscriptCallNode, TupleKeyType, TupleTermNode};
 
 impl TupleLiteralNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<TupleNode> {

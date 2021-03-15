@@ -47,7 +47,7 @@ pub struct ForLoop {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub struct ForBarePattern {
     /// The bare tuple pattern
-    pub pattern: Vec<ArgumentKeyNode>,
+    pub pattern: Vec<ArgumentKey>,
     /// The range of the node
     pub span: Range<u32>,
 }

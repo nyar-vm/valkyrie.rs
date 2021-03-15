@@ -1,6 +1,6 @@
 mod display;
 
-use crate::{ArgumentKeyNode, ExpressionNode, IdentifierNode, ModifiersNode, NamePathNode, StatementNode};
+use crate::{ArgumentKey, ExpressionNode, IdentifierNode, ModifiersNode, NamePathNode, StatementNode};
 use alloc::{boxed::Box, vec, vec::Vec};
 use core::ops::Range;
 use deriver::From;
@@ -123,7 +123,7 @@ pub struct PatternCaseNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum LetPattern {
     /// `a, 'string', number, bool`
-    Symbol(Box<ArgumentKeyNode>),
+    Symbol(Box<ArgumentKey>),
     /// `(mut a, mut b)`
     Tuple(Box<TuplePatternNode>),
     /// `{ mut a: b, mut c: d }`

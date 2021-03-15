@@ -32,7 +32,7 @@ impl Lispify for ApplyCallNode {
 
     fn lispify(&self) -> Self::Output {
         let mut lisp = Lisp::new(10);
-        lisp += Lisp::keyword("apply");
+        lisp += Lisp::keyword("argument");
         match &self.arguments {
             Some(s) => {
                 lisp += s.lispify();
@@ -66,13 +66,13 @@ impl Lispify for ApplyCallItem {
     }
 }
 
-impl PrettyPrint for ApplyArgument {
+impl PrettyPrint for ArgumentNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         PrettyTree::text("(").append(theme.join(self.terms.clone(), ", ")).append(")")
     }
 }
 #[cfg(feature = "lispify")]
-impl Lispify for ApplyArgument {
+impl Lispify for ArgumentNode {
     type Output = Lisp;
 
     fn lispify(&self) -> Self::Output {
@@ -84,14 +84,14 @@ impl Lispify for ApplyArgument {
     }
 }
 
-impl PrettyPrint for ApplyArgumentTerm {
+impl PrettyPrint for ArgumentTerm {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         self.term.pretty(theme)
     }
 }
 
 #[cfg(feature = "lispify")]
-impl Lispify for ApplyArgumentTerm {
+impl Lispify for ArgumentTerm {
     type Output = Lisp;
 
     fn lispify(&self) -> Self::Output {
@@ -99,7 +99,7 @@ impl Lispify for ApplyArgumentTerm {
     }
 }
 
-impl PrettyPrint for ArgumentKeyNode {
+impl PrettyPrint for ArgumentKey {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mods = self.modifiers.pretty(theme);
         let key = theme.argument(self.key.name.clone(), false);

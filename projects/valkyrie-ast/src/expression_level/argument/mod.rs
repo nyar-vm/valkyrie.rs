@@ -3,12 +3,18 @@ use super::*;
 #[cfg(feature = "pretty-print")]
 mod display;
 
-/// `(mut self, a, b: int, c: T = 3, ⁑args, ⁂kwargs)`
+/// `(mut self, a: Type = A), <T: Expression = ()>`
+///
+///
+///
+/// ```v
+/// (mut self, a, b: int, c: T = 3, ⁑args, ⁂kwargs)
+/// ```
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ApplyArgument {
+pub struct ArgumentNode {
     /// The raw string of the number.
-    pub terms: Vec<ApplyArgumentTerm>,
+    pub terms: Vec<ArgumentTerm>,
     /// The range of the number.
     pub span: Range<u32>,
 }
@@ -16,19 +22,21 @@ pub struct ApplyArgument {
 /// `mut self: T? = null, ⁑args, ⁂kwargs`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ApplyArgumentTerm {
-    pub term: ArgumentTermNode<ArgumentKeyNode, ExpressionNode, ExpressionNode>,
+pub struct ArgumentTerm {
+    pub key: ArgumentKey,
+    pub value: Option<ExpressionNode>,
+    pub default: Option<ExpressionNode>,
 }
 
 /// `mod1 mod2 args`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ArgumentKeyNode {
+pub struct ArgumentKey {
     pub modifiers: ModifiersNode,
     pub key: IdentifierNode,
 }
 
-/// `apply(0, a: 1, ⁑args, ⁂kwargs)`
+/// `argument(0, a: 1, ⁑args, ⁂kwargs)`
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ApplyCallNode {
@@ -36,7 +44,7 @@ pub struct ApplyCallNode {
     pub base: ExpressionType,
     /// Weather it is a monadic call
     pub monadic: bool,
-    /// The caller of apply
+    /// The caller of argument
     pub caller: ApplyCaller,
     /// The raw string of the number.
     pub arguments: Option<ApplyCallTerms>,
