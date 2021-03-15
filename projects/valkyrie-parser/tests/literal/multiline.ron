@@ -2,24 +2,34 @@ ProgramRoot {
     statements: [
         ExpressionNode {
             omit: true,
-            body: StringTextNode {
-                text: "\n$x\n\n${y}\n${{}\n",
-                span: 0..23,
+            body: StringLiteralNode {
+                literal: StringTextNode {
+                    text: "\n$x\n\n${y}\n${{}\n",
+                    span: 0..23,
+                },
+                handler: None,
             },
             span: 0..24,
         },
         ExpressionNode {
-            omit: false,
-            body: json,
-            span: 27..31,
-        },
-        ExpressionNode {
             omit: true,
-            body: StringTextNode {
-                text: "\n{\n    x: 1\n    y: 2\n}\n",
-                span: 31..60,
+            body: StringLiteralNode {
+                literal: StringTextNode {
+                    text: "\n{\n    x: 1\n    y: 2\n}\n",
+                    span: 31..60,
+                },
+                handler: Some(
+                    IdentifierNode {
+                        name: "json",
+                        span: FileSpan {
+                            start: 27,
+                            end: 31,
+                            file: FileID(0x527BED2BB200F6AD),
+                        },
+                    },
+                ),
             },
-            span: 31..61,
+            span: 27..61,
         },
     ],
 }

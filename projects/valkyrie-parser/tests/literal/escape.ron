@@ -2,57 +2,78 @@ ProgramRoot {
     statements: [
         ExpressionNode {
             omit: true,
-            body: StringTextNode {
-                text: "\\u{24}",
-                span: 0..8,
+            body: StringLiteralNode {
+                literal: StringTextNode {
+                    text: "\\u{24}",
+                    span: 0..8,
+                },
+                handler: None,
             },
             span: 0..9,
         },
         ExpressionNode {
             omit: true,
-            body: StringTextNode {
-                text: "\\u{03D6}",
-                span: 10..20,
+            body: StringLiteralNode {
+                literal: StringTextNode {
+                    text: "\\u{03D6}",
+                    span: 10..20,
+                },
+                handler: None,
             },
             span: 10..21,
         },
         ExpressionNode {
             omit: true,
-            body: StringTextNode {
-                text: "\\u{000024}",
-                span: 22..34,
+            body: StringLiteralNode {
+                literal: StringTextNode {
+                    text: "\\u{000024}",
+                    span: 22..34,
+                },
+                handler: None,
             },
             span: 22..35,
         },
         ExpressionNode {
             omit: true,
-            body: StringTextNode {
-                text: "\\u{99999999}",
-                span: 36..50,
+            body: StringLiteralNode {
+                literal: StringTextNode {
+                    text: "\\u{99999999}",
+                    span: 36..50,
+                },
+                handler: None,
             },
             span: 36..51,
         },
         ExpressionNode {
             omit: true,
-            body: StringTextNode {
-                text: "\\n",
-                span: 52..56,
+            body: StringLiteralNode {
+                literal: StringTextNode {
+                    text: "\\n",
+                    span: 52..56,
+                },
+                handler: None,
             },
             span: 52..57,
         },
         ExpressionNode {
             omit: true,
-            body: StringTextNode {
-                text: "\\a",
-                span: 58..62,
+            body: StringLiteralNode {
+                literal: StringTextNode {
+                    text: "\\a",
+                    span: 58..62,
+                },
+                handler: None,
             },
             span: 58..63,
         },
         ExpressionNode {
             omit: true,
-            body: StringTextNode {
-                text: "\\\n",
-                span: 64..68,
+            body: StringLiteralNode {
+                literal: StringTextNode {
+                    text: "\\\n",
+                    span: 64..68,
+                },
+                handler: None,
             },
             span: 64..69,
         },

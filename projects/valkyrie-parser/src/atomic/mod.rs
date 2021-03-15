@@ -1,14 +1,13 @@
 use crate::{
     helpers::ProgramContext, AtomicNode, RangeLiteralNode, SpecialNode, SubscriptAxisNode, SubscriptOnlyNode,
-    SubscriptRangeNode, TextLiteralNode, TupleLiteralNode,
+    SubscriptRangeNode, TupleLiteralNode,
 };
 use nyar_error::{Failure, Success, Validate, Validation};
 use valkyrie_ast::{
     BooleanNode, ExpressionType, IdentifierNode, NamePathNode, NumberLiteralNode, RangeKind, RangeNode, RangeTermNode,
-    StringTextNode, TupleNode,
+    StringLiteralNode, StringTextNode, TupleNode,
 };
 use yggdrasil_rt::YggdrasilNode;
-
 mod bytes;
 mod identifier;
 mod number;
@@ -27,7 +26,7 @@ impl AtomicNode {
             }
             AtomicNode::RangeLiteral(v) => v.build(ctx)?.into(),
             AtomicNode::TupleLiteral(v) => v.build(ctx)?.into(),
-            AtomicNode::TextLiteral(v) => v.build().into(),
+            AtomicNode::TextLiteral(v) => v.build(ctx).into(),
         };
         Success { value, diagnostics: vec![] }
     }

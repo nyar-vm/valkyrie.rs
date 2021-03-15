@@ -13,16 +13,14 @@ pub struct StringTextNode {
     pub span: Range<u32>,
 }
 
-/// A number literal.
+/// `handler"text"`, a string literal with a handler.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct StringLiteralNode {
     /// The raw string of the number.
-    pub literal: String,
+    pub literal: StringTextNode,
     /// The unit of the number, if any.
     pub handler: Option<IdentifierNode>,
-    /// The range of the node
-    pub span: Range<u32>,
 }
 impl ValkyrieNode for StringTextNode {
     fn get_range(&self) -> Range<usize> {
@@ -31,7 +29,10 @@ impl ValkyrieNode for StringTextNode {
 }
 impl ValkyrieNode for StringLiteralNode {
     fn get_range(&self) -> Range<usize> {
-        Range { start: self.span.start as usize, end: self.span.end as usize }
+        match &self.handler {
+            Some(s) => Range { start: s.span.get_start(), end: self.literal.span.end as usize },
+            None => self.literal.get_range(),
+        }
     }
 }
 impl StringTextNode {
@@ -46,16 +47,12 @@ impl StringTextNode {
 }
 
 impl StringLiteralNode {
-    /// Create a text node with unknown handler
-    pub fn new<S: ToString>(value: S, start: u32, end: u32) -> Self {
-        Self { literal: value.to_string(), handler: None, span: start..end }
-    }
     /// Convert to a raw string
     pub fn as_raw(&self) -> StringTextNode {
-        StringTextNode { text: self.literal.clone(), span: self.span.clone() }
+        self.literal.clone()
     }
     pub fn as_escaped(&self) -> String {
-        self.literal.clone()
+        self.literal.text.clone()
     }
 
     /// Attack a handler to the unit of the number.

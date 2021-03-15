@@ -2,6 +2,7 @@ grammar Valkyrie {
 
 }
 
+// === statements === -----------------------------------------------------------------
 entry class Program {
     Statement*
 }
@@ -353,6 +354,9 @@ class ProceduralCall {
 }
 // === text === ------------------------------------------------------------------------------------------------------
 atomic class TextLiteral {
+    Identifier? TextRaw
+}
+atomic class TextRaw {
     | '""""' TEXT_CONTENT5 '""""'
     | "''''" TEXT_CONTENT6 "''''"
     | '"""' TEXT_CONTENT3 '"""'

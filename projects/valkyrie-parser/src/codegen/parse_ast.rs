@@ -2030,6 +2030,30 @@ impl YggdrasilNode for TextLiteralNode {
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
         Ok(Self {
+            identifier: pair.take_tagged_option::<IdentifierNode>(Cow::Borrowed("identifier")),
+            text_raw: pair.take_tagged_one::<TextRawNode>(Cow::Borrowed("text_raw"))?,
+            span: Range { start: _span.start() as u32, end: _span.end() as u32 },
+        })
+    }
+}
+#[automatically_derived]
+impl FromStr for TextLiteralNode {
+    type Err = YggdrasilError<ValkyrieRule>;
+
+    fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::TextLiteral)?)
+    }
+}
+#[automatically_derived]
+impl YggdrasilNode for TextRawNode {
+    type Rule = ValkyrieRule;
+
+    fn get_range(&self) -> Option<Range<usize>> {
+        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    }
+    fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
+        let _span = pair.get_span();
+        Ok(Self {
             text_content_1: pair.take_tagged_option::<TextContent1Node>(Cow::Borrowed("text_content_1")),
             text_content_2: pair.take_tagged_option::<TextContent2Node>(Cow::Borrowed("text_content_2")),
             text_content_3: pair.take_tagged_option::<TextContent3Node>(Cow::Borrowed("text_content_3")),
@@ -2041,11 +2065,11 @@ impl YggdrasilNode for TextLiteralNode {
     }
 }
 #[automatically_derived]
-impl FromStr for TextLiteralNode {
+impl FromStr for TextRawNode {
     type Err = YggdrasilError<ValkyrieRule>;
 
     fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
-        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::TextLiteral)?)
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::TextRaw)?)
     }
 }
 #[automatically_derived]

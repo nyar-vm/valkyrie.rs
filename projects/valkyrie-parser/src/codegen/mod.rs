@@ -107,6 +107,7 @@ pub enum ValkyrieRule {
     AttributeCall,
     ProceduralCall,
     TextLiteral,
+    TextRaw,
     TEXT_CONTENT1,
     TEXT_CONTENT2,
     TEXT_CONTENT3,
@@ -241,6 +242,7 @@ impl YggdrasilRule for ValkyrieRule {
             Self::AttributeCall => "",
             Self::ProceduralCall => "",
             Self::TextLiteral => "",
+            Self::TextRaw => "",
             Self::TEXT_CONTENT1 => "",
             Self::TEXT_CONTENT2 => "",
             Self::TEXT_CONTENT3 => "",
@@ -821,6 +823,13 @@ pub struct ProceduralCallNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct TextLiteralNode {
+    pub identifier: Option<IdentifierNode>,
+    pub text_raw: TextRawNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct TextRawNode {
     pub text_content_1: Option<TextContent1Node>,
     pub text_content_2: Option<TextContent2Node>,
     pub text_content_3: Option<TextContent3Node>,

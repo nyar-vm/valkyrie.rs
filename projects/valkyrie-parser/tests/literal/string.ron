@@ -8,7 +8,7 @@ ProgramRoot {
                     span: FileSpan {
                         start: 11,
                         end: 16,
-                        file: FileID(0x25FFDFBF95AE6AF9),
+                        file: FileID(0xD95016C13DF19A51),
                     },
                 },
                 IdentifierNode {
@@ -16,7 +16,7 @@ ProgramRoot {
                     span: FileSpan {
                         start: 17,
                         end: 24,
-                        file: FileID(0x25FFDFBF95AE6AF9),
+                        file: FileID(0xD95016C13DF19A51),
                     },
                 },
                 IdentifierNode {
@@ -24,7 +24,7 @@ ProgramRoot {
                     span: FileSpan {
                         start: 25,
                         end: 31,
-                        file: FileID(0x25FFDFBF95AE6AF9),
+                        file: FileID(0xD95016C13DF19A51),
                     },
                 },
             ],
@@ -32,56 +32,78 @@ ProgramRoot {
         },
         ExpressionNode {
             omit: true,
-            body: StringTextNode {
-                text: "",
-                span: 34..36,
+            body: StringLiteralNode {
+                literal: StringTextNode {
+                    text: "",
+                    span: 34..36,
+                },
+                handler: None,
             },
             span: 34..37,
         },
         ExpressionNode {
             omit: true,
-            body: StringTextNode {
-                text: "",
-                span: 38..40,
+            body: StringLiteralNode {
+                literal: StringTextNode {
+                    text: "",
+                    span: 38..40,
+                },
+                handler: None,
             },
             span: 38..41,
         },
         ExpressionNode {
             omit: true,
-            body: StringTextNode {
-                text: "'",
-                span: 42..45,
+            body: StringLiteralNode {
+                literal: StringTextNode {
+                    text: "'",
+                    span: 42..45,
+                },
+                handler: None,
             },
             span: 42..46,
         },
         ExpressionNode {
             omit: true,
-            body: StringTextNode {
-                text: "\"",
-                span: 47..50,
+            body: StringLiteralNode {
+                literal: StringTextNode {
+                    text: "\"",
+                    span: 47..50,
+                },
+                handler: None,
             },
             span: 47..51,
         },
         ExpressionNode {
             omit: true,
-            body: StringTextNode {
-                text: "\\n",
-                span: 53..57,
+            body: StringLiteralNode {
+                literal: StringTextNode {
+                    text: "\\n",
+                    span: 53..57,
+                },
+                handler: None,
             },
             span: 53..58,
         },
         ExpressionNode {
-            omit: false,
-            body: r,
-            span: 59..60,
-        },
-        ExpressionNode {
             omit: true,
-            body: StringTextNode {
-                text: "\\n",
-                span: 60..64,
+            body: StringLiteralNode {
+                literal: StringTextNode {
+                    text: "\\n",
+                    span: 60..64,
+                },
+                handler: Some(
+                    IdentifierNode {
+                        name: "r",
+                        span: FileSpan {
+                            start: 59,
+                            end: 60,
+                            file: FileID(0xD95016C13DF19A51),
+                        },
+                    },
+                ),
             },
-            span: 60..65,
+            span: 59..65,
         },
     ],
 }

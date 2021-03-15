@@ -20,10 +20,10 @@ pub mod traits;
 use crate::{
     AnnotationList, AnnotationNode, ApplyArgument, ArgumentTermNode, ClassDeclaration, ClassFieldDeclaration,
     ClassMethodDeclaration, ControlNode, DocumentationNode, EnumerateDeclaration, EnumerateFieldDeclaration, ExpressionNode,
-    ExpressionType, FlagsDeclaration, ForLoop, FunctionDeclaration, FunctionEffectNode, FunctionReturnNode, GenericArgument,
-    GuardStatement, IdentifierNode, ImportStatement, LetBindNode, LetPattern, ModifiersNode, NamePathNode,
-    NamespaceDeclaration, StatementBlock, StatementNode, StringLiteralNode, StringTextNode, TaggedDeclaration,
-    UnionDeclaration, UnionFieldDeclaration, VariantDeclaration, WhileLoop,
+    ExpressionType, ExtendsStatement, FlagsDeclaration, ForLoop, FunctionDeclaration, FunctionEffectNode, FunctionReturnNode,
+    GenericArgument, GuardStatement, IdentifierNode, ImportStatement, LetBindNode, LetPattern, ModifiersNode, NamePathNode,
+    NamespaceDeclaration, StatementBlock, StatementNode, StringTextNode, TaggedDeclaration, TraitDeclaration, UnionDeclaration,
+    UnionFieldDeclaration, VariantDeclaration, WhileLoop,
 };
 use alloc::{
     boxed::Box,

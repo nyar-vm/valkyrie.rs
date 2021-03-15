@@ -79,6 +79,7 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::AttributeCall => parse_attribute_call(state),
         ValkyrieRule::ProceduralCall => parse_procedural_call(state),
         ValkyrieRule::TextLiteral => parse_text_literal(state),
+        ValkyrieRule::TextRaw => parse_text_raw(state),
         ValkyrieRule::TEXT_CONTENT1 => parse_text_content_1(state),
         ValkyrieRule::TEXT_CONTENT2 => parse_text_content_2(state),
         ValkyrieRule::TEXT_CONTENT3 => parse_text_content_3(state),
@@ -1556,6 +1557,16 @@ fn parse_procedural_call(state: Input) -> Output {
 #[inline]
 fn parse_text_literal(state: Input) -> Output {
     state.rule(ValkyrieRule::TextLiteral, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| s.optional(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier"))))
+                .and_then(|s| parse_text_raw(s).and_then(|s| s.tag_node("text_raw")))
+        })
+    })
+}
+#[inline]
+fn parse_text_raw(state: Input) -> Output {
+    state.rule(ValkyrieRule::TextRaw, |s| {
         Err(s)
             .or_else(|s| {
                 s.sequence(|s| {
