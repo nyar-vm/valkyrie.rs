@@ -34,7 +34,7 @@ pub use crate::{
         matches::{MatchDotStatement, MatchKind},
         number::NumberLiteralNode,
         operators::{BinaryNode, LogicMatrix, OperatorNode, UnaryNode, ValkyrieOperator},
-        parameter::{GenericCallNode, GenericCallTerm, ParameterArgument, ParameterTerm},
+        parameter::{GenericCallNode, GenericCallTerm, ParameterArgument, ParameterKind, ParameterTerm},
         range::{RangeKind, RangeNode, RangeTermNode, SubscriptCallNode},
         symbol::{BooleanNode, IdentifierNode, LambdaSlotNode, NamePathNode, NullNode, OutputNode},
         tuple::{TupleKeyType, TupleKind, TupleNode, TupleTermNode},

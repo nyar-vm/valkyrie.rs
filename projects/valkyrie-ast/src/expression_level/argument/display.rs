@@ -85,8 +85,8 @@ impl Lispify for ArgumentNode {
 }
 
 impl PrettyPrint for ArgumentTerm {
-    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
-        self.term.pretty(theme)
+    fn pretty(&self, _: &PrettyProvider) -> PrettyTree {
+        todo!()
     }
 }
 

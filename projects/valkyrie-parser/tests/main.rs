@@ -59,11 +59,11 @@ fn read_io(dir: &str, file: &str) -> std::io::Result<(String, String, PathBuf)> 
 
 #[test]
 fn reexport_all() {
-    find_all("literal").ok();
-    find_all("expression").ok();
+    find_all("literal", false).ok();
+    find_all("expression", false).ok();
 }
 
-fn find_all(dir: &str) -> anyhow::Result<()> {
+fn find_all(dir: &str, debug: bool) -> anyhow::Result<()> {
     let mut cache = FileCache::default();
     let path = here().join(dir).canonicalize()?;
     if !path.is_dir() {
@@ -76,12 +76,16 @@ fn find_all(dir: &str) -> anyhow::Result<()> {
             _ => continue,
         }
         if let Ok(o) = Url::from_file_path(&path) {
-            println!("Short Form: {}", o)
+            if debug {
+                println!("Short Form: {}", o)
+            }
         }
         let file = cache.load_local(path.canonicalize()?)?;
         let text = cache.fetch(&file)?.to_string();
         let cst = ValkyrieParser::parse_cst(&text, ValkyrieRule::Program).unwrap();
-        println!("{}", cst);
+        if debug {
+            println!("{}", cst);
+        }
         let ast = match ProgramNode::from_str(&text) {
             Ok(o) => o,
             Err(e) => {

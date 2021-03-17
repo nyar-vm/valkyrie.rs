@@ -12,6 +12,6 @@ impl crate::DefineNamespaceNode {
                 OpNamespaceNode::Test => NamespaceKind::Test,
             },
         };
-        NamespaceDeclaration { kind, path: self.namepath_free.build(ctx).names, span: self.span.clone() }
+        NamespaceDeclaration { kind, path: self.namepath_free.build(ctx), span: self.span.clone() }
     }
 }

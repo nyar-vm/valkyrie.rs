@@ -43,17 +43,7 @@ impl Lispify for ParameterArgument {
 }
 
 impl PrettyPrint for ParameterTerm {
-    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
-        let mut terms = PrettySequence::new(5);
-        terms += theme.generic(self.term.key.name.to_owned());
-        if let Some(k) = &self.term.value {
-            terms += ": ";
-            terms += k.pretty(theme);
-        }
-        if let Some(k) = &self.term.default {
-            terms += " = ";
-            terms += k.pretty(theme);
-        }
-        terms.into()
+    fn pretty(&self, _: &PrettyProvider) -> PrettyTree {
+        todo!()
     }
 }

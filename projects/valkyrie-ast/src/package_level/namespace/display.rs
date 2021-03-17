@@ -1,11 +1,19 @@
 use super::*;
+use crate::helper::WrapDisplay;
+use core::fmt::Debug;
+
+impl Debug for NamespaceDeclaration {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        f.debug_struct("NamespaceDeclaration").field("kind", &self.kind).field("path", &WrapDisplay::new(&self.path)).finish()
+    }
+}
 
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for NamespaceDeclaration {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let head = theme.keyword(self.kind.as_str());
         let space = " ";
-        let path = theme.join(self.path.clone(), ".");
+        let path = theme.join(self.path.names.clone(), ".");
         let semi = ";";
         head.append(space).append(path).append(semi)
     }

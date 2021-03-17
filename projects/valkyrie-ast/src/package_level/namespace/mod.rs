@@ -13,11 +13,11 @@ pub enum NamespaceKind {
 }
 
 /// `namespace std.math`
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Clone, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct NamespaceDeclaration {
     pub kind: NamespaceKind,
-    pub path: Vec<IdentifierNode>,
+    pub path: NamePathNode,
     /// The range of the node
     pub span: Range<u32>,
 }

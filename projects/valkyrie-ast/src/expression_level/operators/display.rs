@@ -4,7 +4,7 @@ use crate::helper::WrapDisplay;
 impl Debug for BinaryNode {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         f.debug_struct("InfixNode")
-            .field("infix", &WrapDisplay(self.infix.kind))
+            .field("infix", &WrapDisplay::new(&self.infix.kind))
             .field("lhs", &self.lhs)
             .field("rhs", &self.rhs)
             .finish()
@@ -12,7 +12,7 @@ impl Debug for BinaryNode {
 }
 impl Debug for UnaryNode {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        f.debug_struct("UnaryNode").field("prefix", &WrapDisplay(self.operator.kind)).field("base", &self.base).finish()
+        f.debug_struct("UnaryNode").field("prefix", &WrapDisplay::new(&self.operator.kind)).field("base", &self.base).finish()
     }
 }
 impl Display for ValkyrieOperator {

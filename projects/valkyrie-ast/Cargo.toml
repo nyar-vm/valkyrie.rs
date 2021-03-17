@@ -1,6 +1,6 @@
 [package]
 name = "valkyrie-ast"
-version = "0.1.9"
+version = "0.1.10"
 authors = ["Aster <192607617@qq.com>"]
 description = "Strong typed abstract syntax tree of valkyrie language"
 repository = "https://github.com/nyar-vm/valkyrie.rs"
@@ -19,11 +19,11 @@ serde = { version = "1.0.188", default-features = false, optional = true }
 
 [dependencies.nyar-error]
 version = "0.1.*"
+features = ["pratt"]
 
 [dependencies.pretty-print]
 version = "0.1.9"
 optional = true
-#path = 'C:\Users\Dell\CLionProjects\pretty-print\projects\pretty-print'
 
 [dependencies.lispify]
 version = "0.1.0"
@@ -34,5 +34,5 @@ default = ["pretty-print"]
 std = ["pretty-print?/std", "serde?/std"]
 serde = ["dep:serde", "serde/derive", "num-bigint/serde"]
 
-[package.metadata.docs.rs]
-all-features = true
+#[package.metadata.docs.rs]
+#all-features = true

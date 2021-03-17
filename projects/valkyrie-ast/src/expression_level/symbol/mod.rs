@@ -83,6 +83,12 @@ impl LambdaSlotNode {
     }
 }
 
+impl FromIterator<IdentifierNode> for NamePathNode {
+    fn from_iter<T: IntoIterator<Item = IdentifierNode>>(iter: T) -> Self {
+        Self { names: iter.into_iter().collect() }
+    }
+}
+
 impl NamePathNode {
     /// Create a new name path node with given identifiers.
     pub fn new<I>(names: I) -> Self

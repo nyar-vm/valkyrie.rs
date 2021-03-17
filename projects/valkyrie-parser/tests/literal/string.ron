@@ -2,33 +2,7 @@ ProgramRoot {
     statements: [
         NamespaceDeclaration {
             kind: Unique,
-            path: [
-                IdentifierNode {
-                    name: "tests",
-                    span: FileSpan {
-                        start: 11,
-                        end: 16,
-                        file: FileID(0xFC1E811F48B1D460),
-                    },
-                },
-                IdentifierNode {
-                    name: "literal",
-                    span: FileSpan {
-                        start: 17,
-                        end: 24,
-                        file: FileID(0xFC1E811F48B1D460),
-                    },
-                },
-                IdentifierNode {
-                    name: "escape",
-                    span: FileSpan {
-                        start: 25,
-                        end: 31,
-                        file: FileID(0xFC1E811F48B1D460),
-                    },
-                },
-            ],
-            span: 0..32,
+            path: tests∷literal∷escape,
         },
         ExpressionNode {
             omit: true,

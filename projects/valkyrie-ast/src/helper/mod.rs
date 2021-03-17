@@ -22,10 +22,17 @@ pub trait ValkyrieNode {
     }
 }
 
-pub(crate) struct WrapDisplay<T>(pub T);
+pub(crate) struct WrapDisplay<'a, T> {
+    inner: &'a T,
+}
+impl<'a, T> WrapDisplay<'a, T> {
+    pub fn new(wrap: &'a T) -> Self {
+        Self { inner: wrap }
+    }
+}
 
-impl<T: Display> Debug for WrapDisplay<T> {
+impl<'a, T: Display> Debug for WrapDisplay<'a, T> {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        Display::fmt(&self.0, f)
+        Display::fmt(self.inner, f)
     }
 }

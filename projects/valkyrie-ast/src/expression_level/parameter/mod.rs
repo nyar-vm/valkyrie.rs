@@ -4,6 +4,8 @@ mod display;
 use super::*;
 
 /// The kind of the parameter node
+#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum ParameterKind {
     /// `a: Type = null`
     Expression,
@@ -12,7 +14,7 @@ pub enum ParameterKind {
 }
 
 /// `micro f(t: Type = default)` or `class A⦓T: Trait = Default⦔`
-#[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ParameterArgument {
     /// The kind of the parameter node
@@ -39,8 +41,9 @@ pub enum ParameterTerm {
     Single {
         /// The modifiers apply on the parameter
         modifiers: ModifiersNode,
+        /// The name
         key: IdentifierNode,
-        typing: Option<ExpressionNode>,
+        bound: Option<ExpressionNode>,
         default: Option<ExpressionNode>,
     },
     /// `#annotation modifier ..list: Type`
@@ -48,14 +51,14 @@ pub enum ParameterTerm {
         /// The modifiers apply on the parameter
         modifiers: ModifiersNode,
         key: IdentifierNode,
-        typing: Option<ExpressionNode>,
+        bound: Option<ExpressionNode>,
     },
     /// `#annotation modifier ...dict: Type`
     UnpackDict {
         /// The modifiers apply on the parameter
         modifiers: ModifiersNode,
         key: IdentifierNode,
-        typing: Option<ExpressionNode>,
+        bound: Option<ExpressionNode>,
     },
 }
 

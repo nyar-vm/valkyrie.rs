@@ -17,7 +17,7 @@ ProgramNode {
                 ),
                 kw_class: Class,
                 modifier_call: [],
-                span: 0..14,
+                span: 0..12,
             },
         ),
         DefineClass(
@@ -25,26 +25,26 @@ ProgramNode {
                 attribute_call: [],
                 class_block: ClassBlockNode {
                     class_block_item: [],
-                    span: 24..26,
+                    span: 22..24,
                 },
                 class_inherit: Some(
                     ClassInheritNode {
                         class_inherit_item: [],
-                        span: 21..23,
+                        span: 19..21,
                     },
                 ),
                 define_template: None,
                 identifier: IdentifierBare(
                     IdentifierBareNode {
                         text: "B",
-                        span: 20..21,
+                        span: 18..19,
                     },
                 ),
                 kw_class: Class,
                 modifier_call: [],
-                span: 14..26,
+                span: 12..24,
             },
         ),
     ],
-    span: 0..26,
+    span: 0..24,
 }
