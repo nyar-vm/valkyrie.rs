@@ -11,7 +11,7 @@ pub enum ParameterKind {
     Generic,
 }
 
-/// `class A⦓T: S = K⦔` or `class A::(T: S = K)`
+/// `micro f(t: Type = default)` or `class A⦓T: Trait = Default⦔`
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ParameterArgument {
@@ -26,10 +26,21 @@ pub struct ParameterArgument {
 /// `T: Type = type_expression`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ParameterTerm {
-    pub key: IdentifierNode,
-    pub value: Option<ExpressionNode>,
-    pub default: Option<ExpressionNode>,
+pub enum ParameterTerm {
+    /// `<`
+    ///
+    /// The type on the left cannot be called by name, but the type on the right can be called by name.
+    LMark,
+    /// `>`
+    ///
+    /// The type on the left can be called by name, and the type on the right must be called by name.
+    RMark,
+    /// `#annotation mod a: Type = default`
+    Single { modifiers: ModifiersNode, key: IdentifierNode, typing: Option<ExpressionNode>, default: Option<ExpressionNode> },
+    /// `#annotation mod ..list: Type`
+    UnpackList { modifiers: ModifiersNode, key: IdentifierNode, typing: Option<ExpressionNode> },
+    /// `#annotation mod ...dict: Type`
+    UnpackDict { modifiers: ModifiersNode, key: IdentifierNode, typing: Option<ExpressionNode> },
 }
 
 /// `A⦓T⦔` or `A::(T)` or `A(G: T)`
