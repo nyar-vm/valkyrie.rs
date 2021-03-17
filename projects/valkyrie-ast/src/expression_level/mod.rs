@@ -3,11 +3,11 @@ pub mod argument;
 pub mod common;
 pub mod ctor;
 mod dispatch;
-pub mod generic;
 pub mod lambda;
 pub mod matches;
 pub mod number;
 pub mod operators;
+pub mod parameter;
 pub mod range;
 pub mod string_template;
 pub mod symbol;
@@ -193,7 +193,7 @@ impl ExpressionType {
     pub fn suffix(o: OperatorNode, lhs: Self) -> Self {
         Self::Unary(Box::new(UnaryNode { operator: o, base: lhs }))
     }
-    /// Build a new expression with generic call
+    /// Build a new expression with parameter call
     pub fn call_generic(base: Self, rest: GenericCallNode) -> Self {
         let span = base.get_start() as u32..rest.span.end;
         ExpressionType::GenericCall(Box::new(CallNode { base, rest, span }))

@@ -8,7 +8,7 @@ impl ThisParser for CallNode<GenericCallNode> {
 
     fn lispify(&self) -> Lisp {
         let mut lisp = Lisp::new(3);
-        lisp += Lisp::keyword("call/generic");
+        lisp += Lisp::keyword("call/parameter");
         lisp += self.base.lispify();
         lisp += self.rest.lispify();
         lisp
@@ -23,7 +23,7 @@ impl ThisParser for GenericCallNode {
 
     fn lispify(&self) -> Lisp {
         let mut lisp = Lisp::new(self.terms.len() + 2);
-        lisp += Lisp::keyword("generic");
+        lisp += Lisp::keyword("parameter");
         // terms.push(self.base.lispify().into());
         for term in &self.terms {
             lisp += term.term.lispify();

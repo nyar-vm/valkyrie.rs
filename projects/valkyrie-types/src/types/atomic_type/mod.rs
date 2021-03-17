@@ -1,6 +1,6 @@
 use super::*;
 
-// type without generic
+// type without parameter
 #[derive(Debug)]
 pub struct ValkyrieAtomicType {
     namepath: Vec<String>,

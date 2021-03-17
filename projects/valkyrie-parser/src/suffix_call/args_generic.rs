@@ -23,7 +23,7 @@ impl ThisParser for GenericArgument {
 
     fn lispify(&self) -> Lisp {
         let mut lisp = Lisp::new(self.terms.len() + 2);
-        lisp += Lisp::keyword("define/generic");
+        lisp += Lisp::keyword("define/parameter");
         for term in &self.terms {
             lisp += term.lispify();
         }

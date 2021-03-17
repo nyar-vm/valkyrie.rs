@@ -30,7 +30,7 @@ impl ValkyrieType for ValkyrieImage {
     }
 
     fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
-        // TODO: pixel generic
+        // TODO: pixel parameter
         let this = ValkyrieMetaType::new("std.image.Image");
         // this.set_namepath("std.collection.SortedMap");
         // this.mut_generic_types().push(K::static_type());

@@ -1900,7 +1900,7 @@ fn parse_kw_template(state: Input) -> Output {
     state.rule(ValkyrieRule::KW_TEMPLATE, |s| {
         s.match_regex({
             static REGEX: OnceLock<Regex> = OnceLock::new();
-            REGEX.get_or_init(|| Regex::new("^(?x)(template|generic)").unwrap())
+            REGEX.get_or_init(|| Regex::new("^(?x)(template|parameter)").unwrap())
         })
     })
 }

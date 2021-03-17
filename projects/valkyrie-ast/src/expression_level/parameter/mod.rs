@@ -35,12 +35,28 @@ pub enum ParameterTerm {
     ///
     /// The type on the left can be called by name, and the type on the right must be called by name.
     RMark,
-    /// `#annotation mod a: Type = default`
-    Single { modifiers: ModifiersNode, key: IdentifierNode, typing: Option<ExpressionNode>, default: Option<ExpressionNode> },
-    /// `#annotation mod ..list: Type`
-    UnpackList { modifiers: ModifiersNode, key: IdentifierNode, typing: Option<ExpressionNode> },
-    /// `#annotation mod ...dict: Type`
-    UnpackDict { modifiers: ModifiersNode, key: IdentifierNode, typing: Option<ExpressionNode> },
+    /// `#annotation modifier a: Type = default`
+    Single {
+        /// The modifiers apply on the parameter
+        modifiers: ModifiersNode,
+        key: IdentifierNode,
+        typing: Option<ExpressionNode>,
+        default: Option<ExpressionNode>,
+    },
+    /// `#annotation modifier ..list: Type`
+    UnpackList {
+        /// The modifiers apply on the parameter
+        modifiers: ModifiersNode,
+        key: IdentifierNode,
+        typing: Option<ExpressionNode>,
+    },
+    /// `#annotation modifier ...dict: Type`
+    UnpackDict {
+        /// The modifiers apply on the parameter
+        modifiers: ModifiersNode,
+        key: IdentifierNode,
+        typing: Option<ExpressionNode>,
+    },
 }
 
 /// `A⦓T⦔` or `A::(T)` or `A(G: T)`
@@ -57,6 +73,6 @@ pub struct GenericCallNode {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct GenericCallTerm {
-    /// Typed generic call term
+    /// Typed parameter call term
     pub term: CallTermNode<IdentifierNode, ExpressionNode>,
 }
