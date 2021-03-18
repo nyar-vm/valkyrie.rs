@@ -1,6 +1,5 @@
 use super::*;
 
-#[cfg(feature = "pretty-print")]
 mod display;
 
 /// `(mut self, a: Type = A), <T: Expression = ()>`
@@ -8,18 +7,18 @@ mod display;
 ///
 ///
 /// ```v
-/// (mut self, a, b: int, c: T = 3, ⁑args, ⁂kwargs)
+/// (mut self, a: Structure)
 /// ```
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ArgumentNode {
+pub struct ArgumentsList {
     /// The raw string of the number.
     pub terms: Vec<ArgumentTerm>,
     /// The range of the number.
     pub span: Range<u32>,
 }
 
-/// `mut self: T? = null, ⁑args, ⁂kwargs`
+/// `#annotation mut self: null, ⁑args, ⁂kwargs`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ArgumentTerm {

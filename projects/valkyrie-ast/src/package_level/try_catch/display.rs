@@ -1,5 +1,5 @@
 use super::*;
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for TryStatement {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut tree = PrettySequence::new(10);

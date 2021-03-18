@@ -1,5 +1,5 @@
 use super::*;
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for EnumerateDeclaration {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(4);
@@ -10,7 +10,7 @@ impl PrettyPrint for EnumerateDeclaration {
         terms.into()
     }
 }
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for EnumerateFieldDeclaration {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(3);

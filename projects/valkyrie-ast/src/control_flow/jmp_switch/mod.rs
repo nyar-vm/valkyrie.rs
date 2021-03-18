@@ -13,6 +13,7 @@ impl ValkyrieNode for SwitchStatement {
         Range { start: self.span.start as usize, end: self.span.end as usize }
     }
 }
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for SwitchStatement {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(10);

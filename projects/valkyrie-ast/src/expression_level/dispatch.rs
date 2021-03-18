@@ -58,7 +58,7 @@ impl PrettyPrint for ExpressionType {
         }
     }
 }
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for PostfixCallPart {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         match self {

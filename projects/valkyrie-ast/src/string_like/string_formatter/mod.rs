@@ -27,6 +27,7 @@ impl ValkyrieNode for ExpressionFormatted {
         Range { start: self.span.start as usize, end: self.span.end as usize }
     }
 }
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for ExpressionFormatted {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         todo!()

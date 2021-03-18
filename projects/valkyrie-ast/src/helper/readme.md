@@ -1,8 +1,10 @@
 
 
+```scala
+function fname(a, ...kws) {
 
-
-
+}
+```
 
 ```scala
 

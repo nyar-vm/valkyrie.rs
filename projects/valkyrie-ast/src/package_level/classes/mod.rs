@@ -16,7 +16,7 @@ pub struct ClassDeclaration {
     /// The name of the class.
     pub name: IdentifierNode,
     /// The parameter arguments of the class.
-    pub generic: Option<ParameterArgument>,
+    pub generic: Option<ParametersList>,
     /// The super class of the class.
     pub base_classes: Option<String>,
     /// The traits that the class implements.
@@ -54,9 +54,9 @@ pub struct ClassMethodDeclaration {
     /// `method_name()`
     pub method_name: NamePathNode,
     /// `method_name<T>()`
-    pub generic: Option<ParameterArgument>,
+    pub generic: Option<ParametersList>,
     /// `method_name(arguments)`
-    pub arguments: ArgumentNode,
+    pub arguments: ArgumentsList,
     /// `: ReturnType`
     pub return_type: Option<FunctionReturnNode>,
     /// `/ EffectType`

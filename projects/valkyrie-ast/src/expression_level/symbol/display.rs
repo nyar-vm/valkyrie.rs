@@ -24,7 +24,7 @@ impl Display for NamePathNode {
         Ok(())
     }
 }
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for IdentifierNode {
     fn pretty(&self, _: &PrettyProvider) -> PrettyTree {
         PrettyTree::text(self.name.to_string())
@@ -44,7 +44,7 @@ impl Display for OutputNode {
         }
     }
 }
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for OutputNode {
     fn pretty(&self, _: &PrettyProvider) -> PrettyTree {
         PrettyTree::text(self.to_string())
@@ -67,13 +67,13 @@ impl Lispify for IdentifierNode {
         Lisp::symbol(self.to_string())
     }
 }
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for LambdaSlotNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         theme.keyword(format!("${}", self.name))
     }
 }
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for NamePathNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         theme.join(self.names.clone(), "∷")

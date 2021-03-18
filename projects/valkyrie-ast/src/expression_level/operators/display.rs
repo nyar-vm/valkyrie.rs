@@ -20,19 +20,20 @@ impl Display for ValkyrieOperator {
         f.write_str(self.as_str())
     }
 }
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for OperatorNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         theme.operator(self.kind.as_str())
     }
 }
+#[cfg(feature = "pretty-print")]
 
 impl PrettyPrint for UnaryNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         self.operator.pretty(theme).append(self.base.pretty(theme))
     }
 }
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for BinaryNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut items = PrettySequence::new(5);

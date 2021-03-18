@@ -1,6 +1,5 @@
 use super::*;
 
-#[cfg(feature = "pretty-print")]
 mod display;
 
 mod logic;

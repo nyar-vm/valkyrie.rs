@@ -45,7 +45,7 @@ impl Lispify for StringLiteralNode {
         }
     }
 }
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for StringTextNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         theme.string(self.to_string())

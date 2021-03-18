@@ -1,5 +1,5 @@
 use super::*;
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for PatternBlock {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(10);
@@ -21,12 +21,13 @@ impl PrettyPrint for PatternBlock {
         terms.into()
     }
 }
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for PatternBranch {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         theme.concat(vec![self.condition.pretty(theme), self.statements.pretty(theme)])
     }
 }
+#[cfg(feature = "pretty-print")]
 
 impl PrettyPrint for PatternCondition {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
@@ -39,7 +40,7 @@ impl PrettyPrint for PatternCondition {
         item.append(":").append(PrettyTree::Hardline)
     }
 }
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for PatternStatements {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(self.terms.len() * 2);
@@ -53,6 +54,7 @@ impl PrettyPrint for PatternStatements {
         terms.indent(4)
     }
 }
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for LetPattern {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         match self {
@@ -65,6 +67,7 @@ impl PrettyPrint for LetPattern {
         }
     }
 }
+#[cfg(feature = "pretty-print")]
 
 impl PrettyPrint for TuplePatternNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
@@ -81,6 +84,7 @@ impl PrettyPrint for TuplePatternNode {
         terms.into()
     }
 }
+#[cfg(feature = "pretty-print")]
 
 impl PrettyPrint for ClassPatternNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
@@ -95,7 +99,7 @@ impl PrettyPrint for ClassPatternNode {
         terms.into()
     }
 }
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for ArrayPatternNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(4);
@@ -109,7 +113,7 @@ impl PrettyPrint for ArrayPatternNode {
         terms.into()
     }
 }
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for UnionPatternNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(4);
@@ -120,6 +124,7 @@ impl PrettyPrint for UnionPatternNode {
         terms.into()
     }
 }
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for ImplicitCaseNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(10);
@@ -129,7 +134,7 @@ impl PrettyPrint for ImplicitCaseNode {
         terms.into()
     }
 }
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for PatternCaseNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(5);
@@ -143,7 +148,7 @@ impl PrettyPrint for PatternCaseNode {
         terms.into()
     }
 }
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for IdentifierPattern {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(10);
@@ -152,18 +157,19 @@ impl PrettyPrint for IdentifierPattern {
         terms.into()
     }
 }
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for PatternWhenNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         theme.concat(vec![theme.keyword("when"), " ".into(), self.guard.pretty(theme)])
     }
 }
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for PatternTypeNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         theme.concat(vec![theme.keyword("type"), " ".into(), self.pattern.pretty(theme)])
     }
 }
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for PatternElseNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         theme.keyword("else")

@@ -1,5 +1,5 @@
 use super::*;
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for TraitDeclaration {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         theme.keyword("trait")
@@ -29,7 +29,7 @@ impl Lispify for TraitDeclaration {
         out
     }
 }
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for ExtendsStatement {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         theme.keyword("extends")

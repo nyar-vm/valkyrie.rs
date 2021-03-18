@@ -5,7 +5,7 @@ impl Default for ApplyCaller {
         Self::None
     }
 }
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for ApplyCallNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(3);
@@ -15,7 +15,7 @@ impl PrettyPrint for ApplyCallNode {
         terms.into()
     }
 }
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for ApplyCallTerms {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(3);
@@ -51,6 +51,7 @@ impl Lispify for ApplyCallTerms {
         Lisp::keyword("ApplyCallTerms: ???")
     }
 }
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for ApplyCallItem {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         theme.text("ApplyCallTerm ???")
@@ -65,14 +66,14 @@ impl Lispify for ApplyCallItem {
         Lisp::keyword("ApplyCallTerm: ???")
     }
 }
-
-impl PrettyPrint for ArgumentNode {
+#[cfg(feature = "pretty-print")]
+impl PrettyPrint for ArgumentsList {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         PrettyTree::text("(").append(theme.join(self.terms.clone(), ", ")).append(")")
     }
 }
 #[cfg(feature = "lispify")]
-impl Lispify for ArgumentNode {
+impl Lispify for ArgumentsList {
     type Output = Lisp;
 
     fn lispify(&self) -> Self::Output {
@@ -83,7 +84,7 @@ impl Lispify for ArgumentNode {
         lisp
     }
 }
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for ArgumentTerm {
     fn pretty(&self, _: &PrettyProvider) -> PrettyTree {
         todo!()
@@ -98,7 +99,7 @@ impl Lispify for ArgumentTerm {
         todo!()
     }
 }
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for ArgumentKey {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mods = self.modifiers.pretty(theme);

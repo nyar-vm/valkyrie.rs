@@ -5,7 +5,7 @@ impl Display for NumberLiteralNode {
         Display::fmt(&self.value, f)
     }
 }
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for NumberLiteralNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let num = theme.number(self.value.to_string());

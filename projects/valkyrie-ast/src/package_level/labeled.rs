@@ -43,13 +43,13 @@ impl Display for LabelStatement {
         Ok(())
     }
 }
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for LabelStatement {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         theme.annotation(self.to_string())
     }
 }
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for GotoStatement {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         theme.annotation(self.to_string())

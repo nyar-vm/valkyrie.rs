@@ -33,7 +33,7 @@ pub struct MonadicDotCall {
     /// Weather the do call is monadic
     pub mark: bool,
 }
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for MonadicDotCall {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         match self.mark {

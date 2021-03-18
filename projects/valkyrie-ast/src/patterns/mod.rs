@@ -338,7 +338,7 @@ pub struct PatternGuard {
     /// The range of the node
     pub span: Range<u32>,
 }
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for PatternGuard {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         theme.keyword("when").append(" ").append(self.condition.pretty(theme))

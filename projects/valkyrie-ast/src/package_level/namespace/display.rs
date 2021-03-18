@@ -1,6 +1,4 @@
 use super::*;
-use crate::helper::WrapDisplay;
-use core::fmt::Debug;
 
 impl Debug for NamespaceDeclaration {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {

@@ -1,6 +1,4 @@
-use alloc::{borrow::ToOwned, string::String};
-use core::ops::Range;
-use pretty_print::{helpers::PrettySequence, PrettyPrint, PrettyProvider, PrettyTree};
+use super::*;
 
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -9,7 +7,7 @@ pub struct DocumentationNode {
     /// The range of the node
     pub span: Range<u32>,
 }
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for DocumentationNode {
     fn pretty(&self, _: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(0);

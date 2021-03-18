@@ -1,4 +1,3 @@
-#[cfg(feature = "pretty-print")]
 mod display;
 
 use super::*;

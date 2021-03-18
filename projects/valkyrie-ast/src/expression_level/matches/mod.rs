@@ -33,7 +33,7 @@ impl MatchKind {
         }
     }
 }
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for MatchDotStatement {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(10);

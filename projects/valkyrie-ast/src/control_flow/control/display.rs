@@ -1,12 +1,11 @@
 use super::*;
-use pretty_print::helpers::PrettySequence;
 
 impl Display for ControlType {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         f.write_str(self.as_str())
     }
 }
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for RaiseNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(2);
@@ -18,7 +17,7 @@ impl PrettyPrint for RaiseNode {
         terms.into()
     }
 }
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for ControlNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(3);
@@ -30,7 +29,7 @@ impl PrettyPrint for ControlNode {
         terms.into()
     }
 }
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for ControlType {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         theme.keyword(self.as_str())

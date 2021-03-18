@@ -24,7 +24,7 @@ impl PrettyPrint for GenericCallTerm {
 }
 
 // noinspection DuplicatedCode
-impl PrettyPrint for ParameterArgument {
+impl PrettyPrint for ParametersList {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(3);
         terms += "⦓";
@@ -34,7 +34,7 @@ impl PrettyPrint for ParameterArgument {
     }
 }
 #[cfg(feature = "lispify")]
-impl Lispify for ParameterArgument {
+impl Lispify for ParametersList {
     type Output = Lisp;
 
     fn lispify(&self) -> Self::Output {

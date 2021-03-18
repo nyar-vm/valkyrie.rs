@@ -13,10 +13,10 @@ pub enum ParameterKind {
     Generic,
 }
 
-/// `micro f(t: Type = default)` or `class A⦓T: Trait = Default⦔`
+/// `micro f(t: Type = default)` or `class F⦓T: Trait = Default⦔`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ParameterArgument {
+pub struct ParametersList {
     /// The kind of the parameter node
     pub kind: ParameterKind,
     /// The raw string of the number.

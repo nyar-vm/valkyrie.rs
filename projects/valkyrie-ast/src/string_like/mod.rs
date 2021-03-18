@@ -14,4 +14,5 @@ use core::{
 };
 #[cfg(feature = "lispify")]
 use lispify::{Lisp, Lispify};
+#[cfg(feature = "pretty-print")]
 use pretty_print::{PrettyPrint, PrettyProvider, PrettyTree};

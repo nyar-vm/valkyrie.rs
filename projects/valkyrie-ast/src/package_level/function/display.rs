@@ -49,7 +49,7 @@ impl Lispify for FunctionDeclaration {
         lisp
     }
 }
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for FunctionReturnNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(4);
@@ -67,7 +67,7 @@ impl Lispify for FunctionReturnNode {
         todo!()
     }
 }
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for FunctionEffectNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(4);
@@ -85,6 +85,7 @@ impl Lispify for FunctionEffectNode {
         todo!()
     }
 }
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for StatementBlock {
     /// ```vk
     /// # inline style
@@ -100,7 +101,7 @@ impl PrettyPrint for StatementBlock {
         block.join_slice(&self.terms, theme)
     }
 }
-
+#[cfg(feature = "pretty-print")]
 impl<K: PrettyPrint, V: PrettyPrint, D: PrettyPrint> PrettyPrint for ArgumentTermNode<K, V, D> {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(3);

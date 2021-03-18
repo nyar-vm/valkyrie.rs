@@ -18,14 +18,16 @@ pub mod unions;
 pub mod traits;
 
 use crate::{
-    AnnotationList, AnnotationNode, ArgumentNode, ArgumentTermNode, ClassDeclaration, ClassFieldDeclaration,
-    ClassMethodDeclaration, ControlNode, DocumentationNode, EnumerateDeclaration, EnumerateFieldDeclaration, ExpressionNode,
-    ExpressionType, ExtendsStatement, FlagsDeclaration, ForLoop, FunctionDeclaration, FunctionEffectNode, FunctionReturnNode,
-    GuardStatement, IdentifierNode, ImportStatement, LetBindNode, LetPattern, ModifiersNode, NamePathNode,
-    NamespaceDeclaration, ParameterArgument, StatementBlock, StatementNode, StringTextNode, TaggedDeclaration,
-    TraitDeclaration, UnionDeclaration, UnionFieldDeclaration, VariantDeclaration, WhileLoop,
+    helper::WrapDisplay, AnnotationList, AnnotationNode, ArgumentTermNode, ArgumentsList, ClassDeclaration,
+    ClassFieldDeclaration, ClassMethodDeclaration, ControlNode, DocumentationNode, EnumerateDeclaration,
+    EnumerateFieldDeclaration, ExpressionNode, ExpressionType, ExtendsStatement, FlagsDeclaration, ForLoop,
+    FunctionDeclaration, FunctionEffectNode, FunctionReturnNode, GuardStatement, IdentifierNode, ImportStatement, LetBindNode,
+    LetPattern, ModifiersNode, NamePathNode, NamespaceDeclaration, ParametersList, StatementBlock, StatementNode,
+    StringTextNode, TaggedDeclaration, TraitDeclaration, UnionDeclaration, UnionFieldDeclaration, VariantDeclaration,
+    WhileLoop,
 };
 use alloc::{
+    borrow::ToOwned,
     boxed::Box,
     string::{String, ToString},
     sync::Arc,
@@ -33,16 +35,11 @@ use alloc::{
     vec::Vec,
 };
 use core::{
-    fmt::{Display, Formatter, Write},
+    fmt::{Debug, Display, Formatter, Write},
     ops::Range,
 };
 use deriver::From;
-use pretty_print::helpers::SoftBlock;
-
 #[cfg(feature = "lispify")]
 use lispify::{Lisp, Lispify};
 #[cfg(feature = "pretty-print")]
-use pretty_print::{
-    helpers::{KAndRBracket, PrettySequence},
-    PrettyPrint, PrettyProvider, PrettyTree,
-};
+use pretty_print::{helpers::KAndRBracket, helpers::PrettySequence, helpers::SoftBlock};
