@@ -1,14 +1,23 @@
 ProgramRoot {
     statements: [
-        ExpressionNode {
-            omit: true,
-            body: '\n$x\n\n${y}\n${{}\n',
-            span: 0..24,
+        NamespaceDeclaration {
+            kind: Unique,
+            path: std∷create∷test,
         },
         ExpressionNode {
             omit: true,
-            body: json'\n{\n    x: 1\n    y: 2\n}\n',
-            span: 27..61,
+            body: i'\nx\n{1 2 3 4 5 6 7 8 9}\n{x + 2}\n',
+            span: 28..67,
+        },
+        ExpressionNode {
+            omit: true,
+            body: json'\n{\n    x: 1,\n    y: 2\n}\n',
+            span: 70..105,
+        },
+        ExpressionNode {
+            omit: false,
+            body: json5'\n{\n    // comments\n    unquoted: \'and you can quote me on that\',\n    singleQuotes: \'I can use "double quotes" here\',\n    lineBreaks: "Look, Mom! \\\nNo \\\\n\'s!",\n    hexadecimal: 0xdecaf,\n    leadingDecimalPoint: .8675309, andTrailing: 8675309.,\n    positiveSign: +1,\n    trailingComma: \'in objects\', andIn: [\'arrays\',],\n    "backwardsCompatible": "with JSON",\n}\n',
+            span: 107..479,
         },
     ],
 }

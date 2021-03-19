@@ -1,8 +1,6 @@
-#[cfg(feature = "pretty-print")]
-mod display;
-
 use super::*;
-use crate::ApplyCallTerms;
+
+mod display;
 
 /// `{ lambda(args), ... }`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
@@ -25,8 +23,6 @@ pub struct ClosureCallNode {
     pub monadic: bool,
     ///
     pub caller: ClosureCaller,
-    ///
-    pub arguments: Option<ApplyCallTerms>,
     /// trailing closure
     pub trailing: Option<FunctionBlock>,
     /// The range of the node

@@ -5,10 +5,10 @@ ProgramRoot {
             body: SubscriptCallNode {
                 kind: Ordinal,
                 base: ApplyCallNode {
-                    base: a,
                     monadic: false,
-                    caller: None,
+                    caller: a,
                     arguments: None,
+                    body: None,
                     span: 1..4,
                 },
                 monadic: false,

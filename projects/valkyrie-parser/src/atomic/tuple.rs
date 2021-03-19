@@ -45,13 +45,7 @@ impl crate::TupleCallNode {
         let monadic = self.op_and_then.is_some();
         // let terms = self.tuple_literal.build(ctx)?.terms;
         Success {
-            value: ApplyCallNode {
-                base: Default::default(),
-                monadic,
-                caller: Default::default(),
-                arguments: None,
-                span: self.span.clone(),
-            },
+            value: ApplyCallNode { monadic, caller: Default::default(), arguments: None, body: None, span: self.span.clone() },
             diagnostics: vec![],
         }
     }

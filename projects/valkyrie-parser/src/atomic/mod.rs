@@ -18,7 +18,7 @@ mod tuple;
 impl AtomicNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<ExpressionType> {
         let value = match self {
-            AtomicNode::Special(v) => v.build().into(),
+            AtomicNode::Special(v) => v.build(),
             AtomicNode::Integer(v) => v.build().into(),
             AtomicNode::Namepath(v) => v.build(ctx).into(),
             AtomicNode::ProceduralCall(_) => {

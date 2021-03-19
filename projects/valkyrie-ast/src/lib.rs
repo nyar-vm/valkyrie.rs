@@ -1,4 +1,5 @@
 #![no_std]
+#![allow(unused_imports)]
 #![deny(missing_debug_implementations, missing_copy_implementations)]
 #![warn(missing_docs, rustdoc::missing_crate_level_docs)]
 #![doc = include_str!("../readme.md")]
@@ -27,7 +28,7 @@ pub use crate::{
         annotations::{
             AnnotationKind, AnnotationList, AnnotationNode, AnnotationPathNode, AnnotationTerm, ModifiedNode, ModifiersNode,
         },
-        argument::{ApplyCallItem, ApplyCallNode, ApplyCallTerms, ApplyCaller, ArgumentKey, ArgumentTerm, ArgumentsList},
+        argument::{ApplyCallNode, ArgumentKey, ArgumentTerm, ArgumentsList},
         common::{ArgumentTermNode, CallNode, CallTermNode, MonadicCall, MonadicDotCall},
         ctor::{CollectsNode, NewConstructNode},
         lambda::{ClosureCallNode, ClosureCaller, FunctionBlock, LambdaNode},

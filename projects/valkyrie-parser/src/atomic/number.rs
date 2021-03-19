@@ -1,4 +1,5 @@
 use super::*;
+use valkyrie_ast::NullNode;
 
 // A number literal.
 // #[derive(Debug, Clone, Eq, Hash)]
@@ -9,13 +10,14 @@ use super::*;
 // |   ⍜(_*[01])*        # binary
 
 impl SpecialNode {
-    pub fn build(&self) -> BooleanNode {
-        let value = match self.text.as_str() {
-            "false" => false,
-            "true" => true,
-            _ => unimplemented!("Unknown boolean value: {}", self.text),
-        };
-        BooleanNode { value, span: self.span.clone() }
+    pub fn build(&self) -> ExpressionType {
+        match self.text.as_str() {
+            "false" => BooleanNode { value: false, span: self.span.clone() }.into(),
+            "true" => BooleanNode { value: true, span: self.span.clone() }.into(),
+            "∞" => NullNode { nil: true, span: self.span.clone() }.into(),
+            "∅" => NullNode { nil: true, span: self.span.clone() }.into(),
+            _ => unimplemented!("Unknown special value: {}", self.text),
+        }
     }
 }
 

@@ -1,10 +1,5 @@
 use super::*;
 
-impl Default for ApplyCaller {
-    fn default() -> Self {
-        Self::None
-    }
-}
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for ApplyCallNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
@@ -12,16 +7,6 @@ impl PrettyPrint for ApplyCallNode {
         if let Some(s) = &self.arguments {
             terms += s.pretty(theme)
         }
-        terms.into()
-    }
-}
-#[cfg(feature = "pretty-print")]
-impl PrettyPrint for ApplyCallTerms {
-    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
-        let mut terms = PrettySequence::new(3);
-        terms += "(";
-        terms += theme.join(self.terms.clone(), ", ");
-        terms += ")";
         terms.into()
     }
 }
@@ -43,29 +28,7 @@ impl Lispify for ApplyCallNode {
         lisp
     }
 }
-#[cfg(feature = "lispify")]
-impl Lispify for ApplyCallTerms {
-    type Output = Lisp;
 
-    fn lispify(&self) -> Self::Output {
-        Lisp::keyword("ApplyCallTerms: ???")
-    }
-}
-#[cfg(feature = "pretty-print")]
-impl PrettyPrint for ApplyCallItem {
-    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
-        theme.text("ApplyCallTerm ???")
-    }
-}
-
-#[cfg(feature = "lispify")]
-impl Lispify for ApplyCallItem {
-    type Output = Lisp;
-
-    fn lispify(&self) -> Self::Output {
-        Lisp::keyword("ApplyCallTerm: ???")
-    }
-}
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for ArgumentsList {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {

@@ -1,14 +1,9 @@
 use super::*;
+use crate::StatementBlock;
 
 mod display;
 
-/// `(mut self, a: Type = A), <T: Expression = ()>`
-///
-///
-///
-/// ```v
-/// (mut self, a: Structure)
-/// ```
+/// `(a + b, c: d, ..e)`
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ArgumentsList {
@@ -18,74 +13,54 @@ pub struct ArgumentsList {
     pub span: Range<u32>,
 }
 
-/// `#annotation mut self: null, ⁑args, ⁂kwargs`
+/// `#annotation mut this: null`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ArgumentTerm {
+    /// The modifier conditions
+    pub modifiers: ModifiersNode,
+    /// The key of the argument
     pub key: ArgumentKey,
-    pub value: Option<ExpressionNode>,
-    pub default: Option<ExpressionNode>,
+    /// The value of the argument
+    pub value: ExpressionNode,
 }
 
-/// `mod1 mod2 args`
+/// The key of the argument
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ArgumentKey {
-    pub modifiers: ModifiersNode,
-    pub key: IdentifierNode,
+pub enum ArgumentKey {
+    /// `a + b`
+    Nothing,
+    /// `key: a + b`
+    Symbol(IdentifierNode),
 }
 
-/// `argument(0, a: 1, ⁑args, ⁂kwargs)`
+/// `f(a + b, c: d, ..e) { a + b }`
+///
+/// ```v
+/// f { a + b }
+/// f(0, key: 1, ..list)
+/// f(0, key: 1, ..list) { a + b }
+///
+/// this.m { a + b }
+/// this.m(0, key: 1, ..list)
+/// this.m(0, key: 1, ..list) { a + b }
+/// ```
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ApplyCallNode {
-    /// The call basement
-    pub base: ExpressionType,
     /// Weather it is a monadic call
     pub monadic: bool,
     /// The caller of argument
-    pub caller: ApplyCaller,
+    pub caller: ExpressionType,
     /// The raw string of the number.
-    pub arguments: Option<ApplyCallTerms>,
+    pub arguments: Option<ArgumentsList>,
+    /// The raw string of the number.
+    pub body: Option<StatementBlock>,
     /// The range of the number.
     pub span: Range<u32>,
 }
 
-/// The key of tuple
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum ApplyCaller {
-    /// `object()`
-    None,
-    /// `object.1()`
-    Integer(BigUint),
-    /// `object.method()`
-    Internal(IdentifierNode),
-}
-
-/// `(1, 2, 3, name: value, ..list)`
-#[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ApplyCallTerms {
-    /// item
-    pub terms: Vec<ApplyCallItem>,
-    /// The range of the number.
-    pub span: Range<u32>,
-}
-
-/// `0, a: 1, ..args, ...kwargs`
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ApplyCallItem {
-    /// The modifier conditions
-    pub modifiers: ModifiersNode,
-    /// Parameters filled in according to fields
-    pub parameter: Option<IdentifierNode>,
-    /// The main body
-    pub body: ExpressionType,
-    /// The range of the number.
-    pub span: Range<u32>,
-}
 impl ValkyrieNode for ApplyCallNode {
     fn get_range(&self) -> Range<usize> {
         Range { start: self.span.start as usize, end: self.span.end as usize }
@@ -130,6 +105,6 @@ impl<K, V, D> ArgumentTermNode<K, V, D> {
 impl ApplyCallNode {
     /// Replace placeholder with actual expression
     pub fn with_base(self, base: ExpressionType) -> Self {
-        Self { base, ..self }
+        Self { caller: base, ..self }
     }
 }

@@ -1,0 +1,74 @@
+ProgramRoot {
+    statements: [
+        NamespaceDeclaration {
+            kind: Unique,
+            path: std∷create∷test,
+        },
+        ExpressionNode {
+            omit: true,
+            body: NullNode {
+                nil: true,
+                span: 28..31,
+            },
+            span: 28..32,
+        },
+        ExpressionNode {
+            omit: true,
+            body: NullNode {
+                nil: true,
+                span: 33..36,
+            },
+            span: 33..37,
+        },
+        ExpressionNode {
+            omit: true,
+            body: nil,
+            span: 38..42,
+        },
+        ExpressionNode {
+            omit: true,
+            body: null,
+            span: 43..48,
+        },
+        ExpressionNode {
+            omit: true,
+            body: true,
+            span: 49..54,
+        },
+        ExpressionNode {
+            omit: true,
+            body: false,
+            span: 55..61,
+        },
+        ExpressionNode {
+            omit: true,
+            body: a,
+            span: 63..65,
+        },
+        ExpressionNode {
+            omit: true,
+            body: a∷b,
+            span: 66..71,
+        },
+        ExpressionNode {
+            omit: true,
+            body: a∷b∷c,
+            span: 72..82,
+        },
+        ExpressionNode {
+            omit: true,
+            body: 我,
+            span: 83..87,
+        },
+        ExpressionNode {
+            omit: true,
+            body: 我∷的,
+            span: 88..97,
+        },
+        ExpressionNode {
+            omit: true,
+            body: 我∷的∷库,
+            span: 98..114,
+        },
+    ],
+}

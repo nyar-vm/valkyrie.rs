@@ -1,0 +1,81 @@
+ProgramRoot {
+    statements: [
+        NamespaceDeclaration {
+            kind: Unique,
+            path: test∷literal,
+        },
+        ExpressionNode {
+            omit: true,
+            body: TupleNode {
+                kind: Tuple,
+                terms: [],
+                span: 34..36,
+            },
+            span: 34..37,
+        },
+        ExpressionNode {
+            omit: true,
+            body: 0,
+            span: 38..42,
+        },
+        ExpressionNode {
+            omit: true,
+            body: TupleNode {
+                kind: Tuple,
+                terms: [
+                    TupleTermNode {
+                        key: Nothing,
+                        value: 1,
+                    },
+                ],
+                span: 43..48,
+            },
+            span: 43..49,
+        },
+        ExpressionNode {
+            omit: true,
+            body: TupleNode {
+                kind: Tuple,
+                terms: [
+                    TupleTermNode {
+                        key: Nothing,
+                        value: 1,
+                    },
+                    TupleTermNode {
+                        key: Nothing,
+                        value: 2,
+                    },
+                ],
+                span: 50..56,
+            },
+            span: 50..57,
+        },
+        ExpressionNode {
+            omit: true,
+            body: TupleNode {
+                kind: Tuple,
+                terms: [
+                    TupleTermNode {
+                        key: Nothing,
+                        value: true,
+                    },
+                    TupleTermNode {
+                        key: Nothing,
+                        value: TupleNode {
+                            kind: Tuple,
+                            terms: [
+                                TupleTermNode {
+                                    key: Nothing,
+                                    value: false,
+                                },
+                            ],
+                            span: 65..73,
+                        },
+                    },
+                ],
+                span: 58..74,
+            },
+            span: 58..75,
+        },
+    ],
+}

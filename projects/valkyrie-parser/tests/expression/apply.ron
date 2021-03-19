@@ -3,10 +3,10 @@ ProgramRoot {
         ExpressionNode {
             omit: true,
             body: ApplyCallNode {
-                base: f,
                 monadic: false,
-                caller: None,
+                caller: f,
                 arguments: None,
+                body: None,
                 span: 21..23,
             },
             span: 20..24,
@@ -14,10 +14,10 @@ ProgramRoot {
         ExpressionNode {
             omit: true,
             body: ApplyCallNode {
-                base: f,
                 monadic: false,
-                caller: None,
+                caller: f,
                 arguments: None,
+                body: None,
                 span: 26..29,
             },
             span: 25..30,
@@ -25,10 +25,10 @@ ProgramRoot {
         ExpressionNode {
             omit: true,
             body: ApplyCallNode {
-                base: f,
                 monadic: false,
-                caller: None,
+                caller: f,
                 arguments: None,
+                body: None,
                 span: 32..38,
             },
             span: 31..39,
@@ -36,10 +36,10 @@ ProgramRoot {
         ExpressionNode {
             omit: false,
             body: ApplyCallNode {
-                base: f,
                 monadic: false,
-                caller: None,
+                caller: f,
                 arguments: None,
+                body: None,
                 span: 41..72,
             },
             span: 40..92,
@@ -47,28 +47,28 @@ ProgramRoot {
         ExpressionNode {
             omit: true,
             body: ApplyCallNode {
-                base: ApplyCallNode {
-                    base: ApplyCallNode {
-                        base: ApplyCallNode {
-                            base: f,
+                monadic: false,
+                caller: ApplyCallNode {
+                    monadic: false,
+                    caller: ApplyCallNode {
+                        monadic: false,
+                        caller: ApplyCallNode {
                             monadic: false,
-                            caller: None,
+                            caller: f,
                             arguments: None,
+                            body: None,
                             span: 93..95,
                         },
-                        monadic: false,
-                        caller: None,
                         arguments: None,
+                        body: None,
                         span: 95..98,
                     },
-                    monadic: false,
-                    caller: None,
                     arguments: None,
+                    body: None,
                     span: 98..104,
                 },
-                monadic: false,
-                caller: None,
                 arguments: None,
+                body: None,
                 span: 104..113,
             },
             span: 92..114,

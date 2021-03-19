@@ -18,10 +18,10 @@ ProgramRoot {
         ExpressionNode {
             omit: true,
             body: ApplyCallNode {
-                base: B,
                 monadic: false,
-                caller: None,
+                caller: B,
                 arguments: None,
+                body: None,
                 span: 13..15,
             },
             span: 12..16,

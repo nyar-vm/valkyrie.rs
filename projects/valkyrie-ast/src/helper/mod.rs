@@ -1,6 +1,9 @@
-use core::fmt::{Debug, Display, Formatter};
-#[doc = include_str!("readme.md")]
-use core::ops::Range;
+#![doc = include_str!("readme.md")]
+
+use core::{
+    fmt::{Debug, Display, Formatter},
+    ops::Range,
+};
 
 #[cfg(feature = "lispify")]
 pub use lispify::{Lisp, Lispify};

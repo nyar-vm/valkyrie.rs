@@ -1,5 +1,4 @@
 use super::*;
-use alloc::string::ToString;
 
 #[cfg(feature = "pretty-print")]
 mod display;

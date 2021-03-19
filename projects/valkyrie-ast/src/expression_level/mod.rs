@@ -23,9 +23,7 @@ use crate::{
     SubscriptCallNode, SwitchStatement, TryStatement, TupleNode, TupleTermNode, UnaryNode,
 };
 use alloc::{
-    borrow::ToOwned,
     boxed::Box,
-    format,
     string::{String, ToString},
     vec,
     vec::Vec,
