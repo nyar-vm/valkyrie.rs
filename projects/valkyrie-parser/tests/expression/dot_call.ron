@@ -10,7 +10,12 @@ ProgramRoot {
             body: ApplyCallNode {
                 monadic: false,
                 caller: a∷b∷c,
-                arguments: None,
+                arguments: Some(
+                    ArgumentsList {
+                        terms: [],
+                        span: 0..0,
+                    },
+                ),
                 body: None,
                 span: 15..17,
             },

@@ -20,7 +20,11 @@ impl TupleLiteralNode {
         }
         Success { value: TupleNode { kind: Default::default(), terms, span: self.span.clone() }, diagnostics: errors }
     }
+    pub fn build_terms(&self, ctx: &ProgramContext) -> Validation<ArgumentsList> {
+        Success { value: ArgumentsList { terms: self.build(ctx)?.terms, span: Default::default() }, diagnostics: vec![] }
+    }
 }
+
 impl TuplePairNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<TupleTermNode> {
         let key = match &self.tuple_key {
@@ -43,9 +47,12 @@ impl TupleKeyNode {
 impl crate::TupleCallNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<ApplyCallNode> {
         let monadic = self.op_and_then.is_some();
-        // let terms = self.tuple_literal.build(ctx)?.terms;
+        let arguments = match &self.tuple_literal {
+            Some(s) => Some(s.build_terms(ctx)?),
+            None => None,
+        };
         Success {
-            value: ApplyCallNode { monadic, caller: Default::default(), arguments: None, body: None, span: self.span.clone() },
+            value: ApplyCallNode { monadic, caller: Default::default(), arguments, body: None, span: self.span.clone() },
             diagnostics: vec![],
         }
     }

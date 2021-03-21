@@ -42,6 +42,7 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::KW_TRAIT => parse_kw_trait(state),
         ValkyrieRule::DefineFunction => parse_define_function(state),
         ValkyrieRule::KW_FUNCTION => parse_kw_function(state),
+        ValkyrieRule::Continuation => parse_continuation(state),
         ValkyrieRule::WhileStatement => parse_while_statement(state),
         ValkyrieRule::KW_WHILE => parse_kw_while(state),
         ValkyrieRule::ForStatement => parse_for_statement(state),
@@ -910,14 +911,10 @@ fn parse_kw_function(state: Input) -> Output {
     })
 }
 #[inline]
-fn parse_while_statement(state: Input) -> Output {
-    state.rule(ValkyrieRule::WhileStatement, |s| {
+fn parse_continuation(state: Input) -> Output {
+    state.rule(ValkyrieRule::Continuation, |s| {
         s.sequence(|s| {
             Ok(s)
-                .and_then(|s| parse_kw_while(s).and_then(|s| s.tag_node("kw_while")))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| s.optional(|s| parse_inline_expression(s).and_then(|s| s.tag_node("inline_expression"))))
-                .and_then(|s| builtin_ignore(s))
                 .and_then(|s| builtin_text(s, "{", false))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| {
@@ -931,6 +928,19 @@ fn parse_while_statement(state: Input) -> Output {
                 })
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| builtin_text(s, "}", false))
+        })
+    })
+}
+#[inline]
+fn parse_while_statement(state: Input) -> Output {
+    state.rule(ValkyrieRule::WhileStatement, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| parse_kw_while(s).and_then(|s| s.tag_node("kw_while")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| s.optional(|s| parse_inline_expression(s).and_then(|s| s.tag_node("inline_expression"))))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_continuation(s).and_then(|s| s.tag_node("continuation")))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| s.optional(|s| parse_eos(s)))
         })
@@ -958,19 +968,7 @@ fn parse_for_statement(state: Input) -> Output {
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| s.optional(|s| parse_inline_expression(s).and_then(|s| s.tag_node("inline_expression"))))
                 .and_then(|s| builtin_ignore(s))
-                .and_then(|s| builtin_text(s, "{", false))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| {
-                    s.repeat(0..4294967295, |s| {
-                        s.sequence(|s| {
-                            Ok(s)
-                                .and_then(|s| builtin_ignore(s))
-                                .and_then(|s| parse_main_statement(s).and_then(|s| s.tag_node("main_statement")))
-                        })
-                    })
-                })
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| builtin_text(s, "}", false))
+                .and_then(|s| parse_continuation(s).and_then(|s| s.tag_node("continuation")))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| s.optional(|s| parse_eos(s)))
         })
@@ -1089,7 +1087,7 @@ fn parse_main_infix(state: Input) -> Output {
     | [∈∊∉∋∍∌]
     | (not\\s+)?in
     | is(\\s+not)?
-    # map, argument
+    # map, apply
     | /@ | [⇴⨵⊕⟴] | @{2,3})",
                 )
                 .unwrap()
@@ -1291,10 +1289,28 @@ fn parse_tuple_call(state: Input) -> Output {
     state.rule(ValkyrieRule::TupleCall, |s| {
         s.sequence(|s| {
             Ok(s)
-                .and_then(|s| s.optional(|s| parse_white_space(s).and_then(|s| s.tag_node("white_space"))))
+                .and_then(|s| s.optional(|s| parse_white_space(s)))
                 .and_then(|s| s.optional(|s| parse_op_and_then(s).and_then(|s| s.tag_node("op_and_then"))))
-                .and_then(|s| s.optional(|s| parse_white_space(s).and_then(|s| s.tag_node("white_space"))))
-                .and_then(|s| parse_tuple_literal(s).and_then(|s| s.tag_node("tuple_literal")))
+                .and_then(|s| s.optional(|s| parse_white_space(s)))
+                .and_then(|s| {
+                    Err(s)
+                        .or_else(|s| {
+                            s.sequence(|s| {
+                                Ok(s).and_then(|s| parse_tuple_literal(s).and_then(|s| s.tag_node("tuple_literal"))).and_then(
+                                    |s| {
+                                        s.optional(|s| {
+                                            s.sequence(|s| {
+                                                Ok(s).and_then(|s| s.optional(|s| parse_white_space(s))).and_then(|s| {
+                                                    parse_continuation(s).and_then(|s| s.tag_node("continuation"))
+                                                })
+                                            })
+                                        })
+                                    },
+                                )
+                            })
+                        })
+                        .or_else(|s| parse_continuation(s).and_then(|s| s.tag_node("continuation")))
+                })
         })
     })
 }
@@ -1900,7 +1916,7 @@ fn parse_kw_template(state: Input) -> Output {
     state.rule(ValkyrieRule::KW_TEMPLATE, |s| {
         s.match_regex({
             static REGEX: OnceLock<Regex> = OnceLock::new();
-            REGEX.get_or_init(|| Regex::new("^(?x)(template|parameter)").unwrap())
+            REGEX.get_or_init(|| Regex::new("^(?x)(template|generic)").unwrap())
         })
     })
 }

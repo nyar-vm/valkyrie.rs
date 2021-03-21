@@ -8,7 +8,7 @@ mod display;
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ArgumentsList {
     /// The raw string of the number.
-    pub terms: Vec<ArgumentTerm>,
+    pub terms: Vec<TupleTermNode>,
     /// The range of the number.
     pub span: Range<u32>,
 }

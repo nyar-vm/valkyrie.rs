@@ -1075,6 +1075,31 @@ impl FromStr for KwFunctionNode {
     }
 }
 #[automatically_derived]
+impl YggdrasilNode for ContinuationNode {
+    type Rule = ValkyrieRule;
+
+    fn get_range(&self) -> Option<Range<usize>> {
+        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    }
+    fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
+        let _span = pair.get_span();
+        Ok(Self {
+            main_statement: pair
+                .take_tagged_items::<MainStatementNode>(Cow::Borrowed("main_statement"))
+                .collect::<Result<Vec<_>, _>>()?,
+            span: Range { start: _span.start() as u32, end: _span.end() as u32 },
+        })
+    }
+}
+#[automatically_derived]
+impl FromStr for ContinuationNode {
+    type Err = YggdrasilError<ValkyrieRule>;
+
+    fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::Continuation)?)
+    }
+}
+#[automatically_derived]
 impl YggdrasilNode for WhileStatementNode {
     type Rule = ValkyrieRule;
 
@@ -1084,11 +1109,9 @@ impl YggdrasilNode for WhileStatementNode {
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
         Ok(Self {
+            continuation: pair.take_tagged_one::<ContinuationNode>(Cow::Borrowed("continuation"))?,
             inline_expression: pair.take_tagged_option::<InlineExpressionNode>(Cow::Borrowed("inline_expression")),
             kw_while: pair.take_tagged_one::<KwWhileNode>(Cow::Borrowed("kw_while"))?,
-            main_statement: pair
-                .take_tagged_items::<MainStatementNode>(Cow::Borrowed("main_statement"))
-                .collect::<Result<Vec<_>, _>>()?,
             span: Range { start: _span.start() as u32, end: _span.end() as u32 },
         })
     }
@@ -1131,13 +1154,11 @@ impl YggdrasilNode for ForStatementNode {
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
         Ok(Self {
+            continuation: pair.take_tagged_one::<ContinuationNode>(Cow::Borrowed("continuation"))?,
             identifier: pair.take_tagged_one::<IdentifierNode>(Cow::Borrowed("identifier"))?,
             inline_expression: pair.take_tagged_option::<InlineExpressionNode>(Cow::Borrowed("inline_expression")),
             kw_for: pair.take_tagged_one::<KwForNode>(Cow::Borrowed("kw_for"))?,
             kw_in: pair.take_tagged_one::<KwInNode>(Cow::Borrowed("kw_in"))?,
-            main_statement: pair
-                .take_tagged_items::<MainStatementNode>(Cow::Borrowed("main_statement"))
-                .collect::<Result<Vec<_>, _>>()?,
             span: Range { start: _span.start() as u32, end: _span.end() as u32 },
         })
     }
@@ -1729,11 +1750,9 @@ impl YggdrasilNode for TupleCallNode {
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
         Ok(Self {
+            continuation: pair.take_tagged_option::<ContinuationNode>(Cow::Borrowed("continuation")),
             op_and_then: pair.take_tagged_option::<OpAndThenNode>(Cow::Borrowed("op_and_then")),
-            tuple_literal: pair.take_tagged_one::<TupleLiteralNode>(Cow::Borrowed("tuple_literal"))?,
-            white_space: pair
-                .take_tagged_items::<WhiteSpaceNode>(Cow::Borrowed("white_space"))
-                .collect::<Result<Vec<_>, _>>()?,
+            tuple_literal: pair.take_tagged_option::<TupleLiteralNode>(Cow::Borrowed("tuple_literal")),
             span: Range { start: _span.start() as u32, end: _span.end() as u32 },
         })
     }

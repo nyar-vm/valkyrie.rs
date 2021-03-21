@@ -2,24 +2,213 @@ ProgramRoot {
     statements: [
         ExpressionNode {
             omit: false,
+            body: ApplyCallNode {
+                monadic: false,
+                caller: SubscriptCallNode {
+                    kind: Ordinal,
+                    base: ApplyCallNode {
+                        monadic: false,
+                        caller: a,
+                        arguments: Some(
+                            ArgumentsList {
+                                terms: [
+                                    TupleTermNode {
+                                        key: Nothing,
+                                        value: 1,
+                                    },
+                                ],
+                                span: 0..0,
+                            },
+                        ),
+                        body: None,
+                        span: 1..4,
+                    },
+                    monadic: false,
+                    terms: [
+                        Index {
+                            index: 2,
+                        },
+                    ],
+                    span: 4..7,
+                },
+                arguments: None,
+                body: None,
+                span: 7..10,
+            },
+            span: 0..11,
+        },
+        ExpressionNode {
+            omit: false,
             body: SubscriptCallNode {
                 kind: Ordinal,
                 base: ApplyCallNode {
                     monadic: false,
                     caller: a,
-                    arguments: None,
+                    arguments: Some(
+                        ArgumentsList {
+                            terms: [
+                                TupleTermNode {
+                                    key: Nothing,
+                                    value: 1,
+                                },
+                            ],
+                            span: 0..0,
+                        },
+                    ),
                     body: None,
-                    span: 1..4,
+                    span: 12..18,
                 },
                 monadic: false,
                 terms: [
                     Index {
-                        index: 2,
+                        index: 3,
                     },
                 ],
-                span: 4..7,
+                span: 18..21,
             },
-            span: 0..7,
+            span: 11..22,
+        },
+        ExpressionNode {
+            omit: false,
+            body: ApplyCallNode {
+                monadic: false,
+                caller: SubscriptCallNode {
+                    kind: Ordinal,
+                    base: a,
+                    monadic: false,
+                    terms: [
+                        Index {
+                            index: 1,
+                        },
+                    ],
+                    span: 23..26,
+                },
+                arguments: Some(
+                    ArgumentsList {
+                        terms: [
+                            TupleTermNode {
+                                key: Nothing,
+                                value: 2,
+                            },
+                        ],
+                        span: 0..0,
+                    },
+                ),
+                body: None,
+                span: 26..32,
+            },
+            span: 22..33,
+        },
+        ExpressionNode {
+            omit: false,
+            body: ApplyCallNode {
+                monadic: false,
+                caller: ApplyCallNode {
+                    monadic: false,
+                    caller: SubscriptCallNode {
+                        kind: Ordinal,
+                        base: a,
+                        monadic: false,
+                        terms: [
+                            Index {
+                                index: 1,
+                            },
+                        ],
+                        span: 34..37,
+                    },
+                    arguments: None,
+                    body: None,
+                    span: 37..40,
+                },
+                arguments: Some(
+                    ArgumentsList {
+                        terms: [
+                            TupleTermNode {
+                                key: Nothing,
+                                value: 3,
+                            },
+                        ],
+                        span: 0..0,
+                    },
+                ),
+                body: None,
+                span: 40..43,
+            },
+            span: 33..44,
+        },
+        ExpressionNode {
+            omit: false,
+            body: SubscriptCallNode {
+                kind: Ordinal,
+                base: ApplyCallNode {
+                    monadic: false,
+                    caller: ApplyCallNode {
+                        monadic: false,
+                        caller: a,
+                        arguments: None,
+                        body: None,
+                        span: 45..48,
+                    },
+                    arguments: Some(
+                        ArgumentsList {
+                            terms: [
+                                TupleTermNode {
+                                    key: Nothing,
+                                    value: 2,
+                                },
+                            ],
+                            span: 0..0,
+                        },
+                    ),
+                    body: None,
+                    span: 48..51,
+                },
+                monadic: false,
+                terms: [
+                    Index {
+                        index: 3,
+                    },
+                ],
+                span: 51..54,
+            },
+            span: 44..55,
+        },
+        ExpressionNode {
+            omit: false,
+            body: ApplyCallNode {
+                monadic: false,
+                caller: SubscriptCallNode {
+                    kind: Ordinal,
+                    base: ApplyCallNode {
+                        monadic: false,
+                        caller: a,
+                        arguments: None,
+                        body: None,
+                        span: 56..59,
+                    },
+                    monadic: false,
+                    terms: [
+                        Index {
+                            index: 2,
+                        },
+                    ],
+                    span: 59..62,
+                },
+                arguments: Some(
+                    ArgumentsList {
+                        terms: [
+                            TupleTermNode {
+                                key: Nothing,
+                                value: 3,
+                            },
+                        ],
+                        span: 0..0,
+                    },
+                ),
+                body: None,
+                span: 62..65,
+            },
+            span: 55..67,
         },
     ],
 }

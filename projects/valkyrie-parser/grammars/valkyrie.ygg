@@ -177,9 +177,12 @@ union KW_FUNCTION {
     | /micro|function/ #Micro
     | 'macro'          #Macro
 }
+class Continuation {
+    '{' MainStatement* '}'
+}
 // === while loop === --------------------------------------------------------------------------------------------------
 class WhileStatement {
-    KW_WHILE InlineExpression? '{' MainStatement* '}' ^EOS?
+    KW_WHILE InlineExpression? Continuation ^EOS?
 }
 @style(keyword)
 union KW_WHILE {
@@ -188,7 +191,7 @@ union KW_WHILE {
 }
 // === for loop === ----------------------------------------------------------------------------------------------------
 class ForStatement {
-    KW_FOR Identifier KW_IN InlineExpression? '{' MainStatement* '}' ^EOS?
+    KW_FOR Identifier KW_IN InlineExpression? Continuation ^EOS?
 }
 // === expression === --------------------------------------------------------------------------------------------------
 atomic union MainStatement {
@@ -308,7 +311,10 @@ atomic union TypeSuffix {
 }
 // === tuple === --------------------------------------------------------------------------------------------------
 atomic class TupleCall {
-     WhiteSpace? OP_AND_THEN? WhiteSpace? TupleLiteral
+     ^WhiteSpace? OP_AND_THEN? ^WhiteSpace? (
+        | TupleLiteral (^WhiteSpace? Continuation)?
+        | Continuation
+     )
 }
 class TupleLiteral {
     '(' (TuplePair (^COMMA TuplePair)* ^COMMA?)? ')'

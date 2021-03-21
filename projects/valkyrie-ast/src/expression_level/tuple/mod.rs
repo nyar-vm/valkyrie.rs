@@ -45,7 +45,7 @@ pub enum TupleKeyType {
     /// A valid number key
     Number(BigUint),
     /// A subscript key
-    Subscript(SubscriptCallNode),
+    Subscript(RangeNode),
 }
 
 impl Default for TupleKeyType {

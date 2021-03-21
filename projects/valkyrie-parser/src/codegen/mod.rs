@@ -70,6 +70,7 @@ pub enum ValkyrieRule {
     KW_TRAIT,
     DefineFunction,
     KW_FUNCTION,
+    Continuation,
     WhileStatement,
     KW_WHILE,
     ForStatement,
@@ -205,6 +206,7 @@ impl YggdrasilRule for ValkyrieRule {
             Self::KW_TRAIT => "",
             Self::DefineFunction => "",
             Self::KW_FUNCTION => "",
+            Self::Continuation => "",
             Self::WhileStatement => "",
             Self::KW_WHILE => "",
             Self::ForStatement => "",
@@ -576,10 +578,16 @@ pub enum KwFunctionNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ContinuationNode {
+    pub main_statement: Vec<MainStatementNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct WhileStatementNode {
+    pub continuation: ContinuationNode,
     pub inline_expression: Option<InlineExpressionNode>,
     pub kw_while: KwWhileNode,
-    pub main_statement: Vec<MainStatementNode>,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -590,11 +598,11 @@ pub struct KwWhileNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ForStatementNode {
+    pub continuation: ContinuationNode,
     pub identifier: IdentifierNode,
     pub inline_expression: Option<InlineExpressionNode>,
     pub kw_for: KwForNode,
     pub kw_in: KwInNode,
-    pub main_statement: Vec<MainStatementNode>,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -741,9 +749,9 @@ pub enum TypeSuffixNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct TupleCallNode {
+    pub continuation: Option<ContinuationNode>,
     pub op_and_then: Option<OpAndThenNode>,
-    pub tuple_literal: TupleLiteralNode,
-    pub white_space: Vec<WhiteSpaceNode>,
+    pub tuple_literal: Option<TupleLiteralNode>,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]

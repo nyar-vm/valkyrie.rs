@@ -5,7 +5,12 @@ ProgramRoot {
             body: ApplyCallNode {
                 monadic: false,
                 caller: f,
-                arguments: None,
+                arguments: Some(
+                    ArgumentsList {
+                        terms: [],
+                        span: 0..0,
+                    },
+                ),
                 body: None,
                 span: 21..23,
             },
@@ -16,7 +21,17 @@ ProgramRoot {
             body: ApplyCallNode {
                 monadic: false,
                 caller: f,
-                arguments: None,
+                arguments: Some(
+                    ArgumentsList {
+                        terms: [
+                            TupleTermNode {
+                                key: Nothing,
+                                value: 1,
+                            },
+                        ],
+                        span: 0..0,
+                    },
+                ),
                 body: None,
                 span: 26..29,
             },
@@ -27,7 +42,26 @@ ProgramRoot {
             body: ApplyCallNode {
                 monadic: false,
                 caller: f,
-                arguments: None,
+                arguments: Some(
+                    ArgumentsList {
+                        terms: [
+                            TupleTermNode {
+                                key: Identifier(
+                                    IdentifierNode {
+                                        name: "k",
+                                        span: FileSpan {
+                                            start: 33,
+                                            end: 34,
+                                            file: FileID(0xE164825B5852CC6F),
+                                        },
+                                    },
+                                ),
+                                value: 1,
+                            },
+                        ],
+                        span: 0..0,
+                    },
+                ),
                 body: None,
                 span: 32..38,
             },
@@ -38,7 +72,53 @@ ProgramRoot {
             body: ApplyCallNode {
                 monadic: false,
                 caller: f,
-                arguments: None,
+                arguments: Some(
+                    ArgumentsList {
+                        terms: [
+                            TupleTermNode {
+                                key: Nothing,
+                                value: null,
+                            },
+                            TupleTermNode {
+                                key: Identifier(
+                                    IdentifierNode {
+                                        name: "a",
+                                        span: FileSpan {
+                                            start: 48,
+                                            end: 49,
+                                            file: FileID(0xE164825B5852CC6F),
+                                        },
+                                    },
+                                ),
+                                value: 1,
+                            },
+                            TupleTermNode {
+                                key: Nothing,
+                                value: UnaryNode {
+                                    prefix: *,
+                                    base: UnaryNode {
+                                        prefix: *,
+                                        base: args,
+                                    },
+                                },
+                            },
+                            TupleTermNode {
+                                key: Nothing,
+                                value: UnaryNode {
+                                    prefix: *,
+                                    base: UnaryNode {
+                                        prefix: *,
+                                        base: UnaryNode {
+                                            prefix: *,
+                                            base: kwargs,
+                                        },
+                                    },
+                                },
+                            },
+                        ],
+                        span: 0..0,
+                    },
+                ),
                 body: None,
                 span: 41..72,
             },
@@ -55,19 +135,66 @@ ProgramRoot {
                         caller: ApplyCallNode {
                             monadic: false,
                             caller: f,
-                            arguments: None,
+                            arguments: Some(
+                                ArgumentsList {
+                                    terms: [],
+                                    span: 0..0,
+                                },
+                            ),
                             body: None,
                             span: 93..95,
                         },
-                        arguments: None,
+                        arguments: Some(
+                            ArgumentsList {
+                                terms: [
+                                    TupleTermNode {
+                                        key: Nothing,
+                                        value: 1,
+                                    },
+                                ],
+                                span: 0..0,
+                            },
+                        ),
                         body: None,
                         span: 95..98,
                     },
-                    arguments: None,
+                    arguments: Some(
+                        ArgumentsList {
+                            terms: [
+                                TupleTermNode {
+                                    key: Nothing,
+                                    value: 1,
+                                },
+                                TupleTermNode {
+                                    key: Nothing,
+                                    value: 2,
+                                },
+                            ],
+                            span: 0..0,
+                        },
+                    ),
                     body: None,
                     span: 98..104,
                 },
-                arguments: None,
+                arguments: Some(
+                    ArgumentsList {
+                        terms: [
+                            TupleTermNode {
+                                key: Nothing,
+                                value: 1,
+                            },
+                            TupleTermNode {
+                                key: Nothing,
+                                value: 2,
+                            },
+                            TupleTermNode {
+                                key: Nothing,
+                                value: 3,
+                            },
+                        ],
+                        span: 0..0,
+                    },
+                ),
                 body: None,
                 span: 104..113,
             },
