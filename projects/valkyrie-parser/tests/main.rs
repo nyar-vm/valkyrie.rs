@@ -14,7 +14,7 @@ use valkyrie_parser::{
     MainExpressionNode, MainStatementNode, ProgramContext, ProgramNode, StatementNode, ValkyrieParser, ValkyrieRule,
     ValkyrieRule::MainStatement,
 };
-use yggdrasil_rt::{YggdrasilError, YggdrasilParser};
+use yggdrasil_rt::{OutputResult, YggdrasilError, YggdrasilParser};
 
 mod declaration;
 mod expression;
@@ -75,25 +75,25 @@ fn find_all(dir: &str, debug: bool) -> anyhow::Result<()> {
             Some(s) if s.eq("vk") => {}
             _ => continue,
         }
+        // set file path
+        let file = cache.load_local(&path)?;
         if let Ok(o) = Url::from_file_path(&path) {
+            unsafe {
+                cache.set_source(file, o.as_str().to_string());
+            }
             if debug {
                 println!("Short Form: {}", o)
             }
         }
-        let file = cache.load_local(path.canonicalize()?)?;
+        // parse text
+
         let text = cache.fetch(&file)?.to_string();
-        let cst = ValkyrieParser::parse_cst(&text, ValkyrieRule::Program).unwrap();
-        if debug {
-            println!("{}", cst);
-        }
-        let ast = match ProgramNode::from_str(&text) {
-            Ok(o) => o,
-            Err(e) => {
-                eprintln!("{}", e);
-                continue;
-            }
+        match ValkyrieParser::parse_cst(&text, ValkyrieRule::Program) {
+            Ok(o) if debug => println!("{}", o),
+            _ => {}
         };
-        match ast.build(&ProgramContext { file }) {
+        let out = ProgramContext { file }.parse(&mut cache);
+        match out {
             Success { value, diagnostics } => {
                 for error in diagnostics {
                     error.as_report().eprint(&cache)?

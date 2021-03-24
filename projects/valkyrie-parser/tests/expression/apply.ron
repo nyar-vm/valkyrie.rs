@@ -46,16 +46,7 @@ ProgramRoot {
                     ArgumentsList {
                         terms: [
                             TupleTermNode {
-                                key: Identifier(
-                                    IdentifierNode {
-                                        name: "k",
-                                        span: FileSpan {
-                                            start: 33,
-                                            end: 34,
-                                            file: FileID(0xE164825B5852CC6F),
-                                        },
-                                    },
-                                ),
+                                key: k,
                                 value: 1,
                             },
                         ],
@@ -80,39 +71,21 @@ ProgramRoot {
                                 value: null,
                             },
                             TupleTermNode {
-                                key: Identifier(
-                                    IdentifierNode {
-                                        name: "a",
-                                        span: FileSpan {
-                                            start: 48,
-                                            end: 49,
-                                            file: FileID(0xE164825B5852CC6F),
-                                        },
-                                    },
-                                ),
+                                key: a,
                                 value: 1,
                             },
                             TupleTermNode {
                                 key: Nothing,
                                 value: UnaryNode {
-                                    prefix: *,
-                                    base: UnaryNode {
-                                        prefix: *,
-                                        base: args,
-                                    },
+                                    prefix: ⁑,
+                                    base: args,
                                 },
                             },
                             TupleTermNode {
                                 key: Nothing,
                                 value: UnaryNode {
-                                    prefix: *,
-                                    base: UnaryNode {
-                                        prefix: *,
-                                        base: UnaryNode {
-                                            prefix: *,
-                                            base: kwargs,
-                                        },
-                                    },
+                                    prefix: ⁂,
+                                    base: kwargs,
                                 },
                             },
                         ],

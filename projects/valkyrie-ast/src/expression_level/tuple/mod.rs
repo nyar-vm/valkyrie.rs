@@ -1,6 +1,5 @@
 use super::*;
 
-#[cfg(feature = "pretty-print")]
 mod display;
 
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
@@ -35,7 +34,7 @@ pub struct TupleTermNode {
 }
 
 /// The key of tuple
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Clone, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum TupleKeyType {
     /// This expression has no key

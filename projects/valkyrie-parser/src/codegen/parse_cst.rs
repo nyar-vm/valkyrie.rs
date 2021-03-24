@@ -133,10 +133,19 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
 #[inline]
 fn parse_program(state: Input) -> Output {
     state.rule(ValkyrieRule::Program, |s| {
-        s.repeat(0..4294967295, |s| {
-            s.sequence(|s| {
-                Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| parse_statement(s).and_then(|s| s.tag_node("statement")))
-            })
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| {
+                    s.repeat(0..4294967295, |s| {
+                        s.sequence(|s| {
+                            Ok(s)
+                                .and_then(|s| builtin_ignore(s))
+                                .and_then(|s| parse_statement(s).and_then(|s| s.tag_node("statement")))
+                        })
+                    })
+                })
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| s.end_of_input())
         })
     })
 }

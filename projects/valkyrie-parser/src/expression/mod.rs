@@ -126,7 +126,8 @@ impl MainPrefixNode {
             "√" => ValkyrieOperator::Roots(2),
             "∛" => ValkyrieOperator::Roots(3),
             "∜" => ValkyrieOperator::Roots(4),
-
+            ".." => ValkyrieOperator::Unpack { level: 2 },
+            "..." => ValkyrieOperator::Unpack { level: 3 },
             _ => unimplemented!("{} is not a valid prefix operator", self.text),
         };
         OperatorNode { kind: o, span: self.span.clone() }

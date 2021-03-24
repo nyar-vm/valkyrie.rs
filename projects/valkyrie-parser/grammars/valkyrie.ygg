@@ -4,7 +4,7 @@ grammar Valkyrie {
 
 // === statements === -----------------------------------------------------------------
 entry class Program {
-    Statement*
+    Statement* EOI
 }
 // === statements === -----------------------------------------------------------------
 union Statement {

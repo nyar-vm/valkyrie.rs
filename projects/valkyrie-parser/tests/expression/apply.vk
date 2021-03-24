@@ -2,7 +2,7 @@
 f();
 f(1);
 f(k: 1);
-f(null, a: 1, **args, ***kwargs)
+f(null, a: 1, ..args, ...kwargs)
 
 // Curry function
 f()(1)(1, 2)(1, 2, 3);

@@ -203,5 +203,235 @@ ProgramRoot {
             },
             span: 88..111,
         },
+        ExpressionNode {
+            omit: true,
+            body: SubscriptCallNode {
+                kind: Ordinal,
+                base: array,
+                monadic: false,
+                terms: [],
+                span: 137..139,
+            },
+            span: 132..140,
+        },
+        ExpressionNode {
+            omit: true,
+            body: SubscriptCallNode {
+                kind: Ordinal,
+                base: array,
+                monadic: false,
+                terms: [],
+                span: 146..152,
+            },
+            span: 141..153,
+        },
+        ExpressionNode {
+            omit: true,
+            body: SubscriptCallNode {
+                kind: Ordinal,
+                base: array,
+                monadic: false,
+                terms: [
+                    Index {
+                        index: 0,
+                    },
+                ],
+                span: 159..162,
+            },
+            span: 154..163,
+        },
+        ExpressionNode {
+            omit: true,
+            body: SubscriptCallNode {
+                kind: Ordinal,
+                base: array,
+                monadic: false,
+                terms: [
+                    Index {
+                        index: 1,
+                    },
+                ],
+                span: 169..176,
+            },
+            span: 164..177,
+        },
+        ExpressionNode {
+            omit: true,
+            body: SubscriptCallNode {
+                kind: Ordinal,
+                base: array,
+                monadic: false,
+                terms: [
+                    Range {
+                        head: None,
+                        tail: None,
+                        step: None,
+                    },
+                    Range {
+                        head: None,
+                        tail: None,
+                        step: None,
+                    },
+                    Range {
+                        head: None,
+                        tail: None,
+                        step: None,
+                    },
+                    Index {
+                        index: 1,
+                    },
+                    Range {
+                        head: None,
+                        tail: Some(
+                            index0,
+                        ),
+                        step: None,
+                    },
+                    Range {
+                        head: None,
+                        tail: None,
+                        step: Some(
+                            UnaryNode {
+                                prefix: -,
+                                base: 1,
+                            },
+                        ),
+                    },
+                    Index {
+                        index: i∷j,
+                    },
+                    Range {
+                        head: Some(
+                            i,
+                        ),
+                        tail: None,
+                        step: Some(
+                            j,
+                        ),
+                    },
+                ],
+                span: 183..227,
+            },
+            span: 178..228,
+        },
+        ExpressionNode {
+            omit: true,
+            body: SubscriptCallNode {
+                kind: Ordinal,
+                base: array,
+                monadic: false,
+                terms: [
+                    Range {
+                        head: None,
+                        tail: None,
+                        step: None,
+                    },
+                    Range {
+                        head: None,
+                        tail: None,
+                        step: None,
+                    },
+                    Range {
+                        head: None,
+                        tail: None,
+                        step: None,
+                    },
+                    Index {
+                        index: 1,
+                    },
+                    Range {
+                        head: None,
+                        tail: Some(
+                            index0,
+                        ),
+                        step: None,
+                    },
+                    Range {
+                        head: None,
+                        tail: None,
+                        step: Some(
+                            UnaryNode {
+                                prefix: -,
+                                base: 1,
+                            },
+                        ),
+                    },
+                    Index {
+                        index: i∷j,
+                    },
+                    Range {
+                        head: Some(
+                            i,
+                        ),
+                        tail: None,
+                        step: Some(
+                            j,
+                        ),
+                    },
+                ],
+                span: 234..282,
+            },
+            span: 229..283,
+        },
+        ExpressionNode {
+            omit: true,
+            body: TupleNode {
+                kind: Tuple,
+                terms: [
+                    TupleTermNode {
+                        key: Nothing,
+                        value: v,
+                    },
+                    TupleTermNode {
+                        key: Nothing,
+                        value: TupleNode {
+                            kind: Tuple,
+                            terms: [],
+                            span: 300..302,
+                        },
+                    },
+                    TupleTermNode {
+                        key: Nothing,
+                        value: InfixNode {
+                            infix: +,
+                            lhs: v,
+                            rhs: 1,
+                        },
+                    },
+                    TupleTermNode {
+                        key: a,
+                        value: TupleNode {
+                            kind: Tuple,
+                            terms: [],
+                            span: 324..326,
+                        },
+                    },
+                    TupleTermNode {
+                        key: b,
+                        value: InfixNode {
+                            infix: +,
+                            lhs: v,
+                            rhs: 2,
+                        },
+                    },
+                    TupleTermNode {
+                        key: Nothing,
+                        value: UnaryNode {
+                            prefix: ⁑,
+                            base: args,
+                        },
+                    },
+                    TupleTermNode {
+                        key: Nothing,
+                        value: UnaryNode {
+                            prefix: ⁂,
+                            base: kwargs,
+                        },
+                    },
+                ],
+                span: 287..372,
+            },
+            span: 287..373,
+        },
     ],
 }

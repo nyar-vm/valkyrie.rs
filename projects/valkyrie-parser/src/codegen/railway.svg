@@ -67,6 +67,7 @@ svg.railroad .character > rect {
 <path d=" M 10 21 a 5 5 0 0 1 5 -5 a 5 5 0 0 1 5 5 a 5 5 0 0 1 -5 5 a 5 5 0 0 1 -5 -5 m 10 0 h 5"/>
 <text class="comment" id="Program" x="64" y="26">
 Program</text>
+<g class="sequence">
 <g class="repeat">
 <path d=" M 104 21 h 12 m 154 0 h 12 m -12 0 a 12 12 0 0 1 12 12 v 7 a 12 12 0 0 1 -12 12 m -52 0 h -102 m 54 0 l 5 -5 m 0 10 l -5 -5 m -54 0 a 12 12 0 0 1 -12 -12 v -7 a 12 12 0 0 1 12 -12"/>
 <text class="comment" x="244" y="57">
@@ -87,10 +88,23 @@ Statement</text>
 <path d=" M 168 21 h 10"/>
 </g>
 </g>
-<path d=" M 292 21 h 5 a 5 5 0 0 1 5 -5 a 5 5 0 0 1 5 5 a 5 5 0 0 1 -5 5 a 5 5 0 0 1 -5 -5"/>
+<g class="character">
+<rect height="22" rx="10" ry="10" width="52" x="292" y="10"/>
+<text x="318" y="26">
+HIDE</text>
+</g>
+<g class="character">
+<rect height="22" rx="10" ry="10" width="116" x="354" y="10"/>
+<text x="412" y="26">
+END_OF_INPUT</text>
+</g>
+<path d=" M 282 21 h 10"/>
+<path d=" M 344 21 h 10"/>
+</g>
+<path d=" M 480 21 h 5 a 5 5 0 0 1 5 -5 a 5 5 0 0 1 5 5 a 5 5 0 0 1 -5 5 a 5 5 0 0 1 -5 -5"/>
 <path d=" M 25 21 h 10"/>
 <path d=" M 94 21 h 10"/>
-<path d=" M 282 21 h 10"/>
+<path d=" M 470 21 h 10"/>
 </g>
 <g class="sequence">
 <path d=" M 10 85 a 5 5 0 0 1 5 -5 a 5 5 0 0 1 5 5 a 5 5 0 0 1 -5 5 a 5 5 0 0 1 -5 -5 m 10 0 h 5"/>
