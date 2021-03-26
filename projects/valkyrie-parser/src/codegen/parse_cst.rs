@@ -128,6 +128,7 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::KW_IS => parse_kw_is(state),
         ValkyrieRule::KW_AS => parse_kw_as(state),
         ValkyrieRule::WhiteSpace => parse_white_space(state),
+        ValkyrieRule::SkipSpace => parse_skip_space(state),
         ValkyrieRule::Comment => parse_comment(state),
         ValkyrieRule::HiddenText => unreachable!(),
     })
@@ -1412,9 +1413,9 @@ fn parse_range_call(state: Input) -> Output {
     state.rule(ValkyrieRule::RangeCall, |s| {
         s.sequence(|s| {
             Ok(s)
-                .and_then(|s| s.optional(|s| parse_white_space(s).and_then(|s| s.tag_node("white_space"))))
+                .and_then(|s| s.optional(|s| parse_white_space(s)))
                 .and_then(|s| s.optional(|s| parse_op_and_then(s).and_then(|s| s.tag_node("op_and_then"))))
-                .and_then(|s| s.optional(|s| parse_white_space(s).and_then(|s| s.tag_node("white_space"))))
+                .and_then(|s| s.optional(|s| parse_white_space(s)))
                 .and_then(|s| parse_range_literal(s).and_then(|s| s.tag_node("range_literal")))
         })
     })
@@ -2064,6 +2065,15 @@ fn parse_white_space(state: Input) -> Output {
     state.rule(ValkyrieRule::WhiteSpace, |s| {
         s.match_regex({
             static REGEX: OnceLock<Regex> = OnceLock::new();
+            REGEX.get_or_init(|| Regex::new("^(?x)([^\\S\\r\\n]+)").unwrap())
+        })
+    })
+}
+#[inline]
+fn parse_skip_space(state: Input) -> Output {
+    state.rule(ValkyrieRule::SkipSpace, |s| {
+        s.match_regex({
+            static REGEX: OnceLock<Regex> = OnceLock::new();
             REGEX.get_or_init(|| Regex::new("^(?x)(\\p{White_Space}+)").unwrap())
         })
     })
@@ -2090,7 +2100,7 @@ fn parse_comment(state: Input) -> Output {
 
 /// All rules ignored in ast mode, inline is not recommended
 fn builtin_ignore(state: Input) -> Output {
-    state.repeat(0..u32::MAX, |s| parse_white_space(s).or_else(|s| parse_comment(s)))
+    state.repeat(0..u32::MAX, |s| parse_skip_space(s).or_else(|s| parse_comment(s)))
 }
 
 fn builtin_any(state: Input) -> Output {

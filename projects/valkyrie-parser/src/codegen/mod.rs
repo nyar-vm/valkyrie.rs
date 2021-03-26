@@ -156,6 +156,7 @@ pub enum ValkyrieRule {
     KW_IS,
     KW_AS,
     WhiteSpace,
+    SkipSpace,
     Comment,
     /// Label for unnamed text literal
     HiddenText,
@@ -163,7 +164,7 @@ pub enum ValkyrieRule {
 
 impl YggdrasilRule for ValkyrieRule {
     fn is_ignore(&self) -> bool {
-        matches!(self, Self::HiddenText | Self::WhiteSpace | Self::Comment)
+        matches!(self, Self::HiddenText | Self::SkipSpace | Self::Comment)
     }
 
     fn get_style(&self) -> &'static str {
@@ -294,6 +295,7 @@ impl YggdrasilRule for ValkyrieRule {
             Self::KW_IS => "",
             Self::KW_AS => "",
             Self::WhiteSpace => "",
+            Self::SkipSpace => "",
             Self::Comment => "",
             _ => "",
         }
@@ -796,7 +798,6 @@ pub enum TupleKeyNode {
 pub struct RangeCallNode {
     pub op_and_then: Option<OpAndThenNode>,
     pub range_literal: RangeLiteralNode,
-    pub white_space: Vec<WhiteSpaceNode>,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -1104,6 +1105,11 @@ pub struct KwAsNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct WhiteSpaceNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct SkipSpaceNode {
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]

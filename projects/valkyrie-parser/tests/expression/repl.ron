@@ -32,10 +32,13 @@ ProgramRoot {
         },
         ExpressionNode {
             omit: false,
-            body: SubscriptCallNode {
+            body: a,
+            span: 25..27,
+        },
+        ExpressionNode {
+            omit: false,
+            body: RangeNode {
                 kind: Ordinal,
-                base: a,
-                monadic: false,
                 terms: [
                     Index {
                         index: 3,
@@ -44,34 +47,40 @@ ProgramRoot {
                         index: 4,
                     },
                 ],
-                span: 26..32,
+                span: 27..32,
             },
-            span: 25..34,
+            span: 27..34,
         },
         ExpressionNode {
             omit: false,
-            body: SubscriptCallNode {
+            body: a,
+            span: 34..36,
+        },
+        ExpressionNode {
+            omit: false,
+            body: RangeNode {
                 kind: Ordinal,
-                base: SubscriptCallNode {
-                    kind: Ordinal,
-                    base: a,
-                    monadic: false,
-                    terms: [
-                        Index {
-                            index: 5,
-                        },
-                    ],
-                    span: 35..39,
-                },
-                monadic: false,
+                terms: [
+                    Index {
+                        index: 5,
+                    },
+                ],
+                span: 36..39,
+            },
+            span: 36..40,
+        },
+        ExpressionNode {
+            omit: false,
+            body: RangeNode {
+                kind: Ordinal,
                 terms: [
                     Index {
                         index: 6,
                     },
                 ],
-                span: 39..43,
+                span: 40..43,
             },
-            span: 34..45,
+            span: 40..45,
         },
         ExpressionNode {
             omit: false,
@@ -125,10 +134,13 @@ ProgramRoot {
         },
         ExpressionNode {
             omit: false,
-            body: SubscriptCallNode {
+            body: a,
+            span: 84..86,
+        },
+        ExpressionNode {
+            omit: false,
+            body: RangeNode {
                 kind: Ordinal,
-                base: a,
-                monadic: false,
                 terms: [
                     Index {
                         index: 3,
@@ -137,34 +149,40 @@ ProgramRoot {
                         index: 4,
                     },
                 ],
-                span: 85..91,
+                span: 86..91,
             },
-            span: 84..93,
+            span: 86..93,
         },
         ExpressionNode {
             omit: false,
-            body: SubscriptCallNode {
+            body: a,
+            span: 93..95,
+        },
+        ExpressionNode {
+            omit: false,
+            body: RangeNode {
                 kind: Ordinal,
-                base: SubscriptCallNode {
-                    kind: Ordinal,
-                    base: a,
-                    monadic: false,
-                    terms: [
-                        Index {
-                            index: 5,
-                        },
-                    ],
-                    span: 94..98,
-                },
-                monadic: false,
+                terms: [
+                    Index {
+                        index: 5,
+                    },
+                ],
+                span: 95..98,
+            },
+            span: 95..99,
+        },
+        ExpressionNode {
+            omit: false,
+            body: RangeNode {
+                kind: Ordinal,
                 terms: [
                     Index {
                         index: 6,
                     },
                 ],
-                span: 98..102,
+                span: 99..102,
             },
-            span: 93..103,
+            span: 99..103,
         },
     ],
 }

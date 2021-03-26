@@ -336,7 +336,7 @@ union TupleKey {
 }
 // === range === --------------------------------------------------------------------------------------------------
 atomic class RangeCall {
-    WhiteSpace? OP_AND_THEN? WhiteSpace? RangeLiteral
+    ^WhiteSpace? OP_AND_THEN? ^WhiteSpace? RangeLiteral
 }
 atomic class RangeLiteral {
     | '[' ~ (SubscriptAxis (HIDE ^COMMA ~ SubscriptAxis)* ~ ^COMMA?)? ~ ']'
@@ -468,7 +468,11 @@ token {
 }
 // === ignores === -----------------------------------------------------------------------------------------------------
 @railway(false)
-hide class WhiteSpace {
+class WhiteSpace {
+    /[^\\S\r\n]+/
+}
+@railway(false)
+hide class SkipSpace {
     /\p{White_Space}+/
 }
 @style(comment)
