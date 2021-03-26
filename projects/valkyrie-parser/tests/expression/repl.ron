@@ -75,8 +75,96 @@ ProgramRoot {
         },
         ExpressionNode {
             omit: false,
-            body: a,
-            span: 45..46,
+            body: DotCallNode {
+                monadic: false,
+                caller: a,
+                term: 1,
+                span: 46..48,
+            },
+            span: 45..49,
+        },
+        ExpressionNode {
+            omit: false,
+            body: DotCallNode {
+                monadic: false,
+                caller: a,
+                term: 1,
+                span: 50..57,
+            },
+            span: 49..59,
+        },
+        ExpressionNode {
+            omit: false,
+            body: SubscriptCallNode {
+                kind: Ordinal,
+                base: a,
+                monadic: false,
+                terms: [
+                    Index {
+                        index: 1,
+                    },
+                ],
+                span: 60..63,
+            },
+            span: 59..65,
+        },
+        ExpressionNode {
+            omit: false,
+            body: SubscriptCallNode {
+                kind: Ordinal,
+                base: a,
+                monadic: false,
+                terms: [
+                    Index {
+                        index: 2,
+                    },
+                ],
+                span: 66..82,
+            },
+            span: 65..84,
+        },
+        ExpressionNode {
+            omit: false,
+            body: SubscriptCallNode {
+                kind: Ordinal,
+                base: a,
+                monadic: false,
+                terms: [
+                    Index {
+                        index: 3,
+                    },
+                    Index {
+                        index: 4,
+                    },
+                ],
+                span: 85..91,
+            },
+            span: 84..93,
+        },
+        ExpressionNode {
+            omit: false,
+            body: SubscriptCallNode {
+                kind: Ordinal,
+                base: SubscriptCallNode {
+                    kind: Ordinal,
+                    base: a,
+                    monadic: false,
+                    terms: [
+                        Index {
+                            index: 5,
+                        },
+                    ],
+                    span: 94..98,
+                },
+                monadic: false,
+                terms: [
+                    Index {
+                        index: 6,
+                    },
+                ],
+                span: 98..102,
+            },
+            span: 93..103,
         },
     ],
 }

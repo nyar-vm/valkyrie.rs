@@ -1,8 +1,10 @@
 pub mod annotations;
+pub mod apply_call;
 pub mod argument;
 pub mod common;
 pub mod ctor;
 mod dispatch;
+pub mod dot_call;
 pub mod lambda;
 pub mod matches;
 pub mod number;
@@ -17,8 +19,8 @@ mod display;
 
 use crate::{
     helper::ValkyrieNode, ApplyCallNode, ArgumentTermNode, BinaryNode, BooleanNode, CallNode, CallTermNode, ClosureCallNode,
-    CollectsNode, ExpressionFormatted, GenericCallNode, GuardStatement, IdentifierNode, IfStatement, LambdaSlotNode,
-    MatchDotStatement, ModifiersNode, MonadicDotCall, NamePathNode, NewConstructNode, NullNode, NumberLiteralNode,
+    CollectsNode, DotCallNode, ExpressionFormatted, GenericCallNode, GuardStatement, IdentifierNode, IfStatement,
+    LambdaSlotNode, MatchDotStatement, ModifiersNode, NamePathNode, NewConstructNode, NullNode, NumberLiteralNode,
     OperatorNode, OutputNode, PatternBlock, RaiseNode, RangeNode, StatementNode, StringLiteralNode, StringTextNode,
     SubscriptCallNode, SwitchStatement, TryStatement, TupleNode, TupleTermNode, UnaryNode,
 };
@@ -30,6 +32,7 @@ use alloc::{
 };
 use core::{
     fmt::{Debug, Display, Formatter, Write},
+    num::NonZeroUsize,
     ops::Range,
 };
 use deriver::From;
@@ -128,6 +131,8 @@ pub enum ExpressionType {
     SubscriptCall(Box<SubscriptCallNode>),
     /// - Postfix expression
     GenericCall(Box<CallNode<GenericCallNode>>),
+    /// - Postfix expression
+    DotCall(Box<DotCallNode>),
     /// - Postfix expression
     MatchDot(Box<CallNode<MatchDotStatement>>),
     /// - REPL Reference

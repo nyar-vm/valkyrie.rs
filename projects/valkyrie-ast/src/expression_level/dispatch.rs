@@ -99,6 +99,7 @@ impl ValkyrieNode for ExpressionType {
             Self::Boolean(node) => node.get_range(),
             Self::OutputReference(node) => node.get_range(),
             Self::Array(node) => node.get_range(),
+            Self::DotCall(node) => node.get_range(),
         }
     }
 }

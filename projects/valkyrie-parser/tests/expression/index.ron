@@ -2,8 +2,96 @@ ProgramRoot {
     statements: [
         ExpressionNode {
             omit: false,
-            body: a,
-            span: 0..1,
+            body: DotCallNode {
+                monadic: false,
+                caller: a,
+                term: 1,
+                span: 1..3,
+            },
+            span: 0..4,
+        },
+        ExpressionNode {
+            omit: false,
+            body: DotCallNode {
+                monadic: false,
+                caller: a,
+                term: 1,
+                span: 5..12,
+            },
+            span: 4..14,
+        },
+        ExpressionNode {
+            omit: false,
+            body: SubscriptCallNode {
+                kind: Ordinal,
+                base: a,
+                monadic: false,
+                terms: [
+                    Index {
+                        index: 1,
+                    },
+                ],
+                span: 15..18,
+            },
+            span: 14..20,
+        },
+        ExpressionNode {
+            omit: false,
+            body: SubscriptCallNode {
+                kind: Ordinal,
+                base: a,
+                monadic: false,
+                terms: [
+                    Index {
+                        index: 2,
+                    },
+                ],
+                span: 21..37,
+            },
+            span: 20..39,
+        },
+        ExpressionNode {
+            omit: false,
+            body: SubscriptCallNode {
+                kind: Ordinal,
+                base: a,
+                monadic: false,
+                terms: [
+                    Index {
+                        index: 3,
+                    },
+                    Index {
+                        index: 4,
+                    },
+                ],
+                span: 40..46,
+            },
+            span: 39..48,
+        },
+        ExpressionNode {
+            omit: false,
+            body: SubscriptCallNode {
+                kind: Ordinal,
+                base: SubscriptCallNode {
+                    kind: Ordinal,
+                    base: a,
+                    monadic: false,
+                    terms: [
+                        Index {
+                            index: 5,
+                        },
+                    ],
+                    span: 49..53,
+                },
+                monadic: false,
+                terms: [
+                    Index {
+                        index: 6,
+                    },
+                ],
+                span: 53..57,
+            },
+            span: 48..58,
         },
     ],
 }

@@ -95,6 +95,8 @@ pub enum ValkyrieRule {
     TypeInfix,
     TypePrefix,
     TypeSuffix,
+    DotCall,
+    DotCallItem,
     TupleCall,
     TupleLiteral,
     TuplePair,
@@ -231,6 +233,8 @@ impl YggdrasilRule for ValkyrieRule {
             Self::TypeInfix => "",
             Self::TypePrefix => "",
             Self::TypeSuffix => "",
+            Self::DotCall => "",
+            Self::DotCallItem => "",
             Self::TupleCall => "",
             Self::TupleLiteral => "",
             Self::TuplePair => "",
@@ -692,6 +696,7 @@ pub struct InlineTermNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum InlineSuffixNode {
+    DotCall(DotCallNode),
     InlineSuffix0(SuffixOperatorNode),
     RangeCall(RangeCallNode),
     TupleCall(TupleCallNode),
@@ -745,6 +750,19 @@ pub enum TypePrefixNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum TypeSuffixNode {
     Option,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct DotCallNode {
+    pub dot_call_item: DotCallItemNode,
+    pub op_and_then: Option<OpAndThenNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum DotCallItemNode {
+    Identifier(IdentifierNode),
+    Integer(IntegerNode),
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]

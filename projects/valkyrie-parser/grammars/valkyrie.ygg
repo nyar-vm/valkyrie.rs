@@ -273,6 +273,7 @@ atomic class InlineTerm {
 }
 atomic union InlineSuffix {
     | HIDE SuffixOperator
+    | DotCall
     | TupleCall
     | RangeCall
 }
@@ -309,7 +310,15 @@ atomic union TypePrefix {
 atomic union TypeSuffix {
     | '?' #Option
 }
-// === tuple === --------------------------------------------------------------------------------------------------
+// === dot === ---------------------------------------------------------------------------------------------------------
+class DotCall {
+    OP_AND_THEN? ^DOT DotCallItem
+}
+union DotCallItem {
+    | Identifier
+    | Integer
+}
+// === tuple === -------------------------------------------------------------------------------------------------------
 atomic class TupleCall {
      ^WhiteSpace? OP_AND_THEN? ^WhiteSpace? (
         | TupleLiteral (^WhiteSpace? Continuation)?

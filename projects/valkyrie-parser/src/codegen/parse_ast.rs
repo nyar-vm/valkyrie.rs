@@ -1508,6 +1508,7 @@ impl YggdrasilNode for InlineSuffixNode {
 
     fn get_range(&self) -> Option<Range<usize>> {
         match self {
+            Self::DotCall(s) => s.get_range(),
             Self::InlineSuffix0(s) => s.get_range(),
             Self::RangeCall(s) => s.get_range(),
             Self::TupleCall(s) => s.get_range(),
@@ -1515,6 +1516,9 @@ impl YggdrasilNode for InlineSuffixNode {
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
+        if let Ok(s) = pair.take_tagged_one::<DotCallNode>(Cow::Borrowed("dot_call")) {
+            return Ok(Self::DotCall(s));
+        }
         if let Ok(s) = pair.take_tagged_one::<SuffixOperatorNode>(Cow::Borrowed("inline_suffix_0")) {
             return Ok(Self::InlineSuffix0(s));
         }
@@ -1738,6 +1742,59 @@ impl FromStr for TypeSuffixNode {
 
     fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
         Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::TypeSuffix)?)
+    }
+}
+#[automatically_derived]
+impl YggdrasilNode for DotCallNode {
+    type Rule = ValkyrieRule;
+
+    fn get_range(&self) -> Option<Range<usize>> {
+        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    }
+    fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
+        let _span = pair.get_span();
+        Ok(Self {
+            dot_call_item: pair.take_tagged_one::<DotCallItemNode>(Cow::Borrowed("dot_call_item"))?,
+            op_and_then: pair.take_tagged_option::<OpAndThenNode>(Cow::Borrowed("op_and_then")),
+            span: Range { start: _span.start() as u32, end: _span.end() as u32 },
+        })
+    }
+}
+#[automatically_derived]
+impl FromStr for DotCallNode {
+    type Err = YggdrasilError<ValkyrieRule>;
+
+    fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::DotCall)?)
+    }
+}
+#[automatically_derived]
+impl YggdrasilNode for DotCallItemNode {
+    type Rule = ValkyrieRule;
+
+    fn get_range(&self) -> Option<Range<usize>> {
+        match self {
+            Self::Identifier(s) => s.get_range(),
+            Self::Integer(s) => s.get_range(),
+        }
+    }
+    fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
+        let _span = pair.get_span();
+        if let Ok(s) = pair.take_tagged_one::<IdentifierNode>(Cow::Borrowed("identifier")) {
+            return Ok(Self::Identifier(s));
+        }
+        if let Ok(s) = pair.take_tagged_one::<IntegerNode>(Cow::Borrowed("integer")) {
+            return Ok(Self::Integer(s));
+        }
+        Err(YggdrasilError::invalid_node(ValkyrieRule::DotCallItem, _span))
+    }
+}
+#[automatically_derived]
+impl FromStr for DotCallItemNode {
+    type Err = YggdrasilError<ValkyrieRule>;
+
+    fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::DotCallItem)?)
     }
 }
 #[automatically_derived]

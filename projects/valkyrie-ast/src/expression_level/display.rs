@@ -28,6 +28,7 @@ impl Debug for ExpressionType {
             Self::GenericCall(v) => Debug::fmt(v, f),
             Self::MatchDot(v) => Debug::fmt(v, f),
             Self::OutputReference(v) => Debug::fmt(v, f),
+            Self::DotCall(v) => Debug::fmt(v, f),
         }
     }
 }

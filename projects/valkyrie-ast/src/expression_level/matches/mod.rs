@@ -15,7 +15,7 @@ pub enum MatchKind {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct MatchDotStatement {
     /// expr?.match { }
-    pub monadic: MonadicDotCall,
+    pub monadic: bool,
     /// The kind of the match statement
     pub kind: MatchKind,
     /// The patterns of the match statement

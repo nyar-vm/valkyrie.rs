@@ -67,6 +67,8 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::TypeInfix => parse_type_infix(state),
         ValkyrieRule::TypePrefix => parse_type_prefix(state),
         ValkyrieRule::TypeSuffix => parse_type_suffix(state),
+        ValkyrieRule::DotCall => parse_dot_call(state),
+        ValkyrieRule::DotCallItem => parse_dot_call_item(state),
         ValkyrieRule::TupleCall => parse_tuple_call(state),
         ValkyrieRule::TupleLiteral => parse_tuple_literal(state),
         ValkyrieRule::TuplePair => parse_tuple_pair(state),
@@ -1178,6 +1180,7 @@ fn parse_inline_suffix(state: Input) -> Output {
                 })
                 .and_then(|s| s.tag_node("inline_suffix_0"))
             })
+            .or_else(|s| parse_dot_call(s).and_then(|s| s.tag_node("dot_call")))
             .or_else(|s| parse_tuple_call(s).and_then(|s| s.tag_node("tuple_call")))
             .or_else(|s| parse_range_call(s).and_then(|s| s.tag_node("range_call")))
     })
@@ -1292,6 +1295,27 @@ fn parse_type_prefix(state: Input) -> Output {
 #[inline]
 fn parse_type_suffix(state: Input) -> Output {
     state.rule(ValkyrieRule::TypeSuffix, |s| Err(s).or_else(|s| builtin_text(s, "?", false).and_then(|s| s.tag_node("option"))))
+}
+#[inline]
+fn parse_dot_call(state: Input) -> Output {
+    state.rule(ValkyrieRule::DotCall, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| s.optional(|s| parse_op_and_then(s).and_then(|s| s.tag_node("op_and_then"))))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_dot(s))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_dot_call_item(s).and_then(|s| s.tag_node("dot_call_item")))
+        })
+    })
+}
+#[inline]
+fn parse_dot_call_item(state: Input) -> Output {
+    state.rule(ValkyrieRule::DotCallItem, |s| {
+        Err(s)
+            .or_else(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
+            .or_else(|s| parse_integer(s).and_then(|s| s.tag_node("integer")))
+    })
 }
 #[inline]
 fn parse_tuple_call(state: Input) -> Output {

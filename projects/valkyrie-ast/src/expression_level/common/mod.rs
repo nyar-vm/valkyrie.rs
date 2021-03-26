@@ -18,30 +18,6 @@ impl<E> ValkyrieNode for CallNode<E> {
         Range { start: self.span.start as usize, end: self.span.end as usize }
     }
 }
-/// `function?(), a?[slice]`
-#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct MonadicCall {
-    /// Weather the call is monadic
-    pub mark: bool,
-}
-
-/// `a?.method()`
-#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct MonadicDotCall {
-    /// Weather the do call is monadic
-    pub mark: bool,
-}
-#[cfg(feature = "pretty-print")]
-impl PrettyPrint for MonadicDotCall {
-    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
-        match self.mark {
-            true => theme.text("?."),
-            false => theme.text("."),
-        }
-    }
-}
 
 /// `term` or `field: term`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
