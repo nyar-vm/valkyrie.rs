@@ -14,7 +14,6 @@ impl Debug for StatementNode {
             Self::UnionField(v) => Debug::fmt(v, f),
             Self::Enumerate(v) => Debug::fmt(v, f),
             Self::EnumerateField(v) => Debug::fmt(v, f),
-            Self::Flags(v) => Debug::fmt(v, f),
             Self::Tagged(v) => Debug::fmt(v, f),
             Self::Variant(v) => Debug::fmt(v, f),
             Self::Trait(v) => Debug::fmt(v, f),

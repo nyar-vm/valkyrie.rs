@@ -4,6 +4,7 @@ use valkyrie_ast::{ImportStatement, NamespaceDeclaration, ProgramRoot, Statement
 
 mod import;
 mod namespace;
+
 impl crate::ProgramNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<ProgramRoot> {
         let mut errors = vec![];
@@ -19,7 +20,7 @@ impl crate::StatementNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<StatementNode> {
         let value = match self {
             Self::DefineClass(v) => v.build(ctx)?.into(),
-            Self::DefineFlags(_) => {
+            Self::DefineEnumerate(_) => {
                 todo!()
             }
             Self::DefineFunction(_) => {

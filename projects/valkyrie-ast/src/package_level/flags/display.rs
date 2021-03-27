@@ -3,27 +3,25 @@ use super::*;
 impl PrettyPrint for FlagsDeclaration {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(4);
-        terms += theme.keyword("flags");
+        terms += theme.keyword("enumerate");
         terms += " ";
-        terms += self.name.pretty(theme);
+        terms += self.namepath.pretty(theme);
         terms += self.body.pretty(theme);
         terms.into()
     }
 }
-#[cfg(feature = "lispify")]
-impl Lispify for FlagsDeclaration {
-    type Output = Lisp;
-
-    fn lispify(&self) -> Self::Output {
-        let mut terms = Lisp::new(3 + self.body.terms.len());
-        terms += Lisp::keyword("flags");
-        terms += self.name.lispify();
-        if let Some(s) = &self.layout {
-            terms += Lisp::keyword("layout") + s.lispify();
+#[cfg(feature = "pretty-print")]
+impl PrettyPrint for FlagsFieldDeclaration {
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        let mut terms = PrettySequence::new(3);
+        terms += self.name.pretty(theme);
+        if let Some(value) = &self.value {
+            terms += " ";
+            terms += theme.operator("=");
+            terms += " ";
+            terms += value.pretty(theme);
         }
-        for term in &self.body.terms {
-            terms += term.lispify();
-        }
-        terms
+        terms += ",";
+        terms.into()
     }
 }

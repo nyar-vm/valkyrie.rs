@@ -64,7 +64,7 @@ pub enum ValkyrieRule {
     KW_CLASS,
     DefineUnion,
     KW_UNION,
-    DefineFlags,
+    DefineEnumerate,
     KW_FLAGS,
     DefineTrait,
     KW_TRAIT,
@@ -203,7 +203,7 @@ impl YggdrasilRule for ValkyrieRule {
             Self::KW_CLASS => "",
             Self::DefineUnion => "",
             Self::KW_UNION => "",
-            Self::DefineFlags => "",
+            Self::DefineEnumerate => "",
             Self::KW_FLAGS => "",
             Self::DefineTrait => "",
             Self::KW_TRAIT => "",
@@ -311,7 +311,7 @@ pub struct ProgramNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum StatementNode {
     DefineClass(DefineClassNode),
-    DefineFlags(DefineFlagsNode),
+    DefineEnumerate(DefineEnumerateNode),
     DefineFunction(DefineFunctionNode),
     DefineImport(DefineImportNode),
     DefineNamespace(DefineNamespaceNode),
@@ -547,7 +547,7 @@ pub struct KwUnionNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct DefineFlagsNode {
+pub struct DefineEnumerateNode {
     pub attribute_call: Vec<AttributeCallNode>,
     pub identifier: IdentifierNode,
     pub kw_flags: KwFlagsNode,
@@ -555,8 +555,9 @@ pub struct DefineFlagsNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct KwFlagsNode {
-    pub span: Range<u32>,
+pub enum KwFlagsNode {
+    Enum,
+    Flags,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]

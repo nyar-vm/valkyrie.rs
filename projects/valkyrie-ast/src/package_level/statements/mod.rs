@@ -23,11 +23,10 @@ pub enum StatementNode {
     /// The union's field declaration node.
     UnionField(Box<UnionFieldDeclaration>),
     /// The enumerate declaration node.
-    Enumerate(Box<EnumerateDeclaration>),
+    Enumerate(Box<FlagsDeclaration>),
     /// The enumerates field declaration node.
-    EnumerateField(Box<EnumerateFieldDeclaration>),
-    /// The flags declaration node.
-    Flags(Box<FlagsDeclaration>),
+    EnumerateField(Box<FlagsFieldDeclaration>),
+
     /// The tagged union declaration node.
     Tagged(Box<TaggedDeclaration>),
     /// The tagged union's variant declaration node.

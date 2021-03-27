@@ -1,55 +1,30 @@
-use super::*;
+use crate::{KwClassNode, KwFlagsNode, ProgramContext};
+use nyar_error::{Success, Validation};
+use valkyrie_ast::{ClassDeclaration, ClassKind, FlagsDeclaration, FlagsKind, IdentifierNode, NamePathNode};
 
-impl ThisParser for EnumerateDeclaration {
-    fn parse(input: ParseState) -> ParseResult<Self> {
-        let (state, _) = str("enumerate")(input)?;
-        let (state, id) = state.skip(ignore).match_fn(NamePathNode::parse)?;
-        let (state, stmt) = parse_statement_block(state.skip(ignore), enum_statements)?;
-
-        state.finish(EnumerateDeclaration {
-            documentation: Default::default(),
-            namepath: id,
-            modifiers: vec![],
-            layout: None,
-            implements: vec![],
-            body: stmt,
-            span: get_span(input, state),
-        })
-    }
-
-    fn lispify(&self) -> Lisp {
-        let mut lisp = Lisp::new(3 + self.body.terms.len());
-        lisp += Lisp::keyword("enumerate");
-        lisp += self.namepath.lispify();
-        if let Some(s) = &self.layout {
-            lisp += Lisp::keyword("layout") + s.lispify();
+impl crate::DefineEnumerateNode {
+    pub fn build(&self, ctx: &ProgramContext) -> Validation<FlagsDeclaration> {
+        Success {
+            value: FlagsDeclaration {
+                documentation: Default::default(),
+                kind: FlagsKind::Enumerate,
+                namepath: NamePathNode { names: vec![] },
+                modifiers: vec![],
+                layout: None,
+                implements: vec![],
+                body: Default::default(),
+                span: self.span.clone(),
+            },
+            diagnostics: vec![],
         }
-        for term in &self.body.terms {
-            lisp += term.lispify();
-        }
-        lisp
     }
 }
 
-impl ThisParser for EnumerateFieldDeclaration {
-    fn parse(input: ParseState) -> ParseResult<Self> {
-        let (state, name) = IdentifierNode::parse(input)?;
-        let (state, value) = state.skip(ignore).match_optional(|s| {
-            let (state, _) = str("=")(s)?;
-            let (state, expr) = parse_expression_node(state.skip(ignore), ExpressionContext::default())?;
-            let state = state.skip(ignore).skip(parse_semi);
-            state.finish(expr)
-        })?;
-        state.finish(EnumerateFieldDeclaration { documentation: Default::default(), name, value, span: get_span(input, state) })
-    }
-
-    fn lispify(&self) -> Lisp {
-        let mut lisp = Lisp::new(3);
-        lisp += Lisp::keyword("flag");
-        lisp += self.name.lispify();
-        if let Some(value) = &self.value {
-            lisp += value.lispify();
+impl KwFlagsNode {
+    pub fn build(&self) -> ClassKind {
+        match self {
+            Self::Enum => ClassKind::Class,
+            Self::Flags => ClassKind::Structure,
         }
-        lisp
     }
 }

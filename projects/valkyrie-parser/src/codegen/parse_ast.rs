@@ -29,7 +29,7 @@ impl YggdrasilNode for StatementNode {
     fn get_range(&self) -> Option<Range<usize>> {
         match self {
             Self::DefineClass(s) => s.get_range(),
-            Self::DefineFlags(s) => s.get_range(),
+            Self::DefineEnumerate(s) => s.get_range(),
             Self::DefineFunction(s) => s.get_range(),
             Self::DefineImport(s) => s.get_range(),
             Self::DefineNamespace(s) => s.get_range(),
@@ -43,8 +43,8 @@ impl YggdrasilNode for StatementNode {
         if let Ok(s) = pair.take_tagged_one::<DefineClassNode>(Cow::Borrowed("define_class")) {
             return Ok(Self::DefineClass(s));
         }
-        if let Ok(s) = pair.take_tagged_one::<DefineFlagsNode>(Cow::Borrowed("define_flags")) {
-            return Ok(Self::DefineFlags(s));
+        if let Ok(s) = pair.take_tagged_one::<DefineEnumerateNode>(Cow::Borrowed("define_enumerate")) {
+            return Ok(Self::DefineEnumerate(s));
         }
         if let Ok(s) = pair.take_tagged_one::<DefineFunctionNode>(Cow::Borrowed("define_function")) {
             return Ok(Self::DefineFunction(s));
@@ -932,7 +932,7 @@ impl FromStr for KwUnionNode {
     }
 }
 #[automatically_derived]
-impl YggdrasilNode for DefineFlagsNode {
+impl YggdrasilNode for DefineEnumerateNode {
     type Rule = ValkyrieRule;
 
     fn get_range(&self) -> Option<Range<usize>> {
@@ -951,11 +951,11 @@ impl YggdrasilNode for DefineFlagsNode {
     }
 }
 #[automatically_derived]
-impl FromStr for DefineFlagsNode {
+impl FromStr for DefineEnumerateNode {
     type Err = YggdrasilError<ValkyrieRule>;
 
     fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
-        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::DefineFlags)?)
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::DefineEnumerate)?)
     }
 }
 #[automatically_derived]
@@ -963,11 +963,20 @@ impl YggdrasilNode for KwFlagsNode {
     type Rule = ValkyrieRule;
 
     fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+        match self {
+            Self::Enum => None,
+            Self::Flags => None,
+        }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
-        Ok(Self { span: Range { start: _span.start() as u32, end: _span.end() as u32 } })
+        if let Some(_) = pair.find_first_tag("enum") {
+            return Ok(Self::Enum);
+        }
+        if let Some(_) = pair.find_first_tag("flags") {
+            return Ok(Self::Flags);
+        }
+        Err(YggdrasilError::invalid_node(ValkyrieRule::KW_FLAGS, _span))
     }
 }
 #[automatically_derived]

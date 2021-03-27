@@ -45,8 +45,7 @@ pub use crate::{
     package_level::{
         classes::{ClassDeclaration, ClassFieldDeclaration, ClassKind, ClassMethodDeclaration},
         documentation::DocumentationNode,
-        enumerates::{EnumerateDeclaration, EnumerateFieldDeclaration},
-        flags::{FlagsDeclaration, FlagsIterator, FlagsTerm},
+        flags::{FlagsDeclaration, FlagsFieldDeclaration, FlagsKind},
         function::{
             FunctionDeclaration, FunctionDeclarationInline, FunctionEffectNode, FunctionReturnNode, FunctionType,
             StatementBlock,

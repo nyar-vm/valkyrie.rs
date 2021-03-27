@@ -36,7 +36,7 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::KW_CLASS => parse_kw_class(state),
         ValkyrieRule::DefineUnion => parse_define_union(state),
         ValkyrieRule::KW_UNION => parse_kw_union(state),
-        ValkyrieRule::DefineFlags => parse_define_flags(state),
+        ValkyrieRule::DefineEnumerate => parse_define_enumerate(state),
         ValkyrieRule::KW_FLAGS => parse_kw_flags(state),
         ValkyrieRule::DefineTrait => parse_define_trait(state),
         ValkyrieRule::KW_TRAIT => parse_kw_trait(state),
@@ -160,7 +160,7 @@ fn parse_statement(state: Input) -> Output {
             .or_else(|s| parse_define_import(s).and_then(|s| s.tag_node("define_import")))
             .or_else(|s| parse_define_class(s).and_then(|s| s.tag_node("define_class")))
             .or_else(|s| parse_define_union(s).and_then(|s| s.tag_node("define_union")))
-            .or_else(|s| parse_define_flags(s).and_then(|s| s.tag_node("define_flags")))
+            .or_else(|s| parse_define_enumerate(s).and_then(|s| s.tag_node("define_enumerate")))
             .or_else(|s| parse_define_trait(s).and_then(|s| s.tag_node("define_trait")))
             .or_else(|s| parse_define_function(s).and_then(|s| s.tag_node("define_function")))
             .or_else(|s| parse_main_statement(s).and_then(|s| s.tag_node("main_statement")))
@@ -860,8 +860,8 @@ fn parse_kw_union(state: Input) -> Output {
     state.rule(ValkyrieRule::KW_UNION, |s| s.match_string("union", false))
 }
 #[inline]
-fn parse_define_flags(state: Input) -> Output {
-    state.rule(ValkyrieRule::DefineFlags, |s| {
+fn parse_define_enumerate(state: Input) -> Output {
+    state.rule(ValkyrieRule::DefineEnumerate, |s| {
         s.sequence(|s| {
             Ok(s)
                 .and_then(|s| {
@@ -882,7 +882,11 @@ fn parse_define_flags(state: Input) -> Output {
 }
 #[inline]
 fn parse_kw_flags(state: Input) -> Output {
-    state.rule(ValkyrieRule::KW_FLAGS, |s| s.match_string("flags", false))
+    state.rule(ValkyrieRule::KW_FLAGS, |s| {
+        Err(s)
+            .or_else(|s| builtin_text(s, "enumerate", false).and_then(|s| s.tag_node("enum")))
+            .or_else(|s| builtin_text(s, "flags", false).and_then(|s| s.tag_node("flags")))
+    })
 }
 #[inline]
 fn parse_define_trait(state: Input) -> Output {
