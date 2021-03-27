@@ -7,16 +7,7 @@ impl TupleLiteralNode {
         let mut errors = vec![];
         let mut terms = vec![];
         for x in &self.tuple_pair {
-            match x.build(ctx) {
-                Success { value, diagnostics } => {
-                    terms.push(value);
-                    errors.extend(diagnostics);
-                }
-                Failure { fatal, diagnostics } => {
-                    errors.push(fatal);
-                    errors.extend(diagnostics);
-                }
-            }
+            x.build(ctx).append(&mut terms, &mut errors)
         }
         Success { value: TupleNode { kind: Default::default(), terms, span: self.span.clone() }, diagnostics: errors }
     }

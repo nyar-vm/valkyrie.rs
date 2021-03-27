@@ -1129,11 +1129,20 @@ impl YggdrasilNode for KwWhileNode {
     type Rule = ValkyrieRule;
 
     fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+        match self {
+            Self::Until => None,
+            Self::While => None,
+        }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
-        Ok(Self { span: Range { start: _span.start() as u32, end: _span.end() as u32 } })
+        if let Some(_) = pair.find_first_tag("until") {
+            return Ok(Self::Until);
+        }
+        if let Some(_) = pair.find_first_tag("while") {
+            return Ok(Self::While);
+        }
+        Err(YggdrasilError::invalid_node(ValkyrieRule::KW_WHILE, _span))
     }
 }
 #[automatically_derived]

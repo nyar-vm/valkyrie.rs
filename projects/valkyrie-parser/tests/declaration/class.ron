@@ -1,50 +1,44 @@
-ProgramNode {
-    statement: [
-        DefineClass(
-            DefineClassNode {
-                attribute_call: [],
-                class_block: ClassBlockNode {
-                    class_block_item: [],
-                    span: 8..10,
-                },
-                class_inherit: None,
-                define_template: None,
-                identifier: IdentifierBare(
-                    IdentifierBareNode {
-                        text: "A",
-                        span: 6..7,
-                    },
-                ),
-                kw_class: Class,
-                modifier_call: [],
-                span: 0..12,
+ProgramRoot {
+    statements: [
+        ClassDeclaration {
+            kind: Class,
+            modifiers: ModifiersNode {
+                terms: [],
             },
-        ),
-        DefineClass(
-            DefineClassNode {
-                attribute_call: [],
-                class_block: ClassBlockNode {
-                    class_block_item: [],
-                    span: 22..24,
+            name: IdentifierNode {
+                name: "A",
+                span: FileSpan {
+                    start: 6,
+                    end: 7,
+                    file: FileID(0xCF86C9320B189CAB),
                 },
-                class_inherit: Some(
-                    ClassInheritNode {
-                        class_inherit_item: [],
-                        span: 19..21,
-                    },
-                ),
-                define_template: None,
-                identifier: IdentifierBare(
-                    IdentifierBareNode {
-                        text: "B",
-                        span: 18..19,
-                    },
-                ),
-                kw_class: Class,
-                modifier_call: [],
-                span: 12..24,
             },
-        ),
+            generic: None,
+            base_classes: None,
+            auto_traits: [],
+            fields: [],
+            methods: [],
+            span: 0..12,
+        },
+        ClassDeclaration {
+            kind: Class,
+            modifiers: ModifiersNode {
+                terms: [],
+            },
+            name: IdentifierNode {
+                name: "B",
+                span: FileSpan {
+                    start: 18,
+                    end: 19,
+                    file: FileID(0xCF86C9320B189CAB),
+                },
+            },
+            generic: None,
+            base_classes: None,
+            auto_traits: [],
+            fields: [],
+            methods: [],
+            span: 12..25,
+        },
     ],
-    span: 0..24,
 }

@@ -961,10 +961,9 @@ fn parse_while_statement(state: Input) -> Output {
 #[inline]
 fn parse_kw_while(state: Input) -> Output {
     state.rule(ValkyrieRule::KW_WHILE, |s| {
-        s.match_regex({
-            static REGEX: OnceLock<Regex> = OnceLock::new();
-            REGEX.get_or_init(|| Regex::new("^(?x)(while)").unwrap())
-        })
+        Err(s)
+            .or_else(|s| builtin_text(s, "while", false).and_then(|s| s.tag_node("while")))
+            .or_else(|s| builtin_text(s, "until", false).and_then(|s| s.tag_node("until")))
     })
 }
 #[inline]

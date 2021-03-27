@@ -6,16 +6,7 @@ impl RangeLiteralNode {
         let mut errors = vec![];
         let mut terms = vec![];
         for x in &self.subscript_axis {
-            match x.build(ctx) {
-                Success { value, diagnostics } => {
-                    terms.push(value);
-                    errors.extend(diagnostics);
-                }
-                Failure { fatal, diagnostics } => {
-                    errors.push(fatal);
-                    errors.extend(diagnostics);
-                }
-            }
+            x.build(ctx).append(&mut terms, &mut errors)
         }
         Success { value: RangeNode { kind: RangeKind::Ordinal, terms, span: self.span.clone() }, diagnostics: errors }
     }

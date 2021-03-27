@@ -1,565 +1,216 @@
-ProgramNode {
-    statement: [
-        DefineNamespace(
-            DefineNamespaceNode {
-                namepath_free: NamepathFreeNode {
-                    identifier: [
-                        IdentifierBare(
-                            IdentifierBareNode {
-                                text: "test",
-                                span: 10..14,
-                            },
-                        ),
-                        IdentifierBare(
-                            IdentifierBareNode {
-                                text: "import",
-                                span: 15..21,
-                            },
-                        ),
-                    ],
-                    span: 10..21,
+ProgramRoot {
+    statements: [
+        NamespaceDeclaration {
+            kind: Unique,
+            path: test∷import,
+        },
+        ImportStatement {
+            annotation: AnnotationList {
+                kind: Normal,
+                terms: [],
+                span: 0..0,
+            },
+            term: Group(
+                ImportGroupNode {
+                    path: NamePathNode {
+                        names: [],
+                    },
+                    group: [],
                 },
-                op_namespace: None,
-                span: 0..22,
+            ),
+            span: 24..30,
+        },
+        ImportStatement {
+            annotation: AnnotationList {
+                kind: Normal,
+                terms: [],
+                span: 0..0,
             },
-        ),
-        DefineImport(
-            DefineImportNode {
-                import_term: [],
-                span: 26..32,
+            term: Group(
+                ImportGroupNode {
+                    path: NamePathNode {
+                        names: [],
+                    },
+                    group: [],
+                },
+            ),
+            span: 31..41,
+        },
+        ImportStatement {
+            annotation: AnnotationList {
+                kind: Normal,
+                terms: [],
+                span: 0..0,
             },
-        ),
-        DefineImport(
-            DefineImportNode {
-                import_term: [
-                    NamepathFree(
-                        NamepathFreeNode {
-                            identifier: [
-                                IdentifierBare(
-                                    IdentifierBareNode {
-                                        text: "std",
-                                        span: 40..43,
-                                    },
-                                ),
-                            ],
-                            span: 40..43,
-                        },
-                    ),
-                ],
-                span: 34..44,
+            term: Group(
+                ImportGroupNode {
+                    path: NamePathNode {
+                        names: [],
+                    },
+                    group: [],
+                },
+            ),
+            span: 43..55,
+        },
+        ImportStatement {
+            annotation: AnnotationList {
+                kind: Normal,
+                terms: [],
+                span: 0..0,
             },
-        ),
-        DefineImport(
-            DefineImportNode {
-                import_term: [
-                    NamepathFree(
-                        NamepathFreeNode {
-                            identifier: [
-                                IdentifierBare(
-                                    IdentifierBareNode {
-                                        text: "torch",
-                                        span: 54..59,
-                                    },
-                                ),
-                            ],
-                            span: 54..59,
-                        },
-                    ),
-                ],
-                span: 48..61,
+            term: Group(
+                ImportGroupNode {
+                    path: NamePathNode {
+                        names: [],
+                    },
+                    group: [],
+                },
+            ),
+            span: 55..73,
+        },
+        ImportStatement {
+            annotation: AnnotationList {
+                kind: Normal,
+                terms: [],
+                span: 0..0,
             },
-        ),
-        DefineImport(
-            DefineImportNode {
-                import_term: [
-                    ImportAs(
-                        ImportAsNode {
-                            namepath_free: NamepathFreeNode {
-                                identifier: [
-                                    IdentifierBare(
-                                        IdentifierBareNode {
-                                            text: "numpy",
-                                            span: 67..72,
-                                        },
-                                    ),
-                                ],
-                                span: 67..72,
-                            },
-                            alias: IdentifierBare(
-                                IdentifierBareNode {
-                                    text: "np",
-                                    span: 76..78,
-                                },
-                            ),
-                            span: 67..78,
-                        },
-                    ),
-                ],
-                span: 61..80,
+            term: Group(
+                ImportGroupNode {
+                    path: NamePathNode {
+                        names: [],
+                    },
+                    group: [],
+                },
+            ),
+            span: 73..102,
+        },
+        ImportStatement {
+            annotation: AnnotationList {
+                kind: Normal,
+                terms: [],
+                span: 0..0,
             },
-        ),
-        DefineImport(
-            DefineImportNode {
-                import_term: [
-                    ImportAs(
-                        ImportAsNode {
-                            namepath_free: NamepathFreeNode {
-                                identifier: [
-                                    IdentifierBare(
-                                        IdentifierBareNode {
-                                            text: "pandas",
-                                            span: 86..92,
-                                        },
-                                    ),
-                                    IdentifierBare(
-                                        IdentifierBareNode {
-                                            text: "database",
-                                            span: 93..101,
-                                        },
-                                    ),
-                                ],
-                                span: 86..101,
-                            },
-                            alias: IdentifierBare(
-                                IdentifierBareNode {
-                                    text: "db",
-                                    span: 105..107,
-                                },
-                            ),
-                            span: 86..107,
-                        },
-                    ),
-                ],
-                span: 80..111,
+            term: Group(
+                ImportGroupNode {
+                    path: NamePathNode {
+                        names: [],
+                    },
+                    group: [],
+                },
+            ),
+            span: 102..115,
+        },
+        ImportStatement {
+            annotation: AnnotationList {
+                kind: Normal,
+                terms: [],
+                span: 0..0,
             },
-        ),
-        DefineImport(
-            DefineImportNode {
-                import_term: [
-                    ImportAll(
-                        ImportAllNode {
-                            namepath_free: NamepathFreeNode {
-                                identifier: [
-                                    IdentifierBare(
-                                        IdentifierBareNode {
-                                            text: "lib1",
-                                            span: 117..121,
-                                        },
-                                    ),
-                                ],
-                                span: 117..121,
-                            },
-                            op_import_all: OpImportAllNode {
-                                span: 122..123,
-                            },
-                            span: 117..123,
-                        },
-                    ),
-                ],
-                span: 111..125,
+            term: Group(
+                ImportGroupNode {
+                    path: NamePathNode {
+                        names: [],
+                    },
+                    group: [],
+                },
+            ),
+            span: 115..129,
+        },
+        ImportStatement {
+            annotation: AnnotationList {
+                kind: Normal,
+                terms: [],
+                span: 0..0,
             },
-        ),
-        DefineImport(
-            DefineImportNode {
-                import_term: [
-                    ImportAll(
-                        ImportAllNode {
-                            namepath_free: NamepathFreeNode {
-                                identifier: [
-                                    IdentifierBare(
-                                        IdentifierBareNode {
-                                            text: "lib2",
-                                            span: 131..135,
-                                        },
-                                    ),
-                                ],
-                                span: 131..135,
-                            },
-                            op_import_all: OpImportAllNode {
-                                span: 137..138,
-                            },
-                            span: 131..138,
-                        },
-                    ),
-                ],
-                span: 125..140,
+            term: Group(
+                ImportGroupNode {
+                    path: NamePathNode {
+                        names: [],
+                    },
+                    group: [],
+                },
+            ),
+            span: 129..145,
+        },
+        ImportStatement {
+            annotation: AnnotationList {
+                kind: Normal,
+                terms: [],
+                span: 0..0,
             },
-        ),
-        DefineImport(
-            DefineImportNode {
-                import_term: [
-                    ImportAs(
-                        ImportAsNode {
-                            namepath_free: NamepathFreeNode {
-                                identifier: [
-                                    IdentifierBare(
-                                        IdentifierBareNode {
-                                            text: "lib3",
-                                            span: 146..150,
-                                        },
-                                    ),
-                                ],
-                                span: 146..150,
-                            },
-                            alias: IdentifierBare(
-                                IdentifierBareNode {
-                                    text: "z",
-                                    span: 154..155,
-                                },
-                            ),
-                            span: 146..155,
-                        },
-                    ),
-                ],
-                span: 140..157,
+            term: Group(
+                ImportGroupNode {
+                    path: NamePathNode {
+                        names: [],
+                    },
+                    group: [],
+                },
+            ),
+            span: 145..161,
+        },
+        ImportStatement {
+            annotation: AnnotationList {
+                kind: Normal,
+                terms: [],
+                span: 0..0,
             },
-        ),
-        DefineImport(
-            DefineImportNode {
-                import_term: [
-                    ImportAs(
-                        ImportAsNode {
-                            namepath_free: NamepathFreeNode {
-                                identifier: [
-                                    IdentifierBare(
-                                        IdentifierBareNode {
-                                            text: "lib4",
-                                            span: 163..167,
-                                        },
-                                    ),
-                                ],
-                                span: 163..167,
-                            },
-                            alias: IdentifierBare(
-                                IdentifierBareNode {
-                                    text: "_",
-                                    span: 171..172,
-                                },
-                            ),
-                            span: 163..172,
-                        },
-                    ),
-                ],
-                span: 157..174,
+            term: Group(
+                ImportGroupNode {
+                    path: NamePathNode {
+                        names: [],
+                    },
+                    group: [],
+                },
+            ),
+            span: 161..355,
+        },
+        ImportStatement {
+            annotation: AnnotationList {
+                kind: Normal,
+                terms: [],
+                span: 0..0,
             },
-        ),
-        DefineImport(
-            DefineImportNode {
-                import_term: [
-                    ImportBlock(
-                        ImportBlockNode {
-                            import_term: [
-                                ImportAs(
-                                    ImportAsNode {
-                                        namepath_free: NamepathFreeNode {
-                                            identifier: [
-                                                IdentifierBare(
-                                                    IdentifierBareNode {
-                                                        text: "valkyrie",
-                                                        span: 194..202,
-                                                    },
-                                                ),
-                                                IdentifierBare(
-                                                    IdentifierBareNode {
-                                                        text: "nexus",
-                                                        span: 203..208,
-                                                    },
-                                                ),
-                                            ],
-                                            span: 194..208,
-                                        },
-                                        alias: IdentifierBare(
-                                            IdentifierBareNode {
-                                                text: "nexus",
-                                                span: 212..217,
-                                            },
-                                        ),
-                                        span: 194..217,
-                                    },
-                                ),
-                                ImportAll(
-                                    ImportAllNode {
-                                        namepath_free: NamepathFreeNode {
-                                            identifier: [
-                                                IdentifierBare(
-                                                    IdentifierBareNode {
-                                                        text: "valkyrie",
-                                                        span: 224..232,
-                                                    },
-                                                ),
-                                                IdentifierBare(
-                                                    IdentifierBareNode {
-                                                        text: "nexus",
-                                                        span: 233..238,
-                                                    },
-                                                ),
-                                            ],
-                                            span: 224..238,
-                                        },
-                                        op_import_all: OpImportAllNode {
-                                            span: 240..241,
-                                        },
-                                        span: 224..241,
-                                    },
-                                ),
-                                ImportBlock(
-                                    ImportBlockNode {
-                                        import_term: [
-                                            NamepathFree(
-                                                NamepathFreeNode {
-                                                    identifier: [
-                                                        IdentifierBare(
-                                                            IdentifierBareNode {
-                                                                text: "knight",
-                                                                span: 266..272,
-                                                            },
-                                                        ),
-                                                    ],
-                                                    span: 266..272,
-                                                },
-                                            ),
-                                            ImportBlock(
-                                                ImportBlockNode {
-                                                    import_term: [
-                                                        NamepathFree(
-                                                            NamepathFreeNode {
-                                                                identifier: [
-                                                                    IdentifierBare(
-                                                                        IdentifierBareNode {
-                                                                            text: "hunter1",
-                                                                            span: 305..312,
-                                                                        },
-                                                                    ),
-                                                                ],
-                                                                span: 305..312,
-                                                            },
-                                                        ),
-                                                        NamepathFree(
-                                                            NamepathFreeNode {
-                                                                identifier: [
-                                                                    IdentifierBare(
-                                                                        IdentifierBareNode {
-                                                                            text: "hunter2",
-                                                                            span: 327..334,
-                                                                        },
-                                                                    ),
-                                                                ],
-                                                                span: 327..334,
-                                                            },
-                                                        ),
-                                                    ],
-                                                    namepath_free: NamepathFreeNode {
-                                                        identifier: [
-                                                            IdentifierBare(
-                                                                IdentifierBareNode {
-                                                                    text: "hunter",
-                                                                    span: 283..289,
-                                                                },
-                                                            ),
-                                                        ],
-                                                        span: 283..289,
-                                                    },
-                                                    span: 283..345,
-                                                },
-                                            ),
-                                            ImportAll(
-                                                ImportAllNode {
-                                                    namepath_free: NamepathFreeNode {
-                                                        identifier: [
-                                                            IdentifierBare(
-                                                                IdentifierBareNode {
-                                                                    text: "mage",
-                                                                    span: 355..359,
-                                                                },
-                                                            ),
-                                                            IdentifierBare(
-                                                                IdentifierBareNode {
-                                                                    text: "nexus",
-                                                                    span: 360..365,
-                                                                },
-                                                            ),
-                                                        ],
-                                                        span: 355..365,
-                                                    },
-                                                    op_import_all: OpImportAllNode {
-                                                        span: 366..367,
-                                                    },
-                                                    span: 355..367,
-                                                },
-                                            ),
-                                        ],
-                                        namepath_free: NamepathFreeNode {
-                                            identifier: [
-                                                IdentifierBare(
-                                                    IdentifierBareNode {
-                                                        text: "vampire",
-                                                        span: 247..254,
-                                                    },
-                                                ),
-                                            ],
-                                            span: 247..254,
-                                        },
-                                        span: 247..374,
-                                    },
-                                ),
-                            ],
-                            namepath_free: NamepathFreeNode {
-                                identifier: [
-                                    IdentifierBare(
-                                        IdentifierBareNode {
-                                            text: "github",
-                                            span: 180..186,
-                                        },
-                                    ),
-                                ],
-                                span: 180..186,
-                            },
-                            span: 180..377,
-                        },
-                    ),
-                ],
-                span: 174..381,
+            term: Group(
+                ImportGroupNode {
+                    path: NamePathNode {
+                        names: [],
+                    },
+                    group: [],
+                },
+            ),
+            span: 355..376,
+        },
+        ImportStatement {
+            annotation: AnnotationList {
+                kind: Normal,
+                terms: [],
+                span: 0..0,
             },
-        ),
-        DefineImport(
-            DefineImportNode {
-                import_term: [
-                    NamepathFree(
-                        NamepathFreeNode {
-                            identifier: [
-                                IdentifierRaw(
-                                    IdentifierRawNode {
-                                        identifier_raw_text: IdentifierRawTextNode {
-                                            text: "python",
-                                            span: 388..394,
-                                        },
-                                        span: 387..395,
-                                    },
-                                ),
-                                IdentifierBare(
-                                    IdentifierBareNode {
-                                        text: "numpy",
-                                        span: 396..401,
-                                    },
-                                ),
-                            ],
-                            span: 387..401,
-                        },
-                    ),
-                ],
-                span: 381..402,
+            term: Group(
+                ImportGroupNode {
+                    path: NamePathNode {
+                        names: [],
+                    },
+                    group: [],
+                },
+            ),
+            span: 377..406,
+        },
+        ImportStatement {
+            annotation: AnnotationList {
+                kind: Normal,
+                terms: [],
+                span: 0..0,
             },
-        ),
-        DefineImport(
-            DefineImportNode {
-                import_term: [
-                    ImportAs(
-                        ImportAsNode {
-                            namepath_free: NamepathFreeNode {
-                                identifier: [
-                                    IdentifierRaw(
-                                        IdentifierRawNode {
-                                            identifier_raw_text: IdentifierRawTextNode {
-                                                text: "python",
-                                                span: 411..417,
-                                            },
-                                            span: 410..418,
-                                        },
-                                    ),
-                                    IdentifierBare(
-                                        IdentifierBareNode {
-                                            text: "numpy",
-                                            span: 420..425,
-                                        },
-                                    ),
-                                ],
-                                span: 410..425,
-                            },
-                            alias: IdentifierBare(
-                                IdentifierBareNode {
-                                    text: "npy",
-                                    span: 429..432,
-                                },
-                            ),
-                            span: 410..432,
-                        },
-                    ),
-                ],
-                span: 404..433,
-            },
-        ),
-        DefineImport(
-            DefineImportNode {
-                import_term: [
-                    ImportBlock(
-                        ImportBlockNode {
-                            import_term: [
-                                ImportAs(
-                                    ImportAsNode {
-                                        namepath_free: NamepathFreeNode {
-                                            identifier: [
-                                                IdentifierBare(
-                                                    IdentifierBareNode {
-                                                        text: "numpy",
-                                                        span: 458..463,
-                                                    },
-                                                ),
-                                            ],
-                                            span: 458..463,
-                                        },
-                                        alias: IdentifierBare(
-                                            IdentifierBareNode {
-                                                text: "np",
-                                                span: 467..469,
-                                            },
-                                        ),
-                                        span: 458..469,
-                                    },
-                                ),
-                                ImportAs(
-                                    ImportAsNode {
-                                        namepath_free: NamepathFreeNode {
-                                            identifier: [
-                                                IdentifierBare(
-                                                    IdentifierBareNode {
-                                                        text: "torch",
-                                                        span: 476..481,
-                                                    },
-                                                ),
-                                            ],
-                                            span: 476..481,
-                                        },
-                                        alias: IdentifierBare(
-                                            IdentifierBareNode {
-                                                text: "tf",
-                                                span: 485..487,
-                                            },
-                                        ),
-                                        span: 476..487,
-                                    },
-                                ),
-                            ],
-                            namepath_free: NamepathFreeNode {
-                                identifier: [
-                                    IdentifierRaw(
-                                        IdentifierRawNode {
-                                            identifier_raw_text: IdentifierRawTextNode {
-                                                text: "python",
-                                                span: 442..448,
-                                            },
-                                            span: 441..449,
-                                        },
-                                    ),
-                                ],
-                                span: 441..449,
-                            },
-                            span: 441..491,
-                        },
-                    ),
-                ],
-                span: 435..493,
-            },
-        ),
+            term: Group(
+                ImportGroupNode {
+                    path: NamePathNode {
+                        names: [],
+                    },
+                    group: [],
+                },
+            ),
+            span: 407..461,
+        },
     ],
-    span: 0..493,
 }

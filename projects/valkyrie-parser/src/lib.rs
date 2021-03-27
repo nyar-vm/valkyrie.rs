@@ -5,8 +5,10 @@ mod codegen;
 
 pub use crate::{codegen::*, helpers::ProgramContext};
 mod atomic;
+mod control_flow;
 // mod control_flow;
 // mod declarations;
+mod declarations;
 mod expression;
 mod helpers;
 mod statements;

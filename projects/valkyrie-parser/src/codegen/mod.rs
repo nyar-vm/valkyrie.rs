@@ -598,8 +598,9 @@ pub struct WhileStatementNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct KwWhileNode {
-    pub span: Range<u32>,
+pub enum KwWhileNode {
+    Until,
+    While,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]

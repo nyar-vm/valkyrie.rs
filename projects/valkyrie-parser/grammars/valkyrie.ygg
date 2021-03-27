@@ -12,7 +12,7 @@ union Statement {
     | DefineImport
     | DefineClass
     | DefineUnion
-    | DefineFlags
+    | DefineEnumerate
     | DefineTrait
     | DefineFunction
     | MainStatement
@@ -152,12 +152,14 @@ class KW_UNION {
     'union'
 }
 // === identifier === --------------------------------------------------------------------------------------------------
-class DefineFlags {
+class DefineEnumerate {
     AttributeCall* KW_FLAGS Identifier
 }
 @style(keyword)
-class KW_FLAGS {
-    'flags'
+@railway(false)
+union KW_FLAGS {
+    | 'enumerate' #Enum
+    | 'flags'     #Flags
 }
 // === identifier === --------------------------------------------------------------------------------------------------
 class DefineTrait {
@@ -455,7 +457,6 @@ token {
     // control
     KW_IF: /if/
     KW_ELSE: /else/
-    KW_WHILE: /while/
     KW_FOR: /for/
     KW_RETURN: /return/
     KW_BREAK: /break/

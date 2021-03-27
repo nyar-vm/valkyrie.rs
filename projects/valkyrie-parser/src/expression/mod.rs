@@ -151,6 +151,7 @@ impl MainInfixNode {
             "/" => ValkyrieOperator::Divide,
             "%" => ValkyrieOperator::Remider,
             "^" => ValkyrieOperator::Power,
+            "=" => ValkyrieOperator::Assign,
             "!=" => ValkyrieOperator::Equal { negative: true },
             "==" => ValkyrieOperator::Equal { negative: false },
             _ => unimplemented!("{} is not a valid infix operator", self.text),

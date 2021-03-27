@@ -1,0 +1,30 @@
+ProgramRoot {
+    statements: [
+        WhileLoop {
+            kind: While,
+            condition: Unconditional,
+            then_body: StatementBlock {
+                terms: [],
+                span: 0..0,
+            },
+            otherwise: None,
+            span: 0..9,
+        },
+        ExpressionNode {
+            omit: false,
+            body: while,
+            span: 9..15,
+        },
+        ExpressionNode {
+            omit: false,
+            body: ApplyCallNode {
+                monadic: false,
+                caller: true,
+                arguments: None,
+                body: None,
+                span: 19..230,
+            },
+            span: 15..231,
+        },
+    ],
+}

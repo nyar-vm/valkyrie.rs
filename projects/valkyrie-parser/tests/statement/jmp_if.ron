@@ -1,0 +1,340 @@
+ProgramRoot {
+    statements: [
+        ExpressionNode {
+            omit: false,
+            body: if,
+            span: 0..3,
+        },
+        ExpressionNode {
+            omit: false,
+            body: ApplyCallNode {
+                monadic: false,
+                caller: a,
+                arguments: None,
+                body: None,
+                span: 4..8,
+            },
+            span: 3..9,
+        },
+        ExpressionNode {
+            omit: false,
+            body: if,
+            span: 9..12,
+        },
+        ExpressionNode {
+            omit: false,
+            body: ApplyCallNode {
+                monadic: false,
+                caller: a,
+                arguments: None,
+                body: None,
+                span: 13..17,
+            },
+            span: 12..18,
+        },
+        ExpressionNode {
+            omit: false,
+            body: ApplyCallNode {
+                monadic: false,
+                caller: else,
+                arguments: None,
+                body: None,
+                span: 22..26,
+            },
+            span: 18..27,
+        },
+        ExpressionNode {
+            omit: false,
+            body: if,
+            span: 27..30,
+        },
+        ExpressionNode {
+            omit: false,
+            body: ApplyCallNode {
+                monadic: false,
+                caller: a,
+                arguments: None,
+                body: None,
+                span: 31..35,
+            },
+            span: 30..36,
+        },
+        ExpressionNode {
+            omit: false,
+            body: else,
+            span: 36..41,
+        },
+        ExpressionNode {
+            omit: false,
+            body: if,
+            span: 41..44,
+        },
+        ExpressionNode {
+            omit: false,
+            body: ApplyCallNode {
+                monadic: false,
+                caller: b,
+                arguments: None,
+                body: None,
+                span: 45..49,
+            },
+            span: 44..50,
+        },
+        ExpressionNode {
+            omit: false,
+            body: if,
+            span: 50..53,
+        },
+        ExpressionNode {
+            omit: false,
+            body: ApplyCallNode {
+                monadic: false,
+                caller: a,
+                arguments: None,
+                body: None,
+                span: 54..58,
+            },
+            span: 53..59,
+        },
+        ExpressionNode {
+            omit: false,
+            body: else,
+            span: 59..64,
+        },
+        ExpressionNode {
+            omit: false,
+            body: if,
+            span: 64..67,
+        },
+        ExpressionNode {
+            omit: false,
+            body: ApplyCallNode {
+                monadic: false,
+                caller: b,
+                arguments: None,
+                body: None,
+                span: 68..72,
+            },
+            span: 67..73,
+        },
+        ExpressionNode {
+            omit: false,
+            body: ApplyCallNode {
+                monadic: false,
+                caller: else,
+                arguments: None,
+                body: None,
+                span: 77..81,
+            },
+            span: 73..82,
+        },
+        ExpressionNode {
+            omit: false,
+            body: if,
+            span: 82..85,
+        },
+        ExpressionNode {
+            omit: false,
+            body: ApplyCallNode {
+                monadic: false,
+                caller: a,
+                arguments: None,
+                body: None,
+                span: 86..90,
+            },
+            span: 85..91,
+        },
+        ExpressionNode {
+            omit: false,
+            body: else,
+            span: 91..96,
+        },
+        ExpressionNode {
+            omit: false,
+            body: if,
+            span: 96..99,
+        },
+        ExpressionNode {
+            omit: false,
+            body: ApplyCallNode {
+                monadic: false,
+                caller: b,
+                arguments: None,
+                body: None,
+                span: 100..104,
+            },
+            span: 99..105,
+        },
+        ExpressionNode {
+            omit: false,
+            body: else,
+            span: 105..110,
+        },
+        ExpressionNode {
+            omit: false,
+            body: if,
+            span: 110..113,
+        },
+        ExpressionNode {
+            omit: false,
+            body: ApplyCallNode {
+                monadic: false,
+                caller: c,
+                arguments: None,
+                body: None,
+                span: 114..118,
+            },
+            span: 113..119,
+        },
+        ExpressionNode {
+            omit: false,
+            body: if,
+            span: 119..122,
+        },
+        ExpressionNode {
+            omit: false,
+            body: ApplyCallNode {
+                monadic: false,
+                caller: a,
+                arguments: None,
+                body: None,
+                span: 123..127,
+            },
+            span: 122..128,
+        },
+        ExpressionNode {
+            omit: false,
+            body: else,
+            span: 128..133,
+        },
+        ExpressionNode {
+            omit: false,
+            body: if,
+            span: 133..136,
+        },
+        ExpressionNode {
+            omit: false,
+            body: ApplyCallNode {
+                monadic: false,
+                caller: b,
+                arguments: None,
+                body: None,
+                span: 137..141,
+            },
+            span: 136..142,
+        },
+        ExpressionNode {
+            omit: false,
+            body: else,
+            span: 142..147,
+        },
+        ExpressionNode {
+            omit: false,
+            body: if,
+            span: 147..150,
+        },
+        ExpressionNode {
+            omit: false,
+            body: ApplyCallNode {
+                monadic: false,
+                caller: c,
+                arguments: None,
+                body: None,
+                span: 151..155,
+            },
+            span: 150..156,
+        },
+        ExpressionNode {
+            omit: false,
+            body: ApplyCallNode {
+                monadic: false,
+                caller: else,
+                arguments: None,
+                body: None,
+                span: 160..164,
+            },
+            span: 156..167,
+        },
+        ExpressionNode {
+            omit: false,
+            body: if,
+            span: 167..170,
+        },
+        ExpressionNode {
+            omit: false,
+            body: ApplyCallNode {
+                monadic: false,
+                caller: InfixNode {
+                    infix: =,
+                    lhs: ApplyCallNode {
+                        monadic: false,
+                        caller: let,
+                        arguments: Some(
+                            ArgumentsList {
+                                terms: [
+                                    TupleTermNode {
+                                        key: Nothing,
+                                        value: x,
+                                    },
+                                    TupleTermNode {
+                                        key: Nothing,
+                                        value: y,
+                                    },
+                                ],
+                                span: 0..0,
+                            },
+                        ),
+                        body: None,
+                        span: 173..180,
+                    },
+                    rhs: point,
+                },
+                arguments: None,
+                body: None,
+                span: 188..217,
+            },
+            span: 170..219,
+        },
+        ExpressionNode {
+            omit: false,
+            body: if,
+            span: 219..222,
+        },
+        ExpressionNode {
+            omit: false,
+            body: let,
+            span: 222..226,
+        },
+        ExpressionNode {
+            omit: false,
+            body: ApplyCallNode {
+                monadic: false,
+                caller: InfixNode {
+                    infix: =,
+                    lhs: ApplyCallNode {
+                        monadic: false,
+                        caller: Failure,
+                        arguments: Some(
+                            ArgumentsList {
+                                terms: [
+                                    TupleTermNode {
+                                        key: Nothing,
+                                        value: error,
+                                    },
+                                ],
+                                span: 0..0,
+                            },
+                        ),
+                        body: None,
+                        span: 233..240,
+                    },
+                    rhs: x,
+                },
+                arguments: None,
+                body: None,
+                span: 244..266,
+            },
+            span: 226..267,
+        },
+    ],
+}

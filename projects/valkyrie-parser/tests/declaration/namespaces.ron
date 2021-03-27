@@ -1,97 +1,20 @@
-ProgramNode {
-    statement: [
-        DefineNamespace(
-            DefineNamespaceNode {
-                namepath_free: NamepathFreeNode {
-                    identifier: [
-                        IdentifierBare(
-                            IdentifierBareNode {
-                                text: "std",
-                                span: 10..13,
-                            },
-                        ),
-                    ],
-                    span: 10..13,
-                },
-                op_namespace: None,
-                span: 0..14,
-            },
-        ),
-        DefineNamespace(
-            DefineNamespaceNode {
-                namepath_free: NamepathFreeNode {
-                    identifier: [
-                        IdentifierBare(
-                            IdentifierBareNode {
-                                text: "std",
-                                span: 27..30,
-                            },
-                        ),
-                        IdentifierBare(
-                            IdentifierBareNode {
-                                text: "string",
-                                span: 31..37,
-                            },
-                        ),
-                    ],
-                    span: 27..37,
-                },
-                op_namespace: Some(
-                    Main,
-                ),
-                span: 16..38,
-            },
-        ),
-        DefineNamespace(
-            DefineNamespaceNode {
-                namepath_free: NamepathFreeNode {
-                    identifier: [
-                        IdentifierBare(
-                            IdentifierBareNode {
-                                text: "std",
-                                span: 51..54,
-                            },
-                        ),
-                        IdentifierBare(
-                            IdentifierBareNode {
-                                text: "integer",
-                                span: 56..63,
-                            },
-                        ),
-                    ],
-                    span: 51..63,
-                },
-                op_namespace: Some(
-                    Test,
-                ),
-                span: 40..64,
-            },
-        ),
-        DefineNamespace(
-            DefineNamespaceNode {
-                namepath_free: NamepathFreeNode {
-                    identifier: [
-                        IdentifierBare(
-                            IdentifierBareNode {
-                                text: "std",
-                                span: 77..80,
-                            },
-                        ),
-                        IdentifierBare(
-                            IdentifierBareNode {
-                                text: "decimal",
-                                span: 83..90,
-                            },
-                        ),
-                    ],
-                    span: 77..90,
-                },
-                op_namespace: Some(
-                    Hide,
-                ),
-                span: 66..91,
-            },
-        ),
+ProgramRoot {
+    statements: [
+        NamespaceDeclaration {
+            kind: Unique,
+            path: std,
+        },
+        NamespaceDeclaration {
+            kind: Shared,
+            path: std∷string,
+        },
+        NamespaceDeclaration {
+            kind: Test,
+            path: std∷integer,
+        },
+        NamespaceDeclaration {
+            kind: Unique,
+            path: std∷decimal,
+        },
     ],
-    span: 0..95,
 }

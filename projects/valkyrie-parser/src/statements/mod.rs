@@ -1,23 +1,15 @@
 use crate::helpers::ProgramContext;
 use nyar_error::{Failure, Success, Validation};
-use valkyrie_ast::{NamespaceDeclaration, ProgramRoot, StatementNode};
+use valkyrie_ast::{ImportStatement, NamespaceDeclaration, ProgramRoot, StatementNode, WhileConditionNode, WhileLoop};
 
+mod import;
 mod namespace;
 impl crate::ProgramNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<ProgramRoot> {
         let mut errors = vec![];
         let mut statements = vec![];
         for node in &self.statement {
-            match node.build(ctx) {
-                Success { value, diagnostics } => {
-                    statements.push(value);
-                    errors.extend(diagnostics)
-                }
-                Failure { fatal, diagnostics } => {
-                    errors.push(fatal);
-                    errors.extend(diagnostics)
-                }
-            }
+            node.build(ctx).append(&mut statements, &mut errors)
         }
         Success { value: ProgramRoot { statements }, diagnostics: errors }
     }
@@ -26,18 +18,14 @@ impl crate::ProgramNode {
 impl crate::StatementNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<StatementNode> {
         let value = match self {
-            Self::DefineClass(_) => {
-                todo!()
-            }
+            Self::DefineClass(v) => v.build(ctx)?.into(),
             Self::DefineFlags(_) => {
                 todo!()
             }
             Self::DefineFunction(_) => {
                 todo!()
             }
-            Self::DefineImport(_) => {
-                todo!()
-            }
+            Self::DefineImport(v) => v.build(ctx)?.into(),
             Self::DefineNamespace(v) => v.build(ctx).into(),
             Self::DefineTrait(_) => {
                 todo!()
@@ -58,9 +46,7 @@ impl crate::MainStatementNode {
                 todo!()
             }
             Self::ExpressionStatement(v) => v.build(ctx).map(|v| v.into()),
-            Self::WhileStatement(_) => {
-                todo!()
-            }
+            Self::WhileStatement(v) => v.build(ctx).map(|v| v.into()),
         }
     }
 }
