@@ -5,14 +5,7 @@ ProgramRoot {
             modifiers: ModifiersNode {
                 terms: [],
             },
-            name: IdentifierNode {
-                name: "A",
-                span: FileSpan {
-                    start: 6,
-                    end: 7,
-                    file: FileID(0xBFC0AEA11A5E88C0),
-                },
-            },
+            name: Identifier("A", 6..7),
             generic: None,
             base_classes: None,
             auto_traits: [],
@@ -25,14 +18,7 @@ ProgramRoot {
             modifiers: ModifiersNode {
                 terms: [],
             },
-            name: IdentifierNode {
-                name: "B",
-                span: FileSpan {
-                    start: 18,
-                    end: 19,
-                    file: FileID(0xBFC0AEA11A5E88C0),
-                },
-            },
+            name: Identifier("B", 18..19),
             generic: None,
             base_classes: None,
             auto_traits: [],

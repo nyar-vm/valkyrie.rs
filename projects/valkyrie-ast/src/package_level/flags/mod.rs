@@ -5,21 +5,26 @@ mod iters;
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum FlagsKind {
-    Enumerate,
-    Flags,
+    /// aka. `enumerate`,
+    Exclusive,
+    /// aka. `flags`
+    Juxtapose,
 }
 
+/// a number that encodes special semantics
+///
+/// `enumerate Bit(8bits): Trait { FlagA, FlagB }`
+///
 /// `flags Bit(8bits): Trait { FlagA, FlagB }`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct FlagsDeclaration {
+pub struct FlagDeclaration {
     /// The documentation for this flag.
     pub documentation: DocumentationNode,
-
+    /// The kind of the flag statement
     pub kind: FlagsKind,
-
-    /// `flags Name`
-    pub namepath: NamePathNode,
+    /// The name of the flag.
+    pub name: IdentifierNode,
     /// The modifiers for this flag.
     pub modifiers: Vec<IdentifierNode>,
     /// `(8bits)`
@@ -35,7 +40,7 @@ pub struct FlagsDeclaration {
 /// `Name = 0x00`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct FlagsFieldDeclaration {
+pub struct FlagFieldDeclaration {
     /// The documentation for this field.
     pub documentation: DocumentationNode,
     /// The identifier of the field.
@@ -48,11 +53,11 @@ pub struct FlagsFieldDeclaration {
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum EnumerateTerm {
-    Field(FlagsFieldDeclaration),
+pub enum FlagTerm {
+    Field(FlagFieldDeclaration),
 }
 
 #[derive(Clone, Debug)]
-pub struct EnumerateIterator<'a> {
+pub struct FlagIterator<'a> {
     inner: core::slice::Iter<'a, StatementNode>,
 }

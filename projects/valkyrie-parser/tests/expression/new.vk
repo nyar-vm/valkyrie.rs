@@ -6,9 +6,9 @@ new C {
 
 };
 
-new D::();
+new D::<>;
 
-new E::()(){};
+new E::<>(){};
 
 new stack List
 {

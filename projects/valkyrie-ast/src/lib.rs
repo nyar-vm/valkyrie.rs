@@ -45,7 +45,7 @@ pub use crate::{
     package_level::{
         classes::{ClassDeclaration, ClassFieldDeclaration, ClassKind, ClassMethodDeclaration},
         documentation::DocumentationNode,
-        flags::{FlagsDeclaration, FlagsFieldDeclaration, FlagsKind},
+        flags::{FlagDeclaration, FlagFieldDeclaration, FlagsKind},
         function::{
             FunctionDeclaration, FunctionDeclarationInline, FunctionEffectNode, FunctionReturnNode, FunctionType,
             StatementBlock,

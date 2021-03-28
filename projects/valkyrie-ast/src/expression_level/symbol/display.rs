@@ -6,6 +6,12 @@ impl Display for BooleanNode {
     }
 }
 
+impl Debug for IdentifierNode {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        write!(f, "Identifier({:?}, {:?})", self.name, self.span.get_range())
+    }
+}
+
 impl Display for IdentifierNode {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         f.write_str(self.name.as_str())

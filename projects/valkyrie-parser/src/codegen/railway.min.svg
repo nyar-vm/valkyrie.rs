@@ -3341,16 +3341,16 @@ DotCallItem</text>
 <text class="comment" id="DotCallItem" x="78" y="4376">
 DotCallItem</text>
 <g class="choice">
-<path d=" M 132 4371 h 24 m 100 0 h 24"/>
-<a class="link" xlink:href="#Identifier">
+<path d=" M 132 4371 h 24 m 84 0 h 24"/>
+<a class="link" xlink:href="#Namepath">
 <g class="symbol">
-<rect height="22" width="100" x="156" y="4360"/>
-<text x="206" y="4376">
-Identifier</text>
+<rect height="22" width="84" x="156" y="4360"/>
+<text x="198" y="4376">
+Namepath</text>
 </g>
 </a>
-<path d=" M 132 4371 a 12 12 0 0 1 12 12 v 9 m 124 0 v -9 a 12 12 0 0 1 12 -12"/>
-<path d=" M 144 4392 v 0 a 12 12 0 0 0 12 12 m 76 0 h 24 a 12 12 0 0 0 12 -12 v 0"/>
+<path d=" M 132 4371 a 12 12 0 0 1 12 12 v 9 m 108 0 v -9 a 12 12 0 0 1 12 -12"/>
+<path d=" M 144 4392 v 0 a 12 12 0 0 0 12 12 m 76 0 h 8 a 12 12 0 0 0 12 -12 v 0"/>
 <a class="link" xlink:href="#Integer">
 <g class="symbol">
 <rect height="22" width="76" x="156" y="4393"/>
@@ -3359,10 +3359,10 @@ Integer</text>
 </g>
 </a>
 </g>
-<path d=" M 290 4371 h 5 a 5 5 0 0 1 5 -5 a 5 5 0 0 1 5 5 a 5 5 0 0 1 -5 5 a 5 5 0 0 1 -5 -5"/>
+<path d=" M 274 4371 h 5 a 5 5 0 0 1 5 -5 a 5 5 0 0 1 5 5 a 5 5 0 0 1 -5 5 a 5 5 0 0 1 -5 -5"/>
 <path d=" M 25 4371 h 10"/>
 <path d=" M 122 4371 h 10"/>
-<path d=" M 280 4371 h 10"/>
+<path d=" M 264 4371 h 10"/>
 </g>
 <g class="sequence">
 <path d=" M 10 4463 a 5 5 0 0 1 5 -5 a 5 5 0 0 1 5 5 a 5 5 0 0 1 -5 5 a 5 5 0 0 1 -5 -5 m 10 0 h 5"/>

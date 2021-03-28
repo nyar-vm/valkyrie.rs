@@ -5,6 +5,16 @@ mod display;
 
 mod iters;
 
+/// `class A { }, structure V { }`
+#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum ClassKind {
+    /// A function that lazy evaluate the arguments
+    Class,
+    /// A function that eager evaluate the arguments
+    Structure,
+}
+
 /// `class Name(Super): Trait {}`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -63,16 +73,6 @@ pub struct ClassMethodDeclaration {
     pub effect_type: Option<FunctionEffectNode>,
     /// `{ body }`
     pub body: Option<StatementBlock>,
-}
-
-/// `class A { }, structure V { }`
-#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum ClassKind {
-    /// A function that lazy evaluate the arguments
-    Class,
-    /// A function that eager evaluate the arguments
-    Structure,
 }
 
 impl ClassKind {

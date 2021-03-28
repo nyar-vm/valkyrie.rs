@@ -765,8 +765,8 @@ pub struct DotCallNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum DotCallItemNode {
-    Identifier(IdentifierNode),
     Integer(IntegerNode),
+    Namepath(NamepathNode),
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]

@@ -317,7 +317,7 @@ class DotCall {
     OP_AND_THEN? ^DOT DotCallItem
 }
 union DotCallItem {
-    | Identifier
+    | Namepath
     | Integer
 }
 // === tuple === -------------------------------------------------------------------------------------------------------

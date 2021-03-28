@@ -33,8 +33,8 @@ pub enum DotCallTerm {
     MetaType,
     /// `caller.1`
     Integer(NonZeroU64),
-    /// `caller.method`
-    Identifier(IdentifierNode),
+    /// `caller.module::method`
+    Symbol(NamePathNode),
 }
 
 impl Debug for DotCallTerm {
@@ -42,7 +42,7 @@ impl Debug for DotCallTerm {
         match self {
             Self::MetaType => f.write_str("MetaType"),
             Self::Integer(v) => Display::fmt(v, f),
-            Self::Identifier(v) => Display::fmt(v, f),
+            Self::Symbol(v) => Display::fmt(v, f),
         }
     }
 }

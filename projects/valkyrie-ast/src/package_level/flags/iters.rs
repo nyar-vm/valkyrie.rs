@@ -1,21 +1,21 @@
 use super::*;
 
-impl<'a> IntoIterator for &'a FlagsDeclaration {
-    type Item = EnumerateTerm;
-    type IntoIter = EnumerateIterator<'a>;
+impl<'a> IntoIterator for &'a FlagDeclaration {
+    type Item = FlagTerm;
+    type IntoIter = FlagIterator<'a>;
 
     fn into_iter(self) -> Self::IntoIter {
-        EnumerateIterator { inner: self.body.terms.iter() }
+        FlagIterator { inner: self.body.terms.iter() }
     }
 }
 
-impl<'a> Iterator for EnumerateIterator<'a> {
-    type Item = EnumerateTerm;
+impl<'a> Iterator for FlagIterator<'a> {
+    type Item = FlagTerm;
 
     fn next(&mut self) -> Option<Self::Item> {
         let term = self.inner.next()?;
         match &term {
-            StatementNode::EnumerateField(field) => Some(EnumerateTerm::Field((**field).clone())),
+            StatementNode::EnumerateField(field) => Some(FlagTerm::Field((**field).clone())),
             _ => self.next(),
         }
     }

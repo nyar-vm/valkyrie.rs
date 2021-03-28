@@ -1,6 +1,6 @@
 use super::*;
 #[cfg(feature = "pretty-print")]
-impl PrettyPrint for FlagsDeclaration {
+impl PrettyPrint for FlagDeclaration {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(4);
         terms += theme.keyword("enumerate");
@@ -11,7 +11,7 @@ impl PrettyPrint for FlagsDeclaration {
     }
 }
 #[cfg(feature = "pretty-print")]
-impl PrettyPrint for FlagsFieldDeclaration {
+impl PrettyPrint for FlagFieldDeclaration {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(3);
         terms += self.name.pretty(theme);

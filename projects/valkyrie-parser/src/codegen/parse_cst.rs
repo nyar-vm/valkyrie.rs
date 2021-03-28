@@ -1317,7 +1317,7 @@ fn parse_dot_call(state: Input) -> Output {
 fn parse_dot_call_item(state: Input) -> Output {
     state.rule(ValkyrieRule::DotCallItem, |s| {
         Err(s)
-            .or_else(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
+            .or_else(|s| parse_namepath(s).and_then(|s| s.tag_node("namepath")))
             .or_else(|s| parse_integer(s).and_then(|s| s.tag_node("integer")))
     })
 }
