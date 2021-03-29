@@ -1,4 +1,5 @@
 use super::*;
+use core::num::NonZeroU64;
 
 mod display;
 
@@ -41,10 +42,6 @@ pub enum TupleKeyType {
     Nothing,
     /// A valid identifier key, or a string key
     Identifier(IdentifierNode),
-    /// A valid number key
-    Number(BigUint),
-    /// A subscript key
-    Subscript(RangeNode),
 }
 
 impl Default for TupleKeyType {

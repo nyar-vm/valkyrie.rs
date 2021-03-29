@@ -1895,12 +1895,16 @@ impl YggdrasilNode for TupleKeyNode {
     fn get_range(&self) -> Option<Range<usize>> {
         match self {
             Self::Identifier(s) => s.get_range(),
+            Self::Integer(s) => s.get_range(),
         }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
         if let Ok(s) = pair.take_tagged_one::<IdentifierNode>(Cow::Borrowed("identifier")) {
             return Ok(Self::Identifier(s));
+        }
+        if let Ok(s) = pair.take_tagged_one::<IntegerNode>(Cow::Borrowed("integer")) {
+            return Ok(Self::Integer(s));
         }
         Err(YggdrasilError::invalid_node(ValkyrieRule::TupleKey, _span))
     }

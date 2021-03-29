@@ -5,7 +5,7 @@ impl Debug for TupleKeyType {
         match self {
             Self::Nothing => f.write_str("Nothing"),
             Self::Identifier(v) => Display::fmt(v, f),
-            Self::Number(v) => Display::fmt(v, f),
+            Self::String(v) => Display::fmt(v, f),
             Self::Subscript(v) => Debug::fmt(v, f),
         }
     }
@@ -45,7 +45,7 @@ impl PrettyPrint for TupleTermNode {
         terms += match &self.key {
             TupleKeyType::Nothing => return self.value.pretty(theme),
             TupleKeyType::Identifier(node) => node.pretty(theme),
-            TupleKeyType::Number(node) => theme.number(node.to_string()),
+            TupleKeyType::String(node) => theme.number(node.to_string()),
             TupleKeyType::Subscript(node) => node.pretty(theme),
         };
         terms += PrettyTree::text(":");

@@ -1409,7 +1409,11 @@ fn parse_tuple_pair(state: Input) -> Output {
 }
 #[inline]
 fn parse_tuple_key(state: Input) -> Output {
-    state.rule(ValkyrieRule::TupleKey, |s| Err(s).or_else(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier"))))
+    state.rule(ValkyrieRule::TupleKey, |s| {
+        Err(s)
+            .or_else(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
+            .or_else(|s| parse_integer(s).and_then(|s| s.tag_node("integer")))
+    })
 }
 #[inline]
 fn parse_range_call(state: Input) -> Output {
