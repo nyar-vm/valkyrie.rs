@@ -794,7 +794,7 @@ pub struct TuplePairNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum TupleKeyNode {
     Identifier(IdentifierNode),
-    Integer(IntegerNode),
+    TextRaw(TextRawNode),
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]

@@ -20,7 +20,7 @@ ProgramRoot {
                 kind: Tuple,
                 terms: [
                     TupleTermNode {
-                        key: Nothing,
+                        key: None,
                         value: InfixNode {
                             infix: +,
                             lhs: 1,
@@ -28,7 +28,7 @@ ProgramRoot {
                         },
                     },
                     TupleTermNode {
-                        key: Nothing,
+                        key: None,
                         value: 3,
                     },
                 ],
@@ -42,7 +42,7 @@ ProgramRoot {
                 kind: Tuple,
                 terms: [
                     TupleTermNode {
-                        key: Nothing,
+                        key: None,
                         value: InfixNode {
                             infix: +,
                             lhs: 1,
@@ -50,11 +50,11 @@ ProgramRoot {
                         },
                     },
                     TupleTermNode {
-                        key: Nothing,
+                        key: None,
                         value: 3,
                     },
                     TupleTermNode {
-                        key: Nothing,
+                        key: None,
                         value: TupleNode {
                             kind: Tuple,
                             terms: [],
@@ -72,7 +72,7 @@ ProgramRoot {
                 kind: Tuple,
                 terms: [
                     TupleTermNode {
-                        key: Nothing,
+                        key: None,
                         value: InfixNode {
                             infix: +,
                             lhs: 1,
@@ -80,20 +80,20 @@ ProgramRoot {
                         },
                     },
                     TupleTermNode {
-                        key: Nothing,
+                        key: None,
                         value: 3,
                     },
                     TupleTermNode {
-                        key: Nothing,
+                        key: None,
                         value: TupleNode {
                             kind: Tuple,
                             terms: [
                                 TupleTermNode {
-                                    key: Nothing,
+                                    key: None,
                                     value: 4,
                                 },
                                 TupleTermNode {
-                                    key: Nothing,
+                                    key: None,
                                     value: 5,
                                 },
                             ],
@@ -111,7 +111,7 @@ ProgramRoot {
                 kind: Tuple,
                 terms: [
                     TupleTermNode {
-                        key: Nothing,
+                        key: None,
                         value: InfixNode {
                             infix: +,
                             lhs: 1,
@@ -119,24 +119,24 @@ ProgramRoot {
                         },
                     },
                     TupleTermNode {
-                        key: Nothing,
+                        key: None,
                         value: 3,
                     },
                     TupleTermNode {
-                        key: Nothing,
+                        key: None,
                         value: TupleNode {
                             kind: Tuple,
                             terms: [
                                 TupleTermNode {
-                                    key: Nothing,
+                                    key: None,
                                     value: 4,
                                 },
                                 TupleTermNode {
-                                    key: Nothing,
+                                    key: None,
                                     value: 5,
                                 },
                                 TupleTermNode {
-                                    key: Nothing,
+                                    key: None,
                                     value: TupleNode {
                                         kind: Tuple,
                                         terms: [],
@@ -158,7 +158,7 @@ ProgramRoot {
                 kind: Tuple,
                 terms: [
                     TupleTermNode {
-                        key: Nothing,
+                        key: None,
                         value: TupleNode {
                             kind: Tuple,
                             terms: [],
@@ -166,7 +166,7 @@ ProgramRoot {
                         },
                     },
                     TupleTermNode {
-                        key: Nothing,
+                        key: None,
                         value: TupleNode {
                             kind: Tuple,
                             terms: [],
@@ -174,12 +174,12 @@ ProgramRoot {
                         },
                     },
                     TupleTermNode {
-                        key: Nothing,
+                        key: None,
                         value: TupleNode {
                             kind: Tuple,
                             terms: [
                                 TupleTermNode {
-                                    key: Nothing,
+                                    key: None,
                                     value: TupleNode {
                                         kind: Tuple,
                                         terms: [],
@@ -187,7 +187,7 @@ ProgramRoot {
                                     },
                                 },
                                 TupleTermNode {
-                                    key: Nothing,
+                                    key: None,
                                     value: TupleNode {
                                         kind: Tuple,
                                         terms: [],
@@ -379,11 +379,11 @@ ProgramRoot {
                 kind: Tuple,
                 terms: [
                     TupleTermNode {
-                        key: Nothing,
+                        key: None,
                         value: v,
                     },
                     TupleTermNode {
-                        key: Nothing,
+                        key: None,
                         value: TupleNode {
                             kind: Tuple,
                             terms: [],
@@ -391,7 +391,7 @@ ProgramRoot {
                         },
                     },
                     TupleTermNode {
-                        key: Nothing,
+                        key: None,
                         value: InfixNode {
                             infix: +,
                             lhs: v,
@@ -399,7 +399,9 @@ ProgramRoot {
                         },
                     },
                     TupleTermNode {
-                        key: a,
+                        key: Some(
+                            Identifier("a", 321..322),
+                        ),
                         value: TupleNode {
                             kind: Tuple,
                             terms: [],
@@ -407,7 +409,9 @@ ProgramRoot {
                         },
                     },
                     TupleTermNode {
-                        key: b,
+                        key: Some(
+                            Identifier("b", 332..333),
+                        ),
                         value: InfixNode {
                             infix: +,
                             lhs: v,
@@ -415,14 +419,14 @@ ProgramRoot {
                         },
                     },
                     TupleTermNode {
-                        key: Nothing,
+                        key: None,
                         value: UnaryNode {
                             prefix: ⁑,
                             base: args,
                         },
                     },
                     TupleTermNode {
-                        key: Nothing,
+                        key: None,
                         value: UnaryNode {
                             prefix: ⁂,
                             base: kwargs,

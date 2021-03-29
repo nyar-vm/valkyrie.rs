@@ -3,8 +3,8 @@ use super::*;
 impl YggdrasilNode for ProgramNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -26,7 +26,7 @@ impl FromStr for ProgramNode {
 impl YggdrasilNode for StatementNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
+    fn get_range(&self) -> Range<usize> {
         match self {
             Self::DefineClass(s) => s.get_range(),
             Self::DefineEnumerate(s) => s.get_range(),
@@ -79,10 +79,10 @@ impl FromStr for StatementNode {
 impl YggdrasilNode for EosNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
+    fn get_range(&self) -> Range<usize> {
         match self {
-            Self::Omit => None,
-            Self::Show => None,
+            Self::Omit => Range::default(),
+            Self::Show => Range::default(),
         }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
@@ -108,8 +108,8 @@ impl FromStr for EosNode {
 impl YggdrasilNode for EosFreeNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -128,8 +128,8 @@ impl FromStr for EosFreeNode {
 impl YggdrasilNode for DefineNamespaceNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -152,11 +152,11 @@ impl FromStr for DefineNamespaceNode {
 impl YggdrasilNode for OpNamespaceNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
+    fn get_range(&self) -> Range<usize> {
         match self {
-            Self::Hide => None,
-            Self::Main => None,
-            Self::Test => None,
+            Self::Hide => Range::default(),
+            Self::Main => Range::default(),
+            Self::Test => Range::default(),
         }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
@@ -185,8 +185,8 @@ impl FromStr for OpNamespaceNode {
 impl YggdrasilNode for DefineImportNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -210,7 +210,7 @@ impl FromStr for DefineImportNode {
 impl YggdrasilNode for ImportTermNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
+    fn get_range(&self) -> Range<usize> {
         match self {
             Self::ImportAll(s) => s.get_range(),
             Self::ImportAs(s) => s.get_range(),
@@ -251,8 +251,8 @@ impl FromStr for ImportTermNode {
 impl YggdrasilNode for ImportAsNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -275,8 +275,8 @@ impl FromStr for ImportAsNode {
 impl YggdrasilNode for ImportAllNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -299,8 +299,8 @@ impl FromStr for ImportAllNode {
 impl YggdrasilNode for ImportBlockNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -325,8 +325,8 @@ impl FromStr for ImportBlockNode {
 impl YggdrasilNode for ImportMacroNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -350,7 +350,7 @@ impl FromStr for ImportMacroNode {
 impl YggdrasilNode for ImportMacroItemNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
+    fn get_range(&self) -> Range<usize> {
         match self {
             Self::Capture(s) => s.get_range(),
             Self::Instant(s) => s.get_range(),
@@ -379,8 +379,8 @@ impl FromStr for ImportMacroItemNode {
 impl YggdrasilNode for DefineTemplateNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -410,8 +410,8 @@ impl FromStr for DefineTemplateNode {
 impl YggdrasilNode for TemplateParametersNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -433,8 +433,8 @@ impl FromStr for TemplateParametersNode {
 impl YggdrasilNode for TemplateBlockNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -462,8 +462,8 @@ impl FromStr for TemplateBlockNode {
 impl YggdrasilNode for TemplateStatementNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -485,8 +485,8 @@ impl FromStr for TemplateStatementNode {
 impl YggdrasilNode for TemplateImplementsNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -508,8 +508,8 @@ impl FromStr for TemplateImplementsNode {
 impl YggdrasilNode for WhereBlockNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -534,8 +534,8 @@ impl FromStr for WhereBlockNode {
 impl YggdrasilNode for WhereBoundNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -557,8 +557,8 @@ impl FromStr for WhereBoundNode {
 impl YggdrasilNode for DefineClassNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -590,8 +590,8 @@ impl FromStr for DefineClassNode {
 impl YggdrasilNode for ClassBlockNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -615,7 +615,7 @@ impl FromStr for ClassBlockNode {
 impl YggdrasilNode for ClassBlockItemNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
+    fn get_range(&self) -> Range<usize> {
         match self {
             Self::ClassDomain(s) => s.get_range(),
             Self::ClassField(s) => s.get_range(),
@@ -652,8 +652,8 @@ impl FromStr for ClassBlockItemNode {
 impl YggdrasilNode for ClassInheritNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -677,8 +677,8 @@ impl FromStr for ClassInheritNode {
 impl YggdrasilNode for ClassInheritItemNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -700,8 +700,8 @@ impl FromStr for ClassInheritItemNode {
 impl YggdrasilNode for ClassFieldNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -731,8 +731,8 @@ impl FromStr for ClassFieldNode {
 impl YggdrasilNode for FieldModifierNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -754,8 +754,8 @@ impl FromStr for FieldModifierNode {
 impl YggdrasilNode for ParameterDefaultNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -777,8 +777,8 @@ impl FromStr for ParameterDefaultNode {
 impl YggdrasilNode for ClassMethodNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -806,8 +806,8 @@ impl FromStr for ClassMethodNode {
 impl YggdrasilNode for MethodModifierNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -829,8 +829,8 @@ impl FromStr for MethodModifierNode {
 impl YggdrasilNode for ClassDomainNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -859,10 +859,10 @@ impl FromStr for ClassDomainNode {
 impl YggdrasilNode for KwClassNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
+    fn get_range(&self) -> Range<usize> {
         match self {
-            Self::Class => None,
-            Self::Structure => None,
+            Self::Class => Range::default(),
+            Self::Structure => Range::default(),
         }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
@@ -888,8 +888,8 @@ impl FromStr for KwClassNode {
 impl YggdrasilNode for DefineUnionNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -915,8 +915,8 @@ impl FromStr for DefineUnionNode {
 impl YggdrasilNode for KwUnionNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -935,8 +935,8 @@ impl FromStr for KwUnionNode {
 impl YggdrasilNode for DefineEnumerateNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -962,10 +962,10 @@ impl FromStr for DefineEnumerateNode {
 impl YggdrasilNode for KwFlagsNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
+    fn get_range(&self) -> Range<usize> {
         match self {
-            Self::Enum => None,
-            Self::Flags => None,
+            Self::Enum => Range::default(),
+            Self::Flags => Range::default(),
         }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
@@ -991,8 +991,8 @@ impl FromStr for KwFlagsNode {
 impl YggdrasilNode for DefineTraitNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -1014,8 +1014,8 @@ impl FromStr for DefineTraitNode {
 impl YggdrasilNode for KwTraitNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -1034,8 +1034,8 @@ impl FromStr for KwTraitNode {
 impl YggdrasilNode for DefineFunctionNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -1058,10 +1058,10 @@ impl FromStr for DefineFunctionNode {
 impl YggdrasilNode for KwFunctionNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
+    fn get_range(&self) -> Range<usize> {
         match self {
-            Self::Macro => None,
-            Self::Micro => None,
+            Self::Macro => Range::default(),
+            Self::Micro => Range::default(),
         }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
@@ -1087,8 +1087,8 @@ impl FromStr for KwFunctionNode {
 impl YggdrasilNode for ContinuationNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -1112,8 +1112,8 @@ impl FromStr for ContinuationNode {
 impl YggdrasilNode for WhileStatementNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -1137,10 +1137,10 @@ impl FromStr for WhileStatementNode {
 impl YggdrasilNode for KwWhileNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
+    fn get_range(&self) -> Range<usize> {
         match self {
-            Self::Until => None,
-            Self::While => None,
+            Self::Until => Range::default(),
+            Self::While => Range::default(),
         }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
@@ -1166,8 +1166,8 @@ impl FromStr for KwWhileNode {
 impl YggdrasilNode for ForStatementNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -1193,7 +1193,7 @@ impl FromStr for ForStatementNode {
 impl YggdrasilNode for MainStatementNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
+    fn get_range(&self) -> Range<usize> {
         match self {
             Self::ExpressionStatement(s) => s.get_range(),
             Self::ForStatement(s) => s.get_range(),
@@ -1226,8 +1226,8 @@ impl FromStr for MainStatementNode {
 impl YggdrasilNode for ExpressionStatementNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -1250,8 +1250,8 @@ impl FromStr for ExpressionStatementNode {
 impl YggdrasilNode for MainExpressionNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -1274,8 +1274,8 @@ impl FromStr for MainExpressionNode {
 impl YggdrasilNode for MainTermNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -1303,7 +1303,7 @@ impl FromStr for MainTermNode {
 impl YggdrasilNode for MainFactorNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
+    fn get_range(&self) -> Range<usize> {
         match self {
             Self::Atomic(s) => s.get_range(),
             Self::GroupFactor(s) => s.get_range(),
@@ -1332,8 +1332,8 @@ impl FromStr for MainFactorNode {
 impl YggdrasilNode for GroupFactorNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -1355,7 +1355,7 @@ impl FromStr for GroupFactorNode {
 impl YggdrasilNode for AtomicNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
+    fn get_range(&self) -> Range<usize> {
         match self {
             Self::Integer(s) => s.get_range(),
             Self::Namepath(s) => s.get_range(),
@@ -1404,8 +1404,8 @@ impl FromStr for AtomicNode {
 impl YggdrasilNode for MainInfixNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -1424,8 +1424,8 @@ impl FromStr for MainInfixNode {
 impl YggdrasilNode for MainPrefixNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -1444,7 +1444,7 @@ impl FromStr for MainPrefixNode {
 impl YggdrasilNode for MainSuffixNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
+    fn get_range(&self) -> Range<usize> {
         match self {
             Self::InlineSuffix(s) => s.get_range(),
         }
@@ -1469,8 +1469,8 @@ impl FromStr for MainSuffixNode {
 impl YggdrasilNode for InlineExpressionNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -1495,8 +1495,8 @@ impl FromStr for InlineExpressionNode {
 impl YggdrasilNode for InlineTermNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -1524,7 +1524,7 @@ impl FromStr for InlineTermNode {
 impl YggdrasilNode for InlineSuffixNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
+    fn get_range(&self) -> Range<usize> {
         match self {
             Self::DotCall(s) => s.get_range(),
             Self::InlineSuffix0(s) => s.get_range(),
@@ -1561,8 +1561,8 @@ impl FromStr for InlineSuffixNode {
 impl YggdrasilNode for SuffixOperatorNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -1581,8 +1581,8 @@ impl FromStr for SuffixOperatorNode {
 impl YggdrasilNode for TypeHintNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -1605,8 +1605,8 @@ impl FromStr for TypeHintNode {
 impl YggdrasilNode for TypeExpressionNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -1629,8 +1629,8 @@ impl FromStr for TypeExpressionNode {
 impl YggdrasilNode for TypeTermNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -1658,7 +1658,7 @@ impl FromStr for TypeTermNode {
 impl YggdrasilNode for TypeFactorNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
+    fn get_range(&self) -> Range<usize> {
         match self {
             Self::Atomic(s) => s.get_range(),
             Self::TypeFactor0(s) => s.get_range(),
@@ -1687,9 +1687,9 @@ impl FromStr for TypeFactorNode {
 impl YggdrasilNode for TypeInfixNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
+    fn get_range(&self) -> Range<usize> {
         match self {
-            Self::Union => None,
+            Self::Union => Range::default(),
         }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
@@ -1712,10 +1712,10 @@ impl FromStr for TypeInfixNode {
 impl YggdrasilNode for TypePrefixNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
+    fn get_range(&self) -> Range<usize> {
         match self {
-            Self::Negative => None,
-            Self::Positive => None,
+            Self::Negative => Range::default(),
+            Self::Positive => Range::default(),
         }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
@@ -1741,9 +1741,9 @@ impl FromStr for TypePrefixNode {
 impl YggdrasilNode for TypeSuffixNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
+    fn get_range(&self) -> Range<usize> {
         match self {
-            Self::Option => None,
+            Self::Option => Range::default(),
         }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
@@ -1766,8 +1766,8 @@ impl FromStr for TypeSuffixNode {
 impl YggdrasilNode for DotCallNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -1790,7 +1790,7 @@ impl FromStr for DotCallNode {
 impl YggdrasilNode for DotCallItemNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
+    fn get_range(&self) -> Range<usize> {
         match self {
             Self::Integer(s) => s.get_range(),
             Self::Namepath(s) => s.get_range(),
@@ -1819,8 +1819,8 @@ impl FromStr for DotCallItemNode {
 impl YggdrasilNode for TupleCallNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -1844,8 +1844,8 @@ impl FromStr for TupleCallNode {
 impl YggdrasilNode for TupleLiteralNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -1867,8 +1867,8 @@ impl FromStr for TupleLiteralNode {
 impl YggdrasilNode for TuplePairNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -1892,10 +1892,10 @@ impl FromStr for TuplePairNode {
 impl YggdrasilNode for TupleKeyNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
+    fn get_range(&self) -> Range<usize> {
         match self {
             Self::Identifier(s) => s.get_range(),
-            Self::Integer(s) => s.get_range(),
+            Self::TextRaw(s) => s.get_range(),
         }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
@@ -1903,8 +1903,8 @@ impl YggdrasilNode for TupleKeyNode {
         if let Ok(s) = pair.take_tagged_one::<IdentifierNode>(Cow::Borrowed("identifier")) {
             return Ok(Self::Identifier(s));
         }
-        if let Ok(s) = pair.take_tagged_one::<IntegerNode>(Cow::Borrowed("integer")) {
-            return Ok(Self::Integer(s));
+        if let Ok(s) = pair.take_tagged_one::<TextRawNode>(Cow::Borrowed("text_raw")) {
+            return Ok(Self::TextRaw(s));
         }
         Err(YggdrasilError::invalid_node(ValkyrieRule::TupleKey, _span))
     }
@@ -1921,8 +1921,8 @@ impl FromStr for TupleKeyNode {
 impl YggdrasilNode for RangeCallNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -1945,8 +1945,8 @@ impl FromStr for RangeCallNode {
 impl YggdrasilNode for RangeLiteralNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -1970,7 +1970,7 @@ impl FromStr for RangeLiteralNode {
 impl YggdrasilNode for SubscriptAxisNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
+    fn get_range(&self) -> Range<usize> {
         match self {
             Self::SubscriptOnly(s) => s.get_range(),
             Self::SubscriptRange(s) => s.get_range(),
@@ -1999,8 +1999,8 @@ impl FromStr for SubscriptAxisNode {
 impl YggdrasilNode for SubscriptOnlyNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -2022,8 +2022,8 @@ impl FromStr for SubscriptOnlyNode {
 impl YggdrasilNode for SubscriptRangeNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -2047,8 +2047,8 @@ impl FromStr for SubscriptRangeNode {
 impl YggdrasilNode for RangeOmitNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -2071,8 +2071,8 @@ impl FromStr for RangeOmitNode {
 impl YggdrasilNode for AttributeCallNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -2095,8 +2095,8 @@ impl FromStr for AttributeCallNode {
 impl YggdrasilNode for ProceduralCallNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -2119,8 +2119,8 @@ impl FromStr for ProceduralCallNode {
 impl YggdrasilNode for TextLiteralNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -2143,8 +2143,8 @@ impl FromStr for TextLiteralNode {
 impl YggdrasilNode for TextRawNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -2171,8 +2171,8 @@ impl FromStr for TextRawNode {
 impl YggdrasilNode for TextContent1Node {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -2191,8 +2191,8 @@ impl FromStr for TextContent1Node {
 impl YggdrasilNode for TextContent2Node {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -2211,8 +2211,8 @@ impl FromStr for TextContent2Node {
 impl YggdrasilNode for TextContent3Node {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -2231,8 +2231,8 @@ impl FromStr for TextContent3Node {
 impl YggdrasilNode for TextContent4Node {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -2251,8 +2251,8 @@ impl FromStr for TextContent4Node {
 impl YggdrasilNode for TextContent5Node {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -2271,8 +2271,8 @@ impl FromStr for TextContent5Node {
 impl YggdrasilNode for TextContent6Node {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -2291,8 +2291,8 @@ impl FromStr for TextContent6Node {
 impl YggdrasilNode for ModifierCallNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -2314,8 +2314,8 @@ impl FromStr for ModifierCallNode {
 impl YggdrasilNode for AttributePathNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -2337,8 +2337,8 @@ impl FromStr for AttributePathNode {
 impl YggdrasilNode for ProceduralPathNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -2360,8 +2360,8 @@ impl FromStr for ProceduralPathNode {
 impl YggdrasilNode for NamepathFreeNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -2383,8 +2383,8 @@ impl FromStr for NamepathFreeNode {
 impl YggdrasilNode for NamepathNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -2406,7 +2406,7 @@ impl FromStr for NamepathNode {
 impl YggdrasilNode for IdentifierNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
+    fn get_range(&self) -> Range<usize> {
         match self {
             Self::IdentifierBare(s) => s.get_range(),
             Self::IdentifierRaw(s) => s.get_range(),
@@ -2435,8 +2435,8 @@ impl FromStr for IdentifierNode {
 impl YggdrasilNode for IdentifierBareNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -2455,8 +2455,8 @@ impl FromStr for IdentifierBareNode {
 impl YggdrasilNode for IdentifierRawNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -2478,8 +2478,8 @@ impl FromStr for IdentifierRawNode {
 impl YggdrasilNode for IdentifierRawTextNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -2498,8 +2498,8 @@ impl FromStr for IdentifierRawTextNode {
 impl YggdrasilNode for SpecialNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -2518,8 +2518,8 @@ impl FromStr for SpecialNode {
 impl YggdrasilNode for IntegerNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -2538,8 +2538,8 @@ impl FromStr for IntegerNode {
 impl YggdrasilNode for ProportionNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -2558,8 +2558,8 @@ impl FromStr for ProportionNode {
 impl YggdrasilNode for ColonNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -2578,8 +2578,8 @@ impl FromStr for ColonNode {
 impl YggdrasilNode for CommaNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -2598,8 +2598,8 @@ impl FromStr for CommaNode {
 impl YggdrasilNode for DotNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -2618,8 +2618,8 @@ impl FromStr for DotNode {
 impl YggdrasilNode for OffsetLNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -2638,8 +2638,8 @@ impl FromStr for OffsetLNode {
 impl YggdrasilNode for OffsetRNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -2658,8 +2658,8 @@ impl FromStr for OffsetRNode {
 impl YggdrasilNode for Proportion2Node {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -2678,8 +2678,8 @@ impl FromStr for Proportion2Node {
 impl YggdrasilNode for OpImportAllNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -2698,8 +2698,8 @@ impl FromStr for OpImportAllNode {
 impl YggdrasilNode for OpAndThenNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -2718,8 +2718,8 @@ impl FromStr for OpAndThenNode {
 impl YggdrasilNode for OpBindNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -2738,8 +2738,8 @@ impl FromStr for OpBindNode {
 impl YggdrasilNode for KwNamespaceNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -2758,8 +2758,8 @@ impl FromStr for KwNamespaceNode {
 impl YggdrasilNode for KwImportNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -2778,8 +2778,8 @@ impl FromStr for KwImportNode {
 impl YggdrasilNode for KwTemplateNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -2798,8 +2798,8 @@ impl FromStr for KwTemplateNode {
 impl YggdrasilNode for KwWhereNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -2818,8 +2818,8 @@ impl FromStr for KwWhereNode {
 impl YggdrasilNode for KwImplementsNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -2838,8 +2838,8 @@ impl FromStr for KwImplementsNode {
 impl YggdrasilNode for KwExtendsNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -2858,8 +2858,8 @@ impl FromStr for KwExtendsNode {
 impl YggdrasilNode for KwInheritsNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -2878,8 +2878,8 @@ impl FromStr for KwInheritsNode {
 impl YggdrasilNode for KwIfNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -2898,8 +2898,8 @@ impl FromStr for KwIfNode {
 impl YggdrasilNode for KwElseNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -2918,8 +2918,8 @@ impl FromStr for KwElseNode {
 impl YggdrasilNode for KwForNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -2938,8 +2938,8 @@ impl FromStr for KwForNode {
 impl YggdrasilNode for KwReturnNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -2958,8 +2958,8 @@ impl FromStr for KwReturnNode {
 impl YggdrasilNode for KwBreakNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -2978,8 +2978,8 @@ impl FromStr for KwBreakNode {
 impl YggdrasilNode for KwContinueNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -2998,8 +2998,8 @@ impl FromStr for KwContinueNode {
 impl YggdrasilNode for KwNotNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -3018,8 +3018,8 @@ impl FromStr for KwNotNode {
 impl YggdrasilNode for KwInNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -3038,8 +3038,8 @@ impl FromStr for KwInNode {
 impl YggdrasilNode for KwIsNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -3058,8 +3058,8 @@ impl FromStr for KwIsNode {
 impl YggdrasilNode for KwAsNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -3078,8 +3078,8 @@ impl FromStr for KwAsNode {
 impl YggdrasilNode for WhiteSpaceNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -3098,8 +3098,8 @@ impl FromStr for WhiteSpaceNode {
 impl YggdrasilNode for SkipSpaceNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
@@ -3118,8 +3118,8 @@ impl FromStr for SkipSpaceNode {
 impl YggdrasilNode for CommentNode {
     type Rule = ValkyrieRule;
 
-    fn get_range(&self) -> Option<Range<usize>> {
-        Some(Range { start: self.span.start as usize, end: self.span.end as usize })
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();

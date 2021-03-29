@@ -1,15 +1,5 @@
 use super::*;
 
-impl Debug for TupleKeyType {
-    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        match self {
-            Self::Nothing => f.write_str("Nothing"),
-            Self::Identifier(v) => Display::fmt(v, f),
-            Self::String(v) => Display::fmt(v, f),
-            Self::Subscript(v) => Debug::fmt(v, f),
-        }
-    }
-}
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for TupleNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {

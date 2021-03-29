@@ -2,7 +2,6 @@
 mod display;
 
 use super::*;
-use crate::{TupleKeyType, TupleKind};
 
 /// The literal of array
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
@@ -91,7 +90,7 @@ impl RangeTermNode {
     /// Convert to tuple item if possible
     pub fn as_tuple(&self) -> Option<TupleTermNode> {
         match self {
-            RangeTermNode::Index { index } => Some(TupleTermNode { key: TupleKeyType::Nothing, value: index.clone() }),
+            RangeTermNode::Index { index } => Some(TupleTermNode { key: None, value: index.clone() }),
             RangeTermNode::Range { .. } => None,
         }
     }

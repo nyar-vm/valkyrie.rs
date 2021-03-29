@@ -17,7 +17,7 @@ version = "0.1.*"
 path = "../valkyrie-ast"
 
 [dependencies.yggdrasil-rt]
-version = "0.0.*"
+version = "0.0.15"
 
 [dependencies.nyar-error]
 version = "0.1.8"

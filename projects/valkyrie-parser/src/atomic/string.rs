@@ -31,4 +31,7 @@ impl crate::TextRawNode {
         }
         StringTextNode { text: buffer, span: self.span.clone() }
     }
+    pub fn build_id(&self, ctx: &ProgramContext) -> IdentifierNode {
+        IdentifierNode { name: "".to_string(), span: ctx.file.with_range(self.get_range()) }
+    }
 }

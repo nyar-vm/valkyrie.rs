@@ -2,7 +2,7 @@ use super::*;
 use crate::{TupleKeyNode, TuplePairNode};
 use nyar_error::NyarError;
 use std::{num::NonZeroU64, str::FromStr};
-use valkyrie_ast::{ApplyCallNode, ArgumentsList, SubscriptCallNode, TupleKeyType, TupleTermNode};
+use valkyrie_ast::{ApplyCallNode, ArgumentsList, TupleTermNode};
 
 impl TupleLiteralNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<TupleNode> {
@@ -21,8 +21,8 @@ impl TupleLiteralNode {
 impl TuplePairNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<TupleTermNode> {
         let key = match &self.tuple_key {
-            None => TupleKeyType::Nothing,
-            Some(v) => v.build(ctx)?,
+            Some(v) => Some(v.build(ctx)),
+            None => None,
         };
         let value = self.main_expression.build(ctx)?;
         Success { value: TupleTermNode { key, value }, diagnostics: vec![] }
@@ -30,19 +30,10 @@ impl TuplePairNode {
 }
 
 impl TupleKeyNode {
-    pub fn build(&self, ctx: &ProgramContext) -> Result<TupleKeyType, NyarError> {
+    pub fn build(&self, ctx: &ProgramContext) -> IdentifierNode {
         match self {
-            Self::Identifier(v) => Ok(TupleKeyType::Identifier(v.build(ctx))),
-            Self::Integer(v) => {
-                let n = u64::from_str(&v.text)?;
-                match NonZeroU64::new(n) {
-                    Some(n) => Ok(TupleKeyType::String(n)),
-                    None => Err(NyarError::syntax_error(
-                        "Tuple key cannot be zero",
-                        ctx.file.with_range(v.get_range().unwrap_or_default().clone()),
-                    )),
-                }
-            }
+            Self::Identifier(v) => v.build(ctx),
+            Self::TextRaw(v) => v.build_id(ctx),
         }
     }
 }

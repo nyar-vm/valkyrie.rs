@@ -16,13 +16,12 @@ pub mod symbol;
 pub mod tuple;
 
 mod display;
-
 use crate::{
     helper::ValkyrieNode, ApplyCallNode, ArgumentTermNode, BinaryNode, BooleanNode, CallNode, CallTermNode, ClosureCallNode,
     CollectsNode, DotCallNode, ExpressionFormatted, GenericCallNode, GuardStatement, IdentifierNode, IfStatement,
     LambdaSlotNode, MatchDotStatement, ModifiersNode, NamePathNode, NewConstructNode, NullNode, NumberLiteralNode,
     OperatorNode, OutputNode, PatternBlock, RaiseNode, RangeNode, StatementNode, StringLiteralNode, StringTextNode,
-    SubscriptCallNode, SwitchStatement, TryStatement, TupleNode, TupleTermNode, UnaryNode,
+    SubscriptCallNode, SwitchStatement, TryStatement, TupleKind, TupleNode, TupleTermNode, UnaryNode,
 };
 use alloc::{
     boxed::Box,
@@ -32,7 +31,7 @@ use alloc::{
 };
 use core::{
     fmt::{Debug, Display, Formatter, Write},
-    num::NonZeroUsize,
+    num::{NonZeroU64, NonZeroUsize},
     ops::Range,
 };
 use deriver::From;

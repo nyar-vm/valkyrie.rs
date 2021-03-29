@@ -39,7 +39,7 @@ pub use crate::{
         parameter::{GenericCallNode, GenericCallTerm, ParameterKind, ParameterTerm, ParametersList},
         range::{RangeKind, RangeNode, RangeTermNode, SubscriptCallNode},
         symbol::{BooleanNode, IdentifierNode, LambdaSlotNode, NamePathNode, NullNode, OutputNode},
-        tuple::{TupleKeyType, TupleKind, TupleNode, TupleTermNode},
+        tuple::{TupleKind, TupleNode, TupleTermNode},
         ExpressionContext, ExpressionNode, ExpressionType, PostfixCallPart, TypingExpression,
     },
     package_level::{

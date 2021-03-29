@@ -335,7 +335,7 @@ class TuplePair {
 }
 union TupleKey {
     | Identifier
-    | Integer
+    | TextRaw
 }
 // === range === --------------------------------------------------------------------------------------------------
 atomic class RangeCall {

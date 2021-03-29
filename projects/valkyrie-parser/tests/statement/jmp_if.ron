@@ -273,11 +273,11 @@ ProgramRoot {
                             ArgumentsList {
                                 terms: [
                                     TupleTermNode {
-                                        key: Nothing,
+                                        key: None,
                                         value: x,
                                     },
                                     TupleTermNode {
-                                        key: Nothing,
+                                        key: None,
                                         value: y,
                                     },
                                 ],
@@ -318,7 +318,7 @@ ProgramRoot {
                             ArgumentsList {
                                 terms: [
                                     TupleTermNode {
-                                        key: Nothing,
+                                        key: None,
                                         value: error,
                                     },
                                 ],

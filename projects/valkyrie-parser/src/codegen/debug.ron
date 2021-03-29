@@ -6470,13 +6470,13 @@ GrammarInfo {
                     },
                     YggdrasilVariant {
                         tag: Some(
-                            Identifier("Integer", 8598..8605),
+                            Identifier("TextRaw", 8598..8605),
                         ),
                         branch: Expression {
-                            tag: Identifier("Integer", 8598..8605),
+                            tag: Identifier("TextRaw", 8598..8605),
                             remark: false,
                             body: RuleReference {
-                                name: Identifier("Integer", 8598..8605),
+                                name: Identifier("TextRaw", 8598..8605),
                                 boxed: false,
                                 inline: false,
                             },
