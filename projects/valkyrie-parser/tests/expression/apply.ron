@@ -181,7 +181,7 @@ ProgramRoot {
             omit: true,
             body: DotCallNode {
                 monadic: false,
-                caller: a,
+                base: a,
                 term: b,
                 span: 129..131,
             },
@@ -193,7 +193,7 @@ ProgramRoot {
                 monadic: false,
                 caller: DotCallNode {
                     monadic: false,
-                    caller: a,
+                    base: a,
                     term: b,
                     span: 134..136,
                 },
@@ -214,9 +214,9 @@ ProgramRoot {
                 monadic: false,
                 caller: DotCallNode {
                     monadic: false,
-                    caller: DotCallNode {
+                    base: DotCallNode {
                         monadic: false,
-                        caller: a,
+                        base: a,
                         term: b,
                         span: 141..143,
                     },
@@ -244,13 +244,13 @@ ProgramRoot {
                         monadic: false,
                         caller: DotCallNode {
                             monadic: false,
-                            caller: ApplyCallNode {
+                            base: ApplyCallNode {
                                 monadic: false,
                                 caller: ApplyCallNode {
                                     monadic: false,
                                     caller: DotCallNode {
                                         monadic: false,
-                                        caller: ApplyCallNode {
+                                        base: ApplyCallNode {
                                             monadic: false,
                                             caller: a,
                                             arguments: Some(

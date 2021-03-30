@@ -70,7 +70,7 @@ ProgramRoot {
             omit: true,
             body: DotCallNode {
                 monadic: false,
-                caller: InfixNode {
+                base: InfixNode {
                     infix: -,
                     lhs: _i256,
                     rhs: 0,
@@ -84,7 +84,7 @@ ProgramRoot {
             omit: true,
             body: DotCallNode {
                 monadic: false,
-                caller: UnaryNode {
+                base: UnaryNode {
                     prefix: +,
                     base: 0,
                 },
@@ -97,7 +97,7 @@ ProgramRoot {
             omit: true,
             body: DotCallNode {
                 monadic: false,
-                caller: 0,
+                base: 0,
                 term: MetaType,
                 span: 237..239,
             },
@@ -107,7 +107,7 @@ ProgramRoot {
             omit: true,
             body: DotCallNode {
                 monadic: false,
-                caller: UnaryNode {
+                base: UnaryNode {
                     prefix: +,
                     base: 123456,
                 },
@@ -120,7 +120,7 @@ ProgramRoot {
             omit: true,
             body: DotCallNode {
                 monadic: false,
-                caller: UnaryNode {
+                base: UnaryNode {
                     prefix: -,
                     base: 0,
                 },
@@ -260,7 +260,7 @@ ProgramRoot {
             omit: false,
             body: DotCallNode {
                 monadic: false,
-                caller: 1234,
+                base: 1234,
                 term: 56,
                 span: 427..430,
             },

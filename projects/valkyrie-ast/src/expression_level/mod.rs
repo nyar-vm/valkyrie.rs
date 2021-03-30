@@ -15,6 +15,8 @@ pub mod string_template;
 pub mod symbol;
 pub mod tuple;
 
+pub mod generic_call;
+
 mod display;
 use crate::{
     helper::ValkyrieNode, ApplyCallNode, ArgumentTermNode, BinaryNode, BooleanNode, CallNode, CallTermNode, ClosureCallNode,
@@ -129,7 +131,7 @@ pub enum ExpressionType {
     /// - Postfix expression
     SubscriptCall(Box<SubscriptCallNode>),
     /// - Postfix expression
-    GenericCall(Box<CallNode<GenericCallNode>>),
+    GenericCall(Box<GenericCallNode>),
     /// - Postfix expression
     DotCall(Box<DotCallNode>),
     /// - Postfix expression
@@ -194,11 +196,6 @@ impl ExpressionType {
     /// Build a new suffix expression
     pub fn suffix(o: OperatorNode, lhs: Self) -> Self {
         Self::Unary(Box::new(UnaryNode { operator: o, base: lhs }))
-    }
-    /// Build a new expression with parameter call
-    pub fn call_generic(base: Self, rest: GenericCallNode) -> Self {
-        let span = base.get_start() as u32..rest.span.end;
-        ExpressionType::GenericCall(Box::new(CallNode { base, rest, span }))
     }
     /// Build a new expression with dot match
     pub fn dot_match(base: Self, rest: MatchDotStatement) -> Self {

@@ -6,7 +6,7 @@ impl crate::DotCallNode {
         Success {
             value: DotCallNode {
                 monadic,
-                caller: Default::default(),
+                base: Default::default(),
                 term: self.dot_call_item.build(ctx)?,
                 span: self.span.clone(),
             },

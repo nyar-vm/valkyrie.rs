@@ -61,21 +61,3 @@ pub enum ParameterTerm {
         bound: Option<ExpressionNode>,
     },
 }
-
-/// `A⦓T⦔` or `A::(T)` or `A(G: T)`
-#[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct GenericCallNode {
-    /// The raw string of the number.
-    pub terms: Vec<GenericCallTerm>,
-    /// The range of the node
-    pub span: Range<u32>,
-}
-
-/// `T: Type + Trait`
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct GenericCallTerm {
-    /// Typed parameter call term
-    pub term: CallTermNode<IdentifierNode, ExpressionNode>,
-}

@@ -6,11 +6,12 @@ use nyar_error::{NyarError, Success, Validate, Validation};
 use pratt::{Affix, PrattParser, Precedence};
 use std::{num::NonZeroUsize, str::FromStr};
 use valkyrie_ast::{
-    ApplyCallNode, BinaryNode, DotCallNode, DotCallTerm, ExpressionNode, ExpressionType, OperatorNode, SubscriptCallNode,
-    UnaryNode, ValkyrieOperator,
+    ApplyCallNode, BinaryNode, DotCallNode, DotCallTerm, ExpressionNode, ExpressionType, GenericCallNode, OperatorNode,
+    SubscriptCallNode, UnaryNode, ValkyrieOperator,
 };
 
 mod dot_call;
+mod generic_call;
 
 impl ExpressionStatementNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<ExpressionNode> {
@@ -58,6 +59,7 @@ enum TokenStream {
     Term(ExpressionType),
     Postfix(OperatorNode),
     Subscript(SubscriptCallNode),
+    Generic(GenericCallNode),
     Apply(ApplyCallNode),
     Dot(DotCallNode),
 }
@@ -76,7 +78,7 @@ where
             TokenStream::Infix(v) => Affix::Infix(v.kind.precedence(), v.kind.associativity()),
             TokenStream::Term(_) => Affix::Nilfix,
             TokenStream::Postfix(v) => Affix::Postfix(v.kind.precedence()),
-            TokenStream::Apply(_) | TokenStream::Dot(_) | TokenStream::Subscript(_) => Affix::Postfix(Precedence(10000)),
+            _ => Affix::Postfix(Precedence(10000)),
         };
         Ok(affix)
     }
@@ -108,6 +110,7 @@ where
             TokenStream::Subscript(call) => Ok(call.with_base(lhs).into()),
             TokenStream::Apply(call) => Ok(call.with_base(lhs).into()),
             TokenStream::Dot(call) => Ok(call.with_base(lhs).into()),
+            TokenStream::Generic(call) => Ok(call.with_base(lhs).into()),
             _ => unreachable!(),
         }
     }
@@ -191,6 +194,7 @@ impl InlineSuffixNode {
             InlineSuffixNode::RangeCall(v) => TokenStream::Subscript(v.build(ctx)?),
             InlineSuffixNode::TupleCall(v) => TokenStream::Apply(v.build(ctx)?),
             InlineSuffixNode::DotCall(v) => TokenStream::Dot(v.build(ctx)?),
+            InlineSuffixNode::GenericCall(v) => TokenStream::Generic(v.build(ctx)?),
         };
         Success { value: token, diagnostics: vec![] }
     }

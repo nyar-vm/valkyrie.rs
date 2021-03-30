@@ -86,7 +86,7 @@ ProgramRoot {
             omit: false,
             body: DotCallNode {
                 monadic: false,
-                caller: a,
+                base: a,
                 term: 1,
                 span: 46..48,
             },
@@ -96,7 +96,7 @@ ProgramRoot {
             omit: false,
             body: DotCallNode {
                 monadic: false,
-                caller: a,
+                base: a,
                 term: 1,
                 span: 50..57,
             },

@@ -24,7 +24,7 @@ ProgramRoot {
                 kind: Tuple,
                 terms: [
                     TupleTermNode {
-                        key: Nothing,
+                        key: None,
                         value: 1,
                     },
                 ],
@@ -38,11 +38,11 @@ ProgramRoot {
                 kind: Tuple,
                 terms: [
                     TupleTermNode {
-                        key: Nothing,
+                        key: None,
                         value: 1,
                     },
                     TupleTermNode {
-                        key: Nothing,
+                        key: None,
                         value: 2,
                     },
                 ],
@@ -56,16 +56,16 @@ ProgramRoot {
                 kind: Tuple,
                 terms: [
                     TupleTermNode {
-                        key: Nothing,
+                        key: None,
                         value: true,
                     },
                     TupleTermNode {
-                        key: Nothing,
+                        key: None,
                         value: TupleNode {
                             kind: Tuple,
                             terms: [
                                 TupleTermNode {
-                                    key: Nothing,
+                                    key: None,
                                     value: false,
                                 },
                             ],
@@ -76,6 +76,213 @@ ProgramRoot {
                 span: 58..74,
             },
             span: 58..75,
+        },
+        ExpressionNode {
+            omit: true,
+            body: TupleNode {
+                kind: Tuple,
+                terms: [
+                    TupleTermNode {
+                        key: Some(
+                            Identifier("", 85..88),
+                        ),
+                        value: 2,
+                    },
+                    TupleTermNode {
+                        key: Some(
+                            Identifier("", 93..96),
+                        ),
+                        value: 4,
+                    },
+                ],
+                span: 84..100,
+            },
+            span: 84..101,
+        },
+        ExpressionNode {
+            omit: true,
+            body: TupleNode {
+                kind: Tuple,
+                terms: [
+                    TupleTermNode {
+                        key: Some(
+                            Identifier("a", 103..104),
+                        ),
+                        value: 1,
+                    },
+                    TupleTermNode {
+                        key: Some(
+                            Identifier("z", 109..110),
+                        ),
+                        value: 26,
+                    },
+                ],
+                span: 102..115,
+            },
+            span: 102..116,
+        },
+        ExpressionNode {
+            omit: true,
+            body: TupleNode {
+                kind: Tuple,
+                terms: [
+                    TupleTermNode {
+                        key: Some(
+                            Identifier("啊", 118..121),
+                        ),
+                        value: 1,
+                    },
+                    TupleTermNode {
+                        key: Some(
+                            Identifier("吧", 126..129),
+                        ),
+                        value: 2,
+                    },
+                    TupleTermNode {
+                        key: Some(
+                            Identifier("", 134..139),
+                        ),
+                        value: 3,
+                    },
+                    TupleTermNode {
+                        key: Some(
+                            Identifier("", 144..149),
+                        ),
+                        value: 4,
+                    },
+                ],
+                span: 117..153,
+            },
+            span: 117..154,
+        },
+        ExpressionNode {
+            omit: true,
+            body: RangeNode {
+                kind: Ordinal,
+                terms: [],
+                span: 163..165,
+            },
+            span: 163..166,
+        },
+        ExpressionNode {
+            omit: true,
+            body: RangeNode {
+                kind: Ordinal,
+                terms: [
+                    Index {
+                        index: 0,
+                    },
+                ],
+                span: 167..170,
+            },
+            span: 167..171,
+        },
+        ExpressionNode {
+            omit: true,
+            body: RangeNode {
+                kind: Ordinal,
+                terms: [
+                    Index {
+                        index: 1,
+                    },
+                ],
+                span: 172..177,
+            },
+            span: 172..178,
+        },
+        ExpressionNode {
+            omit: true,
+            body: RangeNode {
+                kind: Ordinal,
+                terms: [
+                    Index {
+                        index: 1,
+                    },
+                    Index {
+                        index: 2,
+                    },
+                ],
+                span: 179..185,
+            },
+            span: 179..186,
+        },
+        ExpressionNode {
+            omit: true,
+            body: RangeNode {
+                kind: Ordinal,
+                terms: [
+                    Index {
+                        index: true,
+                    },
+                    Index {
+                        index: RangeNode {
+                            kind: Ordinal,
+                            terms: [
+                                Index {
+                                    index: false,
+                                },
+                            ],
+                            span: 194..201,
+                        },
+                    },
+                ],
+                span: 187..202,
+            },
+            span: 187..203,
+        },
+        ExpressionNode {
+            omit: true,
+            body: RangeNode {
+                kind: Ordinal,
+                terms: [],
+                span: 213..215,
+            },
+            span: 213..216,
+        },
+        ExpressionNode {
+            omit: true,
+            body: RangeNode {
+                kind: Ordinal,
+                terms: [
+                    Range {
+                        head: None,
+                        tail: None,
+                        step: None,
+                    },
+                ],
+                span: 217..220,
+            },
+            span: 217..221,
+        },
+        ExpressionNode {
+            omit: true,
+            body: RangeNode {
+                kind: Ordinal,
+                terms: [
+                    Range {
+                        head: None,
+                        tail: None,
+                        step: None,
+                    },
+                ],
+                span: 222..226,
+            },
+            span: 222..227,
+        },
+        ExpressionNode {
+            omit: true,
+            body: RangeNode {
+                kind: Ordinal,
+                terms: [
+                    Range {
+                        head: None,
+                        tail: None,
+                        step: None,
+                    },
+                ],
+                span: 228..233,
+            },
+            span: 228..234,
         },
     ],
 }

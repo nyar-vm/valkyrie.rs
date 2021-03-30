@@ -79,6 +79,7 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::SubscriptOnly => parse_subscript_only(state),
         ValkyrieRule::SubscriptRange => parse_subscript_range(state),
         ValkyrieRule::RangeOmit => parse_range_omit(state),
+        ValkyrieRule::GenericCall => parse_generic_call(state),
         ValkyrieRule::AttributeCall => parse_attribute_call(state),
         ValkyrieRule::ProceduralCall => parse_procedural_call(state),
         ValkyrieRule::TextLiteral => parse_text_literal(state),
@@ -1088,7 +1089,7 @@ fn parse_main_infix(state: Input) -> Output {
             REGEX.get_or_init(|| {
                 Regex::new(
                     "^(?x)([+\\-*/%]=?
-    | [\\^√]
+    | [√^]
     # start with !, =
     | !==|=!=|===|==|=|[!≢≡]
     # start with `<, >`
@@ -1187,6 +1188,7 @@ fn parse_inline_suffix(state: Input) -> Output {
             .or_else(|s| parse_dot_call(s).and_then(|s| s.tag_node("dot_call")))
             .or_else(|s| parse_tuple_call(s).and_then(|s| s.tag_node("tuple_call")))
             .or_else(|s| parse_range_call(s).and_then(|s| s.tag_node("range_call")))
+            .or_else(|s| parse_generic_call(s).and_then(|s| s.tag_node("generic_call")))
     })
 }
 #[inline]
@@ -1586,6 +1588,37 @@ fn parse_range_omit(state: Input) -> Output {
                     .and_then(|s| builtin_ignore(s))
                     .and_then(|s| parse_colon(s).and_then(|s| s.tag_node("colon")))
             })
+        })
+    })
+}
+#[inline]
+fn parse_generic_call(state: Input) -> Output {
+    state.rule(ValkyrieRule::GenericCall, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| s.optional(|s| parse_op_and_then(s).and_then(|s| s.tag_node("op_and_then"))))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| {
+                    Err(s)
+                        .or_else(|s| {
+                            s.sequence(|s| {
+                                Ok(s)
+                                    .and_then(|s| parse_proportion(s).and_then(|s| s.tag_node("proportion")))
+                                    .and_then(|s| builtin_ignore(s))
+                                    .and_then(|s| builtin_text(s, "<", false))
+                                    .and_then(|s| builtin_ignore(s))
+                                    .and_then(|s| builtin_text(s, ">", false))
+                            })
+                        })
+                        .or_else(|s| {
+                            s.sequence(|s| {
+                                Ok(s)
+                                    .and_then(|s| builtin_text(s, "⟨", false))
+                                    .and_then(|s| builtin_ignore(s))
+                                    .and_then(|s| builtin_text(s, "⟩", false))
+                            })
+                        })
+                })
         })
     })
 }

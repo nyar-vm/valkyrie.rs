@@ -234,7 +234,7 @@ union Atomic {
 @style(operator)
 text class MainInfix ^ {
     / [+\\-*\/%]=?
-    | [\\^√]
+    | [√^]
     # start with !, =
     | !==|=!=|===|==|=|[!≢≡]
     # start with `<, >`
@@ -278,6 +278,7 @@ atomic union InlineSuffix {
     | DotCall
     | TupleCall
     | RangeCall
+    | GenericCall
 }
 @railway(false)
 text class SuffixOperator {
@@ -337,7 +338,7 @@ union TupleKey {
     | Identifier
     | TextRaw
 }
-// === range === --------------------------------------------------------------------------------------------------
+// === range === -------------------------------------------------------------------------------------------------------
 atomic class RangeCall {
     ^WhiteSpace? OP_AND_THEN? ^WhiteSpace? RangeLiteral
 }
@@ -360,6 +361,13 @@ atomic class SubscriptRange ^ {
 }
 atomic inline class RangeOmit {
     PROPORTION | COLON ~ COLON
+}
+// === generic call === ------------------------------------------------------------------------------------------------
+class GenericCall {
+    OP_AND_THEN? (
+        | PROPORTION '<'  '>'
+        | '⟨'  '⟩'
+    )
 }
 // === annotation === --------------------------------------------------------------------------------------------------
 class AttributeCall {

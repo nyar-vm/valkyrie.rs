@@ -1527,6 +1527,7 @@ impl YggdrasilNode for InlineSuffixNode {
     fn get_range(&self) -> Range<usize> {
         match self {
             Self::DotCall(s) => s.get_range(),
+            Self::GenericCall(s) => s.get_range(),
             Self::InlineSuffix0(s) => s.get_range(),
             Self::RangeCall(s) => s.get_range(),
             Self::TupleCall(s) => s.get_range(),
@@ -1536,6 +1537,9 @@ impl YggdrasilNode for InlineSuffixNode {
         let _span = pair.get_span();
         if let Ok(s) = pair.take_tagged_one::<DotCallNode>(Cow::Borrowed("dot_call")) {
             return Ok(Self::DotCall(s));
+        }
+        if let Ok(s) = pair.take_tagged_one::<GenericCallNode>(Cow::Borrowed("generic_call")) {
+            return Ok(Self::GenericCall(s));
         }
         if let Ok(s) = pair.take_tagged_one::<SuffixOperatorNode>(Cow::Borrowed("inline_suffix_0")) {
             return Ok(Self::InlineSuffix0(s));
@@ -2065,6 +2069,30 @@ impl FromStr for RangeOmitNode {
 
     fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
         Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::RangeOmit)?)
+    }
+}
+#[automatically_derived]
+impl YggdrasilNode for GenericCallNode {
+    type Rule = ValkyrieRule;
+
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
+    }
+    fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
+        let _span = pair.get_span();
+        Ok(Self {
+            op_and_then: pair.take_tagged_option::<OpAndThenNode>(Cow::Borrowed("op_and_then")),
+            proportion: pair.take_tagged_option::<ProportionNode>(Cow::Borrowed("proportion")),
+            span: Range { start: _span.start() as u32, end: _span.end() as u32 },
+        })
+    }
+}
+#[automatically_derived]
+impl FromStr for GenericCallNode {
+    type Err = YggdrasilError<ValkyrieRule>;
+
+    fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::GenericCall)?)
     }
 }
 #[automatically_derived]

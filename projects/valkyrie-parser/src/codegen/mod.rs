@@ -107,6 +107,7 @@ pub enum ValkyrieRule {
     SubscriptOnly,
     SubscriptRange,
     RangeOmit,
+    GenericCall,
     AttributeCall,
     ProceduralCall,
     TextLiteral,
@@ -246,6 +247,7 @@ impl YggdrasilRule for ValkyrieRule {
             Self::SubscriptOnly => "",
             Self::SubscriptRange => "",
             Self::RangeOmit => "",
+            Self::GenericCall => "",
             Self::AttributeCall => "",
             Self::ProceduralCall => "",
             Self::TextLiteral => "",
@@ -701,6 +703,7 @@ pub struct InlineTermNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum InlineSuffixNode {
     DotCall(DotCallNode),
+    GenericCall(GenericCallNode),
     InlineSuffix0(SuffixOperatorNode),
     RangeCall(RangeCallNode),
     TupleCall(TupleCallNode),
@@ -833,6 +836,13 @@ pub struct SubscriptRangeNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct RangeOmitNode {
     pub colon: Vec<ColonNode>,
+    pub proportion: Option<ProportionNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct GenericCallNode {
+    pub op_and_then: Option<OpAndThenNode>,
     pub proportion: Option<ProportionNode>,
     pub span: Range<u32>,
 }
