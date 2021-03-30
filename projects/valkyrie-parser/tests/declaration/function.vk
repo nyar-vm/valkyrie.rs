@@ -1,18 +1,18 @@
-micro function() {
+micro fun1() {
 
 }
 
-macro module::function(): R {
+macro fun2(): R {
 
 }
 
 
-micro function(a, k: T, p: U = 1) -> R {
+micro fun3(a, k: T, p: U = 1) -> R {
     print("Hello, world!")
 }
 
 
-micro function<G, R>(g: G) -> R {
+micro fun4<G, R>(g: G) -> R {
     1 + 1
     a in b
     print("Hello, world!")
@@ -20,8 +20,8 @@ micro function<G, R>(g: G) -> R {
 
 
 macro outer<L>(lhs: L) -> String {
-    # let mut count = 0
-    micro inner<R>(rhs: R) {
+    // let mut count = 0
+    lambda<R>(rhs: R) {
         while count < 10 {
             count += 1
             print("{lhs} {rhs}")
@@ -30,7 +30,7 @@ macro outer<L>(lhs: L) -> String {
     "{count}"
 }
 
-public static final micro main(mut args: [String]) -> Int {
+public static final micro main(mut args: List<String>) -> int {
     outer("Hello")("world")
     return 0
 }

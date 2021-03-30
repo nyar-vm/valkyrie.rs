@@ -11,3 +11,6 @@ while true {
         }
     }
 }
+otherwise {
+    nothing
+}

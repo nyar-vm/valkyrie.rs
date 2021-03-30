@@ -7,7 +7,7 @@ use pratt::{Affix, PrattParser, Precedence};
 use std::str::FromStr;
 use valkyrie_ast::{
     ApplyCallNode, BinaryNode, DotCallNode, DotCallTerm, ExpressionNode, ExpressionType, GenericCallNode, OperatorNode,
-    SubscriptCallNode, UnaryNode, ValkyrieOperator,
+    SubscriptCallNode, UnaryNode, ValkyrieOperator, ValkyrieOperator::LogicMatrix,
 };
 
 mod dot_call;
@@ -119,25 +119,26 @@ where
 impl MainFactorNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<ExpressionType> {
         match self {
-            MainFactorNode::Atomic(v) => v.build(ctx),
-            MainFactorNode::GroupFactor(v) => v.main_expression.build(ctx),
+            Self::Atomic(v) => v.build(ctx),
+            Self::GroupFactor(v) => v.main_expression.build(ctx),
         }
     }
 }
 impl MainPrefixNode {
     pub fn as_operator(&self) -> OperatorNode {
+        use ValkyrieOperator::*;
         let o = match self.text.as_str() {
-            "!" => ValkyrieOperator::Not,
-            "+" => ValkyrieOperator::Positive,
-            "-" => ValkyrieOperator::Negative,
-            "*" => ValkyrieOperator::Unbox,
-            "⅟" => ValkyrieOperator::Reciprocal,
-            "√" => ValkyrieOperator::Roots(2),
-            "∛" => ValkyrieOperator::Roots(3),
-            "∜" => ValkyrieOperator::Roots(4),
-            ".." => ValkyrieOperator::Unpack { level: 2 },
-            "..." => ValkyrieOperator::Unpack { level: 3 },
-            _ => unimplemented!("{} is not a valid prefix operator", self.text),
+            "!" => Not,
+            "+" => Positive,
+            "-" => Negative,
+            "*" => Unbox,
+            "⅟" => Reciprocal,
+            "√" => Roots(2),
+            "∛" => Roots(3),
+            "∜" => Roots(4),
+            ".." => Unpack { level: 2 },
+            "..." => Unpack { level: 3 },
+            _ => unimplemented!("{} is a unknown prefix operator", self.text),
         };
         OperatorNode { kind: o, span: self.span.clone() }
     }
@@ -145,19 +146,44 @@ impl MainPrefixNode {
 
 impl MainInfixNode {
     pub fn as_operator(&self) -> OperatorNode {
+        use valkyrie_ast::LogicMatrix;
+        use ValkyrieOperator::*;
         let o = match self.text.as_str() {
-            s if s.starts_with("is") => ValkyrieOperator::Is { negative: s.ends_with("not") },
-            s if s.ends_with("in") => ValkyrieOperator::In { negative: s.ends_with("not") },
-            "+" => ValkyrieOperator::Plus,
-            "-" => ValkyrieOperator::Minus,
-            "*" => ValkyrieOperator::Multiply,
-            "/" => ValkyrieOperator::Divide,
-            "%" => ValkyrieOperator::Remider,
-            "^" => ValkyrieOperator::Power,
-            "=" => ValkyrieOperator::Assign,
-            "!=" => ValkyrieOperator::Equal { negative: true },
-            "==" => ValkyrieOperator::Equal { negative: false },
-            _ => unimplemented!("{} is not a valid infix operator", self.text),
+            s if s.starts_with("is") => Is { negative: s.ends_with("not") },
+            s if s.ends_with("in") => In { negative: s.ends_with("not") },
+            "∈" | "∊" => In { negative: false },
+            "∉" => In { negative: true },
+            "∋" => Contains { negative: false },
+            "∌" => Contains { negative: true },
+
+            "+" => Plus,
+            "-" => Minus,
+            "*" => Multiply,
+            "/" => Divide,
+            "%" => Remider,
+            "^" => Power,
+            "=" => Assign { monadic: false },
+            "?=" => Assign { monadic: true },
+            "==" => Equal { negative: false },
+            "≠" | "!=" => Equal { negative: true },
+            "≡" | "===" => StrictlyEqual { negative: false },
+            "≢" | "!==" | "=!=" => StrictlyEqual { negative: true },
+            ">" => Greater { equal: false },
+            "≥" | ">=" => Greater { equal: true },
+            "≫" | ">>" => MuchGreater,
+            "⋙" | ">>>" => VeryMuchGreater,
+            "<" => Less { equal: false },
+            "≤" | "<=" => Less { equal: true },
+            "≪" | "<<" => MuchLess,
+            "⋘" | "<<<" => VeryMuchLess,
+            // logic operators
+            "∧" | "&&" => LogicMatrix::And.into(),
+            "⊼" => LogicMatrix::Nand.into(),
+            "⩟" => LogicMatrix::Xnor.into(), // aka. xand
+            "∨" | "||" => LogicMatrix::Or.into(),
+            "⊽" => LogicMatrix::Nor.into(),
+            "⊻" => LogicMatrix::Xor.into(),
+            _ => unimplemented!("{} is a unknown infix operator", self.text),
         };
         OperatorNode { kind: o, span: self.span.clone() }
     }
@@ -165,14 +191,15 @@ impl MainInfixNode {
 
 impl SuffixOperatorNode {
     pub fn as_operator(&self) -> OperatorNode {
+        use ValkyrieOperator::*;
         let o = match self.text.as_str() {
-            "!" => ValkyrieOperator::QuickRaise,
-            "℃" => ValkyrieOperator::Celsius,
-            "℉" => ValkyrieOperator::Fahrenheit,
-            "%" => ValkyrieOperator::DivideByDecimalPower(2),
-            "‰" => ValkyrieOperator::DivideByDecimalPower(3),
-            "‱" => ValkyrieOperator::DivideByDecimalPower(4),
-            _ => unimplemented!("{} is not a valid suffix operator", self.text),
+            "!" => QuickRaise,
+            "℃" => Celsius,
+            "℉" => Fahrenheit,
+            "%" => DivideByDecimalPower(2),
+            "‰" => DivideByDecimalPower(3),
+            "‱" => DivideByDecimalPower(4),
+            _ => unimplemented!("{} is a unknown suffix operator", self.text),
         };
         OperatorNode { kind: o, span: self.span.clone() }
     }

@@ -29,7 +29,10 @@ pub enum ValkyrieOperator {
     /// prefix operator: `√`, `∛`, `∜`     
     Roots(u8),
     /// infix operator: `=`
-    Assign,
+    Assign {
+        /// monadic assign: `?=`
+        monadic: bool,
+    },
     /// binary operator: `+`
     Plus,
     /// binary operator: `+=`
@@ -158,6 +161,12 @@ pub enum LogicMatrix {
     True = 0b1111,
 }
 
+impl From<LogicMatrix> for ValkyrieOperator {
+    fn from(logic: LogicMatrix) -> Self {
+        Self::LogicMatrix { mask: logic }
+    }
+}
+
 impl ValkyrieOperator {
     pub fn precedence(&self) -> Precedence {
         let n = match self {
@@ -167,7 +176,7 @@ impl ValkyrieOperator {
             Self::Is { .. } => 14000,
             Self::In { .. } => 14000,
             Self::Contains { .. } => 14000,
-            Self::Assign => 14000,
+            Self::Assign { .. } => 14000,
             // prefix - 3
             Self::PlusAssign => 14100,
             Self::MinusAssign => 14100,
@@ -292,7 +301,10 @@ impl ValkyrieOperator {
                 4 => "‱",
                 _ => "%",
             },
-            Self::Assign => "=",
+            Self::Assign { monadic } => match monadic {
+                true => "?=",
+                false => "=",
+            },
             Self::LogicMatrix { mask } => mask.as_str(),
         }
     }

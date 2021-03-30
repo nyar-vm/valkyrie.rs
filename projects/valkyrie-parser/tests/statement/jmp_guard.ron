@@ -2,8 +2,8 @@ ProgramRoot {
     statements: [
         ExpressionNode {
             omit: false,
-            body: guard,
-            span: 3..9,
+            body: if,
+            span: 0..3,
         },
         ExpressionNode {
             omit: false,
@@ -12,14 +12,14 @@ ProgramRoot {
                 caller: condition1,
                 arguments: None,
                 body: None,
-                span: 19..164,
+                span: 13..148,
             },
-            span: 9..169,
+            span: 3..153,
         },
         ExpressionNode {
             omit: false,
-            body: guard,
-            span: 169..175,
+            body: if,
+            span: 153..156,
         },
         ExpressionNode {
             omit: false,
@@ -45,15 +45,15 @@ ProgramRoot {
                             },
                         ),
                         body: None,
-                        span: 178..185,
+                        span: 159..166,
                     },
                     rhs: point,
                 },
                 arguments: None,
                 body: None,
-                span: 193..293,
+                span: 174..275,
             },
-            span: 175..294,
+            span: 156..276,
         },
     ],
 }

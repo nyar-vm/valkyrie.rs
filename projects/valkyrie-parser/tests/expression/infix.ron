@@ -96,9 +96,278 @@ ProgramRoot {
             span: 102..109,
         },
         ExpressionNode {
-            omit: false,
-            body: a,
-            span: 110..112,
+            omit: true,
+            body: InfixNode {
+                infix: =,
+                lhs: InfixNode {
+                    infix: ≠,
+                    lhs: a,
+                    rhs: UnaryNode {
+                        prefix: !,
+                        base: b,
+                    },
+                },
+                rhs: c,
+            },
+            span: 110..123,
+        },
+        ExpressionNode {
+            omit: true,
+            body: InfixNode {
+                infix: ≡,
+                lhs: InfixNode {
+                    infix: ≡,
+                    lhs: a,
+                    rhs: b,
+                },
+                rhs: c,
+            },
+            span: 124..138,
+        },
+        ExpressionNode {
+            omit: true,
+            body: InfixNode {
+                infix: ≢,
+                lhs: InfixNode {
+                    infix: ==,
+                    lhs: InfixNode {
+                        infix: ≢,
+                        lhs: a,
+                        rhs: UnaryNode {
+                            prefix: !,
+                            base: b,
+                        },
+                    },
+                    rhs: c,
+                },
+                rhs: c,
+            },
+            span: 139..159,
+        },
+        ExpressionNode {
+            omit: true,
+            body: InfixNode {
+                infix: ≢,
+                lhs: InfixNode {
+                    infix: ≢,
+                    lhs: a,
+                    rhs: b,
+                },
+                rhs: c,
+            },
+            span: 160..174,
+        },
+        ExpressionNode {
+            omit: true,
+            body: InfixNode {
+                infix: >,
+                lhs: InfixNode {
+                    infix: >,
+                    lhs: a,
+                    rhs: b,
+                },
+                rhs: c,
+            },
+            span: 188..198,
+        },
+        ExpressionNode {
+            omit: true,
+            body: InfixNode {
+                infix: ⩾,
+                lhs: InfixNode {
+                    infix: ⩾,
+                    lhs: InfixNode {
+                        infix: ⩾,
+                        lhs: a,
+                        rhs: b,
+                    },
+                    rhs: c,
+                },
+                rhs: d,
+            },
+            span: 199..216,
+        },
+        ExpressionNode {
+            omit: true,
+            body: InfixNode {
+                infix: <,
+                lhs: InfixNode {
+                    infix: <,
+                    lhs: a,
+                    rhs: b,
+                },
+                rhs: c,
+            },
+            span: 217..227,
+        },
+        ExpressionNode {
+            omit: true,
+            body: InfixNode {
+                infix: ⩽,
+                lhs: InfixNode {
+                    infix: ⩽,
+                    lhs: InfixNode {
+                        infix: ⩽,
+                        lhs: a,
+                        rhs: b,
+                    },
+                    rhs: c,
+                },
+                rhs: d,
+            },
+            span: 228..245,
+        },
+        ExpressionNode {
+            omit: true,
+            body: InfixNode {
+                infix: ≫,
+                lhs: InfixNode {
+                    infix: ≫,
+                    lhs: a,
+                    rhs: b,
+                },
+                rhs: c,
+            },
+            span: 251..264,
+        },
+        ExpressionNode {
+            omit: true,
+            body: InfixNode {
+                infix: ⋙,
+                lhs: InfixNode {
+                    infix: ⋙,
+                    lhs: a,
+                    rhs: b,
+                },
+                rhs: c,
+            },
+            span: 265..279,
+        },
+        ExpressionNode {
+            omit: true,
+            body: InfixNode {
+                infix: ≪,
+                lhs: InfixNode {
+                    infix: ≪,
+                    lhs: a,
+                    rhs: b,
+                },
+                rhs: c,
+            },
+            span: 280..293,
+        },
+        ExpressionNode {
+            omit: true,
+            body: InfixNode {
+                infix: ⋘,
+                lhs: InfixNode {
+                    infix: ⋘,
+                    lhs: a,
+                    rhs: b,
+                },
+                rhs: c,
+            },
+            span: 294..308,
+        },
+        ExpressionNode {
+            omit: true,
+            body: InfixNode {
+                infix: ∈,
+                lhs: a,
+                rhs: list,
+            },
+            span: 322..333,
+        },
+        ExpressionNode {
+            omit: true,
+            body: InfixNode {
+                infix: ∈,
+                lhs: a,
+                rhs: list,
+            },
+            span: 334..345,
+        },
+        ExpressionNode {
+            omit: true,
+            body: InfixNode {
+                infix: ∉,
+                lhs: a,
+                rhs: list,
+            },
+            span: 346..357,
+        },
+        ExpressionNode {
+            omit: true,
+            body: InfixNode {
+                infix: ∈,
+                lhs: a,
+                rhs: list,
+            },
+            span: 358..368,
+        },
+        ExpressionNode {
+            omit: true,
+            body: InfixNode {
+                infix: ∈,
+                lhs: a,
+                rhs: list,
+            },
+            span: 369..383,
+        },
+        ExpressionNode {
+            omit: true,
+            body: InfixNode {
+                infix: ⊑,
+                lhs: a,
+                rhs: String,
+            },
+            span: 398..410,
+        },
+        ExpressionNode {
+            omit: true,
+            body: InfixNode {
+                infix: ⋢,
+                lhs: b,
+                rhs: String,
+            },
+            span: 411..427,
+        },
+        ExpressionNode {
+            omit: true,
+            body: InfixNode {
+                infix: ==,
+                lhs: InfixNode {
+                    infix: ⍲,
+                    lhs: InfixNode {
+                        infix: ∧,
+                        lhs: InfixNode {
+                            infix: ≠,
+                            lhs: InfixNode {
+                                infix: ⍱,
+                                lhs: InfixNode {
+                                    infix: ∨,
+                                    lhs: InfixNode {
+                                        infix: ∨,
+                                        lhs: InfixNode {
+                                            infix: ∧,
+                                            lhs: a,
+                                            rhs: b,
+                                        },
+                                        rhs: c,
+                                    },
+                                    rhs: d,
+                                },
+                                rhs: e,
+                            },
+                            rhs: f,
+                        },
+                        rhs: g,
+                    },
+                    rhs: h,
+                },
+                rhs: i,
+            },
+            span: 429..477,
         },
     ],
 }

@@ -26,5 +26,16 @@ ProgramRoot {
             },
             span: 15..231,
         },
+        ExpressionNode {
+            omit: false,
+            body: ApplyCallNode {
+                monadic: false,
+                caller: otherwise,
+                arguments: None,
+                body: None,
+                span: 240..256,
+            },
+            span: 231..257,
+        },
     ],
 }

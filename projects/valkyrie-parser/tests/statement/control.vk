@@ -21,7 +21,7 @@ try {
     print("try");
 }
 
-try Option(T) {
+try Option<T> {
     print("try");
 }
 

@@ -6,7 +6,13 @@ vow {
     }
 }
 refine class Positive(Integer) {
+    constructor() {
 
+    }
+    constructor() {
+
+    }
+    `+`() {}
 }
 
 violate {
@@ -28,8 +34,8 @@ function a() {
 }
 
 
-contract T, U {
-    ∀ {f32, f64}
+generic T, U {
+    forall {f32, f64}
     // 前置
     require {
 
@@ -92,7 +98,7 @@ base 0
 
 a⦉T⦊
 
-#? 能被 @derive 的 trait
+//? 能被 @derive 的 trait
 @derive(Copy, Clone, Debug, PartialEq, Eq, Hash)
 @(Copy, Clone , Debug, PartialEq, Eq, Hash)
 derived macro A {
@@ -100,7 +106,7 @@ derived macro A {
 }
 
 
-#? 隐式宏, 此类宏不需要
+//? 隐式宏, 此类宏不需要
 implicit macro print {
 
 }

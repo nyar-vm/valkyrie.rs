@@ -12,7 +12,8 @@ function fibonacci() -> Iterator<Integer> {
 
 self.word ?= b"Hello, World!"
 
-extends<T, E> Result<T, E>: Perform {
+generic T E {}
+extends Result<T, E>: Perform {
 	perform(self) -> T / E {
 		match self {
 			Success(s) => s
