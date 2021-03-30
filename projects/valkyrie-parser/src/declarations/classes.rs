@@ -1,13 +1,11 @@
-use crate::{KwClassNode, ProgramContext};
-use nyar_error::{Success, Validation};
-use valkyrie_ast::{ClassDeclaration, ClassKind, IdentifierNode};
+use super::*;
 
 impl crate::DefineClassNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<ClassDeclaration> {
         Success {
             value: ClassDeclaration {
                 kind: self.kw_class.build(),
-                modifiers: Default::default(),
+                modifiers: build_modifiers(&self.modifier_call, ctx),
                 name: self.identifier.build(ctx),
                 generic: None,
                 base_classes: None,

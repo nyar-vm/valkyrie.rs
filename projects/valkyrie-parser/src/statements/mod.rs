@@ -1,7 +1,6 @@
-use crate::helpers::ProgramContext;
-use nyar_error::{Failure, Success, Validation};
-use valkyrie_ast::{ImportStatement, NamespaceDeclaration, ProgramRoot, StatementNode, WhileConditionNode, WhileLoop};
-
+use crate::{helpers::ProgramContext, OpNamespaceNode};
+use nyar_error::{Success, Validation};
+use valkyrie_ast::{ImportStatement, NamespaceDeclaration, NamespaceKind, ProgramRoot, StatementNode};
 mod import;
 mod namespace;
 

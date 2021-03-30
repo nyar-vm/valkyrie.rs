@@ -71,6 +71,7 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::DotCallItem => parse_dot_call_item(state),
         ValkyrieRule::TupleCall => parse_tuple_call(state),
         ValkyrieRule::TupleLiteral => parse_tuple_literal(state),
+        ValkyrieRule::TupleTerms => parse_tuple_terms(state),
         ValkyrieRule::TuplePair => parse_tuple_pair(state),
         ValkyrieRule::TupleKey => parse_tuple_key(state),
         ValkyrieRule::RangeCall => parse_range_call(state),
@@ -1360,32 +1361,37 @@ fn parse_tuple_literal(state: Input) -> Output {
             Ok(s)
                 .and_then(|s| builtin_text(s, "(", false))
                 .and_then(|s| builtin_ignore(s))
-                .and_then(|s| {
-                    s.optional(|s| {
-                        s.sequence(|s| {
-                            Ok(s)
-                                .and_then(|s| parse_tuple_pair(s).and_then(|s| s.tag_node("tuple_pair")))
-                                .and_then(|s| builtin_ignore(s))
-                                .and_then(|s| {
-                                    s.repeat(0..4294967295, |s| {
-                                        s.sequence(|s| {
-                                            Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| {
-                                                s.sequence(|s| {
-                                                    Ok(s).and_then(|s| parse_comma(s)).and_then(|s| builtin_ignore(s)).and_then(
-                                                        |s| parse_tuple_pair(s).and_then(|s| s.tag_node("tuple_pair")),
-                                                    )
-                                                })
-                                            })
-                                        })
-                                    })
-                                })
-                                .and_then(|s| builtin_ignore(s))
-                                .and_then(|s| s.optional(|s| parse_comma(s)))
-                        })
-                    })
-                })
+                .and_then(|s| parse_tuple_terms(s).and_then(|s| s.tag_node("tuple_terms")))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| builtin_text(s, ")", false))
+        })
+    })
+}
+#[inline]
+fn parse_tuple_terms(state: Input) -> Output {
+    state.rule(ValkyrieRule::TupleTerms, |s| {
+        s.optional(|s| {
+            s.sequence(|s| {
+                Ok(s)
+                    .and_then(|s| parse_tuple_pair(s).and_then(|s| s.tag_node("tuple_pair")))
+                    .and_then(|s| builtin_ignore(s))
+                    .and_then(|s| {
+                        s.repeat(0..4294967295, |s| {
+                            s.sequence(|s| {
+                                Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| {
+                                    s.sequence(|s| {
+                                        Ok(s)
+                                            .and_then(|s| parse_comma(s))
+                                            .and_then(|s| builtin_ignore(s))
+                                            .and_then(|s| parse_tuple_pair(s).and_then(|s| s.tag_node("tuple_pair")))
+                                    })
+                                })
+                            })
+                        })
+                    })
+                    .and_then(|s| builtin_ignore(s))
+                    .and_then(|s| s.optional(|s| parse_comma(s)))
+            })
         })
     })
 }
@@ -1607,6 +1613,8 @@ fn parse_generic_call(state: Input) -> Output {
                                     .and_then(|s| builtin_ignore(s))
                                     .and_then(|s| builtin_text(s, "<", false))
                                     .and_then(|s| builtin_ignore(s))
+                                    .and_then(|s| parse_tuple_terms(s).and_then(|s| s.tag_node("tuple_terms")))
+                                    .and_then(|s| builtin_ignore(s))
                                     .and_then(|s| builtin_text(s, ">", false))
                             })
                         })
@@ -1615,9 +1623,22 @@ fn parse_generic_call(state: Input) -> Output {
                                 Ok(s)
                                     .and_then(|s| builtin_text(s, "⟨", false))
                                     .and_then(|s| builtin_ignore(s))
+                                    .and_then(|s| parse_tuple_terms(s).and_then(|s| s.tag_node("tuple_terms")))
+                                    .and_then(|s| builtin_ignore(s))
                                     .and_then(|s| builtin_text(s, "⟩", false))
                             })
                         })
+                })
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| {
+                    s.optional(|s| {
+                        s.sequence(|s| {
+                            Ok(s)
+                                .and_then(|s| parse_proportion(s).and_then(|s| s.tag_node("proportion")))
+                                .and_then(|s| builtin_ignore(s))
+                                .and_then(|s| parse_namepath(s).and_then(|s| s.tag_node("namepath")))
+                        })
+                    })
                 })
         })
     })

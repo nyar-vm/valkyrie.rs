@@ -19,14 +19,6 @@ impl<E> ValkyrieNode for CallNode<E> {
     }
 }
 
-/// `term` or `field: term`
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct CallTermNode<K, V> {
-    pub key: Option<K>,
-    pub value: V,
-}
-
 /// `a: Integer = 1`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]

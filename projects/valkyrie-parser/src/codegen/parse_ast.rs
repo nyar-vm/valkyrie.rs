@@ -1854,7 +1854,7 @@ impl YggdrasilNode for TupleLiteralNode {
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
         Ok(Self {
-            tuple_pair: pair.take_tagged_items::<TuplePairNode>(Cow::Borrowed("tuple_pair")).collect::<Result<Vec<_>, _>>()?,
+            tuple_terms: pair.take_tagged_one::<TupleTermsNode>(Cow::Borrowed("tuple_terms"))?,
             span: Range { start: _span.start() as u32, end: _span.end() as u32 },
         })
     }
@@ -1865,6 +1865,29 @@ impl FromStr for TupleLiteralNode {
 
     fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
         Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::TupleLiteral)?)
+    }
+}
+#[automatically_derived]
+impl YggdrasilNode for TupleTermsNode {
+    type Rule = ValkyrieRule;
+
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
+    }
+    fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
+        let _span = pair.get_span();
+        Ok(Self {
+            tuple_pair: pair.take_tagged_items::<TuplePairNode>(Cow::Borrowed("tuple_pair")).collect::<Result<Vec<_>, _>>()?,
+            span: Range { start: _span.start() as u32, end: _span.end() as u32 },
+        })
+    }
+}
+#[automatically_derived]
+impl FromStr for TupleTermsNode {
+    type Err = YggdrasilError<ValkyrieRule>;
+
+    fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::TupleTerms)?)
     }
 }
 #[automatically_derived]
@@ -2081,8 +2104,10 @@ impl YggdrasilNode for GenericCallNode {
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
         Ok(Self {
+            namepath: pair.take_tagged_option::<NamepathNode>(Cow::Borrowed("namepath")),
             op_and_then: pair.take_tagged_option::<OpAndThenNode>(Cow::Borrowed("op_and_then")),
-            proportion: pair.take_tagged_option::<ProportionNode>(Cow::Borrowed("proportion")),
+            proportion: pair.take_tagged_items::<ProportionNode>(Cow::Borrowed("proportion")).collect::<Result<Vec<_>, _>>()?,
+            tuple_terms: pair.take_tagged_one::<TupleTermsNode>(Cow::Borrowed("tuple_terms"))?,
             span: Range { start: _span.start() as u32, end: _span.end() as u32 },
         })
     }

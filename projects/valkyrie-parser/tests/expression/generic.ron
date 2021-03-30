@@ -1,3 +1,129 @@
 ProgramRoot {
-    statements: [],
+    statements: [
+        ExpressionNode {
+            omit: true,
+            body: GenericCallNode {
+                monadic: false,
+                base: Object,
+                terms: ArgumentsList {
+                    terms: [],
+                },
+                associated: [],
+                span: 20..24,
+            },
+            span: 14..25,
+        },
+        ExpressionNode {
+            omit: true,
+            body: GenericCallNode {
+                monadic: false,
+                base: Object,
+                terms: ArgumentsList {
+                    terms: [
+                        TupleTermNode {
+                            key: None,
+                            value: T,
+                        },
+                    ],
+                },
+                associated: [],
+                span: 32..38,
+            },
+            span: 26..39,
+        },
+        ExpressionNode {
+            omit: true,
+            body: GenericCallNode {
+                monadic: false,
+                base: Object,
+                terms: ArgumentsList {
+                    terms: [
+                        TupleTermNode {
+                            key: None,
+                            value: T,
+                        },
+                        TupleTermNode {
+                            key: None,
+                            value: U,
+                        },
+                    ],
+                },
+                associated: [],
+                span: 46..53,
+            },
+            span: 40..54,
+        },
+        ExpressionNode {
+            omit: true,
+            body: GenericCallNode {
+                monadic: false,
+                base: Object,
+                terms: ArgumentsList {
+                    terms: [],
+                },
+                associated: [],
+                span: 78..84,
+            },
+            span: 72..85,
+        },
+        ExpressionNode {
+            omit: true,
+            body: GenericCallNode {
+                monadic: false,
+                base: Object,
+                terms: ArgumentsList {
+                    terms: [
+                        TupleTermNode {
+                            key: None,
+                            value: T,
+                        },
+                    ],
+                },
+                associated: [],
+                span: 92..99,
+            },
+            span: 86..100,
+        },
+        ExpressionNode {
+            omit: true,
+            body: ApplyCallNode {
+                monadic: false,
+                caller: GenericCallNode {
+                    monadic: false,
+                    base: Object,
+                    terms: ArgumentsList {
+                        terms: [
+                            TupleTermNode {
+                                key: None,
+                                value: T,
+                            },
+                            TupleTermNode {
+                                key: None,
+                                value: U,
+                            },
+                        ],
+                    },
+                    associated: [],
+                    span: 107..116,
+                },
+                arguments: Some(
+                    ArgumentsList {
+                        terms: [
+                            TupleTermNode {
+                                key: None,
+                                value: 1,
+                            },
+                            TupleTermNode {
+                                key: None,
+                                value: 2,
+                            },
+                        ],
+                    },
+                ),
+                body: None,
+                span: 116..122,
+            },
+            span: 101..123,
+        },
+    ],
 }

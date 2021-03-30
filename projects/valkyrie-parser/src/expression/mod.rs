@@ -4,7 +4,7 @@ use crate::{
 };
 use nyar_error::{NyarError, Success, Validate, Validation};
 use pratt::{Affix, PrattParser, Precedence};
-use std::{num::NonZeroUsize, str::FromStr};
+use std::str::FromStr;
 use valkyrie_ast::{
     ApplyCallNode, BinaryNode, DotCallNode, DotCallTerm, ExpressionNode, ExpressionType, GenericCallNode, OperatorNode,
     SubscriptCallNode, UnaryNode, ValkyrieOperator,
@@ -188,7 +188,7 @@ impl MainSuffixNode {
 }
 
 impl InlineSuffixNode {
-    pub fn as_token(&self, ctx: &ProgramContext) -> Validation<TokenStream> {
+    fn as_token(&self, ctx: &ProgramContext) -> Validation<TokenStream> {
         let token = match self {
             InlineSuffixNode::InlineSuffix0(v) => TokenStream::Postfix(v.as_operator()),
             InlineSuffixNode::RangeCall(v) => TokenStream::Subscript(v.build(ctx)?),

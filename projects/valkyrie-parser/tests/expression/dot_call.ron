@@ -13,7 +13,6 @@ ProgramRoot {
                 arguments: Some(
                     ArgumentsList {
                         terms: [],
-                        span: 0..0,
                     },
                 ),
                 body: None,
@@ -44,7 +43,6 @@ ProgramRoot {
                 arguments: Some(
                     ArgumentsList {
                         terms: [],
-                        span: 0..0,
                     },
                 ),
                 body: None,
@@ -75,7 +73,6 @@ ProgramRoot {
                 arguments: Some(
                     ArgumentsList {
                         terms: [],
-                        span: 0..0,
                     },
                 ),
                 body: None,
@@ -116,7 +113,6 @@ ProgramRoot {
                 arguments: Some(
                     ArgumentsList {
                         terms: [],
-                        span: 0..0,
                     },
                 ),
                 body: None,
@@ -141,7 +137,6 @@ ProgramRoot {
                         arguments: Some(
                             ArgumentsList {
                                 terms: [],
-                                span: 0..0,
                             },
                         ),
                         body: None,
@@ -153,7 +148,6 @@ ProgramRoot {
                 arguments: Some(
                     ArgumentsList {
                         terms: [],
-                        span: 0..0,
                     },
                 ),
                 body: None,
@@ -177,7 +171,6 @@ ProgramRoot {
                                 arguments: Some(
                                     ArgumentsList {
                                         terms: [],
-                                        span: 0..0,
                                     },
                                 ),
                                 body: None,
@@ -189,7 +182,6 @@ ProgramRoot {
                         arguments: Some(
                             ArgumentsList {
                                 terms: [],
-                                span: 0..0,
                             },
                         ),
                         body: None,
@@ -201,7 +193,6 @@ ProgramRoot {
                 arguments: Some(
                     ArgumentsList {
                         terms: [],
-                        span: 0..0,
                     },
                 ),
                 body: None,

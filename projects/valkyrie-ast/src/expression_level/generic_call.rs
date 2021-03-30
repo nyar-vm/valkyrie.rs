@@ -9,7 +9,7 @@ pub struct GenericCallNode {
     /// `A`
     pub base: ExpressionType,
     /// The raw string of the number.
-    pub terms: Vec<TupleTermNode>,
+    pub terms: ArgumentsList,
     /// The associated type or method
     /// `A::<T as Trait>::Type::method`
     pub associated: Vec<IdentifierNode>,

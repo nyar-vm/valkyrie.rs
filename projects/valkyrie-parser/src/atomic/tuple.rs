@@ -1,20 +1,19 @@
 use super::*;
-use crate::{TupleKeyNode, TuplePairNode};
-use nyar_error::NyarError;
-use std::{num::NonZeroU64, str::FromStr};
-use valkyrie_ast::{ApplyCallNode, ArgumentsList, TupleTermNode};
 
 impl TupleLiteralNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<TupleNode> {
+        self.tuple_terms.build(ctx).map(|terms| TupleNode { kind: Default::default(), terms, span: self.span.clone() })
+    }
+}
+
+impl TupleTermsNode {
+    pub fn build(&self, ctx: &ProgramContext) -> Validation<ArgumentsList> {
         let mut errors = vec![];
         let mut terms = vec![];
         for x in &self.tuple_pair {
             x.build(ctx).append(&mut terms, &mut errors)
         }
-        Success { value: TupleNode { kind: Default::default(), terms, span: self.span.clone() }, diagnostics: errors }
-    }
-    pub fn build_terms(&self, ctx: &ProgramContext) -> Validation<ArgumentsList> {
-        Success { value: ArgumentsList { terms: self.build(ctx)?.terms, span: Default::default() }, diagnostics: vec![] }
+        Success { value: ArgumentsList { terms }, diagnostics: errors }
     }
 }
 
@@ -42,7 +41,7 @@ impl crate::TupleCallNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<ApplyCallNode> {
         let monadic = self.op_and_then.is_some();
         let arguments = match &self.tuple_literal {
-            Some(s) => Some(s.build_terms(ctx)?),
+            Some(s) => Some(s.tuple_terms.build(ctx)?),
             None => None,
         };
         Success {

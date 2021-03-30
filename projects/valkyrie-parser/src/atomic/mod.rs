@@ -1,11 +1,11 @@
 use crate::{
     helpers::ProgramContext, AtomicNode, RangeLiteralNode, SpecialNode, SubscriptAxisNode, SubscriptOnlyNode,
-    SubscriptRangeNode, TupleLiteralNode,
+    SubscriptRangeNode, TupleKeyNode, TupleLiteralNode, TuplePairNode, TupleTermsNode,
 };
 use nyar_error::{Failure, Success, Validate, Validation};
 use valkyrie_ast::{
-    BooleanNode, ExpressionType, IdentifierNode, NamePathNode, NumberLiteralNode, RangeKind, RangeNode, RangeTermNode,
-    StringLiteralNode, StringTextNode, TupleNode,
+    ApplyCallNode, ArgumentsList, BooleanNode, ExpressionType, IdentifierNode, NamePathNode, NumberLiteralNode, RangeKind,
+    RangeNode, RangeTermNode, StringLiteralNode, StringTextNode, TupleNode, TupleTermNode,
 };
 use yggdrasil_rt::YggdrasilNode;
 mod bytes;

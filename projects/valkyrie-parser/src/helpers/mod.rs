@@ -1,8 +1,7 @@
-use crate::{ProgramNode, ValkyrieRule};
+use crate::ProgramNode;
 use nyar_error::{Failure, FileCache, FileID, NyarError, Validation};
 use std::str::FromStr;
 use valkyrie_ast::ProgramRoot;
-use yggdrasil_rt::YggdrasilError;
 
 pub struct ProgramContext {
     pub file: FileID,

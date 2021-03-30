@@ -18,11 +18,11 @@ for (k, v) in dict {
 }
 
 
-for (k, mut v) in dict if k > 0 {
+for (k, mut v) ∈ dict if k > 0 {
     looping
 }
 
-for (k, mut v) in dict if k > 0 {
+for (k, mut v) ∈ dict if k > 0 {
     looping
 }
 else {

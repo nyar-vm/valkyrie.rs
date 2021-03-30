@@ -9,8 +9,6 @@ mod display;
 pub struct ArgumentsList {
     /// The raw string of the number.
     pub terms: Vec<TupleTermNode>,
-    /// The range of the number.
-    pub span: Range<u32>,
 }
 
 /// `#annotation mut this: null`
@@ -64,27 +62,6 @@ pub struct ApplyCallNode {
 impl ValkyrieNode for ApplyCallNode {
     fn get_range(&self) -> Range<usize> {
         Range { start: self.span.start as usize, end: self.span.end as usize }
-    }
-}
-
-impl<K, V, D> ArgumentTermNode<K, V, D> {
-    pub fn map_key<F, O>(self, f: F) -> ArgumentTermNode<O, V, D>
-    where
-        F: FnOnce(K) -> O,
-    {
-        ArgumentTermNode { key: f(self.key), value: self.value, default: self.default }
-    }
-    pub fn map_value<F, O>(self, f: F) -> ArgumentTermNode<K, O, D>
-    where
-        F: FnOnce(V) -> O,
-    {
-        ArgumentTermNode { key: self.key, value: self.value.map(f), default: self.default }
-    }
-    pub fn map_default<F, O>(self, f: F) -> ArgumentTermNode<K, V, O>
-    where
-        F: FnOnce(D) -> O,
-    {
-        ArgumentTermNode { key: self.key, value: self.value, default: self.default.map(f) }
     }
 }
 

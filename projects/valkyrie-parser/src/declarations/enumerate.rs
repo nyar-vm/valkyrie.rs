@@ -1,6 +1,4 @@
-use crate::{KwClassNode, KwFlagsNode, ProgramContext};
-use nyar_error::{Success, Validation};
-use valkyrie_ast::{ClassDeclaration, ClassKind, FlagDeclaration, FlagsKind, IdentifierNode, NamePathNode};
+use super::*;
 
 impl crate::DefineEnumerateNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<FlagDeclaration> {

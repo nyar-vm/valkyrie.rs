@@ -99,6 +99,7 @@ pub enum ValkyrieRule {
     DotCallItem,
     TupleCall,
     TupleLiteral,
+    TupleTerms,
     TuplePair,
     TupleKey,
     RangeCall,
@@ -239,6 +240,7 @@ impl YggdrasilRule for ValkyrieRule {
             Self::DotCallItem => "",
             Self::TupleCall => "",
             Self::TupleLiteral => "",
+            Self::TupleTerms => "",
             Self::TuplePair => "",
             Self::TupleKey => "",
             Self::RangeCall => "",
@@ -782,6 +784,12 @@ pub struct TupleCallNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct TupleLiteralNode {
+    pub tuple_terms: TupleTermsNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct TupleTermsNode {
     pub tuple_pair: Vec<TuplePairNode>,
     pub span: Range<u32>,
 }
@@ -842,8 +850,10 @@ pub struct RangeOmitNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct GenericCallNode {
+    pub namepath: Option<NamepathNode>,
     pub op_and_then: Option<OpAndThenNode>,
-    pub proportion: Option<ProportionNode>,
+    pub proportion: Vec<ProportionNode>,
+    pub tuple_terms: TupleTermsNode,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]

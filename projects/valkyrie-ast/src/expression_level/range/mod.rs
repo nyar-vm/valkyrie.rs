@@ -82,7 +82,7 @@ impl RangeNode {
         for term in &self.terms {
             terms.push(term.as_tuple()?)
         }
-        Some(TupleNode { kind: TupleKind::List, terms: vec![], span: self.span.clone() })
+        Some(TupleNode { kind: TupleKind::Tuple, terms: ArgumentsList { terms }, span: self.span.clone() })
     }
 }
 

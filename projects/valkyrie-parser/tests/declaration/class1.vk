@@ -29,7 +29,7 @@ function a() {
 
 
 contract T, U {
-    forall {f32, f64}
+    ∀ {f32, f64}
     // 前置
     require {
 

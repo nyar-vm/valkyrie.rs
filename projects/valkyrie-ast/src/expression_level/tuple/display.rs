@@ -8,7 +8,7 @@ impl PrettyPrint for TupleNode {
                 let k = KAndRBracket { head_space: false, bracket_l: "(", bracket_r: ")" };
                 k.build(&self.terms, theme, ", ".into(), PrettyTree::text(",").append(PrettyTree::Hardline))
             }
-            TupleKind::List => {
+            TupleKind::Set => {
                 let k = KAndRBracket { head_space: false, bracket_l: "[", bracket_r: "]" };
                 k.build(&self.terms, theme, ", ".into(), PrettyTree::text(",").append(PrettyTree::Hardline))
             }

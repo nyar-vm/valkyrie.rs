@@ -329,7 +329,10 @@ atomic class TupleCall {
      )
 }
 class TupleLiteral {
-    '(' (TuplePair (^COMMA TuplePair)* ^COMMA?)? ')'
+    '(' TupleTerms ')'
+}
+class TupleTerms {
+    (TuplePair (^COMMA TuplePair)* ^COMMA?)?
 }
 class TuplePair {
     (TupleKey Colon)? MainExpression
@@ -365,9 +368,10 @@ atomic inline class RangeOmit {
 // === generic call === ------------------------------------------------------------------------------------------------
 class GenericCall {
     OP_AND_THEN? (
-        | PROPORTION '<'  '>'
-        | '⟨'  '⟩'
+        | PROPORTION '<' TupleTerms '>'
+        | '⟨' TupleTerms '⟩'
     )
+    (PROPORTION Namepath)?
 }
 // === annotation === --------------------------------------------------------------------------------------------------
 class AttributeCall {

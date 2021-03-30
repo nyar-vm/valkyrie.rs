@@ -7,10 +7,8 @@ mod display;
 pub enum TupleKind {
     /// `(a, b, ..c)`
     Tuple,
-    /// `[a: 1, b, ..c]`
-    List,
-    /// `{a: 1, b, ..c}`
-    Dict,
+    /// `⦃a: 1, b, ..c⦄`
+    Set,
 }
 
 /// `(tuple, ), (named: tuple, expression)`
@@ -20,7 +18,7 @@ pub struct TupleNode {
     ///  The kind of tuple.
     pub kind: TupleKind,
     /// The raw string of the number.
-    pub terms: Vec<TupleTermNode>,
+    pub terms: ArgumentsList,
     /// The range of the number.
     pub span: Range<u32>,
 }

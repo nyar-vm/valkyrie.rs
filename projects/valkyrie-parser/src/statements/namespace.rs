@@ -1,6 +1,4 @@
 use super::*;
-use crate::OpNamespaceNode;
-use valkyrie_ast::{NamePathNode, NamespaceKind};
 
 impl crate::DefineNamespaceNode {
     pub fn build(&self, ctx: &ProgramContext) -> NamespaceDeclaration {

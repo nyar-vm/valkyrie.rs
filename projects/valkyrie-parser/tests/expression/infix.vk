@@ -15,26 +15,19 @@ a ≢ b !== c =!= c;
 a =!= b =!= c;
 
 // Ordering
-
 a > b > c;
-
-
-// a >= b >= c >= d;
-
+a >= b >= c >= d;
 a < b < c;
-
-//a <= b <= c <= d;
+a <= b <= c <= d;
 
 
 //
-
 a ≫ b >> c;
 a ⋙ b >>> c;
 a ≪ b << c;
 a ⋘ b <<< c;
 
 // contains
-
 a ∈ list;
 a ∊ list;
 a ∉ list;

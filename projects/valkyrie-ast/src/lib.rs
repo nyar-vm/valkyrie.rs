@@ -29,7 +29,7 @@ pub use crate::{
             AnnotationKind, AnnotationList, AnnotationNode, AnnotationPathNode, AnnotationTerm, ModifiedNode, ModifiersNode,
         },
         argument::{ApplyCallNode, ArgumentKey, ArgumentTerm, ArgumentsList},
-        common::{ArgumentTermNode, CallNode, CallTermNode},
+        common::{ArgumentTermNode, CallNode},
         ctor::{CollectsNode, NewConstructNode},
         dot_call::{DotCallNode, DotCallTerm},
         generic_call::GenericCallNode,

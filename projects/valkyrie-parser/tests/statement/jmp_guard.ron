@@ -42,7 +42,6 @@ ProgramRoot {
                                         value: y,
                                     },
                                 ],
-                                span: 0..0,
                             },
                         ),
                         body: None,
