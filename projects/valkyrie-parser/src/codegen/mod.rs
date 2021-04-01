@@ -62,6 +62,7 @@ pub enum ValkyrieRule {
     method_modifier,
     ClassDomain,
     KW_CLASS,
+    ObjectStatement,
     DefineUnion,
     KW_UNION,
     DefineEnumerate,
@@ -95,6 +96,7 @@ pub enum ValkyrieRule {
     TypeInfix,
     TypePrefix,
     TypeSuffix,
+    NewStatement,
     DotCall,
     DotCallItem,
     TupleCall,
@@ -153,6 +155,8 @@ pub enum ValkyrieRule {
     KW_RETURN,
     KW_BREAK,
     KW_CONTINUE,
+    KW_NEW,
+    KW_OBJECT,
     KW_NOT,
     KW_IN,
     KW_IS,
@@ -203,6 +207,7 @@ impl YggdrasilRule for ValkyrieRule {
             Self::method_modifier => "",
             Self::ClassDomain => "",
             Self::KW_CLASS => "",
+            Self::ObjectStatement => "",
             Self::DefineUnion => "",
             Self::KW_UNION => "",
             Self::DefineEnumerate => "",
@@ -236,6 +241,7 @@ impl YggdrasilRule for ValkyrieRule {
             Self::TypeInfix => "",
             Self::TypePrefix => "",
             Self::TypeSuffix => "",
+            Self::NewStatement => "",
             Self::DotCall => "",
             Self::DotCallItem => "",
             Self::TupleCall => "",
@@ -294,6 +300,8 @@ impl YggdrasilRule for ValkyrieRule {
             Self::KW_RETURN => "",
             Self::KW_BREAK => "",
             Self::KW_CONTINUE => "",
+            Self::KW_NEW => "",
+            Self::KW_OBJECT => "",
             Self::KW_NOT => "",
             Self::KW_IN => "",
             Self::KW_IS => "",
@@ -538,6 +546,14 @@ pub enum KwClassNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ObjectStatementNode {
+    pub class_block: ClassBlockNode,
+    pub class_inherit: Option<ClassInheritNode>,
+    // Missing rule KW_Object
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct DefineUnionNode {
     pub attribute_call: Vec<AttributeCallNode>,
     pub identifier: IdentifierNode,
@@ -663,6 +679,8 @@ pub struct GroupFactorNode {
 pub enum AtomicNode {
     Integer(IntegerNode),
     Namepath(NamepathNode),
+    NewStatement(NewStatementNode),
+    ObjectStatement(ObjectStatementNode),
     ProceduralCall(ProceduralCallNode),
     RangeLiteral(RangeLiteralNode),
     Special(SpecialNode),
@@ -759,6 +777,13 @@ pub enum TypePrefixNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum TypeSuffixNode {
     Option,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct NewStatementNode {
+    pub kw_new: KwNewNode,
+    pub namepath: NamepathNode,
+    pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -1103,6 +1128,16 @@ pub struct KwBreakNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct KwContinueNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct KwNewNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct KwObjectNode {
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]

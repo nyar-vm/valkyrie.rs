@@ -143,6 +143,10 @@ union KW_CLASS {
     | 'class'     #Class
     | 'structure' #Structure
 }
+// === object statement === --------------------------------------------------------------------------------------------
+class ObjectStatement {
+    KW_Object ClassInherit? ClassBlock ^EOS?
+}
 // === identifier === --------------------------------------------------------------------------------------------------
 class DefineUnion {
     AttributeCall* KW_UNION Identifier
@@ -204,6 +208,8 @@ atomic union MainStatement {
 class ExpressionStatement {
     MainExpression EOS?
 }
+
+
 // === expression === --------------------------------------------------------------------------------------------------
 atomic class MainExpression {
     MainTerm (HIDE MainInfix ~ MainTerm)*
@@ -225,6 +231,8 @@ union Atomic {
     | TupleLiteral
     | RangeLiteral
     | TextLiteral
+    | ObjectStatement
+    | NewStatement
     | Namepath
     | Integer
     | Special
@@ -313,6 +321,10 @@ atomic union TypePrefix {
 }
 atomic union TypeSuffix {
     | '?' #Option
+}
+// === new statement === --------------------------------------------------------------------------------------------------
+class NewStatement {
+    KW_NEW Namepath
 }
 // === dot === ---------------------------------------------------------------------------------------------------------
 class DotCall {
@@ -475,6 +487,8 @@ token {
     KW_RETURN: /return/
     KW_BREAK: /break/
     KW_CONTINUE: /continue/
+    KW_NEW: /new/
+    KW_OBJECT: /object/
     // === operators === -----------------------------------------------------------------------------------------------
     KW_NOT: 'not'
     KW_IN: 'in'

@@ -172,10 +172,12 @@ impl MainInfixNode {
             "≥" | ">=" => Greater { equal: true },
             "≫" | ">>" => MuchGreater,
             "⋙" | ">>>" => VeryMuchGreater,
+            ">>=" => Placeholder,
             "<" => Less { equal: false },
             "≤" | "<=" => Less { equal: true },
             "≪" | "<<" => MuchLess,
             "⋘" | "<<<" => VeryMuchLess,
+            "<<=" => Placeholder,
             // logic operators
             "∧" | "&&" => LogicMatrix::And.into(),
             "⊼" => LogicMatrix::Nand.into(),

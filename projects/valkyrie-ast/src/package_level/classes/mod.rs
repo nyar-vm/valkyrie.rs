@@ -39,6 +39,15 @@ pub struct ClassDeclaration {
     pub span: Range<u32>,
 }
 
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ConstructObjectNode {
+    /// The super class of the class.
+    pub base_classes: Option<String>,
+    /// The range of the node
+    pub span: Range<u32>,
+}
+
 /// `field: Type = default`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]

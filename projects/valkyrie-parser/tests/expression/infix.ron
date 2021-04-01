@@ -1,9 +1,8 @@
 ProgramRoot {
     statements: [
-        ExpressionNode {
-            omit: true,
-            body: a∷b∷c,
-            span: 0..9,
+        NamespaceDeclaration {
+            kind: Test,
+            path: expression∷infix,
         },
         ExpressionNode {
             omit: true,
@@ -16,7 +15,7 @@ ProgramRoot {
                 },
                 rhs: c,
             },
-            span: 11..21,
+            span: 30..40,
         },
         ExpressionNode {
             omit: true,
@@ -29,7 +28,7 @@ ProgramRoot {
                 },
                 rhs: c,
             },
-            span: 22..32,
+            span: 41..51,
         },
         ExpressionNode {
             omit: true,
@@ -42,7 +41,7 @@ ProgramRoot {
                     rhs: c,
                 },
             },
-            span: 33..43,
+            span: 52..62,
         },
         ExpressionNode {
             omit: true,
@@ -63,7 +62,7 @@ ProgramRoot {
                     rhs: 1,
                 },
             },
-            span: 45..67,
+            span: 64..86,
         },
         ExpressionNode {
             omit: true,
@@ -84,7 +83,7 @@ ProgramRoot {
                     },
                 },
             },
-            span: 68..88,
+            span: 87..107,
         },
         ExpressionNode {
             omit: true,
@@ -93,7 +92,7 @@ ProgramRoot {
                 lhs: a,
                 rhs: c,
             },
-            span: 102..109,
+            span: 121..128,
         },
         ExpressionNode {
             omit: true,
@@ -109,7 +108,7 @@ ProgramRoot {
                 },
                 rhs: c,
             },
-            span: 110..123,
+            span: 129..142,
         },
         ExpressionNode {
             omit: true,
@@ -122,7 +121,7 @@ ProgramRoot {
                 },
                 rhs: c,
             },
-            span: 124..138,
+            span: 143..157,
         },
         ExpressionNode {
             omit: true,
@@ -142,20 +141,20 @@ ProgramRoot {
                 },
                 rhs: c,
             },
-            span: 139..159,
+            span: 158..178,
         },
         ExpressionNode {
-            omit: true,
+            omit: false,
             body: InfixNode {
-                infix: ≢,
+                infix: ?=,
                 lhs: InfixNode {
-                    infix: ≢,
+                    infix: =,
                     lhs: a,
                     rhs: b,
                 },
                 rhs: c,
             },
-            span: 160..174,
+            span: 179..203,
         },
         ExpressionNode {
             omit: true,
@@ -168,7 +167,7 @@ ProgramRoot {
                 },
                 rhs: c,
             },
-            span: 188..198,
+            span: 203..213,
         },
         ExpressionNode {
             omit: true,
@@ -185,7 +184,7 @@ ProgramRoot {
                 },
                 rhs: d,
             },
-            span: 199..216,
+            span: 214..231,
         },
         ExpressionNode {
             omit: true,
@@ -198,7 +197,7 @@ ProgramRoot {
                 },
                 rhs: c,
             },
-            span: 217..227,
+            span: 232..242,
         },
         ExpressionNode {
             omit: true,
@@ -215,7 +214,7 @@ ProgramRoot {
                 },
                 rhs: d,
             },
-            span: 228..245,
+            span: 243..260,
         },
         ExpressionNode {
             omit: true,
@@ -228,7 +227,7 @@ ProgramRoot {
                 },
                 rhs: c,
             },
-            span: 251..264,
+            span: 265..284,
         },
         ExpressionNode {
             omit: true,
@@ -241,7 +240,7 @@ ProgramRoot {
                 },
                 rhs: c,
             },
-            span: 265..279,
+            span: 285..299,
         },
         ExpressionNode {
             omit: true,
@@ -254,7 +253,7 @@ ProgramRoot {
                 },
                 rhs: c,
             },
-            span: 280..293,
+            span: 300..319,
         },
         ExpressionNode {
             omit: true,
@@ -267,25 +266,20 @@ ProgramRoot {
                 },
                 rhs: c,
             },
-            span: 294..308,
+            span: 320..334,
         },
         ExpressionNode {
             omit: true,
             body: InfixNode {
                 infix: ∈,
-                lhs: a,
-                rhs: list,
+                lhs: InfixNode {
+                    infix: ∈,
+                    lhs: a,
+                    rhs: list,
+                },
+                rhs: List,
             },
-            span: 322..333,
-        },
-        ExpressionNode {
-            omit: true,
-            body: InfixNode {
-                infix: ∈,
-                lhs: a,
-                rhs: list,
-            },
-            span: 334..345,
+            span: 349..369,
         },
         ExpressionNode {
             omit: true,
@@ -294,7 +288,7 @@ ProgramRoot {
                 lhs: a,
                 rhs: list,
             },
-            span: 346..357,
+            span: 370..381,
         },
         ExpressionNode {
             omit: true,
@@ -303,7 +297,7 @@ ProgramRoot {
                 lhs: a,
                 rhs: list,
             },
-            span: 358..368,
+            span: 382..392,
         },
         ExpressionNode {
             omit: true,
@@ -312,7 +306,7 @@ ProgramRoot {
                 lhs: a,
                 rhs: list,
             },
-            span: 369..383,
+            span: 393..407,
         },
         ExpressionNode {
             omit: true,
@@ -321,7 +315,7 @@ ProgramRoot {
                 lhs: a,
                 rhs: String,
             },
-            span: 398..410,
+            span: 422..434,
         },
         ExpressionNode {
             omit: true,
@@ -330,7 +324,7 @@ ProgramRoot {
                 lhs: b,
                 rhs: String,
             },
-            span: 411..427,
+            span: 435..451,
         },
         ExpressionNode {
             omit: true,
@@ -367,7 +361,7 @@ ProgramRoot {
                 },
                 rhs: i,
             },
-            span: 429..477,
+            span: 453..501,
         },
     ],
 }

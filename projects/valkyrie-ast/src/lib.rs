@@ -30,7 +30,7 @@ pub use crate::{
         },
         argument::{ApplyCallNode, ArgumentKey, ArgumentTerm, ArgumentsList},
         common::{ArgumentTermNode, CallNode},
-        ctor::{CollectsNode, NewConstructNode},
+        ctor::{CollectsNode, ConstructNewNode},
         dot_call::{DotCallNode, DotCallTerm},
         generic_call::GenericCallNode,
         lambda::{ClosureCallNode, ClosureCaller, FunctionBlock, LambdaNode},
@@ -44,7 +44,7 @@ pub use crate::{
         ExpressionContext, ExpressionNode, ExpressionType, PostfixCallPart, TypingExpression,
     },
     package_level::{
-        classes::{ClassDeclaration, ClassFieldDeclaration, ClassKind, ClassMethodDeclaration},
+        classes::{ClassDeclaration, ClassFieldDeclaration, ClassKind, ClassMethodDeclaration, ConstructObjectNode},
         documentation::DocumentationNode,
         flags::{FlagDeclaration, FlagFieldDeclaration, FlagsKind},
         function::{

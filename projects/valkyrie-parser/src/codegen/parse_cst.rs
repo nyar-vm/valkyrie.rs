@@ -34,6 +34,7 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::method_modifier => parse_method_modifier(state),
         ValkyrieRule::ClassDomain => parse_class_domain(state),
         ValkyrieRule::KW_CLASS => parse_kw_class(state),
+        ValkyrieRule::ObjectStatement => parse_object_statement(state),
         ValkyrieRule::DefineUnion => parse_define_union(state),
         ValkyrieRule::KW_UNION => parse_kw_union(state),
         ValkyrieRule::DefineEnumerate => parse_define_enumerate(state),
@@ -67,6 +68,7 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::TypeInfix => parse_type_infix(state),
         ValkyrieRule::TypePrefix => parse_type_prefix(state),
         ValkyrieRule::TypeSuffix => parse_type_suffix(state),
+        ValkyrieRule::NewStatement => parse_new_statement(state),
         ValkyrieRule::DotCall => parse_dot_call(state),
         ValkyrieRule::DotCallItem => parse_dot_call_item(state),
         ValkyrieRule::TupleCall => parse_tuple_call(state),
@@ -125,6 +127,8 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::KW_RETURN => parse_kw_return(state),
         ValkyrieRule::KW_BREAK => parse_kw_break(state),
         ValkyrieRule::KW_CONTINUE => parse_kw_continue(state),
+        ValkyrieRule::KW_NEW => parse_kw_new(state),
+        ValkyrieRule::KW_OBJECT => parse_kw_object(state),
         ValkyrieRule::KW_NOT => parse_kw_not(state),
         ValkyrieRule::KW_IN => parse_kw_in(state),
         ValkyrieRule::KW_IS => parse_kw_is(state),
@@ -837,6 +841,21 @@ fn parse_kw_class(state: Input) -> Output {
     })
 }
 #[inline]
+fn parse_object_statement(state: Input) -> Output {
+    state.rule(ValkyrieRule::ObjectStatement, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| parse_kw_object(s).and_then(|s| s.tag_node("kw_object")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| s.optional(|s| parse_class_inherit(s).and_then(|s| s.tag_node("class_inherit"))))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_class_block(s).and_then(|s| s.tag_node("class_block")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| s.optional(|s| parse_eos(s)))
+        })
+    })
+}
+#[inline]
 fn parse_define_union(state: Input) -> Output {
     state.rule(ValkyrieRule::DefineUnion, |s| {
         s.sequence(|s| {
@@ -1077,6 +1096,8 @@ fn parse_atomic(state: Input) -> Output {
             .or_else(|s| parse_tuple_literal(s).and_then(|s| s.tag_node("tuple_literal")))
             .or_else(|s| parse_range_literal(s).and_then(|s| s.tag_node("range_literal")))
             .or_else(|s| parse_text_literal(s).and_then(|s| s.tag_node("text_literal")))
+            .or_else(|s| parse_object_statement(s).and_then(|s| s.tag_node("object_statement")))
+            .or_else(|s| parse_new_statement(s).and_then(|s| s.tag_node("new_statement")))
             .or_else(|s| parse_namepath(s).and_then(|s| s.tag_node("namepath")))
             .or_else(|s| parse_integer(s).and_then(|s| s.tag_node("integer")))
             .or_else(|s| parse_special(s).and_then(|s| s.tag_node("special")))
@@ -1303,6 +1324,17 @@ fn parse_type_prefix(state: Input) -> Output {
 #[inline]
 fn parse_type_suffix(state: Input) -> Output {
     state.rule(ValkyrieRule::TypeSuffix, |s| Err(s).or_else(|s| builtin_text(s, "?", false).and_then(|s| s.tag_node("option"))))
+}
+#[inline]
+fn parse_new_statement(state: Input) -> Output {
+    state.rule(ValkyrieRule::NewStatement, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| parse_kw_new(s).and_then(|s| s.tag_node("kw_new")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_namepath(s).and_then(|s| s.tag_node("namepath")))
+        })
+    })
 }
 #[inline]
 fn parse_dot_call(state: Input) -> Output {
@@ -2103,6 +2135,24 @@ fn parse_kw_continue(state: Input) -> Output {
         s.match_regex({
             static REGEX: OnceLock<Regex> = OnceLock::new();
             REGEX.get_or_init(|| Regex::new("^(?x)(continue)").unwrap())
+        })
+    })
+}
+#[inline]
+fn parse_kw_new(state: Input) -> Output {
+    state.rule(ValkyrieRule::KW_NEW, |s| {
+        s.match_regex({
+            static REGEX: OnceLock<Regex> = OnceLock::new();
+            REGEX.get_or_init(|| Regex::new("^(?x)(new)").unwrap())
+        })
+    })
+}
+#[inline]
+fn parse_kw_object(state: Input) -> Output {
+    state.rule(ValkyrieRule::KW_OBJECT, |s| {
+        s.match_regex({
+            static REGEX: OnceLock<Regex> = OnceLock::new();
+            REGEX.get_or_init(|| Regex::new("^(?x)(object)").unwrap())
         })
     })
 }

@@ -1,7 +1,7 @@
 use super::*;
 use pretty_print::PrettyBuilder;
 
-impl PrettyPrint for NewConstructNode {
+impl PrettyPrint for ConstructNewNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(5);
         terms += theme.keyword("new");
