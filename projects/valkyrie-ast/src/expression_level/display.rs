@@ -13,6 +13,7 @@ impl Debug for ExpressionType {
             Self::String(v) => Display::fmt(v, f),
             Self::Formatted(v) => Debug::fmt(v, f),
             Self::New(v) => Debug::fmt(v, f),
+            Self::Object(v) => Debug::fmt(v, f),
             Self::Unary(v) => Debug::fmt(v, f),
             Self::Infix(v) => Debug::fmt(v, f),
             Self::Tuple(v) => Debug::fmt(v, f),

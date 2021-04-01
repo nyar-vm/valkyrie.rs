@@ -31,8 +31,8 @@ impl AtomicNode {
             AtomicNode::RangeLiteral(v) => v.build(ctx)?.into(),
             AtomicNode::TupleLiteral(v) => v.build(ctx)?.into(),
             AtomicNode::TextLiteral(v) => v.build(ctx).into(),
-            AtomicNode::NewStatement(v) => v.build(ctx).into(),
-            AtomicNode::ObjectStatement(v) => v.build(ctx).into(),
+            AtomicNode::NewStatement(v) => v.build(ctx)?.into(),
+            AtomicNode::ObjectStatement(v) => v.build(ctx)?.into(),
         };
         Success { value, diagnostics: vec![] }
     }

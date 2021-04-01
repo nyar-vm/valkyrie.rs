@@ -1,4 +1,5 @@
 use super::*;
+use crate::helper::ValkyrieNode;
 
 #[cfg(feature = "pretty-print")]
 mod display;
@@ -90,6 +91,12 @@ impl ClassKind {
             ClassKind::Class => "class",
             ClassKind::Structure => "structure",
         }
+    }
+}
+
+impl ValkyrieNode for ConstructObjectNode {
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
 }
 

@@ -5,7 +5,7 @@ impl crate::NewStatementNode {
         Success {
             value: ConstructNewNode {
                 modifiers: vec![],
-                namepath: NamePathNode { names: vec![] },
+                namepath: self.namepath.build(ctx),
                 generic: Default::default(),
                 arguments: Default::default(),
                 body: Default::default(),

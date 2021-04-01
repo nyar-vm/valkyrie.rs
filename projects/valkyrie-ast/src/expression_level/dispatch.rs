@@ -81,6 +81,7 @@ impl ValkyrieNode for ExpressionType {
             Self::Text(node) => node.get_range(),
             Self::String(node) => node.get_range(),
             Self::New(node) => node.get_range(),
+            Self::Object(node) => node.get_range(),
             Self::Unary(node) => node.get_range(),
             Self::Infix(node) => node.get_range(),
             Self::Tuple(node) => node.get_range(),
