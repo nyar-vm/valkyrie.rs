@@ -220,19 +220,20 @@ atomic class MainTerm {
 
 atomic union MainFactor {
     | GroupFactor
-    | Atomic
+    | Leading
 }
 atomic class GroupFactor {
     '(' ~ MainExpression ~ ')'
 }
 
-union Atomic {
+union Leading {
     | ProceduralCall
     | TupleLiteral
     | RangeLiteral
     | TextLiteral
-    | ObjectStatement
+    | TryStatement
     | NewStatement
+    | ObjectStatement
     | Namepath
     | Integer
     | Special
@@ -309,7 +310,7 @@ atomic class TypeTerm {
 }
 atomic union TypeFactor {
     | '(' ~ TypeExpression ~ ')'
-    | Atomic
+    | Leading
 }
 @style(operator)
 atomic union TypeInfix ^ {
@@ -321,6 +322,10 @@ atomic union TypePrefix {
 }
 atomic union TypeSuffix {
     | '?' #Option
+}
+// === try statement === --------------------------------------------------------------------------------------------------
+class TryStatement {
+    KW_TRY TypeExpression? Continuation
 }
 // === new statement === --------------------------------------------------------------------------------------------------
 class NewStatement {
@@ -498,6 +503,7 @@ token {
     KW_RETURN: /return/
     KW_BREAK: /break/
     KW_CONTINUE: /continue/
+    KW_TRY: /try/
     KW_NEW: /new/
     KW_OBJECT: /object/
     // === operators === -----------------------------------------------------------------------------------------------

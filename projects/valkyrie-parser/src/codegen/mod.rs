@@ -81,7 +81,7 @@ pub enum ValkyrieRule {
     MainTerm,
     MainFactor,
     GroupFactor,
-    Atomic,
+    Leading,
     MainInfix,
     MainPrefix,
     MainSuffix,
@@ -96,6 +96,7 @@ pub enum ValkyrieRule {
     TypeInfix,
     TypePrefix,
     TypeSuffix,
+    TryStatement,
     NewStatement,
     NewModifiers,
     NewPair,
@@ -158,6 +159,7 @@ pub enum ValkyrieRule {
     KW_RETURN,
     KW_BREAK,
     KW_CONTINUE,
+    KW_TRY,
     KW_NEW,
     KW_OBJECT,
     KW_NOT,
@@ -229,7 +231,7 @@ impl YggdrasilRule for ValkyrieRule {
             Self::MainTerm => "",
             Self::MainFactor => "",
             Self::GroupFactor => "",
-            Self::Atomic => "",
+            Self::Leading => "",
             Self::MainInfix => "",
             Self::MainPrefix => "",
             Self::MainSuffix => "",
@@ -244,6 +246,7 @@ impl YggdrasilRule for ValkyrieRule {
             Self::TypeInfix => "",
             Self::TypePrefix => "",
             Self::TypeSuffix => "",
+            Self::TryStatement => "",
             Self::NewStatement => "",
             Self::NewModifiers => "",
             Self::NewPair => "",
@@ -306,6 +309,7 @@ impl YggdrasilRule for ValkyrieRule {
             Self::KW_RETURN => "",
             Self::KW_BREAK => "",
             Self::KW_CONTINUE => "",
+            Self::KW_TRY => "",
             Self::KW_NEW => "",
             Self::KW_OBJECT => "",
             Self::KW_NOT => "",
@@ -671,8 +675,8 @@ pub struct MainTermNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum MainFactorNode {
-    Atomic(AtomicNode),
     GroupFactor(GroupFactorNode),
+    Leading(LeadingNode),
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -682,7 +686,7 @@ pub struct GroupFactorNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum AtomicNode {
+pub enum LeadingNode {
     Integer(IntegerNode),
     Namepath(NamepathNode),
     NewStatement(NewStatementNode),
@@ -691,6 +695,7 @@ pub enum AtomicNode {
     RangeLiteral(RangeLiteralNode),
     Special(SpecialNode),
     TextLiteral(TextLiteralNode),
+    TryStatement(TryStatementNode),
     TupleLiteral(TupleLiteralNode),
 }
 #[derive(Clone, Debug, Hash)]
@@ -765,7 +770,7 @@ pub struct TypeTermNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum TypeFactorNode {
-    Atomic(AtomicNode),
+    Leading(LeadingNode),
     TypeFactor0(TypeExpressionNode),
 }
 #[derive(Clone, Debug, Hash)]
@@ -783,6 +788,14 @@ pub enum TypePrefixNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum TypeSuffixNode {
     Option,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct TryStatementNode {
+    pub continuation: ContinuationNode,
+    pub kw_try: KwTryNode,
+    pub type_expression: Option<TypeExpressionNode>,
+    pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -1158,6 +1171,11 @@ pub struct KwBreakNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct KwContinueNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct KwTryNode {
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]

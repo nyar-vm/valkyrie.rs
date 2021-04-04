@@ -1,5 +1,5 @@
 use crate::{
-    helpers::ProgramContext, AtomicNode, RangeLiteralNode, SpecialNode, SubscriptAxisNode, SubscriptOnlyNode,
+    helpers::ProgramContext, LeadingNode, RangeLiteralNode, SpecialNode, SubscriptAxisNode, SubscriptOnlyNode,
     SubscriptRangeNode, TupleKeyNode, TupleLiteralNode, TuplePairNode, TupleTermsNode,
 };
 use nyar_error::{Failure, Success, Validate, Validation};
@@ -18,21 +18,23 @@ mod tuple;
 
 mod create_new;
 mod create_object;
+mod create_try;
 
-impl AtomicNode {
+impl LeadingNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<ExpressionType> {
         let value = match self {
-            AtomicNode::Special(v) => v.build(),
-            AtomicNode::Integer(v) => v.build().into(),
-            AtomicNode::Namepath(v) => v.build(ctx).into(),
-            AtomicNode::ProceduralCall(_) => {
+            Self::Special(v) => v.build(),
+            Self::Integer(v) => v.build().into(),
+            Self::Namepath(v) => v.build(ctx).into(),
+            Self::ProceduralCall(_) => {
                 todo!()
             }
-            AtomicNode::RangeLiteral(v) => v.build(ctx)?.into(),
-            AtomicNode::TupleLiteral(v) => v.build(ctx)?.into(),
-            AtomicNode::TextLiteral(v) => v.build(ctx).into(),
-            AtomicNode::NewStatement(v) => v.build(ctx)?.into(),
-            AtomicNode::ObjectStatement(v) => v.build(ctx)?.into(),
+            Self::RangeLiteral(v) => v.build(ctx)?.into(),
+            Self::TupleLiteral(v) => v.build(ctx)?.into(),
+            Self::TextLiteral(v) => v.build(ctx).into(),
+            Self::NewStatement(v) => v.build(ctx)?.into(),
+            Self::ObjectStatement(v) => v.build(ctx)?.into(),
+            Self::TryStatement(v) => v.build(ctx)?.into(),
         };
         Success { value, diagnostics: vec![] }
     }

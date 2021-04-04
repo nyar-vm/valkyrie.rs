@@ -53,7 +53,7 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::MainTerm => parse_main_term(state),
         ValkyrieRule::MainFactor => parse_main_factor(state),
         ValkyrieRule::GroupFactor => parse_group_factor(state),
-        ValkyrieRule::Atomic => parse_atomic(state),
+        ValkyrieRule::Leading => parse_leading(state),
         ValkyrieRule::MainInfix => parse_main_infix(state),
         ValkyrieRule::MainPrefix => parse_main_prefix(state),
         ValkyrieRule::MainSuffix => parse_main_suffix(state),
@@ -68,6 +68,7 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::TypeInfix => parse_type_infix(state),
         ValkyrieRule::TypePrefix => parse_type_prefix(state),
         ValkyrieRule::TypeSuffix => parse_type_suffix(state),
+        ValkyrieRule::TryStatement => parse_try_statement(state),
         ValkyrieRule::NewStatement => parse_new_statement(state),
         ValkyrieRule::NewModifiers => parse_new_modifiers(state),
         ValkyrieRule::NewPair => parse_new_pair(state),
@@ -130,6 +131,7 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::KW_RETURN => parse_kw_return(state),
         ValkyrieRule::KW_BREAK => parse_kw_break(state),
         ValkyrieRule::KW_CONTINUE => parse_kw_continue(state),
+        ValkyrieRule::KW_TRY => parse_kw_try(state),
         ValkyrieRule::KW_NEW => parse_kw_new(state),
         ValkyrieRule::KW_OBJECT => parse_kw_object(state),
         ValkyrieRule::KW_NOT => parse_kw_not(state),
@@ -1075,7 +1077,7 @@ fn parse_main_factor(state: Input) -> Output {
     state.rule(ValkyrieRule::MainFactor, |s| {
         Err(s)
             .or_else(|s| parse_group_factor(s).and_then(|s| s.tag_node("group_factor")))
-            .or_else(|s| parse_atomic(s).and_then(|s| s.tag_node("atomic")))
+            .or_else(|s| parse_leading(s).and_then(|s| s.tag_node("leading")))
     })
 }
 #[inline]
@@ -1092,15 +1094,16 @@ fn parse_group_factor(state: Input) -> Output {
     })
 }
 #[inline]
-fn parse_atomic(state: Input) -> Output {
-    state.rule(ValkyrieRule::Atomic, |s| {
+fn parse_leading(state: Input) -> Output {
+    state.rule(ValkyrieRule::Leading, |s| {
         Err(s)
             .or_else(|s| parse_procedural_call(s).and_then(|s| s.tag_node("procedural_call")))
             .or_else(|s| parse_tuple_literal(s).and_then(|s| s.tag_node("tuple_literal")))
             .or_else(|s| parse_range_literal(s).and_then(|s| s.tag_node("range_literal")))
             .or_else(|s| parse_text_literal(s).and_then(|s| s.tag_node("text_literal")))
-            .or_else(|s| parse_object_statement(s).and_then(|s| s.tag_node("object_statement")))
+            .or_else(|s| parse_try_statement(s).and_then(|s| s.tag_node("try_statement")))
             .or_else(|s| parse_new_statement(s).and_then(|s| s.tag_node("new_statement")))
+            .or_else(|s| parse_object_statement(s).and_then(|s| s.tag_node("object_statement")))
             .or_else(|s| parse_namepath(s).and_then(|s| s.tag_node("namepath")))
             .or_else(|s| parse_integer(s).and_then(|s| s.tag_node("integer")))
             .or_else(|s| parse_special(s).and_then(|s| s.tag_node("special")))
@@ -1297,7 +1300,7 @@ fn parse_type_factor(state: Input) -> Output {
                 })
                 .and_then(|s| s.tag_node("type_factor_0"))
             })
-            .or_else(|s| parse_atomic(s).and_then(|s| s.tag_node("atomic")))
+            .or_else(|s| parse_leading(s).and_then(|s| s.tag_node("leading")))
     })
 }
 #[inline]
@@ -1327,6 +1330,19 @@ fn parse_type_prefix(state: Input) -> Output {
 #[inline]
 fn parse_type_suffix(state: Input) -> Output {
     state.rule(ValkyrieRule::TypeSuffix, |s| Err(s).or_else(|s| builtin_text(s, "?", false).and_then(|s| s.tag_node("option"))))
+}
+#[inline]
+fn parse_try_statement(state: Input) -> Output {
+    state.rule(ValkyrieRule::TryStatement, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| parse_kw_try(s).and_then(|s| s.tag_node("kw_try")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| s.optional(|s| parse_type_expression(s).and_then(|s| s.tag_node("type_expression"))))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_continuation(s).and_then(|s| s.tag_node("continuation")))
+        })
+    })
 }
 #[inline]
 fn parse_new_statement(state: Input) -> Output {
@@ -2218,6 +2234,15 @@ fn parse_kw_continue(state: Input) -> Output {
         s.match_regex({
             static REGEX: OnceLock<Regex> = OnceLock::new();
             REGEX.get_or_init(|| Regex::new("^(?x)(continue)").unwrap())
+        })
+    })
+}
+#[inline]
+fn parse_kw_try(state: Input) -> Output {
+    state.rule(ValkyrieRule::KW_TRY, |s| {
+        s.match_regex({
+            static REGEX: OnceLock<Regex> = OnceLock::new();
+            REGEX.get_or_init(|| Regex::new("^(?x)(try)").unwrap())
         })
     })
 }

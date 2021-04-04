@@ -119,7 +119,7 @@ where
 impl MainFactorNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<ExpressionType> {
         match self {
-            Self::Atomic(v) => v.build(ctx),
+            Self::Leading(v) => v.build(ctx),
             Self::GroupFactor(v) => v.main_expression.build(ctx),
         }
     }

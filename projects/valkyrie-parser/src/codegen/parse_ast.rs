@@ -1330,17 +1330,17 @@ impl YggdrasilNode for MainFactorNode {
 
     fn get_range(&self) -> Range<usize> {
         match self {
-            Self::Atomic(s) => s.get_range(),
             Self::GroupFactor(s) => s.get_range(),
+            Self::Leading(s) => s.get_range(),
         }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
-        if let Ok(s) = pair.take_tagged_one::<AtomicNode>(Cow::Borrowed("atomic")) {
-            return Ok(Self::Atomic(s));
-        }
         if let Ok(s) = pair.take_tagged_one::<GroupFactorNode>(Cow::Borrowed("group_factor")) {
             return Ok(Self::GroupFactor(s));
+        }
+        if let Ok(s) = pair.take_tagged_one::<LeadingNode>(Cow::Borrowed("leading")) {
+            return Ok(Self::Leading(s));
         }
         Err(YggdrasilError::invalid_node(ValkyrieRule::MainFactor, _span))
     }
@@ -1377,7 +1377,7 @@ impl FromStr for GroupFactorNode {
     }
 }
 #[automatically_derived]
-impl YggdrasilNode for AtomicNode {
+impl YggdrasilNode for LeadingNode {
     type Rule = ValkyrieRule;
 
     fn get_range(&self) -> Range<usize> {
@@ -1390,6 +1390,7 @@ impl YggdrasilNode for AtomicNode {
             Self::RangeLiteral(s) => s.get_range(),
             Self::Special(s) => s.get_range(),
             Self::TextLiteral(s) => s.get_range(),
+            Self::TryStatement(s) => s.get_range(),
             Self::TupleLiteral(s) => s.get_range(),
         }
     }
@@ -1419,18 +1420,21 @@ impl YggdrasilNode for AtomicNode {
         if let Ok(s) = pair.take_tagged_one::<TextLiteralNode>(Cow::Borrowed("text_literal")) {
             return Ok(Self::TextLiteral(s));
         }
+        if let Ok(s) = pair.take_tagged_one::<TryStatementNode>(Cow::Borrowed("try_statement")) {
+            return Ok(Self::TryStatement(s));
+        }
         if let Ok(s) = pair.take_tagged_one::<TupleLiteralNode>(Cow::Borrowed("tuple_literal")) {
             return Ok(Self::TupleLiteral(s));
         }
-        Err(YggdrasilError::invalid_node(ValkyrieRule::Atomic, _span))
+        Err(YggdrasilError::invalid_node(ValkyrieRule::Leading, _span))
     }
 }
 #[automatically_derived]
-impl FromStr for AtomicNode {
+impl FromStr for LeadingNode {
     type Err = YggdrasilError<ValkyrieRule>;
 
     fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
-        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::Atomic)?)
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::Leading)?)
     }
 }
 #[automatically_derived]
@@ -1697,14 +1701,14 @@ impl YggdrasilNode for TypeFactorNode {
 
     fn get_range(&self) -> Range<usize> {
         match self {
-            Self::Atomic(s) => s.get_range(),
+            Self::Leading(s) => s.get_range(),
             Self::TypeFactor0(s) => s.get_range(),
         }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
-        if let Ok(s) = pair.take_tagged_one::<AtomicNode>(Cow::Borrowed("atomic")) {
-            return Ok(Self::Atomic(s));
+        if let Ok(s) = pair.take_tagged_one::<LeadingNode>(Cow::Borrowed("leading")) {
+            return Ok(Self::Leading(s));
         }
         if let Ok(s) = pair.take_tagged_one::<TypeExpressionNode>(Cow::Borrowed("type_factor_0")) {
             return Ok(Self::TypeFactor0(s));
@@ -1797,6 +1801,31 @@ impl FromStr for TypeSuffixNode {
 
     fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
         Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::TypeSuffix)?)
+    }
+}
+#[automatically_derived]
+impl YggdrasilNode for TryStatementNode {
+    type Rule = ValkyrieRule;
+
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
+    }
+    fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
+        let _span = pair.get_span();
+        Ok(Self {
+            continuation: pair.take_tagged_one::<ContinuationNode>(Cow::Borrowed("continuation"))?,
+            kw_try: pair.take_tagged_one::<KwTryNode>(Cow::Borrowed("kw_try"))?,
+            type_expression: pair.take_tagged_option::<TypeExpressionNode>(Cow::Borrowed("type_expression")),
+            span: Range { start: _span.start() as u32, end: _span.end() as u32 },
+        })
+    }
+}
+#[automatically_derived]
+impl FromStr for TryStatementNode {
+    type Err = YggdrasilError<ValkyrieRule>;
+
+    fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::TryStatement)?)
     }
 }
 #[automatically_derived]
@@ -3188,6 +3217,26 @@ impl FromStr for KwContinueNode {
 
     fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
         Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::KW_CONTINUE)?)
+    }
+}
+#[automatically_derived]
+impl YggdrasilNode for KwTryNode {
+    type Rule = ValkyrieRule;
+
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
+    }
+    fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
+        let _span = pair.get_span();
+        Ok(Self { span: Range { start: _span.start() as u32, end: _span.end() as u32 } })
+    }
+}
+#[automatically_derived]
+impl FromStr for KwTryNode {
+    type Err = YggdrasilError<ValkyrieRule>;
+
+    fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::KW_TRY)?)
     }
 }
 #[automatically_derived]
