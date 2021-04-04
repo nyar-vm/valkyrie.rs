@@ -59,6 +59,7 @@ fn read_io(dir: &str, file: &str) -> std::io::Result<(String, String, PathBuf)> 
 
 #[test]
 fn reexport_all() {
+    find_all("debug", true).ok();
     find_all("literal", false).ok();
     find_all("expression", false).ok();
     find_all("statement", false).ok();

@@ -218,7 +218,7 @@ atomic class MainTerm {
     (MainPrefix HIDE)* MainFactor MainSuffix*
 }
 
-atomic union MainFactor {
+union MainFactor {
     | GroupFactor
     | Leading
 }
@@ -313,26 +313,35 @@ atomic union TypeFactor {
     | Leading
 }
 @style(operator)
-atomic union TypeInfix ^ {
-    | '|'  #Union
+text class TypeInfix {
+    / [|&]
+    /
 }
-atomic union TypePrefix {
-    | [+]        #Positive
-    | [-]        #Negative
+text class TypePrefix {
+    / [+]
+    | [-]
+    /
 }
 atomic union TypeSuffix {
+    | GenericHide
     | '?' #Option
 }
-// === try statement === --------------------------------------------------------------------------------------------------
+// === try statement === -----------------------------------------------------------------------------------------------
 class TryStatement {
     KW_TRY TypeExpression? Continuation
 }
-// === new statement === --------------------------------------------------------------------------------------------------
+// === new statement === -----------------------------------------------------------------------------------------------
 class NewStatement {
-    KW_NEW NewModifiers* Namepath '{' (NewPair (EOS_FREE NewPair)* EOS_FREE?)? '}'
+    KW_NEW NewModifiers* Namepath GenericHide? TupleLiteral? NewBlock? ^EOS?
 }
-class NewModifiers ^ {
-    !Namepath ^Identifier
+class NewBlock {
+    '{' (NewPair (EOS_FREE NewPair)* EOS_FREE?)? '}'
+}
+atomic class NewModifiers ^ {
+    !NEW_MODIFIER_STOP ^Identifier
+}
+atomic class NEW_MODIFIER_STOP {
+    Identifier HIDE [\[({<⟨:∷;]
 }
 class NewPair {
     (NewPairKey Colon)? MainExpression
@@ -401,6 +410,10 @@ class GenericCall {
         | '⟨' TupleTerms '⟩'
     )
     (PROPORTION Namepath)?
+}
+class GenericHide {
+    | PROPORTION? '<' TupleTerms '>'
+    | '⟨' TupleTerms '⟩'
 }
 // === annotation === --------------------------------------------------------------------------------------------------
 class AttributeCall {

@@ -1,0 +1,38 @@
+ProgramRoot {
+    statements: [
+        ExpressionNode {
+            omit: false,
+            body: ConstructNewNode {
+                modifiers: [],
+                namepath: NamePathNode {
+                    names: [
+                        Identifier("namespace", 15..24),
+                        Identifier("name", 26..30),
+                    ],
+                },
+                generic: GenericCallNode {
+                    monadic: false,
+                    base: Placeholder,
+                    terms: ArgumentsList {
+                        terms: [],
+                    },
+                    associated: [],
+                    span: 0..0,
+                },
+                arguments: ApplyCallNode {
+                    monadic: false,
+                    caller: Placeholder,
+                    arguments: None,
+                    body: None,
+                    span: 0..0,
+                },
+                body: CollectsNode {
+                    terms: [],
+                    span: 0..0,
+                },
+                span: 3..42,
+            },
+            span: 3..42,
+        },
+    ],
+}

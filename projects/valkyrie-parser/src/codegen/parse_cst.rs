@@ -70,7 +70,9 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::TypeSuffix => parse_type_suffix(state),
         ValkyrieRule::TryStatement => parse_try_statement(state),
         ValkyrieRule::NewStatement => parse_new_statement(state),
+        ValkyrieRule::NewBlock => parse_new_block(state),
         ValkyrieRule::NewModifiers => parse_new_modifiers(state),
+        ValkyrieRule::NEW_MODIFIER_STOP => parse_new_modifier_stop(state),
         ValkyrieRule::NewPair => parse_new_pair(state),
         ValkyrieRule::NewPairKey => parse_new_pair_key(state),
         ValkyrieRule::DotCall => parse_dot_call(state),
@@ -87,6 +89,7 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::SubscriptRange => parse_subscript_range(state),
         ValkyrieRule::RangeOmit => parse_range_omit(state),
         ValkyrieRule::GenericCall => parse_generic_call(state),
+        ValkyrieRule::GenericHide => parse_generic_hide(state),
         ValkyrieRule::AttributeCall => parse_attribute_call(state),
         ValkyrieRule::ProceduralCall => parse_procedural_call(state),
         ValkyrieRule::TextLiteral => parse_text_literal(state),
@@ -1305,31 +1308,35 @@ fn parse_type_factor(state: Input) -> Output {
 }
 #[inline]
 fn parse_type_infix(state: Input) -> Output {
-    state.rule(ValkyrieRule::TypeInfix, |s| Err(s).or_else(|s| builtin_text(s, "|", false).and_then(|s| s.tag_node("union"))))
+    state.rule(ValkyrieRule::TypeInfix, |s| {
+        s.match_regex({
+            static REGEX: OnceLock<Regex> = OnceLock::new();
+            REGEX.get_or_init(|| Regex::new("^(?x)([|&])").unwrap())
+        })
+    })
 }
 #[inline]
 fn parse_type_prefix(state: Input) -> Output {
     state.rule(ValkyrieRule::TypePrefix, |s| {
-        Err(s)
-            .or_else(|s| {
-                builtin_regex(s, {
-                    static REGEX: OnceLock<Regex> = OnceLock::new();
-                    REGEX.get_or_init(|| Regex::new("^(?x)([+])").unwrap())
-                })
-                .and_then(|s| s.tag_node("positive"))
+        s.match_regex({
+            static REGEX: OnceLock<Regex> = OnceLock::new();
+            REGEX.get_or_init(|| {
+                Regex::new(
+                    "^(?x)([+]
+    | [-])",
+                )
+                .unwrap()
             })
-            .or_else(|s| {
-                builtin_regex(s, {
-                    static REGEX: OnceLock<Regex> = OnceLock::new();
-                    REGEX.get_or_init(|| Regex::new("^(?x)([-])").unwrap())
-                })
-                .and_then(|s| s.tag_node("negative"))
-            })
+        })
     })
 }
 #[inline]
 fn parse_type_suffix(state: Input) -> Output {
-    state.rule(ValkyrieRule::TypeSuffix, |s| Err(s).or_else(|s| builtin_text(s, "?", false).and_then(|s| s.tag_node("option"))))
+    state.rule(ValkyrieRule::TypeSuffix, |s| {
+        Err(s)
+            .or_else(|s| parse_generic_hide(s).and_then(|s| s.tag_node("generic_hide")))
+            .or_else(|s| builtin_text(s, "?", false).and_then(|s| s.tag_node("option")))
+    })
 }
 #[inline]
 fn parse_try_statement(state: Input) -> Output {
@@ -1363,6 +1370,21 @@ fn parse_new_statement(state: Input) -> Output {
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_namepath(s).and_then(|s| s.tag_node("namepath")))
                 .and_then(|s| builtin_ignore(s))
+                .and_then(|s| s.optional(|s| parse_generic_hide(s).and_then(|s| s.tag_node("generic_hide"))))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| s.optional(|s| parse_tuple_literal(s).and_then(|s| s.tag_node("tuple_literal"))))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| s.optional(|s| parse_new_block(s).and_then(|s| s.tag_node("new_block"))))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| s.optional(|s| parse_eos(s)))
+        })
+    })
+}
+#[inline]
+fn parse_new_block(state: Input) -> Output {
+    state.rule(ValkyrieRule::NewBlock, |s| {
+        s.sequence(|s| {
+            Ok(s)
                 .and_then(|s| builtin_text(s, "{", false))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| {
@@ -1400,9 +1422,24 @@ fn parse_new_modifiers(state: Input) -> Output {
     state.rule(ValkyrieRule::NewModifiers, |s| {
         s.sequence(|s| {
             Ok(s)
-                .and_then(|s| s.lookahead(false, |s| parse_namepath(s)))
-                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| s.lookahead(false, |s| parse_new_modifier_stop(s)))
                 .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
+        })
+    })
+}
+#[inline]
+fn parse_new_modifier_stop(state: Input) -> Output {
+    state.rule(ValkyrieRule::NEW_MODIFIER_STOP, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| {
+                    builtin_regex(s, {
+                        static REGEX: OnceLock<Regex> = OnceLock::new();
+                        REGEX.get_or_init(|| Regex::new("^(?x)([\\[({<⟨:∷;])").unwrap())
+                    })
+                })
         })
     })
 }
@@ -1773,6 +1810,34 @@ fn parse_generic_call(state: Input) -> Output {
                     })
                 })
         })
+    })
+}
+#[inline]
+fn parse_generic_hide(state: Input) -> Output {
+    state.rule(ValkyrieRule::GenericHide, |s| {
+        Err(s)
+            .or_else(|s| {
+                s.sequence(|s| {
+                    Ok(s)
+                        .and_then(|s| s.optional(|s| parse_proportion(s).and_then(|s| s.tag_node("proportion"))))
+                        .and_then(|s| builtin_ignore(s))
+                        .and_then(|s| builtin_text(s, "<", false))
+                        .and_then(|s| builtin_ignore(s))
+                        .and_then(|s| parse_tuple_terms(s).and_then(|s| s.tag_node("tuple_terms")))
+                        .and_then(|s| builtin_ignore(s))
+                        .and_then(|s| builtin_text(s, ">", false))
+                })
+            })
+            .or_else(|s| {
+                s.sequence(|s| {
+                    Ok(s)
+                        .and_then(|s| builtin_text(s, "⟨", false))
+                        .and_then(|s| builtin_ignore(s))
+                        .and_then(|s| parse_tuple_terms(s).and_then(|s| s.tag_node("tuple_terms")))
+                        .and_then(|s| builtin_ignore(s))
+                        .and_then(|s| builtin_text(s, "⟩", false))
+                })
+            })
     })
 }
 #[inline]
