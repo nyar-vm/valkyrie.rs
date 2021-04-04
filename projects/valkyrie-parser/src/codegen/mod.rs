@@ -97,6 +97,9 @@ pub enum ValkyrieRule {
     TypePrefix,
     TypeSuffix,
     NewStatement,
+    NewModifiers,
+    NewPair,
+    NewPairKey,
     DotCall,
     DotCallItem,
     TupleCall,
@@ -242,6 +245,9 @@ impl YggdrasilRule for ValkyrieRule {
             Self::TypePrefix => "",
             Self::TypeSuffix => "",
             Self::NewStatement => "",
+            Self::NewModifiers => "",
+            Self::NewPair => "",
+            Self::NewPairKey => "",
             Self::DotCall => "",
             Self::DotCallItem => "",
             Self::TupleCall => "",
@@ -781,9 +787,33 @@ pub enum TypeSuffixNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct NewStatementNode {
+    pub eos_free: Vec<EosFreeNode>,
     pub kw_new: KwNewNode,
     pub namepath: NamepathNode,
+    pub new_modifiers: Vec<NewModifiersNode>,
+    pub new_pair: Vec<NewPairNode>,
     pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct NewModifiersNode {
+    pub identifier: IdentifierNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct NewPairNode {
+    // Missing rule Colon
+    pub main_expression: MainExpressionNode,
+    pub new_pair_key: Option<NewPairKeyNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum NewPairKeyNode {
+    Identifier(IdentifierNode),
+    RangeLiteral(RangeLiteralNode),
+    TextRaw(TextRawNode),
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]

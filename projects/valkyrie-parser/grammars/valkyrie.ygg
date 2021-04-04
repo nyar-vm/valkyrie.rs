@@ -324,7 +324,18 @@ atomic union TypeSuffix {
 }
 // === new statement === --------------------------------------------------------------------------------------------------
 class NewStatement {
-    KW_NEW Namepath
+    KW_NEW NewModifiers* Namepath '{' (NewPair (EOS_FREE NewPair)* EOS_FREE?)? '}'
+}
+class NewModifiers ^ {
+    !Namepath ^Identifier
+}
+class NewPair {
+    (NewPairKey Colon)? MainExpression
+}
+union NewPairKey {
+    | Identifier
+    | TextRaw
+    | RangeLiteral
 }
 // === dot === ---------------------------------------------------------------------------------------------------------
 class DotCall {

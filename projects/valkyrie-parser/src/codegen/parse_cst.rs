@@ -69,6 +69,9 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::TypePrefix => parse_type_prefix(state),
         ValkyrieRule::TypeSuffix => parse_type_suffix(state),
         ValkyrieRule::NewStatement => parse_new_statement(state),
+        ValkyrieRule::NewModifiers => parse_new_modifiers(state),
+        ValkyrieRule::NewPair => parse_new_pair(state),
+        ValkyrieRule::NewPairKey => parse_new_pair_key(state),
         ValkyrieRule::DotCall => parse_dot_call(state),
         ValkyrieRule::DotCallItem => parse_dot_call_item(state),
         ValkyrieRule::TupleCall => parse_tuple_call(state),
@@ -1332,8 +1335,88 @@ fn parse_new_statement(state: Input) -> Output {
             Ok(s)
                 .and_then(|s| parse_kw_new(s).and_then(|s| s.tag_node("kw_new")))
                 .and_then(|s| builtin_ignore(s))
+                .and_then(|s| {
+                    s.repeat(0..4294967295, |s| {
+                        s.sequence(|s| {
+                            Ok(s)
+                                .and_then(|s| builtin_ignore(s))
+                                .and_then(|s| parse_new_modifiers(s).and_then(|s| s.tag_node("new_modifiers")))
+                        })
+                    })
+                })
+                .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_namepath(s).and_then(|s| s.tag_node("namepath")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| builtin_text(s, "{", false))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| {
+                    s.optional(|s| {
+                        s.sequence(|s| {
+                            Ok(s)
+                                .and_then(|s| parse_new_pair(s).and_then(|s| s.tag_node("new_pair")))
+                                .and_then(|s| builtin_ignore(s))
+                                .and_then(|s| {
+                                    s.repeat(0..4294967295, |s| {
+                                        s.sequence(|s| {
+                                            Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| {
+                                                s.sequence(|s| {
+                                                    Ok(s)
+                                                        .and_then(|s| parse_eos_free(s).and_then(|s| s.tag_node("eos_free")))
+                                                        .and_then(|s| builtin_ignore(s))
+                                                        .and_then(|s| parse_new_pair(s).and_then(|s| s.tag_node("new_pair")))
+                                                })
+                                            })
+                                        })
+                                    })
+                                })
+                                .and_then(|s| builtin_ignore(s))
+                                .and_then(|s| s.optional(|s| parse_eos_free(s).and_then(|s| s.tag_node("eos_free"))))
+                        })
+                    })
+                })
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| builtin_text(s, "}", false))
         })
+    })
+}
+#[inline]
+fn parse_new_modifiers(state: Input) -> Output {
+    state.rule(ValkyrieRule::NewModifiers, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| s.lookahead(false, |s| parse_namepath(s)))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
+        })
+    })
+}
+#[inline]
+fn parse_new_pair(state: Input) -> Output {
+    state.rule(ValkyrieRule::NewPair, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| {
+                    s.optional(|s| {
+                        s.sequence(|s| {
+                            Ok(s)
+                                .and_then(|s| parse_new_pair_key(s).and_then(|s| s.tag_node("new_pair_key")))
+                                .and_then(|s| builtin_ignore(s))
+                                .and_then(|s| parse_colon(s).and_then(|s| s.tag_node("colon")))
+                        })
+                    })
+                })
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_main_expression(s).and_then(|s| s.tag_node("main_expression")))
+        })
+    })
+}
+#[inline]
+fn parse_new_pair_key(state: Input) -> Output {
+    state.rule(ValkyrieRule::NewPairKey, |s| {
+        Err(s)
+            .or_else(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
+            .or_else(|s| parse_text_raw(s).and_then(|s| s.tag_node("text_raw")))
+            .or_else(|s| parse_range_literal(s).and_then(|s| s.tag_node("range_literal")))
     })
 }
 #[inline]
