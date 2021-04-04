@@ -7,7 +7,7 @@ use pratt::{Affix, PrattParser, Precedence};
 use std::str::FromStr;
 use valkyrie_ast::{
     ApplyCallNode, BinaryNode, DotCallNode, DotCallTerm, ExpressionNode, ExpressionType, GenericCallNode, OperatorNode,
-    SubscriptCallNode, UnaryNode, ValkyrieOperator, ValkyrieOperator::LogicMatrix,
+    SubscriptCallNode, UnaryNode, ValkyrieOperator,
 };
 
 mod dot_call;

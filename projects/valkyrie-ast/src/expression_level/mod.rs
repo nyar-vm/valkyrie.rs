@@ -1,10 +1,10 @@
 pub mod annotations;
-pub mod apply_call;
 pub mod argument;
-pub mod common;
+pub mod call_apply;
+pub mod call_dot;
+pub mod call_subscript;
 pub mod ctor;
 mod dispatch;
-pub mod dot_call;
 pub mod lambda;
 pub mod matches;
 pub mod number;
@@ -15,16 +15,10 @@ pub mod string_template;
 pub mod symbol;
 pub mod tuple;
 
-pub mod generic_call;
+pub mod call_generic;
 
 mod display;
-use crate::{
-    helper::ValkyrieNode, ApplyCallNode, ArgumentTermNode, ArgumentsList, BinaryNode, BooleanNode, CallNode, ClosureCallNode,
-    CollectsNode, ConstructNewNode, ConstructObjectNode, DotCallNode, ExpressionFormatted, GenericCallNode, GuardStatement,
-    IdentifierNode, IfStatement, LambdaSlotNode, MatchDotStatement, ModifiersNode, NamePathNode, NullNode, NumberLiteralNode,
-    OperatorNode, OutputNode, PatternBlock, RaiseNode, RangeNode, StatementNode, StringLiteralNode, StringTextNode,
-    SubscriptCallNode, SwitchStatement, TryStatement, TupleKind, TupleNode, TupleTermNode, UnaryNode,
-};
+use crate::{helper::ValkyrieNode, *};
 use alloc::{
     boxed::Box,
     string::{String, ToString},
@@ -137,7 +131,7 @@ pub enum ExpressionType {
     /// - Postfix expression
     DotCall(Box<DotCallNode>),
     /// - Postfix expression
-    MatchDot(Box<CallNode<MatchDotStatement>>),
+    MatchDot(Box<MatchDotStatement>),
     /// - REPL Reference
     OutputReference(Box<OutputNode>),
 }
@@ -198,10 +192,5 @@ impl ExpressionType {
     /// Build a new suffix expression
     pub fn suffix(o: OperatorNode, lhs: Self) -> Self {
         Self::Unary(Box::new(UnaryNode { operator: o, base: lhs }))
-    }
-    /// Build a new expression with dot match
-    pub fn dot_match(base: Self, rest: MatchDotStatement) -> Self {
-        let span = base.get_start() as u32..rest.span.end;
-        ExpressionType::MatchDot(Box::new(CallNode { base, rest, span }))
     }
 }

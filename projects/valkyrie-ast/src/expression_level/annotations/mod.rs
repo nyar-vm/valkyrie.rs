@@ -36,6 +36,7 @@ pub struct AnnotationNode {
 pub struct AnnotationList {
     pub kind: AnnotationKind,
     pub terms: Vec<AnnotationTerm>,
+    /// The location of the annotation
     pub span: Range<u32>,
 }
 

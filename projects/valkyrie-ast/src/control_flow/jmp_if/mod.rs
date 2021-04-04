@@ -66,6 +66,7 @@ impl IfStatement {
 }
 
 impl WhileConditionNode {
+    /// Weather it is a unconditional loop
     pub fn is_empty(&self) -> bool {
         match self {
             WhileConditionNode::Unconditional => true,

@@ -24,6 +24,12 @@ pub struct MatchDotStatement {
     pub span: Range<u32>,
 }
 
+impl ValkyrieNode for MatchDotStatement {
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
+    }
+}
+
 impl MatchKind {
     /// Get the string representation of the match kind
     pub fn as_str(&self) -> &'static str {
