@@ -1,4 +1,5 @@
 use super::*;
+use crate::utils::build_arguments;
 
 impl crate::GenericCallNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<GenericCallNode> {

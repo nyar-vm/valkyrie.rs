@@ -1543,23 +1543,20 @@ fn parse_tuple_terms(state: Input) -> Output {
             s.sequence(|s| {
                 Ok(s)
                     .and_then(|s| parse_tuple_pair(s).and_then(|s| s.tag_node("tuple_pair")))
-                    .and_then(|s| builtin_ignore(s))
                     .and_then(|s| {
                         s.repeat(0..4294967295, |s| {
                             s.sequence(|s| {
-                                Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| {
-                                    s.sequence(|s| {
-                                        Ok(s)
-                                            .and_then(|s| parse_comma(s))
-                                            .and_then(|s| builtin_ignore(s))
-                                            .and_then(|s| parse_tuple_pair(s).and_then(|s| s.tag_node("tuple_pair")))
-                                    })
-                                })
+                                Ok(s)
+                                    .and_then(|s| builtin_ignore(s))
+                                    .and_then(|s| parse_comma(s))
+                                    .and_then(|s| builtin_ignore(s))
+                                    .and_then(|s| parse_tuple_pair(s).and_then(|s| s.tag_node("tuple_pair")))
                             })
                         })
                     })
-                    .and_then(|s| builtin_ignore(s))
-                    .and_then(|s| s.optional(|s| parse_comma(s)))
+                    .and_then(|s| {
+                        s.optional(|s| s.sequence(|s| Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| parse_comma(s))))
+                    })
             })
         })
     })
@@ -1819,8 +1816,15 @@ fn parse_generic_hide(state: Input) -> Output {
             .or_else(|s| {
                 s.sequence(|s| {
                     Ok(s)
-                        .and_then(|s| s.optional(|s| parse_proportion(s).and_then(|s| s.tag_node("proportion"))))
-                        .and_then(|s| builtin_ignore(s))
+                        .and_then(|s| {
+                            s.optional(|s| {
+                                s.sequence(|s| {
+                                    Ok(s)
+                                        .and_then(|s| parse_proportion(s).and_then(|s| s.tag_node("proportion")))
+                                        .and_then(|s| builtin_ignore(s))
+                                })
+                            })
+                        })
                         .and_then(|s| builtin_text(s, "<", false))
                         .and_then(|s| builtin_ignore(s))
                         .and_then(|s| parse_tuple_terms(s).and_then(|s| s.tag_node("tuple_terms")))

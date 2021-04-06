@@ -369,8 +369,8 @@ atomic class TupleCall {
 class TupleLiteral {
     '(' TupleTerms ')'
 }
-class TupleTerms {
-    (TuplePair (^COMMA TuplePair)* ^COMMA?)?
+atomic class TupleTerms {
+    (TuplePair (HIDE ^COMMA ~ TuplePair)* (HIDE ^COMMA)?)?
 }
 class TuplePair {
     (TupleKey Colon)? MainExpression
@@ -411,9 +411,9 @@ class GenericCall {
     )
     (PROPORTION Namepath)?
 }
-class GenericHide {
-    | PROPORTION? '<' TupleTerms '>'
-    | '⟨' TupleTerms '⟩'
+atomic class GenericHide {
+    | (PROPORTION HIDE)? '<' ~ TupleTerms ~ '>'
+    | '⟨' ~ TupleTerms ~ '⟩'
 }
 // === annotation === --------------------------------------------------------------------------------------------------
 class AttributeCall {

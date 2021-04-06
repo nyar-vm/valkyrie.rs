@@ -1,3 +1,4 @@
-new a stack namespace::name::<>() {
-
-}
+new stack List
+<>
+()
+{}

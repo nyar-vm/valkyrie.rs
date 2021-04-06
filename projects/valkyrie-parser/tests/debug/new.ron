@@ -6,8 +6,7 @@ ProgramRoot {
                 modifiers: [],
                 namepath: NamePathNode {
                     names: [
-                        Identifier("namespace", 15..24),
-                        Identifier("name", 26..30),
+                        Identifier("List", 10..14),
                     ],
                 },
                 generic: GenericCallNode {
@@ -30,9 +29,9 @@ ProgramRoot {
                     terms: [],
                     span: 0..0,
                 },
-                span: 3..42,
+                span: 0..24,
             },
-            span: 3..42,
+            span: 0..24,
         },
     ],
 }

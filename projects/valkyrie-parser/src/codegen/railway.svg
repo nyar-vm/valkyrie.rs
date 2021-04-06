@@ -4088,7 +4088,7 @@ HIDE</text>
 <text class="comment" id="TupleTerms" x="75" y="5201">
 TupleTerms</text>
 <g class="optional">
-<path d=" M 125 5196 h 24 m -24 0 a 12 12 0 0 0 12 -12 v -12 a 12 12 0 0 1 12 -12 h 654 m -324 0 l -5 -5 m 0 10 l 5 -5 m 324 0 a 12 12 0 0 1 12 12 v 12 a 12 12 0 0 0 12 12 h -24"/>
+<path d=" M 125 5196 h 24 m -24 0 a 12 12 0 0 0 12 -12 v -12 a 12 12 0 0 1 12 -12 h 592 m -293 0 l -5 -5 m 0 10 l 5 -5 m 293 0 a 12 12 0 0 1 12 12 v 12 a 12 12 0 0 0 12 12 h -24"/>
 <g class="sequence">
 <a class="link" xlink:href="#TuplePair">
 <g class="symbol">
@@ -4097,72 +4097,66 @@ TupleTerms</text>
 TuplePair</text>
 </g>
 </a>
-<g class="character">
-<rect height="22" rx="10" ry="10" width="52" x="251" y="5185"/>
-<text x="277" y="5201">
-HIDE</text>
-</g>
 <g class="repeat">
-<path d=" M 313 5196 h 12 m 286 0 h 12 m -12 0 a 12 12 0 0 1 12 12 v 7 a 12 12 0 0 1 -12 12 m -52 0 h -234 m 120 0 l 5 -5 m 0 10 l -5 -5 m -120 0 a 12 12 0 0 1 -12 -12 v -7 a 12 12 0 0 1 12 -12"/>
-<text class="comment" x="585" y="5232">
+<path d=" M 251 5196 h 12 m 286 0 h 12 m -12 0 a 12 12 0 0 1 12 12 v 7 a 12 12 0 0 1 -12 12 m -52 0 h -234 m 120 0 l 5 -5 m 0 10 l -5 -5 m -120 0 a 12 12 0 0 1 -12 -12 v -7 a 12 12 0 0 1 12 -12"/>
+<text class="comment" x="523" y="5232">
 [0, ∞]</text>
 <g class="sequence">
 <g class="character">
-<rect height="22" rx="10" ry="10" width="52" x="325" y="5185"/>
-<text x="351" y="5201">
+<rect height="22" rx="10" ry="10" width="52" x="263" y="5185"/>
+<text x="289" y="5201">
 HIDE</text>
 </g>
-<g class="sequence">
 <a class="link" xlink:href="#COMMA">
 <g class="symbol">
-<rect height="22" width="60" x="387" y="5185"/>
-<text x="417" y="5201">
+<rect height="22" width="60" x="325" y="5185"/>
+<text x="355" y="5201">
 COMMA</text>
 </g>
 </a>
 <g class="character">
-<rect height="22" rx="10" ry="10" width="52" x="457" y="5185"/>
-<text x="483" y="5201">
+<rect height="22" rx="10" ry="10" width="52" x="395" y="5185"/>
+<text x="421" y="5201">
 HIDE</text>
 </g>
 <a class="link" xlink:href="#TuplePair">
 <g class="symbol">
-<rect height="22" width="92" x="519" y="5185"/>
-<text x="565" y="5201">
+<rect height="22" width="92" x="457" y="5185"/>
+<text x="503" y="5201">
 TuplePair</text>
 </g>
 </a>
+<path d=" M 315 5196 h 10"/>
+<path d=" M 385 5196 h 10"/>
 <path d=" M 447 5196 h 10"/>
-<path d=" M 509 5196 h 10"/>
 </g>
-<path d=" M 377 5196 h 10"/>
-</g>
-</g>
-<g class="character">
-<rect height="22" rx="10" ry="10" width="52" x="633" y="5185"/>
-<text x="659" y="5201">
-HIDE</text>
 </g>
 <g class="optional">
-<path d=" M 695 5196 h 24 m -24 0 a 12 12 0 0 0 12 -12 v 0 a 12 12 0 0 1 12 -12 h 60 m -27 0 l -5 -5 m 0 10 l 5 -5 m 27 0 a 12 12 0 0 1 12 12 v 0 a 12 12 0 0 0 12 12 h -24"/>
+<path d=" M 571 5196 h 24 m -24 0 a 12 12 0 0 0 12 -12 v 0 a 12 12 0 0 1 12 -12 h 122 m -58 0 l -5 -5 m 0 10 l 5 -5 m 58 0 a 12 12 0 0 1 12 12 v 0 a 12 12 0 0 0 12 12 h -24"/>
+<g class="sequence">
+<g class="character">
+<rect height="22" rx="10" ry="10" width="52" x="595" y="5185"/>
+<text x="621" y="5201">
+HIDE</text>
+</g>
 <a class="link" xlink:href="#COMMA">
 <g class="symbol">
-<rect height="22" width="60" x="719" y="5185"/>
-<text x="749" y="5201">
+<rect height="22" width="60" x="657" y="5185"/>
+<text x="687" y="5201">
 COMMA</text>
 </g>
 </a>
+<path d=" M 647 5196 h 10"/>
+</g>
 </g>
 <path d=" M 241 5196 h 10"/>
-<path d=" M 303 5196 h 10"/>
-<path d=" M 623 5196 h 10"/>
-<path d=" M 685 5196 h 10"/>
+<path d=" M 561 5196 h 10"/>
 </g>
 </g>
-<path d=" M 837 5196 h 5 a 5 5 0 0 1 5 -5 a 5 5 0 0 1 5 5 a 5 5 0 0 1 -5 5 a 5 5 0 0 1 -5 -5"/>
+<path d=" M 775 5196 h 5 a 5 5 0 0 1 5 -5 a 5 5 0 0 1 5 5 a 5 5 0 0 1 -5 5 a 5 5 0 0 1 -5 -5"/>
 <path d=" M 25 5196 h 10"/>
 <path d=" M 115 5196 h 10"/>
-<path d=" M 827 5196 h 10"/>
+<path d=" M 765 5196 h 10"/>
 </g>
 <g class="sequence">
 <path d=" M 10 5273 a 5 5 0 0 1 5 -5 a 5 5 0 0 1 5 5 a 5 5 0 0 1 -5 5 a 5 5 0 0 1 -5 -5 m 10 0 h 5"/>
@@ -4859,7 +4853,8 @@ GenericHide</text>
 <path d=" M 132 5974 h 24 m 520 0 h 24"/>
 <g class="sequence">
 <g class="optional">
-<path d=" M 156 5974 h 24 m -24 0 a 12 12 0 0 0 12 -12 v 0 a 12 12 0 0 1 12 -12 h 100 m -47 0 l -5 -5 m 0 10 l 5 -5 m 47 0 a 12 12 0 0 1 12 12 v 0 a 12 12 0 0 0 12 12 h -24"/>
+<path d=" M 156 5974 h 24 m -24 0 a 12 12 0 0 0 12 -12 v 0 a 12 12 0 0 1 12 -12 h 162 m -78 0 l -5 -5 m 0 10 l 5 -5 m 78 0 a 12 12 0 0 1 12 12 v 0 a 12 12 0 0 0 12 12 h -24"/>
+<g class="sequence">
 <a class="link" xlink:href="#PROPORTION">
 <g class="symbol">
 <rect height="22" width="100" x="180" y="5963"/>
@@ -4867,11 +4862,13 @@ GenericHide</text>
 PROPORTION</text>
 </g>
 </a>
-</g>
 <g class="character">
-<rect height="22" rx="10" ry="10" width="52" x="314" y="5963"/>
-<text x="340" y="5979">
+<rect height="22" rx="10" ry="10" width="52" x="290" y="5963"/>
+<text x="316" y="5979">
 HIDE</text>
+</g>
+<path d=" M 280 5974 h 10"/>
+</g>
 </g>
 <g class="string">
 <rect height="22" rx="10" ry="10" width="28" x="376" y="5963"/>
@@ -4900,7 +4897,6 @@ HIDE</text>
 <text x="662" y="5979">
 &gt;</text>
 </g>
-<path d=" M 304 5974 h 10"/>
 <path d=" M 366 5974 h 10"/>
 <path d=" M 404 5974 h 10"/>
 <path d=" M 466 5974 h 10"/>
