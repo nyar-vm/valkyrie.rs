@@ -21,7 +21,7 @@ class ClassA {
         return self.append(other)
     }
 }
-# union must have type
+// union must have type
 union UnionA {
     field: Type
 }

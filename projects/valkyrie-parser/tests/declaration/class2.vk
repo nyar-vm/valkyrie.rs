@@ -2,7 +2,6 @@
 
 #derive(Copy, Clone, Debug, PartialEq, Eq, Hash)
 class A⟨T <: Trait⟩
-
 {
 
 }

@@ -157,7 +157,14 @@ class KW_UNION {
 }
 // === identifier === --------------------------------------------------------------------------------------------------
 class DefineEnumerate {
-    AttributeCall* KW_FLAGS Identifier
+    AttributeCall* KW_FLAGS Identifier '{' EnumerateTerms* '}'
+}
+union EnumerateTerms {
+    | EnumerateField
+    | EOS_FREE
+}
+class EnumerateField {
+    Identifier '=' MainExpression
 }
 @style(keyword)
 @railway(false)

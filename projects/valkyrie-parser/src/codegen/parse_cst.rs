@@ -38,6 +38,8 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::DefineUnion => parse_define_union(state),
         ValkyrieRule::KW_UNION => parse_kw_union(state),
         ValkyrieRule::DefineEnumerate => parse_define_enumerate(state),
+        ValkyrieRule::EnumerateTerms => parse_enumerate_terms(state),
+        ValkyrieRule::EnumerateField => parse_enumerate_field(state),
         ValkyrieRule::KW_FLAGS => parse_kw_flags(state),
         ValkyrieRule::DefineTrait => parse_define_trait(state),
         ValkyrieRule::KW_TRAIT => parse_kw_trait(state),
@@ -909,6 +911,41 @@ fn parse_define_enumerate(state: Input) -> Output {
                 .and_then(|s| parse_kw_flags(s).and_then(|s| s.tag_node("kw_flags")))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| builtin_text(s, "{", false))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| {
+                    s.repeat(0..4294967295, |s| {
+                        s.sequence(|s| {
+                            Ok(s)
+                                .and_then(|s| builtin_ignore(s))
+                                .and_then(|s| parse_enumerate_terms(s).and_then(|s| s.tag_node("enumerate_terms")))
+                        })
+                    })
+                })
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| builtin_text(s, "}", false))
+        })
+    })
+}
+#[inline]
+fn parse_enumerate_terms(state: Input) -> Output {
+    state.rule(ValkyrieRule::EnumerateTerms, |s| {
+        Err(s)
+            .or_else(|s| parse_enumerate_field(s).and_then(|s| s.tag_node("enumerate_field")))
+            .or_else(|s| parse_eos_free(s).and_then(|s| s.tag_node("eos_free")))
+    })
+}
+#[inline]
+fn parse_enumerate_field(state: Input) -> Output {
+    state.rule(ValkyrieRule::EnumerateField, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| builtin_text(s, "=", false))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_main_expression(s).and_then(|s| s.tag_node("main_expression")))
         })
     })
 }

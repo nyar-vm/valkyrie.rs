@@ -19,9 +19,7 @@ impl crate::StatementNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<StatementNode> {
         let value = match self {
             Self::DefineClass(v) => v.build(ctx)?.into(),
-            Self::DefineEnumerate(_) => {
-                todo!()
-            }
+            Self::DefineEnumerate(v) => v.build(ctx)?.into(),
             Self::DefineFunction(_) => {
                 todo!()
             }

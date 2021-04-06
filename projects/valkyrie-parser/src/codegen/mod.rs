@@ -66,6 +66,8 @@ pub enum ValkyrieRule {
     DefineUnion,
     KW_UNION,
     DefineEnumerate,
+    EnumerateTerms,
+    EnumerateField,
     KW_FLAGS,
     DefineTrait,
     KW_TRAIT,
@@ -222,6 +224,8 @@ impl YggdrasilRule for ValkyrieRule {
             Self::DefineUnion => "",
             Self::KW_UNION => "",
             Self::DefineEnumerate => "",
+            Self::EnumerateTerms => "",
+            Self::EnumerateField => "",
             Self::KW_FLAGS => "",
             Self::DefineTrait => "",
             Self::KW_TRAIT => "",
@@ -591,8 +595,22 @@ pub struct KwUnionNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct DefineEnumerateNode {
     pub attribute_call: Vec<AttributeCallNode>,
+    pub enumerate_terms: Vec<EnumerateTermsNode>,
     pub identifier: IdentifierNode,
     pub kw_flags: KwFlagsNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum EnumerateTermsNode {
+    EnumerateField(EnumerateFieldNode),
+    EosFree(EosFreeNode),
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct EnumerateFieldNode {
+    pub identifier: IdentifierNode,
+    pub main_expression: MainExpressionNode,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]

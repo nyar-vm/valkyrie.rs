@@ -969,6 +969,9 @@ impl YggdrasilNode for DefineEnumerateNode {
             attribute_call: pair
                 .take_tagged_items::<AttributeCallNode>(Cow::Borrowed("attribute_call"))
                 .collect::<Result<Vec<_>, _>>()?,
+            enumerate_terms: pair
+                .take_tagged_items::<EnumerateTermsNode>(Cow::Borrowed("enumerate_terms"))
+                .collect::<Result<Vec<_>, _>>()?,
             identifier: pair.take_tagged_one::<IdentifierNode>(Cow::Borrowed("identifier"))?,
             kw_flags: pair.take_tagged_one::<KwFlagsNode>(Cow::Borrowed("kw_flags"))?,
             span: Range { start: _span.start() as u32, end: _span.end() as u32 },
@@ -981,6 +984,59 @@ impl FromStr for DefineEnumerateNode {
 
     fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
         Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::DefineEnumerate)?)
+    }
+}
+#[automatically_derived]
+impl YggdrasilNode for EnumerateTermsNode {
+    type Rule = ValkyrieRule;
+
+    fn get_range(&self) -> Range<usize> {
+        match self {
+            Self::EnumerateField(s) => s.get_range(),
+            Self::EosFree(s) => s.get_range(),
+        }
+    }
+    fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
+        let _span = pair.get_span();
+        if let Ok(s) = pair.take_tagged_one::<EnumerateFieldNode>(Cow::Borrowed("enumerate_field")) {
+            return Ok(Self::EnumerateField(s));
+        }
+        if let Ok(s) = pair.take_tagged_one::<EosFreeNode>(Cow::Borrowed("eos_free")) {
+            return Ok(Self::EosFree(s));
+        }
+        Err(YggdrasilError::invalid_node(ValkyrieRule::EnumerateTerms, _span))
+    }
+}
+#[automatically_derived]
+impl FromStr for EnumerateTermsNode {
+    type Err = YggdrasilError<ValkyrieRule>;
+
+    fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::EnumerateTerms)?)
+    }
+}
+#[automatically_derived]
+impl YggdrasilNode for EnumerateFieldNode {
+    type Rule = ValkyrieRule;
+
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
+    }
+    fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
+        let _span = pair.get_span();
+        Ok(Self {
+            identifier: pair.take_tagged_one::<IdentifierNode>(Cow::Borrowed("identifier"))?,
+            main_expression: pair.take_tagged_one::<MainExpressionNode>(Cow::Borrowed("main_expression"))?,
+            span: Range { start: _span.start() as u32, end: _span.end() as u32 },
+        })
+    }
+}
+#[automatically_derived]
+impl FromStr for EnumerateFieldNode {
+    type Err = YggdrasilError<ValkyrieRule>;
+
+    fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::EnumerateField)?)
     }
 }
 #[automatically_derived]

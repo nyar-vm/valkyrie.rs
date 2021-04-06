@@ -1,16 +1,100 @@
-(enumerate Empty)
-(flags Empty)
-(enumerate OneEnum (flag A))
-(flags OneFlag (flag A))
-(enumerate
-  ManyEnums
-  (flag A 1)
-  (flag B (≫ 2 0))
-  (flag C (& (call/apply-dot Base (A)) (call/apply-dot Base (B))))
-  (flag D (| (call/subscript1 flip (subscript1 Self∷A)) (call/subscript1 flip (subscript1 Self∷B)))))
-(flags
-  ManyFlags
-  (flag A 1)
-  (flag B (≫ 2 0))
-  (flag C (& (call/apply-dot Base (A)) (call/apply-dot Base (B))))
-  (flag D (| (call/subscript1 flip (subscript1 Self∷A)) (call/subscript1 flip (subscript1 Self∷B)))))
+ProgramRoot {
+    statements: [
+        FlagDeclaration {
+            documentation: DocumentationNode {
+                documentation: "",
+                span: 0..0,
+            },
+            kind: Exclusive,
+            name: Identifier("Empty", 10..15),
+            modifiers: [],
+            layout: None,
+            implements: [],
+            body: StatementBlock {
+                terms: [],
+                span: 0..0,
+            },
+            span: 0..18,
+        },
+        FlagDeclaration {
+            documentation: DocumentationNode {
+                documentation: "",
+                span: 0..0,
+            },
+            kind: Juxtapose,
+            name: Identifier("Empty", 25..30),
+            modifiers: [],
+            layout: None,
+            implements: [],
+            body: StatementBlock {
+                terms: [],
+                span: 0..0,
+            },
+            span: 19..33,
+        },
+        ExpressionNode {
+            omit: false,
+            body: enumerate,
+            span: 35..45,
+        },
+        ExpressionNode {
+            omit: false,
+            body: ApplyCallNode {
+                monadic: false,
+                caller: OneEnum,
+                arguments: None,
+                body: None,
+                span: 52..62,
+            },
+            span: 45..63,
+        },
+        ExpressionNode {
+            omit: false,
+            body: flags,
+            span: 63..69,
+        },
+        ExpressionNode {
+            omit: false,
+            body: ApplyCallNode {
+                monadic: false,
+                caller: OneFlag,
+                arguments: None,
+                body: None,
+                span: 76..86,
+            },
+            span: 69..89,
+        },
+        FlagDeclaration {
+            documentation: DocumentationNode {
+                documentation: "",
+                span: 0..0,
+            },
+            kind: Exclusive,
+            name: Identifier("ManyEnums", 99..108),
+            modifiers: [],
+            layout: None,
+            implements: [],
+            body: StatementBlock {
+                terms: [],
+                span: 0..0,
+            },
+            span: 89..203,
+        },
+        FlagDeclaration {
+            documentation: DocumentationNode {
+                documentation: "",
+                span: 0..0,
+            },
+            kind: Juxtapose,
+            name: Identifier("ManyFlags", 210..219),
+            modifiers: [],
+            layout: None,
+            implements: [],
+            body: StatementBlock {
+                terms: [],
+                span: 0..0,
+            },
+            span: 204..314,
+        },
+    ],
+}
