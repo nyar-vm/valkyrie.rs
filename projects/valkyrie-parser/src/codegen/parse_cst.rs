@@ -79,6 +79,7 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::DotCallItem => parse_dot_call_item(state),
         ValkyrieRule::TupleCall => parse_tuple_call(state),
         ValkyrieRule::TupleLiteral => parse_tuple_literal(state),
+        ValkyrieRule::TupleLiteralStrict => parse_tuple_literal_strict(state),
         ValkyrieRule::TupleTerms => parse_tuple_terms(state),
         ValkyrieRule::TuplePair => parse_tuple_pair(state),
         ValkyrieRule::TupleKey => parse_tuple_key(state),
@@ -1079,6 +1080,9 @@ fn parse_main_term(state: Input) -> Output {
 fn parse_main_factor(state: Input) -> Output {
     state.rule(ValkyrieRule::MainFactor, |s| {
         Err(s)
+            .or_else(|s| parse_try_statement(s).and_then(|s| s.tag_node("try_statement")))
+            .or_else(|s| parse_new_statement(s).and_then(|s| s.tag_node("new_statement")))
+            .or_else(|s| parse_object_statement(s).and_then(|s| s.tag_node("object_statement")))
             .or_else(|s| parse_group_factor(s).and_then(|s| s.tag_node("group_factor")))
             .or_else(|s| parse_leading(s).and_then(|s| s.tag_node("leading")))
     })
@@ -1101,12 +1105,9 @@ fn parse_leading(state: Input) -> Output {
     state.rule(ValkyrieRule::Leading, |s| {
         Err(s)
             .or_else(|s| parse_procedural_call(s).and_then(|s| s.tag_node("procedural_call")))
-            .or_else(|s| parse_tuple_literal(s).and_then(|s| s.tag_node("tuple_literal")))
+            .or_else(|s| parse_tuple_literal_strict(s).and_then(|s| s.tag_node("tuple_literal_strict")))
             .or_else(|s| parse_range_literal(s).and_then(|s| s.tag_node("range_literal")))
             .or_else(|s| parse_text_literal(s).and_then(|s| s.tag_node("text_literal")))
-            .or_else(|s| parse_try_statement(s).and_then(|s| s.tag_node("try_statement")))
-            .or_else(|s| parse_new_statement(s).and_then(|s| s.tag_node("new_statement")))
-            .or_else(|s| parse_object_statement(s).and_then(|s| s.tag_node("object_statement")))
             .or_else(|s| parse_namepath(s).and_then(|s| s.tag_node("namepath")))
             .or_else(|s| parse_integer(s).and_then(|s| s.tag_node("integer")))
             .or_else(|s| parse_special(s).and_then(|s| s.tag_node("special")))
@@ -1356,6 +1357,16 @@ fn parse_new_statement(state: Input) -> Output {
     state.rule(ValkyrieRule::NewStatement, |s| {
         s.sequence(|s| {
             Ok(s)
+                .and_then(|s| {
+                    s.repeat(0..4294967295, |s| {
+                        s.sequence(|s| {
+                            Ok(s)
+                                .and_then(|s| builtin_ignore(s))
+                                .and_then(|s| parse_attribute_call(s).and_then(|s| s.tag_node("attribute_call")))
+                        })
+                    })
+                })
+                .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_kw_new(s).and_then(|s| s.tag_node("kw_new")))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| {
@@ -1455,10 +1466,10 @@ fn parse_new_pair(state: Input) -> Output {
                                 .and_then(|s| parse_new_pair_key(s).and_then(|s| s.tag_node("new_pair_key")))
                                 .and_then(|s| builtin_ignore(s))
                                 .and_then(|s| parse_colon(s).and_then(|s| s.tag_node("colon")))
+                                .and_then(|s| builtin_ignore(s))
                         })
                     })
                 })
-                .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_main_expression(s).and_then(|s| s.tag_node("main_expression")))
         })
     })
@@ -1534,6 +1545,56 @@ fn parse_tuple_literal(state: Input) -> Output {
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| builtin_text(s, ")", false))
         })
+    })
+}
+#[inline]
+fn parse_tuple_literal_strict(state: Input) -> Output {
+    state.rule(ValkyrieRule::TupleLiteralStrict, |s| {
+        Err(s)
+            .or_else(|s| {
+                s.sequence(|s| {
+                    Ok(s)
+                        .and_then(|s| builtin_text(s, "(", false))
+                        .and_then(|s| builtin_ignore(s))
+                        .and_then(|s| builtin_text(s, ")", false))
+                })
+            })
+            .or_else(|s| {
+                s.sequence(|s| {
+                    Ok(s)
+                        .and_then(|s| builtin_text(s, "(", false))
+                        .and_then(|s| builtin_ignore(s))
+                        .and_then(|s| parse_tuple_pair(s).and_then(|s| s.tag_node("tuple_pair")))
+                        .and_then(|s| builtin_ignore(s))
+                        .and_then(|s| parse_comma(s))
+                        .and_then(|s| builtin_ignore(s))
+                        .and_then(|s| builtin_text(s, ")", false))
+                })
+            })
+            .or_else(|s| {
+                s.sequence(|s| {
+                    Ok(s)
+                        .and_then(|s| builtin_text(s, "(", false))
+                        .and_then(|s| builtin_ignore(s))
+                        .and_then(|s| parse_tuple_pair(s).and_then(|s| s.tag_node("tuple_pair")))
+                        .and_then(|s| {
+                            s.repeat(0..4294967295, |s| {
+                                s.sequence(|s| {
+                                    Ok(s)
+                                        .and_then(|s| builtin_ignore(s))
+                                        .and_then(|s| parse_comma(s))
+                                        .and_then(|s| builtin_ignore(s))
+                                        .and_then(|s| parse_tuple_pair(s).and_then(|s| s.tag_node("tuple_pair")))
+                                })
+                            })
+                        })
+                        .and_then(|s| {
+                            s.optional(|s| s.sequence(|s| Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| parse_comma(s))))
+                        })
+                        .and_then(|s| builtin_ignore(s))
+                        .and_then(|s| builtin_text(s, ")", false))
+                })
+            })
     })
 }
 #[inline]

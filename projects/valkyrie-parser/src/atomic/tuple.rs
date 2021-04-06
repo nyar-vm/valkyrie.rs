@@ -1,5 +1,19 @@
 use super::*;
 
+impl TupleLiteralStrictNode {
+    pub fn build(&self, ctx: &ProgramContext) -> Validation<TupleNode> {
+        let mut errors = vec![];
+        let mut terms = vec![];
+        for x in &self.tuple_pair {
+            x.build(ctx).append(&mut terms, &mut errors)
+        }
+        Success {
+            value: TupleNode { kind: TupleKind::Tuple, terms: ArgumentsList { terms }, span: self.span.clone() },
+            diagnostics: errors,
+        }
+    }
+}
+
 impl TupleLiteralNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<TupleNode> {
         self.tuple_terms.build(ctx).map(|terms| TupleNode { kind: Default::default(), terms, span: self.span.clone() })
@@ -41,7 +55,7 @@ impl crate::TupleCallNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<ApplyCallNode> {
         let monadic = self.op_and_then.is_some();
         let arguments = match &self.tuple_literal {
-            Some(s) => Some(s.tuple_terms.build(ctx)?),
+            Some(s) => Some(s.build(ctx)?.terms),
             None => None,
         };
         Success {

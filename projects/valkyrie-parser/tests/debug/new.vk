@@ -1,4 +1,1 @@
-new stack List
-<>
-()
-{}
+new a stack List::<A> B

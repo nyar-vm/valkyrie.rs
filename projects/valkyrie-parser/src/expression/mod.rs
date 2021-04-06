@@ -121,6 +121,9 @@ impl MainFactorNode {
         match self {
             Self::Leading(v) => v.build(ctx),
             Self::GroupFactor(v) => v.main_expression.build(ctx),
+            Self::NewStatement(v) => v.build(ctx).map(Into::into),
+            Self::ObjectStatement(v) => v.build(ctx).map(Into::into),
+            Self::TryStatement(v) => v.build(ctx).map(Into::into),
         }
     }
 }

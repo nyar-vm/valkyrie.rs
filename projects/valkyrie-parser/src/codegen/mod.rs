@@ -107,6 +107,7 @@ pub enum ValkyrieRule {
     DotCallItem,
     TupleCall,
     TupleLiteral,
+    TupleLiteralStrict,
     TupleTerms,
     TuplePair,
     TupleKey,
@@ -260,6 +261,7 @@ impl YggdrasilRule for ValkyrieRule {
             Self::DotCallItem => "",
             Self::TupleCall => "",
             Self::TupleLiteral => "",
+            Self::TupleLiteralStrict => "",
             Self::TupleTerms => "",
             Self::TuplePair => "",
             Self::TupleKey => "",
@@ -683,6 +685,9 @@ pub struct MainTermNode {
 pub enum MainFactorNode {
     GroupFactor(GroupFactorNode),
     Leading(LeadingNode),
+    NewStatement(NewStatementNode),
+    ObjectStatement(ObjectStatementNode),
+    TryStatement(TryStatementNode),
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -695,14 +700,11 @@ pub struct GroupFactorNode {
 pub enum LeadingNode {
     Integer(IntegerNode),
     Namepath(NamepathNode),
-    NewStatement(NewStatementNode),
-    ObjectStatement(ObjectStatementNode),
     ProceduralCall(ProceduralCallNode),
     RangeLiteral(RangeLiteralNode),
     Special(SpecialNode),
     TextLiteral(TextLiteralNode),
-    TryStatement(TryStatementNode),
-    TupleLiteral(TupleLiteralNode),
+    TupleLiteralStrict(TupleLiteralStrictNode),
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -808,6 +810,7 @@ pub struct TryStatementNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct NewStatementNode {
+    pub attribute_call: Vec<AttributeCallNode>,
     pub generic_hide: Option<GenericHideNode>,
     pub kw_new: KwNewNode,
     pub namepath: NamepathNode,
@@ -875,6 +878,12 @@ pub struct TupleCallNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct TupleLiteralNode {
     pub tuple_terms: TupleTermsNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct TupleLiteralStrictNode {
+    pub tuple_pair: Vec<TuplePairNode>,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]

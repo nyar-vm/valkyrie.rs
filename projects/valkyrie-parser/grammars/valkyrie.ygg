@@ -219,6 +219,9 @@ atomic class MainTerm {
 }
 
 union MainFactor {
+    | TryStatement
+    | NewStatement
+    | ObjectStatement
     | GroupFactor
     | Leading
 }
@@ -228,12 +231,9 @@ atomic class GroupFactor {
 
 union Leading {
     | ProceduralCall
-    | TupleLiteral
+    | TupleLiteralStrict
     | RangeLiteral
     | TextLiteral
-    | TryStatement
-    | NewStatement
-    | ObjectStatement
     | Namepath
     | Integer
     | Special
@@ -332,19 +332,19 @@ class TryStatement {
 }
 // === new statement === -----------------------------------------------------------------------------------------------
 class NewStatement {
-    KW_NEW NewModifiers* Namepath GenericHide? TupleLiteral? NewBlock? ^EOS?
-}
-class NewBlock {
-    '{' (NewPair (EOS_FREE NewPair)* EOS_FREE?)? '}'
+    AttributeCall* KW_NEW NewModifiers* Namepath GenericHide? TupleLiteral? NewBlock? ^EOS?
 }
 atomic class NewModifiers ^ {
     !NEW_MODIFIER_STOP ^Identifier
 }
+class NewBlock {
+    '{' (NewPair (EOS_FREE NewPair)* EOS_FREE?)? '}'
+}
 atomic class NEW_MODIFIER_STOP {
     Identifier HIDE [\[({<⟨:∷;]
 }
-class NewPair {
-    (NewPairKey Colon)? MainExpression
+atomic class NewPair {
+    (NewPairKey ~ Colon HIDE)? MainExpression
 }
 union NewPairKey {
     | Identifier
@@ -368,6 +368,11 @@ atomic class TupleCall {
 }
 class TupleLiteral {
     '(' TupleTerms ')'
+}
+atomic class TupleLiteralStrict {
+    | '(' ~ ')'
+    | '(' ~ TuplePair ~ ^COMMA ~ ')'
+    | '(' ~ TuplePair (HIDE ^COMMA ~ TuplePair)* (HIDE ^COMMA)? ~ ')'
 }
 atomic class TupleTerms {
     (TuplePair (HIDE ^COMMA ~ TuplePair)* (HIDE ^COMMA)?)?

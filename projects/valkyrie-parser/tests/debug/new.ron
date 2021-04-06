@@ -2,36 +2,44 @@ ProgramRoot {
     statements: [
         ExpressionNode {
             omit: false,
-            body: ConstructNewNode {
-                modifiers: [],
-                namepath: NamePathNode {
-                    names: [
-                        Identifier("List", 10..14),
-                    ],
-                },
-                generic: GenericCallNode {
-                    monadic: false,
-                    base: Placeholder,
-                    terms: ArgumentsList {
-                        terms: [],
+            body: InfixNode {
+                infix: >,
+                lhs: InfixNode {
+                    infix: <,
+                    lhs: ConstructNewNode {
+                        modifiers: [],
+                        namepath: NamePathNode {
+                            names: [
+                                Identifier("List", 12..16),
+                            ],
+                        },
+                        generic: GenericCallNode {
+                            monadic: false,
+                            base: Placeholder,
+                            terms: ArgumentsList {
+                                terms: [],
+                            },
+                            associated: [],
+                            span: 0..0,
+                        },
+                        arguments: ApplyCallNode {
+                            monadic: false,
+                            caller: Placeholder,
+                            arguments: None,
+                            body: None,
+                            span: 0..0,
+                        },
+                        body: CollectsNode {
+                            terms: [],
+                            span: 0..0,
+                        },
+                        span: 0..16,
                     },
-                    associated: [],
-                    span: 0..0,
+                    rhs: A,
                 },
-                arguments: ApplyCallNode {
-                    monadic: false,
-                    caller: Placeholder,
-                    arguments: None,
-                    body: None,
-                    span: 0..0,
-                },
-                body: CollectsNode {
-                    terms: [],
-                    span: 0..0,
-                },
-                span: 0..24,
+                rhs: B,
             },
-            span: 0..24,
+            span: 0..22,
         },
     ],
 }
