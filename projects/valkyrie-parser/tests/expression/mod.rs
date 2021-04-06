@@ -1,6 +1,6 @@
 use nyar_error::third_party::Url;
 use std::path::PathBuf;
-use valkyrie_parser::{MainStatementNode, ProgramContext, RangeLiteralNode};
+use valkyrie_parser::{MainStatementNode, NewStatementNode, ProgramContext, RangeLiteralNode};
 
 use super::*;
 
@@ -18,16 +18,16 @@ fn lex_expression() {
 
 fn debug_expression(input: &str) -> std::io::Result<()> {
     let here = Path::new(env!("CARGO_MANIFEST_DIR")).join("tests").canonicalize()?;
-    let cst = ValkyrieParser::parse_cst(input, ValkyrieRule::MainStatement).unwrap();
+    let cst = ValkyrieParser::parse_cst(input, ValkyrieRule::GenericHide).unwrap();
     println!("Short Form:\n{}", cst);
-    let ast = MainExpressionNode::from_str(input).unwrap();
-    println!("Long Form:\n{:#?}", ast);
+    // let ast = NewStatementNode::from_str(input).unwrap();
+    // println!("Long Form:\n{:#?}", ast);
     Ok(())
 }
 
 #[test]
 fn debug() {
-    let raw = "[1:1]";
+    let raw = "<A>B";
     debug_expression(raw).unwrap();
 }
 

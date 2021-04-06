@@ -98,8 +98,8 @@ pub enum ValkyrieRule {
     TypeSuffix,
     TryStatement,
     NewStatement,
-    NewBlock,
     NewModifiers,
+    NewBlock,
     NEW_MODIFIER_STOP,
     NewPair,
     NewPairKey,
@@ -119,6 +119,8 @@ pub enum ValkyrieRule {
     RangeOmit,
     GenericCall,
     GenericHide,
+    GenericTerms,
+    GenericPair,
     AttributeCall,
     ProceduralCall,
     TextLiteral,
@@ -252,8 +254,8 @@ impl YggdrasilRule for ValkyrieRule {
             Self::TypeSuffix => "",
             Self::TryStatement => "",
             Self::NewStatement => "",
-            Self::NewBlock => "",
             Self::NewModifiers => "",
+            Self::NewBlock => "",
             Self::NEW_MODIFIER_STOP => "",
             Self::NewPair => "",
             Self::NewPairKey => "",
@@ -273,6 +275,8 @@ impl YggdrasilRule for ValkyrieRule {
             Self::RangeOmit => "",
             Self::GenericCall => "",
             Self::GenericHide => "",
+            Self::GenericTerms => "",
+            Self::GenericPair => "",
             Self::AttributeCall => "",
             Self::ProceduralCall => "",
             Self::TextLiteral => "",
@@ -810,7 +814,6 @@ pub struct TryStatementNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct NewStatementNode {
-    pub attribute_call: Vec<AttributeCallNode>,
     pub generic_hide: Option<GenericHideNode>,
     pub kw_new: KwNewNode,
     pub namepath: NamepathNode,
@@ -821,15 +824,15 @@ pub struct NewStatementNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct NewBlockNode {
-    pub eos_free: Vec<EosFreeNode>,
-    pub new_pair: Vec<NewPairNode>,
+pub struct NewModifiersNode {
+    pub identifier: IdentifierNode,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct NewModifiersNode {
-    pub identifier: IdentifierNode,
+pub struct NewBlockNode {
+    pub eos_free: Vec<EosFreeNode>,
+    pub new_pair: Vec<NewPairNode>,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -949,17 +952,31 @@ pub struct RangeOmitNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct GenericCallNode {
+    pub generic_terms: GenericTermsNode,
     pub namepath: Option<NamepathNode>,
     pub op_and_then: Option<OpAndThenNode>,
     pub proportion: Vec<ProportionNode>,
-    pub tuple_terms: TupleTermsNode,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct GenericHideNode {
+    pub generic_terms: GenericTermsNode,
     pub proportion: Option<ProportionNode>,
-    pub tuple_terms: TupleTermsNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct GenericTermsNode {
+    pub generic_pair: Vec<GenericPairNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct GenericPairNode {
+    // Missing rule Colon
+    pub identifier: Option<IdentifierNode>,
+    pub type_expression: TypeExpressionNode,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]

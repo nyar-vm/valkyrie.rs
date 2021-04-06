@@ -70,8 +70,8 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::TypeSuffix => parse_type_suffix(state),
         ValkyrieRule::TryStatement => parse_try_statement(state),
         ValkyrieRule::NewStatement => parse_new_statement(state),
-        ValkyrieRule::NewBlock => parse_new_block(state),
         ValkyrieRule::NewModifiers => parse_new_modifiers(state),
+        ValkyrieRule::NewBlock => parse_new_block(state),
         ValkyrieRule::NEW_MODIFIER_STOP => parse_new_modifier_stop(state),
         ValkyrieRule::NewPair => parse_new_pair(state),
         ValkyrieRule::NewPairKey => parse_new_pair_key(state),
@@ -91,6 +91,8 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::RangeOmit => parse_range_omit(state),
         ValkyrieRule::GenericCall => parse_generic_call(state),
         ValkyrieRule::GenericHide => parse_generic_hide(state),
+        ValkyrieRule::GenericTerms => parse_generic_terms(state),
+        ValkyrieRule::GenericPair => parse_generic_pair(state),
         ValkyrieRule::AttributeCall => parse_attribute_call(state),
         ValkyrieRule::ProceduralCall => parse_procedural_call(state),
         ValkyrieRule::TextLiteral => parse_text_literal(state),
@@ -1357,16 +1359,6 @@ fn parse_new_statement(state: Input) -> Output {
     state.rule(ValkyrieRule::NewStatement, |s| {
         s.sequence(|s| {
             Ok(s)
-                .and_then(|s| {
-                    s.repeat(0..4294967295, |s| {
-                        s.sequence(|s| {
-                            Ok(s)
-                                .and_then(|s| builtin_ignore(s))
-                                .and_then(|s| parse_attribute_call(s).and_then(|s| s.tag_node("attribute_call")))
-                        })
-                    })
-                })
-                .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_kw_new(s).and_then(|s| s.tag_node("kw_new")))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| {
@@ -1388,6 +1380,16 @@ fn parse_new_statement(state: Input) -> Output {
                 .and_then(|s| s.optional(|s| parse_new_block(s).and_then(|s| s.tag_node("new_block"))))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| s.optional(|s| parse_eos(s)))
+        })
+    })
+}
+#[inline]
+fn parse_new_modifiers(state: Input) -> Output {
+    state.rule(ValkyrieRule::NewModifiers, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| s.lookahead(false, |s| parse_new_modifier_stop(s)))
+                .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
         })
     })
 }
@@ -1425,16 +1427,6 @@ fn parse_new_block(state: Input) -> Output {
                 })
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| builtin_text(s, "}", false))
-        })
-    })
-}
-#[inline]
-fn parse_new_modifiers(state: Input) -> Output {
-    state.rule(ValkyrieRule::NewModifiers, |s| {
-        s.sequence(|s| {
-            Ok(s)
-                .and_then(|s| s.lookahead(false, |s| parse_new_modifier_stop(s)))
-                .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
         })
     })
 }
@@ -1840,7 +1832,7 @@ fn parse_generic_call(state: Input) -> Output {
                                     .and_then(|s| builtin_ignore(s))
                                     .and_then(|s| builtin_text(s, "<", false))
                                     .and_then(|s| builtin_ignore(s))
-                                    .and_then(|s| parse_tuple_terms(s).and_then(|s| s.tag_node("tuple_terms")))
+                                    .and_then(|s| parse_generic_terms(s).and_then(|s| s.tag_node("generic_terms")))
                                     .and_then(|s| builtin_ignore(s))
                                     .and_then(|s| builtin_text(s, ">", false))
                             })
@@ -1850,7 +1842,7 @@ fn parse_generic_call(state: Input) -> Output {
                                 Ok(s)
                                     .and_then(|s| builtin_text(s, "⟨", false))
                                     .and_then(|s| builtin_ignore(s))
-                                    .and_then(|s| parse_tuple_terms(s).and_then(|s| s.tag_node("tuple_terms")))
+                                    .and_then(|s| parse_generic_terms(s).and_then(|s| s.tag_node("generic_terms")))
                                     .and_then(|s| builtin_ignore(s))
                                     .and_then(|s| builtin_text(s, "⟩", false))
                             })
@@ -1877,18 +1869,11 @@ fn parse_generic_hide(state: Input) -> Output {
             .or_else(|s| {
                 s.sequence(|s| {
                     Ok(s)
-                        .and_then(|s| {
-                            s.optional(|s| {
-                                s.sequence(|s| {
-                                    Ok(s)
-                                        .and_then(|s| parse_proportion(s).and_then(|s| s.tag_node("proportion")))
-                                        .and_then(|s| builtin_ignore(s))
-                                })
-                            })
-                        })
+                        .and_then(|s| s.optional(|s| parse_proportion(s).and_then(|s| s.tag_node("proportion"))))
+                        .and_then(|s| builtin_ignore(s))
                         .and_then(|s| builtin_text(s, "<", false))
                         .and_then(|s| builtin_ignore(s))
-                        .and_then(|s| parse_tuple_terms(s).and_then(|s| s.tag_node("tuple_terms")))
+                        .and_then(|s| parse_generic_terms(s).and_then(|s| s.tag_node("generic_terms")))
                         .and_then(|s| builtin_ignore(s))
                         .and_then(|s| builtin_text(s, ">", false))
                 })
@@ -1898,11 +1883,56 @@ fn parse_generic_hide(state: Input) -> Output {
                     Ok(s)
                         .and_then(|s| builtin_text(s, "⟨", false))
                         .and_then(|s| builtin_ignore(s))
-                        .and_then(|s| parse_tuple_terms(s).and_then(|s| s.tag_node("tuple_terms")))
+                        .and_then(|s| parse_generic_terms(s).and_then(|s| s.tag_node("generic_terms")))
                         .and_then(|s| builtin_ignore(s))
                         .and_then(|s| builtin_text(s, "⟩", false))
                 })
             })
+    })
+}
+#[inline]
+fn parse_generic_terms(state: Input) -> Output {
+    state.rule(ValkyrieRule::GenericTerms, |s| {
+        s.optional(|s| {
+            s.sequence(|s| {
+                Ok(s)
+                    .and_then(|s| parse_generic_pair(s).and_then(|s| s.tag_node("generic_pair")))
+                    .and_then(|s| {
+                        s.repeat(0..4294967295, |s| {
+                            s.sequence(|s| {
+                                Ok(s)
+                                    .and_then(|s| builtin_ignore(s))
+                                    .and_then(|s| parse_comma(s))
+                                    .and_then(|s| builtin_ignore(s))
+                                    .and_then(|s| parse_generic_pair(s).and_then(|s| s.tag_node("generic_pair")))
+                            })
+                        })
+                    })
+                    .and_then(|s| {
+                        s.optional(|s| s.sequence(|s| Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| parse_comma(s))))
+                    })
+            })
+        })
+    })
+}
+#[inline]
+fn parse_generic_pair(state: Input) -> Output {
+    state.rule(ValkyrieRule::GenericPair, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| {
+                    s.optional(|s| {
+                        s.sequence(|s| {
+                            Ok(s)
+                                .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
+                                .and_then(|s| builtin_ignore(s))
+                                .and_then(|s| parse_colon(s).and_then(|s| s.tag_node("colon")))
+                        })
+                    })
+                })
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_type_expression(s).and_then(|s| s.tag_node("type_expression")))
+        })
     })
 }
 #[inline]

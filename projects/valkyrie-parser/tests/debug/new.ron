@@ -2,44 +2,41 @@ ProgramRoot {
     statements: [
         ExpressionNode {
             omit: false,
-            body: InfixNode {
-                infix: >,
-                lhs: InfixNode {
-                    infix: <,
-                    lhs: ConstructNewNode {
-                        modifiers: [],
-                        namepath: NamePathNode {
-                            names: [
-                                Identifier("List", 12..16),
-                            ],
-                        },
-                        generic: GenericCallNode {
-                            monadic: false,
-                            base: Placeholder,
-                            terms: ArgumentsList {
-                                terms: [],
-                            },
-                            associated: [],
-                            span: 0..0,
-                        },
-                        arguments: ApplyCallNode {
-                            monadic: false,
-                            caller: Placeholder,
-                            arguments: None,
-                            body: None,
-                            span: 0..0,
-                        },
-                        body: CollectsNode {
-                            terms: [],
-                            span: 0..0,
-                        },
-                        span: 0..16,
-                    },
-                    rhs: A,
+            body: ConstructNewNode {
+                modifiers: [],
+                namepath: NamePathNode {
+                    names: [
+                        Identifier("List", 12..16),
+                    ],
                 },
-                rhs: B,
+                generic: GenericCallNode {
+                    monadic: false,
+                    base: Placeholder,
+                    terms: ArgumentsList {
+                        terms: [],
+                    },
+                    associated: [],
+                    span: 0..0,
+                },
+                arguments: ApplyCallNode {
+                    monadic: false,
+                    caller: Placeholder,
+                    arguments: None,
+                    body: None,
+                    span: 0..0,
+                },
+                body: CollectsNode {
+                    terms: [],
+                    span: 0..0,
+                },
+                span: 0..22,
             },
             span: 0..22,
+        },
+        ExpressionNode {
+            omit: false,
+            body: B,
+            span: 22..24,
         },
     ],
 }

@@ -332,7 +332,7 @@ class TryStatement {
 }
 // === new statement === -----------------------------------------------------------------------------------------------
 class NewStatement {
-    AttributeCall* KW_NEW NewModifiers* Namepath GenericHide? TupleLiteral? NewBlock? ^EOS?
+    KW_NEW NewModifiers* Namepath GenericHide? TupleLiteral? NewBlock? ^EOS?
 }
 atomic class NewModifiers ^ {
     !NEW_MODIFIER_STOP ^Identifier
@@ -411,14 +411,20 @@ atomic inline class RangeOmit {
 // === generic call === ------------------------------------------------------------------------------------------------
 class GenericCall {
     OP_AND_THEN? (
-        | PROPORTION '<' TupleTerms '>'
-        | '⟨' TupleTerms '⟩'
+        | PROPORTION '<' GenericTerms '>'
+        | '⟨' GenericTerms '⟩'
     )
     (PROPORTION Namepath)?
 }
-atomic class GenericHide {
-    | (PROPORTION HIDE)? '<' ~ TupleTerms ~ '>'
-    | '⟨' ~ TupleTerms ~ '⟩'
+class GenericHide {
+    | PROPORTION? '<' GenericTerms '>'
+    | '⟨' GenericTerms '⟩'
+}
+atomic class GenericTerms {
+    (GenericPair (HIDE ^COMMA ~ GenericPair)* (HIDE ^COMMA)?)?
+}
+class GenericPair {
+    (Identifier Colon)? TypeExpression
 }
 // === annotation === --------------------------------------------------------------------------------------------------
 class AttributeCall {

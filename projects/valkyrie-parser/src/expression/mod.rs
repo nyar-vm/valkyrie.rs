@@ -1,13 +1,14 @@
 use crate::{
     helpers::ProgramContext, DotCallItemNode, ExpressionStatementNode, InlineSuffixNode, MainExpressionNode, MainFactorNode,
-    MainInfixNode, MainPrefixNode, MainSuffixNode, MainTermNode, SuffixOperatorNode,
+    MainInfixNode, MainPrefixNode, MainSuffixNode, MainTermNode, SuffixOperatorNode, TypeExpressionNode, TypeFactorNode,
+    TypeInfixNode, TypePrefixNode, TypeSuffixNode, TypeTermNode,
 };
 use nyar_error::{NyarError, Success, Validate, Validation};
 use pratt::{Affix, PrattParser, Precedence};
 use std::str::FromStr;
 use valkyrie_ast::{
-    ApplyCallNode, BinaryNode, DotCallNode, DotCallTerm, ExpressionNode, ExpressionType, GenericCallNode, OperatorNode,
-    SubscriptCallNode, UnaryNode, ValkyrieOperator,
+    ApplyCallNode, ArgumentsList, BinaryNode, DotCallNode, DotCallTerm, ExpressionNode, ExpressionType, GenericCallNode,
+    OperatorNode, SubscriptCallNode, TupleTermNode, UnaryNode, ValkyrieOperator,
 };
 
 mod dot_call;
@@ -35,6 +36,20 @@ impl MainExpressionNode {
         Success { value: expr, diagnostics: vec![] }
     }
 }
+impl TypeExpressionNode {
+    pub fn build(&self, ctx: &ProgramContext) -> Validation<ExpressionType> {
+        let mut stream = vec![];
+        let (head, rest) = self.type_term.split_first().expect("at least one term");
+        head.push_tokens(&mut stream, ctx)?;
+        for (infix, rhs) in self.type_infix.iter().zip(rest.iter()) {
+            stream.push(TokenStream::Infix(infix.as_operator()));
+            rhs.push_tokens(&mut stream, ctx).valid()?;
+        }
+        let mut parser = ExpressionResolver;
+        let expr = parser.parse(stream.into_iter()).valid()?;
+        Success { value: expr, diagnostics: vec![] }
+    }
+}
 
 impl MainTermNode {
     fn push_tokens(&self, stream: &mut Vec<TokenStream>, ctx: &ProgramContext) -> Validation<()> {
@@ -44,6 +59,19 @@ impl MainTermNode {
         let main = self.main_factor.build(ctx).valid()?;
         stream.push(TokenStream::Term(main));
         for i in &self.main_suffix {
+            stream.push(i.as_token(ctx)?)
+        }
+        Success { value: (), diagnostics: vec![] }
+    }
+}
+impl TypeTermNode {
+    fn push_tokens(&self, stream: &mut Vec<TokenStream>, ctx: &ProgramContext) -> Validation<()> {
+        for i in &self.type_prefix {
+            stream.push(TokenStream::Prefix(i.as_operator()))
+        }
+        let main = self.main_factor.build(ctx).valid()?;
+        stream.push(TokenStream::Term(main));
+        for i in &self.type_suffix {
             stream.push(i.as_token(ctx)?)
         }
         Success { value: (), diagnostics: vec![] }
@@ -127,6 +155,17 @@ impl MainFactorNode {
         }
     }
 }
+impl TypeFactorNode {
+    pub fn build(&self, ctx: &ProgramContext) -> Validation<ExpressionType> {
+        match self {
+            Self::Leading(v) => v.build(ctx),
+            Self::TypeFactor0(_) => {
+                todo!()
+            }
+        }
+    }
+}
+
 impl MainPrefixNode {
     pub fn as_operator(&self) -> OperatorNode {
         use ValkyrieOperator::*;
@@ -146,7 +185,16 @@ impl MainPrefixNode {
         OperatorNode { kind: o, span: self.span.clone() }
     }
 }
-
+impl TypePrefixNode {
+    pub fn as_operator(&self) -> OperatorNode {
+        use ValkyrieOperator::*;
+        let o = match self.text.as_str() {
+            "!" => Not,
+            _ => unimplemented!("{} is a unknown prefix operator", self.text),
+        };
+        OperatorNode { kind: o, span: self.span.clone() }
+    }
+}
 impl MainInfixNode {
     pub fn as_operator(&self) -> OperatorNode {
         use valkyrie_ast::LogicMatrix;
@@ -193,7 +241,17 @@ impl MainInfixNode {
         OperatorNode { kind: o, span: self.span.clone() }
     }
 }
-
+impl TypeInfixNode {
+    pub fn as_operator(&self) -> OperatorNode {
+        use valkyrie_ast::LogicMatrix;
+        use ValkyrieOperator::*;
+        let o = match self.text.as_str() {
+            s if s.starts_with("is") => Is { negative: s.ends_with("not") },
+            _ => unimplemented!("{} is a unknown infix operator", self.text),
+        };
+        OperatorNode { kind: o, span: self.span.clone() }
+    }
+}
 impl SuffixOperatorNode {
     pub fn as_operator(&self) -> OperatorNode {
         use ValkyrieOperator::*;
@@ -227,6 +285,18 @@ impl InlineSuffixNode {
             InlineSuffixNode::TupleCall(v) => TokenStream::Apply(v.build(ctx)?),
             InlineSuffixNode::DotCall(v) => TokenStream::Dot(v.build(ctx)?),
             InlineSuffixNode::GenericCall(v) => TokenStream::Generic(v.build(ctx)?),
+        };
+        Success { value: token, diagnostics: vec![] }
+    }
+}
+
+impl TypeSuffixNode {
+    fn as_token(&self, ctx: &ProgramContext) -> Validation<TokenStream> {
+        let token = match self {
+            TypeSuffixNode::GenericHide(v) => TokenStream::Generic(v.build(ctx)?),
+            TypeSuffixNode::Option => {
+                todo!()
+            }
         };
         Success { value: token, diagnostics: vec![] }
     }
