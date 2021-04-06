@@ -27,7 +27,7 @@ impl Debug for ExpressionType {
             Self::LambdaCall(v) => Debug::fmt(v, f),
             Self::SubscriptCall(v) => Debug::fmt(v, f),
             Self::GenericCall(v) => Debug::fmt(v, f),
-            Self::MatchDot(v) => Debug::fmt(v, f),
+            Self::DotMatchCall(v) => Debug::fmt(v, f),
             Self::OutputReference(v) => Debug::fmt(v, f),
             Self::DotCall(v) => Debug::fmt(v, f),
         }
@@ -65,7 +65,7 @@ impl Lispify for ExpressionType {
             Self::Switch(v) => Lisp::keyword(format!("{v:#?}")),
             Self::Text(v) => Lisp::string(v.text.clone()),
             Self::Try(v) => Lisp::keyword(format!("{v:#?}")),
-            Self::MatchDot(v) => Lisp::keyword(format!("{v:#?}")),
+            Self::DotMatchCall(v) => Lisp::keyword(format!("{v:#?}")),
             Self::Formatted(v) => Lisp::keyword(format!("{v:#?}")),
             Self::Null(v) => v.lispify(),
             Self::Boolean(v) => v.lispify(),

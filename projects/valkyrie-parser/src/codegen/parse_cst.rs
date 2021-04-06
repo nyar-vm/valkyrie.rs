@@ -51,6 +51,12 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::ForStatement => parse_for_statement(state),
         ValkyrieRule::MainStatement => parse_main_statement(state),
         ValkyrieRule::ExpressionStatement => parse_expression_statement(state),
+        ValkyrieRule::MatchStatement => parse_match_statement(state),
+        ValkyrieRule::MatchTerms => parse_match_terms(state),
+        ValkyrieRule::MatchType => parse_match_type(state),
+        ValkyrieRule::KW_TYPE => parse_kw_type(state),
+        ValkyrieRule::KW_CASE => parse_kw_case(state),
+        ValkyrieRule::KW_MATCH => parse_kw_match(state),
         ValkyrieRule::MainExpression => parse_main_expression(state),
         ValkyrieRule::MainTerm => parse_main_term(state),
         ValkyrieRule::MainFactor => parse_main_factor(state),
@@ -1079,6 +1085,85 @@ fn parse_expression_statement(state: Input) -> Output {
     })
 }
 #[inline]
+fn parse_match_statement(state: Input) -> Output {
+    state.rule(ValkyrieRule::MatchStatement, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| parse_kw_match(s).and_then(|s| s.tag_node("kw_match")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| {
+                    s.optional(|s| {
+                        s.sequence(|s| {
+                            Ok(s)
+                                .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
+                                .and_then(|s| builtin_ignore(s))
+                                .and_then(|s| builtin_text(s, ":=", false))
+                                .and_then(|s| builtin_ignore(s))
+                                .and_then(|s| parse_inline_expression(s).and_then(|s| s.tag_node("inline_expression")))
+                        })
+                    })
+                })
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| builtin_text(s, "{", false))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| {
+                    s.repeat(0..4294967295, |s| {
+                        s.sequence(|s| {
+                            Ok(s)
+                                .and_then(|s| builtin_ignore(s))
+                                .and_then(|s| parse_match_terms(s).and_then(|s| s.tag_node("match_terms")))
+                        })
+                    })
+                })
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| builtin_text(s, "}", false))
+        })
+    })
+}
+#[inline]
+fn parse_match_terms(state: Input) -> Output {
+    state.rule(ValkyrieRule::MatchTerms, |s| Err(s).or_else(|s| parse_match_type(s).and_then(|s| s.tag_node("match_type"))))
+}
+#[inline]
+fn parse_match_type(state: Input) -> Output {
+    state.rule(ValkyrieRule::MatchType, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| parse_kw_type(s).and_then(|s| s.tag_node("kw_type")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_colon(s).and_then(|s| s.tag_node("colon")))
+        })
+    })
+}
+#[inline]
+fn parse_kw_type(state: Input) -> Output {
+    state.rule(ValkyrieRule::KW_TYPE, |s| {
+        s.match_regex({
+            static REGEX: OnceLock<Regex> = OnceLock::new();
+            REGEX.get_or_init(|| Regex::new("^(?x)(type)").unwrap())
+        })
+    })
+}
+#[inline]
+fn parse_kw_case(state: Input) -> Output {
+    state.rule(ValkyrieRule::KW_CASE, |s| {
+        s.match_regex({
+            static REGEX: OnceLock<Regex> = OnceLock::new();
+            REGEX.get_or_init(|| Regex::new("^(?x)(case)").unwrap())
+        })
+    })
+}
+#[inline]
+fn parse_kw_match(state: Input) -> Output {
+    state.rule(ValkyrieRule::KW_MATCH, |s| {
+        Err(s)
+            .or_else(|s| builtin_text(s, "match", false).and_then(|s| s.tag_node("while")))
+            .or_else(|s| builtin_text(s, "catch", false).and_then(|s| s.tag_node("until")))
+    })
+}
+#[inline]
 fn parse_main_expression(state: Input) -> Output {
     state.rule(ValkyrieRule::MainExpression, |s| {
         s.sequence(|s| {
@@ -1120,6 +1205,7 @@ fn parse_main_factor(state: Input) -> Output {
     state.rule(ValkyrieRule::MainFactor, |s| {
         Err(s)
             .or_else(|s| parse_try_statement(s).and_then(|s| s.tag_node("try_statement")))
+            .or_else(|s| parse_match_statement(s).and_then(|s| s.tag_node("match_statement")))
             .or_else(|s| parse_new_statement(s).and_then(|s| s.tag_node("new_statement")))
             .or_else(|s| parse_object_statement(s).and_then(|s| s.tag_node("object_statement")))
             .or_else(|s| parse_group_factor(s).and_then(|s| s.tag_node("group_factor")))

@@ -1,6 +1,6 @@
 use crate::{
-    helper::ValkyrieNode, patterns::PatternBlock, ArgumentKey, ElseStatement, ExpressionNode, ExpressionType, LetPattern,
-    StatementBlock, StatementNode, SwitchStatement, TuplePatternNode, WhileConditionNode,
+    helper::ValkyrieNode, patterns::PatternBlock, ArgumentKey, ElseStatement, ExpressionNode, ExpressionType, IdentifierNode,
+    LetPattern, StatementBlock, StatementNode, SwitchStatement, TuplePatternNode, WhileConditionNode,
 };
 use alloc::{boxed::Box, vec::Vec};
 use core::{
@@ -13,6 +13,8 @@ use lispify::{Lisp, Lispify};
 use pretty_print::{helpers::PrettySequence, PrettyBuilder, PrettyPrint, PrettyProvider, PrettyTree};
 
 pub mod control;
+pub mod do_catch;
+pub mod do_try;
 pub mod jmp_guard;
 pub mod jmp_if;
 pub mod jmp_switch;

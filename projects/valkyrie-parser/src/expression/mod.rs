@@ -152,6 +152,7 @@ impl MainFactorNode {
             Self::NewStatement(v) => v.build(ctx).map(Into::into),
             Self::ObjectStatement(v) => v.build(ctx).map(Into::into),
             Self::TryStatement(v) => v.build(ctx).map(Into::into),
+            Self::MatchStatement(v) => v.build(ctx).map(Into::into),
         }
     }
 }

@@ -79,6 +79,12 @@ pub enum ValkyrieRule {
     ForStatement,
     MainStatement,
     ExpressionStatement,
+    MatchStatement,
+    MatchTerms,
+    MatchType,
+    KW_TYPE,
+    KW_CASE,
+    KW_MATCH,
     MainExpression,
     MainTerm,
     MainFactor,
@@ -237,6 +243,12 @@ impl YggdrasilRule for ValkyrieRule {
             Self::ForStatement => "",
             Self::MainStatement => "",
             Self::ExpressionStatement => "",
+            Self::MatchStatement => "",
+            Self::MatchTerms => "",
+            Self::MatchType => "",
+            Self::KW_TYPE => "",
+            Self::KW_CASE => "",
+            Self::KW_MATCH => "",
             Self::MainExpression => "",
             Self::MainTerm => "",
             Self::MainFactor => "",
@@ -689,6 +701,44 @@ pub struct ExpressionStatementNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct MatchStatementNode {
+    pub identifier: Option<IdentifierNode>,
+    pub inline_expression: Option<InlineExpressionNode>,
+    pub kw_match: KwMatchNode,
+    pub match_terms: Vec<MatchTermsNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum MatchTermsNode {
+    MatchType(MatchTypeNode),
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct MatchTypeNode {
+    pub colon: ColonNode,
+    pub identifier: IdentifierNode,
+    pub kw_type: KwTypeNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct KwTypeNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct KwCaseNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum KwMatchNode {
+    Until,
+    While,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct MainExpressionNode {
     pub main_infix: Vec<MainInfixNode>,
     pub main_term: Vec<MainTermNode>,
@@ -707,6 +757,7 @@ pub struct MainTermNode {
 pub enum MainFactorNode {
     GroupFactor(GroupFactorNode),
     Leading(LeadingNode),
+    MatchStatement(MatchStatementNode),
     NewStatement(NewStatementNode),
     ObjectStatement(ObjectStatementNode),
     TryStatement(TryStatementNode),

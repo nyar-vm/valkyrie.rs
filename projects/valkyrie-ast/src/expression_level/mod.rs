@@ -6,7 +6,6 @@ pub mod call_subscript;
 pub mod ctor;
 mod dispatch;
 pub mod lambda;
-pub mod matches;
 pub mod number;
 pub mod operators;
 pub mod parameter;
@@ -119,6 +118,8 @@ pub enum ExpressionType {
     /// - Standalone expression
     Switch(Box<SwitchStatement>),
     /// - Standalone expression
+    Match(Box<MatchStatement>),
+    /// - Standalone expression
     Try(Box<TryStatement>),
     /// - Postfix expression
     ApplyCall(Box<ApplyCallNode>),
@@ -131,7 +132,7 @@ pub enum ExpressionType {
     /// - Postfix expression
     DotCall(Box<DotCallNode>),
     /// - Postfix expression
-    MatchDot(Box<MatchDotStatement>),
+    DotMatchCall(Box<MatchCallNode>),
     /// - REPL Reference
     OutputReference(Box<OutputNode>),
 }
@@ -148,7 +149,7 @@ pub enum PostfixCallPart {
     /// - Standalone expression
     Lambda(ClosureCallNode),
     /// - Standalone expression
-    Match(MatchDotStatement),
+    Match(MatchCallNode),
 }
 
 impl Default for ExpressionContext {

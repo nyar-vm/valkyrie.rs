@@ -11,7 +11,6 @@ pub mod namespace;
 pub mod program;
 pub mod statements;
 pub mod tagged;
-pub mod try_catch;
 pub mod unions;
 
 pub mod traits;

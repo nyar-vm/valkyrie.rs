@@ -18,6 +18,8 @@ mod string_like;
 pub use crate::{
     control_flow::{
         control::{ControlNode, ControlType, RaiseNode, TailCallNode},
+        do_catch::{MatchCallNode, MatchKind, MatchStatement},
+        do_try::TryStatement,
         jmp_guard::{GuardPattern, GuardStatement},
         jmp_if::{BreakStatement, ElseStatement, IfBranchNode, IfStatement, JumpStatement},
         jmp_switch::SwitchStatement,
@@ -35,7 +37,6 @@ pub use crate::{
         call_subscript::SubscriptCallNode,
         ctor::{CollectsNode, ConstructNewNode},
         lambda::{ClosureCallNode, ClosureCaller, FunctionBlock, LambdaNode},
-        matches::{MatchDotStatement, MatchKind},
         number::NumberLiteralNode,
         operators::{BinaryNode, LogicMatrix, OperatorNode, UnaryNode, ValkyrieOperator},
         parameter::{ParameterKind, ParameterTerm, ParametersList},
@@ -61,7 +62,6 @@ pub use crate::{
         statements::{StatementContext, StatementNode},
         tagged::{TaggedDeclaration, VariantDeclaration},
         traits::{ExtendsStatement, TraitDeclaration},
-        try_catch::TryStatement,
         unions::{UnionDeclaration, UnionFieldDeclaration},
     },
     patterns::{
