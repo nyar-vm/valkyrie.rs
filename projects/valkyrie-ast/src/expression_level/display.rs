@@ -23,6 +23,7 @@ impl Debug for ExpressionType {
             Self::IfLet(v) => Debug::fmt(v, f),
             Self::Switch(v) => Debug::fmt(v, f),
             Self::Try(v) => Debug::fmt(v, f),
+            Self::Match(v) => Debug::fmt(v, f),
             Self::ApplyCall(v) => Debug::fmt(v, f),
             Self::LambdaCall(v) => Debug::fmt(v, f),
             Self::SubscriptCall(v) => Debug::fmt(v, f),

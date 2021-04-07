@@ -1,6 +1,6 @@
 use super::*;
 
-impl ValkyrieNode for MatchCallNode {
+impl ValkyrieNode for MatchStatement {
     fn get_range(&self) -> Range<usize> {
         Range { start: self.span.start as usize, end: self.span.end as usize }
     }

@@ -79,12 +79,16 @@ pub enum ValkyrieRule {
     ForStatement,
     MainStatement,
     ExpressionStatement,
-    MatchStatement,
+    MatchExpression,
+    SwitchStatement,
     MatchTerms,
     MatchType,
-    KW_TYPE,
-    KW_CASE,
+    MatchCase,
+    MatchWhen,
+    MatchElse,
+    MatchStatement,
     KW_MATCH,
+    MatchCall,
     MainExpression,
     MainTerm,
     MainFactor,
@@ -167,15 +171,19 @@ pub enum ValkyrieRule {
     KW_IMPLEMENTS,
     KW_EXTENDS,
     KW_INHERITS,
-    KW_IF,
-    KW_ELSE,
     KW_FOR,
     KW_RETURN,
     KW_BREAK,
     KW_CONTINUE,
-    KW_TRY,
     KW_NEW,
     KW_OBJECT,
+    KW_IF,
+    KW_SWITCH,
+    KW_TRY,
+    KW_TYPE,
+    KW_CASE,
+    KW_WHEN,
+    KW_ELSE,
     KW_NOT,
     KW_IN,
     KW_IS,
@@ -243,12 +251,16 @@ impl YggdrasilRule for ValkyrieRule {
             Self::ForStatement => "",
             Self::MainStatement => "",
             Self::ExpressionStatement => "",
-            Self::MatchStatement => "",
+            Self::MatchExpression => "",
+            Self::SwitchStatement => "",
             Self::MatchTerms => "",
             Self::MatchType => "",
-            Self::KW_TYPE => "",
-            Self::KW_CASE => "",
+            Self::MatchCase => "",
+            Self::MatchWhen => "",
+            Self::MatchElse => "",
+            Self::MatchStatement => "",
             Self::KW_MATCH => "",
+            Self::MatchCall => "",
             Self::MainExpression => "",
             Self::MainTerm => "",
             Self::MainFactor => "",
@@ -331,15 +343,19 @@ impl YggdrasilRule for ValkyrieRule {
             Self::KW_IMPLEMENTS => "",
             Self::KW_EXTENDS => "",
             Self::KW_INHERITS => "",
-            Self::KW_IF => "",
-            Self::KW_ELSE => "",
             Self::KW_FOR => "",
             Self::KW_RETURN => "",
             Self::KW_BREAK => "",
             Self::KW_CONTINUE => "",
-            Self::KW_TRY => "",
             Self::KW_NEW => "",
             Self::KW_OBJECT => "",
+            Self::KW_IF => "",
+            Self::KW_SWITCH => "",
+            Self::KW_TRY => "",
+            Self::KW_TYPE => "",
+            Self::KW_CASE => "",
+            Self::KW_WHEN => "",
+            Self::KW_ELSE => "",
             Self::KW_NOT => "",
             Self::KW_IN => "",
             Self::KW_IS => "",
@@ -701,41 +717,80 @@ pub struct ExpressionStatementNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct MatchStatementNode {
+pub struct MatchExpressionNode {
     pub identifier: Option<IdentifierNode>,
-    pub inline_expression: Option<InlineExpressionNode>,
+    pub inline_expression: InlineExpressionNode,
     pub kw_match: KwMatchNode,
     pub match_terms: Vec<MatchTermsNode>,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct SwitchStatementNode {
+    pub kw_switch: KwSwitchNode,
+    pub match_terms: Vec<MatchTermsNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum MatchTermsNode {
+    Comma(CommaNode),
+    MatchCase(MatchCaseNode),
+    MatchElse(MatchElseNode),
     MatchType(MatchTypeNode),
+    MatchWhen(MatchWhenNode),
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct MatchTypeNode {
-    pub colon: ColonNode,
     pub identifier: IdentifierNode,
     pub kw_type: KwTypeNode,
+    pub match_statement: Vec<MatchStatementNode>,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct KwTypeNode {
+pub struct MatchCaseNode {
+    pub identifier: IdentifierNode,
+    pub kw_case: KwCaseNode,
+    pub match_statement: Vec<MatchStatementNode>,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct KwCaseNode {
+pub struct MatchWhenNode {
+    pub identifier: IdentifierNode,
+    pub kw_when: KwWhenNode,
+    pub match_statement: Vec<MatchStatementNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct MatchElseNode {
+    pub kw_else: KwElseNode,
+    pub match_statement: Vec<MatchStatementNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct MatchStatementNode {
+    pub main_statement: MainStatementNode,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum KwMatchNode {
-    Until,
-    While,
+    Catch,
+    Match,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct MatchCallNode {
+    pub identifier: Option<IdentifierNode>,
+    pub kw_match: KwMatchNode,
+    pub match_terms: Vec<MatchTermsNode>,
+    pub op_and_then: Option<OpAndThenNode>,
+    pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -757,7 +812,7 @@ pub struct MainTermNode {
 pub enum MainFactorNode {
     GroupFactor(GroupFactorNode),
     Leading(LeadingNode),
-    MatchStatement(MatchStatementNode),
+    MatchExpression(MatchExpressionNode),
     NewStatement(NewStatementNode),
     ObjectStatement(ObjectStatementNode),
     TryStatement(TryStatementNode),
@@ -1269,16 +1324,6 @@ pub struct KwInheritsNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct KwIfNode {
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct KwElseNode {
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct KwForNode {
     pub span: Range<u32>,
 }
@@ -1299,17 +1344,47 @@ pub struct KwContinueNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct KwTryNode {
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct KwNewNode {
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct KwObjectNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct KwIfNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct KwSwitchNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct KwTryNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct KwTypeNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct KwCaseNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct KwWhenNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct KwElseNode {
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]

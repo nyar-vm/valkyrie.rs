@@ -1,8 +1,6 @@
 use super::*;
-use crate::KwMatchNode;
-use valkyrie_ast::{IdentifierNode, MatchKind, MatchStatement, PatternBlock};
 
-impl crate::MatchStatementNode {
+impl crate::MatchExpressionNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<MatchStatement> {
         Success {
             value: MatchStatement {
@@ -16,12 +14,12 @@ impl crate::MatchStatementNode {
         }
     }
     fn get_bind(&self, ctx: &ProgramContext) -> Option<IdentifierNode> {
-        Some(self.identifier?.build(ctx))
+        Some(self.identifier.as_ref()?.build(ctx))
     }
     fn get_kind(&self) -> MatchKind {
         match self.kw_match {
-            KwMatchNode::Until => MatchKind::Typing,
-            KwMatchNode::While => MatchKind::Effect,
+            KwMatchNode::Match => MatchKind::Typing,
+            KwMatchNode::Catch => MatchKind::Effect,
         }
     }
 }
