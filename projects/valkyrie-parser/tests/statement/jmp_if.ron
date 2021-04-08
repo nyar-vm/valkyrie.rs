@@ -10,7 +10,9 @@ ProgramRoot {
             body: ApplyCallNode {
                 monadic: false,
                 caller: a,
-                arguments: None,
+                arguments: ArgumentsList {
+                    terms: [],
+                },
                 body: None,
                 span: 4..8,
             },
@@ -26,7 +28,9 @@ ProgramRoot {
             body: ApplyCallNode {
                 monadic: false,
                 caller: a,
-                arguments: None,
+                arguments: ArgumentsList {
+                    terms: [],
+                },
                 body: None,
                 span: 13..17,
             },
@@ -37,7 +41,9 @@ ProgramRoot {
             body: ApplyCallNode {
                 monadic: false,
                 caller: else,
-                arguments: None,
+                arguments: ArgumentsList {
+                    terms: [],
+                },
                 body: None,
                 span: 22..26,
             },
@@ -53,7 +59,9 @@ ProgramRoot {
             body: ApplyCallNode {
                 monadic: false,
                 caller: a,
-                arguments: None,
+                arguments: ArgumentsList {
+                    terms: [],
+                },
                 body: None,
                 span: 31..35,
             },
@@ -74,7 +82,9 @@ ProgramRoot {
             body: ApplyCallNode {
                 monadic: false,
                 caller: b,
-                arguments: None,
+                arguments: ArgumentsList {
+                    terms: [],
+                },
                 body: None,
                 span: 45..49,
             },
@@ -90,7 +100,9 @@ ProgramRoot {
             body: ApplyCallNode {
                 monadic: false,
                 caller: a,
-                arguments: None,
+                arguments: ArgumentsList {
+                    terms: [],
+                },
                 body: None,
                 span: 54..58,
             },
@@ -111,7 +123,9 @@ ProgramRoot {
             body: ApplyCallNode {
                 monadic: false,
                 caller: b,
-                arguments: None,
+                arguments: ArgumentsList {
+                    terms: [],
+                },
                 body: None,
                 span: 68..72,
             },
@@ -122,7 +136,9 @@ ProgramRoot {
             body: ApplyCallNode {
                 monadic: false,
                 caller: else,
-                arguments: None,
+                arguments: ArgumentsList {
+                    terms: [],
+                },
                 body: None,
                 span: 77..81,
             },
@@ -138,7 +154,9 @@ ProgramRoot {
             body: ApplyCallNode {
                 monadic: false,
                 caller: a,
-                arguments: None,
+                arguments: ArgumentsList {
+                    terms: [],
+                },
                 body: None,
                 span: 86..90,
             },
@@ -159,7 +177,9 @@ ProgramRoot {
             body: ApplyCallNode {
                 monadic: false,
                 caller: b,
-                arguments: None,
+                arguments: ArgumentsList {
+                    terms: [],
+                },
                 body: None,
                 span: 100..104,
             },
@@ -180,7 +200,9 @@ ProgramRoot {
             body: ApplyCallNode {
                 monadic: false,
                 caller: c,
-                arguments: None,
+                arguments: ArgumentsList {
+                    terms: [],
+                },
                 body: None,
                 span: 114..118,
             },
@@ -196,7 +218,9 @@ ProgramRoot {
             body: ApplyCallNode {
                 monadic: false,
                 caller: a,
-                arguments: None,
+                arguments: ArgumentsList {
+                    terms: [],
+                },
                 body: None,
                 span: 123..127,
             },
@@ -217,7 +241,9 @@ ProgramRoot {
             body: ApplyCallNode {
                 monadic: false,
                 caller: b,
-                arguments: None,
+                arguments: ArgumentsList {
+                    terms: [],
+                },
                 body: None,
                 span: 137..141,
             },
@@ -238,7 +264,9 @@ ProgramRoot {
             body: ApplyCallNode {
                 monadic: false,
                 caller: c,
-                arguments: None,
+                arguments: ArgumentsList {
+                    terms: [],
+                },
                 body: None,
                 span: 151..155,
             },
@@ -249,7 +277,9 @@ ProgramRoot {
             body: ApplyCallNode {
                 monadic: false,
                 caller: else,
-                arguments: None,
+                arguments: ArgumentsList {
+                    terms: [],
+                },
                 body: None,
                 span: 160..164,
             },
@@ -269,26 +299,26 @@ ProgramRoot {
                     lhs: ApplyCallNode {
                         monadic: false,
                         caller: let,
-                        arguments: Some(
-                            ArgumentsList {
-                                terms: [
-                                    TupleTermNode {
-                                        key: None,
-                                        value: x,
-                                    },
-                                    TupleTermNode {
-                                        key: None,
-                                        value: y,
-                                    },
-                                ],
-                            },
-                        ),
+                        arguments: ArgumentsList {
+                            terms: [
+                                TupleTermNode {
+                                    key: None,
+                                    value: x,
+                                },
+                                TupleTermNode {
+                                    key: None,
+                                    value: y,
+                                },
+                            ],
+                        },
                         body: None,
                         span: 173..180,
                     },
                     rhs: point,
                 },
-                arguments: None,
+                arguments: ArgumentsList {
+                    terms: [],
+                },
                 body: None,
                 span: 188..217,
             },
@@ -313,22 +343,22 @@ ProgramRoot {
                     lhs: ApplyCallNode {
                         monadic: false,
                         caller: Failure,
-                        arguments: Some(
-                            ArgumentsList {
-                                terms: [
-                                    TupleTermNode {
-                                        key: None,
-                                        value: error,
-                                    },
-                                ],
-                            },
-                        ),
+                        arguments: ArgumentsList {
+                            terms: [
+                                TupleTermNode {
+                                    key: None,
+                                    value: error,
+                                },
+                            ],
+                        },
                         body: None,
                         span: 233..240,
                     },
                     rhs: x,
                 },
-                arguments: None,
+                arguments: ArgumentsList {
+                    terms: [],
+                },
                 body: None,
                 span: 244..266,
             },

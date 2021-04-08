@@ -4,12 +4,14 @@ use super::*;
 #[derive(Copy, Clone, Debug, Eq, PartialEq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum NamespaceKind {
-    // In the v language, there only one shared namespace
-    Shared,
-    // In the v language, there only one shared namespace
-    Unique,
-    // In the v language, there only one shared namespace
+    /// Main namespace where definitions and imports can be shared
+    Main,
+    /// Independent namespace, isolated definitions, except public and main definitions
+    Standalone,
+    /// This is a test file, only available in the test environment
     Test,
+    /// Temporarily remove a file
+    Hide,
 }
 
 /// `namespace std.math`
@@ -27,7 +29,7 @@ impl NamespaceDeclaration {
     where
         I: IntoIterator<Item = IdentifierNode>,
     {
-        Self { kind: NamespaceKind::Unique, path: names.into_iter().collect(), span: range.clone() }
+        Self { kind: NamespaceKind::Standalone, path: names.into_iter().collect(), span: range.clone() }
     }
     pub fn with_kind(mut self, kind: NamespaceKind) -> Self {
         self.kind = kind;

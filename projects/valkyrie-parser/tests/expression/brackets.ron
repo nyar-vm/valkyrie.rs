@@ -9,16 +9,14 @@ ProgramRoot {
                     base: ApplyCallNode {
                         monadic: false,
                         caller: a,
-                        arguments: Some(
-                            ArgumentsList {
-                                terms: [
-                                    TupleTermNode {
-                                        key: None,
-                                        value: 1,
-                                    },
-                                ],
-                            },
-                        ),
+                        arguments: ArgumentsList {
+                            terms: [
+                                TupleTermNode {
+                                    key: None,
+                                    value: 1,
+                                },
+                            ],
+                        },
                         body: None,
                         span: 1..4,
                     },
@@ -30,7 +28,9 @@ ProgramRoot {
                     ],
                     span: 4..7,
                 },
-                arguments: None,
+                arguments: ArgumentsList {
+                    terms: [],
+                },
                 body: None,
                 span: 7..10,
             },
@@ -43,16 +43,14 @@ ProgramRoot {
                 base: ApplyCallNode {
                     monadic: false,
                     caller: a,
-                    arguments: Some(
-                        ArgumentsList {
-                            terms: [
-                                TupleTermNode {
-                                    key: None,
-                                    value: 1,
-                                },
-                            ],
-                        },
-                    ),
+                    arguments: ArgumentsList {
+                        terms: [
+                            TupleTermNode {
+                                key: None,
+                                value: 1,
+                            },
+                        ],
+                    },
                     body: None,
                     span: 12..18,
                 },
@@ -81,16 +79,14 @@ ProgramRoot {
                     ],
                     span: 23..26,
                 },
-                arguments: Some(
-                    ArgumentsList {
-                        terms: [
-                            TupleTermNode {
-                                key: None,
-                                value: 2,
-                            },
-                        ],
-                    },
-                ),
+                arguments: ArgumentsList {
+                    terms: [
+                        TupleTermNode {
+                            key: None,
+                            value: 2,
+                        },
+                    ],
+                },
                 body: None,
                 span: 26..32,
             },
@@ -113,20 +109,20 @@ ProgramRoot {
                         ],
                         span: 34..37,
                     },
-                    arguments: None,
+                    arguments: ArgumentsList {
+                        terms: [],
+                    },
                     body: None,
                     span: 37..40,
                 },
-                arguments: Some(
-                    ArgumentsList {
-                        terms: [
-                            TupleTermNode {
-                                key: None,
-                                value: 3,
-                            },
-                        ],
-                    },
-                ),
+                arguments: ArgumentsList {
+                    terms: [
+                        TupleTermNode {
+                            key: None,
+                            value: 3,
+                        },
+                    ],
+                },
                 body: None,
                 span: 40..43,
             },
@@ -141,20 +137,20 @@ ProgramRoot {
                     caller: ApplyCallNode {
                         monadic: false,
                         caller: a,
-                        arguments: None,
+                        arguments: ArgumentsList {
+                            terms: [],
+                        },
                         body: None,
                         span: 45..48,
                     },
-                    arguments: Some(
-                        ArgumentsList {
-                            terms: [
-                                TupleTermNode {
-                                    key: None,
-                                    value: 2,
-                                },
-                            ],
-                        },
-                    ),
+                    arguments: ArgumentsList {
+                        terms: [
+                            TupleTermNode {
+                                key: None,
+                                value: 2,
+                            },
+                        ],
+                    },
                     body: None,
                     span: 48..51,
                 },
@@ -177,7 +173,9 @@ ProgramRoot {
                     base: ApplyCallNode {
                         monadic: false,
                         caller: a,
-                        arguments: None,
+                        arguments: ArgumentsList {
+                            terms: [],
+                        },
                         body: None,
                         span: 56..59,
                     },
@@ -189,16 +187,14 @@ ProgramRoot {
                     ],
                     span: 59..62,
                 },
-                arguments: Some(
-                    ArgumentsList {
-                        terms: [
-                            TupleTermNode {
-                                key: None,
-                                value: 3,
-                            },
-                        ],
-                    },
-                ),
+                arguments: ArgumentsList {
+                    terms: [
+                        TupleTermNode {
+                            key: None,
+                            value: 3,
+                        },
+                    ],
+                },
                 body: None,
                 span: 62..65,
             },

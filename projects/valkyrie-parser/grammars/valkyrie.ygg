@@ -218,8 +218,8 @@ class ExpressionStatement {
 // === match/catch/switch === ------------------------------------------------------------------------------------------
 class MatchExpression {
     KW_MATCH (
-        | (Identifier ':=')? InlineExpression
-        | InlineExpression ('=:' Identifier)?
+        | (Identifier BIND_L)? InlineExpression
+        | InlineExpression (BIND_R Identifier)?
     )
     '{' MatchTerms* '}'
 }
@@ -253,9 +253,14 @@ union KW_MATCH {
     | 'match' #Match
     | 'catch' #Catch
 }
+@style(operator)
+token {
+    BIND_L: /≔|:=/
+    BIND_R: /≕|=:/
+}
 // === match dot call === ----------------------------------------------------------------------------------------------
-class MatchCall {
-    OP_AND_THEN? ^DOT KW_MATCH ('=:' Identifier)? '{' MatchTerms* '}'
+atomic class MatchCall {
+    HIDE OP_AND_THEN? ^WhiteSpace? ^DOT ^WhiteSpace? KW_MATCH (^WhiteSpace? BIND_R ^WhiteSpace? Identifier)? ^WhiteSpace? '{' (HIDE MatchTerms)* ~ '}'
 }
 // === expression === --------------------------------------------------------------------------------------------------
 atomic class MainExpression {
@@ -322,6 +327,8 @@ text class MainPrefix {
 }
 @railway(false)
 atomic union MainSuffix {
+    | MatchCall
+    | TupleCall
     | InlineSuffix
 }
 // === inline expression === --------------------------------------------------------------------------------------------------
@@ -334,7 +341,7 @@ atomic class InlineTerm {
 atomic union InlineSuffix {
     | HIDE SuffixOperator
     | DotCall
-    | TupleCall
+    | InlineTupleCall
     | RangeCall
     | GenericCall
 }
@@ -408,6 +415,9 @@ union DotCallItem {
     | Integer
 }
 // === tuple === -------------------------------------------------------------------------------------------------------
+atomic class InlineTupleCall {
+     ^WhiteSpace? OP_AND_THEN? ^WhiteSpace? TupleLiteral
+}
 atomic class TupleCall {
      ^WhiteSpace? OP_AND_THEN? ^WhiteSpace? (
         | TupleLiteral (^WhiteSpace? Continuation)?

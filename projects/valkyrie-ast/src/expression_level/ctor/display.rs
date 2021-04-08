@@ -21,7 +21,7 @@ impl PrettyPrint for ConstructNewNode {
     }
 }
 
-impl PrettyPrint for CollectsNode {
+impl PrettyPrint for CollectorNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut inline = PrettySequence::new(6);
         inline += " ";

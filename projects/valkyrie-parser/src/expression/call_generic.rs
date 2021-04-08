@@ -49,11 +49,11 @@ impl crate::GenericTermsNode {
 }
 impl crate::GenericPairNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<TupleTermNode> {
-        let key = match &self.identifier {
-            Some(v) => Some(v.build(ctx)),
-            None => None,
-        };
+        let key = self.get_key(ctx);
         let value = self.type_expression.build(ctx)?;
         Success { value: TupleTermNode { key, value }, diagnostics: vec![] }
+    }
+    fn get_key(&self, ctx: &ProgramContext) -> Option<IdentifierNode> {
+        Some(self.identifier.as_ref()?.build(ctx))
     }
 }

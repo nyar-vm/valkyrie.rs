@@ -106,20 +106,18 @@ ProgramRoot {
                     associated: [],
                     span: 107..116,
                 },
-                arguments: Some(
-                    ArgumentsList {
-                        terms: [
-                            TupleTermNode {
-                                key: None,
-                                value: 1,
-                            },
-                            TupleTermNode {
-                                key: None,
-                                value: 2,
-                            },
-                        ],
-                    },
-                ),
+                arguments: ArgumentsList {
+                    terms: [
+                        TupleTermNode {
+                            key: None,
+                            value: 1,
+                        },
+                        TupleTermNode {
+                            key: None,
+                            value: 2,
+                        },
+                    ],
+                },
                 body: None,
                 span: 116..122,
             },

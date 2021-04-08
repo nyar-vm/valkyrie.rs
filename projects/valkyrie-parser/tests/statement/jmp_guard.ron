@@ -10,7 +10,9 @@ ProgramRoot {
             body: ApplyCallNode {
                 monadic: false,
                 caller: condition1,
-                arguments: None,
+                arguments: ArgumentsList {
+                    terms: [],
+                },
                 body: None,
                 span: 13..148,
             },
@@ -30,26 +32,26 @@ ProgramRoot {
                     lhs: ApplyCallNode {
                         monadic: false,
                         caller: let,
-                        arguments: Some(
-                            ArgumentsList {
-                                terms: [
-                                    TupleTermNode {
-                                        key: None,
-                                        value: x,
-                                    },
-                                    TupleTermNode {
-                                        key: None,
-                                        value: y,
-                                    },
-                                ],
-                            },
-                        ),
+                        arguments: ArgumentsList {
+                            terms: [
+                                TupleTermNode {
+                                    key: None,
+                                    value: x,
+                                },
+                                TupleTermNode {
+                                    key: None,
+                                    value: y,
+                                },
+                            ],
+                        },
                         body: None,
                         span: 159..166,
                     },
                     rhs: point,
                 },
-                arguments: None,
+                arguments: ArgumentsList {
+                    terms: [],
+                },
                 body: None,
                 span: 174..275,
             },

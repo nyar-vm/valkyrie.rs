@@ -3,10 +3,10 @@ use super::*;
 impl crate::DefineNamespaceNode {
     pub fn build(&self, ctx: &ProgramContext) -> NamespaceDeclaration {
         let kind = match &self.op_namespace {
-            None => NamespaceKind::Unique,
+            None => NamespaceKind::Standalone,
             Some(s) => match s {
-                OpNamespaceNode::Hide => NamespaceKind::Unique,
-                OpNamespaceNode::Main => NamespaceKind::Shared,
+                OpNamespaceNode::Hide => NamespaceKind::Standalone,
+                OpNamespaceNode::Main => NamespaceKind::Main,
                 OpNamespaceNode::Test => NamespaceKind::Test,
             },
         };

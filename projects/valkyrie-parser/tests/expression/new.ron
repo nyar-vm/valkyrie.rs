@@ -21,11 +21,13 @@ ProgramRoot {
                 arguments: ApplyCallNode {
                     monadic: false,
                     caller: Placeholder,
-                    arguments: None,
+                    arguments: ArgumentsList {
+                        terms: [],
+                    },
                     body: None,
                     span: 0..0,
                 },
-                body: CollectsNode {
+                body: CollectorNode {
                     terms: [],
                     span: 0..0,
                 },
@@ -54,11 +56,13 @@ ProgramRoot {
                 arguments: ApplyCallNode {
                     monadic: false,
                     caller: Placeholder,
-                    arguments: None,
+                    arguments: ArgumentsList {
+                        terms: [],
+                    },
                     body: None,
                     span: 0..0,
                 },
-                body: CollectsNode {
+                body: CollectorNode {
                     terms: [],
                     span: 0..0,
                 },
@@ -87,11 +91,13 @@ ProgramRoot {
                 arguments: ApplyCallNode {
                     monadic: false,
                     caller: Placeholder,
-                    arguments: None,
+                    arguments: ArgumentsList {
+                        terms: [],
+                    },
                     body: None,
                     span: 0..0,
                 },
-                body: CollectsNode {
+                body: CollectorNode {
                     terms: [],
                     span: 0..0,
                 },
@@ -120,11 +126,13 @@ ProgramRoot {
                 arguments: ApplyCallNode {
                     monadic: false,
                     caller: Placeholder,
-                    arguments: None,
+                    arguments: ArgumentsList {
+                        terms: [],
+                    },
                     body: None,
                     span: 0..0,
                 },
-                body: CollectsNode {
+                body: CollectorNode {
                     terms: [],
                     span: 0..0,
                 },
@@ -153,11 +161,13 @@ ProgramRoot {
                 arguments: ApplyCallNode {
                     monadic: false,
                     caller: Placeholder,
-                    arguments: None,
+                    arguments: ArgumentsList {
+                        terms: [],
+                    },
                     body: None,
                     span: 0..0,
                 },
-                body: CollectsNode {
+                body: CollectorNode {
                     terms: [],
                     span: 0..0,
                 },
@@ -186,11 +196,13 @@ ProgramRoot {
                 arguments: ApplyCallNode {
                     monadic: false,
                     caller: Placeholder,
-                    arguments: None,
+                    arguments: ArgumentsList {
+                        terms: [],
+                    },
                     body: None,
                     span: 0..0,
                 },
-                body: CollectsNode {
+                body: CollectorNode {
                     terms: [],
                     span: 0..0,
                 },
@@ -219,11 +231,13 @@ ProgramRoot {
                 arguments: ApplyCallNode {
                     monadic: false,
                     caller: Placeholder,
-                    arguments: None,
+                    arguments: ArgumentsList {
+                        terms: [],
+                    },
                     body: None,
                     span: 0..0,
                 },
-                body: CollectsNode {
+                body: CollectorNode {
                     terms: [],
                     span: 0..0,
                 },
@@ -252,11 +266,13 @@ ProgramRoot {
                 arguments: ApplyCallNode {
                     monadic: false,
                     caller: Placeholder,
-                    arguments: None,
+                    arguments: ArgumentsList {
+                        terms: [],
+                    },
                     body: None,
                     span: 0..0,
                 },
-                body: CollectsNode {
+                body: CollectorNode {
                     terms: [],
                     span: 0..0,
                 },
@@ -285,11 +301,13 @@ ProgramRoot {
                 arguments: ApplyCallNode {
                     monadic: false,
                     caller: Placeholder,
-                    arguments: None,
+                    arguments: ArgumentsList {
+                        terms: [],
+                    },
                     body: None,
                     span: 0..0,
                 },
-                body: CollectsNode {
+                body: CollectorNode {
                     terms: [],
                     span: 0..0,
                 },
@@ -318,11 +336,13 @@ ProgramRoot {
                 arguments: ApplyCallNode {
                     monadic: false,
                     caller: Placeholder,
-                    arguments: None,
+                    arguments: ArgumentsList {
+                        terms: [],
+                    },
                     body: None,
                     span: 0..0,
                 },
-                body: CollectsNode {
+                body: CollectorNode {
                     terms: [],
                     span: 0..0,
                 },
@@ -351,11 +371,13 @@ ProgramRoot {
                 arguments: ApplyCallNode {
                     monadic: false,
                     caller: Placeholder,
-                    arguments: None,
+                    arguments: ArgumentsList {
+                        terms: [],
+                    },
                     body: None,
                     span: 0..0,
                 },
-                body: CollectsNode {
+                body: CollectorNode {
                     terms: [],
                     span: 0..0,
                 },
@@ -384,11 +406,13 @@ ProgramRoot {
                 arguments: ApplyCallNode {
                     monadic: false,
                     caller: Placeholder,
-                    arguments: None,
+                    arguments: ArgumentsList {
+                        terms: [],
+                    },
                     body: None,
                     span: 0..0,
                 },
-                body: CollectsNode {
+                body: CollectorNode {
                     terms: [],
                     span: 0..0,
                 },

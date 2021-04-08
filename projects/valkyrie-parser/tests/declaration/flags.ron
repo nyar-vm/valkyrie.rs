@@ -42,7 +42,9 @@ ProgramRoot {
             body: ApplyCallNode {
                 monadic: false,
                 caller: OneEnum,
-                arguments: None,
+                arguments: ArgumentsList {
+                    terms: [],
+                },
                 body: None,
                 span: 52..62,
             },
@@ -58,7 +60,9 @@ ProgramRoot {
             body: ApplyCallNode {
                 monadic: false,
                 caller: OneFlag,
-                arguments: None,
+                arguments: ArgumentsList {
+                    terms: [],
+                },
                 body: None,
                 span: 76..86,
             },

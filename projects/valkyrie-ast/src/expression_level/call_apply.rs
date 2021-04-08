@@ -20,7 +20,7 @@ pub struct ApplyCallNode {
     /// The caller of argument
     pub caller: ExpressionType,
     /// The raw string of the number.
-    pub arguments: Option<ArgumentsList>,
+    pub arguments: ArgumentsList,
     /// The raw string of the number.
     pub body: Option<StatementBlock>,
     /// The range of the number.

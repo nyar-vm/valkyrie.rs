@@ -1,3 +1,27 @@
 ProgramRoot {
-    statements: [],
+    statements: [
+        ExpressionNode {
+            omit: false,
+            body: MatchCallNode {
+                monadic: true,
+                base: MatchCallNode {
+                    monadic: true,
+                    base: a,
+                    kind: Typing,
+                    patterns: PatternBlock {
+                        branches: [],
+                        span: 0..0,
+                    },
+                    span: 1..19,
+                },
+                kind: Typing,
+                patterns: PatternBlock {
+                    branches: [],
+                    span: 0..0,
+                },
+                span: 19..32,
+            },
+            span: 0..33,
+        },
+    ],
 }

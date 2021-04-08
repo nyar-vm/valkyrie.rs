@@ -1,7 +1,7 @@
 ProgramRoot {
     statements: [
         NamespaceDeclaration {
-            kind: Unique,
+            kind: Standalone,
             path: test∷import,
         },
         ImportStatement {

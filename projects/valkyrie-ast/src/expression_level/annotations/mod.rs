@@ -46,7 +46,7 @@ pub struct AnnotationList {
 pub struct AnnotationTerm {
     pub path: AnnotationPathNode,
     pub arguments: ApplyCallNode,
-    pub collects: CollectsNode,
+    pub collects: CollectorNode,
 }
 
 /// `@{ module∷name.function(args) <CAPTURE>, module∷name.function2(args) <CAPTURE> }`

@@ -4,7 +4,7 @@ impl crate::MatchExpressionNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<MatchStatement> {
         Success {
             value: MatchStatement {
-                kind: self.get_kind(),
+                kind: self.kw_match.build(),
                 bind: self.get_bind(ctx),
                 main: Default::default(),
                 patterns: PatternBlock { branches: vec![], span: Default::default() },
@@ -16,8 +16,11 @@ impl crate::MatchExpressionNode {
     fn get_bind(&self, ctx: &ProgramContext) -> Option<IdentifierNode> {
         Some(self.identifier.as_ref()?.build(ctx))
     }
-    fn get_kind(&self) -> MatchKind {
-        match self.kw_match {
+}
+
+impl KwMatchNode {
+    pub fn build(&self) -> MatchKind {
+        match self {
             KwMatchNode::Match => MatchKind::Typing,
             KwMatchNode::Catch => MatchKind::Effect,
         }

@@ -55,9 +55,19 @@ impl crate::TupleCallNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<ApplyCallNode> {
         let monadic = self.op_and_then.is_some();
         let arguments = match &self.tuple_literal {
-            Some(s) => Some(s.build(ctx)?.terms),
-            None => None,
+            Some(s) => s.build(ctx)?.terms,
+            None => ArgumentsList { terms: vec![] },
         };
+        Success {
+            value: ApplyCallNode { monadic, caller: Default::default(), arguments, body: None, span: self.span.clone() },
+            diagnostics: vec![],
+        }
+    }
+}
+impl crate::InlineTupleCallNode {
+    pub fn build(&self, ctx: &ProgramContext) -> Validation<ApplyCallNode> {
+        let monadic = self.op_and_then.is_some();
+        let arguments = self.tuple_literal.build(ctx)?.terms;
         Success {
             value: ApplyCallNode { monadic, caller: Default::default(), arguments, body: None, span: self.span.clone() },
             diagnostics: vec![],

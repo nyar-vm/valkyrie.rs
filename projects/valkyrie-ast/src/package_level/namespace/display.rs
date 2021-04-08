@@ -23,8 +23,8 @@ impl Lispify for NamespaceDeclaration {
     fn lispify(&self) -> Self::Output {
         let mut lisp = Lisp::new(self.path.len() + 1);
         let kind = match self.kind {
-            NamespaceKind::Shared => "namespace/shared",
-            NamespaceKind::Unique => "namespace/unique",
+            NamespaceKind::Main => "namespace/shared",
+            NamespaceKind::Standalone => "namespace/unique",
             NamespaceKind::Test => "namespace/test",
         };
         lisp += Lisp::keyword(kind);
@@ -39,9 +39,10 @@ impl NamespaceKind {
     /// Get the string representation of the namespace kind
     pub fn as_str(&self) -> &'static str {
         match self {
-            NamespaceKind::Shared => "namespace",
-            NamespaceKind::Unique => "namespace!",
+            NamespaceKind::Main => "namespace",
+            NamespaceKind::Standalone => "namespace!",
             NamespaceKind::Test => "namespace?",
+            NamespaceKind::Hide => "namespace*",
         }
     }
 }

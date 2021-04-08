@@ -1,11 +1,11 @@
 ProgramRoot {
     statements: [
         NamespaceDeclaration {
-            kind: Unique,
+            kind: Standalone,
             path: std,
         },
         NamespaceDeclaration {
-            kind: Shared,
+            kind: Main,
             path: std∷string,
         },
         NamespaceDeclaration {
@@ -13,7 +13,7 @@ ProgramRoot {
             path: std∷integer,
         },
         NamespaceDeclaration {
-            kind: Unique,
+            kind: Standalone,
             path: std∷decimal,
         },
     ],

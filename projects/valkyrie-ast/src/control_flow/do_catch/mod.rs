@@ -34,6 +34,8 @@ pub struct MatchStatement {
 pub struct MatchCallNode {
     /// expr?.match { }
     pub monadic: bool,
+    /// The basement expression
+    pub base: ExpressionType,
     /// The kind of the match statement
     pub kind: MatchKind,
     /// The patterns of the match statement
@@ -49,5 +51,12 @@ impl MatchKind {
             MatchKind::Typing => "match",
             MatchKind::Effect => "catch",
         }
+    }
+}
+
+impl MatchCallNode {
+    /// Replace placeholder with actual expression
+    pub fn with_base(self, base: ExpressionType) -> Self {
+        Self { base, ..self }
     }
 }

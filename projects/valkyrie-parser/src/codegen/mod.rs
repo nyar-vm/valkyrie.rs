@@ -88,6 +88,8 @@ pub enum ValkyrieRule {
     MatchElse,
     MatchStatement,
     KW_MATCH,
+    BIND_L,
+    BIND_R,
     MatchCall,
     MainExpression,
     MainTerm,
@@ -117,6 +119,7 @@ pub enum ValkyrieRule {
     NewPairKey,
     DotCall,
     DotCallItem,
+    InlineTupleCall,
     TupleCall,
     TupleLiteral,
     TupleLiteralStrict,
@@ -260,6 +263,8 @@ impl YggdrasilRule for ValkyrieRule {
             Self::MatchElse => "",
             Self::MatchStatement => "",
             Self::KW_MATCH => "",
+            Self::BIND_L => "",
+            Self::BIND_R => "",
             Self::MatchCall => "",
             Self::MainExpression => "",
             Self::MainTerm => "",
@@ -289,6 +294,7 @@ impl YggdrasilRule for ValkyrieRule {
             Self::NewPairKey => "",
             Self::DotCall => "",
             Self::DotCallItem => "",
+            Self::InlineTupleCall => "",
             Self::TupleCall => "",
             Self::TupleLiteral => "",
             Self::TupleLiteralStrict => "",
@@ -718,6 +724,8 @@ pub struct ExpressionStatementNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct MatchExpressionNode {
+    pub bind_l: Option<BindLNode>,
+    pub bind_r: Option<BindRNode>,
     pub identifier: Option<IdentifierNode>,
     pub inline_expression: InlineExpressionNode,
     pub kw_match: KwMatchNode,
@@ -785,7 +793,18 @@ pub enum KwMatchNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct BindLNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct BindRNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct MatchCallNode {
+    pub bind_r: Option<BindRNode>,
     pub identifier: Option<IdentifierNode>,
     pub kw_match: KwMatchNode,
     pub match_terms: Vec<MatchTermsNode>,
@@ -850,6 +869,8 @@ pub struct MainPrefixNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum MainSuffixNode {
     InlineSuffix(InlineSuffixNode),
+    MatchCall(MatchCallNode),
+    TupleCall(TupleCallNode),
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -872,8 +893,8 @@ pub enum InlineSuffixNode {
     DotCall(DotCallNode),
     GenericCall(GenericCallNode),
     InlineSuffix0(SuffixOperatorNode),
+    InlineTupleCall(InlineTupleCallNode),
     RangeCall(RangeCallNode),
-    TupleCall(TupleCallNode),
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -992,6 +1013,13 @@ pub struct DotCallNode {
 pub enum DotCallItemNode {
     Integer(IntegerNode),
     Namepath(NamepathNode),
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct InlineTupleCallNode {
+    pub op_and_then: Option<OpAndThenNode>,
+    pub tuple_literal: TupleLiteralNode,
+    pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]

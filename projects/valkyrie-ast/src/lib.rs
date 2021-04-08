@@ -35,7 +35,7 @@ pub use crate::{
         call_dot::{DotCallNode, DotCallTerm},
         call_generic::GenericCallNode,
         call_subscript::SubscriptCallNode,
-        ctor::{CollectsNode, ConstructNewNode},
+        ctor::{CollectorNode, CollectorTerm, ConstructNewNode},
         lambda::{ClosureCallNode, ClosureCaller, FunctionBlock, LambdaNode},
         number::NumberLiteralNode,
         operators::{BinaryNode, LogicMatrix, OperatorNode, UnaryNode, ValkyrieOperator},

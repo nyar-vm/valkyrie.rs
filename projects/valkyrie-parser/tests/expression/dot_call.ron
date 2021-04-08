@@ -10,11 +10,9 @@ ProgramRoot {
             body: ApplyCallNode {
                 monadic: false,
                 caller: a∷b∷c,
-                arguments: Some(
-                    ArgumentsList {
-                        terms: [],
-                    },
-                ),
+                arguments: ArgumentsList {
+                    terms: [],
+                },
                 body: None,
                 span: 15..17,
             },
@@ -40,11 +38,9 @@ ProgramRoot {
                     term: c,
                     span: 30..32,
                 },
-                arguments: Some(
-                    ArgumentsList {
-                        terms: [],
-                    },
-                ),
+                arguments: ArgumentsList {
+                    terms: [],
+                },
                 body: None,
                 span: 32..34,
             },
@@ -70,11 +66,9 @@ ProgramRoot {
                     term: b∷c,
                     span: 44..49,
                 },
-                arguments: Some(
-                    ArgumentsList {
-                        terms: [],
-                    },
-                ),
+                arguments: ArgumentsList {
+                    terms: [],
+                },
                 body: None,
                 span: 49..51,
             },
@@ -110,11 +104,9 @@ ProgramRoot {
                     term: c,
                     span: 73..75,
                 },
-                arguments: Some(
-                    ArgumentsList {
-                        terms: [],
-                    },
-                ),
+                arguments: ArgumentsList {
+                    terms: [],
+                },
                 body: None,
                 span: 75..77,
             },
@@ -134,22 +126,18 @@ ProgramRoot {
                             term: b,
                             span: 79..81,
                         },
-                        arguments: Some(
-                            ArgumentsList {
-                                terms: [],
-                            },
-                        ),
+                        arguments: ArgumentsList {
+                            terms: [],
+                        },
                         body: None,
                         span: 81..83,
                     },
                     term: c,
                     span: 83..85,
                 },
-                arguments: Some(
-                    ArgumentsList {
-                        terms: [],
-                    },
-                ),
+                arguments: ArgumentsList {
+                    terms: [],
+                },
                 body: None,
                 span: 85..87,
             },
@@ -168,33 +156,27 @@ ProgramRoot {
                             base: ApplyCallNode {
                                 monadic: false,
                                 caller: a,
-                                arguments: Some(
-                                    ArgumentsList {
-                                        terms: [],
-                                    },
-                                ),
+                                arguments: ArgumentsList {
+                                    terms: [],
+                                },
                                 body: None,
                                 span: 89..91,
                             },
                             term: b,
                             span: 91..93,
                         },
-                        arguments: Some(
-                            ArgumentsList {
-                                terms: [],
-                            },
-                        ),
+                        arguments: ArgumentsList {
+                            terms: [],
+                        },
                         body: None,
                         span: 93..95,
                     },
                     term: c,
                     span: 95..97,
                 },
-                arguments: Some(
-                    ArgumentsList {
-                        terms: [],
-                    },
-                ),
+                arguments: ArgumentsList {
+                    terms: [],
+                },
                 body: None,
                 span: 97..99,
             },

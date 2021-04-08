@@ -27,10 +27,14 @@ mod display;
 pub struct ConstructNewNode {
     /// The modifiers for new
     pub modifiers: Vec<IdentifierNode>,
+    /// The constructed type
     pub namepath: NamePathNode,
+    /// The construct generic
     pub generic: GenericCallNode,
+    /// The constructor arguments
     pub arguments: ApplyCallNode,
-    pub body: CollectsNode,
+    /// The builder arguments
+    pub body: CollectorNode,
     /// The range of the node
     pub span: Range<u32>,
 }
@@ -38,12 +42,19 @@ pub struct ConstructNewNode {
 /// `{ 1: x, p: y, [a, b]: c, **list, ***dict }`
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct CollectsNode {
+pub struct CollectorNode {
     /// The collect terms
-    pub terms: Vec<TupleTermNode>,
+    pub terms: Vec<CollectorTerm>,
     /// The range of the node
     pub span: Range<u32>,
 }
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum CollectorTerm {
+    /// A simple item to append
+    Item(ExpressionType),
+}
+
 impl ValkyrieNode for ConstructNewNode {
     fn get_range(&self) -> Range<usize> {
         Range { start: self.span.start as usize, end: self.span.end as usize }
