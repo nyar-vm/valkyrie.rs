@@ -153,6 +153,7 @@ impl MainFactorNode {
             Self::ObjectStatement(v) => v.build(ctx).map(Into::into),
             Self::TryStatement(v) => v.build(ctx).map(Into::into),
             Self::MatchExpression(v) => v.build(ctx).map(Into::into),
+            Self::SwitchStatement(v) => v.build(ctx).map(Into::into),
         }
     }
 }
@@ -271,9 +272,12 @@ impl SuffixOperatorNode {
 impl MainSuffixNode {
     fn as_token(&self, ctx: &ProgramContext) -> Validation<TokenStream> {
         let token = match self {
-            MainSuffixNode::InlineSuffix(v) => v.as_token(ctx)?,
-            MainSuffixNode::MatchCall(v) => TokenStream::DotMatch(v.build(ctx)?),
-            MainSuffixNode::TupleCall(v) => TokenStream::Apply(v.build(ctx)?),
+            Self::InlineSuffix(v) => v.as_token(ctx)?,
+            Self::DotMatchCall(v) => TokenStream::DotMatch(v.build(ctx)?),
+            Self::DotClosureCall(v) => {
+                todo!()
+            }
+            Self::TupleCall(v) => TokenStream::Apply(v.build(ctx)?),
         };
         Success { value: token, diagnostics: vec![] }
     }
@@ -282,7 +286,7 @@ impl MainSuffixNode {
 impl InlineSuffixNode {
     fn as_token(&self, ctx: &ProgramContext) -> Validation<TokenStream> {
         let token = match self {
-            InlineSuffixNode::InlineSuffix0(v) => TokenStream::Postfix(v.as_operator()),
+            InlineSuffixNode::SuffixOperator(v) => TokenStream::Postfix(v.as_operator()),
             InlineSuffixNode::RangeCall(v) => TokenStream::Subscript(v.build(ctx)?),
             InlineSuffixNode::InlineTupleCall(v) => TokenStream::Apply(v.build(ctx)?),
             InlineSuffixNode::DotCall(v) => TokenStream::Dot(v.build(ctx)?),

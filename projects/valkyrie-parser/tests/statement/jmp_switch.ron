@@ -1,0 +1,37 @@
+ProgramRoot {
+    statements: [
+        ExpressionNode {
+            omit: false,
+            body: SwitchStatement {
+                patterns: PatternBlock {
+                    branches: [],
+                    span: 0..0,
+                },
+                span: 0..11,
+            },
+            span: 0..13,
+        },
+        ExpressionNode {
+            omit: false,
+            body: SwitchStatement {
+                patterns: PatternBlock {
+                    branches: [],
+                    span: 0..0,
+                },
+                span: 13..44,
+            },
+            span: 13..46,
+        },
+        ExpressionNode {
+            omit: false,
+            body: SwitchStatement {
+                patterns: PatternBlock {
+                    branches: [],
+                    span: 0..0,
+                },
+                span: 46..150,
+            },
+            span: 46..151,
+        },
+    ],
+}

@@ -1,4 +1,5 @@
 mod jmp_match;
+mod jmp_switch;
 mod loop_while;
 
 use crate::{KwMatchNode, ProgramContext};

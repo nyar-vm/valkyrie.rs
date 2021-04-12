@@ -102,7 +102,7 @@ ProgramRoot {
                 monadic: false,
                 base: a,
                 term: 1,
-                span: 79..86,
+                span: 84..86,
             },
             span: 78..88,
         },

@@ -213,7 +213,7 @@ union MainStatement {
     | ExpressionStatement
 }
 class ExpressionStatement {
-    MainExpression EOS?
+    MainExpression OP_AND_THEN? EOS?
 }
 // === match/catch/switch === ------------------------------------------------------------------------------------------
 class MatchExpression {
@@ -240,13 +240,13 @@ class MatchCase {
     KW_CASE Identifier ^COLON MatchStatement*
 }
 class MatchWhen {
-    KW_WHEN Identifier ^COLON MatchStatement*
+    KW_WHEN InlineExpression ^COLON MatchStatement*
 }
 class MatchElse {
     KW_ELSE ^COLON MatchStatement*
 }
 atomic class MatchStatement {
-    !/type|case|when|else/ MainStatement
+    !/type|case|when|else|[,，]/ MainStatement
 }
 @style(keyword)
 union KW_MATCH {
@@ -259,8 +259,8 @@ token {
     BIND_R: /≕|=:/
 }
 // === match dot call === ----------------------------------------------------------------------------------------------
-atomic class MatchCall {
-    HIDE OP_AND_THEN? ^WhiteSpace? ^DOT ^WhiteSpace? KW_MATCH (^WhiteSpace? BIND_R ^WhiteSpace? Identifier)? ^WhiteSpace? '{' (HIDE MatchTerms)* ~ '}'
+atomic class DotMatchCall {
+    OP_AND_THEN? ~ ^DOT ^WhiteSpace? KW_MATCH (^WhiteSpace? BIND_R ^WhiteSpace? Identifier)? ^WhiteSpace? '{' (HIDE MatchTerms)* ~ '}'
 }
 // === expression === --------------------------------------------------------------------------------------------------
 atomic class MainExpression {
@@ -271,6 +271,7 @@ atomic class MainTerm {
 }
 
 union MainFactor {
+    | SwitchStatement
     | TryStatement
     | MatchExpression
     | NewStatement
@@ -327,7 +328,8 @@ text class MainPrefix {
 }
 @railway(false)
 atomic union MainSuffix {
-    | MatchCall
+    | HIDE DotMatchCall   #DotMatchCall
+    | HIDE DotClosureCall #DotClosureCall
     | TupleCall
     | InlineSuffix
 }
@@ -338,9 +340,9 @@ atomic class InlineExpression {
 atomic class InlineTerm {
     (MainPrefix HIDE)* MainFactor InlineSuffix*
 }
-atomic union InlineSuffix {
-    | HIDE SuffixOperator
-    | DotCall
+union InlineSuffix {
+    | HIDE SuffixOperator #SuffixOperator
+    | HIDE DotCall #DotCall
     | InlineTupleCall
     | RangeCall
     | GenericCall
@@ -407,12 +409,16 @@ union NewPairKey {
     | RangeLiteral
 }
 // === dot === ---------------------------------------------------------------------------------------------------------
-class DotCall {
-    OP_AND_THEN? ^DOT DotCallItem
+atomic class DotCall {
+    OP_AND_THEN? ~ ^DOT ^WhiteSpace? DotCallItem
 }
 union DotCallItem {
     | Namepath
     | Integer
+}
+// === dot === ---------------------------------------------------------------------------------------------------------
+atomic class DotClosureCall {
+    OP_AND_THEN? ~ ^DOT ^WhiteSpace? Continuation
 }
 // === tuple === -------------------------------------------------------------------------------------------------------
 atomic class InlineTupleCall {

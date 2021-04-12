@@ -15,7 +15,7 @@ impl crate::DotCallNode {
     }
 }
 
-impl crate::MatchCallNode {
+impl crate::DotMatchCallNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<MatchCallNode> {
         let monadic = self.op_and_then.is_some();
         Success {

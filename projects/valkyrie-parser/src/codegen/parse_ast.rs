@@ -1315,6 +1315,7 @@ impl YggdrasilNode for ExpressionStatementNode {
         Ok(Self {
             eos: pair.take_tagged_option::<EosNode>(Cow::Borrowed("eos")),
             main_expression: pair.take_tagged_one::<MainExpressionNode>(Cow::Borrowed("main_expression"))?,
+            op_and_then: pair.take_tagged_option::<OpAndThenNode>(Cow::Borrowed("op_and_then")),
             span: Range { start: _span.start() as u32, end: _span.end() as u32 },
         })
     }
@@ -1488,7 +1489,7 @@ impl YggdrasilNode for MatchWhenNode {
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
         Ok(Self {
-            identifier: pair.take_tagged_one::<IdentifierNode>(Cow::Borrowed("identifier"))?,
+            inline_expression: pair.take_tagged_one::<InlineExpressionNode>(Cow::Borrowed("inline_expression"))?,
             kw_when: pair.take_tagged_one::<KwWhenNode>(Cow::Borrowed("kw_when"))?,
             match_statement: pair
                 .take_tagged_items::<MatchStatementNode>(Cow::Borrowed("match_statement"))
@@ -1624,7 +1625,7 @@ impl FromStr for BindRNode {
     }
 }
 #[automatically_derived]
-impl YggdrasilNode for MatchCallNode {
+impl YggdrasilNode for DotMatchCallNode {
     type Rule = ValkyrieRule;
 
     fn get_range(&self) -> Range<usize> {
@@ -1645,11 +1646,11 @@ impl YggdrasilNode for MatchCallNode {
     }
 }
 #[automatically_derived]
-impl FromStr for MatchCallNode {
+impl FromStr for DotMatchCallNode {
     type Err = YggdrasilError<ValkyrieRule>;
 
     fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
-        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::MatchCall)?)
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::DotMatchCall)?)
     }
 }
 #[automatically_derived]
@@ -1716,6 +1717,7 @@ impl YggdrasilNode for MainFactorNode {
             Self::MatchExpression(s) => s.get_range(),
             Self::NewStatement(s) => s.get_range(),
             Self::ObjectStatement(s) => s.get_range(),
+            Self::SwitchStatement(s) => s.get_range(),
             Self::TryStatement(s) => s.get_range(),
         }
     }
@@ -1735,6 +1737,9 @@ impl YggdrasilNode for MainFactorNode {
         }
         if let Ok(s) = pair.take_tagged_one::<ObjectStatementNode>(Cow::Borrowed("object_statement")) {
             return Ok(Self::ObjectStatement(s));
+        }
+        if let Ok(s) = pair.take_tagged_one::<SwitchStatementNode>(Cow::Borrowed("switch_statement")) {
+            return Ok(Self::SwitchStatement(s));
         }
         if let Ok(s) = pair.take_tagged_one::<TryStatementNode>(Cow::Borrowed("try_statement")) {
             return Ok(Self::TryStatement(s));
@@ -1868,18 +1873,22 @@ impl YggdrasilNode for MainSuffixNode {
 
     fn get_range(&self) -> Range<usize> {
         match self {
+            Self::DotClosureCall(s) => s.get_range(),
+            Self::DotMatchCall(s) => s.get_range(),
             Self::InlineSuffix(s) => s.get_range(),
-            Self::MatchCall(s) => s.get_range(),
             Self::TupleCall(s) => s.get_range(),
         }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
+        if let Ok(s) = pair.take_tagged_one::<DotClosureCallNode>(Cow::Borrowed("dot_closure_call")) {
+            return Ok(Self::DotClosureCall(s));
+        }
+        if let Ok(s) = pair.take_tagged_one::<DotMatchCallNode>(Cow::Borrowed("dot_match_call")) {
+            return Ok(Self::DotMatchCall(s));
+        }
         if let Ok(s) = pair.take_tagged_one::<InlineSuffixNode>(Cow::Borrowed("inline_suffix")) {
             return Ok(Self::InlineSuffix(s));
-        }
-        if let Ok(s) = pair.take_tagged_one::<MatchCallNode>(Cow::Borrowed("match_call")) {
-            return Ok(Self::MatchCall(s));
         }
         if let Ok(s) = pair.take_tagged_one::<TupleCallNode>(Cow::Borrowed("tuple_call")) {
             return Ok(Self::TupleCall(s));
@@ -1958,9 +1967,9 @@ impl YggdrasilNode for InlineSuffixNode {
         match self {
             Self::DotCall(s) => s.get_range(),
             Self::GenericCall(s) => s.get_range(),
-            Self::InlineSuffix0(s) => s.get_range(),
             Self::InlineTupleCall(s) => s.get_range(),
             Self::RangeCall(s) => s.get_range(),
+            Self::SuffixOperator(s) => s.get_range(),
         }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
@@ -1971,14 +1980,14 @@ impl YggdrasilNode for InlineSuffixNode {
         if let Ok(s) = pair.take_tagged_one::<GenericCallNode>(Cow::Borrowed("generic_call")) {
             return Ok(Self::GenericCall(s));
         }
-        if let Ok(s) = pair.take_tagged_one::<SuffixOperatorNode>(Cow::Borrowed("inline_suffix_0")) {
-            return Ok(Self::InlineSuffix0(s));
-        }
         if let Ok(s) = pair.take_tagged_one::<InlineTupleCallNode>(Cow::Borrowed("inline_tuple_call")) {
             return Ok(Self::InlineTupleCall(s));
         }
         if let Ok(s) = pair.take_tagged_one::<RangeCallNode>(Cow::Borrowed("range_call")) {
             return Ok(Self::RangeCall(s));
+        }
+        if let Ok(s) = pair.take_tagged_one::<SuffixOperatorNode>(Cow::Borrowed("suffix_operator")) {
+            return Ok(Self::SuffixOperator(s));
         }
         Err(YggdrasilError::invalid_node(ValkyrieRule::InlineSuffix, _span))
     }
@@ -2420,6 +2429,30 @@ impl FromStr for DotCallItemNode {
 
     fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
         Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::DotCallItem)?)
+    }
+}
+#[automatically_derived]
+impl YggdrasilNode for DotClosureCallNode {
+    type Rule = ValkyrieRule;
+
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
+    }
+    fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
+        let _span = pair.get_span();
+        Ok(Self {
+            continuation: pair.take_tagged_one::<ContinuationNode>(Cow::Borrowed("continuation"))?,
+            op_and_then: pair.take_tagged_option::<OpAndThenNode>(Cow::Borrowed("op_and_then")),
+            span: Range { start: _span.start() as u32, end: _span.end() as u32 },
+        })
+    }
+}
+#[automatically_derived]
+impl FromStr for DotClosureCallNode {
+    type Err = YggdrasilError<ValkyrieRule>;
+
+    fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::DotClosureCall)?)
     }
 }
 #[automatically_derived]

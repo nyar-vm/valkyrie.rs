@@ -16,7 +16,7 @@ ProgramRoot {
                 monadic: false,
                 base: a,
                 term: 1,
-                span: 5..12,
+                span: 10..12,
             },
             span: 4..14,
         },
