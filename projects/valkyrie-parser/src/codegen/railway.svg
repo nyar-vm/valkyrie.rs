@@ -7095,7 +7095,7 @@ DigitsX</text>
 <g class="string">
 <rect height="22" rx="10" ry="10" width="244" x="104" y="8826"/>
 <text x="226" y="8842">
-[0-9a-fA-F](_*[0-9a-fA-F])*</text>
+[0-9a-zA-Z](_*[0-9a-zA-Z])*</text>
 </g>
 <path d=" M 358 8837 h 5 a 5 5 0 0 1 5 -5 a 5 5 0 0 1 5 5 a 5 5 0 0 1 -5 5 a 5 5 0 0 1 -5 -5"/>
 <path d=" M 25 8837 h 10"/>

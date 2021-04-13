@@ -12542,7 +12542,7 @@ GrammarInfo {
                     tag: None,
                     remark: false,
                     body: YggdrasilRegex {
-                        raw: "[0-9a-fA-F](_*[0-9a-fA-F])*",
+                        raw: "[0-9a-zA-Z](_*[0-9a-zA-Z])*",
                         span: 14986..15015,
                     },
                 },

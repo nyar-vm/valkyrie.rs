@@ -562,7 +562,7 @@ text class Integer {
     /[0-9](_*[0-9])*/
 }
 text class DigitsX {
-    /[0-9a-fA-F](_*[0-9a-fA-F])*/
+    /[0-9a-zA-Z](_*[0-9a-zA-Z])*/
 }
 atomic class Decimal ^ {
     (

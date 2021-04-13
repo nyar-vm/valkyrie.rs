@@ -1,28 +1,48 @@
 use super::*;
 
 impl Display for NumberLiteralNode {
-    /// `16⁂FF.AA⁑shift;`
+    /// `base⁂digits.decimal⁑shift_unit;`
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         match self.base {
-            10 if self.shift == 0 => match &self.unit {
-                Some(unit) => write!(f, "{}_{}", self.digits, unit),
-                _ => write!(f, "{}", self.digits),
-            },
-            10 => match &self.unit {
-                Some(unit) => write!(f, "{}⁑{}_{}", self.digits, self.shift, unit),
-                _ => write!(f, "{}⁑{}", self.digits, self.shift),
-            },
-            base => match self.shift {
-                0 => match &self.unit {
-                    Some(unit) => write!(f, "{}_{}", self.digits, unit),
-                    _ => write!(f, "{}", self.digits),
-                },
-                shift => match &self.unit {
-                    Some(unit) => write!(f, "{}⁑{}_{}", self.digits, self.shift, unit),
-                    _ => write!(f, "{}⁑{}", self.digits, self.shift),
-                },
-            },
+            10 => {
+                self.write_digits(f)?;
+                match self.shift {
+                    0 => {}
+                    shift => write!(f, "⁑{}", shift)?,
+                }
+                if let Some(id) = &self.unit {
+                    write!(f, "_{}", id.name)?
+                }
+            }
+            base => {
+                write!(f, "{}⁂", base)?;
+                self.write_digits(f)?;
+                match &self.unit {
+                    Some(unit) if self.shift == 0 => write!(f, "⁑{}", unit.name)?,
+                    Some(unit) => write!(f, "⁑{}_{}", self.shift, unit.name)?,
+                    None if self.shift != 0 => write!(f, "⁑{}", self.shift)?,
+                    None => {}
+                }
+            }
         }
+        Ok(())
+    }
+}
+
+impl NumberLiteralNode {
+    fn write_digits(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        match self.integer.as_str() {
+            "" => f.write_str("0")?,
+            s => f.write_str(s)?,
+        }
+        match self.decimal.as_str() {
+            "" => {}
+            s => {
+                f.write_str(".")?;
+                f.write_str(s)?;
+            }
+        }
+        Ok(())
     }
 }
 

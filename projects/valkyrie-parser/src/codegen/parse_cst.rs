@@ -2612,7 +2612,7 @@ fn parse_digits_x(state: Input) -> Output {
     state.rule(ValkyrieRule::DigitsX, |s| {
         s.match_regex({
             static REGEX: OnceLock<Regex> = OnceLock::new();
-            REGEX.get_or_init(|| Regex::new("^(?x)([0-9a-fA-F](_*[0-9a-fA-F])*)").unwrap())
+            REGEX.get_or_init(|| Regex::new("^(?x)([0-9a-zA-Z](_*[0-9a-zA-Z])*)").unwrap())
         })
     })
 }

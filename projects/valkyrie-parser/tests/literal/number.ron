@@ -22,204 +22,109 @@ ProgramRoot {
             span: 23..26,
         },
         ExpressionNode {
+            omit: true,
+            body: 65536_i16,
+            span: 27..37,
+        },
+        ExpressionNode {
             omit: false,
-            body: 65536,
-            span: 27..32,
+            body: 4294967296_u32,
+            span: 38..53,
+        },
+        ExpressionNode {
+            omit: false,
+            body: 18446744073709551616_i64,
+            span: 53..78,
+        },
+        ExpressionNode {
+            omit: false,
+            body: 340282366920938463463374607431768211456_i128,
+            span: 78..123,
         },
         ExpressionNode {
             omit: true,
-            body: _i16,
-            span: 32..37,
-        },
-        ExpressionNode {
-            omit: false,
-            body: 4294967296,
-            span: 38..48,
-        },
-        ExpressionNode {
-            omit: false,
-            body: _u32,
-            span: 48..53,
-        },
-        ExpressionNode {
-            omit: false,
-            body: 18446744073709551616,
-            span: 53..73,
-        },
-        ExpressionNode {
-            omit: false,
-            body: _i64,
-            span: 73..78,
-        },
-        ExpressionNode {
-            omit: false,
-            body: 340282366920938463463374607431768211456,
-            span: 78..117,
-        },
-        ExpressionNode {
-            omit: false,
-            body: _i128,
-            span: 117..123,
-        },
-        ExpressionNode {
-            omit: false,
-            body: 115792089237316195423570985008687907853269984665640564039457584007913129639936,
-            span: 123..201,
-        },
-        ExpressionNode {
-            omit: true,
-            body: DotCallNode {
-                monadic: false,
-                base: InfixNode {
-                    infix: -,
-                    lhs: _i256,
-                    rhs: 0,
-                },
-                term: MetaType,
-                span: 226..228,
+            body: InfixNode {
+                infix: -,
+                lhs: 115792089237316195423570985008687907853269984665640564039457584007913129639936_i256,
+                rhs: 0,
             },
-            span: 201..229,
+            span: 123..229,
         },
         ExpressionNode {
             omit: true,
-            body: DotCallNode {
-                monadic: false,
-                base: UnaryNode {
-                    prefix: +,
-                    base: 0,
-                },
-                term: MetaType,
-                span: 232..234,
+            body: UnaryNode {
+                prefix: +,
+                base: 0,
             },
             span: 230..235,
         },
         ExpressionNode {
             omit: true,
-            body: DotCallNode {
-                monadic: false,
-                base: 0,
-                term: MetaType,
-                span: 237..239,
-            },
+            body: 0,
             span: 236..240,
         },
         ExpressionNode {
             omit: true,
-            body: DotCallNode {
-                monadic: false,
-                base: UnaryNode {
-                    prefix: +,
-                    base: 123456,
-                },
-                term: MetaType,
-                span: 248..250,
+            body: UnaryNode {
+                prefix: +,
+                base: 0,
             },
             span: 241..251,
         },
         ExpressionNode {
             omit: true,
-            body: DotCallNode {
-                monadic: false,
-                base: UnaryNode {
-                    prefix: -,
-                    base: 0,
-                },
-                term: 789,
-                span: 254..258,
+            body: UnaryNode {
+                prefix: -,
+                base: 789,
             },
             span: 252..259,
         },
         ExpressionNode {
-            omit: false,
-            body: 42,
-            span: 261..263,
+            omit: true,
+            body: 42_f32,
+            span: 261..267,
         },
         ExpressionNode {
             omit: true,
-            body: f32,
-            span: 263..267,
-        },
-        ExpressionNode {
-            omit: false,
-            body: 42,
-            span: 268..270,
+            body: 42_f32,
+            span: 268..275,
         },
         ExpressionNode {
             omit: true,
-            body: _f32,
-            span: 270..275,
-        },
-        ExpressionNode {
-            omit: false,
-            body: 42,
-            span: 276..278,
-        },
-        ExpressionNode {
-            omit: true,
-            body: __f64,
-            span: 278..284,
+            body: 42_f64,
+            span: 276..284,
         },
         ExpressionNode {
             omit: false,
             body: InfixNode {
                 infix: +,
-                lhs: 114,
-                rhs: 514,
+                lhs: InfixNode {
+                    infix: +,
+                    lhs: InfixNode {
+                        infix: +,
+                        lhs: 114,
+                        rhs: 514_i,
+                    },
+                    rhs: 1919_j,
+                },
+                rhs: 810_k,
             },
-            span: 300..309,
-        },
-        ExpressionNode {
-            omit: false,
-            body: InfixNode {
-                infix: +,
-                lhs: i,
-                rhs: 1919,
-            },
-            span: 309..317,
-        },
-        ExpressionNode {
-            omit: false,
-            body: InfixNode {
-                infix: +,
-                lhs: j,
-                rhs: 810,
-            },
-            span: 317..324,
-        },
-        ExpressionNode {
-            omit: false,
-            body: k,
-            span: 324..342,
-        },
-        ExpressionNode {
-            omit: false,
-            body: 42,
-            span: 342..344,
+            span: 300..342,
         },
         ExpressionNode {
             omit: true,
-            body: f32,
-            span: 344..348,
-        },
-        ExpressionNode {
-            omit: false,
-            body: 42,
-            span: 349..351,
+            body: 42_f32,
+            span: 342..348,
         },
         ExpressionNode {
             omit: true,
-            body: _f32,
-            span: 351..356,
-        },
-        ExpressionNode {
-            omit: false,
-            body: 42,
-            span: 357..359,
+            body: 42_f32,
+            span: 349..356,
         },
         ExpressionNode {
             omit: true,
-            body: __f64,
-            span: 359..365,
+            body: 42_f64,
+            span: 357..365,
         },
         ExpressionNode {
             omit: true,
@@ -227,49 +132,59 @@ ProgramRoot {
             span: 381..386,
         },
         ExpressionNode {
-            omit: false,
-            body: 1234,
-            span: 387..391,
+            omit: true,
+            body: 1234_cm,
+            span: 387..394,
         },
         ExpressionNode {
             omit: true,
-            body: cm,
-            span: 391..394,
-        },
-        ExpressionNode {
-            omit: false,
-            body: 1,
-            span: 395..396,
+            body: 1234_cm,
+            span: 395..406,
         },
         ExpressionNode {
             omit: true,
-            body: _2_3_4_cm,
-            span: 396..406,
-        },
-        ExpressionNode {
-            omit: false,
-            body: 1,
-            span: 407..408,
+            body: 1234_cm,
+            span: 407..422,
         },
         ExpressionNode {
             omit: true,
-            body: __2__3__4__cm,
-            span: 408..422,
-        },
-        ExpressionNode {
-            omit: false,
-            body: DotCallNode {
-                monadic: false,
-                base: 1234,
-                term: 56,
-                span: 427..430,
-            },
-            span: 423..430,
+            body: 56_埃米,
+            span: 423..437,
         },
         ExpressionNode {
             omit: true,
-            body: 埃米,
-            span: 430..437,
+            body: 2,
+            span: 455..460,
+        },
+        ExpressionNode {
+            omit: true,
+            body: 2_f64,
+            span: 461..469,
+        },
+        ExpressionNode {
+            omit: true,
+            body: 2_f64,
+            span: 470..479,
+        },
+        ExpressionNode {
+            omit: true,
+            body: 2_f64,
+            span: 480..490,
+        },
+        ExpressionNode {
+            omit: true,
+            body: 2233_f32,
+            span: 491..508,
+        },
+        ExpressionNode {
+            omit: true,
+            body: 16⁂AA,
+            span: 510..527,
+        },
+        ExpressionNode {
+            omit: true,
+            body: 16⁂AA⁑f32,
+            span: 528..548,
         },
     ],
 }
