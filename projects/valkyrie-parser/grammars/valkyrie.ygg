@@ -551,15 +551,37 @@ text class Special {
 }
 // === number === ------------------------------------------------------------------------------------------------------
 union Number {
-    | Integer
+    | DecimalX
     | Decimal
+}
+union Sign {
+    | '+' #Positive
+    | '-' #Netative
 }
 text class Integer {
     /[0-9](_*[0-9])*/
 }
+text class DigitsX {
+    /[0-9a-fA-F](_*[0-9a-fA-F])*/
+}
 atomic class Decimal ^ {
-    | lhs:Integer DOT (rhs:Integer)?
-    | DOT rhs:Integer
+    (
+        | lhs:Integer (DOT (rhs:Integer)?)?
+        | DOT rhs:Integer
+    )
+    (/[⁑]|[*]{2}/ (sign:Sign)? shift:Integer)?
+    (/[_]*/ unit:Identifier)?
+}
+atomic class DecimalX ^ {
+    base:Integer /[⁂]|[*]{3}/
+    (
+        | lhs:DigitsX (DOT (rhs:DigitsX)?)?
+        | DOT rhs:DigitsX
+    )
+    (/[⁑]|[*]{2}/ (
+        | (sign:Sign)? shift:Integer (/[_]*/ unit:Identifier)?
+        | unit:Identifier
+    ))?
 }
 // === keywords === ----------------------------------------------------------------------------------------------------
 @railway(false)

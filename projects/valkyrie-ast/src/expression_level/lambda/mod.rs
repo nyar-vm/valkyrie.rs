@@ -38,7 +38,7 @@ pub enum ClosureCaller {
     /// `object.{ $1 + 1 }`
     Lambda,
     /// `object.1() { }`
-    Integer(BigUint),
+    Integer(NonZeroU64),
     /// `object.method() { }`, maybe macro call
     Internal(IdentifierNode),
 }

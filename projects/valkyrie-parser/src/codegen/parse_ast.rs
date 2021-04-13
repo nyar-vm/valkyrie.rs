@@ -3331,7 +3331,7 @@ impl YggdrasilNode for NumberNode {
     fn get_range(&self) -> Range<usize> {
         match self {
             Self::Decimal(s) => s.get_range(),
-            Self::Integer(s) => s.get_range(),
+            Self::DecimalX(s) => s.get_range(),
         }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
@@ -3339,8 +3339,8 @@ impl YggdrasilNode for NumberNode {
         if let Ok(s) = pair.take_tagged_one::<DecimalNode>(Cow::Borrowed("decimal")) {
             return Ok(Self::Decimal(s));
         }
-        if let Ok(s) = pair.take_tagged_one::<IntegerNode>(Cow::Borrowed("integer")) {
-            return Ok(Self::Integer(s));
+        if let Ok(s) = pair.take_tagged_one::<DecimalXNode>(Cow::Borrowed("decimal_x")) {
+            return Ok(Self::DecimalX(s));
         }
         Err(YggdrasilError::invalid_node(ValkyrieRule::Number, _span))
     }
@@ -3351,6 +3351,35 @@ impl FromStr for NumberNode {
 
     fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
         Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::Number)?)
+    }
+}
+#[automatically_derived]
+impl YggdrasilNode for SignNode {
+    type Rule = ValkyrieRule;
+
+    fn get_range(&self) -> Range<usize> {
+        match self {
+            Self::Netative => Range::default(),
+            Self::Positive => Range::default(),
+        }
+    }
+    fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
+        let _span = pair.get_span();
+        if let Some(_) = pair.find_first_tag("netative") {
+            return Ok(Self::Netative);
+        }
+        if let Some(_) = pair.find_first_tag("positive") {
+            return Ok(Self::Positive);
+        }
+        Err(YggdrasilError::invalid_node(ValkyrieRule::Sign, _span))
+    }
+}
+#[automatically_derived]
+impl FromStr for SignNode {
+    type Err = YggdrasilError<ValkyrieRule>;
+
+    fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::Sign)?)
     }
 }
 #[automatically_derived]
@@ -3374,6 +3403,26 @@ impl FromStr for IntegerNode {
     }
 }
 #[automatically_derived]
+impl YggdrasilNode for DigitsXNode {
+    type Rule = ValkyrieRule;
+
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
+    }
+    fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
+        let _span = pair.get_span();
+        Ok(Self { text: pair.get_string(), span: Range { start: _span.start() as u32, end: _span.end() as u32 } })
+    }
+}
+#[automatically_derived]
+impl FromStr for DigitsXNode {
+    type Err = YggdrasilError<ValkyrieRule>;
+
+    fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::DigitsX)?)
+    }
+}
+#[automatically_derived]
 impl YggdrasilNode for DecimalNode {
     type Rule = ValkyrieRule;
 
@@ -3385,6 +3434,9 @@ impl YggdrasilNode for DecimalNode {
         Ok(Self {
             lhs: pair.take_tagged_option::<IntegerNode>(Cow::Borrowed("lhs")),
             rhs: pair.take_tagged_option::<IntegerNode>(Cow::Borrowed("rhs")),
+            shift: pair.take_tagged_option::<IntegerNode>(Cow::Borrowed("shift")),
+            sign: pair.take_tagged_option::<SignNode>(Cow::Borrowed("sign")),
+            unit: pair.take_tagged_option::<IdentifierNode>(Cow::Borrowed("unit")),
             span: Range { start: _span.start() as u32, end: _span.end() as u32 },
         })
     }
@@ -3395,6 +3447,34 @@ impl FromStr for DecimalNode {
 
     fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
         Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::Decimal)?)
+    }
+}
+#[automatically_derived]
+impl YggdrasilNode for DecimalXNode {
+    type Rule = ValkyrieRule;
+
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
+    }
+    fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
+        let _span = pair.get_span();
+        Ok(Self {
+            base: pair.take_tagged_one::<IntegerNode>(Cow::Borrowed("base"))?,
+            lhs: pair.take_tagged_option::<DigitsXNode>(Cow::Borrowed("lhs")),
+            rhs: pair.take_tagged_option::<DigitsXNode>(Cow::Borrowed("rhs")),
+            shift: pair.take_tagged_option::<IntegerNode>(Cow::Borrowed("shift")),
+            sign: pair.take_tagged_option::<SignNode>(Cow::Borrowed("sign")),
+            unit: pair.take_tagged_option::<IdentifierNode>(Cow::Borrowed("unit")),
+            span: Range { start: _span.start() as u32, end: _span.end() as u32 },
+        })
+    }
+}
+#[automatically_derived]
+impl FromStr for DecimalXNode {
+    type Err = YggdrasilError<ValkyrieRule>;
+
+    fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::DecimalX)?)
     }
 }
 #[automatically_derived]

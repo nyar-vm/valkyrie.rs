@@ -14,7 +14,6 @@ edition = "2021"
 [dependencies]
 #pratt = "0.4.0"
 deriver = "0.0.0"
-num-bigint = "0.4.4"
 serde = { version = "1.0.188", default-features = false, optional = true }
 
 [dependencies.nyar-error]
@@ -32,7 +31,7 @@ optional = true
 [features]
 default = []
 std = ["pretty-print?/std", "serde?/std"]
-serde = ["dep:serde", "serde/derive", "num-bigint/serde"]
+serde = ["dep:serde", "serde/derive"]
 
 #[package.metadata.docs.rs]
 #all-features = true

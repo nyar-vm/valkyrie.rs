@@ -15,21 +15,28 @@ impl crate::NumberNode {
     pub fn build(&self, _: &ProgramContext) -> Result<ExpressionType, NyarError> {
         let n = match self {
             Self::Decimal(v) => v.build(),
-            Self::Integer(v) => v.build(),
+            Self::DecimalX(v) => v.build(),
         };
         Ok(n.into())
     }
 }
+
+impl crate::DecimalXNode {
+    pub fn build(&self) -> NumberLiteralNode {
+        NumberLiteralNode::new(10, self.span.clone())
+    }
+}
+
 impl crate::DecimalNode {
     pub fn build(&self) -> NumberLiteralNode {
-        NumberLiteralNode { value: "".to_string(), unit: None, span: self.span.clone() }
+        NumberLiteralNode::new(10, self.span.clone())
     }
 }
 
 impl crate::IntegerNode {
     pub fn build(&self) -> NumberLiteralNode {
-        let value = self.text.chars().filter(|c| c.is_digit(10)).collect();
-        NumberLiteralNode { value, unit: None, span: self.span.clone() }
+        // let value = self.text.chars().filter(|c| c.is_digit(10)).collect();
+        NumberLiteralNode::new(10, self.span.clone())
     }
 }
 

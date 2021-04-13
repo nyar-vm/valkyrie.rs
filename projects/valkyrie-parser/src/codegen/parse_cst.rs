@@ -130,8 +130,11 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::IdentifierRawText => parse_identifier_raw_text(state),
         ValkyrieRule::Special => parse_special(state),
         ValkyrieRule::Number => parse_number(state),
+        ValkyrieRule::Sign => parse_sign(state),
         ValkyrieRule::Integer => parse_integer(state),
+        ValkyrieRule::DigitsX => parse_digits_x(state),
         ValkyrieRule::Decimal => parse_decimal(state),
+        ValkyrieRule::DecimalX => parse_decimal_x(state),
         ValkyrieRule::PROPORTION => parse_proportion(state),
         ValkyrieRule::COLON => parse_colon(state),
         ValkyrieRule::COMMA => parse_comma(state),
@@ -2583,8 +2586,16 @@ fn parse_special(state: Input) -> Output {
 fn parse_number(state: Input) -> Output {
     state.rule(ValkyrieRule::Number, |s| {
         Err(s)
-            .or_else(|s| parse_integer(s).and_then(|s| s.tag_node("integer")))
+            .or_else(|s| parse_decimal_x(s).and_then(|s| s.tag_node("decimal_x")))
             .or_else(|s| parse_decimal(s).and_then(|s| s.tag_node("decimal")))
+    })
+}
+#[inline]
+fn parse_sign(state: Input) -> Output {
+    state.rule(ValkyrieRule::Sign, |s| {
+        Err(s)
+            .or_else(|s| builtin_text(s, "+", false).and_then(|s| s.tag_node("positive")))
+            .or_else(|s| builtin_text(s, "-", false).and_then(|s| s.tag_node("netative")))
     })
 }
 #[inline]
@@ -2592,25 +2603,160 @@ fn parse_integer(state: Input) -> Output {
     state.rule(ValkyrieRule::Integer, |s| {
         s.match_regex({
             static REGEX: OnceLock<Regex> = OnceLock::new();
-            REGEX.get_or_init(|| Regex::new("^(?x)(0|[1-9][0-9]*)").unwrap())
+            REGEX.get_or_init(|| Regex::new("^(?x)([0-9](_*[0-9])*)").unwrap())
+        })
+    })
+}
+#[inline]
+fn parse_digits_x(state: Input) -> Output {
+    state.rule(ValkyrieRule::DigitsX, |s| {
+        s.match_regex({
+            static REGEX: OnceLock<Regex> = OnceLock::new();
+            REGEX.get_or_init(|| Regex::new("^(?x)([0-9a-fA-F](_*[0-9a-fA-F])*)").unwrap())
         })
     })
 }
 #[inline]
 fn parse_decimal(state: Input) -> Output {
     state.rule(ValkyrieRule::Decimal, |s| {
-        Err(s)
-            .or_else(|s| {
-                s.sequence(|s| {
-                    Ok(s)
-                        .and_then(|s| parse_integer(s).and_then(|s| s.tag_node("lhs")))
-                        .and_then(|s| parse_dot(s))
-                        .and_then(|s| s.optional(|s| parse_integer(s).and_then(|s| s.tag_node("rhs"))))
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| {
+                    Err(s)
+                        .or_else(|s| {
+                            s.sequence(|s| {
+                                Ok(s).and_then(|s| parse_integer(s).and_then(|s| s.tag_node("lhs"))).and_then(|s| {
+                                    s.optional(|s| {
+                                        s.sequence(|s| {
+                                            Ok(s)
+                                                .and_then(|s| parse_dot(s))
+                                                .and_then(|s| s.optional(|s| parse_integer(s).and_then(|s| s.tag_node("rhs"))))
+                                        })
+                                    })
+                                })
+                            })
+                        })
+                        .or_else(|s| {
+                            s.sequence(|s| {
+                                Ok(s).and_then(|s| parse_dot(s)).and_then(|s| parse_integer(s).and_then(|s| s.tag_node("rhs")))
+                            })
+                        })
                 })
-            })
-            .or_else(|s| {
-                s.sequence(|s| Ok(s).and_then(|s| parse_dot(s)).and_then(|s| parse_integer(s).and_then(|s| s.tag_node("rhs"))))
-            })
+                .and_then(|s| {
+                    s.optional(|s| {
+                        s.sequence(|s| {
+                            Ok(s)
+                                .and_then(|s| {
+                                    s.sequence(|s| {
+                                        Ok(s)
+                                            .and_then(|s| {
+                                                builtin_regex(s, {
+                                                    static REGEX: OnceLock<Regex> = OnceLock::new();
+                                                    REGEX.get_or_init(|| Regex::new("^(?x)([⁑]|[*]{2})").unwrap())
+                                                })
+                                            })
+                                            .and_then(|s| s.optional(|s| parse_sign(s).and_then(|s| s.tag_node("sign"))))
+                                    })
+                                })
+                                .and_then(|s| parse_integer(s).and_then(|s| s.tag_node("shift")))
+                        })
+                    })
+                })
+                .and_then(|s| {
+                    s.optional(|s| {
+                        s.sequence(|s| {
+                            Ok(s)
+                                .and_then(|s| {
+                                    builtin_regex(s, {
+                                        static REGEX: OnceLock<Regex> = OnceLock::new();
+                                        REGEX.get_or_init(|| Regex::new("^(?x)([_]*)").unwrap())
+                                    })
+                                })
+                                .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("unit")))
+                        })
+                    })
+                })
+        })
+    })
+}
+#[inline]
+fn parse_decimal_x(state: Input) -> Output {
+    state.rule(ValkyrieRule::DecimalX, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| parse_integer(s).and_then(|s| s.tag_node("base")))
+                .and_then(|s| {
+                    builtin_regex(s, {
+                        static REGEX: OnceLock<Regex> = OnceLock::new();
+                        REGEX.get_or_init(|| Regex::new("^(?x)([⁂]|[*]{3})").unwrap())
+                    })
+                })
+                .and_then(|s| {
+                    Err(s)
+                        .or_else(|s| {
+                            s.sequence(|s| {
+                                Ok(s).and_then(|s| parse_digits_x(s).and_then(|s| s.tag_node("lhs"))).and_then(|s| {
+                                    s.optional(|s| {
+                                        s.sequence(|s| {
+                                            Ok(s)
+                                                .and_then(|s| parse_dot(s))
+                                                .and_then(|s| s.optional(|s| parse_digits_x(s).and_then(|s| s.tag_node("rhs"))))
+                                        })
+                                    })
+                                })
+                            })
+                        })
+                        .or_else(|s| {
+                            s.sequence(|s| {
+                                Ok(s).and_then(|s| parse_dot(s)).and_then(|s| parse_digits_x(s).and_then(|s| s.tag_node("rhs")))
+                            })
+                        })
+                })
+                .and_then(|s| {
+                    s.optional(|s| {
+                        s.sequence(|s| {
+                            Ok(s)
+                                .and_then(|s| {
+                                    builtin_regex(s, {
+                                        static REGEX: OnceLock<Regex> = OnceLock::new();
+                                        REGEX.get_or_init(|| Regex::new("^(?x)([⁑]|[*]{2})").unwrap())
+                                    })
+                                })
+                                .and_then(|s| {
+                                    Err(s)
+                                        .or_else(|s| {
+                                            s.sequence(|s| {
+                                                Ok(s)
+                                                    .and_then(|s| {
+                                                        s.optional(|s| parse_sign(s).and_then(|s| s.tag_node("sign")))
+                                                    })
+                                                    .and_then(|s| parse_integer(s).and_then(|s| s.tag_node("shift")))
+                                                    .and_then(|s| {
+                                                        s.optional(|s| {
+                                                            s.sequence(|s| {
+                                                                Ok(s)
+                                                                    .and_then(|s| {
+                                                                        builtin_regex(s, {
+                                                                            static REGEX: OnceLock<Regex> = OnceLock::new();
+                                                                            REGEX.get_or_init(|| {
+                                                                                Regex::new("^(?x)([_]*)").unwrap()
+                                                                            })
+                                                                        })
+                                                                    })
+                                                                    .and_then(|s| {
+                                                                        parse_identifier(s).and_then(|s| s.tag_node("unit"))
+                                                                    })
+                                                            })
+                                                        })
+                                                    })
+                                            })
+                                        })
+                                        .or_else(|s| parse_identifier(s).and_then(|s| s.tag_node("unit")))
+                                })
+                        })
+                    })
+                })
+        })
     })
 }
 #[inline]

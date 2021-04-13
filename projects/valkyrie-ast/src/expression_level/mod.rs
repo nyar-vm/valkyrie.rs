@@ -32,7 +32,6 @@ use core::{
 use deriver::From;
 #[cfg(feature = "lispify")]
 use lispify::{Lisp, Lispify};
-use num_bigint::BigUint;
 use nyar_error::{
     third_party::{Associativity, Precedence},
     FileID, FileSpan,

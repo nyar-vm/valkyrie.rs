@@ -2,7 +2,8 @@ use super::*;
 
 impl Display for NumberLiteralNode {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        Display::fmt(&self.value, f)
+        todo!()
+        // Display::fmt(&self.value, f)
     }
 }
 #[cfg(feature = "pretty-print")]

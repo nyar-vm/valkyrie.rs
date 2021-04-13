@@ -158,8 +158,11 @@ pub enum ValkyrieRule {
     IdentifierRawText,
     Special,
     Number,
+    Sign,
     Integer,
+    DigitsX,
     Decimal,
+    DecimalX,
     PROPORTION,
     COLON,
     COMMA,
@@ -336,8 +339,11 @@ impl YggdrasilRule for ValkyrieRule {
             Self::IdentifierRawText => "",
             Self::Special => "",
             Self::Number => "",
+            Self::Sign => "",
             Self::Integer => "",
+            Self::DigitsX => "",
             Self::Decimal => "",
+            Self::DecimalX => "",
             Self::PROPORTION => "",
             Self::COLON => "",
             Self::COMMA => "",
@@ -1279,7 +1285,13 @@ pub struct SpecialNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum NumberNode {
     Decimal(DecimalNode),
-    Integer(IntegerNode),
+    DecimalX(DecimalXNode),
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum SignNode {
+    Netative,
+    Positive,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -1289,9 +1301,29 @@ pub struct IntegerNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct DigitsXNode {
+    pub text: String,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct DecimalNode {
     pub lhs: Option<IntegerNode>,
     pub rhs: Option<IntegerNode>,
+    pub shift: Option<IntegerNode>,
+    pub sign: Option<SignNode>,
+    pub unit: Option<IdentifierNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct DecimalXNode {
+    pub base: IntegerNode,
+    pub lhs: Option<DigitsXNode>,
+    pub rhs: Option<DigitsXNode>,
+    pub shift: Option<IntegerNode>,
+    pub sign: Option<SignNode>,
+    pub unit: Option<IdentifierNode>,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
