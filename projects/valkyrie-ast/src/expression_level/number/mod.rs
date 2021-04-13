@@ -10,7 +10,7 @@ pub struct NumberLiteralNode {
     /// representation of input digits in base
     pub digits: String,
     /// Representation of input precision in base
-    pub significant: Option<String>,
+    pub shift: isize,
     /// unit of the input number
     pub unit: Option<IdentifierNode>,
     /// The range of the node
@@ -25,7 +25,7 @@ impl ValkyrieNode for NumberLiteralNode {
 impl NumberLiteralNode {
     /// Create a new number with given base
     pub fn new(base: u32, span: Range<u32>) -> Self {
-        Self { base, digits: String::new(), significant: None, unit: None, span }
+        Self { base, digits: String::new(), shift: 0, unit: None, span }
     }
     /// Set the digits of the number
     pub fn with_digits(self, text: &str) -> Self {
@@ -33,10 +33,8 @@ impl NumberLiteralNode {
         Self { digits, ..self }
     }
     /// Set the precision of the number
-    pub fn with_significant(self, text: &str) -> Self {
-        // 0xFF|¦1.6
-        let significant = text.chars().filter(|c| c.is_digit(10)).collect();
-        Self { significant: Some(significant), ..self }
+    pub fn with_shift(self, shift: isize) -> Self {
+        Self { shift, ..self }
     }
     /// Set the unit of the number
     pub fn with_unit(self, unit: IdentifierNode) -> Self {

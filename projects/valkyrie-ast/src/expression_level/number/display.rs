@@ -1,11 +1,31 @@
 use super::*;
 
 impl Display for NumberLiteralNode {
+    /// `16⁂FF.AA⁑shift;`
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        todo!()
-        // Display::fmt(&self.value, f)
+        match self.base {
+            10 if self.shift == 0 => match &self.unit {
+                Some(unit) => write!(f, "{}_{}", self.digits, unit),
+                _ => write!(f, "{}", self.digits),
+            },
+            10 => match &self.unit {
+                Some(unit) => write!(f, "{}⁑{}_{}", self.digits, self.shift, unit),
+                _ => write!(f, "{}⁑{}", self.digits, self.shift),
+            },
+            base => match self.shift {
+                0 => match &self.unit {
+                    Some(unit) => write!(f, "{}_{}", self.digits, unit),
+                    _ => write!(f, "{}", self.digits),
+                },
+                shift => match &self.unit {
+                    Some(unit) => write!(f, "{}⁑{}_{}", self.digits, self.shift, unit),
+                    _ => write!(f, "{}⁑{}", self.digits, self.shift),
+                },
+            },
+        }
     }
 }
+
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for NumberLiteralNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
