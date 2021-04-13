@@ -1784,8 +1784,8 @@ impl YggdrasilNode for LeadingNode {
 
     fn get_range(&self) -> Range<usize> {
         match self {
-            Self::Integer(s) => s.get_range(),
             Self::Namepath(s) => s.get_range(),
+            Self::Number(s) => s.get_range(),
             Self::ProceduralCall(s) => s.get_range(),
             Self::RangeLiteral(s) => s.get_range(),
             Self::Special(s) => s.get_range(),
@@ -1795,11 +1795,11 @@ impl YggdrasilNode for LeadingNode {
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
-        if let Ok(s) = pair.take_tagged_one::<IntegerNode>(Cow::Borrowed("integer")) {
-            return Ok(Self::Integer(s));
-        }
         if let Ok(s) = pair.take_tagged_one::<NamepathNode>(Cow::Borrowed("namepath")) {
             return Ok(Self::Namepath(s));
+        }
+        if let Ok(s) = pair.take_tagged_one::<NumberNode>(Cow::Borrowed("number")) {
+            return Ok(Self::Number(s));
         }
         if let Ok(s) = pair.take_tagged_one::<ProceduralCallNode>(Cow::Borrowed("procedural_call")) {
             return Ok(Self::ProceduralCall(s));
@@ -3325,6 +3325,35 @@ impl FromStr for SpecialNode {
     }
 }
 #[automatically_derived]
+impl YggdrasilNode for NumberNode {
+    type Rule = ValkyrieRule;
+
+    fn get_range(&self) -> Range<usize> {
+        match self {
+            Self::Decimal(s) => s.get_range(),
+            Self::Integer(s) => s.get_range(),
+        }
+    }
+    fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
+        let _span = pair.get_span();
+        if let Ok(s) = pair.take_tagged_one::<DecimalNode>(Cow::Borrowed("decimal")) {
+            return Ok(Self::Decimal(s));
+        }
+        if let Ok(s) = pair.take_tagged_one::<IntegerNode>(Cow::Borrowed("integer")) {
+            return Ok(Self::Integer(s));
+        }
+        Err(YggdrasilError::invalid_node(ValkyrieRule::Number, _span))
+    }
+}
+#[automatically_derived]
+impl FromStr for NumberNode {
+    type Err = YggdrasilError<ValkyrieRule>;
+
+    fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::Number)?)
+    }
+}
+#[automatically_derived]
 impl YggdrasilNode for IntegerNode {
     type Rule = ValkyrieRule;
 
@@ -3342,6 +3371,30 @@ impl FromStr for IntegerNode {
 
     fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
         Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::Integer)?)
+    }
+}
+#[automatically_derived]
+impl YggdrasilNode for DecimalNode {
+    type Rule = ValkyrieRule;
+
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
+    }
+    fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
+        let _span = pair.get_span();
+        Ok(Self {
+            lhs: pair.take_tagged_option::<IntegerNode>(Cow::Borrowed("lhs")),
+            rhs: pair.take_tagged_option::<IntegerNode>(Cow::Borrowed("rhs")),
+            span: Range { start: _span.start() as u32, end: _span.end() as u32 },
+        })
+    }
+}
+#[automatically_derived]
+impl FromStr for DecimalNode {
+    type Err = YggdrasilError<ValkyrieRule>;
+
+    fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::Decimal)?)
     }
 }
 #[automatically_derived]

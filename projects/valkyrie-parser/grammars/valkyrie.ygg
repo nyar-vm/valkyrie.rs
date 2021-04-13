@@ -289,7 +289,7 @@ union Leading {
     | RangeLiteral
     | TextLiteral
     | Namepath
-    | Integer
+    | Number
     | Special
 }
 
@@ -550,8 +550,16 @@ text class Special {
     /[∅∞]|true|false/
 }
 // === number === ------------------------------------------------------------------------------------------------------
+union Number {
+    | Integer
+    | Decimal
+}
 text class Integer {
-    /0|[1-9][0-9]*/
+    /[0-9](_*[0-9])*/
+}
+atomic class Decimal ^ {
+    | lhs:Integer DOT (rhs:Integer)?
+    | DOT rhs:Integer
 }
 // === keywords === ----------------------------------------------------------------------------------------------------
 @railway(false)

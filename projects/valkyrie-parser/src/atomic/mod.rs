@@ -24,7 +24,7 @@ impl LeadingNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<ExpressionType> {
         let value = match self {
             Self::Special(v) => v.build(),
-            Self::Integer(v) => v.build().into(),
+            Self::Number(v) => v.build(ctx)?.into(),
             Self::Namepath(v) => v.build(ctx).into(),
             Self::ProceduralCall(_) => {
                 todo!()

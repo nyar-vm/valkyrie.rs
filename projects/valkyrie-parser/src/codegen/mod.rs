@@ -157,7 +157,9 @@ pub enum ValkyrieRule {
     IdentifierRaw,
     IdentifierRawText,
     Special,
+    Number,
     Integer,
+    Decimal,
     PROPORTION,
     COLON,
     COMMA,
@@ -333,7 +335,9 @@ impl YggdrasilRule for ValkyrieRule {
             Self::IdentifierRaw => "",
             Self::IdentifierRawText => "",
             Self::Special => "",
+            Self::Number => "",
             Self::Integer => "",
+            Self::Decimal => "",
             Self::PROPORTION => "",
             Self::COLON => "",
             Self::COMMA => "",
@@ -849,8 +853,8 @@ pub struct GroupFactorNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum LeadingNode {
-    Integer(IntegerNode),
     Namepath(NamepathNode),
+    Number(NumberNode),
     ProceduralCall(ProceduralCallNode),
     RangeLiteral(RangeLiteralNode),
     Special(SpecialNode),
@@ -1273,8 +1277,21 @@ pub struct SpecialNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum NumberNode {
+    Decimal(DecimalNode),
+    Integer(IntegerNode),
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct IntegerNode {
     pub text: String,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct DecimalNode {
+    pub lhs: Option<IntegerNode>,
+    pub rhs: Option<IntegerNode>,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]

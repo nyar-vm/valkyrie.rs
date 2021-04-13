@@ -129,7 +129,9 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::IdentifierRaw => parse_identifier_raw(state),
         ValkyrieRule::IdentifierRawText => parse_identifier_raw_text(state),
         ValkyrieRule::Special => parse_special(state),
+        ValkyrieRule::Number => parse_number(state),
         ValkyrieRule::Integer => parse_integer(state),
+        ValkyrieRule::Decimal => parse_decimal(state),
         ValkyrieRule::PROPORTION => parse_proportion(state),
         ValkyrieRule::COLON => parse_colon(state),
         ValkyrieRule::COMMA => parse_comma(state),
@@ -1435,7 +1437,7 @@ fn parse_leading(state: Input) -> Output {
             .or_else(|s| parse_range_literal(s).and_then(|s| s.tag_node("range_literal")))
             .or_else(|s| parse_text_literal(s).and_then(|s| s.tag_node("text_literal")))
             .or_else(|s| parse_namepath(s).and_then(|s| s.tag_node("namepath")))
-            .or_else(|s| parse_integer(s).and_then(|s| s.tag_node("integer")))
+            .or_else(|s| parse_number(s).and_then(|s| s.tag_node("number")))
             .or_else(|s| parse_special(s).and_then(|s| s.tag_node("special")))
     })
 }
@@ -2578,12 +2580,37 @@ fn parse_special(state: Input) -> Output {
     })
 }
 #[inline]
+fn parse_number(state: Input) -> Output {
+    state.rule(ValkyrieRule::Number, |s| {
+        Err(s)
+            .or_else(|s| parse_integer(s).and_then(|s| s.tag_node("integer")))
+            .or_else(|s| parse_decimal(s).and_then(|s| s.tag_node("decimal")))
+    })
+}
+#[inline]
 fn parse_integer(state: Input) -> Output {
     state.rule(ValkyrieRule::Integer, |s| {
         s.match_regex({
             static REGEX: OnceLock<Regex> = OnceLock::new();
             REGEX.get_or_init(|| Regex::new("^(?x)(0|[1-9][0-9]*)").unwrap())
         })
+    })
+}
+#[inline]
+fn parse_decimal(state: Input) -> Output {
+    state.rule(ValkyrieRule::Decimal, |s| {
+        Err(s)
+            .or_else(|s| {
+                s.sequence(|s| {
+                    Ok(s)
+                        .and_then(|s| parse_integer(s).and_then(|s| s.tag_node("lhs")))
+                        .and_then(|s| parse_dot(s))
+                        .and_then(|s| s.optional(|s| parse_integer(s).and_then(|s| s.tag_node("rhs"))))
+                })
+            })
+            .or_else(|s| {
+                s.sequence(|s| Ok(s).and_then(|s| parse_dot(s)).and_then(|s| parse_integer(s).and_then(|s| s.tag_node("rhs"))))
+            })
     })
 }
 #[inline]

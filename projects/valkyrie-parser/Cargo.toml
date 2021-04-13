@@ -10,6 +10,7 @@ edition = "2021"
 
 [dependencies]
 pratt = "0.4.0"
+num-bigint = "0.4.4"
 
 
 [dependencies.valkyrie-ast]
