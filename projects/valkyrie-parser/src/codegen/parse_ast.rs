@@ -1788,6 +1788,7 @@ impl YggdrasilNode for LeadingNode {
             Self::Number(s) => s.get_range(),
             Self::ProceduralCall(s) => s.get_range(),
             Self::RangeLiteral(s) => s.get_range(),
+            Self::Slot(s) => s.get_range(),
             Self::Special(s) => s.get_range(),
             Self::TextLiteral(s) => s.get_range(),
             Self::TupleLiteralStrict(s) => s.get_range(),
@@ -1806,6 +1807,9 @@ impl YggdrasilNode for LeadingNode {
         }
         if let Ok(s) = pair.take_tagged_one::<RangeLiteralNode>(Cow::Borrowed("range_literal")) {
             return Ok(Self::RangeLiteral(s));
+        }
+        if let Ok(s) = pair.take_tagged_one::<SlotNode>(Cow::Borrowed("slot")) {
+            return Ok(Self::Slot(s));
         }
         if let Ok(s) = pair.take_tagged_one::<SpecialNode>(Cow::Borrowed("special")) {
             return Ok(Self::Special(s));
@@ -3167,6 +3171,58 @@ impl FromStr for ProceduralPathNode {
     }
 }
 #[automatically_derived]
+impl YggdrasilNode for SlotNode {
+    type Rule = ValkyrieRule;
+
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
+    }
+    fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
+        let _span = pair.get_span();
+        Ok(Self {
+            slot_item: pair.take_tagged_option::<SlotItemNode>(Cow::Borrowed("slot_item")),
+            span: Range { start: _span.start() as u32, end: _span.end() as u32 },
+        })
+    }
+}
+#[automatically_derived]
+impl FromStr for SlotNode {
+    type Err = YggdrasilError<ValkyrieRule>;
+
+    fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::Slot)?)
+    }
+}
+#[automatically_derived]
+impl YggdrasilNode for SlotItemNode {
+    type Rule = ValkyrieRule;
+
+    fn get_range(&self) -> Range<usize> {
+        match self {
+            Self::Identifier(s) => s.get_range(),
+            Self::Integer(s) => s.get_range(),
+        }
+    }
+    fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
+        let _span = pair.get_span();
+        if let Ok(s) = pair.take_tagged_one::<IdentifierNode>(Cow::Borrowed("identifier")) {
+            return Ok(Self::Identifier(s));
+        }
+        if let Ok(s) = pair.take_tagged_one::<IntegerNode>(Cow::Borrowed("integer")) {
+            return Ok(Self::Integer(s));
+        }
+        Err(YggdrasilError::invalid_node(ValkyrieRule::SlotItem, _span))
+    }
+}
+#[automatically_derived]
+impl FromStr for SlotItemNode {
+    type Err = YggdrasilError<ValkyrieRule>;
+
+    fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::SlotItem)?)
+    }
+}
+#[automatically_derived]
 impl YggdrasilNode for NamepathFreeNode {
     type Rule = ValkyrieRule;
 
@@ -3432,6 +3488,7 @@ impl YggdrasilNode for DecimalNode {
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
         Ok(Self {
+            dot: pair.take_tagged_option::<DotNode>(Cow::Borrowed("dot")),
             lhs: pair.take_tagged_option::<IntegerNode>(Cow::Borrowed("lhs")),
             rhs: pair.take_tagged_option::<IntegerNode>(Cow::Borrowed("rhs")),
             shift: pair.take_tagged_option::<IntegerNode>(Cow::Borrowed("shift")),
@@ -3460,6 +3517,7 @@ impl YggdrasilNode for DecimalXNode {
         let _span = pair.get_span();
         Ok(Self {
             base: pair.take_tagged_one::<IntegerNode>(Cow::Borrowed("base"))?,
+            dot: pair.take_tagged_option::<DotNode>(Cow::Borrowed("dot")),
             lhs: pair.take_tagged_option::<DigitsXNode>(Cow::Borrowed("lhs")),
             rhs: pair.take_tagged_option::<DigitsXNode>(Cow::Borrowed("rhs")),
             shift: pair.take_tagged_option::<IntegerNode>(Cow::Borrowed("shift")),

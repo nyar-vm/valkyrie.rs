@@ -150,6 +150,8 @@ pub enum ValkyrieRule {
     ModifierCall,
     AttributePath,
     ProceduralPath,
+    Slot,
+    SlotItem,
     NamepathFree,
     Namepath,
     Identifier,
@@ -331,6 +333,8 @@ impl YggdrasilRule for ValkyrieRule {
             Self::ModifierCall => "",
             Self::AttributePath => "",
             Self::ProceduralPath => "",
+            Self::Slot => "",
+            Self::SlotItem => "",
             Self::NamepathFree => "",
             Self::Namepath => "",
             Self::Identifier => "",
@@ -863,6 +867,7 @@ pub enum LeadingNode {
     Number(NumberNode),
     ProceduralCall(ProceduralCallNode),
     RangeLiteral(RangeLiteralNode),
+    Slot(SlotNode),
     Special(SpecialNode),
     TextLiteral(TextLiteralNode),
     TupleLiteralStrict(TupleLiteralStrictNode),
@@ -1241,6 +1246,18 @@ pub struct ProceduralPathNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct SlotNode {
+    pub slot_item: Option<SlotItemNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum SlotItemNode {
+    Identifier(IdentifierNode),
+    Integer(IntegerNode),
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct NamepathFreeNode {
     pub identifier: Vec<IdentifierNode>,
     pub span: Range<u32>,
@@ -1308,6 +1325,7 @@ pub struct DigitsXNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct DecimalNode {
+    pub dot: Option<DotNode>,
     pub lhs: Option<IntegerNode>,
     pub rhs: Option<IntegerNode>,
     pub shift: Option<IntegerNode>,
@@ -1319,6 +1337,7 @@ pub struct DecimalNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct DecimalXNode {
     pub base: IntegerNode,
+    pub dot: Option<DotNode>,
     pub lhs: Option<DigitsXNode>,
     pub rhs: Option<DigitsXNode>,
     pub shift: Option<IntegerNode>,

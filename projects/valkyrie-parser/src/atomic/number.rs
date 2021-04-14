@@ -1,4 +1,5 @@
 use super::*;
+use crate::SignNode;
 use nyar_error::NyarError;
 use std::{num::ParseIntError, str::FromStr};
 use valkyrie_ast::NullNode;
@@ -28,11 +29,18 @@ impl crate::DecimalNode {
             n.set_integer(&s.text, ctx.file, s.span.start as usize)?
         }
         if let Some(s) = &self.rhs {
-            n.set_integer(&s.text, ctx.file, s.span.start as usize)?
+            n.set_decimal(&s.text, ctx.file, s.span.start as usize)?
         }
         if let Some(s) = &self.unit {
             n.unit = Some(s.build(ctx))
         }
+        if let Some(s) = &self.shift {
+            match &self.sign {
+                Some(SignNode::Netative) => n.shift = -s.as_shift(ctx)?,
+                _ => n.shift = s.as_shift(ctx)?,
+            }
+        }
+        n.set_dot(self.dot.is_some());
         Ok(n.into())
     }
 }
@@ -44,11 +52,18 @@ impl crate::DecimalXNode {
             n.set_integer(&s.text, ctx.file, s.span.start as usize)?
         }
         if let Some(s) = &self.rhs {
-            n.set_integer(&s.text, ctx.file, s.span.start as usize)?
+            n.set_decimal(&s.text, ctx.file, s.span.start as usize)?
         }
         if let Some(s) = &self.unit {
             n.unit = Some(s.build(ctx))
         }
+        if let Some(s) = &self.shift {
+            match &self.sign {
+                Some(SignNode::Netative) => n.shift = -s.as_shift(ctx)?,
+                _ => n.shift = s.as_shift(ctx)?,
+            }
+        }
+        n.set_dot(self.dot.is_some());
         Ok(n.into())
     }
 }
@@ -62,6 +77,13 @@ impl crate::IntegerNode {
         match u32::from_str(&self.text) {
             Ok(o) if o >= 2 && o <= 36 => Ok(o),
             Ok(_) => Err(NyarError::syntax_error(format!("Currently only `2 ⩽ base ⩽ 36` is supported"), span)),
+            Err(e) => Err(NyarError::syntax_error(e.to_string(), span)),
+        }
+    }
+    pub fn as_shift(&self, ctx: &ProgramContext) -> Result<isize, NyarError> {
+        let span = ctx.file.with_range(self.get_range());
+        match isize::from_str(&self.text) {
+            Ok(o) => Ok(o),
             Err(e) => Err(NyarError::syntax_error(e.to_string(), span)),
         }
     }

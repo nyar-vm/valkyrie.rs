@@ -20,6 +20,7 @@ mod display;
 use crate::{helper::ValkyrieNode, *};
 use alloc::{
     boxed::Box,
+    format,
     string::{String, ToString},
     vec,
     vec::Vec,
@@ -34,7 +35,7 @@ use deriver::From;
 use lispify::{Lisp, Lispify};
 use nyar_error::{
     third_party::{Associativity, Precedence},
-    FileID, FileSpan,
+    FileID, FileSpan, NyarError, ReportKind, SyntaxError,
 };
 #[cfg(feature = "pretty-print")]
 use pretty_print::{

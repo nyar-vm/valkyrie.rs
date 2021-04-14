@@ -122,6 +122,8 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::ModifierCall => parse_modifier_call(state),
         ValkyrieRule::AttributePath => parse_attribute_path(state),
         ValkyrieRule::ProceduralPath => parse_procedural_path(state),
+        ValkyrieRule::Slot => parse_slot(state),
+        ValkyrieRule::SlotItem => parse_slot_item(state),
         ValkyrieRule::NamepathFree => parse_namepath_free(state),
         ValkyrieRule::Namepath => parse_namepath(state),
         ValkyrieRule::Identifier => parse_identifier(state),
@@ -1439,6 +1441,7 @@ fn parse_leading(state: Input) -> Output {
             .or_else(|s| parse_tuple_literal_strict(s).and_then(|s| s.tag_node("tuple_literal_strict")))
             .or_else(|s| parse_range_literal(s).and_then(|s| s.tag_node("range_literal")))
             .or_else(|s| parse_text_literal(s).and_then(|s| s.tag_node("text_literal")))
+            .or_else(|s| parse_slot(s).and_then(|s| s.tag_node("slot")))
             .or_else(|s| parse_namepath(s).and_then(|s| s.tag_node("namepath")))
             .or_else(|s| parse_number(s).and_then(|s| s.tag_node("number")))
             .or_else(|s| parse_special(s).and_then(|s| s.tag_node("special")))
@@ -2495,6 +2498,29 @@ fn parse_procedural_path(state: Input) -> Output {
     })
 }
 #[inline]
+fn parse_slot(state: Input) -> Output {
+    state.rule(ValkyrieRule::Slot, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| {
+                    builtin_regex(s, {
+                        static REGEX: OnceLock<Regex> = OnceLock::new();
+                        REGEX.get_or_init(|| Regex::new("^(?x)([$]{1,2})").unwrap())
+                    })
+                })
+                .and_then(|s| s.optional(|s| parse_slot_item(s).and_then(|s| s.tag_node("slot_item"))))
+        })
+    })
+}
+#[inline]
+fn parse_slot_item(state: Input) -> Output {
+    state.rule(ValkyrieRule::SlotItem, |s| {
+        Err(s)
+            .or_else(|s| parse_integer(s).and_then(|s| s.tag_node("integer")))
+            .or_else(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
+    })
+}
+#[inline]
 fn parse_namepath_free(state: Input) -> Output {
     state.rule(ValkyrieRule::NamepathFree, |s| {
         s.sequence(|s| {
@@ -2629,7 +2655,7 @@ fn parse_decimal(state: Input) -> Output {
                                     s.optional(|s| {
                                         s.sequence(|s| {
                                             Ok(s)
-                                                .and_then(|s| parse_dot(s))
+                                                .and_then(|s| parse_dot(s).and_then(|s| s.tag_node("dot")))
                                                 .and_then(|s| s.optional(|s| parse_integer(s).and_then(|s| s.tag_node("rhs"))))
                                         })
                                     })
@@ -2638,7 +2664,9 @@ fn parse_decimal(state: Input) -> Output {
                         })
                         .or_else(|s| {
                             s.sequence(|s| {
-                                Ok(s).and_then(|s| parse_dot(s)).and_then(|s| parse_integer(s).and_then(|s| s.tag_node("rhs")))
+                                Ok(s)
+                                    .and_then(|s| parse_dot(s).and_then(|s| s.tag_node("dot")))
+                                    .and_then(|s| parse_integer(s).and_then(|s| s.tag_node("rhs")))
                             })
                         })
                 })
@@ -2699,7 +2727,7 @@ fn parse_decimal_x(state: Input) -> Output {
                                     s.optional(|s| {
                                         s.sequence(|s| {
                                             Ok(s)
-                                                .and_then(|s| parse_dot(s))
+                                                .and_then(|s| parse_dot(s).and_then(|s| s.tag_node("dot")))
                                                 .and_then(|s| s.optional(|s| parse_digits_x(s).and_then(|s| s.tag_node("rhs"))))
                                         })
                                     })
@@ -2708,7 +2736,9 @@ fn parse_decimal_x(state: Input) -> Output {
                         })
                         .or_else(|s| {
                             s.sequence(|s| {
-                                Ok(s).and_then(|s| parse_dot(s)).and_then(|s| parse_digits_x(s).and_then(|s| s.tag_node("rhs")))
+                                Ok(s)
+                                    .and_then(|s| parse_dot(s).and_then(|s| s.tag_node("dot")))
+                                    .and_then(|s| parse_digits_x(s).and_then(|s| s.tag_node("rhs")))
                             })
                         })
                 })

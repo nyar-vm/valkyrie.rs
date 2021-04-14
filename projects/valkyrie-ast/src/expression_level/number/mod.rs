@@ -1,8 +1,6 @@
 mod display;
 
 use super::*;
-use alloc::format;
-use nyar_error::{NyarError, ReportKind, SyntaxError};
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -40,6 +38,12 @@ impl NumberLiteralNode {
     pub fn set_decimal(&mut self, text: &str, file: FileID, start: usize) -> Result<(), NyarError> {
         self.decimal = self.make_number(text, file, start)?;
         Ok(())
+    }
+    /// Ensure a decimal number
+    pub fn set_dot(&mut self, dot: bool) {
+        if self.decimal.is_empty() && dot {
+            self.decimal = "0".to_string()
+        }
     }
     /// Set the precision of the number
     pub fn with_shift(self, shift: isize) -> Self {
