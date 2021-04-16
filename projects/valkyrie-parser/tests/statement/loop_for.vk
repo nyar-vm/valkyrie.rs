@@ -24,6 +24,7 @@ for (k, mut v) ∈ dict if k > 0 {
 
 for (k, mut v) ∈ dict if k > 0 {
     looping
-} otherwise {
+}
+otherwise {
     nothing
 }

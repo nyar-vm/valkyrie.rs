@@ -5,7 +5,7 @@ impl crate::DefineClassNode {
         Success {
             value: ClassDeclaration {
                 kind: self.kw_class.build(),
-                modifiers: build_modifiers(&self.modifier_call, ctx),
+                modifiers: self.annotation_head.get_modifiers(ctx),
                 name: self.identifier.build(ctx),
                 generic: None,
                 base_classes: None,

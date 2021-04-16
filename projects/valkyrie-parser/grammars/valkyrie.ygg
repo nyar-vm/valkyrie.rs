@@ -66,8 +66,10 @@ atomic union ImportMacroItem {
     | '@' Identifier #Instant
 }
 // === template === ----------------------------------------------------------------------------------------------------
+
+// === template === ----------------------------------------------------------------------------------------------------
 class DefineTemplate {
-    AttributeCall* ModifierCall*
+    AnnotationHead
     KW_TEMPLATE TemplateParameters? TemplateBlock
 }
 class TemplateParameters {
@@ -98,7 +100,7 @@ class WhereBound {
 //}
 // === classes === -----------------------------------------------------------------------------------------------------
 class DefineClass {
-    DefineTemplate? AttributeCall* ModifierCall*
+    DefineTemplate? AnnotationHead
     KW_CLASS Identifier ClassInherit? ClassBlock ^EOS?
 }
 class ClassBlock {
@@ -149,7 +151,8 @@ class ObjectStatement {
 }
 // === identifier === --------------------------------------------------------------------------------------------------
 class DefineUnion {
-    AttributeCall* KW_UNION Identifier
+    AnnotationHead
+    KW_UNION Identifier
 }
 @style(keyword)
 class KW_UNION {
@@ -157,7 +160,8 @@ class KW_UNION {
 }
 // === identifier === --------------------------------------------------------------------------------------------------
 class DefineEnumerate {
-    AttributeCall* KW_FLAGS Identifier '{' EnumerateTerms* '}'
+    AnnotationHead
+    KW_FLAGS Identifier '{' EnumerateTerms* '}'
 }
 union EnumerateTerms {
     | EnumerateField
@@ -203,7 +207,7 @@ union ParameterItem {
     | ParameterPair
 }
 class ParameterPair {
-    AttributeCall* ParameterModifier* ParameterHint?
+    AnnotationMix ParameterModifier* ParameterHint?
     Identifier TypeHint? ParameterDefault?
 }
 text class ParameterHint {
@@ -520,6 +524,19 @@ class GenericPair {
     (Identifier Colon)? TypeExpression
 }
 // === annotation === --------------------------------------------------------------------------------------------------
+class AnnotationHead {
+    AnnotationTerm* ModifierCall*
+}
+class AnnotationMix {
+    AnnotationTermMix* ModifierCall*
+}
+union AnnotationTerm {
+    | AttributeCall
+}
+union AnnotationTermMix {
+    | AttributeCall
+    | ProceduralCall
+}
 class AttributeCall {
     // #call(...)
     AttributePath TupleLiteral?

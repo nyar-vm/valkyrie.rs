@@ -145,6 +145,10 @@ pub enum ValkyrieRule {
     GenericHide,
     GenericTerms,
     GenericPair,
+    AnnotationHead,
+    AnnotationMix,
+    AnnotationTerm,
+    AnnotationTermMix,
     AttributeCall,
     ProceduralCall,
     TextLiteral,
@@ -338,6 +342,10 @@ impl YggdrasilRule for ValkyrieRule {
             Self::GenericHide => "",
             Self::GenericTerms => "",
             Self::GenericPair => "",
+            Self::AnnotationHead => "",
+            Self::AnnotationMix => "",
+            Self::AnnotationTerm => "",
+            Self::AnnotationTermMix => "",
             Self::AttributeCall => "",
             Self::ProceduralCall => "",
             Self::TextLiteral => "",
@@ -505,9 +513,8 @@ pub enum ImportMacroItemNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct DefineTemplateNode {
-    pub attribute_call: Vec<AttributeCallNode>,
+    pub annotation_head: AnnotationHeadNode,
     pub kw_template: KwTemplateNode,
-    pub modifier_call: Vec<ModifierCallNode>,
     pub template_block: TemplateBlockNode,
     pub template_parameters: Option<TemplateParametersNode>,
     pub span: Range<u32>,
@@ -554,13 +561,12 @@ pub struct WhereBoundNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct DefineClassNode {
-    pub attribute_call: Vec<AttributeCallNode>,
+    pub annotation_head: AnnotationHeadNode,
     pub class_block: ClassBlockNode,
     pub class_inherit: Option<ClassInheritNode>,
     pub define_template: Option<DefineTemplateNode>,
     pub identifier: IdentifierNode,
     pub kw_class: KwClassNode,
-    pub modifier_call: Vec<ModifierCallNode>,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -651,7 +657,7 @@ pub struct ObjectStatementNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct DefineUnionNode {
-    pub attribute_call: Vec<AttributeCallNode>,
+    pub annotation_head: AnnotationHeadNode,
     pub identifier: IdentifierNode,
     pub kw_union: KwUnionNode,
     pub span: Range<u32>,
@@ -664,7 +670,7 @@ pub struct KwUnionNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct DefineEnumerateNode {
-    pub attribute_call: Vec<AttributeCallNode>,
+    pub annotation_head: AnnotationHeadNode,
     pub enumerate_terms: Vec<EnumerateTermsNode>,
     pub identifier: IdentifierNode,
     pub kw_flags: KwFlagsNode,
@@ -749,7 +755,7 @@ pub enum ParameterItemNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ParameterPairNode {
-    pub attribute_call: Vec<AttributeCallNode>,
+    pub annotation_mix: AnnotationMixNode,
     pub identifier: IdentifierNode,
     pub parameter_default: Option<ParameterDefaultNode>,
     pub parameter_hint: Option<ParameterHintNode>,
@@ -1239,6 +1245,31 @@ pub struct GenericPairNode {
     pub identifier: Option<IdentifierNode>,
     pub type_expression: TypeExpressionNode,
     pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct AnnotationHeadNode {
+    pub annotation_term: Vec<AnnotationTermNode>,
+    pub modifier_call: Vec<ModifierCallNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct AnnotationMixNode {
+    pub annotation_term_mix: Vec<AnnotationTermMixNode>,
+    pub modifier_call: Vec<ModifierCallNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum AnnotationTermNode {
+    AttributeCall(AttributeCallNode),
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum AnnotationTermMixNode {
+    AttributeCall(AttributeCallNode),
+    ProceduralCall(ProceduralCallNode),
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
