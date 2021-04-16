@@ -78,7 +78,7 @@ pub enum ValkyrieRule {
     ParameterTerms,
     ParameterItem,
     ParameterPair,
-    ParameterDeconstruct,
+    ParameterHint,
     ParameterModifier,
     PARAMETER_STOP,
     Continuation,
@@ -122,7 +122,7 @@ pub enum ValkyrieRule {
     NewStatement,
     NewModifiers,
     NewBlock,
-    NEW_MODIFIER_STOP,
+    NEW_STOP,
     NewPair,
     NewPairKey,
     DotCall,
@@ -271,7 +271,7 @@ impl YggdrasilRule for ValkyrieRule {
             Self::ParameterTerms => "",
             Self::ParameterItem => "",
             Self::ParameterPair => "",
-            Self::ParameterDeconstruct => "",
+            Self::ParameterHint => "",
             Self::ParameterModifier => "",
             Self::PARAMETER_STOP => "",
             Self::Continuation => "",
@@ -315,7 +315,7 @@ impl YggdrasilRule for ValkyrieRule {
             Self::NewStatement => "",
             Self::NewModifiers => "",
             Self::NewBlock => "",
-            Self::NEW_MODIFIER_STOP => "",
+            Self::NEW_STOP => "",
             Self::NewPair => "",
             Self::NewPairKey => "",
             Self::DotCall => "",
@@ -706,6 +706,7 @@ pub struct DefineFunctionNode {
     pub continuation: Option<ContinuationNode>,
     pub generic_hide: Option<GenericHideNode>,
     pub kw_function: KwFunctionNode,
+    pub modifier_call: Vec<ModifierCallNode>,
     pub namepath: NamepathNode,
     pub parameter_terms: ParameterTermsNode,
     pub type_effect: Option<TypeEffectNode>,
@@ -750,15 +751,15 @@ pub enum ParameterItemNode {
 pub struct ParameterPairNode {
     pub attribute_call: Vec<AttributeCallNode>,
     pub identifier: IdentifierNode,
-    pub parameter_deconstruct: Option<ParameterDeconstructNode>,
     pub parameter_default: Option<ParameterDefaultNode>,
+    pub parameter_hint: Option<ParameterHintNode>,
     pub parameter_modifier: Vec<ParameterModifierNode>,
     pub type_hint: Option<TypeHintNode>,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ParameterDeconstructNode {
+pub struct ParameterHintNode {
     pub text: String,
     pub span: Range<u32>,
 }
@@ -1083,7 +1084,7 @@ pub struct NewBlockNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct NewModifierStopNode {
+pub struct NewStopNode {
     pub identifier: IdentifierNode,
     pub span: Range<u32>,
 }

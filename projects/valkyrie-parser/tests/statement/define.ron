@@ -4,26 +4,7 @@ ProgramRoot {
             type: Micro,
             namepath: NamePathNode {
                 names: [
-                    Identifier("fun1", 6..10),
-                ],
-            },
-            modifiers: [],
-            attributes: None,
-            generic: None,
-            arguments: ArgumentsList {
-                terms: [],
-            },
-            return: None,
-            body: StatementBlock {
-                terms: [],
-                span: 0..0,
-            },
-        },
-        FunctionDeclaration {
-            type: Macro,
-            namepath: NamePathNode {
-                names: [
-                    Identifier("fun2", 25..29),
+                    Identifier("method", 9..15),
                 ],
             },
             modifiers: [],
@@ -42,7 +23,7 @@ ProgramRoot {
             type: Micro,
             namepath: NamePathNode {
                 names: [
-                    Identifier("fun3", 48..52),
+                    Identifier("method", 36..42),
                 ],
             },
             modifiers: [],
@@ -61,26 +42,7 @@ ProgramRoot {
             type: Micro,
             namepath: NamePathNode {
                 names: [
-                    Identifier("fun4", 116..120),
-                ],
-            },
-            modifiers: [],
-            attributes: None,
-            generic: None,
-            arguments: ArgumentsList {
-                terms: [],
-            },
-            return: None,
-            body: StatementBlock {
-                terms: [],
-                span: 0..0,
-            },
-        },
-        FunctionDeclaration {
-            type: Macro,
-            namepath: NamePathNode {
-                names: [
-                    Identifier("outer", 198..203),
+                    Identifier("method", 57..63),
                 ],
             },
             modifiers: [],
@@ -99,7 +61,64 @@ ProgramRoot {
             type: Micro,
             namepath: NamePathNode {
                 names: [
-                    Identifier("main", 418..422),
+                    Identifier("method", 104..110),
+                ],
+            },
+            modifiers: [],
+            attributes: None,
+            generic: None,
+            arguments: ArgumentsList {
+                terms: [],
+            },
+            return: None,
+            body: StatementBlock {
+                terms: [],
+                span: 0..0,
+            },
+        },
+        FunctionDeclaration {
+            type: Micro,
+            namepath: NamePathNode {
+                names: [
+                    Identifier("method", 149..155),
+                ],
+            },
+            modifiers: [],
+            attributes: None,
+            generic: None,
+            arguments: ArgumentsList {
+                terms: [],
+            },
+            return: None,
+            body: StatementBlock {
+                terms: [],
+                span: 0..0,
+            },
+        },
+        FunctionDeclaration {
+            type: Micro,
+            namepath: NamePathNode {
+                names: [
+                    Identifier("method", 191..197),
+                ],
+            },
+            modifiers: [],
+            attributes: None,
+            generic: None,
+            arguments: ArgumentsList {
+                terms: [],
+            },
+            return: None,
+            body: StatementBlock {
+                terms: [],
+                span: 0..0,
+            },
+        },
+        FunctionDeclaration {
+            type: Micro,
+            namepath: NamePathNode {
+                names: [
+                    Identifier("method", 236..242),
                 ],
             },
             modifiers: [],

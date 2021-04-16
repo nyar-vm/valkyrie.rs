@@ -183,7 +183,7 @@ union KW_TRAIT {
 }
 // === identifier === --------------------------------------------------------------------------------------------------
 class DefineFunction {
-    KW_FUNCTION Namepath GenericHide? '(' ParameterTerms ')' TypeReturn? TypeEffect? Continuation?
+    ModifierCall* KW_FUNCTION Namepath GenericHide? '(' ParameterTerms ')' TypeReturn? TypeEffect? Continuation?
 }
 class TypeHint {
     COLON TypeExpression
@@ -203,11 +203,11 @@ union ParameterItem {
     | ParameterPair
 }
 class ParameterPair {
-    AttributeCall* ParameterModifier* ParameterDeconstruct?
+    AttributeCall* ParameterModifier* ParameterHint?
     Identifier TypeHint? ParameterDefault?
 }
-text class ParameterDeconstruct {
-    /[.]{2,3}/
+text class ParameterHint {
+    /[.]{2,3}|[~^]/
 }
 class ParameterModifier {
     !PARAMETER_STOP Identifier
@@ -421,12 +421,12 @@ class NewStatement {
     KW_NEW NewModifiers* Namepath GenericHide? TupleLiteral? NewBlock? ^EOS?
 }
 atomic class NewModifiers ^ {
-    !NEW_MODIFIER_STOP ^Identifier
+    !NEW_STOP ^Identifier
 }
 class NewBlock {
     '{' (NewPair (EOS_FREE NewPair)* EOS_FREE?)? '}'
 }
-atomic class NEW_MODIFIER_STOP {
+atomic class NEW_STOP {
     Identifier HIDE [\[({<⟨:∷;]
 }
 atomic class NewPair {

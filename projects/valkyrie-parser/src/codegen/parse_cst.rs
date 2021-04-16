@@ -50,7 +50,7 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::ParameterTerms => parse_parameter_terms(state),
         ValkyrieRule::ParameterItem => parse_parameter_item(state),
         ValkyrieRule::ParameterPair => parse_parameter_pair(state),
-        ValkyrieRule::ParameterDeconstruct => parse_parameter_deconstruct(state),
+        ValkyrieRule::ParameterHint => parse_parameter_hint(state),
         ValkyrieRule::ParameterModifier => parse_parameter_modifier(state),
         ValkyrieRule::PARAMETER_STOP => parse_parameter_stop(state),
         ValkyrieRule::Continuation => parse_continuation(state),
@@ -94,7 +94,7 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::NewStatement => parse_new_statement(state),
         ValkyrieRule::NewModifiers => parse_new_modifiers(state),
         ValkyrieRule::NewBlock => parse_new_block(state),
-        ValkyrieRule::NEW_MODIFIER_STOP => parse_new_modifier_stop(state),
+        ValkyrieRule::NEW_STOP => parse_new_stop(state),
         ValkyrieRule::NewPair => parse_new_pair(state),
         ValkyrieRule::NewPairKey => parse_new_pair_key(state),
         ValkyrieRule::DotCall => parse_dot_call(state),
@@ -1010,6 +1010,16 @@ fn parse_define_function(state: Input) -> Output {
     state.rule(ValkyrieRule::DefineFunction, |s| {
         s.sequence(|s| {
             Ok(s)
+                .and_then(|s| {
+                    s.repeat(0..4294967295, |s| {
+                        s.sequence(|s| {
+                            Ok(s)
+                                .and_then(|s| builtin_ignore(s))
+                                .and_then(|s| parse_modifier_call(s).and_then(|s| s.tag_node("modifier_call")))
+                        })
+                    })
+                })
+                .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_kw_function(s).and_then(|s| s.tag_node("kw_function")))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_namepath(s).and_then(|s| s.tag_node("namepath")))
@@ -1122,7 +1132,7 @@ fn parse_parameter_pair(state: Input) -> Output {
                     })
                 })
                 .and_then(|s| builtin_ignore(s))
-                .and_then(|s| s.optional(|s| parse_parameter_deconstruct(s).and_then(|s| s.tag_node("parameter_deconstruct"))))
+                .and_then(|s| s.optional(|s| parse_parameter_hint(s).and_then(|s| s.tag_node("parameter_hint"))))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
                 .and_then(|s| builtin_ignore(s))
@@ -1133,11 +1143,11 @@ fn parse_parameter_pair(state: Input) -> Output {
     })
 }
 #[inline]
-fn parse_parameter_deconstruct(state: Input) -> Output {
-    state.rule(ValkyrieRule::ParameterDeconstruct, |s| {
+fn parse_parameter_hint(state: Input) -> Output {
+    state.rule(ValkyrieRule::ParameterHint, |s| {
         s.match_regex({
             static REGEX: OnceLock<Regex> = OnceLock::new();
-            REGEX.get_or_init(|| Regex::new("^(?x)([.]{2,3})").unwrap())
+            REGEX.get_or_init(|| Regex::new("^(?x)([.]{2,3}|[~^])").unwrap())
         })
     })
 }
@@ -1904,7 +1914,7 @@ fn parse_new_modifiers(state: Input) -> Output {
     state.rule(ValkyrieRule::NewModifiers, |s| {
         s.sequence(|s| {
             Ok(s)
-                .and_then(|s| s.lookahead(false, |s| parse_new_modifier_stop(s)))
+                .and_then(|s| s.lookahead(false, |s| parse_new_stop(s)))
                 .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
         })
     })
@@ -1947,8 +1957,8 @@ fn parse_new_block(state: Input) -> Output {
     })
 }
 #[inline]
-fn parse_new_modifier_stop(state: Input) -> Output {
-    state.rule(ValkyrieRule::NEW_MODIFIER_STOP, |s| {
+fn parse_new_stop(state: Input) -> Output {
+    state.rule(ValkyrieRule::NEW_STOP, |s| {
         s.sequence(|s| {
             Ok(s)
                 .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))

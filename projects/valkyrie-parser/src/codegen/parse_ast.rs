@@ -1124,6 +1124,9 @@ impl YggdrasilNode for DefineFunctionNode {
             continuation: pair.take_tagged_option::<ContinuationNode>(Cow::Borrowed("continuation")),
             generic_hide: pair.take_tagged_option::<GenericHideNode>(Cow::Borrowed("generic_hide")),
             kw_function: pair.take_tagged_one::<KwFunctionNode>(Cow::Borrowed("kw_function"))?,
+            modifier_call: pair
+                .take_tagged_items::<ModifierCallNode>(Cow::Borrowed("modifier_call"))
+                .collect::<Result<Vec<_>, _>>()?,
             namepath: pair.take_tagged_one::<NamepathNode>(Cow::Borrowed("namepath"))?,
             parameter_terms: pair.take_tagged_one::<ParameterTermsNode>(Cow::Borrowed("parameter_terms"))?,
             type_effect: pair.take_tagged_option::<TypeEffectNode>(Cow::Borrowed("type_effect")),
@@ -1283,8 +1286,8 @@ impl YggdrasilNode for ParameterPairNode {
                 .take_tagged_items::<AttributeCallNode>(Cow::Borrowed("attribute_call"))
                 .collect::<Result<Vec<_>, _>>()?,
             identifier: pair.take_tagged_one::<IdentifierNode>(Cow::Borrowed("identifier"))?,
-            parameter_deconstruct: pair.take_tagged_option::<ParameterDeconstructNode>(Cow::Borrowed("parameter_deconstruct")),
             parameter_default: pair.take_tagged_option::<ParameterDefaultNode>(Cow::Borrowed("parameter_default")),
+            parameter_hint: pair.take_tagged_option::<ParameterHintNode>(Cow::Borrowed("parameter_hint")),
             parameter_modifier: pair
                 .take_tagged_items::<ParameterModifierNode>(Cow::Borrowed("parameter_modifier"))
                 .collect::<Result<Vec<_>, _>>()?,
@@ -1302,7 +1305,7 @@ impl FromStr for ParameterPairNode {
     }
 }
 #[automatically_derived]
-impl YggdrasilNode for ParameterDeconstructNode {
+impl YggdrasilNode for ParameterHintNode {
     type Rule = ValkyrieRule;
 
     fn get_range(&self) -> Range<usize> {
@@ -1314,11 +1317,11 @@ impl YggdrasilNode for ParameterDeconstructNode {
     }
 }
 #[automatically_derived]
-impl FromStr for ParameterDeconstructNode {
+impl FromStr for ParameterHintNode {
     type Err = YggdrasilError<ValkyrieRule>;
 
     fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
-        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::ParameterDeconstruct)?)
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::ParameterHint)?)
     }
 }
 #[automatically_derived]
@@ -2513,7 +2516,7 @@ impl FromStr for NewBlockNode {
     }
 }
 #[automatically_derived]
-impl YggdrasilNode for NewModifierStopNode {
+impl YggdrasilNode for NewStopNode {
     type Rule = ValkyrieRule;
 
     fn get_range(&self) -> Range<usize> {
@@ -2528,11 +2531,11 @@ impl YggdrasilNode for NewModifierStopNode {
     }
 }
 #[automatically_derived]
-impl FromStr for NewModifierStopNode {
+impl FromStr for NewStopNode {
     type Err = YggdrasilError<ValkyrieRule>;
 
     fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
-        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::NEW_MODIFIER_STOP)?)
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::NEW_STOP)?)
     }
 }
 #[automatically_derived]

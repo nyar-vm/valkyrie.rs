@@ -1,0 +1,23 @@
+ProgramRoot {
+    statements: [
+        FunctionDeclaration {
+            type: Micro,
+            namepath: NamePathNode {
+                names: [
+                    Identifier("fun3", 6..10),
+                ],
+            },
+            modifiers: [],
+            attributes: None,
+            generic: None,
+            arguments: ArgumentsList {
+                terms: [],
+            },
+            return: None,
+            body: StatementBlock {
+                terms: [],
+                span: 0..0,
+            },
+        },
+    ],
+}

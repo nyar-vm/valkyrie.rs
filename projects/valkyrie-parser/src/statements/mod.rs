@@ -20,17 +20,11 @@ impl crate::StatementNode {
         let value = match self {
             Self::DefineClass(v) => v.build(ctx)?.into(),
             Self::DefineEnumerate(v) => v.build(ctx)?.into(),
-            Self::DefineFunction(_) => {
-                todo!()
-            }
+            Self::DefineFunction(v) => v.build(ctx)?.into(),
             Self::DefineImport(v) => v.build(ctx)?.into(),
             Self::DefineNamespace(v) => v.build(ctx).into(),
-            Self::DefineTrait(_) => {
-                todo!()
-            }
-            Self::DefineUnion(_) => {
-                todo!()
-            }
+            Self::DefineTrait(v) => v.build(ctx)?.into(),
+            Self::DefineUnion(v) => v.build(ctx)?.into(),
             Self::MainStatement(v) => v.build(ctx)?,
         };
         Success { value, diagnostics: vec![] }

@@ -1,7 +1,7 @@
 
 
 #derive(Copy, Clone, Debug, PartialEq, Eq, Hash)
-class A⟨T <: Trait⟩
+class A⟨T⟩
 {
 
 }
