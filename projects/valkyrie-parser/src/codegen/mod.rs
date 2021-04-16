@@ -72,11 +72,15 @@ pub enum ValkyrieRule {
     DefineTrait,
     KW_TRAIT,
     DefineFunction,
-    ParameterTerms,
     TypeHint,
     TypeReturn,
+    TypeEffect,
+    ParameterTerms,
     ParameterItem,
     ParameterPair,
+    ParameterDeconstruct,
+    ParameterModifier,
+    PARAMETER_STOP,
     Continuation,
     KW_FUNCTION,
     WhileStatement,
@@ -261,11 +265,15 @@ impl YggdrasilRule for ValkyrieRule {
             Self::DefineTrait => "",
             Self::KW_TRAIT => "",
             Self::DefineFunction => "",
-            Self::ParameterTerms => "",
             Self::TypeHint => "",
             Self::TypeReturn => "",
+            Self::TypeEffect => "",
+            Self::ParameterTerms => "",
             Self::ParameterItem => "",
             Self::ParameterPair => "",
+            Self::ParameterDeconstruct => "",
+            Self::ParameterModifier => "",
+            Self::PARAMETER_STOP => "",
             Self::Continuation => "",
             Self::KW_FUNCTION => "",
             Self::WhileStatement => "",
@@ -696,16 +704,12 @@ pub struct KwTraitNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct DefineFunctionNode {
     pub continuation: Option<ContinuationNode>,
+    pub generic_hide: Option<GenericHideNode>,
     pub kw_function: KwFunctionNode,
     pub namepath: NamepathNode,
     pub parameter_terms: ParameterTermsNode,
+    pub type_effect: Option<TypeEffectNode>,
     pub type_return: Option<TypeReturnNode>,
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ParameterTermsNode {
-    pub parameter_item: Vec<ParameterItemNode>,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -724,6 +728,18 @@ pub struct TypeReturnNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct TypeEffectNode {
+    pub type_expression: TypeExpressionNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ParameterTermsNode {
+    pub parameter_item: Vec<ParameterItemNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum ParameterItemNode {
     LMark,
     ParameterPair(ParameterPairNode),
@@ -732,9 +748,31 @@ pub enum ParameterItemNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ParameterPairNode {
+    pub attribute_call: Vec<AttributeCallNode>,
     pub identifier: IdentifierNode,
+    pub parameter_deconstruct: Option<ParameterDeconstructNode>,
     pub parameter_default: Option<ParameterDefaultNode>,
+    pub parameter_modifier: Vec<ParameterModifierNode>,
     pub type_hint: Option<TypeHintNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ParameterDeconstructNode {
+    pub text: String,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ParameterModifierNode {
+    pub identifier: IdentifierNode,
+    pub parameter_stop: Vec<ParameterStopNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ParameterStopNode {
+    pub identifier: IdentifierNode,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]

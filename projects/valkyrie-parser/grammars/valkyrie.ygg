@@ -183,10 +183,7 @@ union KW_TRAIT {
 }
 // === identifier === --------------------------------------------------------------------------------------------------
 class DefineFunction {
-    KW_FUNCTION Namepath '(' ParameterTerms ')' TypeReturn? Continuation?
-}
-atomic class ParameterTerms {
-    (ParameterItem (HIDE ^COMMA ~ ParameterItem)* (HIDE ^COMMA)?)?
+    KW_FUNCTION Namepath GenericHide? '(' ParameterTerms ')' TypeReturn? TypeEffect? Continuation?
 }
 class TypeHint {
     COLON TypeExpression
@@ -194,14 +191,31 @@ class TypeHint {
 class TypeReturn {
     ARROW1 TypeExpression
 }
+class TypeEffect {
+    '/' TypeExpression
+}
+atomic class ParameterTerms {
+    (ParameterItem (HIDE ^COMMA ~ ParameterItem)* (HIDE ^COMMA)?)?
+}
 union ParameterItem {
     | '<' #LMark
     | '>' #RMark
     | ParameterPair
 }
 class ParameterPair {
+    AttributeCall* ParameterModifier* ParameterDeconstruct?
     Identifier TypeHint? ParameterDefault?
 }
+text class ParameterDeconstruct {
+    /[.]{2,3}/
+}
+class ParameterModifier {
+    !PARAMETER_STOP Identifier
+}
+class PARAMETER_STOP {
+    Identifier [:=.,)]
+}
+
 class Continuation {
     '{' MainStatement* '}'
 }
@@ -534,7 +548,7 @@ text atomic class TEXT_CONTENT5 { (!'""""' ANY)+ }
 text atomic class TEXT_CONTENT6 { (!"''''" ANY)+ }
 // === identifier === --------------------------------------------------------------------------------------------------
 atomic class ModifierCall ^ {
-    !(KW_CLASS | KW_UNION | KW_TRAIT) ^Identifier
+    !/class|structure|union|function|micro|macro|trait|interface|generic/ ^Identifier
 }
 atomic class AttributePath {
     '#' Namepath

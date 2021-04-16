@@ -1,7 +1,1 @@
-a
-?.match =: b {
-
-}
-?.match {
-
-}
+micro fun3(a, k: T, p: U = 1) -> R { }

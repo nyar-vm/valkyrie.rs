@@ -2,26 +2,42 @@ ProgramRoot {
     statements: [
         ExpressionNode {
             omit: false,
-            body: MatchCallNode {
-                monadic: true,
-                base: MatchCallNode {
-                    monadic: true,
-                    base: a,
-                    kind: Typing,
-                    patterns: PatternBlock {
-                        branches: [],
-                        span: 0..0,
-                    },
-                    span: 2..19,
+            body: micro,
+            span: 0..6,
+        },
+        ExpressionNode {
+            omit: false,
+            body: ApplyCallNode {
+                monadic: false,
+                caller: fun3,
+                arguments: ArgumentsList {
+                    terms: [
+                        TupleTermNode {
+                            key: None,
+                            value: a,
+                        },
+                        TupleTermNode {
+                            key: Some(
+                                Identifier("k", 14..15),
+                            ),
+                            value: T,
+                        },
+                        TupleTermNode {
+                            key: Some(
+                                Identifier("p", 20..21),
+                            ),
+                            value: InfixNode {
+                                infix: =,
+                                lhs: U,
+                                rhs: 1,
+                            },
+                        },
+                    ],
                 },
-                kind: Typing,
-                patterns: PatternBlock {
-                    branches: [],
-                    span: 0..0,
-                },
-                span: 20..32,
+                body: None,
+                span: 10..34,
             },
-            span: 0..33,
+            span: 6..35,
         },
     ],
 }

@@ -44,11 +44,15 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::DefineTrait => parse_define_trait(state),
         ValkyrieRule::KW_TRAIT => parse_kw_trait(state),
         ValkyrieRule::DefineFunction => parse_define_function(state),
-        ValkyrieRule::ParameterTerms => parse_parameter_terms(state),
         ValkyrieRule::TypeHint => parse_type_hint(state),
         ValkyrieRule::TypeReturn => parse_type_return(state),
+        ValkyrieRule::TypeEffect => parse_type_effect(state),
+        ValkyrieRule::ParameterTerms => parse_parameter_terms(state),
         ValkyrieRule::ParameterItem => parse_parameter_item(state),
         ValkyrieRule::ParameterPair => parse_parameter_pair(state),
+        ValkyrieRule::ParameterDeconstruct => parse_parameter_deconstruct(state),
+        ValkyrieRule::ParameterModifier => parse_parameter_modifier(state),
+        ValkyrieRule::PARAMETER_STOP => parse_parameter_stop(state),
         ValkyrieRule::Continuation => parse_continuation(state),
         ValkyrieRule::KW_FUNCTION => parse_kw_function(state),
         ValkyrieRule::WhileStatement => parse_while_statement(state),
@@ -1010,6 +1014,8 @@ fn parse_define_function(state: Input) -> Output {
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_namepath(s).and_then(|s| s.tag_node("namepath")))
                 .and_then(|s| builtin_ignore(s))
+                .and_then(|s| s.optional(|s| parse_generic_hide(s).and_then(|s| s.tag_node("generic_hide"))))
+                .and_then(|s| builtin_ignore(s))
                 .and_then(|s| builtin_text(s, "(", false))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_parameter_terms(s).and_then(|s| s.tag_node("parameter_terms")))
@@ -1018,7 +1024,42 @@ fn parse_define_function(state: Input) -> Output {
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| s.optional(|s| parse_type_return(s).and_then(|s| s.tag_node("type_return"))))
                 .and_then(|s| builtin_ignore(s))
+                .and_then(|s| s.optional(|s| parse_type_effect(s).and_then(|s| s.tag_node("type_effect"))))
+                .and_then(|s| builtin_ignore(s))
                 .and_then(|s| s.optional(|s| parse_continuation(s).and_then(|s| s.tag_node("continuation"))))
+        })
+    })
+}
+#[inline]
+fn parse_type_hint(state: Input) -> Output {
+    state.rule(ValkyrieRule::TypeHint, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| parse_colon(s).and_then(|s| s.tag_node("colon")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_type_expression(s).and_then(|s| s.tag_node("type_expression")))
+        })
+    })
+}
+#[inline]
+fn parse_type_return(state: Input) -> Output {
+    state.rule(ValkyrieRule::TypeReturn, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| parse_arrow_1(s).and_then(|s| s.tag_node("arrow_1")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_type_expression(s).and_then(|s| s.tag_node("type_expression")))
+        })
+    })
+}
+#[inline]
+fn parse_type_effect(state: Input) -> Output {
+    state.rule(ValkyrieRule::TypeEffect, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| builtin_text(s, "/", false))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_type_expression(s).and_then(|s| s.tag_node("type_expression")))
         })
     })
 }
@@ -1048,28 +1089,6 @@ fn parse_parameter_terms(state: Input) -> Output {
     })
 }
 #[inline]
-fn parse_type_hint(state: Input) -> Output {
-    state.rule(ValkyrieRule::TypeHint, |s| {
-        s.sequence(|s| {
-            Ok(s)
-                .and_then(|s| parse_colon(s).and_then(|s| s.tag_node("colon")))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| parse_type_expression(s).and_then(|s| s.tag_node("type_expression")))
-        })
-    })
-}
-#[inline]
-fn parse_type_return(state: Input) -> Output {
-    state.rule(ValkyrieRule::TypeReturn, |s| {
-        s.sequence(|s| {
-            Ok(s)
-                .and_then(|s| parse_arrow_1(s).and_then(|s| s.tag_node("arrow_1")))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| parse_type_expression(s).and_then(|s| s.tag_node("type_expression")))
-        })
-    })
-}
-#[inline]
 fn parse_parameter_item(state: Input) -> Output {
     state.rule(ValkyrieRule::ParameterItem, |s| {
         Err(s)
@@ -1083,11 +1102,69 @@ fn parse_parameter_pair(state: Input) -> Output {
     state.rule(ValkyrieRule::ParameterPair, |s| {
         s.sequence(|s| {
             Ok(s)
+                .and_then(|s| {
+                    s.repeat(0..4294967295, |s| {
+                        s.sequence(|s| {
+                            Ok(s)
+                                .and_then(|s| builtin_ignore(s))
+                                .and_then(|s| parse_attribute_call(s).and_then(|s| s.tag_node("attribute_call")))
+                        })
+                    })
+                })
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| {
+                    s.repeat(0..4294967295, |s| {
+                        s.sequence(|s| {
+                            Ok(s)
+                                .and_then(|s| builtin_ignore(s))
+                                .and_then(|s| parse_parameter_modifier(s).and_then(|s| s.tag_node("parameter_modifier")))
+                        })
+                    })
+                })
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| s.optional(|s| parse_parameter_deconstruct(s).and_then(|s| s.tag_node("parameter_deconstruct"))))
+                .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| s.optional(|s| parse_type_hint(s).and_then(|s| s.tag_node("type_hint"))))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| s.optional(|s| parse_parameter_default(s).and_then(|s| s.tag_node("parameter_default"))))
+        })
+    })
+}
+#[inline]
+fn parse_parameter_deconstruct(state: Input) -> Output {
+    state.rule(ValkyrieRule::ParameterDeconstruct, |s| {
+        s.match_regex({
+            static REGEX: OnceLock<Regex> = OnceLock::new();
+            REGEX.get_or_init(|| Regex::new("^(?x)([.]{2,3})").unwrap())
+        })
+    })
+}
+#[inline]
+fn parse_parameter_modifier(state: Input) -> Output {
+    state.rule(ValkyrieRule::ParameterModifier, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| s.lookahead(false, |s| parse_parameter_stop(s).and_then(|s| s.tag_node("parameter_stop"))))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
+        })
+    })
+}
+#[inline]
+fn parse_parameter_stop(state: Input) -> Output {
+    state.rule(ValkyrieRule::PARAMETER_STOP, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| {
+                    builtin_regex(s, {
+                        static REGEX: OnceLock<Regex> = OnceLock::new();
+                        REGEX.get_or_init(|| Regex::new("^(?x)([:=.,)])").unwrap())
+                    })
+                })
         })
     })
 }
@@ -2554,7 +2631,12 @@ fn parse_modifier_call(state: Input) -> Output {
             Ok(s)
                 .and_then(|s| {
                     s.lookahead(false, |s| {
-                        Err(s).or_else(|s| parse_kw_class(s)).or_else(|s| parse_kw_union(s)).or_else(|s| parse_kw_trait(s))
+                        builtin_regex(s, {
+                            static REGEX: OnceLock<Regex> = OnceLock::new();
+                            REGEX.get_or_init(|| {
+                                Regex::new("^(?x)(class|structure|union|function|micro|macro|trait|interface|generic)").unwrap()
+                            })
+                        })
                     })
                 })
                 .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
