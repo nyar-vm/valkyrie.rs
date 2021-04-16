@@ -72,8 +72,13 @@ pub enum ValkyrieRule {
     DefineTrait,
     KW_TRAIT,
     DefineFunction,
-    KW_FUNCTION,
+    ParameterTerms,
+    TypeHint,
+    TypeReturn,
+    ParameterItem,
+    ParameterPair,
     Continuation,
+    KW_FUNCTION,
     WhileStatement,
     KW_WHILE,
     ForStatement,
@@ -103,7 +108,6 @@ pub enum ValkyrieRule {
     InlineTerm,
     InlineSuffix,
     SuffixOperator,
-    TypeHint,
     TypeExpression,
     TypeTerm,
     TypeFactor,
@@ -167,10 +171,12 @@ pub enum ValkyrieRule {
     DecimalX,
     PROPORTION,
     COLON,
+    ARROW1,
     COMMA,
     DOT,
     OFFSET_L,
     OFFSET_R,
+    OP_SLOT,
     PROPORTION2,
     OP_IMPORT_ALL,
     OP_AND_THEN,
@@ -255,8 +261,13 @@ impl YggdrasilRule for ValkyrieRule {
             Self::DefineTrait => "",
             Self::KW_TRAIT => "",
             Self::DefineFunction => "",
-            Self::KW_FUNCTION => "",
+            Self::ParameterTerms => "",
+            Self::TypeHint => "",
+            Self::TypeReturn => "",
+            Self::ParameterItem => "",
+            Self::ParameterPair => "",
             Self::Continuation => "",
+            Self::KW_FUNCTION => "",
             Self::WhileStatement => "",
             Self::KW_WHILE => "",
             Self::ForStatement => "",
@@ -286,7 +297,6 @@ impl YggdrasilRule for ValkyrieRule {
             Self::InlineTerm => "",
             Self::InlineSuffix => "",
             Self::SuffixOperator => "",
-            Self::TypeHint => "",
             Self::TypeExpression => "",
             Self::TypeTerm => "",
             Self::TypeFactor => "",
@@ -350,10 +360,12 @@ impl YggdrasilRule for ValkyrieRule {
             Self::DecimalX => "",
             Self::PROPORTION => "",
             Self::COLON => "",
+            Self::ARROW1 => "",
             Self::COMMA => "",
             Self::DOT => "",
             Self::OFFSET_L => "",
             Self::OFFSET_R => "",
+            Self::OP_SLOT => "",
             Self::PROPORTION2 => "",
             Self::OP_IMPORT_ALL => "",
             Self::OP_AND_THEN => "",
@@ -683,8 +695,52 @@ pub struct KwTraitNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct DefineFunctionNode {
+    pub continuation: Option<ContinuationNode>,
     pub kw_function: KwFunctionNode,
     pub namepath: NamepathNode,
+    pub parameter_terms: ParameterTermsNode,
+    pub type_return: Option<TypeReturnNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ParameterTermsNode {
+    pub parameter_item: Vec<ParameterItemNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct TypeHintNode {
+    pub colon: ColonNode,
+    pub type_expression: TypeExpressionNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct TypeReturnNode {
+    pub arrow_1: Arrow1Node,
+    pub type_expression: TypeExpressionNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum ParameterItemNode {
+    LMark,
+    ParameterPair(ParameterPairNode),
+    RMark,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ParameterPairNode {
+    pub identifier: IdentifierNode,
+    pub parameter_default: Option<ParameterDefaultNode>,
+    pub type_hint: Option<TypeHintNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ContinuationNode {
+    pub main_statement: Vec<MainStatementNode>,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -692,12 +748,6 @@ pub struct DefineFunctionNode {
 pub enum KwFunctionNode {
     Macro,
     Micro,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ContinuationNode {
-    pub main_statement: Vec<MainStatementNode>,
-    pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -920,13 +970,6 @@ pub enum InlineSuffixNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct SuffixOperatorNode {
     pub text: String,
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct TypeHintNode {
-    pub colon: ColonNode,
-    pub type_expression: TypeExpressionNode,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -1247,6 +1290,7 @@ pub struct ProceduralPathNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct SlotNode {
+    pub op_slot: OpSlotNode,
     pub slot_item: Option<SlotItemNode>,
     pub span: Range<u32>,
 }
@@ -1357,6 +1401,11 @@ pub struct ColonNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct Arrow1Node {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct CommaNode {
     pub span: Range<u32>,
 }
@@ -1373,6 +1422,11 @@ pub struct OffsetLNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct OffsetRNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct OpSlotNode {
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]

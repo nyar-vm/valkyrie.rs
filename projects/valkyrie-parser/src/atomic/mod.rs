@@ -25,6 +25,7 @@ impl LeadingNode {
         let value = match self {
             Self::Special(v) => v.build(),
             Self::Number(v) => v.build(ctx)?.into(),
+            Self::Slot(v) => v.build(ctx)?.into(),
             Self::Namepath(v) => v.build(ctx).into(),
             Self::ProceduralCall(_) => {
                 todo!()

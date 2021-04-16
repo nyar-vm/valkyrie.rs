@@ -6,8 +6,7 @@ impl crate::DotClosureCallNode {
             value: ClosureCallNode {
                 monadic,
                 base: Default::default(),
-                caller: ClosureCaller::Normal,
-                trailing: None,
+                trailing: StatementBlock { terms: vec![], span: Default::default() },
                 span: self.span.clone(),
             },
             diagnostics: vec![],

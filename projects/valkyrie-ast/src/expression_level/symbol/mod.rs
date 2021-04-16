@@ -63,22 +63,29 @@ impl ValkyrieNode for OutputNode {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct LambdaSlotNode {
-    pub name: String,
+    /// The repeat times of `$`
+    pub level: usize,
+    /// The name of the slot
+    pub name: LambdaSlotItem,
+    /// The location of the slot
     pub span: Range<u32>,
+}
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum LambdaSlotItem {
+    /// Automatically obtain a number based on context
+    Nothing,
+    /// The meta info of the slot
+    MetaType,
+    /// The slot index from the lambda
+    Index(NonZeroU64),
+    /// The slot name from the lambda
+    Named(IdentifierNode),
 }
 
 impl ValkyrieNode for LambdaSlotNode {
     fn get_range(&self) -> Range<usize> {
         Range { start: self.span.start as usize, end: self.span.end as usize }
-    }
-}
-
-impl LambdaSlotNode {
-    pub fn new<S>(name: S, span: Range<u32>) -> Self
-    where
-        S: ToString,
-    {
-        Self { name: name.to_string(), span }
     }
 }
 

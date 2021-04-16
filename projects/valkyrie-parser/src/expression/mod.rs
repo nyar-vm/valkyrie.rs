@@ -90,6 +90,7 @@ enum TokenStream {
     Apply(ApplyCallNode),
     Dot(DotCallNode),
     DotMatch(MatchCallNode),
+    DotClosure(ClosureCallNode),
 }
 
 impl<I> PrattParser<I> for ExpressionResolver
@@ -140,6 +141,7 @@ where
             TokenStream::Dot(call) => Ok(call.with_base(lhs).into()),
             TokenStream::Generic(call) => Ok(call.with_base(lhs).into()),
             TokenStream::DotMatch(call) => Ok(call.with_base(lhs).into()),
+            TokenStream::DotClosure(call) => Ok(call.with_base(lhs).into()),
             _ => unreachable!(),
         }
     }
@@ -275,9 +277,7 @@ impl MainSuffixNode {
         let token = match self {
             Self::InlineSuffix(v) => v.as_token(ctx)?,
             Self::DotMatchCall(v) => TokenStream::DotMatch(v.build(ctx)?),
-            Self::DotClosureCall(v) => {
-                todo!()
-            }
+            Self::DotClosureCall(v) => TokenStream::DotClosure(v.build(ctx)?),
             Self::TupleCall(v) => TokenStream::Apply(v.build(ctx)?),
         };
         Success { value: token, diagnostics: vec![] }

@@ -44,8 +44,13 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::DefineTrait => parse_define_trait(state),
         ValkyrieRule::KW_TRAIT => parse_kw_trait(state),
         ValkyrieRule::DefineFunction => parse_define_function(state),
-        ValkyrieRule::KW_FUNCTION => parse_kw_function(state),
+        ValkyrieRule::ParameterTerms => parse_parameter_terms(state),
+        ValkyrieRule::TypeHint => parse_type_hint(state),
+        ValkyrieRule::TypeReturn => parse_type_return(state),
+        ValkyrieRule::ParameterItem => parse_parameter_item(state),
+        ValkyrieRule::ParameterPair => parse_parameter_pair(state),
         ValkyrieRule::Continuation => parse_continuation(state),
+        ValkyrieRule::KW_FUNCTION => parse_kw_function(state),
         ValkyrieRule::WhileStatement => parse_while_statement(state),
         ValkyrieRule::KW_WHILE => parse_kw_while(state),
         ValkyrieRule::ForStatement => parse_for_statement(state),
@@ -75,7 +80,6 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::InlineTerm => parse_inline_term(state),
         ValkyrieRule::InlineSuffix => parse_inline_suffix(state),
         ValkyrieRule::SuffixOperator => parse_suffix_operator(state),
-        ValkyrieRule::TypeHint => parse_type_hint(state),
         ValkyrieRule::TypeExpression => parse_type_expression(state),
         ValkyrieRule::TypeTerm => parse_type_term(state),
         ValkyrieRule::TypeFactor => parse_type_factor(state),
@@ -139,10 +143,12 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::DecimalX => parse_decimal_x(state),
         ValkyrieRule::PROPORTION => parse_proportion(state),
         ValkyrieRule::COLON => parse_colon(state),
+        ValkyrieRule::ARROW1 => parse_arrow_1(state),
         ValkyrieRule::COMMA => parse_comma(state),
         ValkyrieRule::DOT => parse_dot(state),
         ValkyrieRule::OFFSET_L => parse_offset_l(state),
         ValkyrieRule::OFFSET_R => parse_offset_r(state),
+        ValkyrieRule::OP_SLOT => parse_op_slot(state),
         ValkyrieRule::PROPORTION2 => parse_proportion_2(state),
         ValkyrieRule::OP_IMPORT_ALL => parse_op_import_all(state),
         ValkyrieRule::OP_AND_THEN => parse_op_and_then(state),
@@ -1003,21 +1009,86 @@ fn parse_define_function(state: Input) -> Output {
                 .and_then(|s| parse_kw_function(s).and_then(|s| s.tag_node("kw_function")))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_namepath(s).and_then(|s| s.tag_node("namepath")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| builtin_text(s, "(", false))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_parameter_terms(s).and_then(|s| s.tag_node("parameter_terms")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| builtin_text(s, ")", false))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| s.optional(|s| parse_type_return(s).and_then(|s| s.tag_node("type_return"))))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| s.optional(|s| parse_continuation(s).and_then(|s| s.tag_node("continuation"))))
         })
     })
 }
 #[inline]
-fn parse_kw_function(state: Input) -> Output {
-    state.rule(ValkyrieRule::KW_FUNCTION, |s| {
-        Err(s)
-            .or_else(|s| {
-                builtin_regex(s, {
-                    static REGEX: OnceLock<Regex> = OnceLock::new();
-                    REGEX.get_or_init(|| Regex::new("^(?x)(micro|function)").unwrap())
-                })
-                .and_then(|s| s.tag_node("micro"))
+fn parse_parameter_terms(state: Input) -> Output {
+    state.rule(ValkyrieRule::ParameterTerms, |s| {
+        s.optional(|s| {
+            s.sequence(|s| {
+                Ok(s)
+                    .and_then(|s| parse_parameter_item(s).and_then(|s| s.tag_node("parameter_item")))
+                    .and_then(|s| {
+                        s.repeat(0..4294967295, |s| {
+                            s.sequence(|s| {
+                                Ok(s)
+                                    .and_then(|s| builtin_ignore(s))
+                                    .and_then(|s| parse_comma(s))
+                                    .and_then(|s| builtin_ignore(s))
+                                    .and_then(|s| parse_parameter_item(s).and_then(|s| s.tag_node("parameter_item")))
+                            })
+                        })
+                    })
+                    .and_then(|s| {
+                        s.optional(|s| s.sequence(|s| Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| parse_comma(s))))
+                    })
             })
-            .or_else(|s| builtin_text(s, "macro", false).and_then(|s| s.tag_node("macro")))
+        })
+    })
+}
+#[inline]
+fn parse_type_hint(state: Input) -> Output {
+    state.rule(ValkyrieRule::TypeHint, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| parse_colon(s).and_then(|s| s.tag_node("colon")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_type_expression(s).and_then(|s| s.tag_node("type_expression")))
+        })
+    })
+}
+#[inline]
+fn parse_type_return(state: Input) -> Output {
+    state.rule(ValkyrieRule::TypeReturn, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| parse_arrow_1(s).and_then(|s| s.tag_node("arrow_1")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_type_expression(s).and_then(|s| s.tag_node("type_expression")))
+        })
+    })
+}
+#[inline]
+fn parse_parameter_item(state: Input) -> Output {
+    state.rule(ValkyrieRule::ParameterItem, |s| {
+        Err(s)
+            .or_else(|s| builtin_text(s, "<", false).and_then(|s| s.tag_node("l_mark")))
+            .or_else(|s| builtin_text(s, ">", false).and_then(|s| s.tag_node("r_mark")))
+            .or_else(|s| parse_parameter_pair(s).and_then(|s| s.tag_node("parameter_pair")))
+    })
+}
+#[inline]
+fn parse_parameter_pair(state: Input) -> Output {
+    state.rule(ValkyrieRule::ParameterPair, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| s.optional(|s| parse_type_hint(s).and_then(|s| s.tag_node("type_hint"))))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| s.optional(|s| parse_parameter_default(s).and_then(|s| s.tag_node("parameter_default"))))
+        })
     })
 }
 #[inline]
@@ -1039,6 +1110,26 @@ fn parse_continuation(state: Input) -> Output {
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| builtin_text(s, "}", false))
         })
+    })
+}
+#[inline]
+fn parse_kw_function(state: Input) -> Output {
+    state.rule(ValkyrieRule::KW_FUNCTION, |s| {
+        Err(s)
+            .or_else(|s| {
+                builtin_regex(s, {
+                    static REGEX: OnceLock<Regex> = OnceLock::new();
+                    REGEX.get_or_init(|| Regex::new("^(?x)(micro|function)").unwrap())
+                })
+                .and_then(|s| s.tag_node("micro"))
+            })
+            .or_else(|s| {
+                builtin_regex(s, {
+                    static REGEX: OnceLock<Regex> = OnceLock::new();
+                    REGEX.get_or_init(|| Regex::new("^(?x)(macro)").unwrap())
+                })
+                .and_then(|s| s.tag_node("macro"))
+            })
     })
 }
 #[inline]
@@ -1599,17 +1690,6 @@ fn parse_suffix_operator(state: Input) -> Output {
                 )
                 .unwrap()
             })
-        })
-    })
-}
-#[inline]
-fn parse_type_hint(state: Input) -> Output {
-    state.rule(ValkyrieRule::TypeHint, |s| {
-        s.sequence(|s| {
-            Ok(s)
-                .and_then(|s| parse_colon(s).and_then(|s| s.tag_node("colon")))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| parse_type_expression(s).and_then(|s| s.tag_node("type_expression")))
         })
     })
 }
@@ -2502,12 +2582,7 @@ fn parse_slot(state: Input) -> Output {
     state.rule(ValkyrieRule::Slot, |s| {
         s.sequence(|s| {
             Ok(s)
-                .and_then(|s| {
-                    builtin_regex(s, {
-                        static REGEX: OnceLock<Regex> = OnceLock::new();
-                        REGEX.get_or_init(|| Regex::new("^(?x)([$]{1,2})").unwrap())
-                    })
-                })
+                .and_then(|s| parse_op_slot(s).and_then(|s| s.tag_node("op_slot")))
                 .and_then(|s| s.optional(|s| parse_slot_item(s).and_then(|s| s.tag_node("slot_item"))))
         })
     })
@@ -2808,6 +2883,15 @@ fn parse_colon(state: Input) -> Output {
     })
 }
 #[inline]
+fn parse_arrow_1(state: Input) -> Output {
+    state.rule(ValkyrieRule::ARROW1, |s| {
+        s.match_regex({
+            static REGEX: OnceLock<Regex> = OnceLock::new();
+            REGEX.get_or_init(|| Regex::new("^(?x)([:：⟶]|->)").unwrap())
+        })
+    })
+}
+#[inline]
 fn parse_comma(state: Input) -> Output {
     state.rule(ValkyrieRule::COMMA, |s| {
         s.match_regex({
@@ -2832,6 +2916,15 @@ fn parse_offset_l(state: Input) -> Output {
 #[inline]
 fn parse_offset_r(state: Input) -> Output {
     state.rule(ValkyrieRule::OFFSET_R, |s| s.match_string("⁆", false))
+}
+#[inline]
+fn parse_op_slot(state: Input) -> Output {
+    state.rule(ValkyrieRule::OP_SLOT, |s| {
+        s.match_regex({
+            static REGEX: OnceLock<Regex> = OnceLock::new();
+            REGEX.get_or_init(|| Regex::new("^(?x)([$]{1,3})").unwrap())
+        })
+    })
 }
 #[inline]
 fn parse_proportion_2(state: Input) -> Output {

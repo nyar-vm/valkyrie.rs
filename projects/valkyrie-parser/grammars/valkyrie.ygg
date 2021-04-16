@@ -183,15 +183,32 @@ union KW_TRAIT {
 }
 // === identifier === --------------------------------------------------------------------------------------------------
 class DefineFunction {
-    KW_FUNCTION Namepath
+    KW_FUNCTION Namepath '(' ParameterTerms ')' TypeReturn? Continuation?
+}
+atomic class ParameterTerms {
+    (ParameterItem (HIDE ^COMMA ~ ParameterItem)* (HIDE ^COMMA)?)?
+}
+class TypeHint {
+    COLON TypeExpression
+}
+class TypeReturn {
+    ARROW1 TypeExpression
+}
+union ParameterItem {
+    | '<' #LMark
+    | '>' #RMark
+    | ParameterPair
+}
+class ParameterPair {
+    Identifier TypeHint? ParameterDefault?
+}
+class Continuation {
+    '{' MainStatement* '}'
 }
 @style(keyword)
 union KW_FUNCTION {
     | /micro|function/ #Micro
-    | 'macro'          #Macro
-}
-class Continuation {
-    '{' MainStatement* '}'
+    | /macro/          #Macro
 }
 // === while loop === --------------------------------------------------------------------------------------------------
 class WhileStatement {
@@ -288,6 +305,7 @@ union Leading {
     | TupleLiteralStrict
     | RangeLiteral
     | TextLiteral
+    | Slot
     | Namepath
     | Number
     | Special
@@ -356,9 +374,6 @@ text class SuffixOperator {
     /
 }
 // === identifier === --------------------------------------------------------------------------------------------------
-class TypeHint {
-    COLON TypeExpression
-}
 atomic class TypeExpression {
     TypeTerm (HIDE TypeInfix ~ TypeTerm)*
 }
@@ -527,6 +542,13 @@ atomic class AttributePath {
 atomic class ProceduralPath {
     '@' Namepath
 }
+atomic class Slot {
+    OP_SLOT SlotItem?
+}
+union SlotItem {
+    | Integer
+    | Identifier
+}
 atomic class NamepathFree  {
     Identifier (HIDE ^PROPORTION2 ~ Identifier)*
 }
@@ -566,8 +588,8 @@ text class DigitsX {
 }
 atomic class Decimal ^ {
     (
-        | lhs:Integer (DOT (rhs:Integer)?)?
-        | DOT rhs:Integer
+        | lhs:Integer (dot:DOT (rhs:Integer)?)?
+        | dot:DOT rhs:Integer
     )
     (/[⁑]|[*]{2}/ (sign:Sign)? shift:Integer)?
     (/[_]*/ unit:Identifier)?
@@ -575,8 +597,8 @@ atomic class Decimal ^ {
 atomic class DecimalX ^ {
     base:Integer /[⁂]|[*]{3}/
     (
-        | lhs:DigitsX (DOT (rhs:DigitsX)?)?
-        | DOT rhs:DigitsX
+        | lhs:DigitsX (dot:DOT (rhs:DigitsX)?)?
+        | dot:DOT rhs:DigitsX
     )
     (/[⁑]|[*]{2}/ (
         | (sign:Sign)? shift:Integer (/[_]*/ unit:Identifier)?
@@ -588,10 +610,12 @@ atomic class DecimalX ^ {
 token {
     PROPORTION: /∷|::/
     COLON: [:：]
+    ARROW1: /[:：⟶]|->/
     COMMA: [,，]
     DOT:   [.．]
     OFFSET_L: '⁅'
     OFFSET_R: '⁆'
+    OP_SLOT: /[$]{1,3}/
 }
 class PROPORTION2 -> PROPORTION {
     /[.．∷]|::/

@@ -36,8 +36,8 @@ impl crate::DecimalNode {
         }
         if let Some(s) = &self.shift {
             match &self.sign {
-                Some(SignNode::Netative) => n.shift = -s.as_shift(ctx)?,
-                _ => n.shift = s.as_shift(ctx)?,
+                Some(SignNode::Netative) => n.shift = -s.parse::<isize>(ctx)?,
+                _ => n.shift = s.parse::<isize>(ctx)?,
             }
         }
         n.set_dot(self.dot.is_some());
@@ -59,8 +59,8 @@ impl crate::DecimalXNode {
         }
         if let Some(s) = &self.shift {
             match &self.sign {
-                Some(SignNode::Netative) => n.shift = -s.as_shift(ctx)?,
-                _ => n.shift = s.as_shift(ctx)?,
+                Some(SignNode::Netative) => n.shift = -s.parse::<isize>(ctx)?,
+                _ => n.shift = s.parse::<isize>(ctx)?,
             }
         }
         n.set_dot(self.dot.is_some());
@@ -72,6 +72,10 @@ impl crate::IntegerNode {
     pub fn build(&self) -> NumberLiteralNode {
         NumberLiteralNode::new(10, self.span.clone())
     }
+    pub fn as_identifier(&self, ctx: &ProgramContext) -> IdentifierNode {
+        let text = self.text.chars().filter(|c| c.is_digit(10)).collect();
+        IdentifierNode { name: text, span: ctx.file.with_range(self.get_range()) }
+    }
     pub fn as_base(&self, ctx: &ProgramContext) -> Result<u32, NyarError> {
         let span = ctx.file.with_range(self.get_range());
         match u32::from_str(&self.text) {
@@ -80,9 +84,13 @@ impl crate::IntegerNode {
             Err(e) => Err(NyarError::syntax_error(e.to_string(), span)),
         }
     }
-    pub fn as_shift(&self, ctx: &ProgramContext) -> Result<isize, NyarError> {
+    pub fn parse<T>(&self, ctx: &ProgramContext) -> Result<T, NyarError>
+    where
+        T: FromStr,
+        <T as FromStr>::Err: std::error::Error,
+    {
         let span = ctx.file.with_range(self.get_range());
-        match isize::from_str(&self.text) {
+        match T::from_str(&self.text) {
             Ok(o) => Ok(o),
             Err(e) => Err(NyarError::syntax_error(e.to_string(), span)),
         }

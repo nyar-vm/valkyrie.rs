@@ -1,0 +1,87 @@
+ProgramRoot {
+    statements: [
+        ExpressionNode {
+            omit: false,
+            body: ApplyCallNode {
+                monadic: false,
+                caller: a,
+                arguments: ArgumentsList {
+                    terms: [],
+                },
+                body: None,
+                span: 1..6,
+            },
+            span: 0..9,
+        },
+        ExpressionNode {
+            omit: false,
+            body: ApplyCallNode {
+                monadic: false,
+                caller: s,
+                arguments: ArgumentsList {
+                    terms: [
+                        TupleTermNode {
+                            key: None,
+                            value: args,
+                        },
+                    ],
+                },
+                body: None,
+                span: 10..39,
+            },
+            span: 9..43,
+        },
+        ExpressionNode {
+            omit: false,
+            body: ApplyCallNode {
+                monadic: false,
+                caller: DotCallNode {
+                    monadic: false,
+                    base: ApplyCallNode {
+                        monadic: false,
+                        caller: DotCallNode {
+                            monadic: false,
+                            base: ApplyCallNode {
+                                monadic: false,
+                                caller: DotCallNode {
+                                    monadic: false,
+                                    base: ClosureCallNode {
+                                        monadic: false,
+                                        base: chain,
+                                        trailing: StatementBlock {
+                                            terms: [],
+                                            span: 0..0,
+                                        },
+                                        span: 53..62,
+                                    },
+                                    term: map,
+                                    span: 67..71,
+                                },
+                                arguments: ArgumentsList {
+                                    terms: [],
+                                },
+                                body: None,
+                                span: 71..102,
+                            },
+                            term: select,
+                            span: 107..114,
+                        },
+                        arguments: ArgumentsList {
+                            terms: [],
+                        },
+                        body: None,
+                        span: 114..137,
+                    },
+                    term: reject,
+                    span: 142..149,
+                },
+                arguments: ArgumentsList {
+                    terms: [],
+                },
+                body: None,
+                span: 149..172,
+            },
+            span: 43..173,
+        },
+    ],
+}
