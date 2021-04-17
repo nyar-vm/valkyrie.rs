@@ -1,0 +1,17 @@
+ProgramRoot {
+    statements: [
+        ClassDeclaration {
+            kind: Class,
+            modifiers: ModifiersNode {
+                terms: [],
+            },
+            name: Identifier("A", 57..58),
+            generic: None,
+            base_classes: None,
+            auto_traits: [],
+            fields: [],
+            methods: [],
+            span: 2..71,
+        },
+    ],
+}

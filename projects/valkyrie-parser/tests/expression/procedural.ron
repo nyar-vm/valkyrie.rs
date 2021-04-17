@@ -1,0 +1,84 @@
+ProgramRoot {
+    statements: [
+        ExpressionNode {
+            omit: false,
+            body: false,
+            span: 0..6,
+        },
+        ExpressionNode {
+            omit: false,
+            body: false,
+            span: 6..14,
+        },
+        ExpressionNode {
+            omit: false,
+            body: false,
+            span: 14..25,
+        },
+        ExpressionNode {
+            omit: false,
+            body: ApplyCallNode {
+                monadic: false,
+                caller: false,
+                arguments: ArgumentsList {
+                    terms: [],
+                },
+                body: None,
+                span: 35..45,
+            },
+            span: 25..46,
+        },
+        ExpressionNode {
+            omit: false,
+            body: ApplyCallNode {
+                monadic: false,
+                caller: false,
+                arguments: ArgumentsList {
+                    terms: [],
+                },
+                body: None,
+                span: 52..61,
+            },
+            span: 46..62,
+        },
+        ExpressionNode {
+            omit: false,
+            body: ApplyCallNode {
+                monadic: false,
+                caller: false,
+                arguments: ArgumentsList {
+                    terms: [],
+                },
+                body: None,
+                span: 68..79,
+            },
+            span: 62..80,
+        },
+        ExpressionNode {
+            omit: false,
+            body: ApplyCallNode {
+                monadic: false,
+                caller: false,
+                arguments: ArgumentsList {
+                    terms: [],
+                },
+                body: None,
+                span: 86..101,
+            },
+            span: 80..102,
+        },
+        ExpressionNode {
+            omit: false,
+            body: ApplyCallNode {
+                monadic: false,
+                caller: false,
+                arguments: ArgumentsList {
+                    terms: [],
+                },
+                body: None,
+                span: 108..121,
+            },
+            span: 102..122,
+        },
+    ],
+}

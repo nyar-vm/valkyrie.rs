@@ -198,7 +198,370 @@ ProgramRoot {
                 body: None,
                 span: 62..65,
             },
-            span: 55..67,
+            span: 55..68,
+        },
+        ExpressionNode {
+            omit: false,
+            body: SubscriptCallNode {
+                kind: Ordinal,
+                base: ℤ,
+                monadic: false,
+                terms: [],
+                span: 71..73,
+            },
+            span: 68..75,
+        },
+        ExpressionNode {
+            omit: false,
+            body: SubscriptCallNode {
+                kind: Ordinal,
+                base: ℤ,
+                monadic: false,
+                terms: [
+                    Range {
+                        head: None,
+                        tail: None,
+                        step: None,
+                    },
+                ],
+                span: 78..81,
+            },
+            span: 75..82,
+        },
+        ExpressionNode {
+            omit: false,
+            body: SubscriptCallNode {
+                kind: Ordinal,
+                base: ℤ,
+                monadic: false,
+                terms: [
+                    Range {
+                        head: Some(
+                            head,
+                        ),
+                        tail: None,
+                        step: None,
+                    },
+                ],
+                span: 85..92,
+            },
+            span: 82..93,
+        },
+        ExpressionNode {
+            omit: false,
+            body: SubscriptCallNode {
+                kind: Ordinal,
+                base: ℤ,
+                monadic: false,
+                terms: [
+                    Range {
+                        head: None,
+                        tail: Some(
+                            tail,
+                        ),
+                        step: None,
+                    },
+                ],
+                span: 96..103,
+            },
+            span: 93..104,
+        },
+        ExpressionNode {
+            omit: false,
+            body: SubscriptCallNode {
+                kind: Ordinal,
+                base: ℤ,
+                monadic: false,
+                terms: [
+                    Range {
+                        head: Some(
+                            head,
+                        ),
+                        tail: Some(
+                            tail,
+                        ),
+                        step: None,
+                    },
+                ],
+                span: 107..118,
+            },
+            span: 104..120,
+        },
+        ExpressionNode {
+            omit: false,
+            body: SubscriptCallNode {
+                kind: Ordinal,
+                base: ℤ,
+                monadic: false,
+                terms: [
+                    Range {
+                        head: None,
+                        tail: None,
+                        step: None,
+                    },
+                ],
+                span: 123..127,
+            },
+            span: 120..128,
+        },
+        ExpressionNode {
+            omit: false,
+            body: SubscriptCallNode {
+                kind: Ordinal,
+                base: ℤ,
+                monadic: false,
+                terms: [
+                    Range {
+                        head: None,
+                        tail: None,
+                        step: None,
+                    },
+                ],
+                span: 131..138,
+            },
+            span: 128..139,
+        },
+        ExpressionNode {
+            omit: false,
+            body: SubscriptCallNode {
+                kind: Ordinal,
+                base: ℤ,
+                monadic: false,
+                terms: [
+                    Range {
+                        head: Some(
+                            head,
+                        ),
+                        tail: None,
+                        step: None,
+                    },
+                ],
+                span: 142..150,
+            },
+            span: 139..151,
+        },
+        ExpressionNode {
+            omit: false,
+            body: SubscriptCallNode {
+                kind: Ordinal,
+                base: ℤ,
+                monadic: false,
+                terms: [
+                    Range {
+                        head: Some(
+                            head,
+                        ),
+                        tail: None,
+                        step: None,
+                    },
+                ],
+                span: 154..163,
+            },
+            span: 151..164,
+        },
+        ExpressionNode {
+            omit: false,
+            body: SubscriptCallNode {
+                kind: Ordinal,
+                base: ℤ,
+                monadic: false,
+                terms: [
+                    Range {
+                        head: None,
+                        tail: Some(
+                            tail,
+                        ),
+                        step: None,
+                    },
+                ],
+                span: 167..175,
+            },
+            span: 164..176,
+        },
+        ExpressionNode {
+            omit: false,
+            body: SubscriptCallNode {
+                kind: Ordinal,
+                base: ℤ,
+                monadic: false,
+                terms: [
+                    Range {
+                        head: None,
+                        tail: None,
+                        step: Some(
+                            step,
+                        ),
+                    },
+                ],
+                span: 179..187,
+            },
+            span: 176..188,
+        },
+        ExpressionNode {
+            omit: false,
+            body: SubscriptCallNode {
+                kind: Ordinal,
+                base: ℤ,
+                monadic: false,
+                terms: [
+                    Range {
+                        head: None,
+                        tail: None,
+                        step: Some(
+                            step,
+                        ),
+                    },
+                ],
+                span: 191..200,
+            },
+            span: 188..201,
+        },
+        ExpressionNode {
+            omit: false,
+            body: SubscriptCallNode {
+                kind: Ordinal,
+                base: ℤ,
+                monadic: false,
+                terms: [
+                    Range {
+                        head: Some(
+                            head,
+                        ),
+                        tail: Some(
+                            tail,
+                        ),
+                        step: None,
+                    },
+                ],
+                span: 204..216,
+            },
+            span: 201..217,
+        },
+        ExpressionNode {
+            omit: false,
+            body: SubscriptCallNode {
+                kind: Ordinal,
+                base: ℤ,
+                monadic: false,
+                terms: [
+                    Range {
+                        head: None,
+                        tail: Some(
+                            tail,
+                        ),
+                        step: Some(
+                            step,
+                        ),
+                    },
+                ],
+                span: 220..232,
+            },
+            span: 217..233,
+        },
+        ExpressionNode {
+            omit: false,
+            body: SubscriptCallNode {
+                kind: Ordinal,
+                base: ℤ,
+                monadic: false,
+                terms: [
+                    Index {
+                        index: head∷step,
+                    },
+                ],
+                span: 236..248,
+            },
+            span: 233..249,
+        },
+        ExpressionNode {
+            omit: false,
+            body: SubscriptCallNode {
+                kind: Ordinal,
+                base: ℤ,
+                monadic: false,
+                terms: [
+                    Range {
+                        head: Some(
+                            head,
+                        ),
+                        tail: None,
+                        step: Some(
+                            step,
+                        ),
+                    },
+                ],
+                span: 252..265,
+            },
+            span: 249..266,
+        },
+        ExpressionNode {
+            omit: false,
+            body: SubscriptCallNode {
+                kind: Ordinal,
+                base: ℤ,
+                monadic: false,
+                terms: [
+                    Range {
+                        head: Some(
+                            head,
+                        ),
+                        tail: Some(
+                            tail,
+                        ),
+                        step: Some(
+                            step,
+                        ),
+                    },
+                ],
+                span: 269..285,
+            },
+            span: 266..287,
+        },
+        ExpressionNode {
+            omit: false,
+            body: ApplyCallNode {
+                monadic: false,
+                caller: return,
+                arguments: ArgumentsList {
+                    terms: [
+                        TupleTermNode {
+                            key: Some(
+                                Identifier("b", 295..296),
+                            ),
+                            value: 2,
+                        },
+                        TupleTermNode {
+                            key: Some(
+                                Identifier("like", 301..305),
+                            ),
+                            value: c,
+                        },
+                        TupleTermNode {
+                            key: None,
+                            value: 33,
+                        },
+                    ],
+                },
+                body: None,
+                span: 293..313,
+            },
+            span: 287..315,
+        },
+        ExpressionNode {
+            omit: false,
+            body: MatchStatement {
+                kind: Typing,
+                bind: Some(
+                    Identifier("a", 321..322),
+                ),
+                main: Placeholder,
+                patterns: PatternBlock {
+                    branches: [],
+                    span: 0..0,
+                },
+                span: 315..330,
+            },
+            span: 315..331,
         },
     ],
 }

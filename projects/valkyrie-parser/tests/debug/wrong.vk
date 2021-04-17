@@ -1,1 +1,3 @@
-micro fun3(a, k: T, p: U = 1) -> R { }
+public static void micro main(args: String, type A, ) {
+
+}

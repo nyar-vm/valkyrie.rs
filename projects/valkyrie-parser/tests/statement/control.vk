@@ -15,24 +15,3 @@ yield break;
 yield break label;
 yield from;
 yield from expression;
-
-
-try {
-    print("try");
-}
-
-try Option<T> {
-    print("try");
-}
-
-try T? {
-    execute()
-}
-.catch {
-    type RuntimeError:
-        print("RuntimeError")
-}
-?.match {
-    case Some(a):
-        print("Some"),
-}

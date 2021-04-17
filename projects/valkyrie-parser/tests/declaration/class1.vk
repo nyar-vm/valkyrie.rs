@@ -19,37 +19,9 @@ violate {
     y._private_field
 }
 
-vow {
-    require {
-        self > 0
-    }
-    ensure {
-        self != infinity
-    }
-}
-function a() {
-    @assert // 断言
-    @assume // 假设
-    @refute // 否定
-}
 
 
-generic T, U {
-    forall {f32, f64}
-    // 前置
-    require {
-
-    }
-    ensure // 后置
-    where // 约束
-}
-class A {
-	inherit Base;
-	inherit Base2;
-}
-
-
-class B {
+structure B {
 	item
 }
 
@@ -57,7 +29,7 @@ class B {
 @require {
 	a: b
 }
-public static void fun main(args: [String], type A, ) {
+public static void micro main(args: String, type A, ) {
 
 }
 
@@ -85,18 +57,9 @@ class A(B, C): C + D {
 }
 
 
-a::<T>()
-a⦑T⦒
-a<T>
 
-base 1
-a⟦T⟧
-a⦃T⦄
-a⟬T⟭
-a⦅T⦆
-base 0
 
-a⦉T⦊
+
 
 //? 能被 @derive 的 trait
 @derive(Copy, Clone, Debug, PartialEq, Eq, Hash)
@@ -122,10 +85,10 @@ a⁅T⁆
 @derive(Copy, Clone, Debug, PartialEq, Eq, Hash)
 @(Copy, Clone , Debug, PartialEq, Eq, Hash)
 class A⟬T <: Trait⟭ {
-	@@where {
+	##where {
 		T <: Trait
 	}
-	@@ensure {
+	##ensure {
 		self > 0
 	}
 

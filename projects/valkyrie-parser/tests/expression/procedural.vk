@@ -1,0 +1,8 @@
+@call
+@call()
+@call(arg)
+@call(arg) { field }
+@call { field }
+@call { method()}
+@call { method() {} }
+@call { domain {} }

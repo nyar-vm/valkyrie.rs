@@ -113,12 +113,14 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::SubscriptOnly => parse_subscript_only(state),
         ValkyrieRule::SubscriptRange => parse_subscript_range(state),
         ValkyrieRule::RangeOmit => parse_range_omit(state),
+        ValkyrieRule::GenericDefine => parse_generic_define(state),
+        ValkyrieRule::GenericParameter => parse_generic_parameter(state),
+        ValkyrieRule::GenericParameterPair => parse_generic_parameter_pair(state),
         ValkyrieRule::GenericCall => parse_generic_call(state),
         ValkyrieRule::GenericHide => parse_generic_hide(state),
         ValkyrieRule::GenericTerms => parse_generic_terms(state),
         ValkyrieRule::GenericPair => parse_generic_pair(state),
         ValkyrieRule::AnnotationHead => parse_annotation_head(state),
-        ValkyrieRule::AnnotationMix => parse_annotation_mix(state),
         ValkyrieRule::AnnotationTerm => parse_annotation_term(state),
         ValkyrieRule::AnnotationTermMix => parse_annotation_term_mix(state),
         ValkyrieRule::AttributeCall => parse_attribute_call(state),
@@ -615,6 +617,8 @@ fn parse_define_class(state: Input) -> Output {
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
                 .and_then(|s| builtin_ignore(s))
+                .and_then(|s| s.optional(|s| parse_generic_define(s).and_then(|s| s.tag_node("generic_define"))))
+                .and_then(|s| builtin_ignore(s))
                 .and_then(|s| s.optional(|s| parse_class_inherit(s).and_then(|s| s.tag_node("class_inherit"))))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_class_block(s).and_then(|s| s.tag_node("class_block")))
@@ -962,21 +966,13 @@ fn parse_define_function(state: Input) -> Output {
     state.rule(ValkyrieRule::DefineFunction, |s| {
         s.sequence(|s| {
             Ok(s)
-                .and_then(|s| {
-                    s.repeat(0..4294967295, |s| {
-                        s.sequence(|s| {
-                            Ok(s)
-                                .and_then(|s| builtin_ignore(s))
-                                .and_then(|s| parse_modifier_call(s).and_then(|s| s.tag_node("modifier_call")))
-                        })
-                    })
-                })
+                .and_then(|s| parse_annotation_head(s).and_then(|s| s.tag_node("annotation_head")))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_kw_function(s).and_then(|s| s.tag_node("kw_function")))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_namepath(s).and_then(|s| s.tag_node("namepath")))
                 .and_then(|s| builtin_ignore(s))
-                .and_then(|s| s.optional(|s| parse_generic_hide(s).and_then(|s| s.tag_node("generic_hide"))))
+                .and_then(|s| s.optional(|s| parse_generic_define(s).and_then(|s| s.tag_node("generic_define"))))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| builtin_text(s, "(", false))
                 .and_then(|s| builtin_ignore(s))
@@ -1064,8 +1060,6 @@ fn parse_parameter_pair(state: Input) -> Output {
     state.rule(ValkyrieRule::ParameterPair, |s| {
         s.sequence(|s| {
             Ok(s)
-                .and_then(|s| parse_annotation_mix(s).and_then(|s| s.tag_node("annotation_mix")))
-                .and_then(|s| builtin_ignore(s))
                 .and_then(|s| {
                     s.repeat(0..4294967295, |s| {
                         s.sequence(|s| {
@@ -2312,6 +2306,92 @@ fn parse_range_omit(state: Input) -> Output {
     })
 }
 #[inline]
+fn parse_generic_define(state: Input) -> Output {
+    state.rule(ValkyrieRule::GenericDefine, |s| {
+        Err(s)
+            .or_else(|s| {
+                s.sequence(|s| {
+                    Ok(s)
+                        .and_then(|s| s.optional(|s| parse_proportion(s).and_then(|s| s.tag_node("proportion"))))
+                        .and_then(|s| builtin_ignore(s))
+                        .and_then(|s| builtin_text(s, "<", false))
+                        .and_then(|s| builtin_ignore(s))
+                        .and_then(|s| parse_generic_parameter(s).and_then(|s| s.tag_node("generic_parameter")))
+                        .and_then(|s| builtin_ignore(s))
+                        .and_then(|s| builtin_text(s, ">", false))
+                })
+            })
+            .or_else(|s| {
+                s.sequence(|s| {
+                    Ok(s)
+                        .and_then(|s| builtin_text(s, "⟨", false))
+                        .and_then(|s| builtin_ignore(s))
+                        .and_then(|s| parse_generic_parameter(s).and_then(|s| s.tag_node("generic_parameter")))
+                        .and_then(|s| builtin_ignore(s))
+                        .and_then(|s| builtin_text(s, "⟩", false))
+                })
+            })
+    })
+}
+#[inline]
+fn parse_generic_parameter(state: Input) -> Output {
+    state.rule(ValkyrieRule::GenericParameter, |s| {
+        s.optional(|s| {
+            s.sequence(|s| {
+                Ok(s)
+                    .and_then(|s| parse_generic_parameter_pair(s).and_then(|s| s.tag_node("generic_parameter_pair")))
+                    .and_then(|s| {
+                        s.repeat(0..4294967295, |s| {
+                            s.sequence(|s| {
+                                Ok(s)
+                                    .and_then(|s| builtin_ignore(s))
+                                    .and_then(|s| parse_comma(s))
+                                    .and_then(|s| builtin_ignore(s))
+                                    .and_then(|s| {
+                                        parse_generic_parameter_pair(s).and_then(|s| s.tag_node("generic_parameter_pair"))
+                                    })
+                            })
+                        })
+                    })
+                    .and_then(|s| {
+                        s.optional(|s| s.sequence(|s| Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| parse_comma(s))))
+                    })
+            })
+        })
+    })
+}
+#[inline]
+fn parse_generic_parameter_pair(state: Input) -> Output {
+    state.rule(ValkyrieRule::GenericParameterPair, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| {
+                    s.optional(|s| {
+                        s.sequence(|s| {
+                            Ok(s)
+                                .and_then(|s| parse_colon(s).and_then(|s| s.tag_node("colon")))
+                                .and_then(|s| builtin_ignore(s))
+                                .and_then(|s| parse_type_expression(s).and_then(|s| s.tag_node("type_expression")))
+                        })
+                    })
+                })
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| {
+                    s.optional(|s| {
+                        s.sequence(|s| {
+                            Ok(s)
+                                .and_then(|s| builtin_text(s, "=", false))
+                                .and_then(|s| builtin_ignore(s))
+                                .and_then(|s| parse_type_expression(s).and_then(|s| s.tag_node("type_expression")))
+                        })
+                    })
+                })
+        })
+    })
+}
+#[inline]
 fn parse_generic_call(state: Input) -> Output {
     state.rule(ValkyrieRule::GenericCall, |s| {
         s.sequence(|s| {
@@ -2441,33 +2521,6 @@ fn parse_annotation_head(state: Input) -> Output {
                             Ok(s)
                                 .and_then(|s| builtin_ignore(s))
                                 .and_then(|s| parse_annotation_term(s).and_then(|s| s.tag_node("annotation_term")))
-                        })
-                    })
-                })
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| {
-                    s.repeat(0..4294967295, |s| {
-                        s.sequence(|s| {
-                            Ok(s)
-                                .and_then(|s| builtin_ignore(s))
-                                .and_then(|s| parse_modifier_call(s).and_then(|s| s.tag_node("modifier_call")))
-                        })
-                    })
-                })
-        })
-    })
-}
-#[inline]
-fn parse_annotation_mix(state: Input) -> Output {
-    state.rule(ValkyrieRule::AnnotationMix, |s| {
-        s.sequence(|s| {
-            Ok(s)
-                .and_then(|s| {
-                    s.repeat(0..4294967295, |s| {
-                        s.sequence(|s| {
-                            Ok(s)
-                                .and_then(|s| builtin_ignore(s))
-                                .and_then(|s| parse_annotation_term_mix(s).and_then(|s| s.tag_node("annotation_term_mix")))
                         })
                     })
                 })
@@ -2656,7 +2709,8 @@ fn parse_modifier_call(state: Input) -> Output {
                         builtin_regex(s, {
                             static REGEX: OnceLock<Regex> = OnceLock::new();
                             REGEX.get_or_init(|| {
-                                Regex::new("^(?x)(class|structure|union|function|micro|macro|trait|interface|generic)").unwrap()
+                                Regex::new("^(?x)(template|generic|class|structure|union|function|micro|macro|trait|interface)")
+                                    .unwrap()
                             })
                         })
                     })

@@ -5,20 +5,20 @@ use crate::{
 use nyar_error::{Failure, Success, Validate, Validation};
 use valkyrie_ast::{
     ApplyCallNode, ArgumentsList, BooleanNode, ConstructNewNode, ConstructObjectNode, ExpressionType, IdentifierNode,
-    NamePathNode, NumberLiteralNode, RangeKind, RangeNode, RangeTermNode, StringLiteralNode, StringTextNode, TupleKind,
-    TupleNode, TupleTermNode,
+    NamePathNode, NullNode, NumberLiteralNode, RangeKind, RangeNode, RangeTermNode, StringLiteralNode, StringTextNode,
+    TupleKind, TupleNode, TupleTermNode,
 };
 use yggdrasil_rt::YggdrasilNode;
 mod bytes;
-mod identifier;
-mod number;
-mod range;
-mod string;
-mod tuple;
-
 mod create_new;
 mod create_object;
 mod create_try;
+mod identifier;
+mod number;
+mod procedural;
+mod range;
+mod string;
+mod tuple;
 
 impl LeadingNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<ExpressionType> {
@@ -27,9 +27,7 @@ impl LeadingNode {
             Self::Number(v) => v.build(ctx)?.into(),
             Self::Slot(v) => v.build(ctx)?.into(),
             Self::Namepath(v) => v.build(ctx).into(),
-            Self::ProceduralCall(_) => {
-                todo!()
-            }
+            Self::ProceduralCall(v) => v.build(ctx)?.into(),
             Self::RangeLiteral(v) => v.build(ctx)?.into(),
             Self::TupleLiteralStrict(v) => v.build(ctx)?.into(),
             Self::TextLiteral(v) => v.build(ctx).into(),

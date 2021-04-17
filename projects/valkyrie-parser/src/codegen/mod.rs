@@ -141,12 +141,14 @@ pub enum ValkyrieRule {
     SubscriptOnly,
     SubscriptRange,
     RangeOmit,
+    GenericDefine,
+    GenericParameter,
+    GenericParameterPair,
     GenericCall,
     GenericHide,
     GenericTerms,
     GenericPair,
     AnnotationHead,
-    AnnotationMix,
     AnnotationTerm,
     AnnotationTermMix,
     AttributeCall,
@@ -338,12 +340,14 @@ impl YggdrasilRule for ValkyrieRule {
             Self::SubscriptOnly => "",
             Self::SubscriptRange => "",
             Self::RangeOmit => "",
+            Self::GenericDefine => "",
+            Self::GenericParameter => "",
+            Self::GenericParameterPair => "",
             Self::GenericCall => "",
             Self::GenericHide => "",
             Self::GenericTerms => "",
             Self::GenericPair => "",
             Self::AnnotationHead => "",
-            Self::AnnotationMix => "",
             Self::AnnotationTerm => "",
             Self::AnnotationTermMix => "",
             Self::AttributeCall => "",
@@ -565,6 +569,7 @@ pub struct DefineClassNode {
     pub class_block: ClassBlockNode,
     pub class_inherit: Option<ClassInheritNode>,
     pub define_template: Option<DefineTemplateNode>,
+    pub generic_define: Option<GenericDefineNode>,
     pub identifier: IdentifierNode,
     pub kw_class: KwClassNode,
     pub span: Range<u32>,
@@ -709,10 +714,10 @@ pub struct KwTraitNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct DefineFunctionNode {
+    pub annotation_head: AnnotationHeadNode,
     pub continuation: Option<ContinuationNode>,
-    pub generic_hide: Option<GenericHideNode>,
+    pub generic_define: Option<GenericDefineNode>,
     pub kw_function: KwFunctionNode,
-    pub modifier_call: Vec<ModifierCallNode>,
     pub namepath: NamepathNode,
     pub parameter_terms: ParameterTermsNode,
     pub type_effect: Option<TypeEffectNode>,
@@ -755,7 +760,6 @@ pub enum ParameterItemNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ParameterPairNode {
-    pub annotation_mix: AnnotationMixNode,
     pub identifier: IdentifierNode,
     pub parameter_default: Option<ParameterDefaultNode>,
     pub parameter_hint: Option<ParameterHintNode>,
@@ -1218,6 +1222,27 @@ pub struct RangeOmitNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct GenericDefineNode {
+    pub generic_parameter: GenericParameterNode,
+    pub proportion: Option<ProportionNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct GenericParameterNode {
+    pub generic_parameter_pair: Vec<GenericParameterPairNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct GenericParameterPairNode {
+    // Missing rule Colon
+    pub identifier: IdentifierNode,
+    pub type_expression: Vec<TypeExpressionNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct GenericCallNode {
     pub generic_terms: GenericTermsNode,
     pub namepath: Option<NamepathNode>,
@@ -1250,13 +1275,6 @@ pub struct GenericPairNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct AnnotationHeadNode {
     pub annotation_term: Vec<AnnotationTermNode>,
-    pub modifier_call: Vec<ModifierCallNode>,
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct AnnotationMixNode {
-    pub annotation_term_mix: Vec<AnnotationTermMixNode>,
     pub modifier_call: Vec<ModifierCallNode>,
     pub span: Range<u32>,
 }

@@ -4,7 +4,7 @@ ProgramRoot {
             type: Micro,
             namepath: NamePathNode {
                 names: [
-                    Identifier("fun3", 6..10),
+                    Identifier("main", 25..29),
                 ],
             },
             modifiers: [],

@@ -100,8 +100,9 @@ class WhereBound {
 //}
 // === classes === -----------------------------------------------------------------------------------------------------
 class DefineClass {
-    DefineTemplate? AnnotationHead
-    KW_CLASS Identifier ClassInherit? ClassBlock ^EOS?
+    DefineTemplate?
+    AnnotationHead
+    KW_CLASS Identifier GenericDefine? ClassInherit? ClassBlock ^EOS?
 }
 class ClassBlock {
     '{' ClassBlockItem* '}'
@@ -187,7 +188,8 @@ union KW_TRAIT {
 }
 // === identifier === --------------------------------------------------------------------------------------------------
 class DefineFunction {
-    ModifierCall* KW_FUNCTION Namepath GenericHide? '(' ParameterTerms ')' TypeReturn? TypeEffect? Continuation?
+    AnnotationHead
+    KW_FUNCTION Namepath GenericDefine? '(' ParameterTerms ')' TypeReturn? TypeEffect? Continuation?
 }
 class TypeHint {
     COLON TypeExpression
@@ -207,7 +209,7 @@ union ParameterItem {
     | ParameterPair
 }
 class ParameterPair {
-    AnnotationMix ParameterModifier* ParameterHint?
+    ParameterModifier* ParameterHint?
     Identifier TypeHint? ParameterDefault?
 }
 text class ParameterHint {
@@ -505,6 +507,17 @@ atomic class SubscriptRange ^ {
 atomic inline class RangeOmit {
     PROPORTION | COLON ~ COLON
 }
+// === generic define === ----------------------------------------------------------------------------------------------
+class GenericDefine {
+    | PROPORTION? '<' GenericParameter '>'
+    | '⟨' GenericParameter '⟩'
+}
+atomic class GenericParameter {
+    (GenericParameterPair (HIDE ^COMMA ~ GenericParameterPair)* (HIDE ^COMMA)?)?
+}
+class GenericParameterPair {
+    Identifier (Colon TypeExpression)? ('=' TypeExpression)?
+}
 // === generic call === ------------------------------------------------------------------------------------------------
 class GenericCall {
     OP_AND_THEN? (
@@ -526,9 +539,6 @@ class GenericPair {
 // === annotation === --------------------------------------------------------------------------------------------------
 class AnnotationHead {
     AnnotationTerm* ModifierCall*
-}
-class AnnotationMix {
-    AnnotationTermMix* ModifierCall*
 }
 union AnnotationTerm {
     | AttributeCall
@@ -565,7 +575,7 @@ text atomic class TEXT_CONTENT5 { (!'""""' ANY)+ }
 text atomic class TEXT_CONTENT6 { (!"''''" ANY)+ }
 // === identifier === --------------------------------------------------------------------------------------------------
 atomic class ModifierCall ^ {
-    !/class|structure|union|function|micro|macro|trait|interface|generic/ ^Identifier
+    !/template|generic|class|structure|union|function|micro|macro|trait|interface/ ^Identifier
 }
 atomic class AttributePath {
     '#' Namepath
