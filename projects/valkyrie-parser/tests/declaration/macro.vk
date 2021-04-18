@@ -4,7 +4,7 @@ macro a {
     // caller's package name
     package_caller::a
 }
-// 能被 @derive 的 trait
+// @derive trait
 #derive(Copy, Clone, Debug, PartialEq, Eq, Hash)
 derived macro A {
 

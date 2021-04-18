@@ -36,6 +36,7 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::KW_CLASS => parse_kw_class(state),
         ValkyrieRule::ObjectStatement => parse_object_statement(state),
         ValkyrieRule::DefineUnion => parse_define_union(state),
+        ValkyrieRule::UnionTerm => parse_union_term(state),
         ValkyrieRule::KW_UNION => parse_kw_union(state),
         ValkyrieRule::DefineEnumerate => parse_define_enumerate(state),
         ValkyrieRule::EnumerateTerms => parse_enumerate_terms(state),
@@ -885,8 +886,26 @@ fn parse_define_union(state: Input) -> Output {
                 .and_then(|s| parse_kw_union(s).and_then(|s| s.tag_node("kw_union")))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| builtin_text(s, "{", false))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| {
+                    s.repeat(0..4294967295, |s| {
+                        s.sequence(|s| {
+                            Ok(s)
+                                .and_then(|s| builtin_ignore(s))
+                                .and_then(|s| parse_union_term(s).and_then(|s| s.tag_node("union_term")))
+                        })
+                    })
+                })
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| builtin_text(s, "}", false))
         })
     })
+}
+#[inline]
+fn parse_union_term(state: Input) -> Output {
+    state.rule(ValkyrieRule::UnionTerm, |s| Err(s).or_else(|s| parse_eos_free(s).and_then(|s| s.tag_node("eos_free"))))
 }
 #[inline]
 fn parse_kw_union(state: Input) -> Output {
@@ -2837,7 +2856,7 @@ fn parse_special(state: Input) -> Output {
     state.rule(ValkyrieRule::Special, |s| {
         s.match_regex({
             static REGEX: OnceLock<Regex> = OnceLock::new();
-            REGEX.get_or_init(|| Regex::new("^(?x)([∅∞]|true|false)").unwrap())
+            REGEX.get_or_init(|| Regex::new("^(?x)([∅∞]|true|false|[?]{3})").unwrap())
         })
     })
 }

@@ -913,6 +913,7 @@ impl YggdrasilNode for DefineUnionNode {
             annotation_head: pair.take_tagged_one::<AnnotationHeadNode>(Cow::Borrowed("annotation_head"))?,
             identifier: pair.take_tagged_one::<IdentifierNode>(Cow::Borrowed("identifier"))?,
             kw_union: pair.take_tagged_one::<KwUnionNode>(Cow::Borrowed("kw_union"))?,
+            union_term: pair.take_tagged_items::<UnionTermNode>(Cow::Borrowed("union_term")).collect::<Result<Vec<_>, _>>()?,
             span: Range { start: _span.start() as u32, end: _span.end() as u32 },
         })
     }
@@ -923,6 +924,31 @@ impl FromStr for DefineUnionNode {
 
     fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
         Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::DefineUnion)?)
+    }
+}
+#[automatically_derived]
+impl YggdrasilNode for UnionTermNode {
+    type Rule = ValkyrieRule;
+
+    fn get_range(&self) -> Range<usize> {
+        match self {
+            Self::EosFree(s) => s.get_range(),
+        }
+    }
+    fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
+        let _span = pair.get_span();
+        if let Ok(s) = pair.take_tagged_one::<EosFreeNode>(Cow::Borrowed("eos_free")) {
+            return Ok(Self::EosFree(s));
+        }
+        Err(YggdrasilError::invalid_node(ValkyrieRule::UnionTerm, _span))
+    }
+}
+#[automatically_derived]
+impl FromStr for UnionTermNode {
+    type Err = YggdrasilError<ValkyrieRule>;
+
+    fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::UnionTerm)?)
     }
 }
 #[automatically_derived]

@@ -64,6 +64,7 @@ pub enum ValkyrieRule {
     KW_CLASS,
     ObjectStatement,
     DefineUnion,
+    UnionTerm,
     KW_UNION,
     DefineEnumerate,
     EnumerateTerms,
@@ -263,6 +264,7 @@ impl YggdrasilRule for ValkyrieRule {
             Self::KW_CLASS => "",
             Self::ObjectStatement => "",
             Self::DefineUnion => "",
+            Self::UnionTerm => "",
             Self::KW_UNION => "",
             Self::DefineEnumerate => "",
             Self::EnumerateTerms => "",
@@ -665,7 +667,13 @@ pub struct DefineUnionNode {
     pub annotation_head: AnnotationHeadNode,
     pub identifier: IdentifierNode,
     pub kw_union: KwUnionNode,
+    pub union_term: Vec<UnionTermNode>,
     pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum UnionTermNode {
+    EosFree(EosFreeNode),
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]

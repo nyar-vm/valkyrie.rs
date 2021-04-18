@@ -1,5 +1,5 @@
 grammar Valkyrie {
-
+    patterns: ["*.vk", "*.valkyrie"]
 }
 
 // === statements === -----------------------------------------------------------------
@@ -153,7 +153,10 @@ class ObjectStatement {
 // === identifier === --------------------------------------------------------------------------------------------------
 class DefineUnion {
     AnnotationHead
-    KW_UNION Identifier
+    KW_UNION Identifier '{' UnionTerm* '}'
+}
+union UnionTerm {
+    | EOS_FREE
 }
 @style(keyword)
 class KW_UNION {
@@ -610,7 +613,7 @@ text class IdentifierRawText {
     [^`]+
 }
 text class Special {
-    /[∅∞]|true|false/
+    /[∅∞]|true|false|[?]{3}/
 }
 // === number === ------------------------------------------------------------------------------------------------------
 union Number {
