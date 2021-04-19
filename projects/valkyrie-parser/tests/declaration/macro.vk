@@ -6,7 +6,7 @@ macro a {
 }
 // @derive trait
 #derive(Copy, Clone, Debug, PartialEq, Eq, Hash)
-derived macro A {
+derived macro A (){
 
 }
 

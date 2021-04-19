@@ -17,41 +17,17 @@ ProgramRoot {
         },
         ExpressionNode {
             omit: false,
-            body: ApplyCallNode {
-                monadic: false,
-                caller: false,
-                arguments: ArgumentsList {
-                    terms: [],
-                },
-                body: None,
-                span: 35..45,
-            },
+            body: false,
             span: 25..46,
         },
         ExpressionNode {
             omit: false,
-            body: ApplyCallNode {
-                monadic: false,
-                caller: false,
-                arguments: ArgumentsList {
-                    terms: [],
-                },
-                body: None,
-                span: 52..61,
-            },
+            body: false,
             span: 46..62,
         },
         ExpressionNode {
             omit: false,
-            body: ApplyCallNode {
-                monadic: false,
-                caller: false,
-                arguments: ArgumentsList {
-                    terms: [],
-                },
-                body: None,
-                span: 68..79,
-            },
+            body: false,
             span: 62..80,
         },
         ExpressionNode {

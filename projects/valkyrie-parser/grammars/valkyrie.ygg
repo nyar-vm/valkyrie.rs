@@ -102,14 +102,14 @@ class WhereBound {
 class DefineClass {
     DefineTemplate?
     AnnotationHead
-    KW_CLASS Identifier GenericDefine? ClassInherit? ClassBlock ^EOS?
+    KW_CLASS Identifier GenericDefine? ClassInherit? TypeHint? ClassBlock ^EOS?
 }
 class ClassBlock {
-    '{' ClassBlockItem* '}'
+    '{' ClassTerm* '}'
 }
-union ClassBlockItem {
+union ClassTerm {
     | ClassDomain
-    | ClassMethod
+    | DefineMethod
     | ClassField
     | EOS_FREE
 }
@@ -129,7 +129,7 @@ atomic inline class field_modifier {
 class ParameterDefault {
     '=' MainExpression
 }
-class ClassMethod {
+class DefineMethod {
     AttributeCall* method_modifier* Namepath
     '(' ')'
     // DefineGeneric? FunctionParameters ReturnType? FunctionBlock?
@@ -153,10 +153,15 @@ class ObjectStatement {
 // === identifier === --------------------------------------------------------------------------------------------------
 class DefineUnion {
     AnnotationHead
-    KW_UNION Identifier '{' UnionTerm* '}'
+    KW_UNION Identifier ClassInherit? TypeHint? '{' UnionTerm* '}'
 }
 union UnionTerm {
+    | DefineVariant
+    | DefineMethod
     | EOS_FREE
+}
+class DefineVariant {
+    AnnotationTerm* Identifier ClassBlock?
 }
 @style(keyword)
 class KW_UNION {
@@ -165,13 +170,13 @@ class KW_UNION {
 // === identifier === --------------------------------------------------------------------------------------------------
 class DefineEnumerate {
     AnnotationHead
-    KW_FLAGS Identifier '{' EnumerateTerms* '}'
+    KW_FLAGS Identifier '{' FlagTerm* '}'
 }
-union EnumerateTerms {
-    | EnumerateField
+union FlagTerm {
+    | FlagField
     | EOS_FREE
 }
-class EnumerateField {
+class FlagField {
     Identifier '=' MainExpression
 }
 @style(keyword)
@@ -333,7 +338,14 @@ union Leading {
     | Number
     | Special
 }
-
+@railway(false)
+atomic union MainSuffix {
+    | HIDE DotMatchCall   #DotMatchCall
+    | HIDE DotClosureCall #DotClosureCall
+    | TupleCall
+    | InlineSuffix
+}
+// === operators === ---------------------------------------------------------------------------------------------------
 @railway(false)
 @style(operator)
 text class MainInfix ^ {
@@ -358,6 +370,14 @@ text class MainInfix ^ {
     /
 }
 @railway(false)
+@style(operator)
+text class TypeInfix {
+    / [|&+]
+    | [-]
+    /
+}
+@railway(false)
+@style(operator)
 text class MainPrefix {
     / [¬!+]
     | [-]
@@ -368,11 +388,20 @@ text class MainPrefix {
     /
 }
 @railway(false)
-atomic union MainSuffix {
-    | HIDE DotMatchCall   #DotMatchCall
-    | HIDE DotClosureCall #DotClosureCall
-    | TupleCall
-    | InlineSuffix
+@style(operator)
+text class TypePrefix {
+    / [+¬~]
+    | [-]
+    /
+}
+@railway(false)
+@style(operator)
+text class SuffixOperator {
+    / [!]
+    | [%‰‱]
+    | [′″‴⁗]
+    | [℃℉]
+    /
 }
 // === inline expression === --------------------------------------------------------------------------------------------------
 atomic class InlineExpression {
@@ -388,14 +417,6 @@ union InlineSuffix {
     | RangeCall
     | GenericCall
 }
-@railway(false)
-text class SuffixOperator {
-    / [!]
-    | [%‰‱]
-    | [′″‴⁗]
-    | [℃℉]
-    /
-}
 // === identifier === --------------------------------------------------------------------------------------------------
 atomic class TypeExpression {
     TypeTerm (HIDE TypeInfix ~ TypeTerm)*
@@ -406,16 +427,6 @@ atomic class TypeTerm {
 atomic union TypeFactor {
     | '(' ~ TypeExpression ~ ')'
     | Leading
-}
-@style(operator)
-text class TypeInfix {
-    / [|&]
-    /
-}
-text class TypePrefix {
-    / [+]
-    | [-]
-    /
 }
 atomic union TypeSuffix {
     | GenericHide
@@ -550,13 +561,13 @@ union AnnotationTermMix {
     | AttributeCall
     | ProceduralCall
 }
-class AttributeCall {
-    // #call(...)
-    AttributePath TupleLiteral?
+atomic class AttributeCall {
+    // #call(...) { domain } receiver
+    '#' Namepath ~ TupleLiteral? ~ ClassBlock?
 }
-class ProceduralCall {
-    // @call(...)
-    ProceduralPath TupleLiteral?
+atomic class ProceduralCall {
+    // @call(...) { domain }
+    '@' Namepath ~ TupleLiteral? ~ ClassBlock?
 }
 // === text === ------------------------------------------------------------------------------------------------------
 atomic class TextLiteral {
@@ -579,12 +590,6 @@ text atomic class TEXT_CONTENT6 { (!"''''" ANY)+ }
 // === identifier === --------------------------------------------------------------------------------------------------
 atomic class ModifierCall ^ {
     !/template|generic|class|structure|union|function|micro|macro|trait|interface/ ^Identifier
-}
-atomic class AttributePath {
-    '#' Namepath
-}
-atomic class ProceduralPath {
-    '@' Namepath
 }
 atomic class Slot {
     OP_SLOT SlotItem?

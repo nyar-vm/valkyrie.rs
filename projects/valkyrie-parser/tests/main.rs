@@ -1,6 +1,6 @@
 #![allow(unused, dead_code)]
 
-use nyar_error::{Failure, FileCache, Success, Validation};
+use nyar_error::{third_party::Url, Failure, FileCache, Success, Validation};
 use std::{
     ffi::OsStr,
     fs::File,
@@ -8,11 +8,9 @@ use std::{
     path::{Path, PathBuf},
     str::FromStr,
 };
-
-use nyar_error::third_party::Url;
 use valkyrie_parser::{
-    MainExpressionNode, MainStatementNode, ProgramContext, ProgramNode, StatementNode, ValkyrieParser, ValkyrieRule,
-    ValkyrieRule::MainStatement,
+    ClassBlockNode, ClassFieldNode, ClassTermNode, DefineImportNode, DefineMethodNode, DefineNamespaceNode, MainExpressionNode,
+    MainStatementNode, ProgramContext, ProgramNode, StatementNode, ValkyrieParser, ValkyrieRule, ValkyrieRule::MainStatement,
 };
 use yggdrasil_rt::{OutputResult, YggdrasilError, YggdrasilParser};
 
