@@ -151,6 +151,24 @@ class ObjectStatement {
     KW_Object ClassInherit? ClassBlock ^EOS?
 }
 // === identifier === --------------------------------------------------------------------------------------------------
+class DefineEnumerate {
+    AnnotationHead
+    KW_FLAGS Identifier '{' FlagTerm* '}'
+}
+union FlagTerm {
+    | FlagField
+    | EOS_FREE
+}
+class FlagField {
+    Identifier ('=' MainExpression)?
+}
+@style(keyword)
+@railway(false)
+union KW_FLAGS {
+    | 'enumerate' #Enum
+    | 'flags'     #Flags
+}
+// === identifier === --------------------------------------------------------------------------------------------------
 class DefineUnion {
     AnnotationHead
     KW_UNION Identifier ClassInherit? TypeHint? '{' UnionTerm* '}'
@@ -166,24 +184,6 @@ class DefineVariant {
 @style(keyword)
 class KW_UNION {
     'union'
-}
-// === identifier === --------------------------------------------------------------------------------------------------
-class DefineEnumerate {
-    AnnotationHead
-    KW_FLAGS Identifier '{' FlagTerm* '}'
-}
-union FlagTerm {
-    | FlagField
-    | EOS_FREE
-}
-class FlagField {
-    Identifier '=' MainExpression
-}
-@style(keyword)
-@railway(false)
-union KW_FLAGS {
-    | 'enumerate' #Enum
-    | 'flags'     #Flags
 }
 // === identifier === --------------------------------------------------------------------------------------------------
 class DefineTrait {
@@ -217,19 +217,12 @@ union ParameterItem {
     | ParameterPair
 }
 class ParameterPair {
-    ParameterModifier* ParameterHint?
+    ModifierAhead* ParameterHint?
     Identifier TypeHint? ParameterDefault?
 }
 text class ParameterHint {
     /[.]{2,3}|[~^]/
 }
-class ParameterModifier {
-    !PARAMETER_STOP Identifier
-}
-class PARAMETER_STOP {
-    Identifier [:=.,)]
-}
-
 class Continuation {
     '{' MainStatement* '}'
 }
@@ -438,16 +431,10 @@ class TryStatement {
 }
 // === new statement === -----------------------------------------------------------------------------------------------
 class NewStatement {
-    KW_NEW NewModifiers* Namepath GenericHide? TupleLiteral? NewBlock? ^EOS?
-}
-atomic class NewModifiers ^ {
-    !NEW_STOP ^Identifier
+    KW_NEW ModifierAhead* Namepath GenericHide? TupleLiteral? NewBlock? ^EOS?
 }
 class NewBlock {
     '{' (NewPair (EOS_FREE NewPair)* EOS_FREE?)? '}'
-}
-atomic class NEW_STOP {
-    Identifier HIDE [\[({<⟨:∷;]
 }
 atomic class NewPair {
     (NewPairKey ~ Colon HIDE)? MainExpression
@@ -554,6 +541,9 @@ class GenericPair {
 class AnnotationHead {
     AnnotationTerm* ModifierCall*
 }
+class AnnotationMix {
+    AnnotationTermMix* ModifierAhead*
+}
 union AnnotationTerm {
     | AttributeCall
 }
@@ -587,10 +577,25 @@ text atomic class TEXT_CONTENT3 { (!'"""' ANY)+ }
 text atomic class TEXT_CONTENT4 { (!"'''" ANY)+ }
 text atomic class TEXT_CONTENT5 { (!'""""' ANY)+ }
 text atomic class TEXT_CONTENT6 { (!"''''" ANY)+ }
-// === identifier === --------------------------------------------------------------------------------------------------
+// === modifier === --------------------------------------------------------------------------------------------------
 atomic class ModifierCall ^ {
-    !/template|generic|class|structure|union|function|micro|macro|trait|interface/ ^Identifier
+    !KEYWORDS_STOP ^Identifier
 }
+atomic class ModifierAhead ^ {
+    !IDENTIFIER_STOP ^Identifier
+}
+class KEYWORDS_STOP {
+    / template | generic
+    | class | structure
+    | enumerate | flags | union
+    | function | micro | macro
+    | trait | interface
+    /
+}
+class IDENTIFIER_STOP {
+    Identifier [\[(){}<>⟨:∷,;]
+}
+// === identifier === --------------------------------------------------------------------------------------------------
 atomic class Slot {
     OP_SLOT SlotItem?
 }

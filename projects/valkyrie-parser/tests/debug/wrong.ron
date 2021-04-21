@@ -1,23 +1,20 @@
 ProgramRoot {
     statements: [
-        FunctionDeclaration {
-            type: Micro,
-            namepath: NamePathNode {
-                names: [
-                    Identifier("main", 25..29),
-                ],
+        FlagDeclaration {
+            documentation: DocumentationNode {
+                documentation: "",
+                span: 0..0,
             },
+            kind: Juxtapose,
+            name: Identifier("OneFlag", 6..13),
             modifiers: [],
-            attributes: None,
-            generic: None,
-            arguments: ArgumentsList {
-                terms: [],
-            },
-            return: None,
+            layout: None,
+            implements: [],
             body: StatementBlock {
                 terms: [],
                 span: 0..0,
             },
+            span: 0..23,
         },
     ],
 }

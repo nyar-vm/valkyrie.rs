@@ -63,14 +63,14 @@ pub enum ValkyrieRule {
     ClassDomain,
     KW_CLASS,
     ObjectStatement,
+    DefineEnumerate,
+    FlagTerm,
+    FlagField,
+    KW_FLAGS,
     DefineUnion,
     UnionTerm,
     DefineVariant,
     KW_UNION,
-    DefineEnumerate,
-    EnumerateTerms,
-    EnumerateField,
-    KW_FLAGS,
     DefineTrait,
     KW_TRAIT,
     DefineFunction,
@@ -81,8 +81,6 @@ pub enum ValkyrieRule {
     ParameterItem,
     ParameterPair,
     ParameterHint,
-    ParameterModifier,
-    PARAMETER_STOP,
     Continuation,
     KW_FUNCTION,
     WhileStatement,
@@ -122,9 +120,7 @@ pub enum ValkyrieRule {
     TypeSuffix,
     TryStatement,
     NewStatement,
-    NewModifiers,
     NewBlock,
-    NEW_STOP,
     NewPair,
     NewPairKey,
     DotCall,
@@ -164,6 +160,9 @@ pub enum ValkyrieRule {
     TEXT_CONTENT5,
     TEXT_CONTENT6,
     ModifierCall,
+    ModifierAhead,
+    KEYWORDS_STOP,
+    IDENTIFIER_STOP,
     Slot,
     SlotItem,
     NamepathFree,
@@ -262,14 +261,14 @@ impl YggdrasilRule for ValkyrieRule {
             Self::ClassDomain => "",
             Self::KW_CLASS => "",
             Self::ObjectStatement => "",
+            Self::DefineEnumerate => "",
+            Self::FlagTerm => "",
+            Self::FlagField => "",
+            Self::KW_FLAGS => "",
             Self::DefineUnion => "",
             Self::UnionTerm => "",
             Self::DefineVariant => "",
             Self::KW_UNION => "",
-            Self::DefineEnumerate => "",
-            Self::EnumerateTerms => "",
-            Self::EnumerateField => "",
-            Self::KW_FLAGS => "",
             Self::DefineTrait => "",
             Self::KW_TRAIT => "",
             Self::DefineFunction => "",
@@ -280,8 +279,6 @@ impl YggdrasilRule for ValkyrieRule {
             Self::ParameterItem => "",
             Self::ParameterPair => "",
             Self::ParameterHint => "",
-            Self::ParameterModifier => "",
-            Self::PARAMETER_STOP => "",
             Self::Continuation => "",
             Self::KW_FUNCTION => "",
             Self::WhileStatement => "",
@@ -321,9 +318,7 @@ impl YggdrasilRule for ValkyrieRule {
             Self::TypeSuffix => "",
             Self::TryStatement => "",
             Self::NewStatement => "",
-            Self::NewModifiers => "",
             Self::NewBlock => "",
-            Self::NEW_STOP => "",
             Self::NewPair => "",
             Self::NewPairKey => "",
             Self::DotCall => "",
@@ -363,6 +358,9 @@ impl YggdrasilRule for ValkyrieRule {
             Self::TEXT_CONTENT5 => "",
             Self::TEXT_CONTENT6 => "",
             Self::ModifierCall => "",
+            Self::ModifierAhead => "",
+            Self::KEYWORDS_STOP => "",
+            Self::IDENTIFIER_STOP => "",
             Self::Slot => "",
             Self::SlotItem => "",
             Self::NamepathFree => "",
@@ -662,6 +660,34 @@ pub struct ObjectStatementNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct DefineEnumerateNode {
+    pub annotation_head: AnnotationHeadNode,
+    pub flag_term: Vec<FlagTermNode>,
+    pub identifier: IdentifierNode,
+    pub kw_flags: KwFlagsNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum FlagTermNode {
+    EosFree(EosFreeNode),
+    FlagField(FlagFieldNode),
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct FlagFieldNode {
+    pub identifier: IdentifierNode,
+    pub main_expression: Option<MainExpressionNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum KwFlagsNode {
+    Enum,
+    Flags,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct DefineUnionNode {
     pub annotation_head: AnnotationHeadNode,
     pub class_inherit: Option<ClassInheritNode>,
@@ -690,34 +716,6 @@ pub struct DefineVariantNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct KwUnionNode {
     pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct DefineEnumerateNode {
-    pub annotation_head: AnnotationHeadNode,
-    pub enumerate_terms: Vec<EnumerateTermsNode>,
-    pub identifier: IdentifierNode,
-    pub kw_flags: KwFlagsNode,
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum EnumerateTermsNode {
-    EnumerateField(EnumerateFieldNode),
-    EosFree(EosFreeNode),
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct EnumerateFieldNode {
-    pub identifier: IdentifierNode,
-    pub main_expression: MainExpressionNode,
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum KwFlagsNode {
-    Enum,
-    Flags,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -780,9 +778,9 @@ pub enum ParameterItemNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ParameterPairNode {
     pub identifier: IdentifierNode,
+    pub modifier_ahead: Vec<ModifierAheadNode>,
     pub parameter_default: Option<ParameterDefaultNode>,
     pub parameter_hint: Option<ParameterHintNode>,
-    pub parameter_modifier: Vec<ParameterModifierNode>,
     pub type_hint: Option<TypeHintNode>,
     pub span: Range<u32>,
 }
@@ -790,19 +788,6 @@ pub struct ParameterPairNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ParameterHintNode {
     pub text: String,
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ParameterModifierNode {
-    pub identifier: IdentifierNode,
-    pub parameter_stop: Vec<ParameterStopNode>,
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ParameterStopNode {
-    pub identifier: IdentifierNode,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -1092,16 +1077,10 @@ pub struct TryStatementNode {
 pub struct NewStatementNode {
     pub generic_hide: Option<GenericHideNode>,
     pub kw_new: KwNewNode,
+    pub modifier_ahead: Vec<ModifierAheadNode>,
     pub namepath: NamepathNode,
     pub new_block: Option<NewBlockNode>,
-    pub new_modifiers: Vec<NewModifiersNode>,
     pub tuple_literal: Option<TupleLiteralNode>,
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct NewModifiersNode {
-    pub identifier: IdentifierNode,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -1109,12 +1088,6 @@ pub struct NewModifiersNode {
 pub struct NewBlockNode {
     pub eos_free: Vec<EosFreeNode>,
     pub new_pair: Vec<NewPairNode>,
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct NewStopNode {
-    pub identifier: IdentifierNode,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -1381,6 +1354,23 @@ pub struct TextContent6Node {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ModifierCallNode {
+    pub identifier: IdentifierNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ModifierAheadNode {
+    pub identifier: IdentifierNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct KeywordsStopNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct IdentifierStopNode {
     pub identifier: IdentifierNode,
     pub span: Range<u32>,
 }

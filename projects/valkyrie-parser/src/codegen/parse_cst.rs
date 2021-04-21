@@ -35,14 +35,14 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::ClassDomain => parse_class_domain(state),
         ValkyrieRule::KW_CLASS => parse_kw_class(state),
         ValkyrieRule::ObjectStatement => parse_object_statement(state),
+        ValkyrieRule::DefineEnumerate => parse_define_enumerate(state),
+        ValkyrieRule::FlagTerm => parse_flag_term(state),
+        ValkyrieRule::FlagField => parse_flag_field(state),
+        ValkyrieRule::KW_FLAGS => parse_kw_flags(state),
         ValkyrieRule::DefineUnion => parse_define_union(state),
         ValkyrieRule::UnionTerm => parse_union_term(state),
         ValkyrieRule::DefineVariant => parse_define_variant(state),
         ValkyrieRule::KW_UNION => parse_kw_union(state),
-        ValkyrieRule::DefineEnumerate => parse_define_enumerate(state),
-        ValkyrieRule::EnumerateTerms => parse_enumerate_terms(state),
-        ValkyrieRule::EnumerateField => parse_enumerate_field(state),
-        ValkyrieRule::KW_FLAGS => parse_kw_flags(state),
         ValkyrieRule::DefineTrait => parse_define_trait(state),
         ValkyrieRule::KW_TRAIT => parse_kw_trait(state),
         ValkyrieRule::DefineFunction => parse_define_function(state),
@@ -53,8 +53,6 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::ParameterItem => parse_parameter_item(state),
         ValkyrieRule::ParameterPair => parse_parameter_pair(state),
         ValkyrieRule::ParameterHint => parse_parameter_hint(state),
-        ValkyrieRule::ParameterModifier => parse_parameter_modifier(state),
-        ValkyrieRule::PARAMETER_STOP => parse_parameter_stop(state),
         ValkyrieRule::Continuation => parse_continuation(state),
         ValkyrieRule::KW_FUNCTION => parse_kw_function(state),
         ValkyrieRule::WhileStatement => parse_while_statement(state),
@@ -94,9 +92,7 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::TypeSuffix => parse_type_suffix(state),
         ValkyrieRule::TryStatement => parse_try_statement(state),
         ValkyrieRule::NewStatement => parse_new_statement(state),
-        ValkyrieRule::NewModifiers => parse_new_modifiers(state),
         ValkyrieRule::NewBlock => parse_new_block(state),
-        ValkyrieRule::NEW_STOP => parse_new_stop(state),
         ValkyrieRule::NewPair => parse_new_pair(state),
         ValkyrieRule::NewPairKey => parse_new_pair_key(state),
         ValkyrieRule::DotCall => parse_dot_call(state),
@@ -136,6 +132,9 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::TEXT_CONTENT5 => parse_text_content_5(state),
         ValkyrieRule::TEXT_CONTENT6 => parse_text_content_6(state),
         ValkyrieRule::ModifierCall => parse_modifier_call(state),
+        ValkyrieRule::ModifierAhead => parse_modifier_ahead(state),
+        ValkyrieRule::KEYWORDS_STOP => parse_keywords_stop(state),
+        ValkyrieRule::IDENTIFIER_STOP => parse_identifier_stop(state),
         ValkyrieRule::Slot => parse_slot(state),
         ValkyrieRule::SlotItem => parse_slot_item(state),
         ValkyrieRule::NamepathFree => parse_namepath_free(state),
@@ -878,6 +877,69 @@ fn parse_object_statement(state: Input) -> Output {
     })
 }
 #[inline]
+fn parse_define_enumerate(state: Input) -> Output {
+    state.rule(ValkyrieRule::DefineEnumerate, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| parse_annotation_head(s).and_then(|s| s.tag_node("annotation_head")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_kw_flags(s).and_then(|s| s.tag_node("kw_flags")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| builtin_text(s, "{", false))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| {
+                    s.repeat(0..4294967295, |s| {
+                        s.sequence(|s| {
+                            Ok(s)
+                                .and_then(|s| builtin_ignore(s))
+                                .and_then(|s| parse_flag_term(s).and_then(|s| s.tag_node("flag_term")))
+                        })
+                    })
+                })
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| builtin_text(s, "}", false))
+        })
+    })
+}
+#[inline]
+fn parse_flag_term(state: Input) -> Output {
+    state.rule(ValkyrieRule::FlagTerm, |s| {
+        Err(s)
+            .or_else(|s| parse_flag_field(s).and_then(|s| s.tag_node("flag_field")))
+            .or_else(|s| parse_eos_free(s).and_then(|s| s.tag_node("eos_free")))
+    })
+}
+#[inline]
+fn parse_flag_field(state: Input) -> Output {
+    state.rule(ValkyrieRule::FlagField, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| {
+                    s.optional(|s| {
+                        s.sequence(|s| {
+                            Ok(s)
+                                .and_then(|s| builtin_text(s, "=", false))
+                                .and_then(|s| builtin_ignore(s))
+                                .and_then(|s| parse_main_expression(s).and_then(|s| s.tag_node("main_expression")))
+                        })
+                    })
+                })
+        })
+    })
+}
+#[inline]
+fn parse_kw_flags(state: Input) -> Output {
+    state.rule(ValkyrieRule::KW_FLAGS, |s| {
+        Err(s)
+            .or_else(|s| builtin_text(s, "enumerate", false).and_then(|s| s.tag_node("enum")))
+            .or_else(|s| builtin_text(s, "flags", false).and_then(|s| s.tag_node("flags")))
+    })
+}
+#[inline]
 fn parse_define_union(state: Input) -> Output {
     state.rule(ValkyrieRule::DefineUnion, |s| {
         s.sequence(|s| {
@@ -941,62 +1003,6 @@ fn parse_define_variant(state: Input) -> Output {
 #[inline]
 fn parse_kw_union(state: Input) -> Output {
     state.rule(ValkyrieRule::KW_UNION, |s| s.match_string("union", false))
-}
-#[inline]
-fn parse_define_enumerate(state: Input) -> Output {
-    state.rule(ValkyrieRule::DefineEnumerate, |s| {
-        s.sequence(|s| {
-            Ok(s)
-                .and_then(|s| parse_annotation_head(s).and_then(|s| s.tag_node("annotation_head")))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| parse_kw_flags(s).and_then(|s| s.tag_node("kw_flags")))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| builtin_text(s, "{", false))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| {
-                    s.repeat(0..4294967295, |s| {
-                        s.sequence(|s| {
-                            Ok(s)
-                                .and_then(|s| builtin_ignore(s))
-                                .and_then(|s| parse_enumerate_terms(s).and_then(|s| s.tag_node("enumerate_terms")))
-                        })
-                    })
-                })
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| builtin_text(s, "}", false))
-        })
-    })
-}
-#[inline]
-fn parse_enumerate_terms(state: Input) -> Output {
-    state.rule(ValkyrieRule::EnumerateTerms, |s| {
-        Err(s)
-            .or_else(|s| parse_enumerate_field(s).and_then(|s| s.tag_node("enumerate_field")))
-            .or_else(|s| parse_eos_free(s).and_then(|s| s.tag_node("eos_free")))
-    })
-}
-#[inline]
-fn parse_enumerate_field(state: Input) -> Output {
-    state.rule(ValkyrieRule::EnumerateField, |s| {
-        s.sequence(|s| {
-            Ok(s)
-                .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| builtin_text(s, "=", false))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| parse_main_expression(s).and_then(|s| s.tag_node("main_expression")))
-        })
-    })
-}
-#[inline]
-fn parse_kw_flags(state: Input) -> Output {
-    state.rule(ValkyrieRule::KW_FLAGS, |s| {
-        Err(s)
-            .or_else(|s| builtin_text(s, "enumerate", false).and_then(|s| s.tag_node("enum")))
-            .or_else(|s| builtin_text(s, "flags", false).and_then(|s| s.tag_node("flags")))
-    })
 }
 #[inline]
 fn parse_define_trait(state: Input) -> Output {
@@ -1115,7 +1121,7 @@ fn parse_parameter_pair(state: Input) -> Output {
                         s.sequence(|s| {
                             Ok(s)
                                 .and_then(|s| builtin_ignore(s))
-                                .and_then(|s| parse_parameter_modifier(s).and_then(|s| s.tag_node("parameter_modifier")))
+                                .and_then(|s| parse_modifier_ahead(s).and_then(|s| s.tag_node("modifier_ahead")))
                         })
                     })
                 })
@@ -1136,33 +1142,6 @@ fn parse_parameter_hint(state: Input) -> Output {
         s.match_regex({
             static REGEX: OnceLock<Regex> = OnceLock::new();
             REGEX.get_or_init(|| Regex::new("^(?x)([.]{2,3}|[~^])").unwrap())
-        })
-    })
-}
-#[inline]
-fn parse_parameter_modifier(state: Input) -> Output {
-    state.rule(ValkyrieRule::ParameterModifier, |s| {
-        s.sequence(|s| {
-            Ok(s)
-                .and_then(|s| s.lookahead(false, |s| parse_parameter_stop(s).and_then(|s| s.tag_node("parameter_stop"))))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
-        })
-    })
-}
-#[inline]
-fn parse_parameter_stop(state: Input) -> Output {
-    state.rule(ValkyrieRule::PARAMETER_STOP, |s| {
-        s.sequence(|s| {
-            Ok(s)
-                .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| {
-                    builtin_regex(s, {
-                        static REGEX: OnceLock<Regex> = OnceLock::new();
-                        REGEX.get_or_init(|| Regex::new("^(?x)([:=.,)])").unwrap())
-                    })
-                })
         })
     })
 }
@@ -1886,7 +1865,7 @@ fn parse_new_statement(state: Input) -> Output {
                         s.sequence(|s| {
                             Ok(s)
                                 .and_then(|s| builtin_ignore(s))
-                                .and_then(|s| parse_new_modifiers(s).and_then(|s| s.tag_node("new_modifiers")))
+                                .and_then(|s| parse_modifier_ahead(s).and_then(|s| s.tag_node("modifier_ahead")))
                         })
                     })
                 })
@@ -1900,16 +1879,6 @@ fn parse_new_statement(state: Input) -> Output {
                 .and_then(|s| s.optional(|s| parse_new_block(s).and_then(|s| s.tag_node("new_block"))))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| s.optional(|s| parse_eos(s)))
-        })
-    })
-}
-#[inline]
-fn parse_new_modifiers(state: Input) -> Output {
-    state.rule(ValkyrieRule::NewModifiers, |s| {
-        s.sequence(|s| {
-            Ok(s)
-                .and_then(|s| s.lookahead(false, |s| parse_new_stop(s)))
-                .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
         })
     })
 }
@@ -1947,22 +1916,6 @@ fn parse_new_block(state: Input) -> Output {
                 })
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| builtin_text(s, "}", false))
-        })
-    })
-}
-#[inline]
-fn parse_new_stop(state: Input) -> Output {
-    state.rule(ValkyrieRule::NEW_STOP, |s| {
-        s.sequence(|s| {
-            Ok(s)
-                .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| {
-                    builtin_regex(s, {
-                        static REGEX: OnceLock<Regex> = OnceLock::new();
-                        REGEX.get_or_init(|| Regex::new("^(?x)([\\[({<⟨:∷;])").unwrap())
-                    })
-                })
         })
     })
 }
@@ -2766,18 +2719,52 @@ fn parse_modifier_call(state: Input) -> Output {
     state.rule(ValkyrieRule::ModifierCall, |s| {
         s.sequence(|s| {
             Ok(s)
+                .and_then(|s| s.lookahead(false, |s| parse_keywords_stop(s)))
+                .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
+        })
+    })
+}
+#[inline]
+fn parse_modifier_ahead(state: Input) -> Output {
+    state.rule(ValkyrieRule::ModifierAhead, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| s.lookahead(false, |s| parse_identifier_stop(s)))
+                .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
+        })
+    })
+}
+#[inline]
+fn parse_keywords_stop(state: Input) -> Output {
+    state.rule(ValkyrieRule::KEYWORDS_STOP, |s| {
+        s.match_regex({
+            static REGEX: OnceLock<Regex> = OnceLock::new();
+            REGEX.get_or_init(|| {
+                Regex::new(
+                    "^(?x)(template | generic
+    | class | structure
+    | enumerate | flags | union
+    | function | micro | macro
+    | trait | interface)",
+                )
+                .unwrap()
+            })
+        })
+    })
+}
+#[inline]
+fn parse_identifier_stop(state: Input) -> Output {
+    state.rule(ValkyrieRule::IDENTIFIER_STOP, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
+                .and_then(|s| builtin_ignore(s))
                 .and_then(|s| {
-                    s.lookahead(false, |s| {
-                        builtin_regex(s, {
-                            static REGEX: OnceLock<Regex> = OnceLock::new();
-                            REGEX.get_or_init(|| {
-                                Regex::new("^(?x)(template|generic|class|structure|union|function|micro|macro|trait|interface)")
-                                    .unwrap()
-                            })
-                        })
+                    builtin_regex(s, {
+                        static REGEX: OnceLock<Regex> = OnceLock::new();
+                        REGEX.get_or_init(|| Regex::new("^(?x)([\\[(){}<>⟨:∷,;])").unwrap())
                     })
                 })
-                .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
         })
     })
 }
