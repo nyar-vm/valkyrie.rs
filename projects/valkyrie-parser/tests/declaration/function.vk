@@ -71,17 +71,7 @@ macro progress⟨R, P⟩(): R / P {
 
 }
 
-template {
-    return Integer + Number;
-}
-function a() {
-    @assert // 断言
-    assert
-    @assume // 假设
-    assume
-    @refute // 否定
-    refute
-}
+
 
 
 inline function package::path::range(min: int, max: int, step: int): Range {

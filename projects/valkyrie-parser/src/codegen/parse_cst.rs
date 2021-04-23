@@ -25,15 +25,14 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::DefineClass => parse_define_class(state),
         ValkyrieRule::ClassBlock => parse_class_block(state),
         ValkyrieRule::ClassTerm => parse_class_term(state),
-        ValkyrieRule::ClassInherit => parse_class_inherit(state),
-        ValkyrieRule::ClassInheritItem => parse_class_inherit_item(state),
-        ValkyrieRule::ClassField => parse_class_field(state),
-        ValkyrieRule::field_modifier => parse_field_modifier(state),
+        ValkyrieRule::KW_CLASS => parse_kw_class(state),
+        ValkyrieRule::DefineField => parse_define_field(state),
         ValkyrieRule::ParameterDefault => parse_parameter_default(state),
         ValkyrieRule::DefineMethod => parse_define_method(state),
-        ValkyrieRule::method_modifier => parse_method_modifier(state),
-        ValkyrieRule::ClassDomain => parse_class_domain(state),
-        ValkyrieRule::KW_CLASS => parse_kw_class(state),
+        ValkyrieRule::DefineDomain => parse_define_domain(state),
+        ValkyrieRule::DomainTerm => parse_domain_term(state),
+        ValkyrieRule::DefineInherit => parse_define_inherit(state),
+        ValkyrieRule::InheritTerm => parse_inherit_term(state),
         ValkyrieRule::ObjectStatement => parse_object_statement(state),
         ValkyrieRule::DefineEnumerate => parse_define_enumerate(state),
         ValkyrieRule::FlagTerm => parse_flag_term(state),
@@ -49,7 +48,7 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::TypeHint => parse_type_hint(state),
         ValkyrieRule::TypeReturn => parse_type_return(state),
         ValkyrieRule::TypeEffect => parse_type_effect(state),
-        ValkyrieRule::ParameterTerms => parse_parameter_terms(state),
+        ValkyrieRule::FunctionParameters => parse_function_parameters(state),
         ValkyrieRule::ParameterItem => parse_parameter_item(state),
         ValkyrieRule::ParameterPair => parse_parameter_pair(state),
         ValkyrieRule::ParameterHint => parse_parameter_hint(state),
@@ -111,7 +110,7 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::SubscriptOnly => parse_subscript_only(state),
         ValkyrieRule::SubscriptRange => parse_subscript_range(state),
         ValkyrieRule::RangeOmit => parse_range_omit(state),
-        ValkyrieRule::GenericDefine => parse_generic_define(state),
+        ValkyrieRule::DefineGeneric => parse_define_generic(state),
         ValkyrieRule::GenericParameter => parse_generic_parameter(state),
         ValkyrieRule::GenericParameterPair => parse_generic_parameter_pair(state),
         ValkyrieRule::GenericCall => parse_generic_call(state),
@@ -119,6 +118,7 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::GenericTerms => parse_generic_terms(state),
         ValkyrieRule::GenericPair => parse_generic_pair(state),
         ValkyrieRule::AnnotationHead => parse_annotation_head(state),
+        ValkyrieRule::AnnotationMix => parse_annotation_mix(state),
         ValkyrieRule::AnnotationTerm => parse_annotation_term(state),
         ValkyrieRule::AnnotationTermMix => parse_annotation_term_mix(state),
         ValkyrieRule::AttributeCall => parse_attribute_call(state),
@@ -616,9 +616,9 @@ fn parse_define_class(state: Input) -> Output {
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
                 .and_then(|s| builtin_ignore(s))
-                .and_then(|s| s.optional(|s| parse_generic_define(s).and_then(|s| s.tag_node("generic_define"))))
+                .and_then(|s| s.optional(|s| parse_define_generic(s).and_then(|s| s.tag_node("define_generic"))))
                 .and_then(|s| builtin_ignore(s))
-                .and_then(|s| s.optional(|s| parse_class_inherit(s).and_then(|s| s.tag_node("class_inherit"))))
+                .and_then(|s| s.optional(|s| parse_define_inherit(s).and_then(|s| s.tag_node("define_inherit"))))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| s.optional(|s| parse_type_hint(s).and_then(|s| s.tag_node("type_hint"))))
                 .and_then(|s| builtin_ignore(s))
@@ -653,107 +653,32 @@ fn parse_class_block(state: Input) -> Output {
 fn parse_class_term(state: Input) -> Output {
     state.rule(ValkyrieRule::ClassTerm, |s| {
         Err(s)
-            .or_else(|s| parse_class_domain(s).and_then(|s| s.tag_node("class_domain")))
             .or_else(|s| parse_define_method(s).and_then(|s| s.tag_node("define_method")))
-            .or_else(|s| parse_class_field(s).and_then(|s| s.tag_node("class_field")))
+            .or_else(|s| parse_define_domain(s).and_then(|s| s.tag_node("define_domain")))
+            .or_else(|s| parse_define_field(s).and_then(|s| s.tag_node("define_field")))
             .or_else(|s| parse_eos_free(s).and_then(|s| s.tag_node("eos_free")))
     })
 }
 #[inline]
-fn parse_class_inherit(state: Input) -> Output {
-    state.rule(ValkyrieRule::ClassInherit, |s| {
-        s.sequence(|s| {
-            Ok(s)
-                .and_then(|s| builtin_text(s, "(", false))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| {
-                    s.optional(|s| {
-                        s.sequence(|s| {
-                            Ok(s)
-                                .and_then(|s| parse_class_inherit_item(s).and_then(|s| s.tag_node("class_inherit_item")))
-                                .and_then(|s| builtin_ignore(s))
-                                .and_then(|s| {
-                                    s.repeat(0..4294967295, |s| {
-                                        s.sequence(|s| {
-                                            Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| {
-                                                s.sequence(|s| {
-                                                    Ok(s)
-                                                        .and_then(|s| builtin_text(s, ",", false))
-                                                        .and_then(|s| builtin_ignore(s))
-                                                        .and_then(|s| {
-                                                            parse_class_inherit_item(s)
-                                                                .and_then(|s| s.tag_node("class_inherit_item"))
-                                                        })
-                                                })
-                                            })
-                                        })
-                                    })
-                                })
-                                .and_then(|s| builtin_ignore(s))
-                                .and_then(|s| s.optional(|s| builtin_text(s, ",", false)))
-                        })
-                    })
-                })
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| builtin_text(s, ")", false))
-        })
+fn parse_kw_class(state: Input) -> Output {
+    state.rule(ValkyrieRule::KW_CLASS, |s| {
+        Err(s)
+            .or_else(|s| builtin_text(s, "class", false).and_then(|s| s.tag_node("class")))
+            .or_else(|s| builtin_text(s, "structure", false).and_then(|s| s.tag_node("structure")))
     })
 }
 #[inline]
-fn parse_class_inherit_item(state: Input) -> Output {
-    state.rule(ValkyrieRule::ClassInheritItem, |s| parse_namepath(s).and_then(|s| s.tag_node("namepath")))
-}
-#[inline]
-fn parse_class_field(state: Input) -> Output {
-    state.rule(ValkyrieRule::ClassField, |s| {
+fn parse_define_field(state: Input) -> Output {
+    state.rule(ValkyrieRule::DefineField, |s| {
         s.sequence(|s| {
             Ok(s)
-                .and_then(|s| {
-                    s.repeat(0..4294967295, |s| {
-                        s.sequence(|s| {
-                            Ok(s)
-                                .and_then(|s| builtin_ignore(s))
-                                .and_then(|s| parse_attribute_call(s).and_then(|s| s.tag_node("attribute_call")))
-                        })
-                    })
-                })
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| {
-                    s.repeat(0..4294967295, |s| {
-                        s.sequence(|s| {
-                            Ok(s)
-                                .and_then(|s| builtin_ignore(s))
-                                .and_then(|s| parse_field_modifier(s).and_then(|s| s.tag_node("field_modifier")))
-                        })
-                    })
-                })
+                .and_then(|s| parse_annotation_mix(s).and_then(|s| s.tag_node("annotation_mix")))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| s.optional(|s| parse_type_hint(s).and_then(|s| s.tag_node("type_hint"))))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| s.optional(|s| parse_parameter_default(s).and_then(|s| s.tag_node("parameter_default"))))
-        })
-    })
-}
-#[inline]
-fn parse_field_modifier(state: Input) -> Output {
-    state.rule(ValkyrieRule::field_modifier, |s| {
-        s.sequence(|s| {
-            Ok(s)
-                .and_then(|s| {
-                    s.lookahead(false, |s| {
-                        s.sequence(|s| {
-                            Ok(s).and_then(|s| parse_namepath(s)).and_then(|s| builtin_ignore(s)).and_then(|s| {
-                                builtin_regex(s, {
-                                    static REGEX: OnceLock<Regex> = OnceLock::new();
-                                    REGEX.get_or_init(|| Regex::new("^(?x)([:=};])").unwrap())
-                                })
-                            })
-                        })
-                    })
-                })
-                .and_then(|s| parse_modifier_call(s).and_then(|s| s.tag_node("modifier_call")))
         })
     })
 }
@@ -773,79 +698,32 @@ fn parse_define_method(state: Input) -> Output {
     state.rule(ValkyrieRule::DefineMethod, |s| {
         s.sequence(|s| {
             Ok(s)
-                .and_then(|s| {
-                    s.repeat(0..4294967295, |s| {
-                        s.sequence(|s| {
-                            Ok(s)
-                                .and_then(|s| builtin_ignore(s))
-                                .and_then(|s| parse_attribute_call(s).and_then(|s| s.tag_node("attribute_call")))
-                        })
-                    })
-                })
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| {
-                    s.repeat(0..4294967295, |s| {
-                        s.sequence(|s| {
-                            Ok(s)
-                                .and_then(|s| builtin_ignore(s))
-                                .and_then(|s| parse_method_modifier(s).and_then(|s| s.tag_node("method_modifier")))
-                        })
-                    })
-                })
+                .and_then(|s| parse_annotation_mix(s).and_then(|s| s.tag_node("annotation_mix")))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_namepath(s).and_then(|s| s.tag_node("namepath")))
                 .and_then(|s| builtin_ignore(s))
+                .and_then(|s| s.optional(|s| parse_define_generic(s).and_then(|s| s.tag_node("define_generic"))))
+                .and_then(|s| builtin_ignore(s))
                 .and_then(|s| builtin_text(s, "(", false))
                 .and_then(|s| builtin_ignore(s))
-                .and_then(|s| builtin_text(s, ")", false))
-        })
-    })
-}
-#[inline]
-fn parse_method_modifier(state: Input) -> Output {
-    state.rule(ValkyrieRule::method_modifier, |s| {
-        s.sequence(|s| {
-            Ok(s)
-                .and_then(|s| {
-                    s.lookahead(false, |s| {
-                        s.sequence(|s| {
-                            Ok(s).and_then(|s| parse_namepath(s)).and_then(|s| builtin_ignore(s)).and_then(|s| {
-                                builtin_regex(s, {
-                                    static REGEX: OnceLock<Regex> = OnceLock::new();
-                                    REGEX.get_or_init(|| Regex::new("^(?x)([(<:}])").unwrap())
-                                })
-                            })
-                        })
-                    })
-                })
-                .and_then(|s| parse_modifier_call(s).and_then(|s| s.tag_node("modifier_call")))
-        })
-    })
-}
-#[inline]
-fn parse_class_domain(state: Input) -> Output {
-    state.rule(ValkyrieRule::ClassDomain, |s| {
-        s.sequence(|s| {
-            Ok(s)
-                .and_then(|s| {
-                    s.repeat(0..4294967295, |s| {
-                        s.sequence(|s| {
-                            Ok(s)
-                                .and_then(|s| builtin_ignore(s))
-                                .and_then(|s| parse_attribute_call(s).and_then(|s| s.tag_node("attribute_call")))
-                        })
-                    })
-                })
+                .and_then(|s| parse_function_parameters(s).and_then(|s| s.tag_node("function_parameters")))
                 .and_then(|s| builtin_ignore(s))
-                .and_then(|s| {
-                    s.repeat(0..4294967295, |s| {
-                        s.sequence(|s| {
-                            Ok(s)
-                                .and_then(|s| builtin_ignore(s))
-                                .and_then(|s| parse_field_modifier(s).and_then(|s| s.tag_node("field_modifier")))
-                        })
-                    })
-                })
+                .and_then(|s| builtin_text(s, ")", false))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| s.optional(|s| parse_type_return(s).and_then(|s| s.tag_node("type_return"))))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| s.optional(|s| parse_type_effect(s).and_then(|s| s.tag_node("type_effect"))))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| s.optional(|s| parse_continuation(s).and_then(|s| s.tag_node("continuation"))))
+        })
+    })
+}
+#[inline]
+fn parse_define_domain(state: Input) -> Output {
+    state.rule(ValkyrieRule::DefineDomain, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| parse_annotation_mix(s).and_then(|s| s.tag_node("annotation_mix")))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
                 .and_then(|s| builtin_ignore(s))
@@ -854,11 +732,57 @@ fn parse_class_domain(state: Input) -> Output {
     })
 }
 #[inline]
-fn parse_kw_class(state: Input) -> Output {
-    state.rule(ValkyrieRule::KW_CLASS, |s| {
-        Err(s)
-            .or_else(|s| builtin_text(s, "class", false).and_then(|s| s.tag_node("class")))
-            .or_else(|s| builtin_text(s, "structure", false).and_then(|s| s.tag_node("structure")))
+fn parse_domain_term(state: Input) -> Output {
+    state.rule(ValkyrieRule::DomainTerm, |s| Err(s).or_else(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier"))))
+}
+#[inline]
+fn parse_define_inherit(state: Input) -> Output {
+    state.rule(ValkyrieRule::DefineInherit, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| builtin_text(s, "(", false))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| {
+                    s.optional(|s| {
+                        s.sequence(|s| {
+                            Ok(s)
+                                .and_then(|s| parse_inherit_term(s).and_then(|s| s.tag_node("inherit_term")))
+                                .and_then(|s| builtin_ignore(s))
+                                .and_then(|s| {
+                                    s.repeat(0..4294967295, |s| {
+                                        s.sequence(|s| {
+                                            Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| {
+                                                s.sequence(|s| {
+                                                    Ok(s)
+                                                        .and_then(|s| builtin_text(s, ",", false))
+                                                        .and_then(|s| builtin_ignore(s))
+                                                        .and_then(|s| {
+                                                            parse_inherit_term(s).and_then(|s| s.tag_node("inherit_term"))
+                                                        })
+                                                })
+                                            })
+                                        })
+                                    })
+                                })
+                                .and_then(|s| builtin_ignore(s))
+                                .and_then(|s| s.optional(|s| builtin_text(s, ",", false)))
+                        })
+                    })
+                })
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| builtin_text(s, ")", false))
+        })
+    })
+}
+#[inline]
+fn parse_inherit_term(state: Input) -> Output {
+    state.rule(ValkyrieRule::InheritTerm, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| parse_annotation_mix(s).and_then(|s| s.tag_node("annotation_mix")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_type_expression(s).and_then(|s| s.tag_node("type_expression")))
+        })
     })
 }
 #[inline]
@@ -868,7 +792,9 @@ fn parse_object_statement(state: Input) -> Output {
             Ok(s)
                 .and_then(|s| parse_kw_object(s).and_then(|s| s.tag_node("kw_object")))
                 .and_then(|s| builtin_ignore(s))
-                .and_then(|s| s.optional(|s| parse_class_inherit(s).and_then(|s| s.tag_node("class_inherit"))))
+                .and_then(|s| s.optional(|s| parse_define_inherit(s).and_then(|s| s.tag_node("define_inherit"))))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| s.optional(|s| parse_type_hint(s).and_then(|s| s.tag_node("type_hint"))))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_class_block(s).and_then(|s| s.tag_node("class_block")))
                 .and_then(|s| builtin_ignore(s))
@@ -886,6 +812,10 @@ fn parse_define_enumerate(state: Input) -> Output {
                 .and_then(|s| parse_kw_flags(s).and_then(|s| s.tag_node("kw_flags")))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| s.optional(|s| parse_define_inherit(s).and_then(|s| s.tag_node("define_inherit"))))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| s.optional(|s| parse_type_hint(s).and_then(|s| s.tag_node("type_hint"))))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| builtin_text(s, "{", false))
                 .and_then(|s| builtin_ignore(s))
@@ -950,7 +880,7 @@ fn parse_define_union(state: Input) -> Output {
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
                 .and_then(|s| builtin_ignore(s))
-                .and_then(|s| s.optional(|s| parse_class_inherit(s).and_then(|s| s.tag_node("class_inherit"))))
+                .and_then(|s| s.optional(|s| parse_define_inherit(s).and_then(|s| s.tag_node("define_inherit"))))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| s.optional(|s| parse_type_hint(s).and_then(|s| s.tag_node("type_hint"))))
                 .and_then(|s| builtin_ignore(s))
@@ -974,8 +904,8 @@ fn parse_define_union(state: Input) -> Output {
 fn parse_union_term(state: Input) -> Output {
     state.rule(ValkyrieRule::UnionTerm, |s| {
         Err(s)
-            .or_else(|s| parse_define_variant(s).and_then(|s| s.tag_node("define_variant")))
             .or_else(|s| parse_define_method(s).and_then(|s| s.tag_node("define_method")))
+            .or_else(|s| parse_define_variant(s).and_then(|s| s.tag_node("define_variant")))
             .or_else(|s| parse_eos_free(s).and_then(|s| s.tag_node("eos_free")))
     })
 }
@@ -1028,11 +958,11 @@ fn parse_define_function(state: Input) -> Output {
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_namepath(s).and_then(|s| s.tag_node("namepath")))
                 .and_then(|s| builtin_ignore(s))
-                .and_then(|s| s.optional(|s| parse_generic_define(s).and_then(|s| s.tag_node("generic_define"))))
+                .and_then(|s| s.optional(|s| parse_define_generic(s).and_then(|s| s.tag_node("define_generic"))))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| builtin_text(s, "(", false))
                 .and_then(|s| builtin_ignore(s))
-                .and_then(|s| parse_parameter_terms(s).and_then(|s| s.tag_node("parameter_terms")))
+                .and_then(|s| parse_function_parameters(s).and_then(|s| s.tag_node("function_parameters")))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| builtin_text(s, ")", false))
                 .and_then(|s| builtin_ignore(s))
@@ -1078,8 +1008,8 @@ fn parse_type_effect(state: Input) -> Output {
     })
 }
 #[inline]
-fn parse_parameter_terms(state: Input) -> Output {
-    state.rule(ValkyrieRule::ParameterTerms, |s| {
+fn parse_function_parameters(state: Input) -> Output {
+    state.rule(ValkyrieRule::FunctionParameters, |s| {
         s.optional(|s| {
             s.sequence(|s| {
                 Ok(s)
@@ -2315,8 +2245,8 @@ fn parse_range_omit(state: Input) -> Output {
     })
 }
 #[inline]
-fn parse_generic_define(state: Input) -> Output {
-    state.rule(ValkyrieRule::GenericDefine, |s| {
+fn parse_define_generic(state: Input) -> Output {
+    state.rule(ValkyrieRule::DefineGeneric, |s| {
         Err(s)
             .or_else(|s| {
                 s.sequence(|s| {
@@ -2540,6 +2470,33 @@ fn parse_annotation_head(state: Input) -> Output {
                             Ok(s)
                                 .and_then(|s| builtin_ignore(s))
                                 .and_then(|s| parse_modifier_call(s).and_then(|s| s.tag_node("modifier_call")))
+                        })
+                    })
+                })
+        })
+    })
+}
+#[inline]
+fn parse_annotation_mix(state: Input) -> Output {
+    state.rule(ValkyrieRule::AnnotationMix, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| {
+                    s.repeat(0..4294967295, |s| {
+                        s.sequence(|s| {
+                            Ok(s)
+                                .and_then(|s| builtin_ignore(s))
+                                .and_then(|s| parse_annotation_term_mix(s).and_then(|s| s.tag_node("annotation_term_mix")))
+                        })
+                    })
+                })
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| {
+                    s.repeat(0..4294967295, |s| {
+                        s.sequence(|s| {
+                            Ok(s)
+                                .and_then(|s| builtin_ignore(s))
+                                .and_then(|s| parse_modifier_ahead(s).and_then(|s| s.tag_node("modifier_ahead")))
                         })
                     })
                 })

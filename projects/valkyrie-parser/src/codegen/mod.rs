@@ -53,15 +53,14 @@ pub enum ValkyrieRule {
     DefineClass,
     ClassBlock,
     ClassTerm,
-    ClassInherit,
-    ClassInheritItem,
-    ClassField,
-    field_modifier,
+    KW_CLASS,
+    DefineField,
     ParameterDefault,
     DefineMethod,
-    method_modifier,
-    ClassDomain,
-    KW_CLASS,
+    DefineDomain,
+    DomainTerm,
+    DefineInherit,
+    InheritTerm,
     ObjectStatement,
     DefineEnumerate,
     FlagTerm,
@@ -77,7 +76,7 @@ pub enum ValkyrieRule {
     TypeHint,
     TypeReturn,
     TypeEffect,
-    ParameterTerms,
+    FunctionParameters,
     ParameterItem,
     ParameterPair,
     ParameterHint,
@@ -139,7 +138,7 @@ pub enum ValkyrieRule {
     SubscriptOnly,
     SubscriptRange,
     RangeOmit,
-    GenericDefine,
+    DefineGeneric,
     GenericParameter,
     GenericParameterPair,
     GenericCall,
@@ -147,6 +146,7 @@ pub enum ValkyrieRule {
     GenericTerms,
     GenericPair,
     AnnotationHead,
+    AnnotationMix,
     AnnotationTerm,
     AnnotationTermMix,
     AttributeCall,
@@ -251,15 +251,14 @@ impl YggdrasilRule for ValkyrieRule {
             Self::DefineClass => "",
             Self::ClassBlock => "",
             Self::ClassTerm => "",
-            Self::ClassInherit => "",
-            Self::ClassInheritItem => "",
-            Self::ClassField => "",
-            Self::field_modifier => "",
+            Self::KW_CLASS => "",
+            Self::DefineField => "",
             Self::ParameterDefault => "",
             Self::DefineMethod => "",
-            Self::method_modifier => "",
-            Self::ClassDomain => "",
-            Self::KW_CLASS => "",
+            Self::DefineDomain => "",
+            Self::DomainTerm => "",
+            Self::DefineInherit => "",
+            Self::InheritTerm => "",
             Self::ObjectStatement => "",
             Self::DefineEnumerate => "",
             Self::FlagTerm => "",
@@ -275,7 +274,7 @@ impl YggdrasilRule for ValkyrieRule {
             Self::TypeHint => "",
             Self::TypeReturn => "",
             Self::TypeEffect => "",
-            Self::ParameterTerms => "",
+            Self::FunctionParameters => "",
             Self::ParameterItem => "",
             Self::ParameterPair => "",
             Self::ParameterHint => "",
@@ -337,7 +336,7 @@ impl YggdrasilRule for ValkyrieRule {
             Self::SubscriptOnly => "",
             Self::SubscriptRange => "",
             Self::RangeOmit => "",
-            Self::GenericDefine => "",
+            Self::DefineGeneric => "",
             Self::GenericParameter => "",
             Self::GenericParameterPair => "",
             Self::GenericCall => "",
@@ -345,6 +344,7 @@ impl YggdrasilRule for ValkyrieRule {
             Self::GenericTerms => "",
             Self::GenericPair => "",
             Self::AnnotationHead => "",
+            Self::AnnotationMix => "",
             Self::AnnotationTerm => "",
             Self::AnnotationTermMix => "",
             Self::AttributeCall => "",
@@ -565,9 +565,9 @@ pub struct WhereBoundNode {
 pub struct DefineClassNode {
     pub annotation_head: AnnotationHeadNode,
     pub class_block: ClassBlockNode,
-    pub class_inherit: Option<ClassInheritNode>,
+    pub define_generic: Option<DefineGenericNode>,
+    pub define_inherit: Option<DefineInheritNode>,
     pub define_template: Option<DefineTemplateNode>,
-    pub generic_define: Option<GenericDefineNode>,
     pub identifier: IdentifierNode,
     pub kw_class: KwClassNode,
     pub type_hint: Option<TypeHintNode>,
@@ -582,37 +582,24 @@ pub struct ClassBlockNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum ClassTermNode {
-    ClassDomain(ClassDomainNode),
-    ClassField(ClassFieldNode),
+    DefineDomain(DefineDomainNode),
+    DefineField(DefineFieldNode),
     DefineMethod(DefineMethodNode),
     EosFree(EosFreeNode),
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ClassInheritNode {
-    pub class_inherit_item: Vec<ClassInheritItemNode>,
-    pub span: Range<u32>,
+pub enum KwClassNode {
+    Class,
+    Structure,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ClassInheritItemNode {
-    pub namepath: NamepathNode,
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ClassFieldNode {
-    pub attribute_call: Vec<AttributeCallNode>,
+pub struct DefineFieldNode {
+    pub annotation_mix: AnnotationMixNode,
     pub identifier: IdentifierNode,
     pub parameter_default: Option<ParameterDefaultNode>,
     pub type_hint: Option<TypeHintNode>,
-    pub field_modifier: Vec<FieldModifierNode>,
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct FieldModifierNode {
-    pub modifier_call: ModifierCallNode,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -624,47 +611,59 @@ pub struct ParameterDefaultNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct DefineMethodNode {
-    pub attribute_call: Vec<AttributeCallNode>,
+    pub annotation_mix: AnnotationMixNode,
+    pub continuation: Option<ContinuationNode>,
+    pub define_generic: Option<DefineGenericNode>,
+    pub function_parameters: FunctionParametersNode,
     pub namepath: NamepathNode,
-    pub method_modifier: Vec<MethodModifierNode>,
+    pub type_effect: Option<TypeEffectNode>,
+    pub type_return: Option<TypeReturnNode>,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct MethodModifierNode {
-    pub modifier_call: ModifierCallNode,
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ClassDomainNode {
-    pub attribute_call: Vec<AttributeCallNode>,
+pub struct DefineDomainNode {
+    pub annotation_mix: AnnotationMixNode,
     pub class_block: ClassBlockNode,
     pub identifier: IdentifierNode,
-    pub field_modifier: Vec<FieldModifierNode>,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum KwClassNode {
-    Class,
-    Structure,
+pub enum DomainTermNode {
+    Identifier(IdentifierNode),
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct DefineInheritNode {
+    pub inherit_term: Vec<InheritTermNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct InheritTermNode {
+    pub annotation_mix: AnnotationMixNode,
+    pub type_expression: TypeExpressionNode,
+    pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ObjectStatementNode {
     pub class_block: ClassBlockNode,
-    pub class_inherit: Option<ClassInheritNode>,
+    pub define_inherit: Option<DefineInheritNode>,
     // Missing rule KW_Object
+    pub type_hint: Option<TypeHintNode>,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct DefineEnumerateNode {
     pub annotation_head: AnnotationHeadNode,
+    pub define_inherit: Option<DefineInheritNode>,
     pub flag_term: Vec<FlagTermNode>,
     pub identifier: IdentifierNode,
     pub kw_flags: KwFlagsNode,
+    pub type_hint: Option<TypeHintNode>,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -690,7 +689,7 @@ pub enum KwFlagsNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct DefineUnionNode {
     pub annotation_head: AnnotationHeadNode,
-    pub class_inherit: Option<ClassInheritNode>,
+    pub define_inherit: Option<DefineInheritNode>,
     pub identifier: IdentifierNode,
     pub kw_union: KwUnionNode,
     pub type_hint: Option<TypeHintNode>,
@@ -733,10 +732,10 @@ pub struct KwTraitNode {
 pub struct DefineFunctionNode {
     pub annotation_head: AnnotationHeadNode,
     pub continuation: Option<ContinuationNode>,
-    pub generic_define: Option<GenericDefineNode>,
+    pub define_generic: Option<DefineGenericNode>,
+    pub function_parameters: FunctionParametersNode,
     pub kw_function: KwFunctionNode,
     pub namepath: NamepathNode,
-    pub parameter_terms: ParameterTermsNode,
     pub type_effect: Option<TypeEffectNode>,
     pub type_return: Option<TypeReturnNode>,
     pub span: Range<u32>,
@@ -763,7 +762,7 @@ pub struct TypeEffectNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ParameterTermsNode {
+pub struct FunctionParametersNode {
     pub parameter_item: Vec<ParameterItemNode>,
     pub span: Range<u32>,
 }
@@ -1214,7 +1213,7 @@ pub struct RangeOmitNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct GenericDefineNode {
+pub struct DefineGenericNode {
     pub generic_parameter: GenericParameterNode,
     pub proportion: Option<ProportionNode>,
     pub span: Range<u32>,
@@ -1268,6 +1267,13 @@ pub struct GenericPairNode {
 pub struct AnnotationHeadNode {
     pub annotation_term: Vec<AnnotationTermNode>,
     pub modifier_call: Vec<ModifierCallNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct AnnotationMixNode {
+    pub annotation_term_mix: Vec<AnnotationTermMixNode>,
+    pub modifier_ahead: Vec<ModifierAheadNode>,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]

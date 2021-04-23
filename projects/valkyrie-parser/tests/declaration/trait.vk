@@ -4,18 +4,7 @@ trait A: Trait + Trait
 }
 
 
-template F {
-    where {
-        F: AnyType -> AnyType
-    }
-}
-trait Functor⟨F⟩ {
-    domain {
 
-    }
-
-    map<A, B>(self: F<A>, f: (a: A) -> B) -> F<B>
-}
 
 
 trait SemiGroup⟨T⟩ {

@@ -1,36 +1,25 @@
-class A {}
+/// ttt
+namespace* declaration.classes;
+/// ttt
+class Base1 {}
 
-class B() {}
+class Base2() {}
 
-class A {}
+structure Base3<> {}
 
-value class B {}
+value class B::<>() {}
 
-
-
-template {
-    where {
-
-    }
-    // 前置
-    require {
-
-    }
-    // 后置
-    ensures {
-
-    }
-    // 约束
-    return Positive
-}
-refine class Positive(like std::Integer) {
+#derive(Copy, Clone, Debug, PartialEq, Eq, Hash)
+class Inherit1⟨T⟩(virtual Base1, Base2, Base3)
+{
 
 }
 
-
-class A {
-    inherit base1: Base,
+class Inherit2 {
+    virtual
+    inherit base1: Base1,
     inherit base2: Base2,
+    inherit base3: Base3,
 }
 
 template T, U {
@@ -41,13 +30,12 @@ class B {
     item2: U!,
 }
 
-
 template T, U {
     implements Debug + Display
     where {}
 }
 class A(B, C): Encode + Decode {
-    pub static a(): Ref⟨B⟩ + D {
+    pub static a(): Ref⟨B⟩ + Gc<D> {
         return 1
     }
     _a,
@@ -65,6 +53,8 @@ class A(B, C): Encode + Decode {
     }
 }
 
+
+
 template T {
     where {
         T: Trait
@@ -77,10 +67,6 @@ template T {
 class A⟨T⟩ {
 
 }
-class Empty1 {};
-
-class Empty2() {};
-
 
 #derive()
 compile_time reflect
@@ -165,18 +151,6 @@ class Class⟨T⟩
     try_add(  mut
     self, args  ) {
         block
-    }
-
-}
-
-
-extends std::Class {
-    functions() {
-        for  i, j, k,    in
-        {
-
-        }
-
     }
 }
 

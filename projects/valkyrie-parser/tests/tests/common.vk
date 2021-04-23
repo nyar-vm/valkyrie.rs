@@ -16,6 +16,87 @@ function test(
 }
 
 
+extends std::Class {
+    functions() {
+        for  i, j, k,    in
+        {
+
+        }
+
+    }
+}
+
+
+
+vow {
+    ensure positive {
+        self > 0
+    }
+}
+refine class Positive(Integer) {
+    constructor() {
+
+    }
+    constructor() {
+
+    }
+    `+`() {}
+}
+
+violate {
+    y._private_field
+}
+
+
+
+//? 能被 @derive 的 trait
+@derive(Copy, Clone, Debug, PartialEq, Eq, Hash)
+@(Copy, Clone , Debug, PartialEq, Eq, Hash)
+derived macro A {
+
+}
+template F {
+    where {
+        F: AnyType -> AnyType
+    }
+}
+trait Functor⟨F⟩ {
+    domain {
+
+    }
+
+    map<A, B>(self: F<A>, f: (a: A) -> B) -> F<B>
+}
+
+//? 隐式宏, 此类宏不需要
+implicit macro print {
+
+}
+
+print("a")
+
+a[T]
+a⁅T⁆
+
+@document.include("a/b")
+/// a
+/// a
+@derive(Copy, Clone, Debug, PartialEq, Eq, Hash)
+@(Copy, Clone , Debug, PartialEq, Eq, Hash)
+class A⟬T <: Trait⟭ {
+##where {
+T <: Trait
+}
+##ensure {
+self > 0
+}
+
+a: T
+}
+
+extends<T> A<T> {
+
+}
 vow {
      require {
          self > 0
@@ -32,15 +113,14 @@ function a() {
 
 
 generic T, U {
-     // forall {f32, f64}
-    // 前置
-     // require {
+     forall {f32, f64} // 前置
 
-     // }
-    // ensure // 后置
-    // where // 约束
+     require {
+
+     }
+    ensure // 后置
+    where // 约束
 }
 class A {
-	inherit Base;
-	inherit Base2;
+
 }

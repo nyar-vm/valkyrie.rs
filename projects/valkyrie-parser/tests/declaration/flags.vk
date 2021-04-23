@@ -1,105 +1,40 @@
-enumerate Empty {}
-flags Empty {}
+enumerate Empty1 {}
 
-enumerate OneEnum {
+flags Terms1 {
     A
+    B
+    C
+    D
 }
-flags OneFlag {
-    A
-}
-flags Empty {}
-
-flags OneFlag {
+flags Terms2 {
     A,
-
+    B;
+    C
+    D
+}
+flags Terms3 {
+    A    = 2 ^ 0,
+    Bb   = 2 ^ 1;
+    Ccc  = 2 ^ 2
+    Dddd = 2 ^ 3
+}
+flags Terms4 {
+    A = b'01'
+    B = o'02'
+    C = x'07'
+    D = 8
+}
+#layout(u8)
+flags Extend1(Terms3): Show {
+    EEE,
     get name() {
 
     }
 }
 
-flags TestFlags2(u8): A + B {
-    A = 12 + 1,
-    Bb = 12 + 2,
-    Ccc = 3,
-}
-
-flags ManyEnums {
-    A = 1,
-    B = 2 ^ 5, ,
-    C = Base.A && Base.B,
-    D = TestFlags2[Self::A] || TestFlags2[Self::B],
-}
-
 flags ManyFlags {
-    A = 1,
-    B = 2 ^ 2,
-    C = Base.A && Base.B,
-    D = ManyEnums[Self::A] || ManyEnums[Self::B],
+    A = 1, ,
+    B = 2 ^ 2; ;
+    C = Extend1.EEE && Base.A
+    D = Self::A || Self::C
 }
-
-
-
-enumerate ManyEnums {
-    A = 1;
-    B = 2 >> 0,
-    C = Base.A & Base.B,
-    D = flip[Self::A] | flip[Self::B];
-}
-flags ManyFlags {
-    A = 1;
-    B = 2 >> 0,
-    C = Base.A & Base.B,
-    D = flip[Self::A] | flip[Self::B];
-}
-
-flags Bitflags: Debug + Copy + !Default {
-    A = b'01'
-    B = o'01'
-    C = x'01'
-    D = 8
-}
-
-public flags Flags {
-    A = 1 << 0;
-    B = 1 << 1;
-    C = 1 << 2;
-    bitflag = A || B || C;
-    `class` = 1 >> 8;
-}
-
-test function test() {
-    let e1 = Flags::A || Flags::C;
-    let e2 = Flags::B || Flags::C;
-    // union
-    assert {
-        e1 || e2 == Flags::ABC
-    }
-    // intersection
-    assert {
-        e1 && e2 == Flags::ABC
-    }
-    // set difference
-    assert((e1 - e2), Flags::A);
-    // set complement
-    assert(!e2, Flags::A);
-    // set all bits to 1
-    e1.all();
-    // set all bits to 0
-    e1.none();
-}
-
-extends Bitflags {
-    get_bits(self) {
-
-    }
-    as_bools(self) {
-
-    }
-}
-
-// always public
-#infix('|')
-oppo function logic_or(self, rhs: Self) -> Self {
-    Self::from(self.bits || rhs.bits)
-}
-

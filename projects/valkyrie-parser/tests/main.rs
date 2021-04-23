@@ -9,8 +9,9 @@ use std::{
     str::FromStr,
 };
 use valkyrie_parser::{
-    ClassBlockNode, ClassFieldNode, ClassTermNode, DefineImportNode, DefineMethodNode, DefineNamespaceNode, MainExpressionNode,
-    MainStatementNode, ProgramContext, ProgramNode, StatementNode, ValkyrieParser, ValkyrieRule, ValkyrieRule::MainStatement,
+    ClassBlockNode, ClassTermNode, DefineFieldNode, DefineImportNode, DefineMethodNode, DefineNamespaceNode,
+    MainExpressionNode, MainStatementNode, ProgramContext, ProgramNode, StatementNode, ValkyrieParser, ValkyrieRule,
+    ValkyrieRule::MainStatement,
 };
 use yggdrasil_rt::{OutputResult, YggdrasilError, YggdrasilParser};
 

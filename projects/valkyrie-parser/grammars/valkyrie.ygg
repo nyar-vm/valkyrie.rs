@@ -102,58 +102,55 @@ class WhereBound {
 class DefineClass {
     DefineTemplate?
     AnnotationHead
-    KW_CLASS Identifier GenericDefine? ClassInherit? TypeHint? ClassBlock ^EOS?
+    KW_CLASS Identifier DefineGeneric? DefineInherit? TypeHint? ClassBlock ^EOS?
 }
 class ClassBlock {
     '{' ClassTerm* '}'
 }
 union ClassTerm {
-    | ClassDomain
     | DefineMethod
-    | ClassField
+    | DefineDomain
+    | DefineField
     | EOS_FREE
-}
-class ClassInherit {
-    '(' (ClassInheritItem (',' ClassInheritItem)* ','?)? ')'
-}
-class ClassInheritItem {
-    Namepath
-}
-class ClassField {
-    AttributeCall* field_modifier*
-    Identifier TypeHint? ParameterDefault?
-}
-atomic inline class field_modifier {
-    !(^Namepath ~ [:=};]) ModifierCall
-}
-class ParameterDefault {
-    '=' MainExpression
-}
-class DefineMethod {
-    AttributeCall* method_modifier* Namepath
-    '(' ')'
-    // DefineGeneric? FunctionParameters ReturnType? FunctionBlock?
-}
-atomic inline class method_modifier {
-    !(^Namepath ~ [(<:}]) ModifierCall
-}
-class ClassDomain {
-    AttributeCall* field_modifier*
-    Identifier ClassBlock
 }
 @style(keyword)
 union KW_CLASS {
     | 'class'     #Class
     | 'structure' #Structure
 }
+// === field/method/domain === -----------------------------------------------------------------------------------------
+class DefineField {
+    AnnotationMix
+    Identifier TypeHint? ParameterDefault?
+}
+class ParameterDefault {
+    '=' MainExpression
+}
+class DefineMethod {
+    AnnotationMix
+    Namepath DefineGeneric? '(' FunctionParameters ')' TypeReturn? TypeEffect? Continuation?
+}
+class DefineDomain {
+    AnnotationMix
+    Identifier ClassBlock
+}
+union DomainTerm {
+    | Identifier
+}
+class DefineInherit {
+    '(' (InheritTerm (',' InheritTerm)* ','?)? ')'
+}
+class InheritTerm {
+    AnnotationMix TypeExpression
+}
 // === object statement === --------------------------------------------------------------------------------------------
 class ObjectStatement {
-    KW_Object ClassInherit? ClassBlock ^EOS?
+    KW_Object DefineInherit? TypeHint? ClassBlock ^EOS?
 }
 // === identifier === --------------------------------------------------------------------------------------------------
 class DefineEnumerate {
     AnnotationHead
-    KW_FLAGS Identifier '{' FlagTerm* '}'
+    KW_FLAGS Identifier DefineInherit? TypeHint? '{' FlagTerm* '}'
 }
 union FlagTerm {
     | FlagField
@@ -171,11 +168,11 @@ union KW_FLAGS {
 // === identifier === --------------------------------------------------------------------------------------------------
 class DefineUnion {
     AnnotationHead
-    KW_UNION Identifier ClassInherit? TypeHint? '{' UnionTerm* '}'
+    KW_UNION Identifier DefineInherit? TypeHint? '{' UnionTerm* '}'
 }
 union UnionTerm {
-    | DefineVariant
     | DefineMethod
+    | DefineVariant
     | EOS_FREE
 }
 class DefineVariant {
@@ -197,7 +194,7 @@ union KW_TRAIT {
 // === identifier === --------------------------------------------------------------------------------------------------
 class DefineFunction {
     AnnotationHead
-    KW_FUNCTION Namepath GenericDefine? '(' ParameterTerms ')' TypeReturn? TypeEffect? Continuation?
+    KW_FUNCTION Namepath DefineGeneric? '(' FunctionParameters ')' TypeReturn? TypeEffect? Continuation?
 }
 class TypeHint {
     COLON TypeExpression
@@ -208,7 +205,7 @@ class TypeReturn {
 class TypeEffect {
     '/' TypeExpression
 }
-atomic class ParameterTerms {
+atomic class FunctionParameters {
     (ParameterItem (HIDE ^COMMA ~ ParameterItem)* (HIDE ^COMMA)?)?
 }
 union ParameterItem {
@@ -509,7 +506,7 @@ atomic inline class RangeOmit {
     PROPORTION | COLON ~ COLON
 }
 // === generic define === ----------------------------------------------------------------------------------------------
-class GenericDefine {
+class DefineGeneric {
     | PROPORTION? '<' GenericParameter '>'
     | '⟨' GenericParameter '⟩'
 }

@@ -32,28 +32,12 @@ ProgramRoot {
         },
         ExpressionNode {
             omit: false,
-            body: ApplyCallNode {
-                monadic: false,
-                caller: false,
-                arguments: ArgumentsList {
-                    terms: [],
-                },
-                body: None,
-                span: 86..101,
-            },
+            body: false,
             span: 80..102,
         },
         ExpressionNode {
             omit: false,
-            body: ApplyCallNode {
-                monadic: false,
-                caller: false,
-                arguments: ArgumentsList {
-                    terms: [],
-                },
-                body: None,
-                span: 108..121,
-            },
+            body: false,
             span: 102..122,
         },
     ],
