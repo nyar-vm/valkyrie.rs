@@ -71,6 +71,7 @@ pub enum ValkyrieRule {
     DefineVariant,
     KW_UNION,
     DefineTrait,
+    DefineExtends,
     KW_TRAIT,
     DefineFunction,
     TypeHint,
@@ -104,18 +105,19 @@ pub enum ValkyrieRule {
     MainFactor,
     GroupFactor,
     Leading,
-    MainSuffix,
+    MainSuffixTerm,
     MainInfix,
     TypeInfix,
     MainPrefix,
     TypePrefix,
-    SuffixOperator,
+    MainSuffix,
     InlineExpression,
     InlineTerm,
-    InlineSuffix,
+    InlineSuffixTerm,
     TypeExpression,
     TypeTerm,
     TypeFactor,
+    TypeSuffixTerm,
     TypeSuffix,
     TryStatement,
     NewStatement,
@@ -269,6 +271,7 @@ impl YggdrasilRule for ValkyrieRule {
             Self::DefineVariant => "",
             Self::KW_UNION => "",
             Self::DefineTrait => "",
+            Self::DefineExtends => "",
             Self::KW_TRAIT => "",
             Self::DefineFunction => "",
             Self::TypeHint => "",
@@ -302,18 +305,19 @@ impl YggdrasilRule for ValkyrieRule {
             Self::MainFactor => "",
             Self::GroupFactor => "",
             Self::Leading => "",
-            Self::MainSuffix => "",
+            Self::MainSuffixTerm => "",
             Self::MainInfix => "",
             Self::TypeInfix => "",
             Self::MainPrefix => "",
             Self::TypePrefix => "",
-            Self::SuffixOperator => "",
+            Self::MainSuffix => "",
             Self::InlineExpression => "",
             Self::InlineTerm => "",
-            Self::InlineSuffix => "",
+            Self::InlineSuffixTerm => "",
             Self::TypeExpression => "",
             Self::TypeTerm => "",
             Self::TypeFactor => "",
+            Self::TypeSuffixTerm => "",
             Self::TypeSuffix => "",
             Self::TryStatement => "",
             Self::NewStatement => "",
@@ -430,6 +434,7 @@ pub struct ProgramNode {
 pub enum StatementNode {
     DefineClass(DefineClassNode),
     DefineEnumerate(DefineEnumerateNode),
+    DefineExtends(DefineExtendsNode),
     DefineFunction(DefineFunctionNode),
     DefineImport(DefineImportNode),
     DefineNamespace(DefineNamespaceNode),
@@ -719,7 +724,21 @@ pub struct KwUnionNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct DefineTraitNode {
+    pub class_block: ClassBlockNode,
+    pub define_generic: Option<DefineGenericNode>,
+    pub define_inherit: Option<DefineInheritNode>,
+    pub identifier: IdentifierNode,
     pub kw_trait: KwTraitNode,
+    pub type_hint: Option<TypeHintNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct DefineExtendsNode {
+    pub class_block: ClassBlockNode,
+    pub kw_extends: KwExtendsNode,
+    pub type_expression: TypeExpressionNode,
+    pub type_hint: Option<TypeHintNode>,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -942,7 +961,7 @@ pub struct MainExpressionNode {
 pub struct MainTermNode {
     pub main_factor: MainFactorNode,
     pub main_prefix: Vec<MainPrefixNode>,
-    pub main_suffix: Vec<MainSuffixNode>,
+    pub main_suffix_term: Vec<MainSuffixTermNode>,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -976,10 +995,10 @@ pub enum LeadingNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum MainSuffixNode {
+pub enum MainSuffixTermNode {
     DotClosureCall(DotClosureCallNode),
     DotMatchCall(DotMatchCallNode),
-    InlineSuffix(InlineSuffixNode),
+    InlineSuffixTerm(InlineSuffixTermNode),
     TupleCall(TupleCallNode),
 }
 #[derive(Clone, Debug, Hash)]
@@ -1008,7 +1027,7 @@ pub struct TypePrefixNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct SuffixOperatorNode {
+pub struct MainSuffixNode {
     pub text: String,
     pub span: Range<u32>,
 }
@@ -1022,19 +1041,19 @@ pub struct InlineExpressionNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct InlineTermNode {
-    pub inline_suffix: Vec<InlineSuffixNode>,
+    pub inline_suffix_term: Vec<InlineSuffixTermNode>,
     pub main_factor: MainFactorNode,
     pub main_prefix: Vec<MainPrefixNode>,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum InlineSuffixNode {
+pub enum InlineSuffixTermNode {
     DotCall(DotCallNode),
     GenericCall(GenericCallNode),
     InlineTupleCall(InlineTupleCallNode),
+    MainSuffix(MainSuffixNode),
     RangeCall(RangeCallNode),
-    SuffixOperator(SuffixOperatorNode),
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -1048,7 +1067,7 @@ pub struct TypeExpressionNode {
 pub struct TypeTermNode {
     pub main_factor: MainFactorNode,
     pub type_prefix: Vec<TypePrefixNode>,
-    pub type_suffix: Vec<TypeSuffixNode>,
+    pub type_suffix_term: Vec<TypeSuffixTermNode>,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -1059,9 +1078,15 @@ pub enum TypeFactorNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum TypeSuffixNode {
+pub enum TypeSuffixTermNode {
     GenericHide(GenericHideNode),
-    Option,
+    TypeSuffix(TypeSuffixNode),
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct TypeSuffixNode {
+    pub text: String,
+    pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]

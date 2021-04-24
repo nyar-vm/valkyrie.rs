@@ -1,17 +1,14 @@
-use crate::{
-    helpers::ProgramContext, DotCallItemNode, ExpressionStatementNode, InlineSuffixNode, MainExpressionNode, MainFactorNode,
-    MainInfixNode, MainPrefixNode, MainSuffixNode, MainTermNode, SuffixOperatorNode, TypeExpressionNode, TypeFactorNode,
-    TypeInfixNode, TypePrefixNode, TypeSuffixNode, TypeTermNode,
-};
+use crate::{helpers::ProgramContext, *};
 use nyar_error::{NyarError, Success, Validate, Validation};
 use pratt::{Affix, PrattParser, Precedence};
 use std::str::FromStr;
-use valkyrie_ast::*;
+use valkyrie_ast::{DotCallNode, GenericCallNode, *};
 
 mod call_dot;
 mod call_dot_closure;
 mod call_dot_match;
 mod call_generic;
+mod operators;
 
 impl ExpressionStatementNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<ExpressionNode> {
@@ -57,7 +54,7 @@ impl MainTermNode {
         }
         let main = self.main_factor.build(ctx).valid()?;
         stream.push(TokenStream::Term(main));
-        for i in &self.main_suffix {
+        for i in &self.main_suffix_term {
             stream.push(i.as_token(ctx)?)
         }
         Success { value: (), diagnostics: vec![] }
@@ -70,7 +67,7 @@ impl TypeTermNode {
         }
         let main = self.main_factor.build(ctx).valid()?;
         stream.push(TokenStream::Term(main));
-        for i in &self.type_suffix {
+        for i in &self.type_suffix_term {
             stream.push(i.as_token(ctx)?)
         }
         Success { value: (), diagnostics: vec![] }
@@ -171,111 +168,10 @@ impl TypeFactorNode {
     }
 }
 
-impl MainPrefixNode {
-    pub fn as_operator(&self) -> OperatorNode {
-        use ValkyrieOperator::*;
-        let o = match self.text.as_str() {
-            "!" => Not,
-            "+" => Positive,
-            "-" => Negative,
-            "*" => Unbox,
-            "⅟" => Reciprocal,
-            "√" => Roots(2),
-            "∛" => Roots(3),
-            "∜" => Roots(4),
-            ".." => Unpack { level: 2 },
-            "..." => Unpack { level: 3 },
-            _ => unimplemented!("{} is a unknown prefix operator", self.text),
-        };
-        OperatorNode { kind: o, span: self.span.clone() }
-    }
-}
-impl TypePrefixNode {
-    pub fn as_operator(&self) -> OperatorNode {
-        use ValkyrieOperator::*;
-        let o = match self.text.as_str() {
-            "!" => Not,
-            _ => unimplemented!("{} is a unknown prefix operator", self.text),
-        };
-        OperatorNode { kind: o, span: self.span.clone() }
-    }
-}
-impl MainInfixNode {
-    pub fn as_operator(&self) -> OperatorNode {
-        use valkyrie_ast::LogicMatrix;
-        use ValkyrieOperator::*;
-        let o = match self.text.as_str() {
-            s if s.starts_with("is") => Is { negative: s.ends_with("not") },
-            s if s.ends_with("in") => In { negative: s.ends_with("not") },
-            "∈" | "∊" => In { negative: false },
-            "∉" => In { negative: true },
-            "∋" => Contains { negative: false },
-            "∌" => Contains { negative: true },
-
-            "+" => Plus,
-            "-" => Minus,
-            "*" => Multiply,
-            "/" => Divide,
-            "%" => Remider,
-            "^" => Power,
-            "=" => Assign { monadic: false },
-            "?=" => Assign { monadic: true },
-            "==" => Equal { negative: false },
-            "≠" | "!=" => Equal { negative: true },
-            "≡" | "===" => StrictlyEqual { negative: false },
-            "≢" | "!==" | "=!=" => StrictlyEqual { negative: true },
-            ">" => Greater { equal: false },
-            "≥" | ">=" => Greater { equal: true },
-            "≫" | ">>" => MuchGreater,
-            "⋙" | ">>>" => VeryMuchGreater,
-            ">>=" => Placeholder,
-            "<" => Less { equal: false },
-            "≤" | "<=" => Less { equal: true },
-            "≪" | "<<" => MuchLess,
-            "⋘" | "<<<" => VeryMuchLess,
-            "<<=" => Placeholder,
-            // logic operators
-            "∧" | "&&" => LogicMatrix::And.into(),
-            "⊼" => LogicMatrix::Nand.into(),
-            "⩟" => LogicMatrix::Xnor.into(), // aka. xand
-            "∨" | "||" => LogicMatrix::Or.into(),
-            "⊽" => LogicMatrix::Nor.into(),
-            "⊻" => LogicMatrix::Xor.into(),
-            _ => unimplemented!("{} is a unknown infix operator", self.text),
-        };
-        OperatorNode { kind: o, span: self.span.clone() }
-    }
-}
-impl TypeInfixNode {
-    pub fn as_operator(&self) -> OperatorNode {
-        use ValkyrieOperator::*;
-        let o = match self.text.as_str() {
-            s if s.starts_with("is") => Is { negative: s.ends_with("not") },
-            _ => unimplemented!("{} is a unknown infix operator", self.text),
-        };
-        OperatorNode { kind: o, span: self.span.clone() }
-    }
-}
-impl SuffixOperatorNode {
-    pub fn as_operator(&self) -> OperatorNode {
-        use ValkyrieOperator::*;
-        let o = match self.text.as_str() {
-            "!" => QuickRaise,
-            "℃" => Celsius,
-            "℉" => Fahrenheit,
-            "%" => DivideByDecimalPower(2),
-            "‰" => DivideByDecimalPower(3),
-            "‱" => DivideByDecimalPower(4),
-            _ => unimplemented!("{} is a unknown suffix operator", self.text),
-        };
-        OperatorNode { kind: o, span: self.span.clone() }
-    }
-}
-
-impl MainSuffixNode {
+impl MainSuffixTermNode {
     fn as_token(&self, ctx: &ProgramContext) -> Validation<TokenStream> {
         let token = match self {
-            Self::InlineSuffix(v) => v.as_token(ctx)?,
+            Self::InlineSuffixTerm(v) => v.as_token(ctx)?,
             Self::DotMatchCall(v) => TokenStream::DotMatch(v.build(ctx)?),
             Self::DotClosureCall(v) => TokenStream::DotClosure(v.build(ctx)?),
             Self::TupleCall(v) => TokenStream::Apply(v.build(ctx)?),
@@ -284,26 +180,24 @@ impl MainSuffixNode {
     }
 }
 
-impl InlineSuffixNode {
+impl InlineSuffixTermNode {
     fn as_token(&self, ctx: &ProgramContext) -> Validation<TokenStream> {
         let token = match self {
-            InlineSuffixNode::SuffixOperator(v) => TokenStream::Postfix(v.as_operator()),
-            InlineSuffixNode::RangeCall(v) => TokenStream::Subscript(v.build(ctx)?),
-            InlineSuffixNode::InlineTupleCall(v) => TokenStream::Apply(v.build(ctx)?),
-            InlineSuffixNode::DotCall(v) => TokenStream::Dot(v.build(ctx)?),
-            InlineSuffixNode::GenericCall(v) => TokenStream::Generic(v.build(ctx)?),
+            Self::MainSuffix(v) => TokenStream::Postfix(v.as_operator()),
+            Self::RangeCall(v) => TokenStream::Subscript(v.build(ctx)?),
+            Self::InlineTupleCall(v) => TokenStream::Apply(v.build(ctx)?),
+            Self::DotCall(v) => TokenStream::Dot(v.build(ctx)?),
+            Self::GenericCall(v) => TokenStream::Generic(v.build(ctx)?),
         };
         Success { value: token, diagnostics: vec![] }
     }
 }
 
-impl TypeSuffixNode {
+impl TypeSuffixTermNode {
     fn as_token(&self, ctx: &ProgramContext) -> Validation<TokenStream> {
         let token = match self {
-            TypeSuffixNode::GenericHide(v) => TokenStream::Generic(v.build(ctx)?),
-            TypeSuffixNode::Option => {
-                todo!()
-            }
+            TypeSuffixTermNode::GenericHide(v) => TokenStream::Generic(v.build(ctx)?),
+            TypeSuffixTermNode::TypeSuffix(v) => TokenStream::Postfix(v.as_operator()),
         };
         Success { value: token, diagnostics: vec![] }
     }

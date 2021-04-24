@@ -14,6 +14,7 @@ union Statement {
     | DefineUnion
     | DefineEnumerate
     | DefineTrait
+    | DefineExtends
     | DefineFunction
     | MainStatement
 }
@@ -184,7 +185,10 @@ class KW_UNION {
 }
 // === identifier === --------------------------------------------------------------------------------------------------
 class DefineTrait {
-    KW_TRAIT
+    KW_TRAIT Identifier DefineGeneric? DefineInherit? TypeHint? ClassBlock ^EOS?
+}
+class DefineExtends {
+    KW_EXTENDS TypeExpression TypeHint? ClassBlock ^EOS?
 }
 @style(keyword)
 union KW_TRAIT {
@@ -302,7 +306,7 @@ atomic class MainExpression {
     MainTerm (HIDE MainInfix ~ MainTerm)*
 }
 atomic class MainTerm {
-    (MainPrefix HIDE)* MainFactor MainSuffix*
+    (MainPrefix HIDE)* MainFactor MainSuffixTerm*
 }
 
 union MainFactor {
@@ -329,11 +333,11 @@ union Leading {
     | Special
 }
 @railway(false)
-atomic union MainSuffix {
+atomic union MainSuffixTerm {
     | HIDE DotMatchCall   #DotMatchCall
     | HIDE DotClosureCall #DotClosureCall
     | TupleCall
-    | InlineSuffix
+    | InlineSuffixTerm
 }
 // === operators === ---------------------------------------------------------------------------------------------------
 @railway(false)
@@ -386,7 +390,7 @@ text class TypePrefix {
 }
 @railway(false)
 @style(operator)
-text class SuffixOperator {
+text class MainSuffix {
     / [!]
     | [%‰‱]
     | [′″‴⁗]
@@ -398,11 +402,11 @@ atomic class InlineExpression {
     InlineTerm (HIDE MainInfix ~ InlineTerm)*
 }
 atomic class InlineTerm {
-    (MainPrefix HIDE)* MainFactor InlineSuffix*
+    (MainPrefix HIDE)* MainFactor InlineSuffixTerm*
 }
-union InlineSuffix {
-    | HIDE SuffixOperator #SuffixOperator
-    | HIDE DotCall #DotCall
+union InlineSuffixTerm {
+    | HIDE MainSuffix #MainSuffix
+    | HIDE DotCall    #DotCall
     | InlineTupleCall
     | RangeCall
     | GenericCall
@@ -412,15 +416,18 @@ atomic class TypeExpression {
     TypeTerm (HIDE TypeInfix ~ TypeTerm)*
 }
 atomic class TypeTerm {
-    (TypePrefix HIDE)* MainFactor TypeSuffix*
+    (TypePrefix HIDE)* MainFactor TypeSuffixTerm*
 }
 atomic union TypeFactor {
     | '(' ~ TypeExpression ~ ')'
     | Leading
 }
-atomic union TypeSuffix {
+union TypeSuffixTerm {
     | GenericHide
-    | '?' #Option
+    | TypeSuffix
+}
+text class TypeSuffix {
+    /[!?]/
 }
 // === try statement === -----------------------------------------------------------------------------------------------
 class TryStatement {

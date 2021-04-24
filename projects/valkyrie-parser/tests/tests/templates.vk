@@ -1,0 +1,17 @@
+template T, U {
+    implements Debug + Display
+    where {}
+}
+template T {
+    where {
+        T: Trait
+    }
+}
+#derive()
+compile_time reflect
+template T, U {
+    where {
+        T: AnyType => U
+        U: AnyType
+    }
+}

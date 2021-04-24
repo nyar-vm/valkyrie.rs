@@ -43,6 +43,7 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::DefineVariant => parse_define_variant(state),
         ValkyrieRule::KW_UNION => parse_kw_union(state),
         ValkyrieRule::DefineTrait => parse_define_trait(state),
+        ValkyrieRule::DefineExtends => parse_define_extends(state),
         ValkyrieRule::KW_TRAIT => parse_kw_trait(state),
         ValkyrieRule::DefineFunction => parse_define_function(state),
         ValkyrieRule::TypeHint => parse_type_hint(state),
@@ -76,18 +77,19 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::MainFactor => parse_main_factor(state),
         ValkyrieRule::GroupFactor => parse_group_factor(state),
         ValkyrieRule::Leading => parse_leading(state),
-        ValkyrieRule::MainSuffix => parse_main_suffix(state),
+        ValkyrieRule::MainSuffixTerm => parse_main_suffix_term(state),
         ValkyrieRule::MainInfix => parse_main_infix(state),
         ValkyrieRule::TypeInfix => parse_type_infix(state),
         ValkyrieRule::MainPrefix => parse_main_prefix(state),
         ValkyrieRule::TypePrefix => parse_type_prefix(state),
-        ValkyrieRule::SuffixOperator => parse_suffix_operator(state),
+        ValkyrieRule::MainSuffix => parse_main_suffix(state),
         ValkyrieRule::InlineExpression => parse_inline_expression(state),
         ValkyrieRule::InlineTerm => parse_inline_term(state),
-        ValkyrieRule::InlineSuffix => parse_inline_suffix(state),
+        ValkyrieRule::InlineSuffixTerm => parse_inline_suffix_term(state),
         ValkyrieRule::TypeExpression => parse_type_expression(state),
         ValkyrieRule::TypeTerm => parse_type_term(state),
         ValkyrieRule::TypeFactor => parse_type_factor(state),
+        ValkyrieRule::TypeSuffixTerm => parse_type_suffix_term(state),
         ValkyrieRule::TypeSuffix => parse_type_suffix(state),
         ValkyrieRule::TryStatement => parse_try_statement(state),
         ValkyrieRule::NewStatement => parse_new_statement(state),
@@ -221,6 +223,7 @@ fn parse_statement(state: Input) -> Output {
             .or_else(|s| parse_define_union(s).and_then(|s| s.tag_node("define_union")))
             .or_else(|s| parse_define_enumerate(s).and_then(|s| s.tag_node("define_enumerate")))
             .or_else(|s| parse_define_trait(s).and_then(|s| s.tag_node("define_trait")))
+            .or_else(|s| parse_define_extends(s).and_then(|s| s.tag_node("define_extends")))
             .or_else(|s| parse_define_function(s).and_then(|s| s.tag_node("define_function")))
             .or_else(|s| parse_main_statement(s).and_then(|s| s.tag_node("main_statement")))
     })
@@ -936,7 +939,41 @@ fn parse_kw_union(state: Input) -> Output {
 }
 #[inline]
 fn parse_define_trait(state: Input) -> Output {
-    state.rule(ValkyrieRule::DefineTrait, |s| parse_kw_trait(s).and_then(|s| s.tag_node("kw_trait")))
+    state.rule(ValkyrieRule::DefineTrait, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| parse_kw_trait(s).and_then(|s| s.tag_node("kw_trait")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| s.optional(|s| parse_define_generic(s).and_then(|s| s.tag_node("define_generic"))))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| s.optional(|s| parse_define_inherit(s).and_then(|s| s.tag_node("define_inherit"))))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| s.optional(|s| parse_type_hint(s).and_then(|s| s.tag_node("type_hint"))))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_class_block(s).and_then(|s| s.tag_node("class_block")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| s.optional(|s| parse_eos(s)))
+        })
+    })
+}
+#[inline]
+fn parse_define_extends(state: Input) -> Output {
+    state.rule(ValkyrieRule::DefineExtends, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| parse_kw_extends(s).and_then(|s| s.tag_node("kw_extends")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_type_expression(s).and_then(|s| s.tag_node("type_expression")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| s.optional(|s| parse_type_hint(s).and_then(|s| s.tag_node("type_hint"))))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_class_block(s).and_then(|s| s.tag_node("class_block")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| s.optional(|s| parse_eos(s)))
+        })
+    })
 }
 #[inline]
 fn parse_kw_trait(state: Input) -> Output {
@@ -1478,7 +1515,9 @@ fn parse_main_term(state: Input) -> Output {
                     })
                 })
                 .and_then(|s| parse_main_factor(s).and_then(|s| s.tag_node("main_factor")))
-                .and_then(|s| s.repeat(0..4294967295, |s| parse_main_suffix(s).and_then(|s| s.tag_node("main_suffix"))))
+                .and_then(|s| {
+                    s.repeat(0..4294967295, |s| parse_main_suffix_term(s).and_then(|s| s.tag_node("main_suffix_term")))
+                })
         })
     })
 }
@@ -1523,8 +1562,8 @@ fn parse_leading(state: Input) -> Output {
     })
 }
 #[inline]
-fn parse_main_suffix(state: Input) -> Output {
-    state.rule(ValkyrieRule::MainSuffix, |s| {
+fn parse_main_suffix_term(state: Input) -> Output {
+    state.rule(ValkyrieRule::MainSuffixTerm, |s| {
         Err(s)
             .or_else(|s| {
                 s.sequence(|s| {
@@ -1543,7 +1582,7 @@ fn parse_main_suffix(state: Input) -> Output {
                 .and_then(|s| s.tag_node("dot_closure_call"))
             })
             .or_else(|s| parse_tuple_call(s).and_then(|s| s.tag_node("tuple_call")))
-            .or_else(|s| parse_inline_suffix(s).and_then(|s| s.tag_node("inline_suffix")))
+            .or_else(|s| parse_inline_suffix_term(s).and_then(|s| s.tag_node("inline_suffix_term")))
     })
 }
 #[inline]
@@ -1627,8 +1666,8 @@ fn parse_type_prefix(state: Input) -> Output {
     })
 }
 #[inline]
-fn parse_suffix_operator(state: Input) -> Output {
-    state.rule(ValkyrieRule::SuffixOperator, |s| {
+fn parse_main_suffix(state: Input) -> Output {
+    state.rule(ValkyrieRule::MainSuffix, |s| {
         s.match_regex({
             static REGEX: OnceLock<Regex> = OnceLock::new();
             REGEX.get_or_init(|| {
@@ -1676,22 +1715,24 @@ fn parse_inline_term(state: Input) -> Output {
                     })
                 })
                 .and_then(|s| parse_main_factor(s).and_then(|s| s.tag_node("main_factor")))
-                .and_then(|s| s.repeat(0..4294967295, |s| parse_inline_suffix(s).and_then(|s| s.tag_node("inline_suffix"))))
+                .and_then(|s| {
+                    s.repeat(0..4294967295, |s| parse_inline_suffix_term(s).and_then(|s| s.tag_node("inline_suffix_term")))
+                })
         })
     })
 }
 #[inline]
-fn parse_inline_suffix(state: Input) -> Output {
-    state.rule(ValkyrieRule::InlineSuffix, |s| {
+fn parse_inline_suffix_term(state: Input) -> Output {
+    state.rule(ValkyrieRule::InlineSuffixTerm, |s| {
         Err(s)
             .or_else(|s| {
                 s.sequence(|s| {
                     Ok(s)
                         .and_then(|s| builtin_ignore(s))
                         .and_then(|s| builtin_ignore(s))
-                        .and_then(|s| parse_suffix_operator(s).and_then(|s| s.tag_node("suffix_operator")))
+                        .and_then(|s| parse_main_suffix(s).and_then(|s| s.tag_node("main_suffix")))
                 })
-                .and_then(|s| s.tag_node("suffix_operator"))
+                .and_then(|s| s.tag_node("main_suffix"))
             })
             .or_else(|s| {
                 s.sequence(|s| {
@@ -1740,7 +1781,9 @@ fn parse_type_term(state: Input) -> Output {
                     })
                 })
                 .and_then(|s| parse_main_factor(s).and_then(|s| s.tag_node("main_factor")))
-                .and_then(|s| s.repeat(0..4294967295, |s| parse_type_suffix(s).and_then(|s| s.tag_node("type_suffix"))))
+                .and_then(|s| {
+                    s.repeat(0..4294967295, |s| parse_type_suffix_term(s).and_then(|s| s.tag_node("type_suffix_term")))
+                })
         })
     })
 }
@@ -1763,11 +1806,20 @@ fn parse_type_factor(state: Input) -> Output {
     })
 }
 #[inline]
-fn parse_type_suffix(state: Input) -> Output {
-    state.rule(ValkyrieRule::TypeSuffix, |s| {
+fn parse_type_suffix_term(state: Input) -> Output {
+    state.rule(ValkyrieRule::TypeSuffixTerm, |s| {
         Err(s)
             .or_else(|s| parse_generic_hide(s).and_then(|s| s.tag_node("generic_hide")))
-            .or_else(|s| builtin_text(s, "?", false).and_then(|s| s.tag_node("option")))
+            .or_else(|s| parse_type_suffix(s).and_then(|s| s.tag_node("type_suffix")))
+    })
+}
+#[inline]
+fn parse_type_suffix(state: Input) -> Output {
+    state.rule(ValkyrieRule::TypeSuffix, |s| {
+        s.match_regex({
+            static REGEX: OnceLock<Regex> = OnceLock::new();
+            REGEX.get_or_init(|| Regex::new("^(?x)([!?])").unwrap())
+        })
     })
 }
 #[inline]

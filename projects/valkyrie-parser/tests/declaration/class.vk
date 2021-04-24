@@ -1,6 +1,5 @@
-/// ttt
 namespace* declaration.classes;
-/// ttt
+
 class Base1 {}
 
 class Base2() {}
@@ -30,10 +29,7 @@ class B {
     item2: U!,
 }
 
-template T, U {
-    implements Debug + Display
-    where {}
-}
+
 class A(B, C): Encode + Decode {
     pub static a(): Ref⟨B⟩ + Gc<D> {
         return 1
@@ -55,11 +51,6 @@ class A(B, C): Encode + Decode {
 
 
 
-template T {
-    where {
-        T: Trait
-    }
-}
 // test
 #[Copy(Clone), Debug]
 // test
@@ -68,14 +59,6 @@ class A⟨T⟩ {
 
 }
 
-#derive()
-compile_time reflect
-template T, U {
-    where {
-        T: AnyType => U
-        U: AnyType
-    }
-}
 #Encode
 #Decode
 #[derive(Serialize, Deserialize)]
