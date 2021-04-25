@@ -674,6 +674,7 @@ pub struct DefineEnumerateNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum FlagTermNode {
+    DefineMethod(DefineMethodNode),
     EosFree(EosFreeNode),
     FlagField(FlagFieldNode),
 }

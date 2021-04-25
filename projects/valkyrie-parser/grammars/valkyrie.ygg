@@ -154,6 +154,7 @@ class DefineEnumerate {
     KW_FLAGS Identifier DefineInherit? TypeHint? '{' FlagTerm* '}'
 }
 union FlagTerm {
+    | DefineMethod
     | FlagField
     | EOS_FREE
 }
@@ -366,8 +367,9 @@ text class MainInfix ^ {
 @railway(false)
 @style(operator)
 text class TypeInfix {
-    / [|&+]
-    | [-]
+    / [⟶]
+    | ->
+    | [-+&|]
     /
 }
 @railway(false)

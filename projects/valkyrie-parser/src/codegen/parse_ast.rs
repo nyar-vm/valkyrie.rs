@@ -908,12 +908,16 @@ impl YggdrasilNode for FlagTermNode {
 
     fn get_range(&self) -> Range<usize> {
         match self {
+            Self::DefineMethod(s) => s.get_range(),
             Self::EosFree(s) => s.get_range(),
             Self::FlagField(s) => s.get_range(),
         }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
+        if let Ok(s) = pair.take_tagged_one::<DefineMethodNode>(Cow::Borrowed("define_method")) {
+            return Ok(Self::DefineMethod(s));
+        }
         if let Ok(s) = pair.take_tagged_one::<EosFreeNode>(Cow::Borrowed("eos_free")) {
             return Ok(Self::EosFree(s));
         }

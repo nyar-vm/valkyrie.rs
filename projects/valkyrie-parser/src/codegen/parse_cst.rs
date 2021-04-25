@@ -840,6 +840,7 @@ fn parse_define_enumerate(state: Input) -> Output {
 fn parse_flag_term(state: Input) -> Output {
     state.rule(ValkyrieRule::FlagTerm, |s| {
         Err(s)
+            .or_else(|s| parse_define_method(s).and_then(|s| s.tag_node("define_method")))
             .or_else(|s| parse_flag_field(s).and_then(|s| s.tag_node("flag_field")))
             .or_else(|s| parse_eos_free(s).and_then(|s| s.tag_node("eos_free")))
     })
@@ -1623,8 +1624,9 @@ fn parse_type_infix(state: Input) -> Output {
             static REGEX: OnceLock<Regex> = OnceLock::new();
             REGEX.get_or_init(|| {
                 Regex::new(
-                    "^(?x)([|&+]
-    | [-])",
+                    "^(?x)([⟶]
+    | ->
+    | [-+&|])",
                 )
                 .unwrap()
             })

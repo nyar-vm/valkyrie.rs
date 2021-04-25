@@ -20,27 +20,11 @@ class Integer(base Number) {
     }
 }
 
-template {
-    ensures {
-    result == 5
-    }
-}
+
 function five(): i32 {
     5
 }
 
-template {
-    ensures {
-    result.0 / 2 == result.1;
-    result.2 == 'a';
-    self.len() == @old(self.len());
-    }
-    after_expiry {
-        forall {
-        a > b
-        }
-    }
-}
 #[ensures(result.0 / 2 == result.1 && result.2 == 'a')]
 function tuple(): (i32, i32, char) {
     (10, 5, 'a')

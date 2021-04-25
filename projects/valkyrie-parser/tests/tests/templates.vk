@@ -15,3 +15,21 @@ template T, U {
         U: AnyType
     }
 }
+
+template {
+    ensures {
+    result == 5
+    }
+}
+template {
+    ensures {
+    result.0 / 2 == result.1;
+    result.2 == 'a';
+    self.len() == @old(self.len());
+    }
+    after_expiry {
+        forall {
+        a > b
+        }
+    }
+}

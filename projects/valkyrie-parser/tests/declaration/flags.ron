@@ -6,7 +6,7 @@ ProgramRoot {
                 span: 0..0,
             },
             kind: Exclusive,
-            name: Identifier("Empty", 10..15),
+            name: Identifier("Empty1", 10..16),
             modifiers: [],
             layout: None,
             implements: [],
@@ -14,7 +14,7 @@ ProgramRoot {
                 terms: [],
                 span: 0..0,
             },
-            span: 0..18,
+            span: 0..19,
         },
         FlagDeclaration {
             documentation: DocumentationNode {
@@ -22,7 +22,7 @@ ProgramRoot {
                 span: 0..0,
             },
             kind: Juxtapose,
-            name: Identifier("Empty", 25..30),
+            name: Identifier("Terms1", 27..33),
             modifiers: [],
             layout: None,
             implements: [],
@@ -30,59 +30,7 @@ ProgramRoot {
                 terms: [],
                 span: 0..0,
             },
-            span: 19..33,
-        },
-        ExpressionNode {
-            omit: false,
-            body: enumerate,
-            span: 35..45,
-        },
-        ExpressionNode {
-            omit: false,
-            body: ApplyCallNode {
-                monadic: false,
-                caller: OneEnum,
-                arguments: ArgumentsList {
-                    terms: [],
-                },
-                body: None,
-                span: 52..62,
-            },
-            span: 45..63,
-        },
-        ExpressionNode {
-            omit: false,
-            body: flags,
-            span: 63..69,
-        },
-        ExpressionNode {
-            omit: false,
-            body: ApplyCallNode {
-                monadic: false,
-                caller: OneFlag,
-                arguments: ArgumentsList {
-                    terms: [],
-                },
-                body: None,
-                span: 76..86,
-            },
-            span: 69..89,
-        },
-        FlagDeclaration {
-            documentation: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            kind: Exclusive,
-            name: Identifier("ManyEnums", 99..108),
-            modifiers: [],
-            layout: None,
-            implements: [],
-            body: StatementBlock {
-                terms: [],
-                span: 0..0,
-            },
-            span: 89..203,
+            span: 21..61,
         },
         FlagDeclaration {
             documentation: DocumentationNode {
@@ -90,7 +38,7 @@ ProgramRoot {
                 span: 0..0,
             },
             kind: Juxtapose,
-            name: Identifier("ManyFlags", 210..219),
+            name: Identifier("Terms2", 68..74),
             modifiers: [],
             layout: None,
             implements: [],
@@ -98,7 +46,71 @@ ProgramRoot {
                 terms: [],
                 span: 0..0,
             },
-            span: 204..314,
+            span: 62..104,
+        },
+        FlagDeclaration {
+            documentation: DocumentationNode {
+                documentation: "",
+                span: 0..0,
+            },
+            kind: Juxtapose,
+            name: Identifier("Terms3", 111..117),
+            modifiers: [],
+            layout: None,
+            implements: [],
+            body: StatementBlock {
+                terms: [],
+                span: 0..0,
+            },
+            span: 105..191,
+        },
+        FlagDeclaration {
+            documentation: DocumentationNode {
+                documentation: "",
+                span: 0..0,
+            },
+            kind: Juxtapose,
+            name: Identifier("Terms4", 198..204),
+            modifiers: [],
+            layout: None,
+            implements: [],
+            body: StatementBlock {
+                terms: [],
+                span: 0..0,
+            },
+            span: 192..260,
+        },
+        FlagDeclaration {
+            documentation: DocumentationNode {
+                documentation: "",
+                span: 0..0,
+            },
+            kind: Juxtapose,
+            name: Identifier("Extend1", 279..286),
+            modifiers: [],
+            layout: None,
+            implements: [],
+            body: StatementBlock {
+                terms: [],
+                span: 0..0,
+            },
+            span: 261..337,
+        },
+        FlagDeclaration {
+            documentation: DocumentationNode {
+                documentation: "",
+                span: 0..0,
+            },
+            kind: Juxtapose,
+            name: Identifier("ManyFlags", 345..354),
+            modifiers: [],
+            layout: None,
+            implements: [],
+            body: StatementBlock {
+                terms: [],
+                span: 0..0,
+            },
+            span: 339..445,
         },
     ],
 }

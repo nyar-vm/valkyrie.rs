@@ -24,6 +24,7 @@ impl crate::StatementNode {
             Self::DefineImport(v) => v.build(ctx)?.into(),
             Self::DefineNamespace(v) => v.build(ctx).into(),
             Self::DefineTrait(v) => v.build(ctx)?.into(),
+            Self::DefineExtends(v) => v.build(ctx)?.into(),
             Self::DefineUnion(v) => v.build(ctx)?.into(),
             Self::MainStatement(v) => v.build(ctx)?,
         };
