@@ -239,21 +239,22 @@ union KW_FUNCTION {
 // === let variable === ------------------------------------------------------------------------------------------------
 class DefineVariable {
     AnnotationTerm*
-    KW_LET Identifier TypeHint? ParameterDefault? ^EOS?
+    KW_LET LetPattern TypeHint? ParameterDefault? ^EOS?
 }
 union LetPattern {
     | StandardPattern
-    | LetBareTuple
-}
-class LetBareTuple {
-    LetBareItem (^COMMA LetBareItem)* ^COMMA?
-}
-class LetBareItem {
-    ModifierAhead* Identifier
+    | BarePattern
 }
 // === patterns === ------------------------------------------------------------------------------------------------
 class StandardPattern {
     | TuplePattern
+}
+/// `mut a, mut ..c`
+class BarePattern {
+    BarePatternItem (^COMMA BarePatternItem)* ^COMMA?
+}
+class BarePatternItem {
+    ModifierAhead* Identifier
 }
 /// `Class(a, mut b, #mut c, ..d, e: Some(_))`
 class TuplePattern {
@@ -282,7 +283,7 @@ union MainStatement {
     | ExpressionStatement
 }
 class ExpressionStatement {
-    MainExpression OP_AND_THEN? EOS?
+    AnnotationTerm* MainExpression OP_AND_THEN? EOS?
 }
 // === match/catch/switch === ------------------------------------------------------------------------------------------
 class MatchExpression {
@@ -517,6 +518,7 @@ class TuplePair {
 }
 union TupleKey {
     | Identifier
+    | Integer
     | TextRaw
 }
 // === range === -------------------------------------------------------------------------------------------------------
@@ -584,11 +586,12 @@ union AnnotationTerm {
     | AttributeCall
 }
 union AnnotationTermMix {
+    | AttributeList
     | AttributeCall
     | ProceduralCall
 }
 class AttributeList {
-    '#[' (AttributeItem (HIDE ^EOS_FREE ~ AttributeItem)* (HIDE ^EOS_FREE)?)? ']'
+    '#'? '[' (AttributeItem (HIDE ^EOS_FREE ~ AttributeItem)* (HIDE ^EOS_FREE)?)? ']'
 }
 atomic class AttributeCall {
     // #call(...) { domain } receiver
@@ -683,19 +686,13 @@ text class DigitsX {
     /[0-9a-zA-Z](_*[0-9a-zA-Z])*/
 }
 atomic class Decimal ^ {
-    (
-        | lhs:Integer (dot:DOT (rhs:Integer)?)?
-        | dot:DOT rhs:Integer
-    )
+    (lhs:Integer (dot:DOT rhs:Integer)?)
     (/[⁑]|[*]{2}/ (sign:Sign)? shift:Integer)?
     (/[_]*/ unit:Identifier)?
 }
 atomic class DecimalX ^ {
     base:Integer /[⁂]|[*]{3}/
-    (
-        | lhs:DigitsX (dot:DOT (rhs:DigitsX)?)?
-        | dot:DOT rhs:DigitsX
-    )
+    (lhs:DigitsX (dot:DOT rhs:DigitsX)?)
     (/[⁑]|[*]{2}/ (
         | (sign:Sign)? shift:Integer (/[_]*/ unit:Identifier)?
         | unit:Identifier

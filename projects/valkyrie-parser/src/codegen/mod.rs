@@ -85,9 +85,9 @@ pub enum ValkyrieRule {
     KW_FUNCTION,
     DefineVariable,
     LetPattern,
-    LetBareTuple,
-    LetBareItem,
     StandardPattern,
+    BarePattern,
+    BarePatternItem,
     TuplePattern,
     TuplePatternItem,
     WhileStatement,
@@ -295,9 +295,9 @@ impl YggdrasilRule for ValkyrieRule {
             Self::KW_FUNCTION => "",
             Self::DefineVariable => "",
             Self::LetPattern => "",
-            Self::LetBareTuple => "",
-            Self::LetBareItem => "",
             Self::StandardPattern => "",
+            Self::BarePattern => "",
+            Self::BarePatternItem => "",
             Self::TuplePattern => "",
             Self::TuplePatternItem => "",
             Self::WhileStatement => "",
@@ -848,8 +848,8 @@ pub enum KwFunctionNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct DefineVariableNode {
     pub annotation_term: Vec<AnnotationTermNode>,
-    pub identifier: IdentifierNode,
     pub kw_let: KwLetNode,
+    pub let_pattern: LetPatternNode,
     pub parameter_default: Option<ParameterDefaultNode>,
     pub type_hint: Option<TypeHintNode>,
     pub span: Range<u32>,
@@ -857,26 +857,26 @@ pub struct DefineVariableNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum LetPatternNode {
-    LetBareTuple(LetBareTupleNode),
+    BarePattern(BarePatternNode),
     StandardPattern(StandardPatternNode),
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct LetBareTupleNode {
-    pub let_bare_item: Vec<LetBareItemNode>,
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct LetBareItemNode {
-    pub identifier: IdentifierNode,
-    pub modifier_ahead: Vec<ModifierAheadNode>,
-    pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct StandardPatternNode {
     pub tuple_pattern: TuplePatternNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct BarePatternNode {
+    pub bare_pattern_item: Vec<BarePatternItemNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct BarePatternItemNode {
+    pub identifier: IdentifierNode,
+    pub modifier_ahead: Vec<ModifierAheadNode>,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -929,6 +929,7 @@ pub enum MainStatementNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ExpressionStatementNode {
+    pub annotation_term: Vec<AnnotationTermNode>,
     pub eos: Option<EosNode>,
     pub main_expression: MainExpressionNode,
     pub op_and_then: Option<OpAndThenNode>,
@@ -1269,6 +1270,7 @@ pub struct TuplePairNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum TupleKeyNode {
     Identifier(IdentifierNode),
+    Integer(IntegerNode),
     TextRaw(TextRawNode),
 }
 #[derive(Clone, Debug, Hash)]
@@ -1386,6 +1388,7 @@ pub enum AnnotationTermNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum AnnotationTermMixNode {
     AttributeCall(AttributeCallNode),
+    AttributeList(AttributeListNode),
     ProceduralCall(ProceduralCallNode),
 }
 #[derive(Clone, Debug, Hash)]
@@ -1574,7 +1577,7 @@ pub struct DigitsXNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct DecimalNode {
     pub dot: Option<DotNode>,
-    pub lhs: Option<IntegerNode>,
+    pub lhs: IntegerNode,
     pub rhs: Option<IntegerNode>,
     pub shift: Option<IntegerNode>,
     pub sign: Option<SignNode>,
@@ -1586,7 +1589,7 @@ pub struct DecimalNode {
 pub struct DecimalXNode {
     pub base: IntegerNode,
     pub dot: Option<DotNode>,
-    pub lhs: Option<DigitsXNode>,
+    pub lhs: DigitsXNode,
     pub rhs: Option<DigitsXNode>,
     pub shift: Option<IntegerNode>,
     pub sign: Option<SignNode>,

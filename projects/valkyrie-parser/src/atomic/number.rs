@@ -25,9 +25,7 @@ impl crate::NumberNode {
 impl crate::DecimalNode {
     pub fn build(&self, ctx: &ProgramContext) -> Result<ExpressionType, NyarError> {
         let mut n = NumberLiteralNode::new(10, self.span.clone());
-        if let Some(s) = &self.lhs {
-            n.set_integer(&s.text, ctx.file, s.span.start as usize)?
-        }
+        n.set_integer(&self.lhs.text, ctx.file, self.lhs.span.start as usize)?;
         if let Some(s) = &self.rhs {
             n.set_decimal(&s.text, ctx.file, s.span.start as usize)?
         }
@@ -48,9 +46,7 @@ impl crate::DecimalNode {
 impl crate::DecimalXNode {
     pub fn build(&self, ctx: &ProgramContext) -> Result<ExpressionType, NyarError> {
         let mut n = NumberLiteralNode::new(self.base.as_base(ctx)?, self.span.clone());
-        if let Some(s) = &self.lhs {
-            n.set_integer(&s.text, ctx.file, s.span.start as usize)?
-        }
+        n.set_integer(&self.lhs.text, ctx.file, self.lhs.span.start as usize)?;
         if let Some(s) = &self.rhs {
             n.set_decimal(&s.text, ctx.file, s.span.start as usize)?
         }

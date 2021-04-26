@@ -69,6 +69,9 @@ impl MainInfixNode {
             "∨" | "||" => LogicMatrix::Or.into(),
             "⊽" => LogicMatrix::Nor.into(),
             "⊻" => LogicMatrix::Xor.into(),
+            // range
+            "..<" => RangeTo { equal: false },
+            "..=" => RangeTo { equal: true },
             _ => unimplemented!("{} is a unknown infix operator", self.text),
         };
         OperatorNode { kind: o, span: self.span.clone() }

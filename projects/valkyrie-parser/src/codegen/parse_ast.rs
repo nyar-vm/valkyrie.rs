@@ -1451,8 +1451,8 @@ impl YggdrasilNode for DefineVariableNode {
             annotation_term: pair
                 .take_tagged_items::<AnnotationTermNode>(Cow::Borrowed("annotation_term"))
                 .collect::<Result<Vec<_>, _>>()?,
-            identifier: pair.take_tagged_one::<IdentifierNode>(Cow::Borrowed("identifier"))?,
             kw_let: pair.take_tagged_one::<KwLetNode>(Cow::Borrowed("kw_let"))?,
+            let_pattern: pair.take_tagged_one::<LetPatternNode>(Cow::Borrowed("let_pattern"))?,
             parameter_default: pair.take_tagged_option::<ParameterDefaultNode>(Cow::Borrowed("parameter_default")),
             type_hint: pair.take_tagged_option::<TypeHintNode>(Cow::Borrowed("type_hint")),
             span: Range { start: _span.start() as u32, end: _span.end() as u32 },
@@ -1473,14 +1473,14 @@ impl YggdrasilNode for LetPatternNode {
 
     fn get_range(&self) -> Range<usize> {
         match self {
-            Self::LetBareTuple(s) => s.get_range(),
+            Self::BarePattern(s) => s.get_range(),
             Self::StandardPattern(s) => s.get_range(),
         }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
-        if let Ok(s) = pair.take_tagged_one::<LetBareTupleNode>(Cow::Borrowed("let_bare_tuple")) {
-            return Ok(Self::LetBareTuple(s));
+        if let Ok(s) = pair.take_tagged_one::<BarePatternNode>(Cow::Borrowed("bare_pattern")) {
+            return Ok(Self::BarePattern(s));
         }
         if let Ok(s) = pair.take_tagged_one::<StandardPatternNode>(Cow::Borrowed("standard_pattern")) {
             return Ok(Self::StandardPattern(s));
@@ -1494,57 +1494,6 @@ impl FromStr for LetPatternNode {
 
     fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
         Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::LetPattern)?)
-    }
-}
-#[automatically_derived]
-impl YggdrasilNode for LetBareTupleNode {
-    type Rule = ValkyrieRule;
-
-    fn get_range(&self) -> Range<usize> {
-        Range { start: self.span.start as usize, end: self.span.end as usize }
-    }
-    fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
-        let _span = pair.get_span();
-        Ok(Self {
-            let_bare_item: pair
-                .take_tagged_items::<LetBareItemNode>(Cow::Borrowed("let_bare_item"))
-                .collect::<Result<Vec<_>, _>>()?,
-            span: Range { start: _span.start() as u32, end: _span.end() as u32 },
-        })
-    }
-}
-#[automatically_derived]
-impl FromStr for LetBareTupleNode {
-    type Err = YggdrasilError<ValkyrieRule>;
-
-    fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
-        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::LetBareTuple)?)
-    }
-}
-#[automatically_derived]
-impl YggdrasilNode for LetBareItemNode {
-    type Rule = ValkyrieRule;
-
-    fn get_range(&self) -> Range<usize> {
-        Range { start: self.span.start as usize, end: self.span.end as usize }
-    }
-    fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
-        let _span = pair.get_span();
-        Ok(Self {
-            identifier: pair.take_tagged_one::<IdentifierNode>(Cow::Borrowed("identifier"))?,
-            modifier_ahead: pair
-                .take_tagged_items::<ModifierAheadNode>(Cow::Borrowed("modifier_ahead"))
-                .collect::<Result<Vec<_>, _>>()?,
-            span: Range { start: _span.start() as u32, end: _span.end() as u32 },
-        })
-    }
-}
-#[automatically_derived]
-impl FromStr for LetBareItemNode {
-    type Err = YggdrasilError<ValkyrieRule>;
-
-    fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
-        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::LetBareItem)?)
     }
 }
 #[automatically_derived]
@@ -1568,6 +1517,57 @@ impl FromStr for StandardPatternNode {
 
     fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
         Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::StandardPattern)?)
+    }
+}
+#[automatically_derived]
+impl YggdrasilNode for BarePatternNode {
+    type Rule = ValkyrieRule;
+
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
+    }
+    fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
+        let _span = pair.get_span();
+        Ok(Self {
+            bare_pattern_item: pair
+                .take_tagged_items::<BarePatternItemNode>(Cow::Borrowed("bare_pattern_item"))
+                .collect::<Result<Vec<_>, _>>()?,
+            span: Range { start: _span.start() as u32, end: _span.end() as u32 },
+        })
+    }
+}
+#[automatically_derived]
+impl FromStr for BarePatternNode {
+    type Err = YggdrasilError<ValkyrieRule>;
+
+    fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::BarePattern)?)
+    }
+}
+#[automatically_derived]
+impl YggdrasilNode for BarePatternItemNode {
+    type Rule = ValkyrieRule;
+
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
+    }
+    fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
+        let _span = pair.get_span();
+        Ok(Self {
+            identifier: pair.take_tagged_one::<IdentifierNode>(Cow::Borrowed("identifier"))?,
+            modifier_ahead: pair
+                .take_tagged_items::<ModifierAheadNode>(Cow::Borrowed("modifier_ahead"))
+                .collect::<Result<Vec<_>, _>>()?,
+            span: Range { start: _span.start() as u32, end: _span.end() as u32 },
+        })
+    }
+}
+#[automatically_derived]
+impl FromStr for BarePatternItemNode {
+    type Err = YggdrasilError<ValkyrieRule>;
+
+    fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::BarePatternItem)?)
     }
 }
 #[automatically_derived]
@@ -1746,6 +1746,9 @@ impl YggdrasilNode for ExpressionStatementNode {
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
         Ok(Self {
+            annotation_term: pair
+                .take_tagged_items::<AnnotationTermNode>(Cow::Borrowed("annotation_term"))
+                .collect::<Result<Vec<_>, _>>()?,
             eos: pair.take_tagged_option::<EosNode>(Cow::Borrowed("eos")),
             main_expression: pair.take_tagged_one::<MainExpressionNode>(Cow::Borrowed("main_expression"))?,
             op_and_then: pair.take_tagged_option::<OpAndThenNode>(Cow::Borrowed("op_and_then")),
@@ -2992,6 +2995,7 @@ impl YggdrasilNode for TupleKeyNode {
     fn get_range(&self) -> Range<usize> {
         match self {
             Self::Identifier(s) => s.get_range(),
+            Self::Integer(s) => s.get_range(),
             Self::TextRaw(s) => s.get_range(),
         }
     }
@@ -2999,6 +3003,9 @@ impl YggdrasilNode for TupleKeyNode {
         let _span = pair.get_span();
         if let Ok(s) = pair.take_tagged_one::<IdentifierNode>(Cow::Borrowed("identifier")) {
             return Ok(Self::Identifier(s));
+        }
+        if let Ok(s) = pair.take_tagged_one::<IntegerNode>(Cow::Borrowed("integer")) {
+            return Ok(Self::Integer(s));
         }
         if let Ok(s) = pair.take_tagged_one::<TextRawNode>(Cow::Borrowed("text_raw")) {
             return Ok(Self::TextRaw(s));
@@ -3432,6 +3439,7 @@ impl YggdrasilNode for AnnotationTermMixNode {
     fn get_range(&self) -> Range<usize> {
         match self {
             Self::AttributeCall(s) => s.get_range(),
+            Self::AttributeList(s) => s.get_range(),
             Self::ProceduralCall(s) => s.get_range(),
         }
     }
@@ -3439,6 +3447,9 @@ impl YggdrasilNode for AnnotationTermMixNode {
         let _span = pair.get_span();
         if let Ok(s) = pair.take_tagged_one::<AttributeCallNode>(Cow::Borrowed("attribute_call")) {
             return Ok(Self::AttributeCall(s));
+        }
+        if let Ok(s) = pair.take_tagged_one::<AttributeListNode>(Cow::Borrowed("attribute_list")) {
+            return Ok(Self::AttributeList(s));
         }
         if let Ok(s) = pair.take_tagged_one::<ProceduralCallNode>(Cow::Borrowed("procedural_call")) {
             return Ok(Self::ProceduralCall(s));
@@ -4131,7 +4142,7 @@ impl YggdrasilNode for DecimalNode {
         let _span = pair.get_span();
         Ok(Self {
             dot: pair.take_tagged_option::<DotNode>(Cow::Borrowed("dot")),
-            lhs: pair.take_tagged_option::<IntegerNode>(Cow::Borrowed("lhs")),
+            lhs: pair.take_tagged_one::<IntegerNode>(Cow::Borrowed("lhs"))?,
             rhs: pair.take_tagged_option::<IntegerNode>(Cow::Borrowed("rhs")),
             shift: pair.take_tagged_option::<IntegerNode>(Cow::Borrowed("shift")),
             sign: pair.take_tagged_option::<SignNode>(Cow::Borrowed("sign")),
@@ -4160,7 +4171,7 @@ impl YggdrasilNode for DecimalXNode {
         Ok(Self {
             base: pair.take_tagged_one::<IntegerNode>(Cow::Borrowed("base"))?,
             dot: pair.take_tagged_option::<DotNode>(Cow::Borrowed("dot")),
-            lhs: pair.take_tagged_option::<DigitsXNode>(Cow::Borrowed("lhs")),
+            lhs: pair.take_tagged_one::<DigitsXNode>(Cow::Borrowed("lhs"))?,
             rhs: pair.take_tagged_option::<DigitsXNode>(Cow::Borrowed("rhs")),
             shift: pair.take_tagged_option::<IntegerNode>(Cow::Borrowed("shift")),
             sign: pair.take_tagged_option::<SignNode>(Cow::Borrowed("sign")),

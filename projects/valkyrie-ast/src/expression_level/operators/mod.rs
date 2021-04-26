@@ -1,4 +1,5 @@
 use super::*;
+use core::ptr::eq;
 
 mod display;
 
@@ -66,6 +67,11 @@ pub enum ValkyrieOperator {
     StrictlyEqual {
         /// negative operator `=!=`
         negative: bool,
+    },
+    /// binary operator: `..<, ..=`
+    RangeTo {
+        /// inclusive operator: `..=`
+        equal: bool,
     },
     /// binary operator: `⊑, ⋢, is, is not`
     Is {
@@ -177,6 +183,7 @@ impl ValkyrieOperator {
             Self::In { .. } => 14000,
             Self::Contains { .. } => 14000,
             Self::Assign { .. } => 14000,
+            Self::RangeTo { .. } => 14000,
             // prefix - 3
             Self::PlusAssign => 14100,
             Self::MinusAssign => 14100,
@@ -281,6 +288,10 @@ impl ValkyrieOperator {
             Self::Contains { negative } => match negative {
                 true => "∌",
                 false => "∋",
+            },
+            Self::RangeTo { equal } => match equal {
+                true => "..=",
+                false => "..<",
             },
             Self::Equal { negative } => match negative {
                 true => "≠",

@@ -57,9 +57,9 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::KW_FUNCTION => parse_kw_function(state),
         ValkyrieRule::DefineVariable => parse_define_variable(state),
         ValkyrieRule::LetPattern => parse_let_pattern(state),
-        ValkyrieRule::LetBareTuple => parse_let_bare_tuple(state),
-        ValkyrieRule::LetBareItem => parse_let_bare_item(state),
         ValkyrieRule::StandardPattern => parse_standard_pattern(state),
+        ValkyrieRule::BarePattern => parse_bare_pattern(state),
+        ValkyrieRule::BarePatternItem => parse_bare_pattern_item(state),
         ValkyrieRule::TuplePattern => parse_tuple_pattern(state),
         ValkyrieRule::TuplePatternItem => parse_tuple_pattern_item(state),
         ValkyrieRule::WhileStatement => parse_while_statement(state),
@@ -1186,7 +1186,7 @@ fn parse_define_variable(state: Input) -> Output {
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_kw_let(s).and_then(|s| s.tag_node("kw_let")))
                 .and_then(|s| builtin_ignore(s))
-                .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
+                .and_then(|s| parse_let_pattern(s).and_then(|s| s.tag_node("let_pattern")))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| s.optional(|s| parse_type_hint(s).and_then(|s| s.tag_node("type_hint"))))
                 .and_then(|s| builtin_ignore(s))
@@ -1201,15 +1201,19 @@ fn parse_let_pattern(state: Input) -> Output {
     state.rule(ValkyrieRule::LetPattern, |s| {
         Err(s)
             .or_else(|s| parse_standard_pattern(s).and_then(|s| s.tag_node("standard_pattern")))
-            .or_else(|s| parse_let_bare_tuple(s).and_then(|s| s.tag_node("let_bare_tuple")))
+            .or_else(|s| parse_bare_pattern(s).and_then(|s| s.tag_node("bare_pattern")))
     })
 }
 #[inline]
-fn parse_let_bare_tuple(state: Input) -> Output {
-    state.rule(ValkyrieRule::LetBareTuple, |s| {
+fn parse_standard_pattern(state: Input) -> Output {
+    state.rule(ValkyrieRule::StandardPattern, |s| parse_tuple_pattern(s).and_then(|s| s.tag_node("tuple_pattern")))
+}
+#[inline]
+fn parse_bare_pattern(state: Input) -> Output {
+    state.rule(ValkyrieRule::BarePattern, |s| {
         s.sequence(|s| {
             Ok(s)
-                .and_then(|s| parse_let_bare_item(s).and_then(|s| s.tag_node("let_bare_item")))
+                .and_then(|s| parse_bare_pattern_item(s).and_then(|s| s.tag_node("bare_pattern_item")))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| {
                     s.repeat(0..4294967295, |s| {
@@ -1219,7 +1223,7 @@ fn parse_let_bare_tuple(state: Input) -> Output {
                                     Ok(s)
                                         .and_then(|s| parse_comma(s))
                                         .and_then(|s| builtin_ignore(s))
-                                        .and_then(|s| parse_let_bare_item(s).and_then(|s| s.tag_node("let_bare_item")))
+                                        .and_then(|s| parse_bare_pattern_item(s).and_then(|s| s.tag_node("bare_pattern_item")))
                                 })
                             })
                         })
@@ -1231,8 +1235,8 @@ fn parse_let_bare_tuple(state: Input) -> Output {
     })
 }
 #[inline]
-fn parse_let_bare_item(state: Input) -> Output {
-    state.rule(ValkyrieRule::LetBareItem, |s| {
+fn parse_bare_pattern_item(state: Input) -> Output {
+    state.rule(ValkyrieRule::BarePatternItem, |s| {
         s.sequence(|s| {
             Ok(s)
                 .and_then(|s| {
@@ -1248,10 +1252,6 @@ fn parse_let_bare_item(state: Input) -> Output {
                 .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
         })
     })
-}
-#[inline]
-fn parse_standard_pattern(state: Input) -> Output {
-    state.rule(ValkyrieRule::StandardPattern, |s| parse_tuple_pattern(s).and_then(|s| s.tag_node("tuple_pattern")))
 }
 #[inline]
 fn parse_tuple_pattern(state: Input) -> Output {
@@ -1372,6 +1372,16 @@ fn parse_expression_statement(state: Input) -> Output {
     state.rule(ValkyrieRule::ExpressionStatement, |s| {
         s.sequence(|s| {
             Ok(s)
+                .and_then(|s| {
+                    s.repeat(0..4294967295, |s| {
+                        s.sequence(|s| {
+                            Ok(s)
+                                .and_then(|s| builtin_ignore(s))
+                                .and_then(|s| parse_annotation_term(s).and_then(|s| s.tag_node("annotation_term")))
+                        })
+                    })
+                })
+                .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_main_expression(s).and_then(|s| s.tag_node("main_expression")))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| s.optional(|s| parse_op_and_then(s).and_then(|s| s.tag_node("op_and_then"))))
@@ -2283,6 +2293,7 @@ fn parse_tuple_key(state: Input) -> Output {
     state.rule(ValkyrieRule::TupleKey, |s| {
         Err(s)
             .or_else(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
+            .or_else(|s| parse_integer(s).and_then(|s| s.tag_node("integer")))
             .or_else(|s| parse_text_raw(s).and_then(|s| s.tag_node("text_raw")))
     })
 }
@@ -2731,6 +2742,7 @@ fn parse_annotation_term(state: Input) -> Output {
 fn parse_annotation_term_mix(state: Input) -> Output {
     state.rule(ValkyrieRule::AnnotationTermMix, |s| {
         Err(s)
+            .or_else(|s| parse_attribute_list(s).and_then(|s| s.tag_node("attribute_list")))
             .or_else(|s| parse_attribute_call(s).and_then(|s| s.tag_node("attribute_call")))
             .or_else(|s| parse_procedural_call(s).and_then(|s| s.tag_node("procedural_call")))
     })
@@ -2740,7 +2752,9 @@ fn parse_attribute_list(state: Input) -> Output {
     state.rule(ValkyrieRule::AttributeList, |s| {
         s.sequence(|s| {
             Ok(s)
-                .and_then(|s| builtin_text(s, "#[", false))
+                .and_then(|s| s.optional(|s| builtin_text(s, "#", false)))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| builtin_text(s, "[", false))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| {
                     s.optional(|s| {
@@ -3145,28 +3159,15 @@ fn parse_decimal(state: Input) -> Output {
     state.rule(ValkyrieRule::Decimal, |s| {
         s.sequence(|s| {
             Ok(s)
+                .and_then(|s| parse_integer(s).and_then(|s| s.tag_node("lhs")))
                 .and_then(|s| {
-                    Err(s)
-                        .or_else(|s| {
-                            s.sequence(|s| {
-                                Ok(s).and_then(|s| parse_integer(s).and_then(|s| s.tag_node("lhs"))).and_then(|s| {
-                                    s.optional(|s| {
-                                        s.sequence(|s| {
-                                            Ok(s)
-                                                .and_then(|s| parse_dot(s).and_then(|s| s.tag_node("dot")))
-                                                .and_then(|s| s.optional(|s| parse_integer(s).and_then(|s| s.tag_node("rhs"))))
-                                        })
-                                    })
-                                })
-                            })
+                    s.optional(|s| {
+                        s.sequence(|s| {
+                            Ok(s)
+                                .and_then(|s| parse_dot(s).and_then(|s| s.tag_node("dot")))
+                                .and_then(|s| parse_integer(s).and_then(|s| s.tag_node("rhs")))
                         })
-                        .or_else(|s| {
-                            s.sequence(|s| {
-                                Ok(s)
-                                    .and_then(|s| parse_dot(s).and_then(|s| s.tag_node("dot")))
-                                    .and_then(|s| parse_integer(s).and_then(|s| s.tag_node("rhs")))
-                            })
-                        })
+                    })
                 })
                 .and_then(|s| {
                     s.optional(|s| {
@@ -3210,35 +3211,25 @@ fn parse_decimal_x(state: Input) -> Output {
     state.rule(ValkyrieRule::DecimalX, |s| {
         s.sequence(|s| {
             Ok(s)
-                .and_then(|s| parse_integer(s).and_then(|s| s.tag_node("base")))
                 .and_then(|s| {
-                    builtin_regex(s, {
-                        static REGEX: OnceLock<Regex> = OnceLock::new();
-                        REGEX.get_or_init(|| Regex::new("^(?x)([⁂]|[*]{3})").unwrap())
+                    s.sequence(|s| {
+                        Ok(s).and_then(|s| parse_integer(s).and_then(|s| s.tag_node("base"))).and_then(|s| {
+                            builtin_regex(s, {
+                                static REGEX: OnceLock<Regex> = OnceLock::new();
+                                REGEX.get_or_init(|| Regex::new("^(?x)([⁂]|[*]{3})").unwrap())
+                            })
+                        })
                     })
                 })
+                .and_then(|s| parse_digits_x(s).and_then(|s| s.tag_node("lhs")))
                 .and_then(|s| {
-                    Err(s)
-                        .or_else(|s| {
-                            s.sequence(|s| {
-                                Ok(s).and_then(|s| parse_digits_x(s).and_then(|s| s.tag_node("lhs"))).and_then(|s| {
-                                    s.optional(|s| {
-                                        s.sequence(|s| {
-                                            Ok(s)
-                                                .and_then(|s| parse_dot(s).and_then(|s| s.tag_node("dot")))
-                                                .and_then(|s| s.optional(|s| parse_digits_x(s).and_then(|s| s.tag_node("rhs"))))
-                                        })
-                                    })
-                                })
-                            })
+                    s.optional(|s| {
+                        s.sequence(|s| {
+                            Ok(s)
+                                .and_then(|s| parse_dot(s).and_then(|s| s.tag_node("dot")))
+                                .and_then(|s| parse_digits_x(s).and_then(|s| s.tag_node("rhs")))
                         })
-                        .or_else(|s| {
-                            s.sequence(|s| {
-                                Ok(s)
-                                    .and_then(|s| parse_dot(s).and_then(|s| s.tag_node("dot")))
-                                    .and_then(|s| parse_digits_x(s).and_then(|s| s.tag_node("rhs")))
-                            })
-                        })
+                    })
                 })
                 .and_then(|s| {
                     s.optional(|s| {

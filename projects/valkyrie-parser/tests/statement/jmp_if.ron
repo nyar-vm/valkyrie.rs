@@ -290,38 +290,17 @@ ProgramRoot {
             body: if,
             span: 167..170,
         },
-        ExpressionNode {
-            omit: false,
-            body: ApplyCallNode {
-                monadic: false,
-                caller: InfixNode {
-                    infix: =,
-                    lhs: ApplyCallNode {
-                        monadic: false,
-                        caller: let,
-                        arguments: ArgumentsList {
-                            terms: [
-                                TupleTermNode {
-                                    key: None,
-                                    value: x,
-                                },
-                                TupleTermNode {
-                                    key: None,
-                                    value: y,
-                                },
-                            ],
-                        },
-                        body: None,
-                        span: 173..180,
-                    },
-                    rhs: point,
-                },
-                arguments: ArgumentsList {
+        VariableDeclaration {
+            pattern: Tuple(
+                TuplePatternNode {
+                    bind: None,
+                    name: None,
                     terms: [],
+                    span: 0..0,
                 },
-                body: None,
-                span: 188..217,
-            },
+            ),
+            type_hint: None,
+            body: None,
             span: 170..219,
         },
         ExpressionNode {
@@ -340,24 +319,7 @@ ProgramRoot {
             ),
             type_hint: None,
             body: None,
-            span: 222..233,
-        },
-        ExpressionNode {
-            omit: false,
-            body: ApplyCallNode {
-                monadic: false,
-                caller: InfixNode {
-                    infix: =,
-                    lhs: error,
-                    rhs: x,
-                },
-                arguments: ArgumentsList {
-                    terms: [],
-                },
-                body: None,
-                span: 244..266,
-            },
-            span: 233..267,
+            span: 222..267,
         },
     ],
 }

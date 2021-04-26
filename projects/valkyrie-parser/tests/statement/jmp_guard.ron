@@ -23,38 +23,17 @@ ProgramRoot {
             body: if,
             span: 153..156,
         },
-        ExpressionNode {
-            omit: false,
-            body: ApplyCallNode {
-                monadic: false,
-                caller: InfixNode {
-                    infix: =,
-                    lhs: ApplyCallNode {
-                        monadic: false,
-                        caller: let,
-                        arguments: ArgumentsList {
-                            terms: [
-                                TupleTermNode {
-                                    key: None,
-                                    value: x,
-                                },
-                                TupleTermNode {
-                                    key: None,
-                                    value: y,
-                                },
-                            ],
-                        },
-                        body: None,
-                        span: 159..166,
-                    },
-                    rhs: point,
-                },
-                arguments: ArgumentsList {
+        VariableDeclaration {
+            pattern: Tuple(
+                TuplePatternNode {
+                    bind: None,
+                    name: None,
                     terms: [],
+                    span: 0..0,
                 },
-                body: None,
-                span: 174..275,
-            },
+            ),
+            type_hint: None,
+            body: None,
             span: 156..276,
         },
     ],
