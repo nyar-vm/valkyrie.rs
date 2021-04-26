@@ -18,11 +18,12 @@ impl crate::ProgramNode {
 impl crate::StatementNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<StatementNode> {
         let value = match self {
+            Self::DefineNamespace(v) => v.build(ctx).into(),
+            Self::DefineImport(v) => v.build(ctx)?.into(),
             Self::DefineClass(v) => v.build(ctx)?.into(),
             Self::DefineEnumerate(v) => v.build(ctx)?.into(),
             Self::DefineFunction(v) => v.build(ctx)?.into(),
-            Self::DefineImport(v) => v.build(ctx)?.into(),
-            Self::DefineNamespace(v) => v.build(ctx).into(),
+            Self::DefineVariable(v) => v.build(ctx)?.into(),
             Self::DefineTrait(v) => v.build(ctx)?.into(),
             Self::DefineExtends(v) => v.build(ctx)?.into(),
             Self::DefineUnion(v) => v.build(ctx)?.into(),

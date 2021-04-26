@@ -329,10 +329,18 @@ ProgramRoot {
             body: if,
             span: 219..222,
         },
-        ExpressionNode {
-            omit: false,
-            body: let,
-            span: 222..226,
+        VariableDeclaration {
+            pattern: Tuple(
+                TuplePatternNode {
+                    bind: None,
+                    name: None,
+                    terms: [],
+                    span: 0..0,
+                },
+            ),
+            type_hint: None,
+            body: None,
+            span: 222..233,
         },
         ExpressionNode {
             omit: false,
@@ -340,20 +348,7 @@ ProgramRoot {
                 monadic: false,
                 caller: InfixNode {
                     infix: =,
-                    lhs: ApplyCallNode {
-                        monadic: false,
-                        caller: Failure,
-                        arguments: ArgumentsList {
-                            terms: [
-                                TupleTermNode {
-                                    key: None,
-                                    value: error,
-                                },
-                            ],
-                        },
-                        body: None,
-                        span: 233..240,
-                    },
+                    lhs: error,
                     rhs: x,
                 },
                 arguments: ArgumentsList {
@@ -362,7 +357,7 @@ ProgramRoot {
                 body: None,
                 span: 244..266,
             },
-            span: 226..267,
+            span: 233..267,
         },
     ],
 }

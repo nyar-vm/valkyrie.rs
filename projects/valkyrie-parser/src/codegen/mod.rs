@@ -83,6 +83,13 @@ pub enum ValkyrieRule {
     ParameterHint,
     Continuation,
     KW_FUNCTION,
+    DefineVariable,
+    LetPattern,
+    LetBareTuple,
+    LetBareItem,
+    StandardPattern,
+    TuplePattern,
+    TuplePatternItem,
     WhileStatement,
     KW_WHILE,
     ForStatement,
@@ -151,8 +158,10 @@ pub enum ValkyrieRule {
     AnnotationMix,
     AnnotationTerm,
     AnnotationTermMix,
+    AttributeList,
     AttributeCall,
     ProceduralCall,
+    AttributeItem,
     TextLiteral,
     TextRaw,
     TEXT_CONTENT1,
@@ -203,6 +212,7 @@ pub enum ValkyrieRule {
     KW_RETURN,
     KW_BREAK,
     KW_CONTINUE,
+    KW_LET,
     KW_NEW,
     KW_OBJECT,
     KW_IF,
@@ -283,6 +293,13 @@ impl YggdrasilRule for ValkyrieRule {
             Self::ParameterHint => "",
             Self::Continuation => "",
             Self::KW_FUNCTION => "",
+            Self::DefineVariable => "",
+            Self::LetPattern => "",
+            Self::LetBareTuple => "",
+            Self::LetBareItem => "",
+            Self::StandardPattern => "",
+            Self::TuplePattern => "",
+            Self::TuplePatternItem => "",
             Self::WhileStatement => "",
             Self::KW_WHILE => "",
             Self::ForStatement => "",
@@ -351,8 +368,10 @@ impl YggdrasilRule for ValkyrieRule {
             Self::AnnotationMix => "",
             Self::AnnotationTerm => "",
             Self::AnnotationTermMix => "",
+            Self::AttributeList => "",
             Self::AttributeCall => "",
             Self::ProceduralCall => "",
+            Self::AttributeItem => "",
             Self::TextLiteral => "",
             Self::TextRaw => "",
             Self::TEXT_CONTENT1 => "",
@@ -403,6 +422,7 @@ impl YggdrasilRule for ValkyrieRule {
             Self::KW_RETURN => "",
             Self::KW_BREAK => "",
             Self::KW_CONTINUE => "",
+            Self::KW_LET => "",
             Self::KW_NEW => "",
             Self::KW_OBJECT => "",
             Self::KW_IF => "",
@@ -440,6 +460,7 @@ pub enum StatementNode {
     DefineNamespace(DefineNamespaceNode),
     DefineTrait(DefineTraitNode),
     DefineUnion(DefineUnionNode),
+    DefineVariable(DefineVariableNode),
     MainStatement(MainStatementNode),
 }
 #[derive(Clone, Debug, Hash)]
@@ -736,7 +757,9 @@ pub struct DefineTraitNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct DefineExtendsNode {
+    pub annotation_head: AnnotationHeadNode,
     pub class_block: ClassBlockNode,
+    pub define_template: Option<DefineTemplateNode>,
     pub kw_extends: KwExtendsNode,
     pub type_expression: TypeExpressionNode,
     pub type_hint: Option<TypeHintNode>,
@@ -820,6 +843,57 @@ pub struct ContinuationNode {
 pub enum KwFunctionNode {
     Macro,
     Micro,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct DefineVariableNode {
+    pub annotation_term: Vec<AnnotationTermNode>,
+    pub identifier: IdentifierNode,
+    pub kw_let: KwLetNode,
+    pub parameter_default: Option<ParameterDefaultNode>,
+    pub type_hint: Option<TypeHintNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum LetPatternNode {
+    LetBareTuple(LetBareTupleNode),
+    StandardPattern(StandardPatternNode),
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct LetBareTupleNode {
+    pub let_bare_item: Vec<LetBareItemNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct LetBareItemNode {
+    pub identifier: IdentifierNode,
+    pub modifier_ahead: Vec<ModifierAheadNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct StandardPatternNode {
+    pub tuple_pattern: TuplePatternNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct TuplePatternNode {
+    pub namepath: Option<NamepathNode>,
+    pub tuple_pattern_item: Vec<TuplePatternItemNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct TuplePatternItemNode {
+    pub annotation_mix: AnnotationMixNode,
+    pub colon: Option<ColonNode>,
+    pub identifier: IdentifierNode,
+    pub standard_pattern: Option<StandardPatternNode>,
+    pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -1306,6 +1380,7 @@ pub struct AnnotationMixNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum AnnotationTermNode {
     AttributeCall(AttributeCallNode),
+    AttributeList(AttributeListNode),
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -1315,15 +1390,25 @@ pub enum AnnotationTermMixNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct AttributeListNode {
+    pub attribute_item: Vec<AttributeItemNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct AttributeCallNode {
-    pub class_block: Option<ClassBlockNode>,
-    pub namepath: NamepathNode,
-    pub tuple_literal: Option<TupleLiteralNode>,
+    pub attribute_item: AttributeItemNode,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ProceduralCallNode {
+    pub attribute_item: AttributeItemNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct AttributeItemNode {
     pub class_block: Option<ClassBlockNode>,
     pub namepath: NamepathNode,
     pub tuple_literal: Option<TupleLiteralNode>,
@@ -1621,6 +1706,11 @@ pub struct KwBreakNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct KwContinueNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct KwLetNode {
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]

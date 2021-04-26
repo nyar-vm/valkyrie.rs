@@ -15,7 +15,9 @@ template T, U {
         U: AnyType
     }
 }
-
+template P {
+    where { P: AnyType }
+}
 template {
     ensures {
     result == 5

@@ -103,9 +103,7 @@ function name(args) {
     block
 }
 
-template P {
-    where { P: AnyType }
-}
+
 public static void fun main function print⟨P⟩(w: Write, .., ...) {
     #another
     lambda (args, .., ...): T {

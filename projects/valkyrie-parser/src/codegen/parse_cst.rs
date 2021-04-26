@@ -55,6 +55,13 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::ParameterHint => parse_parameter_hint(state),
         ValkyrieRule::Continuation => parse_continuation(state),
         ValkyrieRule::KW_FUNCTION => parse_kw_function(state),
+        ValkyrieRule::DefineVariable => parse_define_variable(state),
+        ValkyrieRule::LetPattern => parse_let_pattern(state),
+        ValkyrieRule::LetBareTuple => parse_let_bare_tuple(state),
+        ValkyrieRule::LetBareItem => parse_let_bare_item(state),
+        ValkyrieRule::StandardPattern => parse_standard_pattern(state),
+        ValkyrieRule::TuplePattern => parse_tuple_pattern(state),
+        ValkyrieRule::TuplePatternItem => parse_tuple_pattern_item(state),
         ValkyrieRule::WhileStatement => parse_while_statement(state),
         ValkyrieRule::KW_WHILE => parse_kw_while(state),
         ValkyrieRule::ForStatement => parse_for_statement(state),
@@ -123,8 +130,10 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::AnnotationMix => parse_annotation_mix(state),
         ValkyrieRule::AnnotationTerm => parse_annotation_term(state),
         ValkyrieRule::AnnotationTermMix => parse_annotation_term_mix(state),
+        ValkyrieRule::AttributeList => parse_attribute_list(state),
         ValkyrieRule::AttributeCall => parse_attribute_call(state),
         ValkyrieRule::ProceduralCall => parse_procedural_call(state),
+        ValkyrieRule::AttributeItem => parse_attribute_item(state),
         ValkyrieRule::TextLiteral => parse_text_literal(state),
         ValkyrieRule::TextRaw => parse_text_raw(state),
         ValkyrieRule::TEXT_CONTENT1 => parse_text_content_1(state),
@@ -175,6 +184,7 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::KW_RETURN => parse_kw_return(state),
         ValkyrieRule::KW_BREAK => parse_kw_break(state),
         ValkyrieRule::KW_CONTINUE => parse_kw_continue(state),
+        ValkyrieRule::KW_LET => parse_kw_let(state),
         ValkyrieRule::KW_NEW => parse_kw_new(state),
         ValkyrieRule::KW_OBJECT => parse_kw_object(state),
         ValkyrieRule::KW_IF => parse_kw_if(state),
@@ -225,6 +235,7 @@ fn parse_statement(state: Input) -> Output {
             .or_else(|s| parse_define_trait(s).and_then(|s| s.tag_node("define_trait")))
             .or_else(|s| parse_define_extends(s).and_then(|s| s.tag_node("define_extends")))
             .or_else(|s| parse_define_function(s).and_then(|s| s.tag_node("define_function")))
+            .or_else(|s| parse_define_variable(s).and_then(|s| s.tag_node("define_variable")))
             .or_else(|s| parse_main_statement(s).and_then(|s| s.tag_node("main_statement")))
     })
 }
@@ -964,6 +975,10 @@ fn parse_define_extends(state: Input) -> Output {
     state.rule(ValkyrieRule::DefineExtends, |s| {
         s.sequence(|s| {
             Ok(s)
+                .and_then(|s| s.optional(|s| parse_define_template(s).and_then(|s| s.tag_node("define_template"))))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_annotation_head(s).and_then(|s| s.tag_node("annotation_head")))
+                .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_kw_extends(s).and_then(|s| s.tag_node("kw_extends")))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_type_expression(s).and_then(|s| s.tag_node("type_expression")))
@@ -1152,6 +1167,153 @@ fn parse_kw_function(state: Input) -> Output {
                 })
                 .and_then(|s| s.tag_node("macro"))
             })
+    })
+}
+#[inline]
+fn parse_define_variable(state: Input) -> Output {
+    state.rule(ValkyrieRule::DefineVariable, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| {
+                    s.repeat(0..4294967295, |s| {
+                        s.sequence(|s| {
+                            Ok(s)
+                                .and_then(|s| builtin_ignore(s))
+                                .and_then(|s| parse_annotation_term(s).and_then(|s| s.tag_node("annotation_term")))
+                        })
+                    })
+                })
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_kw_let(s).and_then(|s| s.tag_node("kw_let")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| s.optional(|s| parse_type_hint(s).and_then(|s| s.tag_node("type_hint"))))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| s.optional(|s| parse_parameter_default(s).and_then(|s| s.tag_node("parameter_default"))))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| s.optional(|s| parse_eos(s)))
+        })
+    })
+}
+#[inline]
+fn parse_let_pattern(state: Input) -> Output {
+    state.rule(ValkyrieRule::LetPattern, |s| {
+        Err(s)
+            .or_else(|s| parse_standard_pattern(s).and_then(|s| s.tag_node("standard_pattern")))
+            .or_else(|s| parse_let_bare_tuple(s).and_then(|s| s.tag_node("let_bare_tuple")))
+    })
+}
+#[inline]
+fn parse_let_bare_tuple(state: Input) -> Output {
+    state.rule(ValkyrieRule::LetBareTuple, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| parse_let_bare_item(s).and_then(|s| s.tag_node("let_bare_item")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| {
+                    s.repeat(0..4294967295, |s| {
+                        s.sequence(|s| {
+                            Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| {
+                                s.sequence(|s| {
+                                    Ok(s)
+                                        .and_then(|s| parse_comma(s))
+                                        .and_then(|s| builtin_ignore(s))
+                                        .and_then(|s| parse_let_bare_item(s).and_then(|s| s.tag_node("let_bare_item")))
+                                })
+                            })
+                        })
+                    })
+                })
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| s.optional(|s| parse_comma(s)))
+        })
+    })
+}
+#[inline]
+fn parse_let_bare_item(state: Input) -> Output {
+    state.rule(ValkyrieRule::LetBareItem, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| {
+                    s.repeat(0..4294967295, |s| {
+                        s.sequence(|s| {
+                            Ok(s)
+                                .and_then(|s| builtin_ignore(s))
+                                .and_then(|s| parse_modifier_ahead(s).and_then(|s| s.tag_node("modifier_ahead")))
+                        })
+                    })
+                })
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
+        })
+    })
+}
+#[inline]
+fn parse_standard_pattern(state: Input) -> Output {
+    state.rule(ValkyrieRule::StandardPattern, |s| parse_tuple_pattern(s).and_then(|s| s.tag_node("tuple_pattern")))
+}
+#[inline]
+fn parse_tuple_pattern(state: Input) -> Output {
+    state.rule(ValkyrieRule::TuplePattern, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| s.optional(|s| parse_namepath(s).and_then(|s| s.tag_node("namepath"))))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| builtin_text(s, "(", false))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| {
+                    s.optional(|s| {
+                        s.sequence(|s| {
+                            Ok(s)
+                                .and_then(|s| parse_tuple_pattern_item(s).and_then(|s| s.tag_node("tuple_pattern_item")))
+                                .and_then(|s| builtin_ignore(s))
+                                .and_then(|s| {
+                                    s.repeat(0..4294967295, |s| {
+                                        s.sequence(|s| {
+                                            Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| {
+                                                s.sequence(|s| {
+                                                    Ok(s).and_then(|s| parse_comma(s)).and_then(|s| builtin_ignore(s)).and_then(
+                                                        |s| {
+                                                            parse_tuple_pattern_item(s)
+                                                                .and_then(|s| s.tag_node("tuple_pattern_item"))
+                                                        },
+                                                    )
+                                                })
+                                            })
+                                        })
+                                    })
+                                })
+                                .and_then(|s| builtin_ignore(s))
+                                .and_then(|s| s.optional(|s| parse_comma(s)))
+                        })
+                    })
+                })
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| builtin_text(s, ")", false))
+        })
+    })
+}
+#[inline]
+fn parse_tuple_pattern_item(state: Input) -> Output {
+    state.rule(ValkyrieRule::TuplePatternItem, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| parse_annotation_mix(s).and_then(|s| s.tag_node("annotation_mix")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| {
+                    s.optional(|s| {
+                        s.sequence(|s| {
+                            Ok(s)
+                                .and_then(|s| parse_colon(s).and_then(|s| s.tag_node("colon")))
+                                .and_then(|s| builtin_ignore(s))
+                                .and_then(|s| parse_standard_pattern(s).and_then(|s| s.tag_node("standard_pattern")))
+                        })
+                    })
+                })
+        })
     })
 }
 #[inline]
@@ -2560,7 +2722,9 @@ fn parse_annotation_mix(state: Input) -> Output {
 #[inline]
 fn parse_annotation_term(state: Input) -> Output {
     state.rule(ValkyrieRule::AnnotationTerm, |s| {
-        Err(s).or_else(|s| parse_attribute_call(s).and_then(|s| s.tag_node("attribute_call")))
+        Err(s)
+            .or_else(|s| parse_attribute_list(s).and_then(|s| s.tag_node("attribute_list")))
+            .or_else(|s| parse_attribute_call(s).and_then(|s| s.tag_node("attribute_call")))
     })
 }
 #[inline]
@@ -2572,16 +2736,64 @@ fn parse_annotation_term_mix(state: Input) -> Output {
     })
 }
 #[inline]
+fn parse_attribute_list(state: Input) -> Output {
+    state.rule(ValkyrieRule::AttributeList, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| builtin_text(s, "#[", false))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| {
+                    s.optional(|s| {
+                        s.sequence(|s| {
+                            Ok(s)
+                                .and_then(|s| parse_attribute_item(s).and_then(|s| s.tag_node("attribute_item")))
+                                .and_then(|s| builtin_ignore(s))
+                                .and_then(|s| {
+                                    s.repeat(0..4294967295, |s| {
+                                        s.sequence(|s| {
+                                            Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| {
+                                                s.sequence(|s| {
+                                                    Ok(s)
+                                                        .and_then(|s| builtin_ignore(s))
+                                                        .and_then(|s| builtin_ignore(s))
+                                                        .and_then(|s| parse_eos_free(s))
+                                                        .and_then(|s| builtin_ignore(s))
+                                                        .and_then(|s| builtin_ignore(s))
+                                                        .and_then(|s| builtin_ignore(s))
+                                                        .and_then(|s| {
+                                                            parse_attribute_item(s).and_then(|s| s.tag_node("attribute_item"))
+                                                        })
+                                                })
+                                            })
+                                        })
+                                    })
+                                })
+                                .and_then(|s| builtin_ignore(s))
+                                .and_then(|s| {
+                                    s.optional(|s| {
+                                        s.sequence(|s| {
+                                            Ok(s)
+                                                .and_then(|s| builtin_ignore(s))
+                                                .and_then(|s| builtin_ignore(s))
+                                                .and_then(|s| parse_eos_free(s))
+                                        })
+                                    })
+                                })
+                        })
+                    })
+                })
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| builtin_text(s, "]", false))
+        })
+    })
+}
+#[inline]
 fn parse_attribute_call(state: Input) -> Output {
     state.rule(ValkyrieRule::AttributeCall, |s| {
         s.sequence(|s| {
             Ok(s)
                 .and_then(|s| builtin_text(s, "#", false))
-                .and_then(|s| parse_namepath(s).and_then(|s| s.tag_node("namepath")))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| s.optional(|s| parse_tuple_literal(s).and_then(|s| s.tag_node("tuple_literal"))))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| s.optional(|s| parse_class_block(s).and_then(|s| s.tag_node("class_block"))))
+                .and_then(|s| parse_attribute_item(s).and_then(|s| s.tag_node("attribute_item")))
         })
     })
 }
@@ -2591,6 +2803,15 @@ fn parse_procedural_call(state: Input) -> Output {
         s.sequence(|s| {
             Ok(s)
                 .and_then(|s| builtin_text(s, "@", false))
+                .and_then(|s| parse_attribute_item(s).and_then(|s| s.tag_node("attribute_item")))
+        })
+    })
+}
+#[inline]
+fn parse_attribute_item(state: Input) -> Output {
+    state.rule(ValkyrieRule::AttributeItem, |s| {
+        s.sequence(|s| {
+            Ok(s)
                 .and_then(|s| parse_namepath(s).and_then(|s| s.tag_node("namepath")))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| s.optional(|s| parse_tuple_literal(s).and_then(|s| s.tag_node("tuple_literal"))))
@@ -2773,7 +2994,7 @@ fn parse_identifier_stop(state: Input) -> Output {
                 .and_then(|s| {
                     builtin_regex(s, {
                         static REGEX: OnceLock<Regex> = OnceLock::new();
-                        REGEX.get_or_init(|| Regex::new("^(?x)([\\[(){}<>⟨:∷,;])").unwrap())
+                        REGEX.get_or_init(|| Regex::new("^(?x)([\\[(){}<>⟨:∷,.;])").unwrap())
                     })
                 })
         })
@@ -3250,6 +3471,15 @@ fn parse_kw_continue(state: Input) -> Output {
         s.match_regex({
             static REGEX: OnceLock<Regex> = OnceLock::new();
             REGEX.get_or_init(|| Regex::new("^(?x)(continue)").unwrap())
+        })
+    })
+}
+#[inline]
+fn parse_kw_let(state: Input) -> Output {
+    state.rule(ValkyrieRule::KW_LET, |s| {
+        s.match_regex({
+            static REGEX: OnceLock<Regex> = OnceLock::new();
+            REGEX.get_or_init(|| Regex::new("^(?x)(let)").unwrap())
         })
     })
 }

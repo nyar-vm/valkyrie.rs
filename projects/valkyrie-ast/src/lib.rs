@@ -56,7 +56,7 @@ pub use crate::{
         guarantee::{EffectTypeNode, GuaranteeNode},
         import::{ImportAliasNode, ImportGroupNode, ImportResolvedItem, ImportState, ImportStatement, ImportTermNode},
         labeled::{GotoStatement, LabelStatement},
-        let_bind::LetBindNode,
+        let_bind::VariableDeclaration,
         namespace::{NamespaceDeclaration, NamespaceKind},
         program::ProgramRoot,
         statements::{StatementContext, StatementNode},

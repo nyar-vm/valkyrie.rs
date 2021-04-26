@@ -16,6 +16,7 @@ union Statement {
     | DefineTrait
     | DefineExtends
     | DefineFunction
+    | DefineVariable
     | MainStatement
 }
 /// Used to isolate expressions and control whether to output the expression
@@ -189,6 +190,8 @@ class DefineTrait {
     KW_TRAIT Identifier DefineGeneric? DefineInherit? TypeHint? ClassBlock ^EOS?
 }
 class DefineExtends {
+    DefineTemplate?
+    AnnotationHead
     KW_EXTENDS TypeExpression TypeHint? ClassBlock ^EOS?
 }
 @style(keyword)
@@ -196,7 +199,7 @@ union KW_TRAIT {
     | 'trait'     #Trait
     | 'interface' #Interface
 }
-// === identifier === --------------------------------------------------------------------------------------------------
+// === def function === ------------------------------------------------------------------------------------------------
 class DefineFunction {
     AnnotationHead
     KW_FUNCTION Namepath DefineGeneric? '(' FunctionParameters ')' TypeReturn? TypeEffect? Continuation?
@@ -232,6 +235,32 @@ class Continuation {
 union KW_FUNCTION {
     | /micro|function/ #Micro
     | /macro/          #Macro
+}
+// === let variable === ------------------------------------------------------------------------------------------------
+class DefineVariable {
+    AnnotationTerm*
+    KW_LET Identifier TypeHint? ParameterDefault? ^EOS?
+}
+union LetPattern {
+    | StandardPattern
+    | LetBareTuple
+}
+class LetBareTuple {
+    LetBareItem (^COMMA LetBareItem)* ^COMMA?
+}
+class LetBareItem {
+    ModifierAhead* Identifier
+}
+// === patterns === ------------------------------------------------------------------------------------------------
+class StandardPattern {
+    | TuplePattern
+}
+/// `Class(a, mut b, #mut c, ..d, e: Some(_))`
+class TuplePattern {
+   Namepath? '(' (TuplePatternItem (^COMMA TuplePatternItem)* ^COMMA?)? ')'
+}
+class TuplePatternItem {
+    AnnotationMix Identifier (COLON StandardPattern)?
 }
 // === while loop === --------------------------------------------------------------------------------------------------
 class WhileStatement {
@@ -551,19 +580,26 @@ class AnnotationMix {
     AnnotationTermMix* ModifierAhead*
 }
 union AnnotationTerm {
+    | AttributeList
     | AttributeCall
 }
 union AnnotationTermMix {
     | AttributeCall
     | ProceduralCall
 }
+class AttributeList {
+    '#[' (AttributeItem (HIDE ^EOS_FREE ~ AttributeItem)* (HIDE ^EOS_FREE)?)? ']'
+}
 atomic class AttributeCall {
     // #call(...) { domain } receiver
-    '#' Namepath ~ TupleLiteral? ~ ClassBlock?
+    '#' AttributeItem
 }
 atomic class ProceduralCall {
     // @call(...) { domain }
-    '@' Namepath ~ TupleLiteral? ~ ClassBlock?
+    '@' AttributeItem
+}
+class AttributeItem {
+    Namepath TupleLiteral? ClassBlock?
 }
 // === text === ------------------------------------------------------------------------------------------------------
 atomic class TextLiteral {
@@ -587,7 +623,7 @@ text atomic class TEXT_CONTENT6 { (!"''''" ANY)+ }
 atomic class ModifierCall ^ {
     !KEYWORDS_STOP ^Identifier
 }
-atomic class ModifierAhead ^ {
+atomic class ModifierAhead -> ModifierCall ^ {
     !IDENTIFIER_STOP ^Identifier
 }
 class KEYWORDS_STOP {
@@ -598,8 +634,8 @@ class KEYWORDS_STOP {
     | trait | interface
     /
 }
-class IDENTIFIER_STOP {
-    Identifier [\[(){}<>⟨:∷,;]
+atomic class IDENTIFIER_STOP {
+    Identifier ~ [\[(){}<>⟨:∷,.;]
 }
 // === identifier === --------------------------------------------------------------------------------------------------
 atomic class Slot {
@@ -705,6 +741,7 @@ token {
     KW_BREAK: /break/
     KW_CONTINUE: /continue/
     // === constructor === ---------------------------------------------------------------------------------------------
+    KW_LET: /let/
     KW_NEW: /new/
     KW_OBJECT: /object/
     // === if/switch/catch/match === -----------------------------------------------------------------------------------

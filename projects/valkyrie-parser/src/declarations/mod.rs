@@ -5,6 +5,7 @@ mod function;
 mod interface;
 mod unions;
 
+mod def_var;
 mod extends;
 
 use crate::{

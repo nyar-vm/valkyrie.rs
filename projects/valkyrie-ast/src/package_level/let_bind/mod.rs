@@ -16,7 +16,7 @@ mod display;
 /// ```
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct LetBindNode {
+pub struct VariableDeclaration {
     pub pattern: LetPattern,
     pub type_hint: Option<ExpressionType>,
     pub body: Option<ExpressionNode>,

@@ -26,7 +26,6 @@ pub enum StatementNode {
     Enumerate(Box<FlagDeclaration>),
     /// The enumerates field declaration node.
     EnumerateField(Box<FlagFieldDeclaration>),
-
     /// The tagged union declaration node.
     Tagged(Box<TaggedDeclaration>),
     /// The tagged union's variant declaration node.
@@ -37,12 +36,12 @@ pub enum StatementNode {
     Extends(Box<ExtendsStatement>),
     /// The function declaration node.
     Function(Box<FunctionDeclaration>),
+    /// The let bind statement node.
+    Variable(Box<VariableDeclaration>),
     /// The while loop statement node.
     While(Box<WhileLoop>),
     /// The for loop statement node.
     For(Box<ForLoop>),
-    /// The let bind statement node.
-    LetBind(Box<LetBindNode>),
     /// The guard statement node.
     Guard(Box<GuardStatement>),
     /// The argument argument node.
