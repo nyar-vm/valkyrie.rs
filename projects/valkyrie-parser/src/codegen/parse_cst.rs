@@ -72,6 +72,7 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::MatchTerms => parse_match_terms(state),
         ValkyrieRule::MatchType => parse_match_type(state),
         ValkyrieRule::MatchCase => parse_match_case(state),
+        ValkyrieRule::CasePattern => parse_case_pattern(state),
         ValkyrieRule::MatchWhen => parse_match_when(state),
         ValkyrieRule::MatchElse => parse_match_else(state),
         ValkyrieRule::MatchStatement => parse_match_statement(state),
@@ -1492,7 +1493,7 @@ fn parse_match_type(state: Input) -> Output {
             Ok(s)
                 .and_then(|s| parse_kw_type(s).and_then(|s| s.tag_node("kw_type")))
                 .and_then(|s| builtin_ignore(s))
-                .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
+                .and_then(|s| parse_type_expression(s).and_then(|s| s.tag_node("type_expression")))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_colon(s))
                 .and_then(|s| builtin_ignore(s))
@@ -1515,7 +1516,7 @@ fn parse_match_case(state: Input) -> Output {
             Ok(s)
                 .and_then(|s| parse_kw_case(s).and_then(|s| s.tag_node("kw_case")))
                 .and_then(|s| builtin_ignore(s))
-                .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
+                .and_then(|s| parse_standard_pattern(s).and_then(|s| s.tag_node("standard_pattern")))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_colon(s))
                 .and_then(|s| builtin_ignore(s))
@@ -1529,6 +1530,14 @@ fn parse_match_case(state: Input) -> Output {
                     })
                 })
         })
+    })
+}
+#[inline]
+fn parse_case_pattern(state: Input) -> Output {
+    state.rule(ValkyrieRule::CasePattern, |s| {
+        Err(s)
+            .or_else(|s| parse_standard_pattern(s).and_then(|s| s.tag_node("standard_pattern")))
+            .or_else(|s| parse_namepath(s).and_then(|s| s.tag_node("namepath")))
     })
 }
 #[inline]

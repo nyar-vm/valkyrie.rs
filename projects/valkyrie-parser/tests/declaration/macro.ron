@@ -1,0 +1,136 @@
+ProgramRoot {
+    statements: [
+        ExpressionNode {
+            omit: false,
+            body: macro,
+            span: 0..6,
+        },
+        ExpressionNode {
+            omit: false,
+            body: ApplyCallNode {
+                monadic: false,
+                caller: a,
+                arguments: ArgumentsList {
+                    terms: [],
+                },
+                body: None,
+                span: 7..105,
+            },
+            span: 6..123,
+        },
+        FunctionDeclaration {
+            type: Macro,
+            namepath: NamePathNode {
+                names: [
+                    Identifier("A", 186..187),
+                ],
+            },
+            modifiers: [],
+            attributes: None,
+            generic: None,
+            arguments: ArgumentsList {
+                terms: [],
+            },
+            return: None,
+            body: StatementBlock {
+                terms: [],
+                span: 0..0,
+            },
+        },
+        FunctionDeclaration {
+            type: Macro,
+            namepath: NamePathNode {
+                names: [
+                    Identifier("print", 215..220),
+                ],
+            },
+            modifiers: [],
+            attributes: None,
+            generic: None,
+            arguments: ArgumentsList {
+                terms: [],
+            },
+            return: None,
+            body: StatementBlock {
+                terms: [],
+                span: 0..0,
+            },
+        },
+        FunctionDeclaration {
+            type: Micro,
+            namepath: NamePathNode {
+                names: [
+                    Identifier("name", 234..238),
+                ],
+            },
+            modifiers: [],
+            attributes: None,
+            generic: None,
+            arguments: ArgumentsList {
+                terms: [],
+            },
+            return: None,
+            body: StatementBlock {
+                terms: [],
+                span: 0..0,
+            },
+        },
+        FunctionDeclaration {
+            type: Macro,
+            namepath: NamePathNode {
+                names: [
+                    Identifier("outer", 322..327),
+                ],
+            },
+            modifiers: [],
+            attributes: None,
+            generic: None,
+            arguments: ArgumentsList {
+                terms: [],
+            },
+            return: None,
+            body: StatementBlock {
+                terms: [],
+                span: 0..0,
+            },
+        },
+        FunctionDeclaration {
+            type: Micro,
+            namepath: NamePathNode {
+                names: [
+                    Identifier("inner", 393..398),
+                ],
+            },
+            modifiers: [],
+            attributes: None,
+            generic: None,
+            arguments: ArgumentsList {
+                terms: [],
+            },
+            return: None,
+            body: StatementBlock {
+                terms: [],
+                span: 0..0,
+            },
+        },
+        FunctionDeclaration {
+            type: Micro,
+            namepath: NamePathNode {
+                names: [
+                    Identifier("main", 538..542),
+                ],
+            },
+            modifiers: [],
+            attributes: None,
+            generic: None,
+            arguments: ArgumentsList {
+                terms: [],
+            },
+            return: None,
+            body: StatementBlock {
+                terms: [],
+                span: 0..0,
+            },
+        },
+    ],
+}

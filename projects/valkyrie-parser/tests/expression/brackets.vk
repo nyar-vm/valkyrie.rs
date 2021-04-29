@@ -26,8 +26,3 @@ a{1}[2](3)
 ℤ[head: :step]
 ℤ[head:tail:step]
 
-return (b: 2, like: c, 33)
-
-match a:= _{
-
-}

@@ -100,6 +100,7 @@ pub enum ValkyrieRule {
     MatchTerms,
     MatchType,
     MatchCase,
+    CasePattern,
     MatchWhen,
     MatchElse,
     MatchStatement,
@@ -310,6 +311,7 @@ impl YggdrasilRule for ValkyrieRule {
             Self::MatchTerms => "",
             Self::MatchType => "",
             Self::MatchCase => "",
+            Self::CasePattern => "",
             Self::MatchWhen => "",
             Self::MatchElse => "",
             Self::MatchStatement => "",
@@ -965,18 +967,24 @@ pub enum MatchTermsNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct MatchTypeNode {
-    pub identifier: IdentifierNode,
     pub kw_type: KwTypeNode,
     pub match_statement: Vec<MatchStatementNode>,
+    pub type_expression: TypeExpressionNode,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct MatchCaseNode {
-    pub identifier: IdentifierNode,
     pub kw_case: KwCaseNode,
     pub match_statement: Vec<MatchStatementNode>,
+    pub standard_pattern: StandardPatternNode,
     pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum CasePatternNode {
+    Namepath(NamepathNode),
+    StandardPattern(StandardPatternNode),
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]

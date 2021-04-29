@@ -1,0 +1,582 @@
+ProgramRoot {
+    statements: [
+        VariableDeclaration {
+            pattern: Tuple(
+                TuplePatternNode {
+                    bind: None,
+                    name: None,
+                    terms: [],
+                    span: 0..0,
+                },
+            ),
+            type_hint: None,
+            body: None,
+            span: 0..6,
+        },
+        VariableDeclaration {
+            pattern: Tuple(
+                TuplePatternNode {
+                    bind: None,
+                    name: None,
+                    terms: [],
+                    span: 0..0,
+                },
+            ),
+            type_hint: None,
+            body: None,
+            span: 8..23,
+        },
+        VariableDeclaration {
+            pattern: Tuple(
+                TuplePatternNode {
+                    bind: None,
+                    name: None,
+                    terms: [],
+                    span: 0..0,
+                },
+            ),
+            type_hint: None,
+            body: None,
+            span: 25..58,
+        },
+        VariableDeclaration {
+            pattern: Tuple(
+                TuplePatternNode {
+                    bind: None,
+                    name: None,
+                    terms: [],
+                    span: 0..0,
+                },
+            ),
+            type_hint: None,
+            body: None,
+            span: 60..92,
+        },
+        ExpressionNode {
+            omit: false,
+            body: let,
+            span: 94..98,
+        },
+        ExpressionNode {
+            omit: true,
+            body: InfixNode {
+                infix: =,
+                lhs: a,
+                rhs: RangeNode {
+                    kind: Ordinal,
+                    terms: [
+                        Index {
+                            index: 1,
+                        },
+                        Index {
+                            index: 2,
+                        },
+                        Index {
+                            index: 3,
+                        },
+                    ],
+                    span: 102..111,
+                },
+            },
+            span: 98..112,
+        },
+        ExpressionNode {
+            omit: false,
+            body: let,
+            span: 114..118,
+        },
+        ExpressionNode {
+            omit: false,
+            body: let,
+            span: 118..124,
+        },
+        ExpressionNode {
+            omit: false,
+            body: InfixNode {
+                infix: =,
+                lhs: a,
+                rhs: 1,
+            },
+            span: 124..131,
+        },
+        VariableDeclaration {
+            pattern: Tuple(
+                TuplePatternNode {
+                    bind: None,
+                    name: None,
+                    terms: [],
+                    span: 0..0,
+                },
+            ),
+            type_hint: None,
+            body: None,
+            span: 131..167,
+        },
+        VariableDeclaration {
+            pattern: Tuple(
+                TuplePatternNode {
+                    bind: None,
+                    name: None,
+                    terms: [],
+                    span: 0..0,
+                },
+            ),
+            type_hint: None,
+            body: None,
+            span: 169..196,
+        },
+        VariableDeclaration {
+            pattern: Tuple(
+                TuplePatternNode {
+                    bind: None,
+                    name: None,
+                    terms: [],
+                    span: 0..0,
+                },
+            ),
+            type_hint: None,
+            body: None,
+            span: 198..223,
+        },
+        VariableDeclaration {
+            pattern: Tuple(
+                TuplePatternNode {
+                    bind: None,
+                    name: None,
+                    terms: [],
+                    span: 0..0,
+                },
+            ),
+            type_hint: None,
+            body: None,
+            span: 223..248,
+        },
+        VariableDeclaration {
+            pattern: Tuple(
+                TuplePatternNode {
+                    bind: None,
+                    name: None,
+                    terms: [],
+                    span: 0..0,
+                },
+            ),
+            type_hint: None,
+            body: None,
+            span: 248..289,
+        },
+        ExpressionNode {
+            omit: false,
+            body: let,
+            span: 289..293,
+        },
+        ExpressionNode {
+            omit: true,
+            body: InfixNode {
+                infix: =,
+                lhs: num,
+                rhs: RangeNode {
+                    kind: Ordinal,
+                    terms: [
+                        Index {
+                            index: 0,
+                        },
+                        Index {
+                            index: 1.0,
+                        },
+                        Index {
+                            index: 2.0,
+                        },
+                    ],
+                    span: 299..312,
+                },
+            },
+            span: 293..313,
+        },
+        ExpressionNode {
+            omit: false,
+            body: let,
+            span: 314..318,
+        },
+        ExpressionNode {
+            omit: false,
+            body: InfixNode {
+                infix: =,
+                lhs: unit,
+                rhs: RangeNode {
+                    kind: Ordinal,
+                    terms: [
+                        Index {
+                            index: 1_s,
+                        },
+                        Index {
+                            index: UnaryNode {
+                                prefix: -,
+                                base: 1.0_ms,
+                            },
+                        },
+                        Index {
+                            index: 0_us,
+                        },
+                        Index {
+                            index: UnaryNode {
+                                prefix: +,
+                                base: 1_μs,
+                            },
+                        },
+                        Index {
+                            index: 0_m/s,
+                        },
+                    ],
+                    span: 325..357,
+                },
+            },
+            span: 318..359,
+        },
+        ExpressionNode {
+            omit: false,
+            body: let,
+            span: 359..363,
+        },
+        ExpressionNode {
+            omit: true,
+            body: InfixNode {
+                infix: =,
+                lhs: empty,
+                rhs: '',
+            },
+            span: 363..374,
+        },
+        ExpressionNode {
+            omit: false,
+            body: let,
+            span: 375..379,
+        },
+        ExpressionNode {
+            omit: true,
+            body: InfixNode {
+                infix: =,
+                lhs: char,
+                rhs: 'a',
+            },
+            span: 379..390,
+        },
+        ExpressionNode {
+            omit: false,
+            body: let,
+            span: 391..395,
+        },
+        ExpressionNode {
+            omit: false,
+            body: InfixNode {
+                infix: =,
+                lhs: triple,
+                rhs: 'a',
+            },
+            span: 395..412,
+        },
+        ExpressionNode {
+            omit: false,
+            body: let,
+            span: 412..416,
+        },
+        ExpressionNode {
+            omit: false,
+            body: InfixNode {
+                infix: =,
+                lhs: raw,
+                rhs: r'a',
+            },
+            span: 416..431,
+        },
+        ExpressionNode {
+            omit: false,
+            body: let,
+            span: 431..435,
+        },
+        ExpressionNode {
+            omit: false,
+            body: InfixNode {
+                infix: =,
+                lhs: t,
+                rhs: t'a{0}',
+            },
+            span: 435..449,
+        },
+        ExpressionNode {
+            omit: false,
+            body: let,
+            span: 449..453,
+        },
+        ExpressionNode {
+            omit: false,
+            body: InfixNode {
+                infix: =,
+                lhs: re,
+                rhs: re'[^0-9]',
+            },
+            span: 453..469,
+        },
+        ExpressionNode {
+            omit: false,
+            body: let,
+            span: 469..473,
+        },
+        ExpressionNode {
+            omit: false,
+            body: InfixNode {
+                infix: =,
+                lhs: json,
+                rhs: json'\n{\n    key: "value"\n}\n',
+            },
+            span: 473..514,
+        },
+        ExpressionNode {
+            omit: false,
+            body: let,
+            span: 514..518,
+        },
+        ExpressionNode {
+            omit: false,
+            body: InfixNode {
+                infix: =,
+                lhs: range,
+                rhs: RangeNode {
+                    kind: Ordinal,
+                    terms: [
+                        Index {
+                            index: InfixNode {
+                                infix: ..=,
+                                lhs: UnaryNode {
+                                    prefix: -,
+                                    base: 1,
+                                },
+                                rhs: UnaryNode {
+                                    prefix: +,
+                                    base: 1,
+                                },
+                            },
+                        },
+                        Index {
+                            index: InfixNode {
+                                infix: ..<,
+                                lhs: UnaryNode {
+                                    prefix: -,
+                                    base: a,
+                                },
+                                rhs: UnaryNode {
+                                    prefix: +,
+                                    base: a,
+                                },
+                            },
+                        },
+                        Index {
+                            index: InfixNode {
+                                infix: ..=,
+                                lhs: 'a',
+                                rhs: 'z',
+                            },
+                        },
+                        Index {
+                            index: InfixNode {
+                                infix: ..<,
+                                lhs: 'A',
+                                rhs: 'Z',
+                            },
+                        },
+                    ],
+                    span: 526..566,
+                },
+            },
+            span: 518..568,
+        },
+        ExpressionNode {
+            omit: false,
+            body: let,
+            span: 568..572,
+        },
+        ExpressionNode {
+            omit: true,
+            body: InfixNode {
+                infix: =,
+                lhs: symbol,
+                rhs: b,
+            },
+            span: 572..583,
+        },
+        ExpressionNode {
+            omit: false,
+            body: let,
+            span: 584..588,
+        },
+        ExpressionNode {
+            omit: false,
+            body: ApplyCallNode {
+                monadic: false,
+                caller: InfixNode {
+                    infix: =,
+                    lhs: f,
+                    rhs: a,
+                },
+                arguments: ArgumentsList {
+                    terms: [],
+                },
+                body: None,
+                span: 593..595,
+            },
+            span: 588..596,
+        },
+        ExpressionNode {
+            omit: false,
+            body: let,
+            span: 596..600,
+        },
+        ExpressionNode {
+            omit: true,
+            body: SubscriptCallNode {
+                kind: Ordinal,
+                base: ApplyCallNode {
+                    monadic: false,
+                    caller: GenericCallNode {
+                        monadic: false,
+                        base: InfixNode {
+                            infix: =,
+                            lhs: t,
+                            rhs: a,
+                        },
+                        terms: ArgumentsList {
+                            terms: [
+                                TupleTermNode {
+                                    key: None,
+                                    value: a,
+                                },
+                            ],
+                        },
+                        associated: [],
+                        span: 605..612,
+                    },
+                    arguments: ArgumentsList {
+                        terms: [],
+                    },
+                    body: None,
+                    span: 612..614,
+                },
+                monadic: false,
+                terms: [
+                    Range {
+                        head: None,
+                        tail: None,
+                        step: None,
+                    },
+                    Range {
+                        head: None,
+                        tail: None,
+                        step: None,
+                    },
+                    Range {
+                        head: Some(
+                            1,
+                        ),
+                        tail: None,
+                        step: Some(
+                            UnaryNode {
+                                prefix: -,
+                                base: 1,
+                            },
+                        ),
+                    },
+                    Range {
+                        head: None,
+                        tail: Some(
+                            0,
+                        ),
+                        step: None,
+                    },
+                ],
+                span: 614..634,
+            },
+            span: 600..635,
+        },
+        ExpressionNode {
+            omit: false,
+            body: let,
+            span: 636..640,
+        },
+        ExpressionNode {
+            omit: false,
+            body: SubscriptCallNode {
+                kind: Ordinal,
+                base: InfixNode {
+                    infix: =,
+                    lhs: a,
+                    rhs: a,
+                },
+                monadic: false,
+                terms: [
+                    Index {
+                        index: InfixNode {
+                            infix: >,
+                            lhs: a,
+                            rhs: 0,
+                        },
+                    },
+                ],
+                span: 645..652,
+            },
+            span: 640..653,
+        },
+        ExpressionNode {
+            omit: false,
+            body: let,
+            span: 653..657,
+        },
+        ExpressionNode {
+            omit: false,
+            body: ApplyCallNode {
+                monadic: false,
+                caller: InfixNode {
+                    infix: =,
+                    lhs: a,
+                    rhs: f'{:?}',
+                },
+                arguments: ArgumentsList {
+                    terms: [
+                        TupleTermNode {
+                            key: None,
+                            value: t,
+                        },
+                    ],
+                },
+                body: None,
+                span: 668..671,
+            },
+            span: 657..672,
+        },
+        ExpressionNode {
+            omit: false,
+            body: let,
+            span: 672..676,
+        },
+        ExpressionNode {
+            omit: false,
+            body: ApplyCallNode {
+                monadic: false,
+                caller: InfixNode {
+                    infix: =,
+                    lhs: a,
+                    rhs: cf'%d',
+                },
+                arguments: ArgumentsList {
+                    terms: [
+                        TupleTermNode {
+                            key: None,
+                            value: t,
+                        },
+                    ],
+                },
+                body: None,
+                span: 686..689,
+            },
+            span: 676..690,
+        },
+    ],
+}

@@ -304,10 +304,14 @@ union MatchTerms {
     | COMMA
 }
 class MatchType {
-    KW_TYPE Identifier ^COLON MatchStatement*
+    KW_TYPE TypeExpression ^COLON MatchStatement*
 }
 class MatchCase {
-    KW_CASE Identifier ^COLON MatchStatement*
+    KW_CASE StandardPattern ^COLON MatchStatement*
+}
+union CasePattern {
+    | StandardPattern
+    | Namepath
 }
 class MatchWhen {
     KW_WHEN InlineExpression ^COLON MatchStatement*
@@ -316,7 +320,8 @@ class MatchElse {
     KW_ELSE ^COLON MatchStatement*
 }
 atomic class MatchStatement {
-    !/type|case|when|else|[,，]/ MainStatement
+    !/type|case|when|else|[,，]/
+    MainStatement
 }
 @style(keyword)
 union KW_MATCH {

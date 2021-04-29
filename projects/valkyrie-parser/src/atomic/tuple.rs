@@ -1,4 +1,5 @@
 use super::*;
+use nyar_error::{NyarError, SyntaxError};
 
 impl TupleLiteralStrictNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<TupleNode> {
@@ -34,7 +35,7 @@ impl TupleTermsNode {
 impl TuplePairNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<TupleTermNode> {
         let key = match &self.tuple_key {
-            Some(v) => Some(v.build(ctx)),
+            Some(v) => Some(v.build(ctx)?),
             None => None,
         };
         let value = self.main_expression.build(ctx)?;
@@ -43,10 +44,13 @@ impl TuplePairNode {
 }
 
 impl TupleKeyNode {
-    pub fn build(&self, ctx: &ProgramContext) -> IdentifierNode {
+    pub fn build(&self, ctx: &ProgramContext) -> Result<IdentifierNode, NyarError> {
         match self {
-            Self::Identifier(v) => v.build(ctx),
-            Self::TextRaw(v) => v.build_id(ctx),
+            Self::Identifier(v) => Ok(v.build(ctx)),
+            Self::TextRaw(v) => Ok(v.build_id(ctx)),
+            Self::Integer(v) => {
+                Err(SyntaxError::new("tuple key cannot be a number").with_range(&v.span).with_file(ctx.file).into())
+            }
         }
     }
 }

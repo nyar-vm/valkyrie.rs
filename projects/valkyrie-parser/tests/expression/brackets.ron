@@ -517,51 +517,5 @@ ProgramRoot {
             },
             span: 266..287,
         },
-        ExpressionNode {
-            omit: false,
-            body: ApplyCallNode {
-                monadic: false,
-                caller: return,
-                arguments: ArgumentsList {
-                    terms: [
-                        TupleTermNode {
-                            key: Some(
-                                Identifier("b", 295..296),
-                            ),
-                            value: 2,
-                        },
-                        TupleTermNode {
-                            key: Some(
-                                Identifier("like", 301..305),
-                            ),
-                            value: c,
-                        },
-                        TupleTermNode {
-                            key: None,
-                            value: 33,
-                        },
-                    ],
-                },
-                body: None,
-                span: 293..313,
-            },
-            span: 287..315,
-        },
-        ExpressionNode {
-            omit: false,
-            body: MatchStatement {
-                kind: Typing,
-                bind: Some(
-                    Identifier("a", 321..322),
-                ),
-                main: Placeholder,
-                patterns: PatternBlock {
-                    branches: [],
-                    span: 0..0,
-                },
-                span: 315..330,
-            },
-            span: 315..331,
-        },
     ],
 }

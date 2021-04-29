@@ -1,1 +1,1 @@
-function flat_map::<A, B, F: Mutable<A> -> B>(self: Self<A>, f: F) -> Self<B> { }
+[];

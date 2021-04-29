@@ -1871,11 +1871,11 @@ impl YggdrasilNode for MatchTypeNode {
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
         Ok(Self {
-            identifier: pair.take_tagged_one::<IdentifierNode>(Cow::Borrowed("identifier"))?,
             kw_type: pair.take_tagged_one::<KwTypeNode>(Cow::Borrowed("kw_type"))?,
             match_statement: pair
                 .take_tagged_items::<MatchStatementNode>(Cow::Borrowed("match_statement"))
                 .collect::<Result<Vec<_>, _>>()?,
+            type_expression: pair.take_tagged_one::<TypeExpressionNode>(Cow::Borrowed("type_expression"))?,
             span: Range { start: _span.start() as u32, end: _span.end() as u32 },
         })
     }
@@ -1898,11 +1898,11 @@ impl YggdrasilNode for MatchCaseNode {
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
         Ok(Self {
-            identifier: pair.take_tagged_one::<IdentifierNode>(Cow::Borrowed("identifier"))?,
             kw_case: pair.take_tagged_one::<KwCaseNode>(Cow::Borrowed("kw_case"))?,
             match_statement: pair
                 .take_tagged_items::<MatchStatementNode>(Cow::Borrowed("match_statement"))
                 .collect::<Result<Vec<_>, _>>()?,
+            standard_pattern: pair.take_tagged_one::<StandardPatternNode>(Cow::Borrowed("standard_pattern"))?,
             span: Range { start: _span.start() as u32, end: _span.end() as u32 },
         })
     }
@@ -1913,6 +1913,35 @@ impl FromStr for MatchCaseNode {
 
     fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
         Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::MatchCase)?)
+    }
+}
+#[automatically_derived]
+impl YggdrasilNode for CasePatternNode {
+    type Rule = ValkyrieRule;
+
+    fn get_range(&self) -> Range<usize> {
+        match self {
+            Self::Namepath(s) => s.get_range(),
+            Self::StandardPattern(s) => s.get_range(),
+        }
+    }
+    fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
+        let _span = pair.get_span();
+        if let Ok(s) = pair.take_tagged_one::<NamepathNode>(Cow::Borrowed("namepath")) {
+            return Ok(Self::Namepath(s));
+        }
+        if let Ok(s) = pair.take_tagged_one::<StandardPatternNode>(Cow::Borrowed("standard_pattern")) {
+            return Ok(Self::StandardPattern(s));
+        }
+        Err(YggdrasilError::invalid_node(ValkyrieRule::CasePattern, _span))
+    }
+}
+#[automatically_derived]
+impl FromStr for CasePatternNode {
+    type Err = YggdrasilError<ValkyrieRule>;
+
+    fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::CasePattern)?)
     }
 }
 #[automatically_derived]

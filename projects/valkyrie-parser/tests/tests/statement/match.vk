@@ -13,3 +13,8 @@ match cond {
 match n? {
 
 }
+
+match a := _ {
+
+}
+return (b: 2, like: c, 33)

@@ -1,0 +1,136 @@
+ProgramRoot {
+    statements: [
+        VariableDeclaration {
+            pattern: Tuple(
+                TuplePatternNode {
+                    bind: None,
+                    name: None,
+                    terms: [],
+                    span: 0..0,
+                },
+            ),
+            type_hint: None,
+            body: None,
+            span: 0..6,
+        },
+        VariableDeclaration {
+            pattern: Tuple(
+                TuplePatternNode {
+                    bind: None,
+                    name: None,
+                    terms: [],
+                    span: 0..0,
+                },
+            ),
+            type_hint: None,
+            body: None,
+            span: 7..18,
+        },
+        ExpressionNode {
+            omit: false,
+            body: let,
+            span: 19..23,
+        },
+        ExpressionNode {
+            omit: true,
+            body: InfixNode {
+                infix: =,
+                lhs: a,
+                rhs: 1,
+            },
+            span: 23..29,
+        },
+        VariableDeclaration {
+            pattern: Tuple(
+                TuplePatternNode {
+                    bind: None,
+                    name: None,
+                    terms: [],
+                    span: 0..0,
+                },
+            ),
+            type_hint: None,
+            body: None,
+            span: 30..45,
+        },
+        VariableDeclaration {
+            pattern: Tuple(
+                TuplePatternNode {
+                    bind: None,
+                    name: None,
+                    terms: [],
+                    span: 0..0,
+                },
+            ),
+            type_hint: None,
+            body: None,
+            span: 48..58,
+        },
+        VariableDeclaration {
+            pattern: Tuple(
+                TuplePatternNode {
+                    bind: None,
+                    name: None,
+                    terms: [],
+                    span: 0..0,
+                },
+            ),
+            type_hint: None,
+            body: None,
+            span: 59..76,
+        },
+        VariableDeclaration {
+            pattern: Tuple(
+                TuplePatternNode {
+                    bind: None,
+                    name: None,
+                    terms: [],
+                    span: 0..0,
+                },
+            ),
+            type_hint: None,
+            body: None,
+            span: 78..109,
+        },
+        VariableDeclaration {
+            pattern: Tuple(
+                TuplePatternNode {
+                    bind: None,
+                    name: None,
+                    terms: [],
+                    span: 0..0,
+                },
+            ),
+            type_hint: None,
+            body: None,
+            span: 110..150,
+        },
+        ExpressionNode {
+            omit: false,
+            body: let,
+            span: 152..156,
+        },
+        ExpressionNode {
+            omit: false,
+            body: InfixNode {
+                infix: =,
+                lhs: a,
+                rhs: if,
+            },
+            span: 156..163,
+        },
+        ExpressionNode {
+            omit: false,
+            body: ApplyCallNode {
+                monadic: false,
+                caller: b,
+                arguments: ArgumentsList {
+                    terms: [],
+                },
+                body: None,
+                span: 164..170,
+            },
+            span: 163..171,
+        },
+    ],
+}
