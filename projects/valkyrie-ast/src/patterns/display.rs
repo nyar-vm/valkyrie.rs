@@ -55,7 +55,7 @@ impl PrettyPrint for PatternStatements {
     }
 }
 #[cfg(feature = "pretty-print")]
-impl PrettyPrint for LetPattern {
+impl PrettyPrint for PatternNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         match self {
             Self::Symbol(v) => v.pretty(theme),

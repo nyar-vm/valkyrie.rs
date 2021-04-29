@@ -134,7 +134,7 @@ class DefineMethod {
 }
 class DefineDomain {
     AnnotationMix
-    Identifier ClassBlock
+    DomainTerm ClassBlock
 }
 union DomainTerm {
     | Identifier
@@ -220,6 +220,8 @@ union ParameterItem {
     | '<' #LMark
     | '>' #RMark
     | ParameterPair
+    | '...' #OmitDict
+    | '..'  #OmitList
 }
 class ParameterPair {
     ModifierAhead* ParameterHint?
@@ -246,7 +248,7 @@ union LetPattern {
     | BarePattern
 }
 // === patterns === ------------------------------------------------------------------------------------------------
-class StandardPattern {
+union StandardPattern {
     | TuplePattern
 }
 /// `mut a, mut ..c`
@@ -274,7 +276,10 @@ union KW_WHILE {
 }
 // === for loop === ----------------------------------------------------------------------------------------------------
 class ForStatement {
-    KW_FOR Identifier KW_IN InlineExpression? Continuation ^EOS?
+    KW_FOR LetPattern KW_IN InlineExpression? IfGuard? Continuation ^EOS?
+}
+class IfGuard {
+    KW_IF InlineExpression
 }
 // === expression === --------------------------------------------------------------------------------------------------
 union MainStatement {
@@ -307,7 +312,7 @@ class MatchType {
     KW_TYPE TypeExpression ^COLON MatchStatement*
 }
 class MatchCase {
-    KW_CASE StandardPattern ^COLON MatchStatement*
+    KW_CASE CasePattern IfGuard? ^COLON MatchStatement*
 }
 union CasePattern {
     | StandardPattern
@@ -530,9 +535,15 @@ union TupleKey {
 atomic class RangeCall {
     ^WhiteSpace? OP_AND_THEN? ^WhiteSpace? RangeLiteral
 }
-atomic class RangeLiteral {
-    | '[' ~ (SubscriptAxis (HIDE ^COMMA ~ SubscriptAxis)* ~ ^COMMA?)? ~ ']'
-    | '⁅' ~ (SubscriptAxis (HIDE ^COMMA ~ SubscriptAxis)* ~ ^COMMA?)? ~ '⁆'
+union RangeLiteral {
+    | RangeLiteralIndex0
+    | RangeLiteralIndex1
+}
+class RangeLiteralIndex0 {
+    '⁅' (SubscriptAxis (^COMMA SubscriptAxis)* ^COMMA?)? '⁆'
+}
+class RangeLiteralIndex1 {
+    '[' (SubscriptAxis (^COMMA SubscriptAxis)* ^COMMA?)? ']'
 }
 union SubscriptAxis {
     | SubscriptRange
@@ -596,7 +607,7 @@ union AnnotationTermMix {
     | ProceduralCall
 }
 class AttributeList {
-    '#'? '[' (AttributeItem (HIDE ^EOS_FREE ~ AttributeItem)* (HIDE ^EOS_FREE)?)? ']'
+    '#' '[' (AttributeItem (HIDE ^EOS_FREE ~ AttributeItem)* (HIDE ^EOS_FREE)?)? ']'
 }
 atomic class AttributeCall {
     // #call(...) { domain } receiver
@@ -643,7 +654,7 @@ class KEYWORDS_STOP {
     /
 }
 atomic class IDENTIFIER_STOP {
-    Identifier ~ [\[(){}<>⟨:∷,.;]
+    Identifier ~ /[\\[\\](){}<>⟨:∷,.;∈=]|in|is/
 }
 // === identifier === --------------------------------------------------------------------------------------------------
 atomic class Slot {
@@ -756,7 +767,7 @@ token {
     KW_ELSE: /else/
     // === operators === -----------------------------------------------------------------------------------------------
     KW_NOT: 'not'
-    KW_IN: 'in'
+    KW_IN: /in|∈/
     KW_IS: 'is'
     KW_AS: 'as'
 }

@@ -24,7 +24,7 @@ ProgramRoot {
                 terms: [
                     Index {
                         index: RangeNode {
-                            kind: Ordinal,
+                            kind: Offset,
                             terms: [
                                 Index {
                                     index: 1,
@@ -139,7 +139,7 @@ ProgramRoot {
                     },
                     Index {
                         index: RangeNode {
-                            kind: Ordinal,
+                            kind: Offset,
                             terms: [
                                 Index {
                                     index: 1,
@@ -294,7 +294,7 @@ ProgramRoot {
                 terms: [
                     Index {
                         index: RangeNode {
-                            kind: Ordinal,
+                            kind: Offset,
                             terms: [
                                 Index {
                                     index: 1,
@@ -334,7 +334,7 @@ ProgramRoot {
                     },
                     Index {
                         index: RangeNode {
-                            kind: Ordinal,
+                            kind: Offset,
                             terms: [
                                 Index {
                                     index: 1,

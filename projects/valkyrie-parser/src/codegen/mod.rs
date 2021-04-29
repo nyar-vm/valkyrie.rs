@@ -93,6 +93,7 @@ pub enum ValkyrieRule {
     WhileStatement,
     KW_WHILE,
     ForStatement,
+    IfGuard,
     MainStatement,
     ExpressionStatement,
     MatchExpression,
@@ -144,6 +145,8 @@ pub enum ValkyrieRule {
     TupleKey,
     RangeCall,
     RangeLiteral,
+    RangeLiteralIndex0,
+    RangeLiteralIndex1,
     SubscriptAxis,
     SubscriptOnly,
     SubscriptRange,
@@ -304,6 +307,7 @@ impl YggdrasilRule for ValkyrieRule {
             Self::WhileStatement => "",
             Self::KW_WHILE => "",
             Self::ForStatement => "",
+            Self::IfGuard => "",
             Self::MainStatement => "",
             Self::ExpressionStatement => "",
             Self::MatchExpression => "",
@@ -355,6 +359,8 @@ impl YggdrasilRule for ValkyrieRule {
             Self::TupleKey => "",
             Self::RangeCall => "",
             Self::RangeLiteral => "",
+            Self::RangeLiteralIndex0 => "",
+            Self::RangeLiteralIndex1 => "",
             Self::SubscriptAxis => "",
             Self::SubscriptOnly => "",
             Self::SubscriptRange => "",
@@ -653,7 +659,7 @@ pub struct DefineMethodNode {
 pub struct DefineDomainNode {
     pub annotation_mix: AnnotationMixNode,
     pub class_block: ClassBlockNode,
-    pub identifier: IdentifierNode,
+    pub domain_term: DomainTermNode,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -815,6 +821,8 @@ pub struct FunctionParametersNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum ParameterItemNode {
     LMark,
+    OmitDict,
+    OmitList,
     ParameterPair(ParameterPairNode),
     RMark,
 }
@@ -864,9 +872,8 @@ pub enum LetPatternNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct StandardPatternNode {
-    pub tuple_pattern: TuplePatternNode,
-    pub span: Range<u32>,
+pub enum StandardPatternNode {
+    TuplePattern(TuplePatternNode),
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -915,10 +922,18 @@ pub enum KwWhileNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ForStatementNode {
     pub continuation: ContinuationNode,
-    pub identifier: IdentifierNode,
+    pub if_guard: Option<IfGuardNode>,
     pub inline_expression: Option<InlineExpressionNode>,
     pub kw_for: KwForNode,
     pub kw_in: KwInNode,
+    pub let_pattern: LetPatternNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct IfGuardNode {
+    pub inline_expression: InlineExpressionNode,
+    pub kw_if: KwIfNode,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -975,9 +990,10 @@ pub struct MatchTypeNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct MatchCaseNode {
+    pub case_pattern: CasePatternNode,
+    pub if_guard: Option<IfGuardNode>,
     pub kw_case: KwCaseNode,
     pub match_statement: Vec<MatchStatementNode>,
-    pub standard_pattern: StandardPatternNode,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -1290,7 +1306,19 @@ pub struct RangeCallNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct RangeLiteralNode {
+pub enum RangeLiteralNode {
+    RangeLiteralIndex0(RangeLiteralIndex0Node),
+    RangeLiteralIndex1(RangeLiteralIndex1Node),
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct RangeLiteralIndex0Node {
+    pub subscript_axis: Vec<SubscriptAxisNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct RangeLiteralIndex1Node {
     pub subscript_axis: Vec<SubscriptAxisNode>,
     pub span: Range<u32>,
 }

@@ -1,0 +1,150 @@
+ProgramRoot {
+    statements: [
+        ForLoop {
+            pattern: Tuple(
+                TuplePatternNode {
+                    bind: None,
+                    name: None,
+                    terms: [
+                        Atom(
+                            IdentifierPattern {
+                                modifiers: ModifiersNode {
+                                    terms: [],
+                                },
+                                identifier: Identifier("i", 4..5),
+                            },
+                        ),
+                    ],
+                    span: 0..0,
+                },
+            ),
+            iterator: Placeholder,
+            condition: None,
+            then_body: StatementBlock {
+                terms: [],
+                span: 0..0,
+            },
+            span: 0..32,
+        },
+        ForLoop {
+            pattern: Tuple(
+                TuplePatternNode {
+                    bind: None,
+                    name: None,
+                    terms: [
+                        Atom(
+                            IdentifierPattern {
+                                modifiers: ModifiersNode {
+                                    terms: [],
+                                },
+                                identifier: Identifier("i", 36..37),
+                            },
+                        ),
+                    ],
+                    span: 0..0,
+                },
+            ),
+            iterator: Placeholder,
+            condition: None,
+            then_body: StatementBlock {
+                terms: [],
+                span: 0..0,
+            },
+            span: 32..56,
+        },
+        ForLoop {
+            pattern: Tuple(
+                TuplePatternNode {
+                    bind: None,
+                    name: None,
+                    terms: [
+                        Atom(
+                            IdentifierPattern {
+                                modifiers: ModifiersNode {
+                                    terms: [],
+                                },
+                                identifier: Identifier("i", 62..63),
+                            },
+                        ),
+                    ],
+                    span: 0..0,
+                },
+            ),
+            iterator: Placeholder,
+            condition: None,
+            then_body: StatementBlock {
+                terms: [],
+                span: 0..0,
+            },
+            span: 58..97,
+        },
+        ForLoop {
+            pattern: Tuple(
+                TuplePatternNode {
+                    bind: None,
+                    name: None,
+                    terms: [
+                        Atom(
+                            IdentifierPattern {
+                                modifiers: ModifiersNode {
+                                    terms: [],
+                                },
+                                identifier: Identifier("k", 104..105),
+                            },
+                        ),
+                        Atom(
+                            IdentifierPattern {
+                                modifiers: ModifiersNode {
+                                    terms: [],
+                                },
+                                identifier: Identifier("v", 107..108),
+                            },
+                        ),
+                    ],
+                    span: 0..0,
+                },
+            ),
+            iterator: Placeholder,
+            condition: None,
+            then_body: StatementBlock {
+                terms: [],
+                span: 0..0,
+            },
+            span: 99..171,
+        },
+        ForLoop {
+            pattern: Tuple(
+                TuplePatternNode {
+                    bind: None,
+                    name: None,
+                    terms: [
+                        Atom(
+                            IdentifierPattern {
+                                modifiers: ModifiersNode {
+                                    terms: [],
+                                },
+                                identifier: Identifier("k", 176..177),
+                            },
+                        ),
+                        Atom(
+                            IdentifierPattern {
+                                modifiers: ModifiersNode {
+                                    terms: [],
+                                },
+                                identifier: Identifier("v", 183..184),
+                            },
+                        ),
+                    ],
+                    span: 0..0,
+                },
+            ),
+            iterator: Placeholder,
+            condition: None,
+            then_body: StatementBlock {
+                terms: [],
+                span: 0..0,
+            },
+            span: 171..221,
+        },
+    ],
+}

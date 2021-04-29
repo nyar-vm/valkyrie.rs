@@ -4,7 +4,7 @@ impl crate::DefineVariableNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<VariableDeclaration> {
         Success {
             value: VariableDeclaration {
-                pattern: LetPattern::Tuple(Box::new(TuplePatternNode {
+                pattern: PatternNode::Tuple(Box::new(TuplePatternNode {
                     bind: None,
                     name: None,
                     terms: vec![],

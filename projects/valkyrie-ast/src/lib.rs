@@ -65,8 +65,8 @@ pub use crate::{
         unions::{UnionDeclaration, UnionFieldDeclaration},
     },
     patterns::{
-        ArrayPatternNode, ClassPatternNode, IdentifierPattern, ImplicitCaseNode, LetPattern, PatternBlock, PatternBranch,
-        PatternCaseNode, PatternCondition, PatternElseNode, PatternGuard, PatternStatements, PatternTypeNode, PatternWhenNode,
+        ArrayPatternNode, ClassPatternNode, IdentifierPattern, ImplicitCaseNode, PatternBlock, PatternBranch, PatternCaseNode,
+        PatternCondition, PatternElseNode, PatternGuard, PatternNode, PatternStatements, PatternTypeNode, PatternWhenNode,
         TuplePatternNode, UnionPatternNode,
     },
     string_like::{

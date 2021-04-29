@@ -65,6 +65,7 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::WhileStatement => parse_while_statement(state),
         ValkyrieRule::KW_WHILE => parse_kw_while(state),
         ValkyrieRule::ForStatement => parse_for_statement(state),
+        ValkyrieRule::IfGuard => parse_if_guard(state),
         ValkyrieRule::MainStatement => parse_main_statement(state),
         ValkyrieRule::ExpressionStatement => parse_expression_statement(state),
         ValkyrieRule::MatchExpression => parse_match_expression(state),
@@ -116,6 +117,8 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::TupleKey => parse_tuple_key(state),
         ValkyrieRule::RangeCall => parse_range_call(state),
         ValkyrieRule::RangeLiteral => parse_range_literal(state),
+        ValkyrieRule::RangeLiteralIndex0 => parse_range_literal_index_0(state),
+        ValkyrieRule::RangeLiteralIndex1 => parse_range_literal_index_1(state),
         ValkyrieRule::SubscriptAxis => parse_subscript_axis(state),
         ValkyrieRule::SubscriptOnly => parse_subscript_only(state),
         ValkyrieRule::SubscriptRange => parse_subscript_range(state),
@@ -740,7 +743,7 @@ fn parse_define_domain(state: Input) -> Output {
             Ok(s)
                 .and_then(|s| parse_annotation_mix(s).and_then(|s| s.tag_node("annotation_mix")))
                 .and_then(|s| builtin_ignore(s))
-                .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
+                .and_then(|s| parse_domain_term(s).and_then(|s| s.tag_node("domain_term")))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_class_block(s).and_then(|s| s.tag_node("class_block")))
         })
@@ -1093,6 +1096,8 @@ fn parse_parameter_item(state: Input) -> Output {
             .or_else(|s| builtin_text(s, "<", false).and_then(|s| s.tag_node("l_mark")))
             .or_else(|s| builtin_text(s, ">", false).and_then(|s| s.tag_node("r_mark")))
             .or_else(|s| parse_parameter_pair(s).and_then(|s| s.tag_node("parameter_pair")))
+            .or_else(|s| builtin_text(s, "...", false).and_then(|s| s.tag_node("omit_dict")))
+            .or_else(|s| builtin_text(s, "..", false).and_then(|s| s.tag_node("omit_list")))
     })
 }
 #[inline]
@@ -1207,7 +1212,9 @@ fn parse_let_pattern(state: Input) -> Output {
 }
 #[inline]
 fn parse_standard_pattern(state: Input) -> Output {
-    state.rule(ValkyrieRule::StandardPattern, |s| parse_tuple_pattern(s).and_then(|s| s.tag_node("tuple_pattern")))
+    state.rule(ValkyrieRule::StandardPattern, |s| {
+        Err(s).or_else(|s| parse_tuple_pattern(s).and_then(|s| s.tag_node("tuple_pattern")))
+    })
 }
 #[inline]
 fn parse_bare_pattern(state: Input) -> Output {
@@ -1347,15 +1354,28 @@ fn parse_for_statement(state: Input) -> Output {
             Ok(s)
                 .and_then(|s| parse_kw_for(s).and_then(|s| s.tag_node("kw_for")))
                 .and_then(|s| builtin_ignore(s))
-                .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
+                .and_then(|s| parse_let_pattern(s).and_then(|s| s.tag_node("let_pattern")))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_kw_in(s).and_then(|s| s.tag_node("kw_in")))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| s.optional(|s| parse_inline_expression(s).and_then(|s| s.tag_node("inline_expression"))))
                 .and_then(|s| builtin_ignore(s))
+                .and_then(|s| s.optional(|s| parse_if_guard(s).and_then(|s| s.tag_node("if_guard"))))
+                .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_continuation(s).and_then(|s| s.tag_node("continuation")))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| s.optional(|s| parse_eos(s)))
+        })
+    })
+}
+#[inline]
+fn parse_if_guard(state: Input) -> Output {
+    state.rule(ValkyrieRule::IfGuard, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| parse_kw_if(s).and_then(|s| s.tag_node("kw_if")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_inline_expression(s).and_then(|s| s.tag_node("inline_expression")))
         })
     })
 }
@@ -1516,7 +1536,9 @@ fn parse_match_case(state: Input) -> Output {
             Ok(s)
                 .and_then(|s| parse_kw_case(s).and_then(|s| s.tag_node("kw_case")))
                 .and_then(|s| builtin_ignore(s))
-                .and_then(|s| parse_standard_pattern(s).and_then(|s| s.tag_node("standard_pattern")))
+                .and_then(|s| parse_case_pattern(s).and_then(|s| s.tag_node("case_pattern")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| s.optional(|s| parse_if_guard(s).and_then(|s| s.tag_node("if_guard"))))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_colon(s))
                 .and_then(|s| builtin_ignore(s))
@@ -2322,70 +2344,80 @@ fn parse_range_call(state: Input) -> Output {
 fn parse_range_literal(state: Input) -> Output {
     state.rule(ValkyrieRule::RangeLiteral, |s| {
         Err(s)
-            .or_else(|s| {
-                s.sequence(|s| {
-                    Ok(s)
-                        .and_then(|s| builtin_text(s, "[", false))
-                        .and_then(|s| builtin_ignore(s))
-                        .and_then(|s| {
-                            s.optional(|s| {
-                                s.sequence(|s| {
-                                    Ok(s)
-                                        .and_then(|s| parse_subscript_axis(s).and_then(|s| s.tag_node("subscript_axis")))
-                                        .and_then(|s| {
-                                            s.repeat(0..4294967295, |s| {
+            .or_else(|s| parse_range_literal_index_0(s).and_then(|s| s.tag_node("range_literal_index_0")))
+            .or_else(|s| parse_range_literal_index_1(s).and_then(|s| s.tag_node("range_literal_index_1")))
+    })
+}
+#[inline]
+fn parse_range_literal_index_0(state: Input) -> Output {
+    state.rule(ValkyrieRule::RangeLiteralIndex0, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| builtin_text(s, "⁅", false))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| {
+                    s.optional(|s| {
+                        s.sequence(|s| {
+                            Ok(s)
+                                .and_then(|s| parse_subscript_axis(s).and_then(|s| s.tag_node("subscript_axis")))
+                                .and_then(|s| builtin_ignore(s))
+                                .and_then(|s| {
+                                    s.repeat(0..4294967295, |s| {
+                                        s.sequence(|s| {
+                                            Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| {
                                                 s.sequence(|s| {
-                                                    Ok(s)
-                                                        .and_then(|s| builtin_ignore(s))
-                                                        .and_then(|s| parse_comma(s))
-                                                        .and_then(|s| builtin_ignore(s))
-                                                        .and_then(|s| {
-                                                            parse_subscript_axis(s).and_then(|s| s.tag_node("subscript_axis"))
-                                                        })
+                                                    Ok(s).and_then(|s| parse_comma(s)).and_then(|s| builtin_ignore(s)).and_then(
+                                                        |s| parse_subscript_axis(s).and_then(|s| s.tag_node("subscript_axis")),
+                                                    )
                                                 })
                                             })
                                         })
-                                        .and_then(|s| builtin_ignore(s))
-                                        .and_then(|s| s.optional(|s| parse_comma(s)))
+                                    })
                                 })
-                            })
+                                .and_then(|s| builtin_ignore(s))
+                                .and_then(|s| s.optional(|s| parse_comma(s)))
                         })
-                        .and_then(|s| builtin_ignore(s))
-                        .and_then(|s| builtin_text(s, "]", false))
+                    })
                 })
-            })
-            .or_else(|s| {
-                s.sequence(|s| {
-                    Ok(s)
-                        .and_then(|s| builtin_text(s, "⁅", false))
-                        .and_then(|s| builtin_ignore(s))
-                        .and_then(|s| {
-                            s.optional(|s| {
-                                s.sequence(|s| {
-                                    Ok(s)
-                                        .and_then(|s| parse_subscript_axis(s).and_then(|s| s.tag_node("subscript_axis")))
-                                        .and_then(|s| {
-                                            s.repeat(0..4294967295, |s| {
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| builtin_text(s, "⁆", false))
+        })
+    })
+}
+#[inline]
+fn parse_range_literal_index_1(state: Input) -> Output {
+    state.rule(ValkyrieRule::RangeLiteralIndex1, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| builtin_text(s, "[", false))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| {
+                    s.optional(|s| {
+                        s.sequence(|s| {
+                            Ok(s)
+                                .and_then(|s| parse_subscript_axis(s).and_then(|s| s.tag_node("subscript_axis")))
+                                .and_then(|s| builtin_ignore(s))
+                                .and_then(|s| {
+                                    s.repeat(0..4294967295, |s| {
+                                        s.sequence(|s| {
+                                            Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| {
                                                 s.sequence(|s| {
-                                                    Ok(s)
-                                                        .and_then(|s| builtin_ignore(s))
-                                                        .and_then(|s| parse_comma(s))
-                                                        .and_then(|s| builtin_ignore(s))
-                                                        .and_then(|s| {
-                                                            parse_subscript_axis(s).and_then(|s| s.tag_node("subscript_axis"))
-                                                        })
+                                                    Ok(s).and_then(|s| parse_comma(s)).and_then(|s| builtin_ignore(s)).and_then(
+                                                        |s| parse_subscript_axis(s).and_then(|s| s.tag_node("subscript_axis")),
+                                                    )
                                                 })
                                             })
                                         })
-                                        .and_then(|s| builtin_ignore(s))
-                                        .and_then(|s| s.optional(|s| parse_comma(s)))
+                                    })
                                 })
-                            })
+                                .and_then(|s| builtin_ignore(s))
+                                .and_then(|s| s.optional(|s| parse_comma(s)))
                         })
-                        .and_then(|s| builtin_ignore(s))
-                        .and_then(|s| builtin_text(s, "⁆", false))
+                    })
                 })
-            })
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| builtin_text(s, "]", false))
+        })
     })
 }
 #[inline]
@@ -2761,7 +2793,7 @@ fn parse_attribute_list(state: Input) -> Output {
     state.rule(ValkyrieRule::AttributeList, |s| {
         s.sequence(|s| {
             Ok(s)
-                .and_then(|s| s.optional(|s| builtin_text(s, "#", false)))
+                .and_then(|s| builtin_text(s, "#", false))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| builtin_text(s, "[", false))
                 .and_then(|s| builtin_ignore(s))
@@ -3017,7 +3049,7 @@ fn parse_identifier_stop(state: Input) -> Output {
                 .and_then(|s| {
                     builtin_regex(s, {
                         static REGEX: OnceLock<Regex> = OnceLock::new();
-                        REGEX.get_or_init(|| Regex::new("^(?x)([\\[(){}<>⟨:∷,.;])").unwrap())
+                        REGEX.get_or_init(|| Regex::new("^(?x)([\\[\\](){}<>⟨:∷,.;∈=]|in|is)").unwrap())
                     })
                 })
         })
@@ -3570,7 +3602,12 @@ fn parse_kw_not(state: Input) -> Output {
 }
 #[inline]
 fn parse_kw_in(state: Input) -> Output {
-    state.rule(ValkyrieRule::KW_IN, |s| s.match_string("in", false))
+    state.rule(ValkyrieRule::KW_IN, |s| {
+        s.match_regex({
+            static REGEX: OnceLock<Regex> = OnceLock::new();
+            REGEX.get_or_init(|| Regex::new("^(?x)(in|∈)").unwrap())
+        })
+    })
 }
 #[inline]
 fn parse_kw_is(state: Input) -> Output {

@@ -4,11 +4,23 @@ use valkyrie_ast::SubscriptCallNode;
 impl RangeLiteralNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<RangeNode> {
         let mut errors = vec![];
-        let mut terms = vec![];
-        for x in &self.subscript_axis {
-            x.build(ctx).append(&mut terms, &mut errors)
+        let mut value = RangeNode { kind: RangeKind::Ordinal, terms: vec![], span: Default::default() };
+        match self {
+            Self::RangeLiteralIndex0(v) => {
+                for x in &v.subscript_axis {
+                    x.build(ctx).append(&mut value.terms, &mut errors)
+                }
+                value.span = v.span.clone()
+            }
+            Self::RangeLiteralIndex1(v) => {
+                value.kind = RangeKind::Offset;
+                for x in &v.subscript_axis {
+                    x.build(ctx).append(&mut value.terms, &mut errors)
+                }
+                value.span = v.span.clone()
+            }
         }
-        Success { value: RangeNode { kind: RangeKind::Ordinal, terms, span: self.span.clone() }, diagnostics: errors }
+        Success { value, diagnostics: errors }
     }
 }
 

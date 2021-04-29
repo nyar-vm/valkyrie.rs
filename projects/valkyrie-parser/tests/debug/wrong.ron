@@ -1,70 +1,17 @@
 ProgramRoot {
     statements: [
-        ExpressionNode {
-            omit: false,
-            body: RangeNode {
-                kind: Ordinal,
-                terms: [
-                    Index {
-                        index: 0,
-                    },
-                ],
-                span: 3..6,
+        ClassDeclaration {
+            kind: Class,
+            modifiers: ModifiersNode {
+                terms: [],
             },
-            span: 0..7,
-        },
-        ExpressionNode {
-            omit: false,
-            body: RangeNode {
-                kind: Ordinal,
-                terms: [
-                    Index {
-                        index: 1,
-                    },
-                ],
-                span: 7..12,
-            },
-            span: 7..13,
-        },
-        ExpressionNode {
-            omit: false,
-            body: RangeNode {
-                kind: Ordinal,
-                terms: [
-                    Index {
-                        index: 1,
-                    },
-                    Index {
-                        index: 2,
-                    },
-                ],
-                span: 13..19,
-            },
-            span: 13..20,
-        },
-        ExpressionNode {
-            omit: false,
-            body: RangeNode {
-                kind: Ordinal,
-                terms: [
-                    Index {
-                        index: true,
-                    },
-                    Index {
-                        index: RangeNode {
-                            kind: Ordinal,
-                            terms: [
-                                Index {
-                                    index: false,
-                                },
-                            ],
-                            span: 27..34,
-                        },
-                    },
-                ],
-                span: 20..35,
-            },
-            span: 20..36,
+            name: Identifier("A", 6..7),
+            generic: None,
+            base_classes: None,
+            auto_traits: [],
+            fields: [],
+            methods: [],
+            span: 0..35,
         },
     ],
 }

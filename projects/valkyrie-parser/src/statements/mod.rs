@@ -35,12 +35,11 @@ impl crate::StatementNode {
 
 impl crate::MainStatementNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<StatementNode> {
-        match self {
-            Self::ForStatement(_) => {
-                todo!()
-            }
-            Self::ExpressionStatement(v) => v.build(ctx).map(|v| v.into()),
-            Self::WhileStatement(v) => v.build(ctx).map(|v| v.into()),
-        }
+        let value = match self {
+            Self::ExpressionStatement(v) => v.build(ctx)?.into(),
+            Self::ForStatement(v) => v.build(ctx)?.into(),
+            Self::WhileStatement(v) => v.build(ctx)?.into(),
+        };
+        Success { value, diagnostics: vec![] }
     }
 }

@@ -26,19 +26,18 @@ ProgramRoot {
             body: None,
             span: 7..18,
         },
-        ExpressionNode {
-            omit: false,
-            body: let,
-            span: 19..23,
-        },
-        ExpressionNode {
-            omit: true,
-            body: InfixNode {
-                infix: =,
-                lhs: a,
-                rhs: 1,
-            },
-            span: 23..29,
+        VariableDeclaration {
+            pattern: Tuple(
+                TuplePatternNode {
+                    bind: None,
+                    name: None,
+                    terms: [],
+                    span: 0..0,
+                },
+            ),
+            type_hint: None,
+            body: None,
+            span: 19..29,
         },
         VariableDeclaration {
             pattern: Tuple(
@@ -105,19 +104,18 @@ ProgramRoot {
             body: None,
             span: 110..150,
         },
-        ExpressionNode {
-            omit: false,
-            body: let,
-            span: 152..156,
-        },
-        ExpressionNode {
-            omit: false,
-            body: InfixNode {
-                infix: =,
-                lhs: a,
-                rhs: if,
-            },
-            span: 156..163,
+        VariableDeclaration {
+            pattern: Tuple(
+                TuplePatternNode {
+                    bind: None,
+                    name: None,
+                    terms: [],
+                    span: 0..0,
+                },
+            ),
+            type_hint: None,
+            body: None,
+            span: 152..163,
         },
         ExpressionNode {
             omit: false,

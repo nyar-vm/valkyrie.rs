@@ -7,7 +7,7 @@ ProgramRoot {
         ExpressionNode {
             omit: true,
             body: RangeNode {
-                kind: Ordinal,
+                kind: Offset,
                 terms: [
                     Index {
                         index: 1,
@@ -20,11 +20,11 @@ ProgramRoot {
         ExpressionNode {
             omit: true,
             body: RangeNode {
-                kind: Ordinal,
+                kind: Offset,
                 terms: [
                     Index {
                         index: RangeNode {
-                            kind: Ordinal,
+                            kind: Offset,
                             terms: [
                                 Index {
                                     index: 1,
@@ -41,7 +41,7 @@ ProgramRoot {
         ExpressionNode {
             omit: true,
             body: RangeNode {
-                kind: Ordinal,
+                kind: Offset,
                 terms: [
                     Index {
                         index: 2,
@@ -61,7 +61,7 @@ ProgramRoot {
         ExpressionNode {
             omit: true,
             body: RangeNode {
-                kind: Ordinal,
+                kind: Offset,
                 terms: [
                     Range {
                         head: Some(
@@ -80,7 +80,7 @@ ProgramRoot {
         ExpressionNode {
             omit: true,
             body: RangeNode {
-                kind: Ordinal,
+                kind: Offset,
                 terms: [
                     Range {
                         head: Some(
@@ -116,7 +116,7 @@ ProgramRoot {
         ExpressionNode {
             omit: true,
             body: RangeNode {
-                kind: Ordinal,
+                kind: Offset,
                 terms: [
                     Range {
                         head: Some(
@@ -131,7 +131,7 @@ ProgramRoot {
                     },
                     Index {
                         index: RangeNode {
-                            kind: Ordinal,
+                            kind: Offset,
                             terms: [
                                 Index {
                                     index: 1,
@@ -154,7 +154,7 @@ ProgramRoot {
         ExpressionNode {
             omit: true,
             body: RangeNode {
-                kind: Ordinal,
+                kind: Offset,
                 terms: [
                     Range {
                         head: None,
@@ -174,7 +174,7 @@ ProgramRoot {
         ExpressionNode {
             omit: true,
             body: RangeNode {
-                kind: Ordinal,
+                kind: Offset,
                 terms: [
                     Range {
                         head: None,
@@ -194,7 +194,7 @@ ProgramRoot {
         ExpressionNode {
             omit: true,
             body: RangeNode {
-                kind: Ordinal,
+                kind: Offset,
                 terms: [
                     Range {
                         head: Some(
@@ -211,7 +211,7 @@ ProgramRoot {
         ExpressionNode {
             omit: true,
             body: RangeNode {
-                kind: Ordinal,
+                kind: Offset,
                 terms: [
                     Index {
                         index: InfixNode {
@@ -230,7 +230,7 @@ ProgramRoot {
             body: InfixNode {
                 infix: +,
                 lhs: RangeNode {
-                    kind: Ordinal,
+                    kind: Offset,
                     terms: [
                         Index {
                             index: InfixNode {
@@ -249,7 +249,7 @@ ProgramRoot {
         ExpressionNode {
             omit: true,
             body: RangeNode {
-                kind: Ordinal,
+                kind: Offset,
                 terms: [
                     Index {
                         index: 1,
@@ -268,11 +268,11 @@ ProgramRoot {
         ExpressionNode {
             omit: true,
             body: RangeNode {
-                kind: Ordinal,
+                kind: Offset,
                 terms: [
                     Index {
                         index: RangeNode {
-                            kind: Ordinal,
+                            kind: Offset,
                             terms: [
                                 Index {
                                     index: 1,
@@ -295,7 +295,7 @@ ProgramRoot {
         ExpressionNode {
             omit: true,
             body: RangeNode {
-                kind: Ordinal,
+                kind: Offset,
                 terms: [
                     Range {
                         head: Some(
@@ -310,7 +310,7 @@ ProgramRoot {
                     },
                     Index {
                         index: RangeNode {
-                            kind: Ordinal,
+                            kind: Offset,
                             terms: [
                                 Index {
                                     index: 1,
