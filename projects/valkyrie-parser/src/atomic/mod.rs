@@ -3,13 +3,10 @@ use crate::{
     SubscriptRangeNode, TupleKeyNode, TupleLiteralNode, TupleLiteralStrictNode, TuplePairNode, TupleTermsNode,
 };
 use nyar_error::{Failure, Success, Validate, Validation};
-use valkyrie_ast::{
-    ApplyCallNode, ArgumentsList, BooleanNode, ConstructNewNode, ConstructObjectNode, ExpressionType, IdentifierNode,
-    NamePathNode, NullNode, NumberLiteralNode, RangeKind, RangeNode, RangeTermNode, StringLiteralNode, StringTextNode,
-    TupleKind, TupleNode, TupleTermNode,
-};
+use valkyrie_ast::*;
 use yggdrasil_rt::YggdrasilNode;
 mod bytes;
+mod create_lambda;
 mod create_new;
 mod create_object;
 mod create_try;

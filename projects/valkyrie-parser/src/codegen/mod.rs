@@ -74,6 +74,8 @@ pub enum ValkyrieRule {
     DefineExtends,
     KW_TRAIT,
     DefineFunction,
+    DefineLambda,
+    FunctionBody,
     TypeHint,
     TypeReturn,
     TypeEffect,
@@ -115,10 +117,10 @@ pub enum ValkyrieRule {
     GroupFactor,
     Leading,
     MainSuffixTerm,
-    MainInfix,
-    TypeInfix,
     MainPrefix,
     TypePrefix,
+    MainInfix,
+    TypeInfix,
     MainSuffix,
     InlineExpression,
     InlineTerm,
@@ -219,6 +221,7 @@ pub enum ValkyrieRule {
     KW_LET,
     KW_NEW,
     KW_OBJECT,
+    KW_LAMBDA,
     KW_IF,
     KW_SWITCH,
     KW_TRY,
@@ -288,6 +291,8 @@ impl YggdrasilRule for ValkyrieRule {
             Self::DefineExtends => "",
             Self::KW_TRAIT => "",
             Self::DefineFunction => "",
+            Self::DefineLambda => "",
+            Self::FunctionBody => "",
             Self::TypeHint => "",
             Self::TypeReturn => "",
             Self::TypeEffect => "",
@@ -329,10 +334,10 @@ impl YggdrasilRule for ValkyrieRule {
             Self::GroupFactor => "",
             Self::Leading => "",
             Self::MainSuffixTerm => "",
-            Self::MainInfix => "",
-            Self::TypeInfix => "",
             Self::MainPrefix => "",
             Self::TypePrefix => "",
+            Self::MainInfix => "",
+            Self::TypeInfix => "",
             Self::MainSuffix => "",
             Self::InlineExpression => "",
             Self::InlineTerm => "",
@@ -433,6 +438,7 @@ impl YggdrasilRule for ValkyrieRule {
             Self::KW_LET => "",
             Self::KW_NEW => "",
             Self::KW_OBJECT => "",
+            Self::KW_LAMBDA => "",
             Self::KW_IF => "",
             Self::KW_SWITCH => "",
             Self::KW_TRY => "",
@@ -646,12 +652,8 @@ pub struct ParameterDefaultNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct DefineMethodNode {
     pub annotation_mix: AnnotationMixNode,
-    pub continuation: Option<ContinuationNode>,
-    pub define_generic: Option<DefineGenericNode>,
-    pub function_parameters: FunctionParametersNode,
+    pub function_body: FunctionBodyNode,
     pub namepath: NamepathNode,
-    pub type_effect: Option<TypeEffectNode>,
-    pub type_return: Option<TypeReturnNode>,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -782,11 +784,24 @@ pub struct KwTraitNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct DefineFunctionNode {
     pub annotation_head: AnnotationHeadNode,
+    pub function_body: FunctionBodyNode,
+    pub kw_function: KwFunctionNode,
+    pub namepath: NamepathNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct DefineLambdaNode {
+    pub function_body: FunctionBodyNode,
+    pub kw_lambda: KwLambdaNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct FunctionBodyNode {
     pub continuation: Option<ContinuationNode>,
     pub define_generic: Option<DefineGenericNode>,
     pub function_parameters: FunctionParametersNode,
-    pub kw_function: KwFunctionNode,
-    pub namepath: NamepathNode,
     pub type_effect: Option<TypeEffectNode>,
     pub type_return: Option<TypeReturnNode>,
     pub span: Range<u32>,
@@ -1067,6 +1082,7 @@ pub struct MainTermNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum MainFactorNode {
+    DefineLambda(DefineLambdaNode),
     GroupFactor(GroupFactorNode),
     Leading(LeadingNode),
     MatchExpression(MatchExpressionNode),
@@ -1103,18 +1119,6 @@ pub enum MainSuffixTermNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct MainInfixNode {
-    pub text: String,
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct TypeInfixNode {
-    pub text: String,
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct MainPrefixNode {
     pub text: String,
     pub span: Range<u32>,
@@ -1122,6 +1126,18 @@ pub struct MainPrefixNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct TypePrefixNode {
+    pub text: String,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct MainInfixNode {
+    pub text: String,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct TypeInfixNode {
     pub text: String,
     pub span: Range<u32>,
 }
@@ -1760,6 +1776,11 @@ pub struct KwNewNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct KwObjectNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct KwLambdaNode {
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]

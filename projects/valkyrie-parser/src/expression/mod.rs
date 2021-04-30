@@ -151,6 +151,7 @@ impl MainFactorNode {
             Self::GroupFactor(v) => v.main_expression.build(ctx),
             Self::NewStatement(v) => v.build(ctx).map(Into::into),
             Self::ObjectStatement(v) => v.build(ctx).map(Into::into),
+            Self::DefineLambda(v) => v.build(ctx).map(Into::into),
             Self::TryStatement(v) => v.build(ctx).map(Into::into),
             Self::MatchExpression(v) => v.build(ctx).map(Into::into),
             Self::SwitchStatement(v) => v.build(ctx).map(Into::into),

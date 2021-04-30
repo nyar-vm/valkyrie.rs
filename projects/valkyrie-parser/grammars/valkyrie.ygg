@@ -129,8 +129,7 @@ class ParameterDefault {
     '=' MainExpression
 }
 class DefineMethod {
-    AnnotationMix
-    Namepath DefineGeneric? '(' FunctionParameters ')' TypeReturn? TypeEffect? Continuation?
+    AnnotationMix Namepath FunctionBody
 }
 class DefineDomain {
     AnnotationMix
@@ -201,8 +200,13 @@ union KW_TRAIT {
 }
 // === def function === ------------------------------------------------------------------------------------------------
 class DefineFunction {
-    AnnotationHead
-    KW_FUNCTION Namepath DefineGeneric? '(' FunctionParameters ')' TypeReturn? TypeEffect? Continuation?
+    AnnotationHead KW_FUNCTION Namepath FunctionBody
+}
+class DefineLambda {
+    KW_LAMBDA FunctionBody
+}
+class FunctionBody {
+    DefineGeneric? '(' FunctionParameters ')' TypeReturn? TypeEffect? Continuation?
 }
 class TypeHint {
     COLON TypeExpression
@@ -354,8 +358,9 @@ union MainFactor {
     | SwitchStatement
     | TryStatement
     | MatchExpression
-    | NewStatement
+    | DefineLambda
     | ObjectStatement
+    | NewStatement
     | GroupFactor
     | Leading
 }
@@ -383,8 +388,26 @@ atomic union MainSuffixTerm {
 // === operators === ---------------------------------------------------------------------------------------------------
 @railway(false)
 @style(operator)
+text class MainPrefix {
+    / [¬!+]
+    | [-]
+    | [.]{2,3}
+    | [⅟]
+    | [√∛∜]
+    | [&*]
+    /
+}
+@railway(false)
+@style(operator)
+text class TypePrefix {
+    / [-+¬]
+    | [~&]
+    /
+}
+@railway(false)
+@style(operator)
 text class MainInfix ^ {
-    / [+\\-*\/%]=?
+    / [+\\-*⁒÷\/%]=?
     | [√^]
     # start with ?, !, =
     | [?]=
@@ -409,25 +432,7 @@ text class MainInfix ^ {
 text class TypeInfix {
     / [⟶]
     | ->
-    | [-+&|]
-    /
-}
-@railway(false)
-@style(operator)
-text class MainPrefix {
-    / [¬!+]
-    | [-]
-    | [.]{2,3}
-    | [⅟]
-    | [√∛∜]
-    | [&*]
-    /
-}
-@railway(false)
-@style(operator)
-text class TypePrefix {
-    / [+¬~]
-    | [-]
+    | [-+&|∧∨]
     /
 }
 @railway(false)
@@ -757,6 +762,7 @@ token {
     KW_LET: /let/
     KW_NEW: /new/
     KW_OBJECT: /object/
+    KW_LAMBDA: /lambda/
     // === if/switch/catch/match === -----------------------------------------------------------------------------------
     KW_IF: /if/
     KW_SWITCH: /switch/

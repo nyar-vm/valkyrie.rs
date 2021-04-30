@@ -46,6 +46,8 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::DefineExtends => parse_define_extends(state),
         ValkyrieRule::KW_TRAIT => parse_kw_trait(state),
         ValkyrieRule::DefineFunction => parse_define_function(state),
+        ValkyrieRule::DefineLambda => parse_define_lambda(state),
+        ValkyrieRule::FunctionBody => parse_function_body(state),
         ValkyrieRule::TypeHint => parse_type_hint(state),
         ValkyrieRule::TypeReturn => parse_type_return(state),
         ValkyrieRule::TypeEffect => parse_type_effect(state),
@@ -87,10 +89,10 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::GroupFactor => parse_group_factor(state),
         ValkyrieRule::Leading => parse_leading(state),
         ValkyrieRule::MainSuffixTerm => parse_main_suffix_term(state),
-        ValkyrieRule::MainInfix => parse_main_infix(state),
-        ValkyrieRule::TypeInfix => parse_type_infix(state),
         ValkyrieRule::MainPrefix => parse_main_prefix(state),
         ValkyrieRule::TypePrefix => parse_type_prefix(state),
+        ValkyrieRule::MainInfix => parse_main_infix(state),
+        ValkyrieRule::TypeInfix => parse_type_infix(state),
         ValkyrieRule::MainSuffix => parse_main_suffix(state),
         ValkyrieRule::InlineExpression => parse_inline_expression(state),
         ValkyrieRule::InlineTerm => parse_inline_term(state),
@@ -191,6 +193,7 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::KW_LET => parse_kw_let(state),
         ValkyrieRule::KW_NEW => parse_kw_new(state),
         ValkyrieRule::KW_OBJECT => parse_kw_object(state),
+        ValkyrieRule::KW_LAMBDA => parse_kw_lambda(state),
         ValkyrieRule::KW_IF => parse_kw_if(state),
         ValkyrieRule::KW_SWITCH => parse_kw_switch(state),
         ValkyrieRule::KW_TRY => parse_kw_try(state),
@@ -720,19 +723,7 @@ fn parse_define_method(state: Input) -> Output {
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_namepath(s).and_then(|s| s.tag_node("namepath")))
                 .and_then(|s| builtin_ignore(s))
-                .and_then(|s| s.optional(|s| parse_define_generic(s).and_then(|s| s.tag_node("define_generic"))))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| builtin_text(s, "(", false))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| parse_function_parameters(s).and_then(|s| s.tag_node("function_parameters")))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| builtin_text(s, ")", false))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| s.optional(|s| parse_type_return(s).and_then(|s| s.tag_node("type_return"))))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| s.optional(|s| parse_type_effect(s).and_then(|s| s.tag_node("type_effect"))))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| s.optional(|s| parse_continuation(s).and_then(|s| s.tag_node("continuation"))))
+                .and_then(|s| parse_function_body(s).and_then(|s| s.tag_node("function_body")))
         })
     })
 }
@@ -1015,6 +1006,26 @@ fn parse_define_function(state: Input) -> Output {
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_namepath(s).and_then(|s| s.tag_node("namepath")))
                 .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_function_body(s).and_then(|s| s.tag_node("function_body")))
+        })
+    })
+}
+#[inline]
+fn parse_define_lambda(state: Input) -> Output {
+    state.rule(ValkyrieRule::DefineLambda, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| parse_kw_lambda(s).and_then(|s| s.tag_node("kw_lambda")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_function_body(s).and_then(|s| s.tag_node("function_body")))
+        })
+    })
+}
+#[inline]
+fn parse_function_body(state: Input) -> Output {
+    state.rule(ValkyrieRule::FunctionBody, |s| {
+        s.sequence(|s| {
+            Ok(s)
                 .and_then(|s| s.optional(|s| parse_define_generic(s).and_then(|s| s.tag_node("define_generic"))))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| builtin_text(s, "(", false))
@@ -1732,8 +1743,9 @@ fn parse_main_factor(state: Input) -> Output {
             .or_else(|s| parse_switch_statement(s).and_then(|s| s.tag_node("switch_statement")))
             .or_else(|s| parse_try_statement(s).and_then(|s| s.tag_node("try_statement")))
             .or_else(|s| parse_match_expression(s).and_then(|s| s.tag_node("match_expression")))
-            .or_else(|s| parse_new_statement(s).and_then(|s| s.tag_node("new_statement")))
+            .or_else(|s| parse_define_lambda(s).and_then(|s| s.tag_node("define_lambda")))
             .or_else(|s| parse_object_statement(s).and_then(|s| s.tag_node("object_statement")))
+            .or_else(|s| parse_new_statement(s).and_then(|s| s.tag_node("new_statement")))
             .or_else(|s| parse_group_factor(s).and_then(|s| s.tag_node("group_factor")))
             .or_else(|s| parse_leading(s).and_then(|s| s.tag_node("leading")))
     })
@@ -1790,13 +1802,47 @@ fn parse_main_suffix_term(state: Input) -> Output {
     })
 }
 #[inline]
+fn parse_main_prefix(state: Input) -> Output {
+    state.rule(ValkyrieRule::MainPrefix, |s| {
+        s.match_regex({
+            static REGEX: OnceLock<Regex> = OnceLock::new();
+            REGEX.get_or_init(|| {
+                Regex::new(
+                    "^(?x)([¬!+]
+    | [-]
+    | [.]{2,3}
+    | [⅟]
+    | [√∛∜]
+    | [&*])",
+                )
+                .unwrap()
+            })
+        })
+    })
+}
+#[inline]
+fn parse_type_prefix(state: Input) -> Output {
+    state.rule(ValkyrieRule::TypePrefix, |s| {
+        s.match_regex({
+            static REGEX: OnceLock<Regex> = OnceLock::new();
+            REGEX.get_or_init(|| {
+                Regex::new(
+                    "^(?x)([-+¬]
+    | [~&])",
+                )
+                .unwrap()
+            })
+        })
+    })
+}
+#[inline]
 fn parse_main_infix(state: Input) -> Output {
     state.rule(ValkyrieRule::MainInfix, |s| {
         s.match_regex({
             static REGEX: OnceLock<Regex> = OnceLock::new();
             REGEX.get_or_init(|| {
                 Regex::new(
-                    "^(?x)([+\\-*/%]=?
+                    "^(?x)([+\\-*⁒÷/%]=?
     | [√^]
     # start with ?, !, =
     | [?]=
@@ -1829,41 +1875,7 @@ fn parse_type_infix(state: Input) -> Output {
                 Regex::new(
                     "^(?x)([⟶]
     | ->
-    | [-+&|])",
-                )
-                .unwrap()
-            })
-        })
-    })
-}
-#[inline]
-fn parse_main_prefix(state: Input) -> Output {
-    state.rule(ValkyrieRule::MainPrefix, |s| {
-        s.match_regex({
-            static REGEX: OnceLock<Regex> = OnceLock::new();
-            REGEX.get_or_init(|| {
-                Regex::new(
-                    "^(?x)([¬!+]
-    | [-]
-    | [.]{2,3}
-    | [⅟]
-    | [√∛∜]
-    | [&*])",
-                )
-                .unwrap()
-            })
-        })
-    })
-}
-#[inline]
-fn parse_type_prefix(state: Input) -> Output {
-    state.rule(ValkyrieRule::TypePrefix, |s| {
-        s.match_regex({
-            static REGEX: OnceLock<Regex> = OnceLock::new();
-            REGEX.get_or_init(|| {
-                Regex::new(
-                    "^(?x)([+¬~]
-    | [-])",
+    | [-+&|∧∨])",
                 )
                 .unwrap()
             })
@@ -3530,6 +3542,15 @@ fn parse_kw_object(state: Input) -> Output {
         s.match_regex({
             static REGEX: OnceLock<Regex> = OnceLock::new();
             REGEX.get_or_init(|| Regex::new("^(?x)(object)").unwrap())
+        })
+    })
+}
+#[inline]
+fn parse_kw_lambda(state: Input) -> Output {
+    state.rule(ValkyrieRule::KW_LAMBDA, |s| {
+        s.match_regex({
+            static REGEX: OnceLock<Regex> = OnceLock::new();
+            REGEX.get_or_init(|| Regex::new("^(?x)(lambda)").unwrap())
         })
     })
 }

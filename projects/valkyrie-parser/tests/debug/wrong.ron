@@ -1,17 +1,23 @@
 ProgramRoot {
     statements: [
-        ClassDeclaration {
-            kind: Class,
-            modifiers: ModifiersNode {
+        FunctionDeclaration {
+            type: Micro,
+            namepath: NamePathNode {
+                names: [
+                    Identifier("all_zeroes", 9..19),
+                ],
+            },
+            modifiers: [],
+            attributes: None,
+            generic: None,
+            arguments: ArgumentsList {
                 terms: [],
             },
-            name: Identifier("A", 6..7),
-            generic: None,
-            base_classes: None,
-            auto_traits: [],
-            fields: [],
-            methods: [],
-            span: 0..35,
+            return: None,
+            body: StatementBlock {
+                terms: [],
+                span: 0..0,
+            },
         },
     ],
 }
