@@ -169,8 +169,9 @@ union KW_FLAGS {
 }
 // === identifier === --------------------------------------------------------------------------------------------------
 class DefineUnion {
+    DefineTemplate?
     AnnotationHead
-    KW_UNION Identifier DefineInherit? TypeHint? '{' UnionTerm* '}'
+    KW_UNION Identifier DefineGeneric? DefineInherit? TypeHint? '{' UnionTerm* '}'
 }
 union UnionTerm {
     | DefineMethod
@@ -264,10 +265,17 @@ class BarePatternItem {
 }
 /// `Class(a, mut b, #mut c, ..d, e: Some(_))`
 class TuplePattern {
-   Namepath? '(' (TuplePatternItem (^COMMA TuplePatternItem)* ^COMMA?)? ')'
+   | Namepath? '(' (PatternItem (^COMMA PatternItem)* ^COMMA?)? ')'
+   | Namepath? '{' (PatternItem (^COMMA PatternItem)* ^COMMA?)? '}'
+   | '[' (PatternItem (^COMMA PatternItem)* ^COMMA?)? ']'
+}
+union PatternItem {
+    | TuplePatternItem
+    | '...' #OmitDict
+    | '..'  #OmitList
 }
 class TuplePatternItem {
-    AnnotationMix Identifier (COLON StandardPattern)?
+    AnnotationMix ParameterHint? Identifier (COLON StandardPattern)?
 }
 // === while loop === --------------------------------------------------------------------------------------------------
 class WhileStatement {
@@ -444,6 +452,11 @@ text class MainSuffix {
     | [℃℉]
     /
 }
+@railway(false)
+@style(operator)
+text class TypeSuffix {
+    /[!?]/
+}
 // === inline expression === --------------------------------------------------------------------------------------------------
 atomic class InlineExpression {
     InlineTerm (HIDE MainInfix ~ InlineTerm)*
@@ -466,15 +479,12 @@ atomic class TypeTerm {
     (TypePrefix HIDE)* MainFactor TypeSuffixTerm*
 }
 atomic union TypeFactor {
-    | '(' ~ TypeExpression ~ ')'
+    | '(' ~ TypeExpression ~ ')' #TypeExpression
     | Leading
 }
 union TypeSuffixTerm {
     | GenericHide
     | TypeSuffix
-}
-text class TypeSuffix {
-    /[!?]/
 }
 // === try statement === -----------------------------------------------------------------------------------------------
 class TryStatement {
@@ -656,6 +666,7 @@ class KEYWORDS_STOP {
     | enumerate | flags | union
     | function | micro | macro
     | trait | interface
+    | extends?
     /
 }
 atomic class IDENTIFIER_STOP {

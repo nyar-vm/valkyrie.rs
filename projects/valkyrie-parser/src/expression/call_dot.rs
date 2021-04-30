@@ -15,11 +15,11 @@ impl crate::DotCallNode {
     }
 }
 
-impl DotCallItemNode {
+impl crate::DotCallItemNode {
     pub fn build(&self, ctx: &ProgramContext) -> Result<DotCallTerm, NyarError> {
         match self {
-            DotCallItemNode::Namepath(v) => Ok(DotCallTerm::Symbol(v.build(ctx))),
-            DotCallItemNode::Integer(v) => {
+            Self::Namepath(v) => Ok(DotCallTerm::Symbol(v.build(ctx))),
+            Self::Integer(v) => {
                 let u = usize::from_str(&v.text)?;
                 Ok(DotCallTerm::index(u))
             }

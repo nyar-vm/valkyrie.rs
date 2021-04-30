@@ -1,0 +1,177 @@
+ProgramRoot {
+    statements: [
+        ExpressionNode {
+            omit: false,
+            body: type,
+            span: 0..5,
+        },
+        ExpressionNode {
+            omit: true,
+            body: GenericCallNode {
+                monadic: false,
+                base: InfixNode {
+                    infix: =,
+                    lhs: GenericCallNode {
+                        monadic: false,
+                        base: Result,
+                        terms: ArgumentsList {
+                            terms: [
+                                TupleTermNode {
+                                    key: None,
+                                    value: T,
+                                },
+                            ],
+                        },
+                        associated: [],
+                        span: 11..19,
+                    },
+                    rhs: std∷result∷Result,
+                },
+                terms: ArgumentsList {
+                    terms: [
+                        TupleTermNode {
+                            key: None,
+                            value: T,
+                        },
+                        TupleTermNode {
+                            key: None,
+                            value: Error,
+                        },
+                    ],
+                },
+                associated: [],
+                span: 40..54,
+            },
+            span: 5..55,
+        },
+        ExpressionNode {
+            omit: false,
+            body: type,
+            span: 59..64,
+        },
+        ExpressionNode {
+            omit: false,
+            body: ApplyCallNode {
+                monadic: false,
+                caller: GenericCallNode {
+                    monadic: false,
+                    base: List,
+                    terms: ArgumentsList {
+                        terms: [
+                            TupleTermNode {
+                                key: None,
+                                value: UnaryNode {
+                                    prefix: +,
+                                    base: T,
+                                },
+                            },
+                            TupleTermNode {
+                                key: None,
+                                value: UnaryNode {
+                                    prefix: -,
+                                    base: A,
+                                },
+                            },
+                        ],
+                    },
+                    associated: [],
+                    span: 68..81,
+                },
+                arguments: ArgumentsList {
+                    terms: [],
+                },
+                body: None,
+                span: 81..85,
+            },
+            span: 64..88,
+        },
+        ExpressionNode {
+            omit: false,
+            body: alias,
+            span: 88..94,
+        },
+        ExpressionNode {
+            omit: true,
+            body: InfixNode {
+                infix: =,
+                lhs: InfixNode {
+                    infix: ∈,
+                    lhs: type,
+                    rhs: t,
+                },
+                rhs: Integer,
+            },
+            span: 94..113,
+        },
+        ClassDeclaration {
+            kind: Class,
+            modifiers: ModifiersNode {
+                terms: [],
+            },
+            name: Identifier("Integer", 121..128),
+            generic: None,
+            base_classes: None,
+            auto_traits: [],
+            fields: [],
+            methods: [],
+            span: 115..251,
+        },
+        FunctionDeclaration {
+            type: Micro,
+            namepath: NamePathNode {
+                names: [
+                    Identifier("five", 260..264),
+                ],
+            },
+            modifiers: [],
+            attributes: None,
+            generic: None,
+            arguments: ArgumentsList {
+                terms: [],
+            },
+            return: None,
+            body: StatementBlock {
+                terms: [],
+                span: 0..0,
+            },
+        },
+        FunctionDeclaration {
+            type: Micro,
+            namepath: NamePathNode {
+                names: [
+                    Identifier("tuple", 348..353),
+                ],
+            },
+            modifiers: [],
+            attributes: None,
+            generic: None,
+            arguments: ArgumentsList {
+                terms: [],
+            },
+            return: None,
+            body: StatementBlock {
+                terms: [],
+                span: 0..0,
+            },
+        },
+        FunctionDeclaration {
+            type: Micro,
+            namepath: NamePathNode {
+                names: [
+                    Identifier("all_zeroes", 416..426),
+                ],
+            },
+            modifiers: [],
+            attributes: None,
+            generic: None,
+            arguments: ArgumentsList {
+                terms: [],
+            },
+            return: None,
+            body: StatementBlock {
+                terms: [],
+                span: 0..0,
+            },
+        },
+    ],
+}

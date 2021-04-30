@@ -245,23 +245,8 @@ ProgramRoot {
             methods: [],
             span: 1715..1776,
         },
-        ExpressionNode {
-            omit: false,
-            body: extends,
-            span: 1776..1784,
-        },
-        ExpressionNode {
-            omit: false,
-            body: ApplyCallNode {
-                monadic: false,
-                caller: TClass,
-                arguments: ArgumentsList {
-                    terms: [],
-                },
-                body: None,
-                span: 1790..1808,
-            },
-            span: 1784..1811,
+        ExtendsStatement {
+            methods: [],
         },
         FunctionDeclaration {
             type: Micro,

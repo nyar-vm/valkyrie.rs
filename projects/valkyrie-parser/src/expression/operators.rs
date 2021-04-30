@@ -1,5 +1,5 @@
 use super::*;
-impl MainPrefixNode {
+impl crate::MainPrefixNode {
     pub fn as_operator(&self) -> OperatorNode {
         use ValkyrieOperator::*;
         let o = match self.text.as_str() {
@@ -18,17 +18,19 @@ impl MainPrefixNode {
         OperatorNode { kind: o, span: self.span.clone() }
     }
 }
-impl TypePrefixNode {
+impl crate::TypePrefixNode {
     pub fn as_operator(&self) -> OperatorNode {
         use ValkyrieOperator::*;
         let o = match self.text.as_str() {
             "!" => Not,
+            "+" => CovariantType,
+            "-" => ContravariantType,
             _ => unimplemented!("{} is a unknown prefix operator", self.text),
         };
         OperatorNode { kind: o, span: self.span.clone() }
     }
 }
-impl MainInfixNode {
+impl crate::MainInfixNode {
     pub fn as_operator(&self) -> OperatorNode {
         use valkyrie_ast::LogicMatrix;
         use ValkyrieOperator::*;
@@ -77,7 +79,7 @@ impl MainInfixNode {
         OperatorNode { kind: o, span: self.span.clone() }
     }
 }
-impl TypeInfixNode {
+impl crate::TypeInfixNode {
     pub fn as_operator(&self) -> OperatorNode {
         use ValkyrieOperator::*;
         let o = match self.text.as_str() {
@@ -87,7 +89,7 @@ impl TypeInfixNode {
         OperatorNode { kind: o, span: self.span.clone() }
     }
 }
-impl MainSuffixNode {
+impl crate::MainSuffixNode {
     pub fn as_operator(&self) -> OperatorNode {
         use ValkyrieOperator::*;
         let o = match self.text.as_str() {
@@ -103,7 +105,7 @@ impl MainSuffixNode {
     }
 }
 
-impl TypeSuffixNode {
+impl crate::TypeSuffixNode {
     pub fn as_operator(&self) -> OperatorNode {
         use ValkyrieOperator::*;
         let o = match self.text.as_str() {

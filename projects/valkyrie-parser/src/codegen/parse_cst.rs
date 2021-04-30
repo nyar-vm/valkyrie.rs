@@ -63,6 +63,7 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::BarePattern => parse_bare_pattern(state),
         ValkyrieRule::BarePatternItem => parse_bare_pattern_item(state),
         ValkyrieRule::TuplePattern => parse_tuple_pattern(state),
+        ValkyrieRule::PatternItem => parse_pattern_item(state),
         ValkyrieRule::TuplePatternItem => parse_tuple_pattern_item(state),
         ValkyrieRule::WhileStatement => parse_while_statement(state),
         ValkyrieRule::KW_WHILE => parse_kw_while(state),
@@ -94,6 +95,7 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::MainInfix => parse_main_infix(state),
         ValkyrieRule::TypeInfix => parse_type_infix(state),
         ValkyrieRule::MainSuffix => parse_main_suffix(state),
+        ValkyrieRule::TypeSuffix => parse_type_suffix(state),
         ValkyrieRule::InlineExpression => parse_inline_expression(state),
         ValkyrieRule::InlineTerm => parse_inline_term(state),
         ValkyrieRule::InlineSuffixTerm => parse_inline_suffix_term(state),
@@ -101,7 +103,6 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::TypeTerm => parse_type_term(state),
         ValkyrieRule::TypeFactor => parse_type_factor(state),
         ValkyrieRule::TypeSuffixTerm => parse_type_suffix_term(state),
-        ValkyrieRule::TypeSuffix => parse_type_suffix(state),
         ValkyrieRule::TryStatement => parse_try_statement(state),
         ValkyrieRule::NewStatement => parse_new_statement(state),
         ValkyrieRule::NewBlock => parse_new_block(state),
@@ -884,11 +885,15 @@ fn parse_define_union(state: Input) -> Output {
     state.rule(ValkyrieRule::DefineUnion, |s| {
         s.sequence(|s| {
             Ok(s)
+                .and_then(|s| s.optional(|s| parse_define_template(s).and_then(|s| s.tag_node("define_template"))))
+                .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_annotation_head(s).and_then(|s| s.tag_node("annotation_head")))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_kw_union(s).and_then(|s| s.tag_node("kw_union")))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| s.optional(|s| parse_define_generic(s).and_then(|s| s.tag_node("define_generic"))))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| s.optional(|s| parse_define_inherit(s).and_then(|s| s.tag_node("define_inherit"))))
                 .and_then(|s| builtin_ignore(s))
@@ -1275,42 +1280,131 @@ fn parse_bare_pattern_item(state: Input) -> Output {
 #[inline]
 fn parse_tuple_pattern(state: Input) -> Output {
     state.rule(ValkyrieRule::TuplePattern, |s| {
-        s.sequence(|s| {
-            Ok(s)
-                .and_then(|s| s.optional(|s| parse_namepath(s).and_then(|s| s.tag_node("namepath"))))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| builtin_text(s, "(", false))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| {
-                    s.optional(|s| {
-                        s.sequence(|s| {
-                            Ok(s)
-                                .and_then(|s| parse_tuple_pattern_item(s).and_then(|s| s.tag_node("tuple_pattern_item")))
-                                .and_then(|s| builtin_ignore(s))
-                                .and_then(|s| {
-                                    s.repeat(0..4294967295, |s| {
-                                        s.sequence(|s| {
-                                            Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| {
+        Err(s)
+            .or_else(|s| {
+                s.sequence(|s| {
+                    Ok(s)
+                        .and_then(|s| s.optional(|s| parse_namepath(s).and_then(|s| s.tag_node("namepath"))))
+                        .and_then(|s| builtin_ignore(s))
+                        .and_then(|s| builtin_text(s, "(", false))
+                        .and_then(|s| builtin_ignore(s))
+                        .and_then(|s| {
+                            s.optional(|s| {
+                                s.sequence(|s| {
+                                    Ok(s)
+                                        .and_then(|s| parse_pattern_item(s).and_then(|s| s.tag_node("pattern_item")))
+                                        .and_then(|s| builtin_ignore(s))
+                                        .and_then(|s| {
+                                            s.repeat(0..4294967295, |s| {
                                                 s.sequence(|s| {
-                                                    Ok(s).and_then(|s| parse_comma(s)).and_then(|s| builtin_ignore(s)).and_then(
-                                                        |s| {
-                                                            parse_tuple_pattern_item(s)
-                                                                .and_then(|s| s.tag_node("tuple_pattern_item"))
-                                                        },
-                                                    )
+                                                    Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| {
+                                                        s.sequence(|s| {
+                                                            Ok(s)
+                                                                .and_then(|s| parse_comma(s))
+                                                                .and_then(|s| builtin_ignore(s))
+                                                                .and_then(|s| {
+                                                                    parse_pattern_item(s)
+                                                                        .and_then(|s| s.tag_node("pattern_item"))
+                                                                })
+                                                        })
+                                                    })
                                                 })
                                             })
                                         })
-                                    })
+                                        .and_then(|s| builtin_ignore(s))
+                                        .and_then(|s| s.optional(|s| parse_comma(s)))
                                 })
-                                .and_then(|s| builtin_ignore(s))
-                                .and_then(|s| s.optional(|s| parse_comma(s)))
+                            })
                         })
-                    })
+                        .and_then(|s| builtin_ignore(s))
+                        .and_then(|s| builtin_text(s, ")", false))
                 })
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| builtin_text(s, ")", false))
-        })
+            })
+            .or_else(|s| {
+                s.sequence(|s| {
+                    Ok(s)
+                        .and_then(|s| s.optional(|s| parse_namepath(s).and_then(|s| s.tag_node("namepath"))))
+                        .and_then(|s| builtin_ignore(s))
+                        .and_then(|s| builtin_text(s, "{", false))
+                        .and_then(|s| builtin_ignore(s))
+                        .and_then(|s| {
+                            s.optional(|s| {
+                                s.sequence(|s| {
+                                    Ok(s)
+                                        .and_then(|s| parse_pattern_item(s).and_then(|s| s.tag_node("pattern_item")))
+                                        .and_then(|s| builtin_ignore(s))
+                                        .and_then(|s| {
+                                            s.repeat(0..4294967295, |s| {
+                                                s.sequence(|s| {
+                                                    Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| {
+                                                        s.sequence(|s| {
+                                                            Ok(s)
+                                                                .and_then(|s| parse_comma(s))
+                                                                .and_then(|s| builtin_ignore(s))
+                                                                .and_then(|s| {
+                                                                    parse_pattern_item(s)
+                                                                        .and_then(|s| s.tag_node("pattern_item"))
+                                                                })
+                                                        })
+                                                    })
+                                                })
+                                            })
+                                        })
+                                        .and_then(|s| builtin_ignore(s))
+                                        .and_then(|s| s.optional(|s| parse_comma(s)))
+                                })
+                            })
+                        })
+                        .and_then(|s| builtin_ignore(s))
+                        .and_then(|s| builtin_text(s, "}", false))
+                })
+            })
+            .or_else(|s| {
+                s.sequence(|s| {
+                    Ok(s)
+                        .and_then(|s| builtin_text(s, "[", false))
+                        .and_then(|s| builtin_ignore(s))
+                        .and_then(|s| {
+                            s.optional(|s| {
+                                s.sequence(|s| {
+                                    Ok(s)
+                                        .and_then(|s| parse_pattern_item(s).and_then(|s| s.tag_node("pattern_item")))
+                                        .and_then(|s| builtin_ignore(s))
+                                        .and_then(|s| {
+                                            s.repeat(0..4294967295, |s| {
+                                                s.sequence(|s| {
+                                                    Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| {
+                                                        s.sequence(|s| {
+                                                            Ok(s)
+                                                                .and_then(|s| parse_comma(s))
+                                                                .and_then(|s| builtin_ignore(s))
+                                                                .and_then(|s| {
+                                                                    parse_pattern_item(s)
+                                                                        .and_then(|s| s.tag_node("pattern_item"))
+                                                                })
+                                                        })
+                                                    })
+                                                })
+                                            })
+                                        })
+                                        .and_then(|s| builtin_ignore(s))
+                                        .and_then(|s| s.optional(|s| parse_comma(s)))
+                                })
+                            })
+                        })
+                        .and_then(|s| builtin_ignore(s))
+                        .and_then(|s| builtin_text(s, "]", false))
+                })
+            })
+    })
+}
+#[inline]
+fn parse_pattern_item(state: Input) -> Output {
+    state.rule(ValkyrieRule::PatternItem, |s| {
+        Err(s)
+            .or_else(|s| parse_tuple_pattern_item(s).and_then(|s| s.tag_node("tuple_pattern_item")))
+            .or_else(|s| builtin_text(s, "...", false).and_then(|s| s.tag_node("omit_dict")))
+            .or_else(|s| builtin_text(s, "..", false).and_then(|s| s.tag_node("omit_list")))
     })
 }
 #[inline]
@@ -1319,6 +1413,8 @@ fn parse_tuple_pattern_item(state: Input) -> Output {
         s.sequence(|s| {
             Ok(s)
                 .and_then(|s| parse_annotation_mix(s).and_then(|s| s.tag_node("annotation_mix")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| s.optional(|s| parse_parameter_hint(s).and_then(|s| s.tag_node("parameter_hint"))))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
                 .and_then(|s| builtin_ignore(s))
@@ -1900,6 +1996,15 @@ fn parse_main_suffix(state: Input) -> Output {
     })
 }
 #[inline]
+fn parse_type_suffix(state: Input) -> Output {
+    state.rule(ValkyrieRule::TypeSuffix, |s| {
+        s.match_regex({
+            static REGEX: OnceLock<Regex> = OnceLock::new();
+            REGEX.get_or_init(|| Regex::new("^(?x)([!?])").unwrap())
+        })
+    })
+}
+#[inline]
 fn parse_inline_expression(state: Input) -> Output {
     state.rule(ValkyrieRule::InlineExpression, |s| {
         s.sequence(|s| {
@@ -2017,7 +2122,7 @@ fn parse_type_factor(state: Input) -> Output {
                         .and_then(|s| builtin_ignore(s))
                         .and_then(|s| builtin_text(s, ")", false))
                 })
-                .and_then(|s| s.tag_node("type_factor_0"))
+                .and_then(|s| s.tag_node("type_expression"))
             })
             .or_else(|s| parse_leading(s).and_then(|s| s.tag_node("leading")))
     })
@@ -2028,15 +2133,6 @@ fn parse_type_suffix_term(state: Input) -> Output {
         Err(s)
             .or_else(|s| parse_generic_hide(s).and_then(|s| s.tag_node("generic_hide")))
             .or_else(|s| parse_type_suffix(s).and_then(|s| s.tag_node("type_suffix")))
-    })
-}
-#[inline]
-fn parse_type_suffix(state: Input) -> Output {
-    state.rule(ValkyrieRule::TypeSuffix, |s| {
-        s.match_regex({
-            static REGEX: OnceLock<Regex> = OnceLock::new();
-            REGEX.get_or_init(|| Regex::new("^(?x)([!?])").unwrap())
-        })
     })
 }
 #[inline]
@@ -3044,7 +3140,8 @@ fn parse_keywords_stop(state: Input) -> Output {
     | class | structure
     | enumerate | flags | union
     | function | micro | macro
-    | trait | interface)",
+    | trait | interface
+    | extends?)",
                 )
                 .unwrap()
             })

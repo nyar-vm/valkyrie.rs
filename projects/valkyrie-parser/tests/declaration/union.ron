@@ -1,0 +1,147 @@
+ProgramRoot {
+    statements: [
+        NamespaceDeclaration {
+            kind: Standalone,
+            path: std∷create∷test,
+        },
+        UnionDeclaration {
+            document: DocumentationNode {
+                documentation: "",
+                span: 0..0,
+            },
+            modifiers: ModifiersNode {
+                terms: [],
+            },
+            name: Identifier("", 0..0),
+            layout: None,
+            derive_traits: [],
+            body: StatementBlock {
+                terms: [],
+                span: 0..0,
+            },
+            span: 100..120,
+        },
+        UnionDeclaration {
+            document: DocumentationNode {
+                documentation: "",
+                span: 0..0,
+            },
+            modifiers: ModifiersNode {
+                terms: [],
+            },
+            name: Identifier("", 0..0),
+            layout: None,
+            derive_traits: [],
+            body: StatementBlock {
+                terms: [],
+                span: 0..0,
+            },
+            span: 150..242,
+        },
+        UnionDeclaration {
+            document: DocumentationNode {
+                documentation: "",
+                span: 0..0,
+            },
+            modifiers: ModifiersNode {
+                terms: [],
+            },
+            name: Identifier("", 0..0),
+            layout: None,
+            derive_traits: [],
+            body: StatementBlock {
+                terms: [],
+                span: 0..0,
+            },
+            span: 275..402,
+        },
+        UnionDeclaration {
+            document: DocumentationNode {
+                documentation: "",
+                span: 0..0,
+            },
+            modifiers: ModifiersNode {
+                terms: [],
+            },
+            name: Identifier("", 0..0),
+            layout: None,
+            derive_traits: [],
+            body: StatementBlock {
+                terms: [],
+                span: 0..0,
+            },
+            span: 404..603,
+        },
+        UnionDeclaration {
+            document: DocumentationNode {
+                documentation: "",
+                span: 0..0,
+            },
+            modifiers: ModifiersNode {
+                terms: [],
+            },
+            name: Identifier("", 0..0),
+            layout: None,
+            derive_traits: [],
+            body: StatementBlock {
+                terms: [],
+                span: 0..0,
+            },
+            span: 630..683,
+        },
+        UnionDeclaration {
+            document: DocumentationNode {
+                documentation: "",
+                span: 0..0,
+            },
+            modifiers: ModifiersNode {
+                terms: [],
+            },
+            name: Identifier("", 0..0),
+            layout: None,
+            derive_traits: [],
+            body: StatementBlock {
+                terms: [],
+                span: 0..0,
+            },
+            span: 704..820,
+        },
+        UnionDeclaration {
+            document: DocumentationNode {
+                documentation: "",
+                span: 0..0,
+            },
+            modifiers: ModifiersNode {
+                terms: [],
+            },
+            name: Identifier("", 0..0),
+            layout: None,
+            derive_traits: [],
+            body: StatementBlock {
+                terms: [],
+                span: 0..0,
+            },
+            span: 822..939,
+        },
+        UnionDeclaration {
+            document: DocumentationNode {
+                documentation: "",
+                span: 0..0,
+            },
+            modifiers: ModifiersNode {
+                terms: [],
+            },
+            name: Identifier("", 0..0),
+            layout: None,
+            derive_traits: [],
+            body: StatementBlock {
+                terms: [],
+                span: 0..0,
+            },
+            span: 941..1513,
+        },
+        ExtendsStatement {
+            methods: [],
+        },
+    ],
+}

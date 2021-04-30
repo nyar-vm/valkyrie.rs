@@ -43,13 +43,30 @@ impl crate::TuplePatternNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<PatternNode> {
         let mut errors = vec![];
         let mut terms = vec![];
-        for node in &self.tuple_pattern_item {
+        for node in &self.pattern_item {
             node.build(ctx).append(&mut terms, &mut errors)
         }
         let tuple = TuplePatternNode { bind: None, name: None, terms, span: Default::default() };
         Success { value: PatternNode::Tuple(Box::new(tuple)), diagnostics: errors }
     }
 }
+impl crate::PatternItemNode {
+    pub fn build(&self, ctx: &ProgramContext) -> Validation<PatternNode> {
+        let value = match self {
+            Self::OmitDict => PatternNode::Atom(Box::new(IdentifierPattern {
+                modifiers: Default::default(),
+                identifier: IdentifierNode { name: "".to_string(), span: Default::default() },
+            })),
+            Self::OmitList => PatternNode::Atom(Box::new(IdentifierPattern {
+                modifiers: Default::default(),
+                identifier: IdentifierNode { name: "".to_string(), span: Default::default() },
+            })),
+            Self::TuplePatternItem(v) => v.build(ctx)?,
+        };
+        Success { value, diagnostics: vec![] }
+    }
+}
+
 impl crate::TuplePatternItemNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<PatternNode> {
         let mut errors = vec![];

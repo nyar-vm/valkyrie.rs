@@ -1,0 +1,56 @@
+ProgramRoot {
+    statements: [
+        TraitDeclaration {
+            name: Identifier("", 0..0),
+            fields: [],
+            methods: [],
+        },
+        TraitDeclaration {
+            name: Identifier("", 0..0),
+            fields: [],
+            methods: [],
+        },
+        TraitDeclaration {
+            name: Identifier("", 0..0),
+            fields: [],
+            methods: [],
+        },
+        TraitDeclaration {
+            name: Identifier("", 0..0),
+            fields: [],
+            methods: [],
+        },
+        TraitDeclaration {
+            name: Identifier("", 0..0),
+            fields: [],
+            methods: [],
+        },
+        TraitDeclaration {
+            name: Identifier("", 0..0),
+            fields: [],
+            methods: [],
+        },
+        ExtendsStatement {
+            methods: [],
+        },
+        TraitDeclaration {
+            name: Identifier("", 0..0),
+            fields: [],
+            methods: [],
+        },
+        TraitDeclaration {
+            name: Identifier("", 0..0),
+            fields: [],
+            methods: [],
+        },
+        ExtendsStatement {
+            methods: [],
+        },
+        ExtendsStatement {
+            methods: [],
+        },
+        ExtendsStatement {
+            methods: [],
+        },
+    ],
+}

@@ -91,6 +91,7 @@ pub enum ValkyrieRule {
     BarePattern,
     BarePatternItem,
     TuplePattern,
+    PatternItem,
     TuplePatternItem,
     WhileStatement,
     KW_WHILE,
@@ -122,6 +123,7 @@ pub enum ValkyrieRule {
     MainInfix,
     TypeInfix,
     MainSuffix,
+    TypeSuffix,
     InlineExpression,
     InlineTerm,
     InlineSuffixTerm,
@@ -129,7 +131,6 @@ pub enum ValkyrieRule {
     TypeTerm,
     TypeFactor,
     TypeSuffixTerm,
-    TypeSuffix,
     TryStatement,
     NewStatement,
     NewBlock,
@@ -308,6 +309,7 @@ impl YggdrasilRule for ValkyrieRule {
             Self::BarePattern => "",
             Self::BarePatternItem => "",
             Self::TuplePattern => "",
+            Self::PatternItem => "",
             Self::TuplePatternItem => "",
             Self::WhileStatement => "",
             Self::KW_WHILE => "",
@@ -339,6 +341,7 @@ impl YggdrasilRule for ValkyrieRule {
             Self::MainInfix => "",
             Self::TypeInfix => "",
             Self::MainSuffix => "",
+            Self::TypeSuffix => "",
             Self::InlineExpression => "",
             Self::InlineTerm => "",
             Self::InlineSuffixTerm => "",
@@ -346,7 +349,6 @@ impl YggdrasilRule for ValkyrieRule {
             Self::TypeTerm => "",
             Self::TypeFactor => "",
             Self::TypeSuffixTerm => "",
-            Self::TypeSuffix => "",
             Self::TryStatement => "",
             Self::NewStatement => "",
             Self::NewBlock => "",
@@ -726,7 +728,9 @@ pub enum KwFlagsNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct DefineUnionNode {
     pub annotation_head: AnnotationHeadNode,
+    pub define_generic: Option<DefineGenericNode>,
     pub define_inherit: Option<DefineInheritNode>,
+    pub define_template: Option<DefineTemplateNode>,
     pub identifier: IdentifierNode,
     pub kw_union: KwUnionNode,
     pub type_hint: Option<TypeHintNode>,
@@ -907,8 +911,15 @@ pub struct BarePatternItemNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct TuplePatternNode {
     pub namepath: Option<NamepathNode>,
-    pub tuple_pattern_item: Vec<TuplePatternItemNode>,
+    pub pattern_item: Vec<PatternItemNode>,
     pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum PatternItemNode {
+    OmitDict,
+    OmitList,
+    TuplePatternItem(TuplePatternItemNode),
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -916,6 +927,7 @@ pub struct TuplePatternItemNode {
     pub annotation_mix: AnnotationMixNode,
     pub colon: Option<ColonNode>,
     pub identifier: IdentifierNode,
+    pub parameter_hint: Option<ParameterHintNode>,
     pub standard_pattern: Option<StandardPatternNode>,
     pub span: Range<u32>,
 }
@@ -1149,6 +1161,12 @@ pub struct MainSuffixNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct TypeSuffixNode {
+    pub text: String,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct InlineExpressionNode {
     pub inline_term: Vec<InlineTermNode>,
     pub main_infix: Vec<MainInfixNode>,
@@ -1190,19 +1208,13 @@ pub struct TypeTermNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum TypeFactorNode {
     Leading(LeadingNode),
-    TypeFactor0(TypeExpressionNode),
+    TypeExpression(TypeExpressionNode),
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum TypeSuffixTermNode {
     GenericHide(GenericHideNode),
     TypeSuffix(TypeSuffixNode),
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct TypeSuffixNode {
-    pub text: String,
-    pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]

@@ -33,6 +33,6 @@ function tuple(): (i32, i32, char) {
 
 predicate function all_zeroes(a: &MyArray) -> bool {
     forall(lambda(i: usize) {
-        0 <= i && i < a.len() ==> a.lookup(i) == 0
+        0 <= i && i < a.len() && a.lookup(i) == 0
     })
 }

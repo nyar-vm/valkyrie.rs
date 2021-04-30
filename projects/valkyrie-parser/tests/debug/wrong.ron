@@ -1,23 +1,7 @@
 ProgramRoot {
     statements: [
-        FunctionDeclaration {
-            type: Micro,
-            namepath: NamePathNode {
-                names: [
-                    Identifier("all_zeroes", 9..19),
-                ],
-            },
-            modifiers: [],
-            attributes: None,
-            generic: None,
-            arguments: ArgumentsList {
-                terms: [],
-            },
-            return: None,
-            body: StatementBlock {
-                terms: [],
-                span: 0..0,
-            },
+        ExtendsStatement {
+            methods: [],
         },
     ],
 }

@@ -16,6 +16,10 @@ pub enum ValkyrieOperator {
     Positive,
     /// prefix operator: `-`
     Negative,
+    /// prefix type operator: `+`
+    CovariantType,
+    /// prefix type operator: `-`
+    ContravariantType,
     /// prefix operator: `&`
     Box,
     /// prefix operator: `*`
@@ -216,6 +220,7 @@ impl ValkyrieOperator {
             Self::Not => 25000,
             Self::Positive => 25000,
             Self::Negative => 25000,
+            Self::CovariantType | Self::ContravariantType => 25000,
             Self::Box => 25000,
             Self::Unbox => 25000,
             Self::Unpack { .. } => 25000,
@@ -241,6 +246,8 @@ impl ValkyrieOperator {
             Self::Concat => "++",
             Self::Positive => "+",
             Self::Negative => "-",
+            Self::CovariantType => "+",
+            Self::ContravariantType => "-",
             Self::Plus => "+",
             Self::PlusAssign => "+=",
             Self::Minus => "-",
