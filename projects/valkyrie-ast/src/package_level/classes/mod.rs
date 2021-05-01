@@ -33,11 +33,15 @@ pub struct ClassDeclaration {
     /// The traits that the class implements.
     pub auto_traits: Vec<String>,
     /// All fields declared in this block, exclude extensions.
-    pub fields: Vec<ClassFieldDeclaration>,
-    /// All fields declared in this block, exclude extensions.
-    pub methods: Vec<ClassMethodDeclaration>,
+    pub body: Vec<ClassTerm>,
     /// The range of the number.
     pub span: Range<u32>,
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum ClassTerm {
+    Method(MethodDeclaration),
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
@@ -66,7 +70,7 @@ pub struct ClassFieldDeclaration {
 /// `method()`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ClassMethodDeclaration {
+pub struct MethodDeclaration {
     /// The documentation of the node.
     pub document: DocumentationNode,
     /// The modifiers of the node.

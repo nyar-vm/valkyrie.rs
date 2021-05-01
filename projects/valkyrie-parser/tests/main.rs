@@ -15,7 +15,6 @@ use valkyrie_parser::{
 };
 use yggdrasil_rt::{OutputResult, YggdrasilError, YggdrasilParser};
 
-mod declaration;
 mod expression;
 
 mod literal;

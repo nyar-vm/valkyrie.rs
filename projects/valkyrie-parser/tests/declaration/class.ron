@@ -13,8 +13,7 @@ ProgramRoot {
             generic: None,
             base_classes: None,
             auto_traits: [],
-            fields: [],
-            methods: [],
+            body: [],
             span: 33..49,
         },
         ClassDeclaration {
@@ -26,8 +25,7 @@ ProgramRoot {
             generic: None,
             base_classes: None,
             auto_traits: [],
-            fields: [],
-            methods: [],
+            body: [],
             span: 49..67,
         },
         ClassDeclaration {
@@ -39,8 +37,7 @@ ProgramRoot {
             generic: None,
             base_classes: None,
             auto_traits: [],
-            fields: [],
-            methods: [],
+            body: [],
             span: 67..89,
         },
         ClassDeclaration {
@@ -54,8 +51,7 @@ ProgramRoot {
             generic: None,
             base_classes: None,
             auto_traits: [],
-            fields: [],
-            methods: [],
+            body: [],
             span: 89..113,
         },
         ClassDeclaration {
@@ -67,8 +63,7 @@ ProgramRoot {
             generic: None,
             base_classes: None,
             auto_traits: [],
-            fields: [],
-            methods: [],
+            body: [],
             span: 113..219,
         },
         ClassDeclaration {
@@ -80,8 +75,7 @@ ProgramRoot {
             generic: None,
             base_classes: None,
             auto_traits: [],
-            fields: [],
-            methods: [],
+            body: [],
             span: 219..329,
         },
         ClassDeclaration {
@@ -93,8 +87,7 @@ ProgramRoot {
             generic: None,
             base_classes: None,
             auto_traits: [],
-            fields: [],
-            methods: [],
+            body: [],
             span: 329..392,
         },
         ClassDeclaration {
@@ -106,8 +99,100 @@ ProgramRoot {
             generic: None,
             base_classes: None,
             auto_traits: [],
-            fields: [],
-            methods: [],
+            body: [
+                Method(
+                    MethodDeclaration {
+                        document: DocumentationNode {
+                            documentation: "",
+                            span: 0..0,
+                        },
+                        modifiers: ModifiersNode {
+                            terms: [],
+                        },
+                        method_name: NamePathNode {
+                            names: [
+                                Identifier("a", 440..441),
+                            ],
+                        },
+                        generic: None,
+                        arguments: ArgumentsList {
+                            terms: [],
+                        },
+                        return_type: None,
+                        effect_type: None,
+                        body: None,
+                    },
+                ),
+                Method(
+                    MethodDeclaration {
+                        document: DocumentationNode {
+                            documentation: "",
+                            span: 0..0,
+                        },
+                        modifiers: ModifiersNode {
+                            terms: [],
+                        },
+                        method_name: NamePathNode {
+                            names: [
+                                Identifier("a", 505..506),
+                            ],
+                        },
+                        generic: None,
+                        arguments: ArgumentsList {
+                            terms: [],
+                        },
+                        return_type: None,
+                        effect_type: None,
+                        body: None,
+                    },
+                ),
+                Method(
+                    MethodDeclaration {
+                        document: DocumentationNode {
+                            documentation: "",
+                            span: 0..0,
+                        },
+                        modifiers: ModifiersNode {
+                            terms: [],
+                        },
+                        method_name: NamePathNode {
+                            names: [
+                                Identifier("a", 600..601),
+                            ],
+                        },
+                        generic: None,
+                        arguments: ArgumentsList {
+                            terms: [],
+                        },
+                        return_type: None,
+                        effect_type: None,
+                        body: None,
+                    },
+                ),
+                Method(
+                    MethodDeclaration {
+                        document: DocumentationNode {
+                            documentation: "",
+                            span: 0..0,
+                        },
+                        modifiers: ModifiersNode {
+                            terms: [],
+                        },
+                        method_name: NamePathNode {
+                            names: [
+                                Identifier("into", 635..639),
+                            ],
+                        },
+                        generic: None,
+                        arguments: ArgumentsList {
+                            terms: [],
+                        },
+                        return_type: None,
+                        effect_type: None,
+                        body: None,
+                    },
+                ),
+            ],
             span: 392..673,
         },
         ClassDeclaration {
@@ -119,8 +204,7 @@ ProgramRoot {
             generic: None,
             base_classes: None,
             auto_traits: [],
-            fields: [],
-            methods: [],
+            body: [],
             span: 673..753,
         },
         ClassDeclaration {
@@ -138,8 +222,7 @@ ProgramRoot {
             generic: None,
             base_classes: None,
             auto_traits: [],
-            fields: [],
-            methods: [],
+            body: [],
             span: 753..883,
         },
         ClassDeclaration {
@@ -154,8 +237,7 @@ ProgramRoot {
             generic: None,
             base_classes: None,
             auto_traits: [],
-            fields: [],
-            methods: [],
+            body: [],
             span: 883..950,
         },
         ClassDeclaration {
@@ -170,8 +252,31 @@ ProgramRoot {
             generic: None,
             base_classes: None,
             auto_traits: [],
-            fields: [],
-            methods: [],
+            body: [
+                Method(
+                    MethodDeclaration {
+                        document: DocumentationNode {
+                            documentation: "",
+                            span: 0..0,
+                        },
+                        modifiers: ModifiersNode {
+                            terms: [],
+                        },
+                        method_name: NamePathNode {
+                            names: [
+                                Identifier("constructor", 1077..1088),
+                            ],
+                        },
+                        generic: None,
+                        arguments: ArgumentsList {
+                            terms: [],
+                        },
+                        return_type: None,
+                        effect_type: None,
+                        body: None,
+                    },
+                ),
+            ],
             span: 950..1103,
         },
         ClassDeclaration {
@@ -183,8 +288,77 @@ ProgramRoot {
             generic: None,
             base_classes: None,
             auto_traits: [],
-            fields: [],
-            methods: [],
+            body: [
+                Method(
+                    MethodDeclaration {
+                        document: DocumentationNode {
+                            documentation: "",
+                            span: 0..0,
+                        },
+                        modifiers: ModifiersNode {
+                            terms: [],
+                        },
+                        method_name: NamePathNode {
+                            names: [
+                                Identifier("启动", 1200..1206),
+                            ],
+                        },
+                        generic: None,
+                        arguments: ArgumentsList {
+                            terms: [],
+                        },
+                        return_type: None,
+                        effect_type: None,
+                        body: None,
+                    },
+                ),
+                Method(
+                    MethodDeclaration {
+                        document: DocumentationNode {
+                            documentation: "",
+                            span: 0..0,
+                        },
+                        modifiers: ModifiersNode {
+                            terms: [],
+                        },
+                        method_name: NamePathNode {
+                            names: [
+                                Identifier("value", 1298..1303),
+                            ],
+                        },
+                        generic: None,
+                        arguments: ArgumentsList {
+                            terms: [],
+                        },
+                        return_type: None,
+                        effect_type: None,
+                        body: None,
+                    },
+                ),
+                Method(
+                    MethodDeclaration {
+                        document: DocumentationNode {
+                            documentation: "",
+                            span: 0..0,
+                        },
+                        modifiers: ModifiersNode {
+                            terms: [],
+                        },
+                        method_name: NamePathNode {
+                            names: [
+                                Identifier("value", 1348..1353),
+                            ],
+                        },
+                        generic: None,
+                        arguments: ArgumentsList {
+                            terms: [],
+                        },
+                        return_type: None,
+                        effect_type: None,
+                        body: None,
+                    },
+                ),
+            ],
             span: 1103..1384,
         },
         ClassDeclaration {
@@ -196,8 +370,123 @@ ProgramRoot {
             generic: None,
             base_classes: None,
             auto_traits: [],
-            fields: [],
-            methods: [],
+            body: [
+                Method(
+                    MethodDeclaration {
+                        document: DocumentationNode {
+                            documentation: "",
+                            span: 0..0,
+                        },
+                        modifiers: ModifiersNode {
+                            terms: [],
+                        },
+                        method_name: NamePathNode {
+                            names: [
+                                Identifier("property", 1512..1520),
+                            ],
+                        },
+                        generic: None,
+                        arguments: ArgumentsList {
+                            terms: [],
+                        },
+                        return_type: None,
+                        effect_type: None,
+                        body: None,
+                    },
+                ),
+                Method(
+                    MethodDeclaration {
+                        document: DocumentationNode {
+                            documentation: "",
+                            span: 0..0,
+                        },
+                        modifiers: ModifiersNode {
+                            terms: [],
+                        },
+                        method_name: NamePathNode {
+                            names: [
+                                Identifier("property", 1535..1543),
+                            ],
+                        },
+                        generic: None,
+                        arguments: ArgumentsList {
+                            terms: [],
+                        },
+                        return_type: None,
+                        effect_type: None,
+                        body: None,
+                    },
+                ),
+                Method(
+                    MethodDeclaration {
+                        document: DocumentationNode {
+                            documentation: "",
+                            span: 0..0,
+                        },
+                        modifiers: ModifiersNode {
+                            terms: [],
+                        },
+                        method_name: NamePathNode {
+                            names: [
+                                Identifier("method", 1554..1560),
+                            ],
+                        },
+                        generic: None,
+                        arguments: ArgumentsList {
+                            terms: [],
+                        },
+                        return_type: None,
+                        effect_type: None,
+                        body: None,
+                    },
+                ),
+                Method(
+                    MethodDeclaration {
+                        document: DocumentationNode {
+                            documentation: "",
+                            span: 0..0,
+                        },
+                        modifiers: ModifiersNode {
+                            terms: [],
+                        },
+                        method_name: NamePathNode {
+                            names: [
+                                Identifier("/", 1591..1594),
+                            ],
+                        },
+                        generic: None,
+                        arguments: ArgumentsList {
+                            terms: [],
+                        },
+                        return_type: None,
+                        effect_type: None,
+                        body: None,
+                    },
+                ),
+                Method(
+                    MethodDeclaration {
+                        document: DocumentationNode {
+                            documentation: "",
+                            span: 0..0,
+                        },
+                        modifiers: ModifiersNode {
+                            terms: [],
+                        },
+                        method_name: NamePathNode {
+                            names: [
+                                Identifier("join", 1681..1685),
+                            ],
+                        },
+                        generic: None,
+                        arguments: ArgumentsList {
+                            terms: [],
+                        },
+                        return_type: None,
+                        effect_type: None,
+                        body: None,
+                    },
+                ),
+            ],
             span: 1384..1766,
         },
         ClassDeclaration {
@@ -209,8 +498,7 @@ ProgramRoot {
             generic: None,
             base_classes: None,
             auto_traits: [],
-            fields: [],
-            methods: [],
+            body: [],
             span: 1766..1828,
         },
         ClassDeclaration {
@@ -222,8 +510,31 @@ ProgramRoot {
             generic: None,
             base_classes: None,
             auto_traits: [],
-            fields: [],
-            methods: [],
+            body: [
+                Method(
+                    MethodDeclaration {
+                        document: DocumentationNode {
+                            documentation: "",
+                            span: 0..0,
+                        },
+                        modifiers: ModifiersNode {
+                            terms: [],
+                        },
+                        method_name: NamePathNode {
+                            names: [
+                                Identifier("try_add", 2055..2062),
+                            ],
+                        },
+                        generic: None,
+                        arguments: ArgumentsList {
+                            terms: [],
+                        },
+                        return_type: None,
+                        effect_type: None,
+                        body: None,
+                    },
+                ),
+            ],
             span: 1828..2112,
         },
     ],

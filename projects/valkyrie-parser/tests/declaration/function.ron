@@ -241,8 +241,7 @@ ProgramRoot {
             generic: None,
             base_classes: None,
             auto_traits: [],
-            fields: [],
-            methods: [],
+            body: [],
             span: 1715..1776,
         },
         ExtendsStatement {

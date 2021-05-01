@@ -10,10 +10,7 @@ ProgramRoot {
             modifiers: [],
             layout: None,
             implements: [],
-            body: StatementBlock {
-                terms: [],
-                span: 0..0,
-            },
+            body: [],
             span: 0..19,
         },
         FlagDeclaration {
@@ -26,10 +23,7 @@ ProgramRoot {
             modifiers: [],
             layout: None,
             implements: [],
-            body: StatementBlock {
-                terms: [],
-                span: 0..0,
-            },
+            body: [],
             span: 21..61,
         },
         FlagDeclaration {
@@ -42,10 +36,7 @@ ProgramRoot {
             modifiers: [],
             layout: None,
             implements: [],
-            body: StatementBlock {
-                terms: [],
-                span: 0..0,
-            },
+            body: [],
             span: 62..104,
         },
         FlagDeclaration {
@@ -58,10 +49,7 @@ ProgramRoot {
             modifiers: [],
             layout: None,
             implements: [],
-            body: StatementBlock {
-                terms: [],
-                span: 0..0,
-            },
+            body: [],
             span: 105..191,
         },
         FlagDeclaration {
@@ -74,10 +62,7 @@ ProgramRoot {
             modifiers: [],
             layout: None,
             implements: [],
-            body: StatementBlock {
-                terms: [],
-                span: 0..0,
-            },
+            body: [],
             span: 192..260,
         },
         FlagDeclaration {
@@ -90,10 +75,7 @@ ProgramRoot {
             modifiers: [],
             layout: None,
             implements: [],
-            body: StatementBlock {
-                terms: [],
-                span: 0..0,
-            },
+            body: [],
             span: 261..337,
         },
         FlagDeclaration {
@@ -106,10 +88,7 @@ ProgramRoot {
             modifiers: [],
             layout: None,
             implements: [],
-            body: StatementBlock {
-                terms: [],
-                span: 0..0,
-            },
+            body: [],
             span: 339..445,
         },
     ],

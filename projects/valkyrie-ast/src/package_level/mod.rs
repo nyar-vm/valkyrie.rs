@@ -16,10 +16,10 @@ pub mod unions;
 pub mod traits;
 
 use crate::{
-    helper::WrapDisplay, AnnotationList, AnnotationNode, ArgumentsList, ClassDeclaration, ClassFieldDeclaration,
-    ClassMethodDeclaration, ControlNode, DocumentationNode, ExpressionNode, ExpressionType, ExtendsStatement, FlagDeclaration,
-    FlagFieldDeclaration, ForLoop, FunctionDeclaration, FunctionEffectNode, FunctionReturnNode, GuardStatement, IdentifierNode,
-    ImportStatement, ModifiersNode, NamePathNode, NamespaceDeclaration, ParametersList, PatternNode, StatementBlock,
+    helper::WrapDisplay, AnnotationList, AnnotationNode, ArgumentsList, ClassDeclaration, ClassFieldDeclaration, ControlNode,
+    DocumentationNode, EncodeDeclaration, ExpressionNode, ExpressionType, ExtendsStatement, FlagDeclaration, ForLoop,
+    FunctionDeclaration, FunctionEffectNode, FunctionReturnNode, GuardStatement, IdentifierNode, ImportStatement,
+    MethodDeclaration, ModifiersNode, NamePathNode, NamespaceDeclaration, ParametersList, PatternNode, StatementBlock,
     StatementNode, StringTextNode, TaggedDeclaration, TraitDeclaration, UnionDeclaration, UnionFieldDeclaration,
     VariableDeclaration, VariantDeclaration, WhileLoop,
 };

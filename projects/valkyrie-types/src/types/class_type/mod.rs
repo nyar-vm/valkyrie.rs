@@ -1,31 +1,13 @@
 use super::*;
 
+use crate::ValkyrieID;
 use indexmap::IndexMap;
 use nyar_error::FileSpan;
 use shredder::Scanner;
 
-#[derive(Clone, Debug, Eq, PartialEq, Hash)]
-pub struct ValkyrieSymbol {
-    namepath: Vec<String>,
-    location: FileSpan,
-}
-
-impl ValkyrieSymbol {
-    pub fn namepath(&self) -> &[String] {
-        &self.namepath
-    }
-    pub fn namespace(&self) -> &[String] {
-        assert!(self.namepath.len() > 0);
-        unsafe { self.namepath.get_unchecked(..self.namepath.len() - 1) }
-    }
-    pub fn name(&self) -> &str {
-        self.namepath.last().unwrap_or_default()
-    }
-}
-
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct ValkyrieClassType {
-    name: ValkyrieSymbol,
+    name: ValkyrieID,
     items: IndexMap<String, ValkyrieValue>,
 }
 
@@ -46,26 +28,15 @@ unsafe impl Scan for ValkyrieClassType {
 }
 
 impl ValkyrieClassType {
-    pub fn new<S>(name: S) -> Self
-    where
-        S: Into<String>,
-    {
-        Self { name: ValkyrieSymbol { namepath: Vec::new(), location: name.into() }, items: IndexMap::new() }
+    pub fn new(name: ValkyrieID) -> Self {
+        Self { name, items: IndexMap::new() }
     }
-    pub fn set_namespace<I>(&mut self, space: I)
-    where
-        I: IntoIterator<Item = String>,
-    {
-        self.name.namepath = space.into_iter().collect();
+    pub fn namespace(&self) -> &[String] {
+        self.name.namespace()
     }
-    pub fn with_namespace<I>(mut self, space: I) -> Self
-    where
-        I: IntoIterator<Item = String>,
-    {
-        self.set_namespace(space);
-        self
+    pub fn name(&self) -> &str {
+        self.name.name()
     }
-
     pub fn clear(&mut self) {
         self.items.clear();
     }

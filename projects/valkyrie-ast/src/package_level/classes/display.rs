@@ -12,7 +12,7 @@ impl PrettyPrint for ClassDeclaration {
         }
         terms += " ";
         let block = SoftBlock::curly_braces().with_joint(PrettyTree::text(";").append(PrettyTree::Hardline));
-        terms += block.join_slice(&self.fields, theme);
+        terms += block.join_slice(&self.body, theme);
         terms += block.join_slice(&self.methods, theme);
         terms.into()
     }
@@ -26,7 +26,7 @@ impl Lispify for ClassDeclaration {
         lisp += Lisp::keyword("define/class");
         lisp += self.name.lispify();
         lisp += self.modifiers.lispify();
-        for item in &self.fields {
+        for item in &self.body {
             lisp += item.lispify();
         }
         for item in &self.methods {
@@ -76,7 +76,7 @@ impl Lispify for ClassFieldDeclaration {
     }
 }
 
-impl PrettyPrint for ClassMethodDeclaration {
+impl PrettyPrint for MethodDeclaration {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(10);
         terms += self.modifiers.pretty(theme);
@@ -103,7 +103,7 @@ impl PrettyPrint for ClassMethodDeclaration {
     }
 }
 #[cfg(feature = "lispify")]
-impl Lispify for ClassMethodDeclaration {
+impl Lispify for MethodDeclaration {
     type Output = Lisp;
 
     fn lispify(&self) -> Self::Output {

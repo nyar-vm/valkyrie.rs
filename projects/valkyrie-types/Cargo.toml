@@ -38,7 +38,11 @@ features = ["json5"]
 version = "0.1.*"
 path = "../valkyrie-ast"
 
-[dev-dependencies]
+[dev-dependencies.valkyrie-parser]
+version = "0.2.*"
+path = "../valkyrie-parser"
+
+
 
 [features]
 default = []

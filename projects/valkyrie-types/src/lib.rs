@@ -33,7 +33,10 @@ pub use self::{
         dict::ValkyrieDict,
         list::{ValkyrieList, ValkyrieOrdinal},
     },
-    definitions::{classes::ValkyrieStructure, ids::ValkyrieID, interfaces::ValkyrieInterface, names::ValkyrieName},
+    definitions::{
+        classes::ValkyrieStructure, enumerates::ValkyrieEnumerate, ids::ValkyrieID, interfaces::ValkyrieInterface,
+        names::ValkyrieName,
+    },
     functions::{ValkyrieFunction, ValkyrieFunctionType, ValkyrieMonomorphicFunction},
     modifiers::{FeatureType, InitializeType, MutableType},
     types::{
@@ -42,7 +45,7 @@ pub use self::{
     },
     values::ValkyrieValue,
 };
-pub use nyar_error::{NyarError as ValkyrieError, NyarResult as ValkyrieResult, RuntimeError, SyntaxError};
+pub use nyar_error::{NyarError as ValkyrieError, Result as ValkyrieResult, RuntimeError, SyntaxError};
 pub use nyar_number::{Num, NyarReal as ValkyrieNumber, One, Zero};
 pub use shredder::Gc;
 pub use valkyrie_ast::ValkyrieOperator;

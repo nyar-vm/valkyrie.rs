@@ -25,7 +25,7 @@ pub enum StatementNode {
     /// The enumerate declaration node.
     Enumerate(Box<FlagDeclaration>),
     /// The enumerates field declaration node.
-    EnumerateField(Box<FlagFieldDeclaration>),
+    EnumerateField(Box<EncodeDeclaration>),
     /// The tagged union declaration node.
     Tagged(Box<TaggedDeclaration>),
     /// The tagged union's variant declaration node.

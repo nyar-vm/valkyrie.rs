@@ -1,4 +1,14 @@
 use super::*;
+
+impl Debug for FlagTerm {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        match self {
+            Self::Encode(v) => Debug::fmt(v, f),
+            Self::Method(v) => Debug::fmt(v, f),
+        }
+    }
+}
+
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for FlagDeclaration {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
@@ -11,7 +21,7 @@ impl PrettyPrint for FlagDeclaration {
     }
 }
 #[cfg(feature = "pretty-print")]
-impl PrettyPrint for FlagFieldDeclaration {
+impl PrettyPrint for EncodeDeclaration {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(3);
         terms += self.name.pretty(theme);

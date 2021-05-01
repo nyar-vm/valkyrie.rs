@@ -112,8 +112,7 @@ ProgramRoot {
             generic: None,
             base_classes: None,
             auto_traits: [],
-            fields: [],
-            methods: [],
+            body: [],
             span: 115..251,
         },
         FunctionDeclaration {

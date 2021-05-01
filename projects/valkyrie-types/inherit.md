@@ -26,8 +26,6 @@ class A {
 ## 委派类
 
 ```vk
-
-
 delegate class Monad<T>: A [
 
 ]
