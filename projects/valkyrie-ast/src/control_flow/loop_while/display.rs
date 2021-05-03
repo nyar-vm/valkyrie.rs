@@ -18,7 +18,7 @@ impl PrettyPrint for WhileLoop {
         terms += theme.keyword("while");
         terms += " ";
         terms += self.condition.pretty(theme);
-        terms += self.then_body.pretty(theme);
+        terms += self.then.pretty(theme);
         terms.into()
     }
 }
@@ -28,7 +28,7 @@ impl Lispify for WhileLoop {
     type Output = Lisp;
 
     fn lispify(&self) -> Self::Output {
-        let mut lisp = Lisp::new(self.then_body.terms.len() + 1);
+        let mut lisp = Lisp::new(self.then.terms.len() + 1);
         match self.kind {
             WhileLoopKind::While => {
                 lisp += Lisp::keyword("while");
@@ -38,7 +38,7 @@ impl Lispify for WhileLoop {
             }
         }
         lisp += self.condition.lispify();
-        for term in &self.then_body.terms {
+        for term in &self.then.terms {
             lisp += term.lispify();
         }
         lisp

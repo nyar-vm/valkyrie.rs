@@ -24,7 +24,7 @@ pub use crate::{
         jmp_if::{BreakStatement, ElseStatement, IfBranchNode, IfStatement, JumpStatement},
         jmp_switch::SwitchStatement,
         loop_for::{ForBarePattern, ForLoop},
-        loop_while::{OtherwiseStatement, WhileConditionNode, WhileLoop, WhileLoopKind},
+        loop_while::{WhileConditionNode, WhileLoop, WhileLoopKind},
     },
     expression_level::{
         annotations::{AnnotationKind, AnnotationList, AnnotationNode, AnnotationPathNode, AnnotationTerm, ModifiersNode},

@@ -38,17 +38,9 @@ pub struct WhileLoop {
     /// The condition of the loop
     pub condition: WhileConditionNode,
     /// The main body of the loop
-    pub then_body: StatementBlock,
-    /// If the loop does not execute once, execute this statement.
-    pub otherwise: Option<OtherwiseStatement>,
+    pub then: StatementBlock,
     /// The range of the node
     pub span: Range<u32>,
-}
-
-impl ValkyrieNode for WhileLoop {
-    fn get_range(&self) -> Range<usize> {
-        Range { start: self.span.start as usize, end: self.span.end as usize }
-    }
 }
 
 /// The kind of while loop, including `while` and `until`
@@ -71,11 +63,8 @@ pub enum WhileConditionNode {
     Expression(Box<ExpressionNode>),
 }
 
-/// `otherwise { ... }`
-#[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct OtherwiseStatement {
-    pub terms: Vec<StatementNode>,
-    /// The range of the node
-    pub span: Range<u32>,
+impl ValkyrieNode for WhileLoop {
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
+    }
 }

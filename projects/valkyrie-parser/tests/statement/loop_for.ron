@@ -22,9 +22,15 @@ ProgramRoot {
                 ),
                 iterator: Placeholder,
                 condition: None,
-                then_body: StatementBlock {
-                    terms: [],
-                    span: 0..0,
+                then: StatementBlock {
+                    terms: [
+                        ExpressionNode {
+                            omit: false,
+                            body: looping,
+                            span: 20..28,
+                        },
+                    ],
+                    span: 14..29,
                 },
                 span: 0..32,
             },
@@ -52,9 +58,9 @@ ProgramRoot {
                 ),
                 iterator: Placeholder,
                 condition: None,
-                then_body: StatementBlock {
+                then: StatementBlock {
                     terms: [],
-                    span: 0..0,
+                    span: 51..55,
                 },
                 span: 32..56,
             },
@@ -82,9 +88,9 @@ ProgramRoot {
                 ),
                 iterator: Placeholder,
                 condition: None,
-                then_body: StatementBlock {
+                then: StatementBlock {
                     terms: [],
-                    span: 0..0,
+                    span: 92..96,
                 },
                 span: 58..97,
             },
@@ -120,9 +126,54 @@ ProgramRoot {
                 ),
                 iterator: Placeholder,
                 condition: None,
-                then_body: StatementBlock {
-                    terms: [],
-                    span: 0..0,
+                then: StatementBlock {
+                    terms: [
+                        ExpressionNode {
+                            omit: false,
+                            body: ForLoop {
+                                pattern: Tuple(
+                                    TuplePatternNode {
+                                        bind: None,
+                                        name: None,
+                                        terms: [
+                                            Atom(
+                                                IdentifierPattern {
+                                                    modifiers: ModifiersNode {
+                                                        terms: [],
+                                                    },
+                                                    identifier: Identifier("i", 129..130),
+                                                },
+                                            ),
+                                            Atom(
+                                                IdentifierPattern {
+                                                    modifiers: ModifiersNode {
+                                                        terms: [],
+                                                    },
+                                                    identifier: Identifier("j", 132..133),
+                                                },
+                                            ),
+                                        ],
+                                        span: 0..0,
+                                    },
+                                ),
+                                iterator: Placeholder,
+                                condition: None,
+                                then: StatementBlock {
+                                    terms: [
+                                        ExpressionNode {
+                                            omit: false,
+                                            body: looping,
+                                            span: 153..165,
+                                        },
+                                    ],
+                                    span: 143..166,
+                                },
+                                span: 124..167,
+                            },
+                            span: 124..167,
+                        },
+                    ],
+                    span: 118..168,
                 },
                 span: 99..171,
             },
@@ -158,9 +209,15 @@ ProgramRoot {
                 ),
                 iterator: Placeholder,
                 condition: None,
-                then_body: StatementBlock {
-                    terms: [],
-                    span: 0..0,
+                then: StatementBlock {
+                    terms: [
+                        ExpressionNode {
+                            omit: false,
+                            body: looping,
+                            span: 210..218,
+                        },
+                    ],
+                    span: 204..219,
                 },
                 span: 171..221,
             },

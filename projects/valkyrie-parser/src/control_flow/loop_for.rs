@@ -8,7 +8,7 @@ impl crate::ForStatementNode {
                 pattern: self.let_pattern.build(ctx)?,
                 iterator: Default::default(),
                 condition: None,
-                then_body: Default::default(),
+                then: self.continuation.build(ctx)?,
                 span: self.span.clone(),
             },
             diagnostics: vec![],
