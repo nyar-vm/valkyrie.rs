@@ -1,23 +1,31 @@
 ProgramRoot {
     statements: [
-        WhileLoop {
-            kind: While,
-            condition: Unconditional,
-            then_body: StatementBlock {
-                terms: [],
-                span: 0..0,
+        ExpressionNode {
+            omit: false,
+            body: WhileLoop {
+                kind: While,
+                condition: Unconditional,
+                then_body: StatementBlock {
+                    terms: [],
+                    span: 0..0,
+                },
+                otherwise: None,
+                span: 0..10,
             },
-            otherwise: None,
             span: 0..10,
         },
-        WhileLoop {
-            kind: While,
-            condition: Unconditional,
-            then_body: StatementBlock {
-                terms: [],
-                span: 0..0,
+        ExpressionNode {
+            omit: false,
+            body: WhileLoop {
+                kind: While,
+                condition: Unconditional,
+                then_body: StatementBlock {
+                    terms: [],
+                    span: 0..0,
+                },
+                otherwise: None,
+                span: 10..166,
             },
-            otherwise: None,
             span: 10..166,
         },
     ],

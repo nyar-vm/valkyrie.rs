@@ -17,7 +17,7 @@ pub struct UnionDeclaration {
     pub name: IdentifierNode,
     pub layout: Option<String>,
     pub derive_traits: Vec<String>,
-    pub body: StatementBlock,
+    pub body: Vec<UnionTerm>,
     /// The text range of the statement
     pub span: Range<u32>,
 }
@@ -46,9 +46,3 @@ pub struct UnionFieldDeclaration {
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct UnionMethodDeclaration {}
-
-/// The iterator for [`UnionDeclaration`]
-#[derive(Clone, Debug)]
-pub struct UnionIterator<'a> {
-    inner: core::slice::Iter<'a, StatementNode>,
-}

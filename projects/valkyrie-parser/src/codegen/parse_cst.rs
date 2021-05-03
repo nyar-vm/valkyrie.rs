@@ -70,7 +70,6 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::ForStatement => parse_for_statement(state),
         ValkyrieRule::IfGuard => parse_if_guard(state),
         ValkyrieRule::MainStatement => parse_main_statement(state),
-        ValkyrieRule::ExpressionStatement => parse_expression_statement(state),
         ValkyrieRule::MatchExpression => parse_match_expression(state),
         ValkyrieRule::SwitchStatement => parse_switch_statement(state),
         ValkyrieRule::MatchTerms => parse_match_terms(state),
@@ -675,6 +674,7 @@ fn parse_class_block(state: Input) -> Output {
 fn parse_class_term(state: Input) -> Output {
     state.rule(ValkyrieRule::ClassTerm, |s| {
         Err(s)
+            .or_else(|s| parse_procedural_call(s).and_then(|s| s.tag_node("procedural_call")))
             .or_else(|s| parse_define_method(s).and_then(|s| s.tag_node("define_method")))
             .or_else(|s| parse_define_domain(s).and_then(|s| s.tag_node("define_domain")))
             .or_else(|s| parse_define_field(s).and_then(|s| s.tag_node("define_field")))
@@ -847,6 +847,7 @@ fn parse_define_enumerate(state: Input) -> Output {
 fn parse_flag_term(state: Input) -> Output {
     state.rule(ValkyrieRule::FlagTerm, |s| {
         Err(s)
+            .or_else(|s| parse_procedural_call(s).and_then(|s| s.tag_node("procedural_call")))
             .or_else(|s| parse_define_method(s).and_then(|s| s.tag_node("define_method")))
             .or_else(|s| parse_flag_field(s).and_then(|s| s.tag_node("flag_field")))
             .or_else(|s| parse_eos_free(s).and_then(|s| s.tag_node("eos_free")))
@@ -919,6 +920,7 @@ fn parse_define_union(state: Input) -> Output {
 fn parse_union_term(state: Input) -> Output {
     state.rule(ValkyrieRule::UnionTerm, |s| {
         Err(s)
+            .or_else(|s| parse_procedural_call(s).and_then(|s| s.tag_node("procedural_call")))
             .or_else(|s| parse_define_method(s).and_then(|s| s.tag_node("define_method")))
             .or_else(|s| parse_define_variant(s).and_then(|s| s.tag_node("define_variant")))
             .or_else(|s| parse_eos_free(s).and_then(|s| s.tag_node("eos_free")))
@@ -1489,15 +1491,6 @@ fn parse_if_guard(state: Input) -> Output {
 #[inline]
 fn parse_main_statement(state: Input) -> Output {
     state.rule(ValkyrieRule::MainStatement, |s| {
-        Err(s)
-            .or_else(|s| parse_while_statement(s).and_then(|s| s.tag_node("while_statement")))
-            .or_else(|s| parse_for_statement(s).and_then(|s| s.tag_node("for_statement")))
-            .or_else(|s| parse_expression_statement(s).and_then(|s| s.tag_node("expression_statement")))
-    })
-}
-#[inline]
-fn parse_expression_statement(state: Input) -> Output {
-    state.rule(ValkyrieRule::ExpressionStatement, |s| {
         s.sequence(|s| {
             Ok(s)
                 .and_then(|s| {
@@ -1838,6 +1831,8 @@ fn parse_main_factor(state: Input) -> Output {
         Err(s)
             .or_else(|s| parse_switch_statement(s).and_then(|s| s.tag_node("switch_statement")))
             .or_else(|s| parse_try_statement(s).and_then(|s| s.tag_node("try_statement")))
+            .or_else(|s| parse_while_statement(s).and_then(|s| s.tag_node("while_statement")))
+            .or_else(|s| parse_for_statement(s).and_then(|s| s.tag_node("for_statement")))
             .or_else(|s| parse_match_expression(s).and_then(|s| s.tag_node("match_expression")))
             .or_else(|s| parse_define_lambda(s).and_then(|s| s.tag_node("define_lambda")))
             .or_else(|s| parse_object_statement(s).and_then(|s| s.tag_node("object_statement")))

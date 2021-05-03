@@ -1,6 +1,6 @@
 use crate::{helpers::ProgramContext, OpNamespaceNode};
 use nyar_error::{Success, Validation};
-use valkyrie_ast::{ImportStatement, NamespaceDeclaration, NamespaceKind, ProgramRoot, StatementNode};
+use valkyrie_ast::{ExpressionNode, ImportStatement, NamespaceDeclaration, NamespaceKind, ProgramRoot, StatementNode};
 mod import;
 mod namespace;
 
@@ -35,11 +35,9 @@ impl crate::StatementNode {
 
 impl crate::MainStatementNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<StatementNode> {
-        let value = match self {
-            Self::ExpressionStatement(v) => v.build(ctx)?.into(),
-            Self::ForStatement(v) => v.build(ctx)?.into(),
-            Self::WhileStatement(v) => v.build(ctx)?.into(),
-        };
-        Success { value, diagnostics: vec![] }
+        let expr = self.main_expression.build(ctx)?;
+        let eos = self.eos.is_some();
+        let ex = ExpressionNode { omit: eos, body: expr, span: self.span.clone() };
+        Success { value: StatementNode::Expression(Box::new(ex)), diagnostics: vec![] }
     }
 }

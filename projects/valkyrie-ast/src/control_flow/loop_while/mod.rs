@@ -1,4 +1,5 @@
 use super::*;
+use crate::ForLoop;
 
 #[cfg(feature = "pretty-print")]
 mod display;
@@ -42,6 +43,12 @@ pub struct WhileLoop {
     pub otherwise: Option<OtherwiseStatement>,
     /// The range of the node
     pub span: Range<u32>,
+}
+
+impl ValkyrieNode for WhileLoop {
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
+    }
 }
 
 /// The kind of while loop, including `while` and `until`

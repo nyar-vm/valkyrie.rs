@@ -15,10 +15,7 @@ ProgramRoot {
             name: Identifier("", 0..0),
             layout: None,
             derive_traits: [],
-            body: StatementBlock {
-                terms: [],
-                span: 0..0,
-            },
+            body: [],
             span: 100..120,
         },
         UnionDeclaration {
@@ -32,10 +29,7 @@ ProgramRoot {
             name: Identifier("", 0..0),
             layout: None,
             derive_traits: [],
-            body: StatementBlock {
-                terms: [],
-                span: 0..0,
-            },
+            body: [],
             span: 150..242,
         },
         UnionDeclaration {
@@ -49,10 +43,7 @@ ProgramRoot {
             name: Identifier("", 0..0),
             layout: None,
             derive_traits: [],
-            body: StatementBlock {
-                terms: [],
-                span: 0..0,
-            },
+            body: [],
             span: 275..402,
         },
         UnionDeclaration {
@@ -66,10 +57,7 @@ ProgramRoot {
             name: Identifier("", 0..0),
             layout: None,
             derive_traits: [],
-            body: StatementBlock {
-                terms: [],
-                span: 0..0,
-            },
+            body: [],
             span: 404..603,
         },
         UnionDeclaration {
@@ -83,10 +71,7 @@ ProgramRoot {
             name: Identifier("", 0..0),
             layout: None,
             derive_traits: [],
-            body: StatementBlock {
-                terms: [],
-                span: 0..0,
-            },
+            body: [],
             span: 630..683,
         },
         UnionDeclaration {
@@ -100,10 +85,7 @@ ProgramRoot {
             name: Identifier("", 0..0),
             layout: None,
             derive_traits: [],
-            body: StatementBlock {
-                terms: [],
-                span: 0..0,
-            },
+            body: [],
             span: 704..820,
         },
         UnionDeclaration {
@@ -117,10 +99,7 @@ ProgramRoot {
             name: Identifier("", 0..0),
             layout: None,
             derive_traits: [],
-            body: StatementBlock {
-                terms: [],
-                span: 0..0,
-            },
+            body: [],
             span: 822..939,
         },
         UnionDeclaration {
@@ -134,10 +113,7 @@ ProgramRoot {
             name: Identifier("", 0..0),
             layout: None,
             derive_traits: [],
-            body: StatementBlock {
-                terms: [],
-                span: 0..0,
-            },
+            body: [],
             span: 941..1513,
         },
         ExtendsStatement {

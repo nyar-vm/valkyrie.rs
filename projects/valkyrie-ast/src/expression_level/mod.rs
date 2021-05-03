@@ -121,6 +121,10 @@ pub enum ExpressionType {
     Match(Box<MatchStatement>),
     /// - Standalone expression
     Try(Box<TryStatement>),
+    /// The while loop statement node.
+    While(Box<WhileLoop>),
+    /// The for loop statement node.
+    For(Box<ForLoop>),
     /// - Postfix expression
     ApplyCall(Box<ApplyCallNode>),
     /// - Postfix expression

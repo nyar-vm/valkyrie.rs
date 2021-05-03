@@ -42,7 +42,11 @@ pub struct ForLoop {
     /// The range of the node
     pub span: Range<u32>,
 }
-
+impl ValkyrieNode for ForLoop {
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
+    }
+}
 /// `for ref a, mut b in {...}`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub struct ForBarePattern {

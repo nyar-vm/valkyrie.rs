@@ -11,6 +11,7 @@ impl crate::DefineClassNode {
                 ClassTermNode::DefineField(_) => {}
                 ClassTermNode::DefineMethod(v) => v.build(ctx).map(ClassTerm::Method).append(&mut terms, &mut errors),
                 ClassTermNode::EosFree(_) => {}
+                ClassTermNode::ProceduralCall(_) => {}
             }
         }
         Success {

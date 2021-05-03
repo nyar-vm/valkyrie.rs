@@ -110,6 +110,7 @@ class ClassBlock {
     '{' ClassTerm* '}'
 }
 union ClassTerm {
+    | ProceduralCall
     | DefineMethod
     | DefineDomain
     | DefineField
@@ -154,6 +155,7 @@ class DefineEnumerate {
     KW_FLAGS Identifier DefineInherit? TypeHint? '{' FlagTerm* '}'
 }
 union FlagTerm {
+    | ProceduralCall
     | DefineMethod
     | FlagField
     | EOS_FREE
@@ -174,6 +176,7 @@ class DefineUnion {
     KW_UNION Identifier DefineGeneric? DefineInherit? TypeHint? '{' UnionTerm* '}'
 }
 union UnionTerm {
+    | ProceduralCall
     | DefineMethod
     | DefineVariant
     | EOS_FREE
@@ -294,12 +297,7 @@ class IfGuard {
     KW_IF InlineExpression
 }
 // === expression === --------------------------------------------------------------------------------------------------
-union MainStatement {
-    | WhileStatement
-    | ForStatement
-    | ExpressionStatement
-}
-class ExpressionStatement {
+class MainStatement {
     AnnotationTerm* MainExpression OP_AND_THEN? EOS?
 }
 // === match/catch/switch === ------------------------------------------------------------------------------------------
@@ -365,6 +363,8 @@ atomic class MainTerm {
 union MainFactor {
     | SwitchStatement
     | TryStatement
+    | WhileStatement
+    | ForStatement
     | MatchExpression
     | DefineLambda
     | ObjectStatement

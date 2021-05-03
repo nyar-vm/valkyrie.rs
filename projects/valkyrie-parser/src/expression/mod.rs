@@ -1,4 +1,4 @@
-use crate::helpers::ProgramContext;
+use crate::{helpers::ProgramContext, MainFactorNode};
 use nyar_error::{NyarError, Success, Validate, Validation};
 use pratt::{Affix, PrattParser, Precedence};
 use std::str::FromStr;
@@ -9,14 +9,6 @@ mod call_dot_closure;
 mod call_dot_match;
 mod call_generic;
 mod operators;
-
-impl crate::ExpressionStatementNode {
-    pub fn build(&self, ctx: &ProgramContext) -> Validation<ExpressionNode> {
-        let expr = self.main_expression.build(ctx)?;
-        let eos = self.eos.is_some();
-        Success { value: ExpressionNode { omit: eos, body: expr, span: self.span.clone() }, diagnostics: vec![] }
-    }
-}
 
 impl crate::MainExpressionNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<ExpressionType> {
@@ -155,6 +147,8 @@ impl crate::MainFactorNode {
             Self::TryStatement(v) => v.build(ctx).map(Into::into),
             Self::MatchExpression(v) => v.build(ctx).map(Into::into),
             Self::SwitchStatement(v) => v.build(ctx).map(Into::into),
+            Self::ForStatement(v) => v.build(ctx).map(Into::into),
+            Self::WhileStatement(v) => v.build(ctx).map(Into::into),
         }
     }
 }

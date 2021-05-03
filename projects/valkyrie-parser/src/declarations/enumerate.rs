@@ -7,6 +7,7 @@ impl crate::DefineEnumerateNode {
         let mut errors = vec![];
         for term in &self.flag_term {
             match term {
+                FlagTermNode::ProceduralCall(_) => {}
                 FlagTermNode::DefineMethod(v) => v.build(ctx).map(FlagTerm::Method).append(&mut terms, &mut errors),
                 FlagTermNode::FlagField(v) => v.build(ctx).map(FlagTerm::Encode).append(&mut terms, &mut errors),
                 FlagTermNode::EosFree(_) => {}
@@ -17,7 +18,7 @@ impl crate::DefineEnumerateNode {
                 documentation: Default::default(),
                 kind: self.kw_flags.build(),
                 name: self.identifier.build(ctx),
-                modifiers: vec![],
+                modifiers: ModifiersNode::default(),
                 layout: None,
                 implements: vec![],
                 body: Default::default(),

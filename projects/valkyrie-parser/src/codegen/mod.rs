@@ -98,7 +98,6 @@ pub enum ValkyrieRule {
     ForStatement,
     IfGuard,
     MainStatement,
-    ExpressionStatement,
     MatchExpression,
     SwitchStatement,
     MatchTerms,
@@ -316,7 +315,6 @@ impl YggdrasilRule for ValkyrieRule {
             Self::ForStatement => "",
             Self::IfGuard => "",
             Self::MainStatement => "",
-            Self::ExpressionStatement => "",
             Self::MatchExpression => "",
             Self::SwitchStatement => "",
             Self::MatchTerms => "",
@@ -628,6 +626,7 @@ pub enum ClassTermNode {
     DefineField(DefineFieldNode),
     DefineMethod(DefineMethodNode),
     EosFree(EosFreeNode),
+    ProceduralCall(ProceduralCallNode),
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -710,6 +709,7 @@ pub enum FlagTermNode {
     DefineMethod(DefineMethodNode),
     EosFree(EosFreeNode),
     FlagField(FlagFieldNode),
+    ProceduralCall(ProceduralCallNode),
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -743,6 +743,7 @@ pub enum UnionTermNode {
     DefineMethod(DefineMethodNode),
     DefineVariant(DefineVariantNode),
     EosFree(EosFreeNode),
+    ProceduralCall(ProceduralCallNode),
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -965,14 +966,7 @@ pub struct IfGuardNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum MainStatementNode {
-    ExpressionStatement(ExpressionStatementNode),
-    ForStatement(ForStatementNode),
-    WhileStatement(WhileStatementNode),
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ExpressionStatementNode {
+pub struct MainStatementNode {
     pub annotation_term: Vec<AnnotationTermNode>,
     pub eos: Option<EosNode>,
     pub main_expression: MainExpressionNode,
@@ -1095,6 +1089,7 @@ pub struct MainTermNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum MainFactorNode {
     DefineLambda(DefineLambdaNode),
+    ForStatement(ForStatementNode),
     GroupFactor(GroupFactorNode),
     Leading(LeadingNode),
     MatchExpression(MatchExpressionNode),
@@ -1102,6 +1097,7 @@ pub enum MainFactorNode {
     ObjectStatement(ObjectStatementNode),
     SwitchStatement(SwitchStatementNode),
     TryStatement(TryStatementNode),
+    WhileStatement(WhileStatementNode),
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]

@@ -75,6 +75,8 @@ impl ValkyrieNode for ExpressionType {
     fn get_range(&self) -> Range<usize> {
         match self {
             Self::Placeholder => unreachable!(),
+            Self::Null(node) => node.get_range(),
+            Self::Boolean(node) => node.get_range(),
             Self::Slot(node) => node.get_range(),
             Self::Symbol(node) => node.get_range(),
             Self::Number(node) => node.get_range(),
@@ -96,9 +98,9 @@ impl ValkyrieNode for ExpressionType {
             Self::Try(node) => node.get_range(),
             Self::Match(node) => node.get_range(),
             Self::DotMatchCall(node) => node.get_range(),
+            Self::While(node) => node.get_range(),
+            Self::For(node) => node.get_range(),
             Self::Formatted(node) => node.get_range(),
-            Self::Null(node) => node.get_range(),
-            Self::Boolean(node) => node.get_range(),
             Self::OutputReference(node) => node.get_range(),
             Self::Array(node) => node.get_range(),
             Self::DotCall(node) => node.get_range(),
