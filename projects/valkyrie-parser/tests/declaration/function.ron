@@ -241,7 +241,21 @@ ProgramRoot {
             generic: None,
             base_classes: None,
             auto_traits: [],
-            body: [],
+            body: [
+                FieldDeclaration {
+                    document: DocumentationNode {
+                        documentation: "",
+                        span: 0..0,
+                    },
+                    field_name: Identifier("fields", 1765..1771),
+                    modifiers: ModifiersNode {
+                        terms: [],
+                    },
+                    typing: None,
+                    default: None,
+                    span: 1765..1771,
+                },
+            ],
             span: 1715..1776,
         },
         ExtendsStatement {

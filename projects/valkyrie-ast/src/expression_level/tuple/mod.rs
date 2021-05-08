@@ -2,6 +2,7 @@ use super::*;
 
 mod display;
 
+/// The receiver type of the tuple literal
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum TupleKind {

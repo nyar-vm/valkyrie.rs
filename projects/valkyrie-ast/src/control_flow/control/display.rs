@@ -1,5 +1,23 @@
 use super::*;
 
+impl ControlType {
+    /// Convert to keywords
+    pub fn as_str(&self) -> &'static str {
+        match self {
+            Self::Goto => "goto",
+            Self::Break => "break",
+            Self::Continue => "continue",
+            Self::Fallthrough => "fallthrough",
+            Self::Return => "return",
+            Self::Resume => "resume",
+            Self::Yield => "yield",
+            Self::YieldReturn => "yield return",
+            Self::YieldBreak => "yield break",
+            Self::YieldFrom => "yield from",
+        }
+    }
+}
+
 impl Display for ControlType {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         f.write_str(self.as_str())

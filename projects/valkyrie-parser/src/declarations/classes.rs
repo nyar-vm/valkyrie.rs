@@ -7,11 +7,11 @@ impl crate::DefineClassNode {
         let mut errors = vec![];
         for term in &self.class_block.class_term {
             match term {
+                ClassTermNode::ProceduralCall(_) => {}
                 ClassTermNode::DefineDomain(_) => {}
-                ClassTermNode::DefineField(_) => {}
+                ClassTermNode::DefineField(v) => v.build(ctx).map(ClassTerm::Field).append(&mut terms, &mut errors),
                 ClassTermNode::DefineMethod(v) => v.build(ctx).map(ClassTerm::Method).append(&mut terms, &mut errors),
                 ClassTermNode::EosFree(_) => {}
-                ClassTermNode::ProceduralCall(_) => {}
             }
         }
         Success {
@@ -38,6 +38,23 @@ impl KwClassNode {
         }
     }
 }
+impl crate::DefineFieldNode {
+    pub fn build(&self, ctx: &ProgramContext) -> Validation<FieldDeclaration> {
+        let name = self.identifier.build(ctx);
+        Success {
+            value: FieldDeclaration {
+                document: Default::default(),
+                modifiers: Default::default(),
+                field_name: name,
+                typing: None,
+                default: None,
+                span: self.span.clone(),
+            },
+            diagnostics: vec![],
+        }
+    }
+}
+
 impl crate::DefineMethodNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<MethodDeclaration> {
         let name = self.namepath.build(ctx);
@@ -51,6 +68,7 @@ impl crate::DefineMethodNode {
                 return_type: None,
                 effect_type: None,
                 body: None,
+                span: self.span.clone(),
             },
             diagnostics: vec![],
         }

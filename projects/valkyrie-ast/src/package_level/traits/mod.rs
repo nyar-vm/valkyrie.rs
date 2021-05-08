@@ -13,7 +13,7 @@ pub struct TraitDeclaration {
     /// The name of the trait
     pub name: IdentifierNode,
     /// the needed fields(zero parameter method, get + set)
-    pub fields: Vec<ClassFieldDeclaration>,
+    pub fields: Vec<FieldDeclaration>,
     /// Method actually needed
     pub methods: Vec<MethodDeclaration>,
 }

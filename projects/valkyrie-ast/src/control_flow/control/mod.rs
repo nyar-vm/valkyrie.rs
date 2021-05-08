@@ -48,6 +48,8 @@ pub enum ControlType {
     Return,
     /// `resume DivideZero()`
     Resume,
+    /// `yield`
+    Yield,
     /// `yield return?`
     YieldReturn,
     /// `yield break`
@@ -58,21 +60,5 @@ pub enum ControlType {
 impl ValkyrieNode for RaiseNode {
     fn get_range(&self) -> Range<usize> {
         Range { start: self.span.start as usize, end: self.span.end as usize }
-    }
-}
-impl ControlType {
-    /// Convert to keywords
-    pub fn as_str(&self) -> &'static str {
-        match self {
-            Self::Goto => "goto",
-            Self::Break => "break",
-            Self::Continue => "continue",
-            Self::Fallthrough => "fallthrough",
-            Self::Return => "return",
-            Self::Resume => "resume",
-            Self::YieldReturn => "yield",
-            Self::YieldBreak => "yield break",
-            Self::YieldFrom => "yield from",
-        }
     }
 }

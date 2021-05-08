@@ -1,7 +1,6 @@
 use super::*;
 use crate::helper::ValkyrieNode;
 
-#[cfg(feature = "pretty-print")]
 mod display;
 
 mod iters;
@@ -38,12 +37,17 @@ pub struct ClassDeclaration {
     pub span: Range<u32>,
 }
 
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Clone, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum ClassTerm {
+    Field(FieldDeclaration),
     Method(MethodDeclaration),
+    Domain(DomainDeclaration),
 }
 
+/// `object: Trait { ... }`
+///
+/// Construct an anonymous object
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ConstructObjectNode {
@@ -56,14 +60,18 @@ pub struct ConstructObjectNode {
 /// `field: Type = default`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ClassFieldDeclaration {
-    /// The documentation of the node.
+pub struct FieldDeclaration {
+    /// The documentation of the declaration.
     pub document: DocumentationNode,
-    pub modifiers: ModifiersNode,
+    /// The name of this field
     pub field_name: IdentifierNode,
-    pub r#type: Option<ExpressionNode>,
+    /// The modifiers of the declaration.
+    pub modifiers: ModifiersNode,
+    /// The type hint of this field
+    pub typing: Option<ExpressionNode>,
+    /// The default value of this field
     pub default: Option<ExpressionNode>,
-    /// The range of the node
+    /// The range of the declaration.
     pub span: Range<u32>,
 }
 
@@ -87,15 +95,14 @@ pub struct MethodDeclaration {
     pub effect_type: Option<FunctionEffectNode>,
     /// `{ body }`
     pub body: Option<StatementBlock>,
+    /// The range of the declaration.
+    pub span: Range<u32>,
 }
-
-impl ClassKind {
-    pub fn as_str(&self) -> &'static str {
-        match self {
-            ClassKind::Class => "class",
-            ClassKind::Structure => "structure",
-        }
-    }
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct DomainDeclaration {
+    /// The range of the declaration.
+    pub span: Range<u32>,
 }
 
 impl ValkyrieNode for ConstructObjectNode {

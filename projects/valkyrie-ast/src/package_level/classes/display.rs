@@ -1,6 +1,23 @@
 use super::*;
-use pretty_print::helpers::SoftBlock;
 
+impl Debug for ClassTerm {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        match self {
+            Self::Field(v) => Debug::fmt(v, f),
+            Self::Method(v) => Debug::fmt(v, f),
+            Self::Domain(v) => Debug::fmt(v, f),
+        }
+    }
+}
+impl ClassKind {
+    pub fn as_str(&self) -> &'static str {
+        match self {
+            Self::Class => "class",
+            Self::Structure => "structure",
+        }
+    }
+}
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for ClassDeclaration {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(4);
@@ -35,8 +52,8 @@ impl Lispify for ClassDeclaration {
         lisp
     }
 }
-
-impl PrettyPrint for ClassFieldDeclaration {
+#[cfg(feature = "pretty-print")]
+impl PrettyPrint for FieldDeclaration {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(4);
         terms += self.modifiers.pretty(theme);
@@ -56,7 +73,7 @@ impl PrettyPrint for ClassFieldDeclaration {
     }
 }
 #[cfg(feature = "lispify")]
-impl Lispify for ClassFieldDeclaration {
+impl Lispify for FieldDeclaration {
     type Output = Lisp;
 
     fn lispify(&self) -> Self::Output {
@@ -75,7 +92,7 @@ impl Lispify for ClassFieldDeclaration {
         lisp
     }
 }
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for MethodDeclaration {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(10);
