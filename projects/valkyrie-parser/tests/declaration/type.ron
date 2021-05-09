@@ -112,7 +112,57 @@ ProgramRoot {
             generic: None,
             base_classes: None,
             auto_traits: [],
-            body: [],
+            body: [
+                DomainDeclaration {
+                    body: [
+                        MethodDeclaration {
+                            document: DocumentationNode {
+                                documentation: "",
+                                span: 0..0,
+                            },
+                            modifiers: ModifiersNode {
+                                terms: [],
+                            },
+                            method_name: NamePathNode {
+                                names: [
+                                    Identifier("requires", 165..173),
+                                ],
+                            },
+                            generic: None,
+                            arguments: ArgumentsList {
+                                terms: [],
+                            },
+                            return_type: None,
+                            effect_type: None,
+                            body: None,
+                            span: 165..209,
+                        },
+                        MethodDeclaration {
+                            document: DocumentationNode {
+                                documentation: "",
+                                span: 0..0,
+                            },
+                            modifiers: ModifiersNode {
+                                terms: [],
+                            },
+                            method_name: NamePathNode {
+                                names: [
+                                    Identifier("ensures", 218..225),
+                                ],
+                            },
+                            generic: None,
+                            arguments: ArgumentsList {
+                                terms: [],
+                            },
+                            return_type: None,
+                            effect_type: None,
+                            body: None,
+                            span: 218..240,
+                        },
+                    ],
+                    span: 148..246,
+                },
+            ],
             span: 115..251,
         },
         FunctionDeclaration {

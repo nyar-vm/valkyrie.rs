@@ -6,7 +6,7 @@ impl crate::DefineUnionNode {
             value: UnionDeclaration {
                 document: Default::default(),
                 modifiers: Default::default(),
-                name: IdentifierNode { name: "".to_string(), span: Default::default() },
+                name: self.identifier.build(ctx),
                 layout: None,
                 derive_traits: vec![],
                 body: Default::default(),
@@ -17,7 +17,7 @@ impl crate::DefineUnionNode {
     }
 }
 
-impl KwUnionNode {
+impl crate::KwUnionNode {
     // pub fn build(&self) -> FunctionType {
     //     match self {
     //

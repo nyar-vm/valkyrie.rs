@@ -18,7 +18,7 @@ impl crate::DefineFunctionNode {
     }
 }
 
-impl KwFunctionNode {
+impl crate::KwFunctionNode {
     pub fn build(&self) -> FunctionType {
         match self {
             Self::Micro => FunctionType::Micro,

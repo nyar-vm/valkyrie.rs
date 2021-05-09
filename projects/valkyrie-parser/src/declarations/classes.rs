@@ -1,19 +1,9 @@
 use super::*;
-use crate::ClassTermNode;
 
 impl crate::DefineClassNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<ClassDeclaration> {
-        let mut terms = vec![];
         let mut errors = vec![];
-        for term in &self.class_block.class_term {
-            match term {
-                ClassTermNode::ProceduralCall(_) => {}
-                ClassTermNode::DefineDomain(_) => {}
-                ClassTermNode::DefineField(v) => v.build(ctx).map(ClassTerm::Field).append(&mut terms, &mut errors),
-                ClassTermNode::DefineMethod(v) => v.build(ctx).map(ClassTerm::Method).append(&mut terms, &mut errors),
-                ClassTermNode::EosFree(_) => {}
-            }
-        }
+        let body = self.class_block.build(ctx).recover(&mut errors)?;
         Success {
             value: ClassDeclaration {
                 kind: self.kw_class.build(),
@@ -22,7 +12,7 @@ impl crate::DefineClassNode {
                 generic: None,
                 base_classes: None,
                 auto_traits: vec![],
-                body: terms,
+                body,
                 span: self.span.clone(),
             },
             diagnostics: errors,
@@ -30,7 +20,23 @@ impl crate::DefineClassNode {
     }
 }
 
-impl KwClassNode {
+impl crate::ClassBlockNode {
+    pub fn build(&self, ctx: &ProgramContext) -> Validation<Vec<ClassTerm>> {
+        let mut terms = vec![];
+        let mut errors = vec![];
+        for term in &self.class_term {
+            match term {
+                crate::ClassTermNode::ProceduralCall(_) => {}
+                crate::ClassTermNode::DefineDomain(v) => v.build(ctx).map(ClassTerm::Domain).append(&mut terms, &mut errors),
+                crate::ClassTermNode::DefineField(v) => v.build(ctx).map(ClassTerm::Field).append(&mut terms, &mut errors),
+                crate::ClassTermNode::DefineMethod(v) => v.build(ctx).map(ClassTerm::Method).append(&mut terms, &mut errors),
+                crate::ClassTermNode::EosFree(_) => {}
+            }
+        }
+        Success { value: terms, diagnostics: errors }
+    }
+}
+impl crate::KwClassNode {
     pub fn build(&self) -> ClassKind {
         match self {
             Self::Class => ClassKind::Class,
@@ -70,6 +76,15 @@ impl crate::DefineMethodNode {
                 body: None,
                 span: self.span.clone(),
             },
+            diagnostics: vec![],
+        }
+    }
+}
+impl crate::DefineDomainNode {
+    pub fn build(&self, ctx: &ProgramContext) -> Validation<DomainDeclaration> {
+        // let name = self.class_block;
+        Success {
+            value: DomainDeclaration { body: self.class_block.build(ctx)?, span: self.span.clone() },
             diagnostics: vec![],
         }
     }

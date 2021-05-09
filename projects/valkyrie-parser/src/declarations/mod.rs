@@ -8,8 +8,6 @@ mod unions;
 mod def_var;
 mod extends;
 
-use crate::{
-    DefineExtendsNode, KwClassNode, KwFlagsNode, KwFunctionNode, KwTraitNode, KwUnionNode, ModifierCallNode, ProgramContext,
-};
-use nyar_error::{Success, Validation};
+use crate::ProgramContext;
+use nyar_error::{Success, Validate, Validation};
 use valkyrie_ast::*;

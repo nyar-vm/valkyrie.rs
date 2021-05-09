@@ -1,6 +1,6 @@
 use super::*;
 
-impl DefineExtendsNode {
+impl crate::DefineExtendsNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<ExtendsStatement> {
         Success { value: ExtendsStatement { methods: vec![] }, diagnostics: vec![] }
     }

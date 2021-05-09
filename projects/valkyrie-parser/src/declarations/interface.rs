@@ -13,7 +13,7 @@ impl crate::DefineTraitNode {
     }
 }
 
-impl KwTraitNode {
+impl crate::KwTraitNode {
     // pub fn build(&self) -> FunctionType {
     //     match self {
     //

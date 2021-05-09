@@ -44,7 +44,9 @@ pub use crate::{
         ExpressionContext, ExpressionNode, ExpressionType, PostfixCallPart, TypingExpression,
     },
     package_level::{
-        classes::{ClassDeclaration, ClassKind, ClassTerm, ConstructObjectNode, FieldDeclaration, MethodDeclaration},
+        classes::{
+            ClassDeclaration, ClassKind, ClassTerm, ConstructObjectNode, DomainDeclaration, FieldDeclaration, MethodDeclaration,
+        },
         documentation::DocumentationNode,
         flags::{EncodeDeclaration, FlagDeclaration, FlagKind, FlagTerm},
         function::{

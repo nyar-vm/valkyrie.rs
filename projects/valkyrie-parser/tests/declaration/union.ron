@@ -12,7 +12,7 @@ ProgramRoot {
             modifiers: ModifiersNode {
                 terms: [],
             },
-            name: Identifier("", 0..0),
+            name: Identifier("Union1", 111..117),
             layout: None,
             derive_traits: [],
             body: [],
@@ -26,7 +26,7 @@ ProgramRoot {
             modifiers: ModifiersNode {
                 terms: [],
             },
-            name: Identifier("", 0..0),
+            name: Identifier("Union2", 167..173),
             layout: None,
             derive_traits: [],
             body: [],
@@ -40,7 +40,7 @@ ProgramRoot {
             modifiers: ModifiersNode {
                 terms: [],
             },
-            name: Identifier("", 0..0),
+            name: Identifier("Union3", 293..299),
             layout: None,
             derive_traits: [],
             body: [],
@@ -54,7 +54,7 @@ ProgramRoot {
             modifiers: ModifiersNode {
                 terms: [],
             },
-            name: Identifier("", 0..0),
+            name: Identifier("Union4", 410..416),
             layout: None,
             derive_traits: [],
             body: [],
@@ -68,7 +68,7 @@ ProgramRoot {
             modifiers: ModifiersNode {
                 terms: [],
             },
-            name: Identifier("", 0..0),
+            name: Identifier("A", 636..637),
             layout: None,
             derive_traits: [],
             body: [],
@@ -82,7 +82,7 @@ ProgramRoot {
             modifiers: ModifiersNode {
                 terms: [],
             },
-            name: Identifier("", 0..0),
+            name: Identifier("Option", 710..716),
             layout: None,
             derive_traits: [],
             body: [],
@@ -96,7 +96,7 @@ ProgramRoot {
             modifiers: ModifiersNode {
                 terms: [],
             },
-            name: Identifier("", 0..0),
+            name: Identifier("Result", 845..851),
             layout: None,
             derive_traits: [],
             body: [],
@@ -110,7 +110,7 @@ ProgramRoot {
             modifiers: ModifiersNode {
                 terms: [],
             },
-            name: Identifier("", 0..0),
+            name: Identifier("Validation", 947..957),
             layout: None,
             derive_traits: [],
             body: [],

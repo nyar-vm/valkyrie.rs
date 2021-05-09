@@ -102,6 +102,8 @@ pub struct MethodDeclaration {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct DomainDeclaration {
     /// The range of the declaration.
+    pub body: Vec<ClassTerm>,
+    /// The range of the declaration.
     pub span: Range<u32>,
 }
 

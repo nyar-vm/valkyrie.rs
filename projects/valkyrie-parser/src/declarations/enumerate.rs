@@ -29,7 +29,7 @@ impl crate::DefineEnumerateNode {
     }
 }
 
-impl KwFlagsNode {
+impl crate::KwFlagsNode {
     pub fn build(&self) -> FlagKind {
         match self {
             Self::Enum => FlagKind::Exclusive,
