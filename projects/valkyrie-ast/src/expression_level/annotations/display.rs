@@ -16,13 +16,13 @@ impl Display for AnnotationPathNode {
         Ok(())
     }
 }
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for AnnotationKind {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         theme.annotation(self.as_str())
     }
 }
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for AnnotationNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(2);
@@ -31,7 +31,7 @@ impl PrettyPrint for AnnotationNode {
         terms.into()
     }
 }
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for AnnotationList {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(self.terms.len());
@@ -44,7 +44,7 @@ impl PrettyPrint for AnnotationList {
         terms.into()
     }
 }
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for AnnotationTerm {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(3);
@@ -54,12 +54,19 @@ impl PrettyPrint for AnnotationTerm {
         terms.into()
     }
 }
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for AnnotationPathNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         theme.annotation(self.to_string())
     }
 }
+
+impl Debug for ModifiersNode {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        f.debug_list().entries(self.terms.iter()).finish()
+    }
+}
+
 #[cfg(feature = "lispify")]
 impl Lispify for ModifiersNode {
     type Output = Lisp;

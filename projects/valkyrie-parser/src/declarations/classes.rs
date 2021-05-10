@@ -7,12 +7,13 @@ impl crate::DefineClassNode {
         Success {
             value: ClassDeclaration {
                 kind: self.kw_class.build(),
-                modifiers: self.annotation_head.get_modifiers(ctx),
+                document: Default::default(),
+                modifiers: self.annotation_head.modifiers(ctx),
                 name: self.identifier.build(ctx),
                 generic: None,
                 base_classes: None,
                 auto_traits: vec![],
-                body,
+                terms: body,
                 span: self.span.clone(),
             },
             diagnostics: errors,
@@ -50,8 +51,8 @@ impl crate::DefineFieldNode {
         Success {
             value: FieldDeclaration {
                 document: Default::default(),
-                modifiers: Default::default(),
-                field_name: name,
+                modifiers: self.annotation_mix.modifiers(ctx),
+                name: name,
                 typing: None,
                 default: None,
                 span: self.span.clone(),
@@ -67,7 +68,7 @@ impl crate::DefineMethodNode {
         Success {
             value: MethodDeclaration {
                 document: Default::default(),
-                modifiers: Default::default(),
+                modifiers: self.annotation_mix.modifiers(ctx),
                 method_name: name,
                 generic: None,
                 arguments: Default::default(),
@@ -80,6 +81,7 @@ impl crate::DefineMethodNode {
         }
     }
 }
+
 impl crate::DefineDomainNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<DomainDeclaration> {
         // let name = self.class_block;

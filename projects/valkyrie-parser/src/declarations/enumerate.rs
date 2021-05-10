@@ -15,10 +15,10 @@ impl crate::DefineEnumerateNode {
         }
         Success {
             value: FlagDeclaration {
-                documentation: Default::default(),
+                documentation: self.annotation_head.document(ctx),
                 kind: self.kw_flags.build(),
                 name: self.identifier.build(ctx),
-                modifiers: ModifiersNode::default(),
+                modifiers: self.annotation_head.modifiers(ctx),
                 layout: None,
                 implements: vec![],
                 body: Default::default(),

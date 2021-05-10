@@ -10,9 +10,7 @@ ProgramRoot {
                         terms: [
                             Atom(
                                 IdentifierPattern {
-                                    modifiers: ModifiersNode {
-                                        terms: [],
-                                    },
+                                    modifiers: [],
                                     identifier: Identifier("i", 4..5),
                                 },
                             ),
@@ -46,9 +44,7 @@ ProgramRoot {
                         terms: [
                             Atom(
                                 IdentifierPattern {
-                                    modifiers: ModifiersNode {
-                                        terms: [],
-                                    },
+                                    modifiers: [],
                                     identifier: Identifier("i", 36..37),
                                 },
                             ),
@@ -76,9 +72,7 @@ ProgramRoot {
                         terms: [
                             Atom(
                                 IdentifierPattern {
-                                    modifiers: ModifiersNode {
-                                        terms: [],
-                                    },
+                                    modifiers: [],
                                     identifier: Identifier("i", 62..63),
                                 },
                             ),
@@ -106,17 +100,13 @@ ProgramRoot {
                         terms: [
                             Atom(
                                 IdentifierPattern {
-                                    modifiers: ModifiersNode {
-                                        terms: [],
-                                    },
+                                    modifiers: [],
                                     identifier: Identifier("k", 104..105),
                                 },
                             ),
                             Atom(
                                 IdentifierPattern {
-                                    modifiers: ModifiersNode {
-                                        terms: [],
-                                    },
+                                    modifiers: [],
                                     identifier: Identifier("v", 107..108),
                                 },
                             ),
@@ -138,17 +128,13 @@ ProgramRoot {
                                         terms: [
                                             Atom(
                                                 IdentifierPattern {
-                                                    modifiers: ModifiersNode {
-                                                        terms: [],
-                                                    },
+                                                    modifiers: [],
                                                     identifier: Identifier("i", 129..130),
                                                 },
                                             ),
                                             Atom(
                                                 IdentifierPattern {
-                                                    modifiers: ModifiersNode {
-                                                        terms: [],
-                                                    },
+                                                    modifiers: [],
                                                     identifier: Identifier("j", 132..133),
                                                 },
                                             ),
@@ -189,17 +175,13 @@ ProgramRoot {
                         terms: [
                             Atom(
                                 IdentifierPattern {
-                                    modifiers: ModifiersNode {
-                                        terms: [],
-                                    },
+                                    modifiers: [],
                                     identifier: Identifier("k", 176..177),
                                 },
                             ),
                             Atom(
                                 IdentifierPattern {
-                                    modifiers: ModifiersNode {
-                                        terms: [],
-                                    },
+                                    modifiers: [],
                                     identifier: Identifier("v", 183..184),
                                 },
                             ),

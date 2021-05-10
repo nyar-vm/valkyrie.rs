@@ -233,24 +233,24 @@ ProgramRoot {
             },
         },
         ClassDeclaration {
-            kind: Class,
-            modifiers: ModifiersNode {
-                terms: [],
-            },
             name: Identifier("TClass", 1752..1758),
+            kind: Class,
+            document: DocumentationNode {
+                documentation: "",
+                span: 0..0,
+            },
+            modifiers: [],
             generic: None,
             base_classes: None,
             auto_traits: [],
-            body: [
+            terms: [
                 FieldDeclaration {
+                    name: Identifier("fields", 1765..1771),
                     document: DocumentationNode {
                         documentation: "",
                         span: 0..0,
                     },
-                    field_name: Identifier("fields", 1765..1771),
-                    modifiers: ModifiersNode {
-                        terms: [],
-                    },
+                    modifiers: [],
                     typing: None,
                     default: None,
                     span: 1765..1771,

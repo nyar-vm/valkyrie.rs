@@ -17,7 +17,7 @@ impl Lispify for TraitDeclaration {
         for field in &self.fields {
             let mut inside = Lisp::new(10);
             inside += Lisp::keyword("trait/field");
-            inside += Lisp::string(field.field_name.to_string());
+            inside += Lisp::string(field.name.to_string());
             out += inside;
         }
         for field in &self.methods {

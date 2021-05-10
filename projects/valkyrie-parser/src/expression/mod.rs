@@ -4,6 +4,7 @@ use pratt::{Affix, PrattParser, Precedence};
 use std::str::FromStr;
 use valkyrie_ast::*;
 
+mod annotations;
 mod call_dot;
 mod call_dot_closure;
 mod call_dot_match;

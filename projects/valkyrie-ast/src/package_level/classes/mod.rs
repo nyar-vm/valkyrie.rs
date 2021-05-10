@@ -19,12 +19,14 @@ pub enum ClassKind {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ClassDeclaration {
-    /// The kind of class
-    pub kind: ClassKind,
-    /// The modifiers of the class.
-    pub modifiers: ModifiersNode,
     /// The name of the class.
     pub name: IdentifierNode,
+    /// The kind of class
+    pub kind: ClassKind,
+    /// The document of the class
+    pub document: DocumentationNode,
+    /// The modifiers of the class.
+    pub modifiers: ModifiersNode,
     /// The parameter arguments of the class.
     pub generic: Option<ParametersList>,
     /// The super class of the class.
@@ -32,7 +34,7 @@ pub struct ClassDeclaration {
     /// The traits that the class implements.
     pub auto_traits: Vec<String>,
     /// All fields declared in this block, exclude extensions.
-    pub body: Vec<ClassTerm>,
+    pub terms: Vec<ClassTerm>,
     /// The range of the number.
     pub span: Range<u32>,
 }
@@ -61,10 +63,10 @@ pub struct ConstructObjectNode {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct FieldDeclaration {
+    /// The name of this field
+    pub name: IdentifierNode,
     /// The documentation of the declaration.
     pub document: DocumentationNode,
-    /// The name of this field
-    pub field_name: IdentifierNode,
     /// The modifiers of the declaration.
     pub modifiers: ModifiersNode,
     /// The type hint of this field

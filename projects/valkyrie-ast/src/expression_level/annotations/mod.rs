@@ -1,5 +1,5 @@
 use super::*;
-#[cfg(feature = "pretty-print")]
+
 mod display;
 
 /// A namepath is a series of identifiers separated by dots.
@@ -72,7 +72,7 @@ pub struct AnnotationPathNode {
 /// `public static final synchronized class Main {}`
 ///
 /// - Auxiliary parsing function, not instantiable.
-#[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
+#[derive(Clone, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ModifiersNode {
     /// The modifiers in group

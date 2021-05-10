@@ -29,7 +29,7 @@ impl PrettyPrint for ClassDeclaration {
         }
         terms += " ";
         let block = SoftBlock::curly_braces().with_joint(PrettyTree::text(";").append(PrettyTree::Hardline));
-        terms += block.join_slice(&self.body, theme);
+        terms += block.join_slice(&self.terms, theme);
         terms += block.join_slice(&self.methods, theme);
         terms.into()
     }
@@ -43,7 +43,7 @@ impl Lispify for ClassDeclaration {
         lisp += Lisp::keyword("define/class");
         lisp += self.name.lispify();
         lisp += self.modifiers.lispify();
-        for item in &self.body {
+        for item in &self.terms {
             lisp += item.lispify();
         }
         for item in &self.methods {
@@ -57,7 +57,7 @@ impl PrettyPrint for FieldDeclaration {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(4);
         terms += self.modifiers.pretty(theme);
-        terms += theme.argument(self.field_name.name.to_string(), false);
+        terms += theme.argument(self.name.name.to_string(), false);
         if let Some(typing) = &self.r#type {
             terms += theme.operator(":");
             terms += " ";
@@ -79,7 +79,7 @@ impl Lispify for FieldDeclaration {
     fn lispify(&self) -> Self::Output {
         let mut lisp = Lisp::new(10);
         lisp += Lisp::keyword("class/field");
-        lisp += self.field_name.lispify();
+        lisp += self.name.lispify();
         lisp += self.modifiers.lispify();
         if let Some(typing) = &self.r#type {
             lisp += Lisp::keyword(":");

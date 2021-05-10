@@ -5,125 +5,135 @@ ProgramRoot {
             path: declaration∷classes,
         },
         ClassDeclaration {
-            kind: Class,
-            modifiers: ModifiersNode {
-                terms: [],
-            },
             name: Identifier("Base1", 39..44),
+            kind: Class,
+            document: DocumentationNode {
+                documentation: "",
+                span: 0..0,
+            },
+            modifiers: [],
             generic: None,
             base_classes: None,
             auto_traits: [],
-            body: [],
+            terms: [],
             span: 33..49,
         },
         ClassDeclaration {
-            kind: Class,
-            modifiers: ModifiersNode {
-                terms: [],
-            },
             name: Identifier("Base2", 55..60),
+            kind: Class,
+            document: DocumentationNode {
+                documentation: "",
+                span: 0..0,
+            },
+            modifiers: [],
             generic: None,
             base_classes: None,
             auto_traits: [],
-            body: [],
+            terms: [],
             span: 49..67,
         },
         ClassDeclaration {
-            kind: Structure,
-            modifiers: ModifiersNode {
-                terms: [],
-            },
             name: Identifier("Base3", 77..82),
+            kind: Structure,
+            document: DocumentationNode {
+                documentation: "",
+                span: 0..0,
+            },
+            modifiers: [],
             generic: None,
             base_classes: None,
             auto_traits: [],
-            body: [],
+            terms: [],
             span: 67..89,
         },
         ClassDeclaration {
-            kind: Class,
-            modifiers: ModifiersNode {
-                terms: [
-                    Identifier("value", 89..94),
-                ],
-            },
             name: Identifier("B", 101..102),
+            kind: Class,
+            document: DocumentationNode {
+                documentation: "",
+                span: 0..0,
+            },
+            modifiers: [
+                Identifier("value", 89..94),
+            ],
             generic: None,
             base_classes: None,
             auto_traits: [],
-            body: [],
+            terms: [],
             span: 89..113,
         },
         ClassDeclaration {
-            kind: Class,
-            modifiers: ModifiersNode {
-                terms: [],
-            },
             name: Identifier("Inherit1", 168..176),
+            kind: Class,
+            document: DocumentationNode {
+                documentation: "",
+                span: 0..0,
+            },
+            modifiers: [],
             generic: None,
             base_classes: None,
             auto_traits: [],
-            body: [],
+            terms: [],
             span: 113..219,
         },
         ClassDeclaration {
-            kind: Class,
-            modifiers: ModifiersNode {
-                terms: [],
-            },
             name: Identifier("Inherit2", 225..233),
+            kind: Class,
+            document: DocumentationNode {
+                documentation: "",
+                span: 0..0,
+            },
+            modifiers: [],
             generic: None,
             base_classes: None,
             auto_traits: [],
-            body: [
+            terms: [
                 FieldDeclaration {
+                    name: Identifier("virtual", 240..247),
                     document: DocumentationNode {
                         documentation: "",
                         span: 0..0,
                     },
-                    field_name: Identifier("virtual", 240..247),
-                    modifiers: ModifiersNode {
-                        terms: [],
-                    },
+                    modifiers: [],
                     typing: None,
                     default: None,
                     span: 240..252,
                 },
                 FieldDeclaration {
+                    name: Identifier("base1", 260..265),
                     document: DocumentationNode {
                         documentation: "",
                         span: 0..0,
                     },
-                    field_name: Identifier("base1", 260..265),
-                    modifiers: ModifiersNode {
-                        terms: [],
-                    },
+                    modifiers: [
+                        Identifier("inherit", 252..259),
+                    ],
                     typing: None,
                     default: None,
                     span: 252..272,
                 },
                 FieldDeclaration {
+                    name: Identifier("base2", 286..291),
                     document: DocumentationNode {
                         documentation: "",
                         span: 0..0,
                     },
-                    field_name: Identifier("base2", 286..291),
-                    modifiers: ModifiersNode {
-                        terms: [],
-                    },
+                    modifiers: [
+                        Identifier("inherit", 278..285),
+                    ],
                     typing: None,
                     default: None,
                     span: 278..298,
                 },
                 FieldDeclaration {
+                    name: Identifier("base3", 312..317),
                     document: DocumentationNode {
                         documentation: "",
                         span: 0..0,
                     },
-                    field_name: Identifier("base3", 312..317),
-                    modifiers: ModifiersNode {
-                        terms: [],
-                    },
+                    modifiers: [
+                        Identifier("inherit", 304..311),
+                    ],
                     typing: None,
                     default: None,
                     span: 304..324,
@@ -132,37 +142,35 @@ ProgramRoot {
             span: 219..329,
         },
         ClassDeclaration {
-            kind: Class,
-            modifiers: ModifiersNode {
-                terms: [],
-            },
             name: Identifier("B", 354..355),
+            kind: Class,
+            document: DocumentationNode {
+                documentation: "",
+                span: 0..0,
+            },
+            modifiers: [],
             generic: None,
             base_classes: None,
             auto_traits: [],
-            body: [
+            terms: [
                 FieldDeclaration {
+                    name: Identifier("item1", 362..367),
                     document: DocumentationNode {
                         documentation: "",
                         span: 0..0,
                     },
-                    field_name: Identifier("item1", 362..367),
-                    modifiers: ModifiersNode {
-                        terms: [],
-                    },
+                    modifiers: [],
                     typing: None,
                     default: None,
                     span: 362..371,
                 },
                 FieldDeclaration {
+                    name: Identifier("item2", 377..382),
                     document: DocumentationNode {
                         documentation: "",
                         span: 0..0,
                     },
-                    field_name: Identifier("item2", 377..382),
-                    modifiers: ModifiersNode {
-                        terms: [],
-                    },
+                    modifiers: [],
                     typing: None,
                     default: None,
                     span: 377..386,
@@ -171,23 +179,26 @@ ProgramRoot {
             span: 329..392,
         },
         ClassDeclaration {
-            kind: Class,
-            modifiers: ModifiersNode {
-                terms: [],
-            },
             name: Identifier("A", 398..399),
+            kind: Class,
+            document: DocumentationNode {
+                documentation: "",
+                span: 0..0,
+            },
+            modifiers: [],
             generic: None,
             base_classes: None,
             auto_traits: [],
-            body: [
+            terms: [
                 MethodDeclaration {
                     document: DocumentationNode {
                         documentation: "",
                         span: 0..0,
                     },
-                    modifiers: ModifiersNode {
-                        terms: [],
-                    },
+                    modifiers: [
+                        Identifier("pub", 429..432),
+                        Identifier("static", 433..439),
+                    ],
                     method_name: NamePathNode {
                         names: [
                             Identifier("a", 440..441),
@@ -203,14 +214,12 @@ ProgramRoot {
                     span: 429..488,
                 },
                 FieldDeclaration {
+                    name: Identifier("_a", 493..495),
                     document: DocumentationNode {
                         documentation: "",
                         span: 0..0,
                     },
-                    field_name: Identifier("_a", 493..495),
-                    modifiers: ModifiersNode {
-                        terms: [],
-                    },
+                    modifiers: [],
                     typing: None,
                     default: None,
                     span: 493..495,
@@ -220,9 +229,9 @@ ProgramRoot {
                         documentation: "",
                         span: 0..0,
                     },
-                    modifiers: ModifiersNode {
-                        terms: [],
-                    },
+                    modifiers: [
+                        Identifier("get", 501..504),
+                    ],
                     method_name: NamePathNode {
                         names: [
                             Identifier("a", 505..506),
@@ -242,9 +251,9 @@ ProgramRoot {
                         documentation: "",
                         span: 0..0,
                     },
-                    modifiers: ModifiersNode {
-                        terms: [],
-                    },
+                    modifiers: [
+                        Identifier("set", 596..599),
+                    ],
                     method_name: NamePathNode {
                         names: [
                             Identifier("a", 600..601),
@@ -264,9 +273,7 @@ ProgramRoot {
                         documentation: "",
                         span: 0..0,
                     },
-                    modifiers: ModifiersNode {
-                        terms: [],
-                    },
+                    modifiers: [],
                     method_name: NamePathNode {
                         names: [
                             Identifier("into", 635..639),
@@ -285,124 +292,128 @@ ProgramRoot {
             span: 392..673,
         },
         ClassDeclaration {
-            kind: Class,
-            modifiers: ModifiersNode {
-                terms: [],
-            },
             name: Identifier("A", 738..739),
+            kind: Class,
+            document: DocumentationNode {
+                documentation: "",
+                span: 0..0,
+            },
+            modifiers: [],
             generic: None,
             base_classes: None,
             auto_traits: [],
-            body: [],
+            terms: [],
             span: 673..753,
         },
         ClassDeclaration {
-            kind: Class,
-            modifiers: ModifiersNode {
-                terms: [
-                    Identifier("public", 803..809),
-                    Identifier("static", 810..816),
-                    Identifier("dynamic_transaction_safe", 817..841),
-                    Identifier("volatile", 842..850),
-                    Identifier("final", 851..856),
-                ],
-            },
             name: Identifier("Empty3", 863..869),
+            kind: Class,
+            document: DocumentationNode {
+                documentation: "",
+                span: 0..0,
+            },
+            modifiers: [
+                Identifier("public", 803..809),
+                Identifier("static", 810..816),
+                Identifier("dynamic_transaction_safe", 817..841),
+                Identifier("volatile", 842..850),
+                Identifier("final", 851..856),
+            ],
             generic: None,
             base_classes: None,
             auto_traits: [],
-            body: [],
+            terms: [],
             span: 753..883,
         },
         ClassDeclaration {
-            kind: Class,
-            modifiers: ModifiersNode {
-                terms: [
-                    Identifier("open", 883..887),
-                    Identifier("impart", 888..894),
-                ],
-            },
             name: Identifier("Inherit1", 901..909),
+            kind: Class,
+            document: DocumentationNode {
+                documentation: "",
+                span: 0..0,
+            },
+            modifiers: [
+                Identifier("open", 883..887),
+                Identifier("impart", 888..894),
+            ],
             generic: None,
             base_classes: None,
             auto_traits: [],
-            body: [],
+            terms: [],
             span: 883..950,
         },
         ClassDeclaration {
-            kind: Class,
-            modifiers: ModifiersNode {
-                terms: [
-                    Identifier("open", 950..954),
-                    Identifier("impart", 955..961),
-                ],
-            },
             name: Identifier("Inherit2", 968..976),
+            kind: Class,
+            document: DocumentationNode {
+                documentation: "",
+                span: 0..0,
+            },
+            modifiers: [
+                Identifier("open", 950..954),
+                Identifier("impart", 955..961),
+            ],
             generic: None,
             base_classes: None,
             auto_traits: [],
-            body: [
+            terms: [
                 FieldDeclaration {
+                    name: Identifier("virtual", 990..997),
                     document: DocumentationNode {
                         documentation: "",
                         span: 0..0,
                     },
-                    field_name: Identifier("virtual", 990..997),
-                    modifiers: ModifiersNode {
-                        terms: [],
-                    },
+                    modifiers: [
+                        Identifier("public", 983..989),
+                    ],
                     typing: None,
                     default: None,
                     span: 983..1002,
                 },
                 FieldDeclaration {
+                    name: Identifier("x_base", 1010..1016),
                     document: DocumentationNode {
                         documentation: "",
                         span: 0..0,
                     },
-                    field_name: Identifier("x_base", 1010..1016),
-                    modifiers: ModifiersNode {
-                        terms: [],
-                    },
+                    modifiers: [
+                        Identifier("inherit", 1002..1009),
+                    ],
                     typing: None,
                     default: None,
                     span: 1002..1023,
                 },
                 FieldDeclaration {
+                    name: Identifier("private", 1029..1036),
                     document: DocumentationNode {
                         documentation: "",
                         span: 0..0,
                     },
-                    field_name: Identifier("private", 1029..1036),
-                    modifiers: ModifiersNode {
-                        terms: [],
-                    },
+                    modifiers: [],
                     typing: None,
                     default: None,
                     span: 1029..1037,
                 },
                 FieldDeclaration {
+                    name: Identifier("inline", 1037..1043),
                     document: DocumentationNode {
                         documentation: "",
                         span: 0..0,
                     },
-                    field_name: Identifier("inline", 1037..1043),
-                    modifiers: ModifiersNode {
-                        terms: [],
-                    },
+                    modifiers: [],
                     typing: None,
                     default: None,
                     span: 1037..1048,
                 },
                 FieldDeclaration {
+                    name: Identifier("_y_base", 1056..1063),
                     document: DocumentationNode {
                         documentation: "",
                         span: 0..0,
                     },
-                    field_name: Identifier("_y_base", 1056..1063),
-                    modifiers: ModifiersNode {
-                        terms: [],
-                    },
+                    modifiers: [
+                        Identifier("inherit", 1048..1055),
+                    ],
                     typing: None,
                     default: None,
                     span: 1048..1070,
@@ -412,9 +423,7 @@ ProgramRoot {
                         documentation: "",
                         span: 0..0,
                     },
-                    modifiers: ModifiersNode {
-                        terms: [],
-                    },
+                    modifiers: [],
                     method_name: NamePathNode {
                         names: [
                             Identifier("constructor", 1077..1088),
@@ -433,23 +442,23 @@ ProgramRoot {
             span: 950..1103,
         },
         ClassDeclaration {
-            kind: Class,
-            modifiers: ModifiersNode {
-                terms: [],
-            },
             name: Identifier("原神", 1149..1155),
+            kind: Class,
+            document: DocumentationNode {
+                documentation: "",
+                span: 0..0,
+            },
+            modifiers: [],
             generic: None,
             base_classes: None,
             auto_traits: [],
-            body: [
+            terms: [
                 MethodDeclaration {
                     document: DocumentationNode {
                         documentation: "",
                         span: 0..0,
                     },
-                    modifiers: ModifiersNode {
-                        terms: [],
-                    },
+                    modifiers: [],
                     method_name: NamePathNode {
                         names: [
                             Identifier("启动", 1200..1206),
@@ -469,9 +478,9 @@ ProgramRoot {
                         documentation: "",
                         span: 0..0,
                     },
-                    modifiers: ModifiersNode {
-                        terms: [],
-                    },
+                    modifiers: [
+                        Identifier("get", 1294..1297),
+                    ],
                     method_name: NamePathNode {
                         names: [
                             Identifier("value", 1298..1303),
@@ -491,9 +500,9 @@ ProgramRoot {
                         documentation: "",
                         span: 0..0,
                     },
-                    modifiers: ModifiersNode {
-                        terms: [],
-                    },
+                    modifiers: [
+                        Identifier("set", 1344..1347),
+                    ],
                     method_name: NamePathNode {
                         names: [
                             Identifier("value", 1348..1353),
@@ -512,63 +521,60 @@ ProgramRoot {
             span: 1103..1384,
         },
         ClassDeclaration {
-            kind: Class,
-            modifiers: ModifiersNode {
-                terms: [],
-            },
             name: Identifier("ClassA", 1390..1396),
+            kind: Class,
+            document: DocumentationNode {
+                documentation: "",
+                span: 0..0,
+            },
+            modifiers: [],
             generic: None,
             base_classes: None,
             auto_traits: [],
-            body: [
+            terms: [
                 FieldDeclaration {
+                    name: Identifier("type", 1417..1423),
                     document: DocumentationNode {
                         documentation: "",
                         span: 0..0,
                     },
-                    field_name: Identifier("type", 1417..1423),
-                    modifiers: ModifiersNode {
-                        terms: [],
-                    },
+                    modifiers: [
+                        Identifier("public", 1403..1409),
+                        Identifier("static", 1410..1416),
+                    ],
                     typing: None,
                     default: None,
                     span: 1403..1440,
                 },
                 FieldDeclaration {
+                    name: Identifier("unknown_all", 1446..1457),
                     document: DocumentationNode {
                         documentation: "",
                         span: 0..0,
                     },
-                    field_name: Identifier("unknown_all", 1446..1457),
-                    modifiers: ModifiersNode {
-                        terms: [],
-                    },
+                    modifiers: [],
                     typing: None,
                     default: None,
                     span: 1446..1457,
                 },
                 FieldDeclaration {
+                    name: Identifier("default_value", 1463..1476),
                     document: DocumentationNode {
                         documentation: "",
                         span: 0..0,
                     },
-                    field_name: Identifier("default_value", 1463..1476),
-                    modifiers: ModifiersNode {
-                        terms: [],
-                    },
+                    modifiers: [],
                     typing: None,
                     default: None,
                     span: 1463..1479,
                 },
                 FieldDeclaration {
+                    name: Identifier("infer_type", 1485..1495),
                     document: DocumentationNode {
                         documentation: "",
                         span: 0..0,
                     },
-                    field_name: Identifier("infer_type", 1485..1495),
-                    modifiers: ModifiersNode {
-                        terms: [],
-                    },
+                    modifiers: [],
                     typing: None,
                     default: None,
                     span: 1485..1502,
@@ -578,9 +584,9 @@ ProgramRoot {
                         documentation: "",
                         span: 0..0,
                     },
-                    modifiers: ModifiersNode {
-                        terms: [],
-                    },
+                    modifiers: [
+                        Identifier("get", 1508..1511),
+                    ],
                     method_name: NamePathNode {
                         names: [
                             Identifier("property", 1512..1520),
@@ -600,9 +606,9 @@ ProgramRoot {
                         documentation: "",
                         span: 0..0,
                     },
-                    modifiers: ModifiersNode {
-                        terms: [],
-                    },
+                    modifiers: [
+                        Identifier("set", 1531..1534),
+                    ],
                     method_name: NamePathNode {
                         names: [
                             Identifier("property", 1535..1543),
@@ -622,9 +628,7 @@ ProgramRoot {
                         documentation: "",
                         span: 0..0,
                     },
-                    modifiers: ModifiersNode {
-                        terms: [],
-                    },
+                    modifiers: [],
                     method_name: NamePathNode {
                         names: [
                             Identifier("method", 1554..1560),
@@ -644,9 +648,9 @@ ProgramRoot {
                         documentation: "",
                         span: 0..0,
                     },
-                    modifiers: ModifiersNode {
-                        terms: [],
-                    },
+                    modifiers: [
+                        Identifier("infix", 1585..1590),
+                    ],
                     method_name: NamePathNode {
                         names: [
                             Identifier("/", 1591..1594),
@@ -666,9 +670,7 @@ ProgramRoot {
                         documentation: "",
                         span: 0..0,
                     },
-                    modifiers: ModifiersNode {
-                        terms: [],
-                    },
+                    modifiers: [],
                     method_name: NamePathNode {
                         names: [
                             Identifier("join", 1681..1685),
@@ -687,75 +689,81 @@ ProgramRoot {
             span: 1384..1766,
         },
         ClassDeclaration {
-            kind: Class,
-            modifiers: ModifiersNode {
-                terms: [],
-            },
             name: Identifier("TestClass", 1812..1821),
+            kind: Class,
+            document: DocumentationNode {
+                documentation: "",
+                span: 0..0,
+            },
+            modifiers: [],
             generic: None,
             base_classes: None,
             auto_traits: [],
-            body: [],
+            terms: [],
             span: 1766..1828,
         },
         ClassDeclaration {
-            kind: Class,
-            modifiers: ModifiersNode {
-                terms: [],
-            },
             name: Identifier("Class", 1865..1870),
+            kind: Class,
+            document: DocumentationNode {
+                documentation: "",
+                span: 0..0,
+            },
+            modifiers: [],
             generic: None,
             base_classes: None,
             auto_traits: [],
-            body: [
+            terms: [
                 FieldDeclaration {
+                    name: Identifier("field1", 1907..1913),
                     document: DocumentationNode {
                         documentation: "",
                         span: 0..0,
                     },
-                    field_name: Identifier("field1", 1907..1913),
-                    modifiers: ModifiersNode {
-                        terms: [],
-                    },
+                    modifiers: [
+                        Identifier("readonly", 1894..1902),
+                    ],
                     typing: None,
                     default: None,
                     span: 1884..1918,
                 },
                 FieldDeclaration {
+                    name: Identifier("field 2", 1933..1942),
                     document: DocumentationNode {
                         documentation: "",
                         span: 0..0,
                     },
-                    field_name: Identifier("field 2", 1933..1942),
-                    modifiers: ModifiersNode {
-                        terms: [],
-                    },
+                    modifiers: [
+                        Identifier("readonly", 1924..1932),
+                    ],
                     typing: None,
                     default: None,
                     span: 1924..1947,
                 },
                 FieldDeclaration {
+                    name: Identifier("main", 1985..1989),
                     document: DocumentationNode {
                         documentation: "",
                         span: 0..0,
                     },
-                    field_name: Identifier("main", 1985..1989),
-                    modifiers: ModifiersNode {
-                        terms: [],
-                    },
+                    modifiers: [
+                        Identifier("class", 1953..1960),
+                        Identifier("static", 1964..1970),
+                        Identifier("void", 1975..1979),
+                    ],
                     typing: None,
                     default: None,
                     span: 1953..1989,
                 },
                 FieldDeclaration {
+                    name: Identifier("fields", 2005..2011),
                     document: DocumentationNode {
                         documentation: "",
                         span: 0..0,
                     },
-                    field_name: Identifier("fields", 2005..2011),
-                    modifiers: ModifiersNode {
-                        terms: [],
-                    },
+                    modifiers: [
+                        Identifier("mut", 1995..1998),
+                    ],
                     typing: None,
                     default: None,
                     span: 1995..2026,
@@ -765,9 +773,7 @@ ProgramRoot {
                         documentation: "",
                         span: 0..0,
                     },
-                    modifiers: ModifiersNode {
-                        terms: [],
-                    },
+                    modifiers: [],
                     method_name: NamePathNode {
                         names: [
                             Identifier("try_add", 2055..2062),

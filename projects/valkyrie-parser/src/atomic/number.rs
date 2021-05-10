@@ -1,7 +1,7 @@
 use super::*;
 use crate::SignNode;
 use nyar_error::NyarError;
-use std::{num::ParseIntError, str::FromStr};
+use std::str::FromStr;
 use valkyrie_ast::NullNode;
 
 // A number literal.
