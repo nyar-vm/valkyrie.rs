@@ -1,6 +1,6 @@
 mod display;
 
-use crate::{ArgumentKey, ExpressionNode, IdentifierNode, ModifiersNode, NamePathNode, StatementNode};
+use crate::{ArgumentKey, ExpressionNode, IdentifierNode, ModifierList, NamePathNode, StatementNode};
 use alloc::{boxed::Box, vec, vec::Vec};
 use core::ops::Range;
 use deriver::From;
@@ -141,7 +141,7 @@ pub enum PatternNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct IdentifierPattern {
     /// modifiers
-    pub modifiers: ModifiersNode,
+    pub modifiers: ModifierList,
     /// identifiers
     pub identifier: IdentifierNode,
 }

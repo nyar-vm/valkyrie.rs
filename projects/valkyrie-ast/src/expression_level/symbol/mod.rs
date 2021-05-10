@@ -21,6 +21,7 @@ pub struct NamePathNode {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct BooleanNode {
+    /// `true, false`
     pub value: bool,
     /// The range of the node
     pub span: Range<u32>,

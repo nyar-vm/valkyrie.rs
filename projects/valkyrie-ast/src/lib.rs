@@ -27,7 +27,9 @@ pub use crate::{
         loop_while::{WhileConditionNode, WhileLoop, WhileLoopKind},
     },
     expression_level::{
-        annotations::{AnnotationKind, AnnotationList, AnnotationNode, AnnotationPathNode, AnnotationTerm, ModifiersNode},
+        annotations::{
+            AnnotationList, AnnotationNode, AnnotationPathNode, AttributeKind, AttributeNode, AttributeTerm, ModifierList,
+        },
         argument::{ArgumentKey, ArgumentTerm, ArgumentsList},
         call_apply::ApplyCallNode,
         call_dot::{DotCallNode, DotCallTerm},

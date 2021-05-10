@@ -1,6 +1,6 @@
 use super::*;
 
-impl PrettyPrint for ModifiersNode {
+impl PrettyPrint for ModifierList {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut items = PrettySequence::new(2 * self.terms.len());
         for x in &self.terms {

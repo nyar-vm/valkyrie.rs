@@ -13,7 +13,7 @@ pub struct TaggedDeclaration {
     pub document: DocumentationNode,
     /// The range of the number.
     pub namepath: NamePathNode,
-    pub modifiers: ModifiersNode,
+    pub modifiers: ModifierList,
     pub extends: Option<String>,
     pub implements: Vec<String>,
     pub statements: StatementBlock,

@@ -16,7 +16,7 @@ pub struct ArgumentsList {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ArgumentTerm {
     /// The modifier conditions
-    pub modifiers: ModifiersNode,
+    pub modifiers: ModifierList,
     /// The key of the argument
     pub key: ArgumentKey,
     /// The value of the argument

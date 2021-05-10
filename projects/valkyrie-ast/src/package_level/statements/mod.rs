@@ -47,8 +47,8 @@ pub enum StatementNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct StatementContext {}
 
-impl From<AnnotationNode> for StatementNode {
-    fn from(value: AnnotationNode) -> Self {
+impl From<AttributeNode> for StatementNode {
+    fn from(value: AttributeNode) -> Self {
         let list = AnnotationList { kind: value.kind, terms: vec![value.term], span: value.span };
 
         StatementNode::Annotation(Box::new(list))

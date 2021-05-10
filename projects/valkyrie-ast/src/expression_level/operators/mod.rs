@@ -178,6 +178,7 @@ impl From<LogicMatrix> for ValkyrieOperator {
 }
 
 impl ValkyrieOperator {
+    /// Get the precedence of the operator, larger number means higher precedence.
     pub fn precedence(&self) -> Precedence {
         let n = match self {
             Self::Placeholder => 0,

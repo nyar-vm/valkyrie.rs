@@ -1,11 +1,24 @@
 use super::*;
+use crate::helper::WrapDisplay;
 
 mod display;
+
+/// The annotations of the statements
+#[derive(Clone, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct AnnotationNode {
+    /// The documentations of the statement
+    pub documents: DocumentationNode,
+    /// The attributes of the statement
+    pub attributes: AnnotationList,
+    /// The modifiers of the statement
+    pub modifiers: ModifierList,
+}
 
 /// A namepath is a series of identifiers separated by dots.
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum AnnotationKind {
+pub enum AttributeKind {
     /// `@`
     Normal,
     /// `@@`
@@ -14,18 +27,26 @@ pub enum AnnotationKind {
     NonCapture,
 }
 
-impl Default for AnnotationKind {
+impl Default for AttributeKind {
     fn default() -> Self {
         Self::Normal
+    }
+}
+
+impl Default for AnnotationNode {
+    fn default() -> Self {
+        Self { documents: Default::default(), attributes: Default::default(), modifiers: Default::default() }
     }
 }
 
 /// `@module∷name.variant(args) <CAPTURE>`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct AnnotationNode {
-    pub kind: AnnotationKind,
-    pub term: AnnotationTerm,
+pub struct AttributeNode {
+    /// The kind of the attributes
+    pub kind: AttributeKind,
+    /// The arguments of the attributes
+    pub term: AttributeTerm,
     /// The range of the node
     pub span: Range<u32>,
 }
@@ -34,8 +55,8 @@ pub struct AnnotationNode {
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct AnnotationList {
-    pub kind: AnnotationKind,
-    pub terms: Vec<AnnotationTerm>,
+    pub kind: AttributeKind,
+    pub terms: Vec<AttributeTerm>,
     /// The location of the annotation
     pub span: Range<u32>,
 }
@@ -43,7 +64,7 @@ pub struct AnnotationList {
 /// `module∷name.variant(args) <CAPTURE>`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct AnnotationTerm {
+pub struct AttributeTerm {
     pub path: AnnotationPathNode,
     pub arguments: ApplyCallNode,
     pub collects: CollectorNode,
@@ -53,7 +74,7 @@ pub struct AnnotationTerm {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct AnnotationStatements {
-    pub kind: AnnotationKind,
+    pub kind: AttributeKind,
     pub terms: Vec<AnnotationPathNode>,
 }
 
@@ -72,20 +93,26 @@ pub struct AnnotationPathNode {
 /// `public static final synchronized class Main {}`
 ///
 /// - Auxiliary parsing function, not instantiable.
-#[derive(Clone, Default, PartialEq, Eq, Hash)]
+#[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ModifiersNode {
+pub struct ModifierList {
     /// The modifiers in group
     pub terms: Vec<IdentifierNode>,
 }
 
-impl From<AnnotationNode> for AnnotationList {
-    fn from(value: AnnotationNode) -> Self {
+impl From<AttributeNode> for AnnotationList {
+    fn from(value: AttributeNode) -> Self {
         Self { kind: value.kind, terms: vec![value.term], span: value.span }
     }
 }
 
-impl AnnotationKind {
+impl AnnotationNode {
+    pub fn is_empty(&self) -> bool {
+        self.documents.is_empty() && self.attributes.is_empty() && self.modifiers.is_empty()
+    }
+}
+
+impl AttributeKind {
     /// Returns the string representation of the macro kind.
     pub fn as_str(&self) -> &'static str {
         match self {
@@ -102,7 +129,7 @@ impl AnnotationPathNode {
     }
 }
 
-impl AnnotationTerm {
+impl AttributeTerm {
     /// Expand to the standard annotation form.
     pub fn expand(self) -> AnnotationStatements {
         todo!()
@@ -110,13 +137,22 @@ impl AnnotationTerm {
 }
 
 impl AnnotationList {
+    /// Check if the modifier is present.
+    pub fn is_empty(&self) -> bool {
+        self.terms.is_empty()
+    }
     /// Expand to the standard annotation form.
     pub fn expand(self) -> AnnotationStatements {
         todo!()
     }
 }
 
-impl ModifiersNode {
+impl ModifierList {
+    /// Check if the modifier is present.
+    pub fn is_empty(&self) -> bool {
+        self.terms.is_empty()
+    }
+
     /// Check if the modifier is present.
     pub fn contains(&self, modifier: &str) -> bool {
         self.terms.iter().any(|x| x.name.eq(modifier))

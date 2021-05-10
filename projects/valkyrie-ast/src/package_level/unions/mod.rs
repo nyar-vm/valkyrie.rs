@@ -12,7 +12,7 @@ pub struct UnionDeclaration {
     /// Documents of this union type
     pub document: DocumentationNode,
     /// The modifiers for the union
-    pub modifiers: ModifiersNode,
+    pub modifiers: ModifierList,
     /// The range of the number.
     pub name: IdentifierNode,
     pub layout: Option<String>,
@@ -35,7 +35,7 @@ pub enum UnionTerm {
 pub struct UnionFieldDeclaration {
     /// The documentation of the node.
     pub document: DocumentationNode,
-    pub modifiers: ModifiersNode,
+    pub modifiers: ModifierList,
     pub field_name: IdentifierNode,
     pub r#type: ExpressionNode,
     /// The range of the node

@@ -7,11 +7,7 @@ ProgramRoot {
         ClassDeclaration {
             name: Identifier("Base1", 39..44),
             kind: Class,
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: [],
+            annotations: Empty,
             generic: None,
             base_classes: None,
             auto_traits: [],
@@ -21,11 +17,7 @@ ProgramRoot {
         ClassDeclaration {
             name: Identifier("Base2", 55..60),
             kind: Class,
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: [],
+            annotations: Empty,
             generic: None,
             base_classes: None,
             auto_traits: [],
@@ -35,11 +27,7 @@ ProgramRoot {
         ClassDeclaration {
             name: Identifier("Base3", 77..82),
             kind: Structure,
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: [],
+            annotations: Empty,
             generic: None,
             base_classes: None,
             auto_traits: [],
@@ -49,13 +37,11 @@ ProgramRoot {
         ClassDeclaration {
             name: Identifier("B", 101..102),
             kind: Class,
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
+            annotations: Annotation {
+                modifiers: [
+                    Identifier("value", 89..94),
+                ],
             },
-            modifiers: [
-                Identifier("value", 89..94),
-            ],
             generic: None,
             base_classes: None,
             auto_traits: [],
@@ -65,11 +51,7 @@ ProgramRoot {
         ClassDeclaration {
             name: Identifier("Inherit1", 168..176),
             kind: Class,
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: [],
+            annotations: Empty,
             generic: None,
             base_classes: None,
             auto_traits: [],
@@ -79,11 +61,7 @@ ProgramRoot {
         ClassDeclaration {
             name: Identifier("Inherit2", 225..233),
             kind: Class,
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: [],
+            annotations: Empty,
             generic: None,
             base_classes: None,
             auto_traits: [],
@@ -94,7 +72,9 @@ ProgramRoot {
                         documentation: "",
                         span: 0..0,
                     },
-                    modifiers: [],
+                    modifiers: ModifierList {
+                        terms: [],
+                    },
                     typing: None,
                     default: None,
                     span: 240..252,
@@ -105,9 +85,11 @@ ProgramRoot {
                         documentation: "",
                         span: 0..0,
                     },
-                    modifiers: [
-                        Identifier("inherit", 252..259),
-                    ],
+                    modifiers: ModifierList {
+                        terms: [
+                            Identifier("inherit", 252..259),
+                        ],
+                    },
                     typing: None,
                     default: None,
                     span: 252..272,
@@ -118,9 +100,11 @@ ProgramRoot {
                         documentation: "",
                         span: 0..0,
                     },
-                    modifiers: [
-                        Identifier("inherit", 278..285),
-                    ],
+                    modifiers: ModifierList {
+                        terms: [
+                            Identifier("inherit", 278..285),
+                        ],
+                    },
                     typing: None,
                     default: None,
                     span: 278..298,
@@ -131,9 +115,11 @@ ProgramRoot {
                         documentation: "",
                         span: 0..0,
                     },
-                    modifiers: [
-                        Identifier("inherit", 304..311),
-                    ],
+                    modifiers: ModifierList {
+                        terms: [
+                            Identifier("inherit", 304..311),
+                        ],
+                    },
                     typing: None,
                     default: None,
                     span: 304..324,
@@ -144,11 +130,7 @@ ProgramRoot {
         ClassDeclaration {
             name: Identifier("B", 354..355),
             kind: Class,
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: [],
+            annotations: Empty,
             generic: None,
             base_classes: None,
             auto_traits: [],
@@ -159,7 +141,9 @@ ProgramRoot {
                         documentation: "",
                         span: 0..0,
                     },
-                    modifiers: [],
+                    modifiers: ModifierList {
+                        terms: [],
+                    },
                     typing: None,
                     default: None,
                     span: 362..371,
@@ -170,7 +154,9 @@ ProgramRoot {
                         documentation: "",
                         span: 0..0,
                     },
-                    modifiers: [],
+                    modifiers: ModifierList {
+                        terms: [],
+                    },
                     typing: None,
                     default: None,
                     span: 377..386,
@@ -181,11 +167,7 @@ ProgramRoot {
         ClassDeclaration {
             name: Identifier("A", 398..399),
             kind: Class,
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: [],
+            annotations: Empty,
             generic: None,
             base_classes: None,
             auto_traits: [],
@@ -195,10 +177,12 @@ ProgramRoot {
                         documentation: "",
                         span: 0..0,
                     },
-                    modifiers: [
-                        Identifier("pub", 429..432),
-                        Identifier("static", 433..439),
-                    ],
+                    modifiers: ModifierList {
+                        terms: [
+                            Identifier("pub", 429..432),
+                            Identifier("static", 433..439),
+                        ],
+                    },
                     method_name: NamePathNode {
                         names: [
                             Identifier("a", 440..441),
@@ -219,7 +203,9 @@ ProgramRoot {
                         documentation: "",
                         span: 0..0,
                     },
-                    modifiers: [],
+                    modifiers: ModifierList {
+                        terms: [],
+                    },
                     typing: None,
                     default: None,
                     span: 493..495,
@@ -229,9 +215,11 @@ ProgramRoot {
                         documentation: "",
                         span: 0..0,
                     },
-                    modifiers: [
-                        Identifier("get", 501..504),
-                    ],
+                    modifiers: ModifierList {
+                        terms: [
+                            Identifier("get", 501..504),
+                        ],
+                    },
                     method_name: NamePathNode {
                         names: [
                             Identifier("a", 505..506),
@@ -251,9 +239,11 @@ ProgramRoot {
                         documentation: "",
                         span: 0..0,
                     },
-                    modifiers: [
-                        Identifier("set", 596..599),
-                    ],
+                    modifiers: ModifierList {
+                        terms: [
+                            Identifier("set", 596..599),
+                        ],
+                    },
                     method_name: NamePathNode {
                         names: [
                             Identifier("a", 600..601),
@@ -273,7 +263,9 @@ ProgramRoot {
                         documentation: "",
                         span: 0..0,
                     },
-                    modifiers: [],
+                    modifiers: ModifierList {
+                        terms: [],
+                    },
                     method_name: NamePathNode {
                         names: [
                             Identifier("into", 635..639),
@@ -294,11 +286,7 @@ ProgramRoot {
         ClassDeclaration {
             name: Identifier("A", 738..739),
             kind: Class,
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: [],
+            annotations: Empty,
             generic: None,
             base_classes: None,
             auto_traits: [],
@@ -308,17 +296,15 @@ ProgramRoot {
         ClassDeclaration {
             name: Identifier("Empty3", 863..869),
             kind: Class,
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
+            annotations: Annotation {
+                modifiers: [
+                    Identifier("public", 803..809),
+                    Identifier("static", 810..816),
+                    Identifier("dynamic_transaction_safe", 817..841),
+                    Identifier("volatile", 842..850),
+                    Identifier("final", 851..856),
+                ],
             },
-            modifiers: [
-                Identifier("public", 803..809),
-                Identifier("static", 810..816),
-                Identifier("dynamic_transaction_safe", 817..841),
-                Identifier("volatile", 842..850),
-                Identifier("final", 851..856),
-            ],
             generic: None,
             base_classes: None,
             auto_traits: [],
@@ -328,14 +314,12 @@ ProgramRoot {
         ClassDeclaration {
             name: Identifier("Inherit1", 901..909),
             kind: Class,
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
+            annotations: Annotation {
+                modifiers: [
+                    Identifier("open", 883..887),
+                    Identifier("impart", 888..894),
+                ],
             },
-            modifiers: [
-                Identifier("open", 883..887),
-                Identifier("impart", 888..894),
-            ],
             generic: None,
             base_classes: None,
             auto_traits: [],
@@ -345,14 +329,12 @@ ProgramRoot {
         ClassDeclaration {
             name: Identifier("Inherit2", 968..976),
             kind: Class,
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
+            annotations: Annotation {
+                modifiers: [
+                    Identifier("open", 950..954),
+                    Identifier("impart", 955..961),
+                ],
             },
-            modifiers: [
-                Identifier("open", 950..954),
-                Identifier("impart", 955..961),
-            ],
             generic: None,
             base_classes: None,
             auto_traits: [],
@@ -363,9 +345,11 @@ ProgramRoot {
                         documentation: "",
                         span: 0..0,
                     },
-                    modifiers: [
-                        Identifier("public", 983..989),
-                    ],
+                    modifiers: ModifierList {
+                        terms: [
+                            Identifier("public", 983..989),
+                        ],
+                    },
                     typing: None,
                     default: None,
                     span: 983..1002,
@@ -376,9 +360,11 @@ ProgramRoot {
                         documentation: "",
                         span: 0..0,
                     },
-                    modifiers: [
-                        Identifier("inherit", 1002..1009),
-                    ],
+                    modifiers: ModifierList {
+                        terms: [
+                            Identifier("inherit", 1002..1009),
+                        ],
+                    },
                     typing: None,
                     default: None,
                     span: 1002..1023,
@@ -389,7 +375,9 @@ ProgramRoot {
                         documentation: "",
                         span: 0..0,
                     },
-                    modifiers: [],
+                    modifiers: ModifierList {
+                        terms: [],
+                    },
                     typing: None,
                     default: None,
                     span: 1029..1037,
@@ -400,7 +388,9 @@ ProgramRoot {
                         documentation: "",
                         span: 0..0,
                     },
-                    modifiers: [],
+                    modifiers: ModifierList {
+                        terms: [],
+                    },
                     typing: None,
                     default: None,
                     span: 1037..1048,
@@ -411,9 +401,11 @@ ProgramRoot {
                         documentation: "",
                         span: 0..0,
                     },
-                    modifiers: [
-                        Identifier("inherit", 1048..1055),
-                    ],
+                    modifiers: ModifierList {
+                        terms: [
+                            Identifier("inherit", 1048..1055),
+                        ],
+                    },
                     typing: None,
                     default: None,
                     span: 1048..1070,
@@ -423,7 +415,9 @@ ProgramRoot {
                         documentation: "",
                         span: 0..0,
                     },
-                    modifiers: [],
+                    modifiers: ModifierList {
+                        terms: [],
+                    },
                     method_name: NamePathNode {
                         names: [
                             Identifier("constructor", 1077..1088),
@@ -444,11 +438,7 @@ ProgramRoot {
         ClassDeclaration {
             name: Identifier("原神", 1149..1155),
             kind: Class,
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: [],
+            annotations: Empty,
             generic: None,
             base_classes: None,
             auto_traits: [],
@@ -458,7 +448,9 @@ ProgramRoot {
                         documentation: "",
                         span: 0..0,
                     },
-                    modifiers: [],
+                    modifiers: ModifierList {
+                        terms: [],
+                    },
                     method_name: NamePathNode {
                         names: [
                             Identifier("启动", 1200..1206),
@@ -478,9 +470,11 @@ ProgramRoot {
                         documentation: "",
                         span: 0..0,
                     },
-                    modifiers: [
-                        Identifier("get", 1294..1297),
-                    ],
+                    modifiers: ModifierList {
+                        terms: [
+                            Identifier("get", 1294..1297),
+                        ],
+                    },
                     method_name: NamePathNode {
                         names: [
                             Identifier("value", 1298..1303),
@@ -500,9 +494,11 @@ ProgramRoot {
                         documentation: "",
                         span: 0..0,
                     },
-                    modifiers: [
-                        Identifier("set", 1344..1347),
-                    ],
+                    modifiers: ModifierList {
+                        terms: [
+                            Identifier("set", 1344..1347),
+                        ],
+                    },
                     method_name: NamePathNode {
                         names: [
                             Identifier("value", 1348..1353),
@@ -523,11 +519,7 @@ ProgramRoot {
         ClassDeclaration {
             name: Identifier("ClassA", 1390..1396),
             kind: Class,
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: [],
+            annotations: Empty,
             generic: None,
             base_classes: None,
             auto_traits: [],
@@ -538,10 +530,12 @@ ProgramRoot {
                         documentation: "",
                         span: 0..0,
                     },
-                    modifiers: [
-                        Identifier("public", 1403..1409),
-                        Identifier("static", 1410..1416),
-                    ],
+                    modifiers: ModifierList {
+                        terms: [
+                            Identifier("public", 1403..1409),
+                            Identifier("static", 1410..1416),
+                        ],
+                    },
                     typing: None,
                     default: None,
                     span: 1403..1440,
@@ -552,7 +546,9 @@ ProgramRoot {
                         documentation: "",
                         span: 0..0,
                     },
-                    modifiers: [],
+                    modifiers: ModifierList {
+                        terms: [],
+                    },
                     typing: None,
                     default: None,
                     span: 1446..1457,
@@ -563,7 +559,9 @@ ProgramRoot {
                         documentation: "",
                         span: 0..0,
                     },
-                    modifiers: [],
+                    modifiers: ModifierList {
+                        terms: [],
+                    },
                     typing: None,
                     default: None,
                     span: 1463..1479,
@@ -574,7 +572,9 @@ ProgramRoot {
                         documentation: "",
                         span: 0..0,
                     },
-                    modifiers: [],
+                    modifiers: ModifierList {
+                        terms: [],
+                    },
                     typing: None,
                     default: None,
                     span: 1485..1502,
@@ -584,9 +584,11 @@ ProgramRoot {
                         documentation: "",
                         span: 0..0,
                     },
-                    modifiers: [
-                        Identifier("get", 1508..1511),
-                    ],
+                    modifiers: ModifierList {
+                        terms: [
+                            Identifier("get", 1508..1511),
+                        ],
+                    },
                     method_name: NamePathNode {
                         names: [
                             Identifier("property", 1512..1520),
@@ -606,9 +608,11 @@ ProgramRoot {
                         documentation: "",
                         span: 0..0,
                     },
-                    modifiers: [
-                        Identifier("set", 1531..1534),
-                    ],
+                    modifiers: ModifierList {
+                        terms: [
+                            Identifier("set", 1531..1534),
+                        ],
+                    },
                     method_name: NamePathNode {
                         names: [
                             Identifier("property", 1535..1543),
@@ -628,7 +632,9 @@ ProgramRoot {
                         documentation: "",
                         span: 0..0,
                     },
-                    modifiers: [],
+                    modifiers: ModifierList {
+                        terms: [],
+                    },
                     method_name: NamePathNode {
                         names: [
                             Identifier("method", 1554..1560),
@@ -648,9 +654,11 @@ ProgramRoot {
                         documentation: "",
                         span: 0..0,
                     },
-                    modifiers: [
-                        Identifier("infix", 1585..1590),
-                    ],
+                    modifiers: ModifierList {
+                        terms: [
+                            Identifier("infix", 1585..1590),
+                        ],
+                    },
                     method_name: NamePathNode {
                         names: [
                             Identifier("/", 1591..1594),
@@ -670,7 +678,9 @@ ProgramRoot {
                         documentation: "",
                         span: 0..0,
                     },
-                    modifiers: [],
+                    modifiers: ModifierList {
+                        terms: [],
+                    },
                     method_name: NamePathNode {
                         names: [
                             Identifier("join", 1681..1685),
@@ -691,11 +701,7 @@ ProgramRoot {
         ClassDeclaration {
             name: Identifier("TestClass", 1812..1821),
             kind: Class,
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: [],
+            annotations: Empty,
             generic: None,
             base_classes: None,
             auto_traits: [],
@@ -705,11 +711,7 @@ ProgramRoot {
         ClassDeclaration {
             name: Identifier("Class", 1865..1870),
             kind: Class,
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: [],
+            annotations: Empty,
             generic: None,
             base_classes: None,
             auto_traits: [],
@@ -720,9 +722,11 @@ ProgramRoot {
                         documentation: "",
                         span: 0..0,
                     },
-                    modifiers: [
-                        Identifier("readonly", 1894..1902),
-                    ],
+                    modifiers: ModifierList {
+                        terms: [
+                            Identifier("readonly", 1894..1902),
+                        ],
+                    },
                     typing: None,
                     default: None,
                     span: 1884..1918,
@@ -733,9 +737,11 @@ ProgramRoot {
                         documentation: "",
                         span: 0..0,
                     },
-                    modifiers: [
-                        Identifier("readonly", 1924..1932),
-                    ],
+                    modifiers: ModifierList {
+                        terms: [
+                            Identifier("readonly", 1924..1932),
+                        ],
+                    },
                     typing: None,
                     default: None,
                     span: 1924..1947,
@@ -746,11 +752,13 @@ ProgramRoot {
                         documentation: "",
                         span: 0..0,
                     },
-                    modifiers: [
-                        Identifier("class", 1953..1960),
-                        Identifier("static", 1964..1970),
-                        Identifier("void", 1975..1979),
-                    ],
+                    modifiers: ModifierList {
+                        terms: [
+                            Identifier("class", 1953..1960),
+                            Identifier("static", 1964..1970),
+                            Identifier("void", 1975..1979),
+                        ],
+                    },
                     typing: None,
                     default: None,
                     span: 1953..1989,
@@ -761,9 +769,11 @@ ProgramRoot {
                         documentation: "",
                         span: 0..0,
                     },
-                    modifiers: [
-                        Identifier("mut", 1995..1998),
-                    ],
+                    modifiers: ModifierList {
+                        terms: [
+                            Identifier("mut", 1995..1998),
+                        ],
+                    },
                     typing: None,
                     default: None,
                     span: 1995..2026,
@@ -773,7 +783,9 @@ ProgramRoot {
                         documentation: "",
                         span: 0..0,
                     },
-                    modifiers: [],
+                    modifiers: ModifierList {
+                        terms: [],
+                    },
                     method_name: NamePathNode {
                         names: [
                             Identifier("try_add", 2055..2062),

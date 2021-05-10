@@ -13,12 +13,12 @@ impl crate::DefineEnumerateNode {
                 FlagTermNode::EosFree(_) => {}
             }
         }
+        let annotations = self.annotation_head.annotations(ctx).recover(&mut errors)?;
         Success {
             value: FlagDeclaration {
-                documentation: self.annotation_head.document(ctx),
-                kind: self.kw_flags.build(),
                 name: self.identifier.build(ctx),
-                modifiers: self.annotation_head.modifiers(ctx),
+                kind: self.kw_flags.build(),
+                annotations,
                 layout: None,
                 implements: vec![],
                 body: Default::default(),

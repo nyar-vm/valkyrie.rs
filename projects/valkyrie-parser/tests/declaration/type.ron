@@ -106,11 +106,7 @@ ProgramRoot {
         ClassDeclaration {
             name: Identifier("Integer", 121..128),
             kind: Class,
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: [],
+            annotations: Empty,
             generic: None,
             base_classes: None,
             auto_traits: [],
@@ -122,7 +118,9 @@ ProgramRoot {
                                 documentation: "",
                                 span: 0..0,
                             },
-                            modifiers: [],
+                            modifiers: ModifierList {
+                                terms: [],
+                            },
                             method_name: NamePathNode {
                                 names: [
                                     Identifier("requires", 165..173),
@@ -142,7 +140,9 @@ ProgramRoot {
                                 documentation: "",
                                 span: 0..0,
                             },
-                            modifiers: [],
+                            modifiers: ModifierList {
+                                terms: [],
+                            },
                             method_name: NamePathNode {
                                 names: [
                                     Identifier("ensures", 218..225),

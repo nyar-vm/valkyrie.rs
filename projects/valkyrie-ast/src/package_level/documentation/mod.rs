@@ -7,6 +7,13 @@ pub struct DocumentationNode {
     /// The range of the node
     pub span: Range<u32>,
 }
+
+impl DocumentationNode {
+    pub fn is_empty(&self) -> bool {
+        self.documentation.trim().is_empty()
+    }
+}
+
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for DocumentationNode {
     fn pretty(&self, _: &PrettyProvider) -> PrettyTree {

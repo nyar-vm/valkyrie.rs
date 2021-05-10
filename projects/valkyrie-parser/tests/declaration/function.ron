@@ -235,11 +235,7 @@ ProgramRoot {
         ClassDeclaration {
             name: Identifier("TClass", 1752..1758),
             kind: Class,
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: [],
+            annotations: Empty,
             generic: None,
             base_classes: None,
             auto_traits: [],
@@ -250,7 +246,9 @@ ProgramRoot {
                         documentation: "",
                         span: 0..0,
                     },
-                    modifiers: [],
+                    modifiers: ModifierList {
+                        terms: [],
+                    },
                     typing: None,
                     default: None,
                     span: 1765..1771,

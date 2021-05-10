@@ -1,6 +1,27 @@
 use super::*;
 
-impl Display for AnnotationKind {
+impl Debug for AnnotationNode {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        if self.is_empty() {
+            f.debug_struct("Empty").finish()
+        }
+        else {
+            let mut w = f.debug_struct("Annotation");
+            if !self.documents.is_empty() {
+                w.field("documents", &self.documents);
+            }
+            if !self.attributes.is_empty() {
+                w.field("attributes", &self.attributes);
+            }
+            if !self.modifiers.is_empty() {
+                w.field("modifiers", &WrapDisplay::new(&self.modifiers));
+            }
+            w.finish()
+        }
+    }
+}
+
+impl Display for AttributeKind {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         f.write_str(self.as_str())
     }
@@ -17,13 +38,13 @@ impl Display for AnnotationPathNode {
     }
 }
 #[cfg(feature = "pretty-print")]
-impl PrettyPrint for AnnotationKind {
+impl PrettyPrint for AttributeKind {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         theme.annotation(self.as_str())
     }
 }
 #[cfg(feature = "pretty-print")]
-impl PrettyPrint for AnnotationNode {
+impl PrettyPrint for AttributeNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(2);
         terms += self.kind.pretty(theme);
@@ -45,7 +66,7 @@ impl PrettyPrint for AnnotationList {
     }
 }
 #[cfg(feature = "pretty-print")]
-impl PrettyPrint for AnnotationTerm {
+impl PrettyPrint for AttributeTerm {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(3);
         terms += self.path.pretty(theme);
@@ -61,14 +82,14 @@ impl PrettyPrint for AnnotationPathNode {
     }
 }
 
-impl Debug for ModifiersNode {
+impl Display for ModifierList {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         f.debug_list().entries(self.terms.iter()).finish()
     }
 }
 
 #[cfg(feature = "lispify")]
-impl Lispify for ModifiersNode {
+impl Lispify for ModifierList {
     type Output = Lisp;
 
     fn lispify(&self) -> Self::Output {

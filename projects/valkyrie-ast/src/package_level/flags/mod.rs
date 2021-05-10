@@ -19,14 +19,12 @@ pub enum FlagKind {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct FlagDeclaration {
-    /// The documentation for this flag.
-    pub documentation: DocumentationNode,
-    /// The kind of the flag statement
-    pub kind: FlagKind,
     /// The name of the flag.
     pub name: IdentifierNode,
-    /// The modifiers for this flag.
-    pub modifiers: ModifiersNode,
+    /// The kind of the flag statement
+    pub kind: FlagKind,
+    /// The annotations of this flag.
+    pub annotations: AnnotationNode,
     /// `(8bits)`
     pub layout: Option<ExpressionNode>,
     /// `: Trait`

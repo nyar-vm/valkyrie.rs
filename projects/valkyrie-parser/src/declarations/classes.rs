@@ -3,17 +3,17 @@ use super::*;
 impl crate::DefineClassNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<ClassDeclaration> {
         let mut errors = vec![];
-        let body = self.class_block.build(ctx).recover(&mut errors)?;
+        let terms = self.class_block.build(ctx).recover(&mut errors)?;
+        let annotations = self.annotation_head.annotations(ctx).recover(&mut errors)?;
         Success {
             value: ClassDeclaration {
                 kind: self.kw_class.build(),
-                document: Default::default(),
-                modifiers: self.annotation_head.modifiers(ctx),
+                annotations,
                 name: self.identifier.build(ctx),
                 generic: None,
                 base_classes: None,
                 auto_traits: vec![],
-                terms: body,
+                terms,
                 span: self.span.clone(),
             },
             diagnostics: errors,

@@ -1,5 +1,4 @@
 use super::*;
-use crate::helper::ValkyrieNode;
 
 mod display;
 
@@ -24,9 +23,7 @@ pub struct ClassDeclaration {
     /// The kind of class
     pub kind: ClassKind,
     /// The document of the class
-    pub document: DocumentationNode,
-    /// The modifiers of the class.
-    pub modifiers: ModifiersNode,
+    pub annotations: AnnotationNode,
     /// The parameter arguments of the class.
     pub generic: Option<ParametersList>,
     /// The super class of the class.
@@ -68,7 +65,7 @@ pub struct FieldDeclaration {
     /// The documentation of the declaration.
     pub document: DocumentationNode,
     /// The modifiers of the declaration.
-    pub modifiers: ModifiersNode,
+    pub modifiers: ModifierList,
     /// The type hint of this field
     pub typing: Option<ExpressionNode>,
     /// The default value of this field
@@ -84,7 +81,7 @@ pub struct MethodDeclaration {
     /// The documentation of the node.
     pub document: DocumentationNode,
     /// The modifiers of the node.
-    pub modifiers: ModifiersNode,
+    pub modifiers: ModifierList,
     /// `method_name()`
     pub method_name: NamePathNode,
     /// `method_name<T>()`

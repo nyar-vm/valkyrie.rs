@@ -40,7 +40,7 @@ pub enum ParameterTerm {
     /// `#annotation modifier a: Type = default`
     Single {
         /// The modifiers apply on the parameter
-        modifiers: ModifiersNode,
+        modifiers: ModifierList,
         /// The name
         key: IdentifierNode,
         bound: Option<ExpressionNode>,
@@ -49,14 +49,14 @@ pub enum ParameterTerm {
     /// `#annotation modifier ..list: Type`
     UnpackList {
         /// The modifiers apply on the parameter
-        modifiers: ModifiersNode,
+        modifiers: ModifierList,
         key: IdentifierNode,
         bound: Option<ExpressionNode>,
     },
     /// `#annotation modifier ...dict: Type`
     UnpackDict {
         /// The modifiers apply on the parameter
-        modifiers: ModifiersNode,
+        modifiers: ModifierList,
         key: IdentifierNode,
         bound: Option<ExpressionNode>,
     },
