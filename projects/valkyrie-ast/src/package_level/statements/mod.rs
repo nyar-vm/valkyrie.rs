@@ -22,10 +22,6 @@ pub enum StatementNode {
     Union(Box<UnionDeclaration>),
     /// The enumerate declaration node.
     Enumerate(Box<FlagDeclaration>),
-    /// The tagged union declaration node.
-    Tagged(Box<TaggedDeclaration>),
-    /// The tagged union's variant declaration node.
-    Variant(Box<VariantDeclaration>),
     /// The trait declaration node
     Trait(Box<TraitDeclaration>),
     /// The type extension node

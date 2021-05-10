@@ -5,6 +5,6 @@ impl<'a> IntoIterator for &'a UnionDeclaration {
     type IntoIter = core::slice::Iter<'a, UnionTerm>;
 
     fn into_iter(self) -> Self::IntoIter {
-        self.body.iter()
+        self.terms.iter()
     }
 }

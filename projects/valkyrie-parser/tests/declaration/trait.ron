@@ -1,47 +1,39 @@
 ProgramRoot {
     statements: [
         TraitDeclaration {
-            name: Identifier("", 0..0),
-            fields: [],
-            methods: [],
+            name: Identifier("A", 6..7),
+            terms: [],
         },
         TraitDeclaration {
-            name: Identifier("", 0..0),
-            fields: [],
-            methods: [],
+            name: Identifier("SemiGroup", 39..48),
+            terms: [],
         },
         TraitDeclaration {
-            name: Identifier("", 0..0),
-            fields: [],
-            methods: [],
+            name: Identifier("Monoid", 89..95),
+            terms: [],
         },
         TraitDeclaration {
-            name: Identifier("", 0..0),
-            fields: [],
-            methods: [],
+            name: Identifier("SemiGroup", 143..152),
+            terms: [],
         },
         TraitDeclaration {
-            name: Identifier("", 0..0),
-            fields: [],
-            methods: [],
+            name: Identifier("Functor", 199..206),
+            terms: [],
         },
         TraitDeclaration {
-            name: Identifier("", 0..0),
-            fields: [],
-            methods: [],
+            name: Identifier("Monoid", 281..287),
+            terms: [],
         },
         ExtendsStatement {
             methods: [],
         },
         TraitDeclaration {
-            name: Identifier("", 0..0),
-            fields: [],
-            methods: [],
+            name: Identifier("Functor", 439..446),
+            terms: [],
         },
         TraitDeclaration {
-            name: Identifier("", 0..0),
-            fields: [],
-            methods: [],
+            name: Identifier("Functor", 533..540),
+            terms: [],
         },
         ExtendsStatement {
             methods: [],

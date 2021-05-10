@@ -9,15 +9,13 @@ mod iters;
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct UnionDeclaration {
-    /// Documents of this union type
-    pub document: DocumentationNode,
-    /// The modifiers for the union
-    pub modifiers: ModifierList,
+    /// The annotations of this union
+    pub annotations: AnnotationNode,
     /// The range of the number.
     pub name: IdentifierNode,
     pub layout: Option<String>,
     pub derive_traits: Vec<String>,
-    pub body: Vec<UnionTerm>,
+    pub terms: Vec<UnionTerm>,
     /// The text range of the statement
     pub span: Range<u32>,
 }
@@ -25,14 +23,14 @@ pub struct UnionDeclaration {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum UnionTerm {
-    Field(UnionFieldDeclaration),
-    Method(UnionMethodDeclaration),
+    Variant(VariantDeclaration),
+    Method(MethodDeclaration),
 }
 
 /// `field: Type = default`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct UnionFieldDeclaration {
+pub struct VariantDeclaration {
     /// The documentation of the node.
     pub document: DocumentationNode,
     pub modifiers: ModifierList,
@@ -41,8 +39,3 @@ pub struct UnionFieldDeclaration {
     /// The range of the node
     pub span: Range<u32>,
 }
-
-/// `union()`
-#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct UnionMethodDeclaration {}

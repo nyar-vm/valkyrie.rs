@@ -5,115 +5,67 @@ ProgramRoot {
             path: std∷create∷test,
         },
         UnionDeclaration {
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: ModifierList {
-                terms: [],
-            },
+            annotations: Empty,
             name: Identifier("Union1", 111..117),
             layout: None,
             derive_traits: [],
-            body: [],
+            terms: [],
             span: 100..120,
         },
         UnionDeclaration {
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: ModifierList {
-                terms: [],
-            },
+            annotations: Empty,
             name: Identifier("Union2", 167..173),
             layout: None,
             derive_traits: [],
-            body: [],
+            terms: [],
             span: 150..242,
         },
         UnionDeclaration {
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: ModifierList {
-                terms: [],
-            },
+            annotations: Empty,
             name: Identifier("Union3", 293..299),
             layout: None,
             derive_traits: [],
-            body: [],
+            terms: [],
             span: 275..402,
         },
         UnionDeclaration {
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: ModifierList {
-                terms: [],
-            },
+            annotations: Empty,
             name: Identifier("Union4", 410..416),
             layout: None,
             derive_traits: [],
-            body: [],
+            terms: [],
             span: 404..603,
         },
         UnionDeclaration {
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: ModifierList {
-                terms: [],
-            },
+            annotations: Empty,
             name: Identifier("A", 636..637),
             layout: None,
             derive_traits: [],
-            body: [],
+            terms: [],
             span: 630..683,
         },
         UnionDeclaration {
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: ModifierList {
-                terms: [],
-            },
+            annotations: Empty,
             name: Identifier("Option", 710..716),
             layout: None,
             derive_traits: [],
-            body: [],
+            terms: [],
             span: 704..820,
         },
         UnionDeclaration {
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: ModifierList {
-                terms: [],
-            },
+            annotations: Empty,
             name: Identifier("Result", 845..851),
             layout: None,
             derive_traits: [],
-            body: [],
+            terms: [],
             span: 822..939,
         },
         UnionDeclaration {
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: ModifierList {
-                terms: [],
-            },
+            annotations: Empty,
             name: Identifier("Validation", 947..957),
             layout: None,
             derive_traits: [],
-            body: [],
+            terms: [],
             span: 941..1513,
         },
         ExtendsStatement {

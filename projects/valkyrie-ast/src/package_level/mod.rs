@@ -10,7 +10,6 @@ pub mod license;
 pub mod namespace;
 pub mod program;
 pub mod statements;
-pub mod tagged;
 pub mod unions;
 
 pub mod traits;

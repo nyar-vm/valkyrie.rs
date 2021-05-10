@@ -164,14 +164,13 @@ ProgramRoot {
             span: 115..251,
         },
         FunctionDeclaration {
-            type: Micro,
             namepath: NamePathNode {
                 names: [
                     Identifier("five", 260..264),
                 ],
             },
-            modifiers: [],
-            attributes: None,
+            type: Micro,
+            annotations: Empty,
             generic: None,
             arguments: ArgumentsList {
                 terms: [],
@@ -183,14 +182,13 @@ ProgramRoot {
             },
         },
         FunctionDeclaration {
-            type: Micro,
             namepath: NamePathNode {
                 names: [
                     Identifier("tuple", 348..353),
                 ],
             },
-            modifiers: [],
-            attributes: None,
+            type: Micro,
+            annotations: Empty,
             generic: None,
             arguments: ArgumentsList {
                 terms: [],
@@ -202,14 +200,17 @@ ProgramRoot {
             },
         },
         FunctionDeclaration {
-            type: Micro,
             namepath: NamePathNode {
                 names: [
                     Identifier("all_zeroes", 416..426),
                 ],
             },
-            modifiers: [],
-            attributes: None,
+            type: Micro,
+            annotations: Annotation {
+                modifiers: [
+                    Identifier("predicate", 397..406),
+                ],
+            },
             generic: None,
             arguments: ArgumentsList {
                 terms: [],

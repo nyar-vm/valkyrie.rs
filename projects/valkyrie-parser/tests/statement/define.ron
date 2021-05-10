@@ -1,14 +1,13 @@
 ProgramRoot {
     statements: [
         FunctionDeclaration {
-            type: Micro,
             namepath: NamePathNode {
                 names: [
                     Identifier("method", 9..15),
                 ],
             },
-            modifiers: [],
-            attributes: None,
+            type: Micro,
+            annotations: Empty,
             generic: None,
             arguments: ArgumentsList {
                 terms: [],
@@ -20,14 +19,17 @@ ProgramRoot {
             },
         },
         FunctionDeclaration {
-            type: Micro,
             namepath: NamePathNode {
                 names: [
                     Identifier("method", 36..42),
                 ],
             },
-            modifiers: [],
-            attributes: None,
+            type: Micro,
+            annotations: Annotation {
+                modifiers: [
+                    Identifier("eager", 21..26),
+                ],
+            },
             generic: None,
             arguments: ArgumentsList {
                 terms: [],
@@ -39,14 +41,13 @@ ProgramRoot {
             },
         },
         FunctionDeclaration {
-            type: Micro,
             namepath: NamePathNode {
                 names: [
                     Identifier("method", 57..63),
                 ],
             },
-            modifiers: [],
-            attributes: None,
+            type: Micro,
+            annotations: Empty,
             generic: None,
             arguments: ArgumentsList {
                 terms: [],
@@ -58,14 +59,13 @@ ProgramRoot {
             },
         },
         FunctionDeclaration {
-            type: Micro,
             namepath: NamePathNode {
                 names: [
                     Identifier("method", 104..110),
                 ],
             },
-            modifiers: [],
-            attributes: None,
+            type: Micro,
+            annotations: Empty,
             generic: None,
             arguments: ArgumentsList {
                 terms: [],
@@ -77,14 +77,13 @@ ProgramRoot {
             },
         },
         FunctionDeclaration {
-            type: Micro,
             namepath: NamePathNode {
                 names: [
                     Identifier("method", 149..155),
                 ],
             },
-            modifiers: [],
-            attributes: None,
+            type: Micro,
+            annotations: Empty,
             generic: None,
             arguments: ArgumentsList {
                 terms: [],
@@ -96,14 +95,13 @@ ProgramRoot {
             },
         },
         FunctionDeclaration {
-            type: Micro,
             namepath: NamePathNode {
                 names: [
                     Identifier("method", 191..197),
                 ],
             },
-            modifiers: [],
-            attributes: None,
+            type: Micro,
+            annotations: Empty,
             generic: None,
             arguments: ArgumentsList {
                 terms: [],
@@ -115,14 +113,17 @@ ProgramRoot {
             },
         },
         FunctionDeclaration {
-            type: Micro,
             namepath: NamePathNode {
                 names: [
                     Identifier("method", 236..242),
                 ],
             },
-            modifiers: [],
-            attributes: None,
+            type: Micro,
+            annotations: Annotation {
+                modifiers: [
+                    Identifier("lazy", 222..226),
+                ],
+            },
             generic: None,
             arguments: ArgumentsList {
                 terms: [],

@@ -62,9 +62,8 @@ pub use crate::{
         namespace::{NamespaceDeclaration, NamespaceKind},
         program::ProgramRoot,
         statements::{StatementContext, StatementNode},
-        tagged::{TaggedDeclaration, VariantDeclaration},
         traits::{ExtendsStatement, TraitDeclaration},
-        unions::{UnionDeclaration, UnionFieldDeclaration},
+        unions::{UnionDeclaration, VariantDeclaration},
     },
     patterns::{
         ArrayPatternNode, ClassPatternNode, IdentifierPattern, ImplicitCaseNode, PatternBlock, PatternBranch, PatternCaseNode,

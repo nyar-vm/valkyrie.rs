@@ -12,8 +12,6 @@ impl Debug for StatementNode {
             Self::Class(v) => Debug::fmt(v, f),
             Self::Union(v) => Debug::fmt(v, f),
             Self::Enumerate(v) => Debug::fmt(v, f),
-            Self::Tagged(v) => Debug::fmt(v, f),
-            Self::Variant(v) => Debug::fmt(v, f),
             Self::Trait(v) => Debug::fmt(v, f),
             Self::Extends(v) => Debug::fmt(v, f),
             Self::Function(v) => Debug::fmt(v, f),

@@ -2,18 +2,20 @@ use super::*;
 
 impl crate::DefineFunctionNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<FunctionDeclaration> {
+        let mut errors = vec![];
+        // let terms = self.function_body.build(ctx).recover(&mut errors)?;
+        let annotations = self.annotation_head.annotations(ctx).recover(&mut errors)?;
         Success {
             value: FunctionDeclaration {
                 r#type: self.kw_function.build(),
                 namepath: self.namepath.build(ctx),
-                modifiers: vec![],
-                attributes: None,
+                annotations,
                 generic: None,
                 arguments: Default::default(),
                 r#return: None,
                 body: Default::default(),
             },
-            diagnostics: vec![],
+            diagnostics: errors,
         }
     }
 }

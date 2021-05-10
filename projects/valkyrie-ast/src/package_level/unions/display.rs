@@ -6,7 +6,7 @@ impl PrettyPrint for UnionDeclaration {
         terms += theme.keyword("union");
         terms += " ";
         terms += self.name.pretty(theme);
-        terms += self.body.pretty(theme);
+        terms += self.terms.pretty(theme);
         terms.into()
     }
 }
@@ -22,7 +22,7 @@ impl Lispify for UnionDeclaration {
     }
 }
 
-impl PrettyPrint for UnionFieldDeclaration {
+impl PrettyPrint for VariantDeclaration {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(4);
         terms += self.modifiers.pretty(theme);
@@ -33,7 +33,7 @@ impl PrettyPrint for UnionFieldDeclaration {
     }
 }
 #[cfg(feature = "lispify")]
-impl Lispify for UnionFieldDeclaration {
+impl Lispify for VariantDeclaration {
     type Output = Lisp;
 
     fn lispify(&self) -> Self::Output {

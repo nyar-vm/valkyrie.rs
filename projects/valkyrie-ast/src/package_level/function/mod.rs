@@ -16,12 +16,15 @@ pub enum FunctionType {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct FunctionDeclaration {
+    /// The belonging and name of this function
+    pub namepath: NamePathNode,
     /// The range of the number.
     pub r#type: FunctionType,
-    pub namepath: NamePathNode,
-    pub modifiers: Vec<IdentifierNode>,
-    pub attributes: Option<String>,
+    /// The annotations of this function
+    pub annotations: AnnotationNode,
+    /// Thy type parameters of this function
     pub generic: Option<ParametersList>,
+    // The value parameters of this function
     pub arguments: ArgumentsList,
     pub r#return: Option<FunctionReturnNode>,
     pub body: StatementBlock,
