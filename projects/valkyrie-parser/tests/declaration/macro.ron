@@ -19,12 +19,12 @@ ProgramRoot {
             span: 6..123,
         },
         FunctionDeclaration {
-            namepath: NamePathNode {
+            name: NamePathNode {
                 names: [
                     Identifier("A", 186..187),
                 ],
             },
-            type: Macro,
+            kind: Macro,
             annotations: Annotation {
                 modifiers: [
                     Identifier("derived", 172..179),
@@ -34,19 +34,19 @@ ProgramRoot {
             arguments: ArgumentsList {
                 terms: [],
             },
-            return: None,
+            return: Auto,
             body: StatementBlock {
                 terms: [],
                 span: 0..0,
             },
         },
         FunctionDeclaration {
-            namepath: NamePathNode {
+            name: NamePathNode {
                 names: [
                     Identifier("print", 215..220),
                 ],
             },
-            type: Macro,
+            kind: Macro,
             annotations: Annotation {
                 modifiers: [
                     Identifier("implicit", 200..208),
@@ -56,73 +56,77 @@ ProgramRoot {
             arguments: ArgumentsList {
                 terms: [],
             },
-            return: None,
+            return: Auto,
             body: StatementBlock {
                 terms: [],
                 span: 0..0,
             },
         },
         FunctionDeclaration {
-            namepath: NamePathNode {
+            name: NamePathNode {
                 names: [
                     Identifier("name", 234..238),
                 ],
             },
-            type: Micro,
+            kind: Micro,
             annotations: Empty,
             generic: None,
             arguments: ArgumentsList {
                 terms: [],
             },
-            return: None,
+            return: ReturnType {
+                main: R,
+            },
             body: StatementBlock {
                 terms: [],
                 span: 0..0,
             },
         },
         FunctionDeclaration {
-            namepath: NamePathNode {
+            name: NamePathNode {
                 names: [
                     Identifier("outer", 322..327),
                 ],
             },
-            type: Macro,
+            kind: Macro,
             annotations: Empty,
             generic: None,
             arguments: ArgumentsList {
                 terms: [],
             },
-            return: None,
+            return: ReturnType {
+                main: String,
+            },
             body: StatementBlock {
                 terms: [],
                 span: 0..0,
             },
         },
         FunctionDeclaration {
-            namepath: NamePathNode {
+            name: NamePathNode {
                 names: [
                     Identifier("inner", 393..398),
                 ],
             },
-            type: Micro,
+            kind: Micro,
             annotations: Empty,
             generic: None,
             arguments: ArgumentsList {
                 terms: [],
             },
-            return: None,
+            return: Auto,
             body: StatementBlock {
                 terms: [],
                 span: 0..0,
             },
         },
         FunctionDeclaration {
-            namepath: NamePathNode {
+            name: NamePathNode {
                 names: [
                     Identifier("main", 538..542),
                 ],
             },
-            type: Micro,
+            kind: Micro,
             annotations: Annotation {
                 modifiers: [
                     Identifier("public", 512..518),
@@ -134,7 +138,9 @@ ProgramRoot {
             arguments: ArgumentsList {
                 terms: [],
             },
-            return: None,
+            return: ReturnType {
+                main: Int,
+            },
             body: StatementBlock {
                 terms: [],
                 span: 0..0,

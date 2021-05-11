@@ -52,7 +52,7 @@ pub use crate::{
         documentation::DocumentationNode,
         flags::{EncodeDeclaration, FlagDeclaration, FlagKind, FlagTerm},
         function::{
-            FunctionDeclaration, FunctionDeclarationInline, FunctionEffectNode, FunctionReturnNode, FunctionType,
+            FunctionDeclaration, FunctionDeclarationInline, FunctionEffectNode, FunctionKind, FunctionReturnNode,
             StatementBlock,
         },
         guarantee::{EffectTypeNode, GuaranteeNode},

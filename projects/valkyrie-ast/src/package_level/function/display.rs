@@ -1,7 +1,7 @@
 use super::*;
 
 #[cfg(feature = "pretty-print")]
-impl PrettyPrint for FunctionType {
+impl PrettyPrint for FunctionKind {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         theme.keyword(self.as_str())
     }
@@ -17,14 +17,14 @@ impl PrettyPrint for FunctionDeclaration {
         }
         terms += theme.keyword(self.r#type.as_str());
         terms += " ";
-        terms += self.namepath.pretty(theme);
+        terms += self.name.pretty(theme);
         if let Some(gen) = &self.generic {
             terms += gen.pretty(theme);
         }
         terms += self.arguments.pretty(theme);
         if let Some(ret) = &self.r#return {
             terms += ": ";
-            terms += ret.returns.pretty(theme);
+            terms += ret.typing.pretty(theme);
         }
         terms += self.body.pretty(theme);
         terms.into()
@@ -37,7 +37,7 @@ impl Lispify for FunctionDeclaration {
     fn lispify(&self) -> Self::Output {
         let mut lisp = Lisp::new(6);
         // lisp += self.r#type.lispify();
-        lisp += self.namepath.lispify();
+        lisp += self.name.lispify();
         if let Some(generic) = &self.generic {
             lisp += generic.lispify();
         }
@@ -49,13 +49,32 @@ impl Lispify for FunctionDeclaration {
         lisp
     }
 }
+
+impl Debug for FunctionReturnNode {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        if self.is_empty() {
+            f.debug_struct("Auto").finish()
+        }
+        else {
+            let w = &mut f.debug_struct("ReturnType");
+            if let Some(s) = &self.typing {
+                w.field("main", &s);
+            }
+            if !self.effect.is_empty() {
+                w.field("effects", &self.effect);
+            }
+            w.finish()
+        }
+    }
+}
+
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for FunctionReturnNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(4);
         terms += theme.operator(":");
         terms += " ";
-        terms += self.returns.pretty(theme);
+        terms += self.typing.pretty(theme);
         terms.into()
     }
 }

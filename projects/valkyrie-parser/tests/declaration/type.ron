@@ -164,48 +164,71 @@ ProgramRoot {
             span: 115..251,
         },
         FunctionDeclaration {
-            namepath: NamePathNode {
+            name: NamePathNode {
                 names: [
                     Identifier("five", 260..264),
                 ],
             },
-            type: Micro,
+            kind: Micro,
             annotations: Empty,
             generic: None,
             arguments: ArgumentsList {
                 terms: [],
             },
-            return: None,
+            return: ReturnType {
+                main: i32,
+            },
             body: StatementBlock {
                 terms: [],
                 span: 0..0,
             },
         },
         FunctionDeclaration {
-            namepath: NamePathNode {
+            name: NamePathNode {
                 names: [
                     Identifier("tuple", 348..353),
                 ],
             },
-            type: Micro,
+            kind: Micro,
             annotations: Empty,
             generic: None,
             arguments: ArgumentsList {
                 terms: [],
             },
-            return: None,
+            return: ReturnType {
+                main: TupleNode {
+                    kind: Tuple,
+                    terms: ArgumentsList {
+                        terms: [
+                            TupleTermNode {
+                                key: None,
+                                value: i32,
+                            },
+                            TupleTermNode {
+                                key: None,
+                                value: i32,
+                            },
+                            TupleTermNode {
+                                key: None,
+                                value: char,
+                            },
+                        ],
+                    },
+                    span: 357..373,
+                },
+            },
             body: StatementBlock {
                 terms: [],
                 span: 0..0,
             },
         },
         FunctionDeclaration {
-            namepath: NamePathNode {
+            name: NamePathNode {
                 names: [
                     Identifier("all_zeroes", 416..426),
                 ],
             },
-            type: Micro,
+            kind: Micro,
             annotations: Annotation {
                 modifiers: [
                     Identifier("predicate", 397..406),
@@ -215,7 +238,9 @@ ProgramRoot {
             arguments: ArgumentsList {
                 terms: [],
             },
-            return: None,
+            return: ReturnType {
+                main: bool,
+            },
             body: StatementBlock {
                 terms: [],
                 span: 0..0,

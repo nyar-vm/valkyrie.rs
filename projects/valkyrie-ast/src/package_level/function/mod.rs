@@ -5,7 +5,7 @@ mod display;
 /// `micro function(args), macro procedure(args)`
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum FunctionType {
+pub enum FunctionKind {
     /// A function that lazy evaluate the arguments
     Macro,
     /// A function that eager evaluate the arguments
@@ -17,16 +17,16 @@ pub enum FunctionType {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct FunctionDeclaration {
     /// The belonging and name of this function
-    pub namepath: NamePathNode,
+    pub name: NamePathNode,
     /// The range of the number.
-    pub r#type: FunctionType,
+    pub kind: FunctionKind,
     /// The annotations of this function
     pub annotations: AnnotationNode,
     /// Thy type parameters of this function
     pub generic: Option<ParametersList>,
     // The value parameters of this function
     pub arguments: ArgumentsList,
-    pub r#return: Option<FunctionReturnNode>,
+    pub r#return: FunctionReturnNode,
     pub body: StatementBlock,
 }
 
@@ -53,12 +53,13 @@ pub struct StatementBlock {
 }
 
 /// `fun name(): ReturnType`
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Clone, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct FunctionReturnNode {
-    pub returns: ExpressionNode,
-    /// The range of the node
-    pub span: Range<u32>,
+    /// The return type of this function
+    pub typing: Option<ExpressionType>,
+    /// The perform effects of this function
+    pub effect: Vec<ExpressionType>,
 }
 
 /// `fun name() / [EffectType]`
@@ -70,11 +71,11 @@ pub struct FunctionEffectNode {
     pub span: Range<u32>,
 }
 
-impl FunctionType {
+impl FunctionKind {
     pub fn as_str(&self) -> &'static str {
         match self {
-            FunctionType::Macro => "macro",
-            FunctionType::Micro => "micro",
+            FunctionKind::Macro => "macro",
+            FunctionKind::Micro => "micro",
         }
     }
 }
@@ -87,10 +88,16 @@ impl StatementBlock {
     }
 }
 
+impl FunctionReturnNode {
+    pub fn is_empty(&self) -> bool {
+        self.typing.is_none() && self.effect.is_empty()
+    }
+}
+
 impl FunctionDeclaration {
     /// Does the function has a return type
     pub fn has_return_type(&self) -> bool {
-        self.r#return.is_some()
+        self.r#return.typing.is_some()
     }
     /// Does the last statement has a semicolon, or it's empty
     ///
