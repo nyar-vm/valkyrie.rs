@@ -739,6 +739,7 @@ impl YggdrasilNode for DefineMethodNode {
         let _span = pair.get_span();
         Ok(Self {
             annotation_mix: pair.take_tagged_one::<AnnotationMixNode>(Cow::Borrowed("annotation_mix"))?,
+            continuation: pair.take_tagged_option::<ContinuationNode>(Cow::Borrowed("continuation")),
             function_body: pair.take_tagged_one::<FunctionBodyNode>(Cow::Borrowed("function_body"))?,
             namepath: pair.take_tagged_one::<NamepathNode>(Cow::Borrowed("namepath"))?,
             span: Range { start: _span.start() as u32, end: _span.end() as u32 },
@@ -1197,6 +1198,7 @@ impl YggdrasilNode for DefineFunctionNode {
         let _span = pair.get_span();
         Ok(Self {
             annotation_head: pair.take_tagged_one::<AnnotationHeadNode>(Cow::Borrowed("annotation_head"))?,
+            continuation: pair.take_tagged_one::<ContinuationNode>(Cow::Borrowed("continuation"))?,
             function_body: pair.take_tagged_one::<FunctionBodyNode>(Cow::Borrowed("function_body"))?,
             kw_function: pair.take_tagged_one::<KwFunctionNode>(Cow::Borrowed("kw_function"))?,
             namepath: pair.take_tagged_one::<NamepathNode>(Cow::Borrowed("namepath"))?,
@@ -1222,6 +1224,7 @@ impl YggdrasilNode for DefineLambdaNode {
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
         Ok(Self {
+            continuation: pair.take_tagged_one::<ContinuationNode>(Cow::Borrowed("continuation"))?,
             function_body: pair.take_tagged_one::<FunctionBodyNode>(Cow::Borrowed("function_body"))?,
             kw_lambda: pair.take_tagged_one::<KwLambdaNode>(Cow::Borrowed("kw_lambda"))?,
             span: Range { start: _span.start() as u32, end: _span.end() as u32 },
@@ -1246,7 +1249,6 @@ impl YggdrasilNode for FunctionBodyNode {
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
         Ok(Self {
-            continuation: pair.take_tagged_option::<ContinuationNode>(Cow::Borrowed("continuation")),
             define_generic: pair.take_tagged_option::<DefineGenericNode>(Cow::Borrowed("define_generic")),
             function_parameters: pair.take_tagged_one::<FunctionParametersNode>(Cow::Borrowed("function_parameters"))?,
             type_effect: pair.take_tagged_option::<TypeEffectNode>(Cow::Borrowed("type_effect")),

@@ -1,5 +1,14 @@
 use super::*;
 
+impl FunctionKind {
+    pub fn as_str(&self) -> &'static str {
+        match self {
+            FunctionKind::Macro => "macro",
+            FunctionKind::Micro => "micro",
+        }
+    }
+}
+
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for FunctionKind {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {

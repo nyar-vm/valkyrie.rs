@@ -653,6 +653,7 @@ pub struct ParameterDefaultNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct DefineMethodNode {
     pub annotation_mix: AnnotationMixNode,
+    pub continuation: Option<ContinuationNode>,
     pub function_body: FunctionBodyNode,
     pub namepath: NamepathNode,
     pub span: Range<u32>,
@@ -789,6 +790,7 @@ pub struct KwTraitNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct DefineFunctionNode {
     pub annotation_head: AnnotationHeadNode,
+    pub continuation: ContinuationNode,
     pub function_body: FunctionBodyNode,
     pub kw_function: KwFunctionNode,
     pub namepath: NamepathNode,
@@ -797,6 +799,7 @@ pub struct DefineFunctionNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct DefineLambdaNode {
+    pub continuation: ContinuationNode,
     pub function_body: FunctionBodyNode,
     pub kw_lambda: KwLambdaNode,
     pub span: Range<u32>,
@@ -804,7 +807,6 @@ pub struct DefineLambdaNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct FunctionBodyNode {
-    pub continuation: Option<ContinuationNode>,
     pub define_generic: Option<DefineGenericNode>,
     pub function_parameters: FunctionParametersNode,
     pub type_effect: Option<TypeEffectNode>,

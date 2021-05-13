@@ -51,10 +51,7 @@ pub use crate::{
         },
         documentation::DocumentationNode,
         flags::{EncodeDeclaration, FlagDeclaration, FlagKind, FlagTerm},
-        function::{
-            FunctionDeclaration, FunctionDeclarationInline, FunctionEffectNode, FunctionKind, FunctionReturnNode,
-            StatementBlock,
-        },
+        function::{FunctionDeclaration, FunctionDeclarationInline, FunctionKind, FunctionReturnNode, StatementBlock},
         guarantee::{EffectTypeNode, GuaranteeNode},
         import::{ImportAliasNode, ImportGroupNode, ImportResolvedItem, ImportState, ImportStatement, ImportTermNode},
         labeled::{GotoStatement, LabelStatement},

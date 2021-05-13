@@ -88,10 +88,8 @@ pub struct MethodDeclaration {
     pub generic: Option<ParametersList>,
     /// `method_name(arguments)`
     pub arguments: ArgumentsList,
-    /// `: ReturnType`
-    pub return_type: Option<FunctionReturnNode>,
-    /// `/ EffectType`
-    pub effect_type: Option<FunctionEffectNode>,
+    /// `: ReturnType / [EffectType]`
+    pub returns: FunctionReturnNode,
     /// `{ body }`
     pub body: Option<StatementBlock>,
     /// The range of the declaration.

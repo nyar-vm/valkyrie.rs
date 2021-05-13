@@ -34,4 +34,6 @@ use deriver::From;
 #[cfg(feature = "lispify")]
 use lispify::{Lisp, Lispify};
 #[cfg(feature = "pretty-print")]
-use pretty_print::{helpers::KAndRBracket, helpers::PrettySequence, helpers::SoftBlock};
+use pretty_print::{
+    helpers::KAndRBracket, helpers::PrettySequence, helpers::SoftBlock, PrettyPrint, PrettyProvider, PrettyTree,
+};

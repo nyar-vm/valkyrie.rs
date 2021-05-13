@@ -12,7 +12,7 @@ ProgramRoot {
             arguments: ArgumentsList {
                 terms: [],
             },
-            return: Auto,
+            returns: Auto,
             body: StatementBlock {
                 terms: [],
                 span: 0..0,
@@ -34,7 +34,7 @@ ProgramRoot {
             arguments: ArgumentsList {
                 terms: [],
             },
-            return: Auto,
+            returns: Auto,
             body: StatementBlock {
                 terms: [],
                 span: 0..0,
@@ -52,7 +52,7 @@ ProgramRoot {
             arguments: ArgumentsList {
                 terms: [],
             },
-            return: Auto,
+            returns: Auto,
             body: StatementBlock {
                 terms: [],
                 span: 0..0,
@@ -70,7 +70,7 @@ ProgramRoot {
             arguments: ArgumentsList {
                 terms: [],
             },
-            return: Auto,
+            returns: Auto,
             body: StatementBlock {
                 terms: [],
                 span: 0..0,
@@ -88,7 +88,7 @@ ProgramRoot {
             arguments: ArgumentsList {
                 terms: [],
             },
-            return: ReturnType {
+            returns: ReturnType {
                 main: Integer,
             },
             body: StatementBlock {
@@ -108,7 +108,7 @@ ProgramRoot {
             arguments: ArgumentsList {
                 terms: [],
             },
-            return: Auto,
+            returns: Auto,
             body: StatementBlock {
                 terms: [],
                 span: 0..0,
@@ -130,7 +130,7 @@ ProgramRoot {
             arguments: ArgumentsList {
                 terms: [],
             },
-            return: ReturnType {
+            returns: ReturnType {
                 main: Integer,
             },
             body: StatementBlock {

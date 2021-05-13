@@ -725,6 +725,8 @@ fn parse_define_method(state: Input) -> Output {
                 .and_then(|s| parse_namepath(s).and_then(|s| s.tag_node("namepath")))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_function_body(s).and_then(|s| s.tag_node("function_body")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| s.optional(|s| parse_continuation(s).and_then(|s| s.tag_node("continuation"))))
         })
     })
 }
@@ -1014,6 +1016,8 @@ fn parse_define_function(state: Input) -> Output {
                 .and_then(|s| parse_namepath(s).and_then(|s| s.tag_node("namepath")))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_function_body(s).and_then(|s| s.tag_node("function_body")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_continuation(s).and_then(|s| s.tag_node("continuation")))
         })
     })
 }
@@ -1025,6 +1029,8 @@ fn parse_define_lambda(state: Input) -> Output {
                 .and_then(|s| parse_kw_lambda(s).and_then(|s| s.tag_node("kw_lambda")))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_function_body(s).and_then(|s| s.tag_node("function_body")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_continuation(s).and_then(|s| s.tag_node("continuation")))
         })
     })
 }
@@ -1044,8 +1050,6 @@ fn parse_function_body(state: Input) -> Output {
                 .and_then(|s| s.optional(|s| parse_type_return(s).and_then(|s| s.tag_node("type_return"))))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| s.optional(|s| parse_type_effect(s).and_then(|s| s.tag_node("type_effect"))))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| s.optional(|s| parse_continuation(s).and_then(|s| s.tag_node("continuation"))))
         })
     })
 }

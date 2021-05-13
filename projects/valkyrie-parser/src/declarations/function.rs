@@ -5,7 +5,7 @@ impl crate::DefineFunctionNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<FunctionDeclaration> {
         let mut errors = vec![];
         let annotations = self.annotation_head.annotations(ctx).recover(&mut errors)?;
-        let returning = self.function_body.build_return(ctx).recover(&mut errors)?;
+        let returning = self.function_body.returns(ctx).recover(&mut errors)?;
         Success {
             value: FunctionDeclaration {
                 name: self.namepath.build(ctx),
@@ -13,7 +13,7 @@ impl crate::DefineFunctionNode {
                 annotations,
                 generic: None,
                 arguments: Default::default(),
-                r#return: returning,
+                returns: returning,
                 body: Default::default(),
             },
             diagnostics: errors,
@@ -31,7 +31,7 @@ impl crate::KwFunctionNode {
 }
 
 impl crate::FunctionBodyNode {
-    fn build_return(&self, ctx: &ProgramContext) -> Validation<FunctionReturnNode> {
+    pub fn returns(&self, ctx: &ProgramContext) -> Validation<FunctionReturnNode> {
         let mut errors = vec![];
         let typing = match &self.type_return {
             Some(s) => Some(s.type_expression.build(ctx)?),

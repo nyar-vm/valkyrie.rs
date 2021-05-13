@@ -64,7 +64,9 @@ impl crate::DefineFieldNode {
 
 impl crate::DefineMethodNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<MethodDeclaration> {
+        let mut errors = vec![];
         let name = self.namepath.build(ctx);
+        let returns = self.function_body.returns(ctx).recover(&mut errors)?;
         Success {
             value: MethodDeclaration {
                 document: Default::default(),
@@ -72,12 +74,11 @@ impl crate::DefineMethodNode {
                 method_name: name,
                 generic: None,
                 arguments: Default::default(),
-                return_type: None,
-                effect_type: None,
+                returns,
                 body: None,
                 span: self.span.clone(),
             },
-            diagnostics: vec![],
+            diagnostics: errors,
         }
     }
 }

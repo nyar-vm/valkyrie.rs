@@ -130,7 +130,7 @@ class ParameterDefault {
     '=' MainExpression
 }
 class DefineMethod {
-    AnnotationMix Namepath FunctionBody
+    AnnotationMix Namepath FunctionBody Continuation?
 }
 class DefineDomain {
     AnnotationMix
@@ -204,13 +204,13 @@ union KW_TRAIT {
 }
 // === def function === ------------------------------------------------------------------------------------------------
 class DefineFunction {
-    AnnotationHead KW_FUNCTION Namepath FunctionBody
+    AnnotationHead KW_FUNCTION Namepath FunctionBody Continuation
 }
 class DefineLambda {
-    KW_LAMBDA FunctionBody
+    KW_LAMBDA FunctionBody Continuation
 }
 class FunctionBody {
-    DefineGeneric? '(' FunctionParameters ')' TypeReturn? TypeEffect? Continuation?
+    DefineGeneric? '(' FunctionParameters ')' TypeReturn? TypeEffect?
 }
 class TypeHint {
     COLON TypeExpression

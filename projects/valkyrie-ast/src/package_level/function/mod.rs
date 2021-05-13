@@ -26,7 +26,7 @@ pub struct FunctionDeclaration {
     pub generic: Option<ParametersList>,
     // The value parameters of this function
     pub arguments: ArgumentsList,
-    pub r#return: FunctionReturnNode,
+    pub returns: FunctionReturnNode,
     pub body: StatementBlock,
 }
 
@@ -52,7 +52,7 @@ pub struct StatementBlock {
     pub span: Range<u32>,
 }
 
-/// `fun name(): ReturnType`
+/// `fun name(): ReturnType / [EffectType]`
 #[derive(Clone, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct FunctionReturnNode {
@@ -62,23 +62,6 @@ pub struct FunctionReturnNode {
     pub effect: Vec<ExpressionType>,
 }
 
-/// `fun name() / [EffectType]`
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct FunctionEffectNode {
-    pub effects: Vec<ExpressionNode>,
-    /// The range of the node
-    pub span: Range<u32>,
-}
-
-impl FunctionKind {
-    pub fn as_str(&self) -> &'static str {
-        match self {
-            FunctionKind::Macro => "macro",
-            FunctionKind::Micro => "micro",
-        }
-    }
-}
 impl StatementBlock {
     pub fn last_semicolon(&self) -> bool {
         todo!()
@@ -97,7 +80,7 @@ impl FunctionReturnNode {
 impl FunctionDeclaration {
     /// Does the function has a return type
     pub fn has_return_type(&self) -> bool {
-        self.r#return.typing.is_some()
+        self.returns.typing.is_some()
     }
     /// Does the last statement has a semicolon, or it's empty
     ///
