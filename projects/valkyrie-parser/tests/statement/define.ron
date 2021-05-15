@@ -15,7 +15,7 @@ ProgramRoot {
             returns: Auto,
             body: StatementBlock {
                 terms: [],
-                span: 0..0,
+                span: 18..20,
             },
         },
         FunctionDeclaration {
@@ -37,7 +37,7 @@ ProgramRoot {
             returns: Auto,
             body: StatementBlock {
                 terms: [],
-                span: 0..0,
+                span: 45..47,
             },
         },
         FunctionDeclaration {
@@ -55,7 +55,7 @@ ProgramRoot {
             returns: Auto,
             body: StatementBlock {
                 terms: [],
-                span: 0..0,
+                span: 92..94,
             },
         },
         FunctionDeclaration {
@@ -73,7 +73,7 @@ ProgramRoot {
             returns: Auto,
             body: StatementBlock {
                 terms: [],
-                span: 0..0,
+                span: 131..133,
             },
         },
         FunctionDeclaration {
@@ -93,7 +93,7 @@ ProgramRoot {
             },
             body: StatementBlock {
                 terms: [],
-                span: 0..0,
+                span: 174..176,
             },
         },
         FunctionDeclaration {
@@ -111,7 +111,7 @@ ProgramRoot {
             returns: Auto,
             body: StatementBlock {
                 terms: [],
-                span: 0..0,
+                span: 218..220,
             },
         },
         FunctionDeclaration {
@@ -135,7 +135,7 @@ ProgramRoot {
             },
             body: StatementBlock {
                 terms: [],
-                span: 0..0,
+                span: 330..334,
             },
         },
     ],

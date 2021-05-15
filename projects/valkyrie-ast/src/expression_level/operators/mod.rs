@@ -115,6 +115,8 @@ pub enum ValkyrieOperator {
         /// binary operator: `&,  |`
         mask: LogicMatrix,
     },
+    /// binary operator: `/@`
+    Map,
     /// suffix operator: `?`
     Optional,
     /// suffix operator: `!`
@@ -197,6 +199,7 @@ impl ValkyrieOperator {
             Self::LogicMatrix { .. } => 14700,
             Self::Equal { .. } => 14700,
             Self::StrictlyEqual { .. } => 14700,
+            Self::Map => 14700,
             // infix - 2
             Self::Greater { .. } => 14800,
             Self::Less { .. } => 14800,
@@ -325,6 +328,7 @@ impl ValkyrieOperator {
                 false => "=",
             },
             Self::LogicMatrix { mask } => mask.as_str(),
+            Self::Map => "/@",
         }
     }
     pub fn associativity(&self) -> Associativity {

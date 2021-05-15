@@ -740,7 +740,7 @@ impl YggdrasilNode for DefineMethodNode {
         Ok(Self {
             annotation_mix: pair.take_tagged_one::<AnnotationMixNode>(Cow::Borrowed("annotation_mix"))?,
             continuation: pair.take_tagged_option::<ContinuationNode>(Cow::Borrowed("continuation")),
-            function_body: pair.take_tagged_one::<FunctionBodyNode>(Cow::Borrowed("function_body"))?,
+            function_middle: pair.take_tagged_one::<FunctionMiddleNode>(Cow::Borrowed("function_middle"))?,
             namepath: pair.take_tagged_one::<NamepathNode>(Cow::Borrowed("namepath"))?,
             span: Range { start: _span.start() as u32, end: _span.end() as u32 },
         })
@@ -1199,7 +1199,7 @@ impl YggdrasilNode for DefineFunctionNode {
         Ok(Self {
             annotation_head: pair.take_tagged_one::<AnnotationHeadNode>(Cow::Borrowed("annotation_head"))?,
             continuation: pair.take_tagged_one::<ContinuationNode>(Cow::Borrowed("continuation"))?,
-            function_body: pair.take_tagged_one::<FunctionBodyNode>(Cow::Borrowed("function_body"))?,
+            function_middle: pair.take_tagged_one::<FunctionMiddleNode>(Cow::Borrowed("function_middle"))?,
             kw_function: pair.take_tagged_one::<KwFunctionNode>(Cow::Borrowed("kw_function"))?,
             namepath: pair.take_tagged_one::<NamepathNode>(Cow::Borrowed("namepath"))?,
             span: Range { start: _span.start() as u32, end: _span.end() as u32 },
@@ -1224,8 +1224,11 @@ impl YggdrasilNode for DefineLambdaNode {
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
         Ok(Self {
+            annotation_term: pair
+                .take_tagged_items::<AnnotationTermNode>(Cow::Borrowed("annotation_term"))
+                .collect::<Result<Vec<_>, _>>()?,
             continuation: pair.take_tagged_one::<ContinuationNode>(Cow::Borrowed("continuation"))?,
-            function_body: pair.take_tagged_one::<FunctionBodyNode>(Cow::Borrowed("function_body"))?,
+            function_middle: pair.take_tagged_one::<FunctionMiddleNode>(Cow::Borrowed("function_middle"))?,
             kw_lambda: pair.take_tagged_one::<KwLambdaNode>(Cow::Borrowed("kw_lambda"))?,
             span: Range { start: _span.start() as u32, end: _span.end() as u32 },
         })
@@ -1240,7 +1243,7 @@ impl FromStr for DefineLambdaNode {
     }
 }
 #[automatically_derived]
-impl YggdrasilNode for FunctionBodyNode {
+impl YggdrasilNode for FunctionMiddleNode {
     type Rule = ValkyrieRule;
 
     fn get_range(&self) -> Range<usize> {
@@ -1258,11 +1261,11 @@ impl YggdrasilNode for FunctionBodyNode {
     }
 }
 #[automatically_derived]
-impl FromStr for FunctionBodyNode {
+impl FromStr for FunctionMiddleNode {
     type Err = YggdrasilError<ValkyrieRule>;
 
     fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
-        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::FunctionBody)?)
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::FunctionMiddle)?)
     }
 }
 #[automatically_derived]

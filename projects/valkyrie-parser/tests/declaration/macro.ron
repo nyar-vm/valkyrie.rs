@@ -34,10 +34,10 @@ ProgramRoot {
             arguments: ArgumentsList {
                 terms: [],
             },
-            return: Auto,
+            returns: Auto,
             body: StatementBlock {
                 terms: [],
-                span: 0..0,
+                span: 190..194,
             },
         },
         FunctionDeclaration {
@@ -56,10 +56,10 @@ ProgramRoot {
             arguments: ArgumentsList {
                 terms: [],
             },
-            return: Auto,
+            returns: Auto,
             body: StatementBlock {
                 terms: [],
-                span: 0..0,
+                span: 223..227,
             },
         },
         FunctionDeclaration {
@@ -74,12 +74,49 @@ ProgramRoot {
             arguments: ArgumentsList {
                 terms: [],
             },
-            return: ReturnType {
+            returns: ReturnType {
                 main: R,
             },
             body: StatementBlock {
-                terms: [],
-                span: 0..0,
+                terms: [
+                    ExpressionNode {
+                        omit: false,
+                        body: InfixNode {
+                            infix: +,
+                            lhs: 1,
+                            rhs: 1,
+                        },
+                        span: 268..278,
+                    },
+                    ExpressionNode {
+                        omit: false,
+                        body: InfixNode {
+                            infix: ∈,
+                            lhs: a,
+                            rhs: b,
+                        },
+                        span: 278..289,
+                    },
+                    ExpressionNode {
+                        omit: false,
+                        body: ApplyCallNode {
+                            monadic: false,
+                            caller: print,
+                            arguments: ArgumentsList {
+                                terms: [
+                                    TupleTermNode {
+                                        key: None,
+                                        value: 'Hello, world!',
+                                    },
+                                ],
+                            },
+                            body: None,
+                            span: 294..311,
+                        },
+                        span: 289..312,
+                    },
+                ],
+                span: 262..313,
             },
         },
         FunctionDeclaration {
@@ -94,12 +131,32 @@ ProgramRoot {
             arguments: ArgumentsList {
                 terms: [],
             },
-            return: ReturnType {
+            returns: ReturnType {
                 main: String,
             },
             body: StatementBlock {
-                terms: [],
-                span: 0..0,
+                terms: [
+                    ExpressionNode {
+                        omit: false,
+                        body: let,
+                        span: 361..370,
+                    },
+                    ExpressionNode {
+                        omit: false,
+                        body: mut,
+                        span: 370..374,
+                    },
+                    ExpressionNode {
+                        omit: false,
+                        body: InfixNode {
+                            infix: =,
+                            lhs: count,
+                            rhs: 0,
+                        },
+                        span: 374..384,
+                    },
+                ],
+                span: 355..385,
             },
         },
         FunctionDeclaration {
@@ -114,10 +171,57 @@ ProgramRoot {
             arguments: ArgumentsList {
                 terms: [],
             },
-            return: Auto,
+            returns: Auto,
             body: StatementBlock {
-                terms: [],
-                span: 0..0,
+                terms: [
+                    ExpressionNode {
+                        omit: false,
+                        body: WhileLoop {
+                            kind: While,
+                            condition: Unconditional,
+                            then: StatementBlock {
+                                terms: [
+                                    ExpressionNode {
+                                        omit: false,
+                                        body: InfixNode {
+                                            infix: +=,
+                                            lhs: count,
+                                            rhs: 1,
+                                        },
+                                        span: 449..468,
+                                    },
+                                    ExpressionNode {
+                                        omit: false,
+                                        body: ApplyCallNode {
+                                            monadic: false,
+                                            caller: print,
+                                            arguments: ArgumentsList {
+                                                terms: [
+                                                    TupleTermNode {
+                                                        key: None,
+                                                        value: '{lhs} {rhs}',
+                                                    },
+                                                ],
+                                            },
+                                            body: None,
+                                            span: 473..488,
+                                        },
+                                        span: 468..493,
+                                    },
+                                ],
+                                span: 439..494,
+                            },
+                            span: 422..499,
+                        },
+                        span: 422..499,
+                    },
+                    ExpressionNode {
+                        omit: false,
+                        body: '{count}',
+                        span: 499..509,
+                    },
+                ],
+                span: 416..510,
             },
         },
         FunctionDeclaration {
@@ -138,12 +242,54 @@ ProgramRoot {
             arguments: ArgumentsList {
                 terms: [],
             },
-            return: ReturnType {
+            returns: ReturnType {
                 main: Int,
             },
             body: StatementBlock {
-                terms: [],
-                span: 0..0,
+                terms: [
+                    ExpressionNode {
+                        omit: false,
+                        body: ApplyCallNode {
+                            monadic: false,
+                            caller: ApplyCallNode {
+                                monadic: false,
+                                caller: outer,
+                                arguments: ArgumentsList {
+                                    terms: [
+                                        TupleTermNode {
+                                            key: None,
+                                            value: 'Hello',
+                                        },
+                                    ],
+                                },
+                                body: None,
+                                span: 589..598,
+                            },
+                            arguments: ArgumentsList {
+                                terms: [
+                                    TupleTermNode {
+                                        key: None,
+                                        value: 'world',
+                                    },
+                                ],
+                            },
+                            body: None,
+                            span: 598..607,
+                        },
+                        span: 584..612,
+                    },
+                    ExpressionNode {
+                        omit: false,
+                        body: return,
+                        span: 612..619,
+                    },
+                    ExpressionNode {
+                        omit: false,
+                        body: 0,
+                        span: 619..621,
+                    },
+                ],
+                span: 578..622,
             },
         },
     ],

@@ -47,7 +47,7 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::KW_TRAIT => parse_kw_trait(state),
         ValkyrieRule::DefineFunction => parse_define_function(state),
         ValkyrieRule::DefineLambda => parse_define_lambda(state),
-        ValkyrieRule::FunctionBody => parse_function_body(state),
+        ValkyrieRule::FunctionMiddle => parse_function_middle(state),
         ValkyrieRule::TypeHint => parse_type_hint(state),
         ValkyrieRule::TypeReturn => parse_type_return(state),
         ValkyrieRule::TypeEffect => parse_type_effect(state),
@@ -724,7 +724,7 @@ fn parse_define_method(state: Input) -> Output {
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_namepath(s).and_then(|s| s.tag_node("namepath")))
                 .and_then(|s| builtin_ignore(s))
-                .and_then(|s| parse_function_body(s).and_then(|s| s.tag_node("function_body")))
+                .and_then(|s| parse_function_middle(s).and_then(|s| s.tag_node("function_middle")))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| s.optional(|s| parse_continuation(s).and_then(|s| s.tag_node("continuation"))))
         })
@@ -1015,7 +1015,7 @@ fn parse_define_function(state: Input) -> Output {
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_namepath(s).and_then(|s| s.tag_node("namepath")))
                 .and_then(|s| builtin_ignore(s))
-                .and_then(|s| parse_function_body(s).and_then(|s| s.tag_node("function_body")))
+                .and_then(|s| parse_function_middle(s).and_then(|s| s.tag_node("function_middle")))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_continuation(s).and_then(|s| s.tag_node("continuation")))
         })
@@ -1026,17 +1026,27 @@ fn parse_define_lambda(state: Input) -> Output {
     state.rule(ValkyrieRule::DefineLambda, |s| {
         s.sequence(|s| {
             Ok(s)
+                .and_then(|s| {
+                    s.repeat(0..4294967295, |s| {
+                        s.sequence(|s| {
+                            Ok(s)
+                                .and_then(|s| builtin_ignore(s))
+                                .and_then(|s| parse_annotation_term(s).and_then(|s| s.tag_node("annotation_term")))
+                        })
+                    })
+                })
+                .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_kw_lambda(s).and_then(|s| s.tag_node("kw_lambda")))
                 .and_then(|s| builtin_ignore(s))
-                .and_then(|s| parse_function_body(s).and_then(|s| s.tag_node("function_body")))
+                .and_then(|s| parse_function_middle(s).and_then(|s| s.tag_node("function_middle")))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_continuation(s).and_then(|s| s.tag_node("continuation")))
         })
     })
 }
 #[inline]
-fn parse_function_body(state: Input) -> Output {
-    state.rule(ValkyrieRule::FunctionBody, |s| {
+fn parse_function_middle(state: Input) -> Output {
+    state.rule(ValkyrieRule::FunctionMiddle, |s| {
         s.sequence(|s| {
             Ok(s)
                 .and_then(|s| s.optional(|s| parse_define_generic(s).and_then(|s| s.tag_node("define_generic"))))

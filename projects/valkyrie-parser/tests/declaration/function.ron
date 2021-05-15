@@ -12,10 +12,10 @@ ProgramRoot {
             arguments: ArgumentsList {
                 terms: [],
             },
-            return: Auto,
+            returns: Auto,
             body: StatementBlock {
                 terms: [],
-                span: 0..0,
+                span: 13..17,
             },
         },
         FunctionDeclaration {
@@ -30,12 +30,12 @@ ProgramRoot {
             arguments: ArgumentsList {
                 terms: [],
             },
-            return: ReturnType {
+            returns: ReturnType {
                 main: R,
             },
             body: StatementBlock {
                 terms: [],
-                span: 0..0,
+                span: 35..39,
             },
         },
         FunctionDeclaration {
@@ -50,12 +50,31 @@ ProgramRoot {
             arguments: ArgumentsList {
                 terms: [],
             },
-            return: ReturnType {
+            returns: ReturnType {
                 main: R,
             },
             body: StatementBlock {
-                terms: [],
-                span: 0..0,
+                terms: [
+                    ExpressionNode {
+                        omit: false,
+                        body: ApplyCallNode {
+                            monadic: false,
+                            caller: print,
+                            arguments: ArgumentsList {
+                                terms: [
+                                    TupleTermNode {
+                                        key: None,
+                                        value: 'Hello, world!',
+                                    },
+                                ],
+                            },
+                            body: None,
+                            span: 91..108,
+                        },
+                        span: 86..109,
+                    },
+                ],
+                span: 80..110,
             },
         },
         FunctionDeclaration {
@@ -70,12 +89,49 @@ ProgramRoot {
             arguments: ArgumentsList {
                 terms: [],
             },
-            return: ReturnType {
+            returns: ReturnType {
                 main: R,
             },
             body: StatementBlock {
-                terms: [],
-                span: 0..0,
+                terms: [
+                    ExpressionNode {
+                        omit: false,
+                        body: InfixNode {
+                            infix: +,
+                            lhs: 1,
+                            rhs: 1,
+                        },
+                        span: 147..157,
+                    },
+                    ExpressionNode {
+                        omit: false,
+                        body: InfixNode {
+                            infix: ∈,
+                            lhs: a,
+                            rhs: b,
+                        },
+                        span: 157..168,
+                    },
+                    ExpressionNode {
+                        omit: false,
+                        body: ApplyCallNode {
+                            monadic: false,
+                            caller: print,
+                            arguments: ArgumentsList {
+                                terms: [
+                                    TupleTermNode {
+                                        key: None,
+                                        value: 'Hello, world!',
+                                    },
+                                ],
+                            },
+                            body: None,
+                            span: 173..190,
+                        },
+                        span: 168..191,
+                    },
+                ],
+                span: 141..192,
             },
         },
         FunctionDeclaration {
@@ -90,12 +146,26 @@ ProgramRoot {
             arguments: ArgumentsList {
                 terms: [],
             },
-            return: ReturnType {
+            returns: ReturnType {
                 main: String,
             },
             body: StatementBlock {
-                terms: [],
-                span: 0..0,
+                terms: [
+                    ExpressionNode {
+                        omit: false,
+                        body: ConstructObjectNode {
+                            base_classes: None,
+                            span: 259..377,
+                        },
+                        span: 259..382,
+                    },
+                    ExpressionNode {
+                        omit: false,
+                        body: '{count}',
+                        span: 382..392,
+                    },
+                ],
+                span: 228..393,
             },
         },
         FunctionDeclaration {
@@ -116,12 +186,54 @@ ProgramRoot {
             arguments: ArgumentsList {
                 terms: [],
             },
-            return: ReturnType {
+            returns: ReturnType {
                 main: int,
             },
             body: StatementBlock {
-                terms: [],
-                span: 0..0,
+                terms: [
+                    ExpressionNode {
+                        omit: false,
+                        body: ApplyCallNode {
+                            monadic: false,
+                            caller: ApplyCallNode {
+                                monadic: false,
+                                caller: outer,
+                                arguments: ArgumentsList {
+                                    terms: [
+                                        TupleTermNode {
+                                            key: None,
+                                            value: 'Hello',
+                                        },
+                                    ],
+                                },
+                                body: None,
+                                span: 468..477,
+                            },
+                            arguments: ArgumentsList {
+                                terms: [
+                                    TupleTermNode {
+                                        key: None,
+                                        value: 'world',
+                                    },
+                                ],
+                            },
+                            body: None,
+                            span: 477..486,
+                        },
+                        span: 463..491,
+                    },
+                    ExpressionNode {
+                        omit: false,
+                        body: return,
+                        span: 491..498,
+                    },
+                    ExpressionNode {
+                        omit: false,
+                        body: 0,
+                        span: 498..500,
+                    },
+                ],
+                span: 457..501,
             },
         },
         FunctionDeclaration {
@@ -136,10 +248,10 @@ ProgramRoot {
             arguments: ArgumentsList {
                 terms: [],
             },
-            return: Auto,
+            returns: Auto,
             body: StatementBlock {
                 terms: [],
-                span: 0..0,
+                span: 519..521,
             },
         },
         FunctionDeclaration {
@@ -156,10 +268,16 @@ ProgramRoot {
             arguments: ArgumentsList {
                 terms: [],
             },
-            return: Auto,
+            returns: Auto,
             body: StatementBlock {
-                terms: [],
-                span: 0..0,
+                terms: [
+                    ExpressionNode {
+                        omit: false,
+                        body: markdown'*italic*',
+                        span: 1314..1333,
+                    },
+                ],
+                span: 1308..1334,
             },
         },
         FunctionDeclaration {
@@ -174,12 +292,12 @@ ProgramRoot {
             arguments: ArgumentsList {
                 terms: [],
             },
-            return: ReturnType {
+            returns: ReturnType {
                 main: Equirecursive,
             },
             body: StatementBlock {
                 terms: [],
-                span: 0..0,
+                span: 1384..1388,
             },
         },
         FunctionDeclaration {
@@ -194,12 +312,12 @@ ProgramRoot {
             arguments: ArgumentsList {
                 terms: [],
             },
-            return: ReturnType {
+            returns: ReturnType {
                 main: R,
             },
             body: StatementBlock {
                 terms: [],
-                span: 0..0,
+                span: 1424..1428,
             },
         },
         FunctionDeclaration {
@@ -220,12 +338,50 @@ ProgramRoot {
             arguments: ArgumentsList {
                 terms: [],
             },
-            return: ReturnType {
+            returns: ReturnType {
                 main: Range,
             },
             body: StatementBlock {
-                terms: [],
-                span: 0..0,
+                terms: [
+                    ExpressionNode {
+                        omit: false,
+                        body: ConstructNewNode {
+                            modifiers: [],
+                            namepath: NamePathNode {
+                                names: [
+                                    Identifier("std", 1523..1526),
+                                    Identifier("iterator", 1528..1536),
+                                    Identifier("Range", 1538..1543),
+                                ],
+                            },
+                            generic: GenericCallNode {
+                                monadic: false,
+                                base: Placeholder,
+                                terms: ArgumentsList {
+                                    terms: [],
+                                },
+                                associated: [],
+                                span: 0..0,
+                            },
+                            arguments: ApplyCallNode {
+                                monadic: false,
+                                caller: Placeholder,
+                                arguments: ArgumentsList {
+                                    terms: [],
+                                },
+                                body: None,
+                                span: 0..0,
+                            },
+                            body: CollectorNode {
+                                terms: [],
+                                span: 0..0,
+                            },
+                            span: 1514..1644,
+                        },
+                        span: 1514..1644,
+                    },
+                ],
+                span: 1508..1645,
             },
         },
         FunctionDeclaration {
@@ -240,12 +396,31 @@ ProgramRoot {
             arguments: ArgumentsList {
                 terms: [],
             },
-            return: ReturnType {
+            returns: ReturnType {
                 main: R,
             },
             body: StatementBlock {
-                terms: [],
-                span: 0..0,
+                terms: [
+                    ExpressionNode {
+                        omit: false,
+                        body: ApplyCallNode {
+                            monadic: false,
+                            caller: print,
+                            arguments: ArgumentsList {
+                                terms: [
+                                    TupleTermNode {
+                                        key: None,
+                                        value: 'Hello, world!',
+                                    },
+                                ],
+                            },
+                            body: None,
+                            span: 1693..1710,
+                        },
+                        span: 1688..1711,
+                    },
+                ],
+                span: 1682..1712,
             },
         },
         ClassDeclaration {
@@ -287,10 +462,16 @@ ProgramRoot {
             arguments: ArgumentsList {
                 terms: [],
             },
-            return: Auto,
+            returns: Auto,
             body: StatementBlock {
-                terms: [],
-                span: 0..0,
+                terms: [
+                    ExpressionNode {
+                        omit: false,
+                        body: block,
+                        span: 1847..1853,
+                    },
+                ],
+                span: 1841..1854,
             },
         },
         FunctionDeclaration {
@@ -313,10 +494,32 @@ ProgramRoot {
             arguments: ArgumentsList {
                 terms: [],
             },
-            return: Auto,
+            returns: Auto,
             body: StatementBlock {
-                terms: [],
-                span: 0..0,
+                terms: [
+                    ExpressionNode {
+                        omit: false,
+                        body: ApplyCallNode {
+                            monadic: false,
+                            caller: DotCallNode {
+                                monadic: false,
+                                base: ConstructObjectNode {
+                                    base_classes: None,
+                                    span: 1945..2000,
+                                },
+                                term: call,
+                                span: 2005..2010,
+                            },
+                            arguments: ArgumentsList {
+                                terms: [],
+                            },
+                            body: None,
+                            span: 2010..2012,
+                        },
+                        span: 1932..2013,
+                    },
+                ],
+                span: 1926..2014,
             },
         },
         FunctionDeclaration {
@@ -339,10 +542,36 @@ ProgramRoot {
             arguments: ArgumentsList {
                 terms: [],
             },
-            return: Auto,
+            returns: Auto,
             body: StatementBlock {
-                terms: [],
-                span: 0..0,
+                terms: [
+                    ExpressionNode {
+                        omit: false,
+                        body: InfixNode {
+                            infix: /@,
+                            lhs: InfixNode {
+                                infix: /@,
+                                lhs: InfixNode {
+                                    infix: /@,
+                                    lhs: a,
+                                    rhs: b,
+                                },
+                                rhs: c,
+                            },
+                            rhs: InfixNode {
+                                infix: /%,
+                                lhs: InfixNode {
+                                    infix: %,
+                                    lhs: d,
+                                    rhs: 2,
+                                },
+                                rhs: 3,
+                            },
+                        },
+                        span: 2107..2138,
+                    },
+                ],
+                span: 2101..2139,
             },
         },
     ],

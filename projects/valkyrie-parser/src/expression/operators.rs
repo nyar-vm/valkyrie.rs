@@ -43,10 +43,14 @@ impl crate::MainInfixNode {
             "∌" => Contains { negative: true },
 
             "+" => Plus,
+            "+=" => PlusAssign,
             "-" => Minus,
+            "-=" => MinusAssign,
             "*" => Multiply,
             "/" => Divide,
+            "÷" => DivideRemider,
             "%" => Remider,
+            "⁒" => Remider,
             "^" => Power,
             "=" => Assign { monadic: false },
             "?=" => Assign { monadic: true },
@@ -74,6 +78,8 @@ impl crate::MainInfixNode {
             // range
             "..<" => RangeTo { equal: false },
             "..=" => RangeTo { equal: true },
+            // list operator
+            "⇴" | "⨵" | "⊕" | "⟴" => Map,
             _ => unimplemented!("{} is a unknown infix operator", self.text),
         };
         OperatorNode { kind: o, span: self.span.clone() }
@@ -83,8 +89,8 @@ impl crate::TypeInfixNode {
     pub fn as_operator(&self) -> OperatorNode {
         use ValkyrieOperator::*;
         let o = match self.text.as_str() {
-            s if s.starts_with("is") => Is { negative: s.ends_with("not") },
-            _ => unimplemented!("{} is a unknown infix operator", self.text),
+            "+" => Plus,
+            _ => unimplemented!("{} is a unknown infix type operator", self.text),
         };
         OperatorNode { kind: o, span: self.span.clone() }
     }

@@ -1,6 +1,5 @@
 use super::*;
-use crate::{ContinuationNode, KwWhileNode};
-use valkyrie_ast::StatementBlock;
+use crate::KwWhileNode;
 
 impl crate::WhileStatementNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<WhileLoop> {
@@ -22,16 +21,5 @@ impl KwWhileNode {
             Self::Until => WhileLoopKind::Until,
             Self::While => WhileLoopKind::While,
         }
-    }
-}
-
-impl ContinuationNode {
-    pub fn build(&self, ctx: &ProgramContext) -> Validation<StatementBlock> {
-        let mut terms = vec![];
-        let mut diagnostics = vec![];
-        for term in &self.main_statement {
-            term.build(ctx).append(&mut terms, &mut diagnostics)
-        }
-        Success { value: StatementBlock { terms, span: self.span.clone() }, diagnostics }
     }
 }

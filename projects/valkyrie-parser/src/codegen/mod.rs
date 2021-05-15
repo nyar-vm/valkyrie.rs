@@ -75,7 +75,7 @@ pub enum ValkyrieRule {
     KW_TRAIT,
     DefineFunction,
     DefineLambda,
-    FunctionBody,
+    FunctionMiddle,
     TypeHint,
     TypeReturn,
     TypeEffect,
@@ -292,7 +292,7 @@ impl YggdrasilRule for ValkyrieRule {
             Self::KW_TRAIT => "",
             Self::DefineFunction => "",
             Self::DefineLambda => "",
-            Self::FunctionBody => "",
+            Self::FunctionMiddle => "",
             Self::TypeHint => "",
             Self::TypeReturn => "",
             Self::TypeEffect => "",
@@ -654,7 +654,7 @@ pub struct ParameterDefaultNode {
 pub struct DefineMethodNode {
     pub annotation_mix: AnnotationMixNode,
     pub continuation: Option<ContinuationNode>,
-    pub function_body: FunctionBodyNode,
+    pub function_middle: FunctionMiddleNode,
     pub namepath: NamepathNode,
     pub span: Range<u32>,
 }
@@ -791,7 +791,7 @@ pub struct KwTraitNode {
 pub struct DefineFunctionNode {
     pub annotation_head: AnnotationHeadNode,
     pub continuation: ContinuationNode,
-    pub function_body: FunctionBodyNode,
+    pub function_middle: FunctionMiddleNode,
     pub kw_function: KwFunctionNode,
     pub namepath: NamepathNode,
     pub span: Range<u32>,
@@ -799,14 +799,15 @@ pub struct DefineFunctionNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct DefineLambdaNode {
+    pub annotation_term: Vec<AnnotationTermNode>,
     pub continuation: ContinuationNode,
-    pub function_body: FunctionBodyNode,
+    pub function_middle: FunctionMiddleNode,
     pub kw_lambda: KwLambdaNode,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct FunctionBodyNode {
+pub struct FunctionMiddleNode {
     pub define_generic: Option<DefineGenericNode>,
     pub function_parameters: FunctionParametersNode,
     pub type_effect: Option<TypeEffectNode>,

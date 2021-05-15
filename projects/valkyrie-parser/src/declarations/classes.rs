@@ -1,4 +1,5 @@
 use super::*;
+use crate::ContinuationNode;
 
 impl crate::DefineClassNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<ClassDeclaration> {
@@ -66,7 +67,11 @@ impl crate::DefineMethodNode {
     pub fn build(&self, ctx: &ProgramContext) -> Validation<MethodDeclaration> {
         let mut errors = vec![];
         let name = self.namepath.build(ctx);
-        let returns = self.function_body.returns(ctx).recover(&mut errors)?;
+        let body = match &self.continuation {
+            Some(s) => Some(s.build(ctx).recover(&mut errors)?),
+            None => None,
+        };
+        let returns = self.function_middle.returns(ctx).recover(&mut errors)?;
         Success {
             value: MethodDeclaration {
                 document: Default::default(),
@@ -75,7 +80,7 @@ impl crate::DefineMethodNode {
                 generic: None,
                 arguments: Default::default(),
                 returns,
-                body: None,
+                body,
                 span: self.span.clone(),
             },
             diagnostics: errors,
