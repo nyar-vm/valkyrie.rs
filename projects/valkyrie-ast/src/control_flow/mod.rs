@@ -2,7 +2,7 @@ use crate::{
     helper::ValkyrieNode, patterns::PatternBlock, ArgumentKey, ElseStatement, ExpressionNode, ExpressionType, IdentifierNode,
     PatternNode, StatementBlock, StatementNode, SwitchStatement, TuplePatternNode, WhileConditionNode,
 };
-use alloc::{boxed::Box, vec::Vec};
+use alloc::{boxed::Box, string::String, vec::Vec};
 use core::{
     fmt::{Debug, Display, Formatter},
     ops::Range,

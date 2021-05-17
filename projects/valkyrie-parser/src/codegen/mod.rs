@@ -97,6 +97,8 @@ pub enum ValkyrieRule {
     KW_WHILE,
     ForStatement,
     IfGuard,
+    ControlFlow,
+    JumpLabel,
     MainStatement,
     MatchExpression,
     SwitchStatement,
@@ -207,6 +209,7 @@ pub enum ValkyrieRule {
     OP_IMPORT_ALL,
     OP_AND_THEN,
     OP_BIND,
+    KW_CONTROL,
     KW_NAMESPACE,
     KW_IMPORT,
     KW_TEMPLATE,
@@ -215,9 +218,6 @@ pub enum ValkyrieRule {
     KW_EXTENDS,
     KW_INHERITS,
     KW_FOR,
-    KW_RETURN,
-    KW_BREAK,
-    KW_CONTINUE,
     KW_LET,
     KW_NEW,
     KW_OBJECT,
@@ -314,6 +314,8 @@ impl YggdrasilRule for ValkyrieRule {
             Self::KW_WHILE => "",
             Self::ForStatement => "",
             Self::IfGuard => "",
+            Self::ControlFlow => "",
+            Self::JumpLabel => "",
             Self::MainStatement => "",
             Self::MatchExpression => "",
             Self::SwitchStatement => "",
@@ -424,6 +426,7 @@ impl YggdrasilRule for ValkyrieRule {
             Self::OP_IMPORT_ALL => "",
             Self::OP_AND_THEN => "",
             Self::OP_BIND => "",
+            Self::KW_CONTROL => "",
             Self::KW_NAMESPACE => "",
             Self::KW_IMPORT => "",
             Self::KW_TEMPLATE => "",
@@ -432,9 +435,6 @@ impl YggdrasilRule for ValkyrieRule {
             Self::KW_EXTENDS => "",
             Self::KW_INHERITS => "",
             Self::KW_FOR => "",
-            Self::KW_RETURN => "",
-            Self::KW_BREAK => "",
-            Self::KW_CONTINUE => "",
             Self::KW_LET => "",
             Self::KW_NEW => "",
             Self::KW_OBJECT => "",
@@ -466,6 +466,7 @@ pub struct ProgramNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum StatementNode {
+    ControlFlow(ControlFlowNode),
     DefineClass(DefineClassNode),
     DefineEnumerate(DefineEnumerateNode),
     DefineExtends(DefineExtendsNode),
@@ -965,6 +966,20 @@ pub struct ForStatementNode {
 pub struct IfGuardNode {
     pub inline_expression: InlineExpressionNode,
     pub kw_if: KwIfNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ControlFlowNode {
+    pub jump_label: Option<JumpLabelNode>,
+    pub kw_control: KwControlNode,
+    pub main_expression: Option<MainExpressionNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct JumpLabelNode {
+    pub identifier: IdentifierNode,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -1721,6 +1736,20 @@ pub struct OpBindNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum KwControlNode {
+    Break,
+    Continue,
+    Fallthrough,
+    Raise,
+    Resume,
+    Return,
+    YieldBreak,
+    YieldFrom,
+    YieldReturn,
+    YieldSend,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct KwNamespaceNode {
     pub span: Range<u32>,
 }
@@ -1757,21 +1786,6 @@ pub struct KwInheritsNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct KwForNode {
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct KwReturnNode {
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct KwBreakNode {
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct KwContinueNode {
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]

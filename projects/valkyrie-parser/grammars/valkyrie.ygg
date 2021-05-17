@@ -17,6 +17,7 @@ union Statement {
     | DefineExtends
     | DefineFunction
     | DefineVariable
+    | ControlFlow
     | MainStatement
 }
 /// Used to isolate expressions and control whether to output the expression
@@ -296,6 +297,13 @@ class ForStatement {
 }
 class IfGuard {
     KW_IF InlineExpression
+}
+// === controls === ----------------------------------------------------------------------------------------------------
+class ControlFlow {
+    KW_CONTROL JumpLabel? MainExpression?
+}
+atomic class JumpLabel {
+    '^' Identifier
 }
 // === expression === --------------------------------------------------------------------------------------------------
 class MainStatement {
@@ -756,6 +764,21 @@ token {
 }
 @railway(false)
 @style(keyword)
+class KW_CONTROL {
+    | 'continue'                        #Continue
+    | /raise|throw/                     #Raise
+    | 'break'                           #Break
+    | 'fallthrough!?'                    #Fallthrough
+    | 'fallthrough'                     #Fallthrough
+    | 'return'                          #Return
+    | 'resume'                          #Resume
+    | /yield\p{White_Space}+break/      #YieldBreak
+    | /yield\p{White_Space}+from/       #YieldFrom
+    | /yield\p{White_Space}+wait/       #YieldSend
+    | /yield(\p{White_Space}+return)?/  #YieldReturn
+}
+@railway(false)
+@style(keyword)
 token {
     KW_NAMESPACE: /namespace/
     KW_IMPORT: /using/
@@ -768,9 +791,6 @@ token {
     KW_INHERITS: /inherits?/
     // === looping === -------------------------------------------------------------------------------------------------
     KW_FOR: /for/
-    KW_RETURN: /return/
-    KW_BREAK: /break/
-    KW_CONTINUE: /continue/
     // === constructor === ---------------------------------------------------------------------------------------------
     KW_LET: /let/
     KW_NEW: /new/

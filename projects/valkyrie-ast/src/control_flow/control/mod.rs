@@ -15,10 +15,11 @@ pub struct TailCallNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ControlNode {
     /// The type of control flow
-    pub r#type: ControlKind,
-    pub label: IdentifierNode,
+    pub kind: ControlKind,
+    /// In theory, all jumps need a destination
+    pub label: String,
     /// The label of the control flow
-    pub expression: Option<ExpressionNode>,
+    pub expression: Option<ExpressionType>,
     /// The range of the node
     pub span: Range<u32>,
 }
@@ -37,25 +38,27 @@ pub struct RaiseNode {
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum ControlKind {
-    /// `goto label`, can't construct from frontend
+    /// `goto ^label`, equivalent to `call/cc`, can't construct from frontend
     Goto,
-    /// `break label`, equivalent to `call/cc`
+    /// `raise ^label`
+    Raise,
+    /// `break ^label`
     Break,
-    /// `continue label`, equivalent to `goto`
+    /// `continue ^label`, equivalent to `goto`
     Continue,
-    /// `fallthrough`
+    /// `fallthrough ^label`
     Fallthrough,
-    /// `return`
+    /// `fallthrough! ^label`
+    FallthroughUnchecked,
+    /// `return ^label`
     Return,
-    /// `resume DivideZero()`
+    /// `resume ^label`
     Resume,
-    /// `yield`
-    Yield,
-    /// `yield return?`
+    /// `yield ^label`
     YieldReturn,
-    /// `yield break`
+    /// `yield break ^label`
     YieldBreak,
-    /// `yield from`
+    /// `yield from ^label`
     YieldFrom,
 }
 impl ValkyrieNode for RaiseNode {

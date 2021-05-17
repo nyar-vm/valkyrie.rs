@@ -30,6 +30,7 @@ impl crate::StatementNode {
             Self::DefineTrait(v) => v.build(ctx)?.into(),
             Self::DefineExtends(v) => v.build(ctx)?.into(),
             Self::DefineUnion(v) => v.build(ctx)?.into(),
+            Self::ControlFlow(v) => v.build(ctx)?.into(),
             Self::MainStatement(v) => v.build(ctx)?,
         };
         Success { value, diagnostics: vec![] }
