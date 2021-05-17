@@ -2,7 +2,7 @@ use super::*;
 use crate::{FlagTermNode, MainExpressionNode};
 
 impl crate::DefineEnumerateNode {
-    pub fn build(&self, ctx: &ProgramContext) -> Validation<FlagDeclaration> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<FlagDeclaration> {
         let mut terms = vec![];
         let mut errors = vec![];
         for term in &self.flag_term {
@@ -39,7 +39,7 @@ impl crate::KwFlagsNode {
 }
 
 impl crate::FlagFieldNode {
-    pub fn build(&self, ctx: &ProgramContext) -> Validation<EncodeDeclaration> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<EncodeDeclaration> {
         let name = self.identifier.build(ctx);
         let value = match &self.main_expression {
             Some(s) => Some(s.build(ctx)?),

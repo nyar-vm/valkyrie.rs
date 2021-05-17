@@ -1,334 +1,330 @@
-ProgramRoot {
-    statements: [
-        NamespaceDeclaration {
-            kind: Test,
-            path: expression∷range,
-        },
-        ExpressionNode {
-            omit: true,
-            body: RangeNode {
-                kind: Offset,
-                terms: [
-                    Index {
-                        index: 1,
-                    },
-                ],
-                span: 39..42,
+NamespaceDeclaration {
+    kind: Test,
+    path: expression∷range,
+}
+ExpressionNode {
+    omit: true,
+    body: RangeNode {
+        kind: Offset,
+        terms: [
+            Index {
+                index: 1,
             },
-            span: 39..43,
-        },
-        ExpressionNode {
-            omit: true,
-            body: RangeNode {
-                kind: Offset,
-                terms: [
-                    Index {
-                        index: RangeNode {
-                            kind: Offset,
-                            terms: [
-                                Index {
-                                    index: 1,
-                                },
-                            ],
-                            span: 45..48,
-                        },
-                    },
-                ],
-                span: 44..49,
-            },
-            span: 44..50,
-        },
-        ExpressionNode {
-            omit: true,
-            body: RangeNode {
-                kind: Offset,
-                terms: [
-                    Index {
-                        index: 2,
-                    },
-                    Index {
-                        index: InfixNode {
-                            infix: +,
-                            lhs: 1,
-                            rhs: 1,
-                        },
-                    },
-                ],
-                span: 51..61,
-            },
-            span: 51..62,
-        },
-        ExpressionNode {
-            omit: true,
-            body: RangeNode {
-                kind: Offset,
-                terms: [
-                    Range {
-                        head: Some(
-                            1,
-                        ),
-                        tail: Some(
-                            1,
-                        ),
-                        step: None,
-                    },
-                ],
-                span: 63..68,
-            },
-            span: 63..69,
-        },
-        ExpressionNode {
-            omit: true,
-            body: RangeNode {
-                kind: Offset,
-                terms: [
-                    Range {
-                        head: Some(
-                            2,
-                        ),
-                        tail: Some(
-                            2,
-                        ),
-                        step: None,
-                    },
-                    Range {
-                        head: Some(
-                            InfixNode {
-                                infix: +,
-                                lhs: 1,
-                                rhs: 1,
-                            },
-                        ),
-                        tail: Some(
-                            InfixNode {
-                                infix: +,
-                                lhs: 1,
-                                rhs: 1,
-                            },
-                        ),
-                        step: None,
-                    },
-                ],
-                span: 70..89,
-            },
-            span: 70..90,
-        },
-        ExpressionNode {
-            omit: true,
-            body: RangeNode {
-                kind: Offset,
-                terms: [
-                    Range {
-                        head: Some(
-                            1,
-                        ),
-                        tail: Some(
-                            2,
-                        ),
-                        step: Some(
-                            3,
-                        ),
-                    },
-                    Index {
-                        index: RangeNode {
-                            kind: Offset,
-                            terms: [
-                                Index {
-                                    index: 1,
-                                },
-                                Index {
-                                    index: 2,
-                                },
-                                Index {
-                                    index: 3,
-                                },
-                            ],
-                            span: 99..106,
-                        },
-                    },
-                ],
-                span: 91..107,
-            },
-            span: 91..108,
-        },
-        ExpressionNode {
-            omit: true,
-            body: RangeNode {
-                kind: Offset,
-                terms: [
-                    Range {
-                        head: None,
-                        tail: None,
-                        step: Some(
-                            UnaryNode {
-                                prefix: -,
-                                base: 1,
-                            },
-                        ),
-                    },
-                ],
-                span: 109..115,
-            },
-            span: 109..116,
-        },
-        ExpressionNode {
-            omit: true,
-            body: RangeNode {
-                kind: Offset,
-                terms: [
-                    Range {
-                        head: None,
-                        tail: Some(
-                            UnaryNode {
-                                prefix: -,
-                                base: 2,
-                            },
-                        ),
-                        step: None,
-                    },
-                ],
-                span: 117..123,
-            },
-            span: 117..124,
-        },
-        ExpressionNode {
-            omit: true,
-            body: RangeNode {
-                kind: Offset,
-                terms: [
-                    Range {
-                        head: Some(
-                            2,
-                        ),
-                        tail: None,
-                        step: None,
-                    },
-                ],
-                span: 125..130,
-            },
-            span: 125..131,
-        },
-        ExpressionNode {
-            omit: true,
-            body: RangeNode {
-                kind: Offset,
-                terms: [
-                    Index {
-                        index: InfixNode {
-                            infix: +,
-                            lhs: 1,
-                            rhs: 1,
-                        },
-                    },
-                ],
-                span: 132..139,
-            },
-            span: 132..140,
-        },
-        ExpressionNode {
-            omit: true,
-            body: InfixNode {
-                infix: +,
-                lhs: RangeNode {
+        ],
+        span: 39..42,
+    },
+    span: 39..43,
+}
+ExpressionNode {
+    omit: true,
+    body: RangeNode {
+        kind: Offset,
+        terms: [
+            Index {
+                index: RangeNode {
                     kind: Offset,
                     terms: [
                         Index {
-                            index: InfixNode {
-                                infix: +,
-                                lhs: 1,
-                                rhs: 1,
-                            },
+                            index: 1,
                         },
                     ],
-                    span: 141..148,
+                    span: 45..48,
                 },
-                rhs: 1,
             },
-            span: 141..153,
-        },
-        ExpressionNode {
-            omit: true,
-            body: RangeNode {
-                kind: Offset,
-                terms: [
-                    Index {
-                        index: 1,
-                    },
-                    Index {
-                        index: 2,
-                    },
-                    Index {
-                        index: 3,
-                    },
-                ],
-                span: 154..161,
+        ],
+        span: 44..49,
+    },
+    span: 44..50,
+}
+ExpressionNode {
+    omit: true,
+    body: RangeNode {
+        kind: Offset,
+        terms: [
+            Index {
+                index: 2,
             },
-            span: 154..162,
-        },
-        ExpressionNode {
-            omit: true,
-            body: RangeNode {
-                kind: Offset,
-                terms: [
-                    Index {
-                        index: RangeNode {
-                            kind: Offset,
-                            terms: [
-                                Index {
-                                    index: 1,
-                                },
-                                Index {
-                                    index: 2,
-                                },
-                                Index {
-                                    index: 3,
-                                },
-                            ],
-                            span: 164..171,
+            Index {
+                index: InfixNode {
+                    infix: +,
+                    lhs: 1,
+                    rhs: 1,
+                },
+            },
+        ],
+        span: 51..61,
+    },
+    span: 51..62,
+}
+ExpressionNode {
+    omit: true,
+    body: RangeNode {
+        kind: Offset,
+        terms: [
+            Range {
+                head: Some(
+                    1,
+                ),
+                tail: Some(
+                    1,
+                ),
+                step: None,
+            },
+        ],
+        span: 63..68,
+    },
+    span: 63..69,
+}
+ExpressionNode {
+    omit: true,
+    body: RangeNode {
+        kind: Offset,
+        terms: [
+            Range {
+                head: Some(
+                    2,
+                ),
+                tail: Some(
+                    2,
+                ),
+                step: None,
+            },
+            Range {
+                head: Some(
+                    InfixNode {
+                        infix: +,
+                        lhs: 1,
+                        rhs: 1,
+                    },
+                ),
+                tail: Some(
+                    InfixNode {
+                        infix: +,
+                        lhs: 1,
+                        rhs: 1,
+                    },
+                ),
+                step: None,
+            },
+        ],
+        span: 70..89,
+    },
+    span: 70..90,
+}
+ExpressionNode {
+    omit: true,
+    body: RangeNode {
+        kind: Offset,
+        terms: [
+            Range {
+                head: Some(
+                    1,
+                ),
+                tail: Some(
+                    2,
+                ),
+                step: Some(
+                    3,
+                ),
+            },
+            Index {
+                index: RangeNode {
+                    kind: Offset,
+                    terms: [
+                        Index {
+                            index: 1,
                         },
-                    },
-                ],
-                span: 163..172,
-            },
-            span: 163..173,
-        },
-        ExpressionNode {
-            omit: true,
-            body: RangeNode {
-                kind: Offset,
-                terms: [
-                    Range {
-                        head: Some(
-                            1,
-                        ),
-                        tail: Some(
-                            2,
-                        ),
-                        step: Some(
-                            3,
-                        ),
-                    },
-                    Index {
-                        index: RangeNode {
-                            kind: Offset,
-                            terms: [
-                                Index {
-                                    index: 1,
-                                },
-                                Index {
-                                    index: 2,
-                                },
-                                Index {
-                                    index: 3,
-                                },
-                            ],
-                            span: 181..188,
+                        Index {
+                            index: 2,
                         },
-                    },
-                ],
-                span: 174..189,
+                        Index {
+                            index: 3,
+                        },
+                    ],
+                    span: 99..106,
+                },
             },
-            span: 174..190,
+        ],
+        span: 91..107,
+    },
+    span: 91..108,
+}
+ExpressionNode {
+    omit: true,
+    body: RangeNode {
+        kind: Offset,
+        terms: [
+            Range {
+                head: None,
+                tail: None,
+                step: Some(
+                    UnaryNode {
+                        prefix: -,
+                        base: 1,
+                    },
+                ),
+            },
+        ],
+        span: 109..115,
+    },
+    span: 109..116,
+}
+ExpressionNode {
+    omit: true,
+    body: RangeNode {
+        kind: Offset,
+        terms: [
+            Range {
+                head: None,
+                tail: Some(
+                    UnaryNode {
+                        prefix: -,
+                        base: 2,
+                    },
+                ),
+                step: None,
+            },
+        ],
+        span: 117..123,
+    },
+    span: 117..124,
+}
+ExpressionNode {
+    omit: true,
+    body: RangeNode {
+        kind: Offset,
+        terms: [
+            Range {
+                head: Some(
+                    2,
+                ),
+                tail: None,
+                step: None,
+            },
+        ],
+        span: 125..130,
+    },
+    span: 125..131,
+}
+ExpressionNode {
+    omit: true,
+    body: RangeNode {
+        kind: Offset,
+        terms: [
+            Index {
+                index: InfixNode {
+                    infix: +,
+                    lhs: 1,
+                    rhs: 1,
+                },
+            },
+        ],
+        span: 132..139,
+    },
+    span: 132..140,
+}
+ExpressionNode {
+    omit: true,
+    body: InfixNode {
+        infix: +,
+        lhs: RangeNode {
+            kind: Offset,
+            terms: [
+                Index {
+                    index: InfixNode {
+                        infix: +,
+                        lhs: 1,
+                        rhs: 1,
+                    },
+                },
+            ],
+            span: 141..148,
         },
-    ],
+        rhs: 1,
+    },
+    span: 141..153,
+}
+ExpressionNode {
+    omit: true,
+    body: RangeNode {
+        kind: Offset,
+        terms: [
+            Index {
+                index: 1,
+            },
+            Index {
+                index: 2,
+            },
+            Index {
+                index: 3,
+            },
+        ],
+        span: 154..161,
+    },
+    span: 154..162,
+}
+ExpressionNode {
+    omit: true,
+    body: RangeNode {
+        kind: Offset,
+        terms: [
+            Index {
+                index: RangeNode {
+                    kind: Offset,
+                    terms: [
+                        Index {
+                            index: 1,
+                        },
+                        Index {
+                            index: 2,
+                        },
+                        Index {
+                            index: 3,
+                        },
+                    ],
+                    span: 164..171,
+                },
+            },
+        ],
+        span: 163..172,
+    },
+    span: 163..173,
+}
+ExpressionNode {
+    omit: true,
+    body: RangeNode {
+        kind: Offset,
+        terms: [
+            Range {
+                head: Some(
+                    1,
+                ),
+                tail: Some(
+                    2,
+                ),
+                step: Some(
+                    3,
+                ),
+            },
+            Index {
+                index: RangeNode {
+                    kind: Offset,
+                    terms: [
+                        Index {
+                            index: 1,
+                        },
+                        Index {
+                            index: 2,
+                        },
+                        Index {
+                            index: 3,
+                        },
+                    ],
+                    span: 181..188,
+                },
+            },
+        ],
+        span: 174..189,
+    },
+    span: 174..190,
 }

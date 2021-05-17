@@ -27,16 +27,6 @@ impl Display for AttributeKind {
     }
 }
 
-impl Display for AnnotationPathNode {
-    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        Display::fmt(&self.path, f)?;
-        for name in &self.names {
-            f.write_char('.')?;
-            Display::fmt(name, f)?;
-        }
-        Ok(())
-    }
-}
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for AttributeKind {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
@@ -53,7 +43,7 @@ impl PrettyPrint for AttributeNode {
     }
 }
 #[cfg(feature = "pretty-print")]
-impl PrettyPrint for AnnotationList {
+impl PrettyPrint for AttributeList {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(self.terms.len());
         terms += self.kind.pretty(theme);
@@ -71,12 +61,12 @@ impl PrettyPrint for AttributeTerm {
         let mut terms = PrettySequence::new(3);
         terms += self.path.pretty(theme);
         terms += self.arguments.pretty(theme);
-        terms += self.collects.pretty(theme);
+        terms += self.domain.pretty(theme);
         terms.into()
     }
 }
 #[cfg(feature = "pretty-print")]
-impl PrettyPrint for AnnotationPathNode {
+impl PrettyPrint for AttributeName {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         theme.annotation(self.to_string())
     }

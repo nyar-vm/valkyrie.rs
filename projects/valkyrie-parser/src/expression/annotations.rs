@@ -9,16 +9,16 @@ use super::*;
 // )"#;
 
 impl crate::AnnotationMixNode {
-    pub fn modifiers(&self, ctx: &ProgramContext) -> ModifierList {
+    pub fn modifiers(&self, ctx: &mut ProgramState) -> ModifierList {
         ModifierList { terms: self.modifier_ahead.iter().map(|s| s.identifier.build(ctx)).collect() }
     }
-    pub fn document(&self, _: &ProgramContext) -> DocumentationNode {
+    pub fn document(&self, _: &mut ProgramState) -> DocumentationNode {
         DocumentationNode { documentation: "".to_string(), span: Default::default() }
     }
 }
 
 impl crate::AnnotationHeadNode {
-    pub fn annotations(&self, ctx: &ProgramContext) -> Validation<AnnotationNode> {
+    pub fn annotations(&self, ctx: &mut ProgramState) -> Validation<AnnotationNode> {
         let mut errors = vec![];
         Success {
             value: AnnotationNode {

@@ -416,7 +416,8 @@ text class TypePrefix {
 @railway(false)
 @style(operator)
 text class MainInfix ^ {
-    / [+\\-*⁒÷\/%]=?
+    / [+\\-*٪⁒÷\/%]=?
+    | \/%|%%
     | [√^]
     # start with ?, !, =
     | [?]=
@@ -448,7 +449,7 @@ text class TypeInfix {
 @style(operator)
 text class MainSuffix {
     / [!]
-    | [%‰‱]
+    | [٪⁒%‰‱]
     | [′″‴⁗]
     | [℃℉]
     /

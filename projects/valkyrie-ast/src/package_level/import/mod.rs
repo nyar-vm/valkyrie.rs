@@ -7,7 +7,7 @@ mod display;
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ImportStatement {
-    pub annotation: AnnotationList,
+    pub annotation: AttributeList,
     // pub path: Option<StringLiteralNode>,
     pub term: ImportTermNode,
     /// The range of the node
@@ -61,7 +61,7 @@ impl ImportAliasNode {
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 pub struct ImportResolvedItem {
     /// The annotation of the import
-    pub annotation: Option<Arc<AnnotationList>>,
+    pub annotation: Option<Arc<AttributeList>>,
     /// The path of the import
     pub path: Vec<IdentifierNode>,
     /// The alias of the import

@@ -1,7 +1,7 @@
 use super::*;
 
 impl crate::GenericCallNode {
-    pub fn build(&self, ctx: &ProgramContext) -> Validation<GenericCallNode> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<GenericCallNode> {
         let monadic = self.op_and_then.is_some();
         let associated = match &self.namepath {
             Some(s) => s.build(ctx).names,
@@ -23,7 +23,7 @@ impl crate::GenericCallNode {
     }
 }
 impl crate::GenericHideNode {
-    pub(crate) fn build(&self, ctx: &ProgramContext) -> Validation<GenericCallNode> {
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Validation<GenericCallNode> {
         Success {
             value: GenericCallNode {
                 monadic: false,
@@ -38,7 +38,7 @@ impl crate::GenericHideNode {
 }
 
 impl crate::GenericTermsNode {
-    pub fn build(&self, ctx: &ProgramContext) -> Validation<ArgumentsList> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<ArgumentsList> {
         let mut errors = vec![];
         let mut terms = vec![];
         for x in &self.generic_pair {
@@ -48,12 +48,12 @@ impl crate::GenericTermsNode {
     }
 }
 impl crate::GenericPairNode {
-    pub fn build(&self, ctx: &ProgramContext) -> Validation<TupleTermNode> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<TupleTermNode> {
         let key = self.get_key(ctx);
         let value = self.type_expression.build(ctx)?;
         Success { value: TupleTermNode { key, value }, diagnostics: vec![] }
     }
-    fn get_key(&self, ctx: &ProgramContext) -> Option<IdentifierNode> {
+    fn get_key(&self, ctx: &mut ProgramState) -> Option<IdentifierNode> {
         Some(self.identifier.as_ref()?.build(ctx))
     }
 }

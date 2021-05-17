@@ -101,10 +101,12 @@ pub enum ValkyrieOperator {
     /// binary operator: `/`
     Divide,
     /// binary operator: `%`
-    Remider,
-    /// binary operator: `/%`
-    DivideRemider,
-    /// binary operator: `//`
+    Remainder,
+    /// binary operator: `٪, ⁒, %%`
+    Modulo,
+    /// binary operator: `÷, /%`
+    DivideRemainder,
+    /// binary operator: `/_`
     DivideFloor,
     /// binary operator: `^`
     Power,
@@ -125,8 +127,11 @@ pub enum ValkyrieOperator {
     Celsius,
     /// suffix operator: `℉`
     Fahrenheit,
-    /// suffix operator: `a%, b‰, c‱`
-    DivideByDecimalPower(u8),
+    /// suffix operator: `⁒, %, ‰, ‱`
+    DivideByDecimal {
+        /// decimal power: `a⁒, b%, c‰, d‱`
+        power: u8,
+    },
     /// suffix operator: `ᵀ`, `\^T`, `\transpose`
     Transpose,
     /// suffix operator: `ᴴ`, `\^H`, `\conjugate_transpose
@@ -194,36 +199,32 @@ impl ValkyrieOperator {
             // prefix - 3
             Self::PlusAssign => 14100,
             Self::MinusAssign => 14100,
-
             // infix - 3
             Self::LogicMatrix { .. } => 14700,
             Self::Equal { .. } => 14700,
             Self::StrictlyEqual { .. } => 14700,
             Self::Map => 14700,
             // infix - 2
-            Self::Greater { .. } => 14800,
-            Self::Less { .. } => 14800,
+            Self::Less { .. } | Self::Greater { .. } => 14800,
             // infix - 1
-            Self::MuchLess => 14900,
-            Self::MuchGreater => 14900,
-            Self::VeryMuchGreater => 14950,
-            Self::VeryMuchLess => 14950,
+            Self::MuchLess | Self::MuchGreater => 14900,
+            Self::VeryMuchLess | Self::VeryMuchGreater => 14950,
             // infix + 0
             Self::Plus => 15000,
             Self::Minus => 15000,
             // infix + 1
             Self::Multiply => 15100,
             Self::Divide => 15100,
-            Self::Remider => 15100,
-            Self::DivideRemider => 15100,
+            Self::Remainder => 15100,
+            Self::Modulo => 15100,
+            Self::DivideRemainder => 15100,
             Self::DivideFloor => 15100,
             // infix + 2
             Self::Power => 15200,
             Self::Surd => 15200,
             // prefix + 0
             Self::Not => 25000,
-            Self::Positive => 25000,
-            Self::Negative => 25000,
+            Self::Positive | Self::Negative => 25000,
             Self::CovariantType | Self::ContravariantType => 25000,
             Self::Box => 25000,
             Self::Unbox => 25000,
@@ -238,7 +239,7 @@ impl ValkyrieOperator {
             Self::Transpose => 45000,
             Self::Transjugate => 45000,
             Self::Hermitian => 45000,
-            Self::DivideByDecimalPower(_) => 45000,
+            Self::DivideByDecimal { .. } => 45000,
         };
         Precedence(n)
     }
@@ -258,9 +259,10 @@ impl ValkyrieOperator {
             Self::MinusAssign => "-=",
             Self::Multiply => "*",
             Self::Divide => "/",
-            Self::Remider => "%",
-            Self::DivideRemider => "/%",
-            Self::DivideFloor => "//",
+            Self::Remainder => "%",
+            Self::Modulo => "⁒",
+            Self::DivideRemainder => "÷",
+            Self::DivideFloor => "/_",
             Self::Power => "^",
             Self::Surd => "√",
             Self::Optional => "?",
@@ -318,7 +320,8 @@ impl ValkyrieOperator {
                 4 => "∜",
                 _ => "√",
             },
-            Self::DivideByDecimalPower(v) => match v {
+            Self::DivideByDecimal { power } => match power {
+                1 => "⁒",
                 3 => "‰",
                 4 => "‱",
                 _ => "%",

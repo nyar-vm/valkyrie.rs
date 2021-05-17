@@ -1,7 +1,7 @@
 use super::*;
 
 impl crate::DefineNamespaceNode {
-    pub fn build(&self, ctx: &ProgramContext) -> NamespaceDeclaration {
+    pub fn build(&self, ctx: &mut ProgramState) -> NamespaceDeclaration {
         let kind = match &self.op_namespace {
             None => NamespaceKind::Standalone,
             Some(s) => match s {

@@ -1,142 +1,138 @@
-ProgramRoot {
-    statements: [
-        FunctionDeclaration {
-            name: NamePathNode {
-                names: [
-                    Identifier("method", 9..15),
-                ],
-            },
-            kind: Micro,
-            annotations: Empty,
-            generic: None,
-            arguments: ArgumentsList {
-                terms: [],
-            },
-            returns: Auto,
-            body: StatementBlock {
-                terms: [],
-                span: 18..20,
-            },
-        },
-        FunctionDeclaration {
-            name: NamePathNode {
-                names: [
-                    Identifier("method", 36..42),
-                ],
-            },
-            kind: Micro,
-            annotations: Annotation {
-                modifiers: [
-                    Identifier("eager", 21..26),
-                ],
-            },
-            generic: None,
-            arguments: ArgumentsList {
-                terms: [],
-            },
-            returns: Auto,
-            body: StatementBlock {
-                terms: [],
-                span: 45..47,
-            },
-        },
-        FunctionDeclaration {
-            name: NamePathNode {
-                names: [
-                    Identifier("method", 57..63),
-                ],
-            },
-            kind: Micro,
-            annotations: Empty,
-            generic: None,
-            arguments: ArgumentsList {
-                terms: [],
-            },
-            returns: Auto,
-            body: StatementBlock {
-                terms: [],
-                span: 92..94,
-            },
-        },
-        FunctionDeclaration {
-            name: NamePathNode {
-                names: [
-                    Identifier("method", 104..110),
-                ],
-            },
-            kind: Micro,
-            annotations: Empty,
-            generic: None,
-            arguments: ArgumentsList {
-                terms: [],
-            },
-            returns: Auto,
-            body: StatementBlock {
-                terms: [],
-                span: 131..133,
-            },
-        },
-        FunctionDeclaration {
-            name: NamePathNode {
-                names: [
-                    Identifier("method", 149..155),
-                ],
-            },
-            kind: Micro,
-            annotations: Empty,
-            generic: None,
-            arguments: ArgumentsList {
-                terms: [],
-            },
-            returns: ReturnType {
-                main: Integer,
-            },
-            body: StatementBlock {
-                terms: [],
-                span: 174..176,
-            },
-        },
-        FunctionDeclaration {
-            name: NamePathNode {
-                names: [
-                    Identifier("method", 191..197),
-                ],
-            },
-            kind: Micro,
-            annotations: Empty,
-            generic: None,
-            arguments: ArgumentsList {
-                terms: [],
-            },
-            returns: Auto,
-            body: StatementBlock {
-                terms: [],
-                span: 218..220,
-            },
-        },
-        FunctionDeclaration {
-            name: NamePathNode {
-                names: [
-                    Identifier("method", 236..242),
-                ],
-            },
-            kind: Micro,
-            annotations: Annotation {
-                modifiers: [
-                    Identifier("lazy", 222..226),
-                ],
-            },
-            generic: None,
-            arguments: ArgumentsList {
-                terms: [],
-            },
-            returns: ReturnType {
-                main: Integer,
-            },
-            body: StatementBlock {
-                terms: [],
-                span: 330..334,
-            },
-        },
-    ],
+FunctionDeclaration {
+    name: NamePathNode {
+        names: [
+            Identifier("method", 9..15),
+        ],
+    },
+    kind: Micro,
+    annotations: Empty,
+    generic: None,
+    arguments: ArgumentsList {
+        terms: [],
+    },
+    returns: Auto,
+    body: StatementBlock {
+        terms: [],
+        span: 18..20,
+    },
+}
+FunctionDeclaration {
+    name: NamePathNode {
+        names: [
+            Identifier("method", 36..42),
+        ],
+    },
+    kind: Micro,
+    annotations: Annotation {
+        modifiers: [
+            Identifier("eager", 21..26),
+        ],
+    },
+    generic: None,
+    arguments: ArgumentsList {
+        terms: [],
+    },
+    returns: Auto,
+    body: StatementBlock {
+        terms: [],
+        span: 45..47,
+    },
+}
+FunctionDeclaration {
+    name: NamePathNode {
+        names: [
+            Identifier("method", 57..63),
+        ],
+    },
+    kind: Micro,
+    annotations: Empty,
+    generic: None,
+    arguments: ArgumentsList {
+        terms: [],
+    },
+    returns: Auto,
+    body: StatementBlock {
+        terms: [],
+        span: 92..94,
+    },
+}
+FunctionDeclaration {
+    name: NamePathNode {
+        names: [
+            Identifier("method", 104..110),
+        ],
+    },
+    kind: Micro,
+    annotations: Empty,
+    generic: None,
+    arguments: ArgumentsList {
+        terms: [],
+    },
+    returns: Auto,
+    body: StatementBlock {
+        terms: [],
+        span: 131..133,
+    },
+}
+FunctionDeclaration {
+    name: NamePathNode {
+        names: [
+            Identifier("method", 149..155),
+        ],
+    },
+    kind: Micro,
+    annotations: Empty,
+    generic: None,
+    arguments: ArgumentsList {
+        terms: [],
+    },
+    returns: ReturnType {
+        main: Integer,
+    },
+    body: StatementBlock {
+        terms: [],
+        span: 174..176,
+    },
+}
+FunctionDeclaration {
+    name: NamePathNode {
+        names: [
+            Identifier("method", 191..197),
+        ],
+    },
+    kind: Micro,
+    annotations: Empty,
+    generic: None,
+    arguments: ArgumentsList {
+        terms: [],
+    },
+    returns: Auto,
+    body: StatementBlock {
+        terms: [],
+        span: 218..220,
+    },
+}
+FunctionDeclaration {
+    name: NamePathNode {
+        names: [
+            Identifier("method", 236..242),
+        ],
+    },
+    kind: Micro,
+    annotations: Annotation {
+        modifiers: [
+            Identifier("lazy", 222..226),
+        ],
+    },
+    generic: None,
+    arguments: ArgumentsList {
+        terms: [],
+    },
+    returns: ReturnType {
+        main: Integer,
+    },
+    body: StatementBlock {
+        terms: [],
+        span: 330..334,
+    },
 }

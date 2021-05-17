@@ -1,6 +1,6 @@
 use super::*;
 
-impl ControlType {
+impl ControlKind {
     /// Convert to keywords
     pub fn as_str(&self) -> &'static str {
         match self {
@@ -18,7 +18,7 @@ impl ControlType {
     }
 }
 
-impl Display for ControlType {
+impl Display for ControlKind {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         f.write_str(self.as_str())
     }
@@ -48,7 +48,7 @@ impl PrettyPrint for ControlNode {
     }
 }
 #[cfg(feature = "pretty-print")]
-impl PrettyPrint for ControlType {
+impl PrettyPrint for ControlKind {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         theme.keyword(self.as_str())
     }

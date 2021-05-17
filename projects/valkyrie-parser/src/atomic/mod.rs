@@ -1,6 +1,7 @@
 use crate::{
-    helpers::ProgramContext, LeadingNode, RangeLiteralNode, SpecialNode, SubscriptAxisNode, SubscriptOnlyNode,
-    SubscriptRangeNode, TupleKeyNode, TupleLiteralNode, TupleLiteralStrictNode, TuplePairNode, TupleTermsNode,
+    helpers::{ProgramContext, ProgramState},
+    LeadingNode, RangeLiteralNode, SpecialNode, SubscriptAxisNode, SubscriptOnlyNode, SubscriptRangeNode, TupleKeyNode,
+    TupleLiteralNode, TupleLiteralStrictNode, TuplePairNode, TupleTermsNode,
 };
 use nyar_error::{Failure, Success, Validate, Validation};
 use valkyrie_ast::*;
@@ -18,7 +19,7 @@ mod string;
 mod tuple;
 
 impl LeadingNode {
-    pub fn build(&self, ctx: &ProgramContext) -> Validation<ExpressionType> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<ExpressionType> {
         let value = match self {
             Self::Special(v) => v.build(),
             Self::Number(v) => v.build(ctx)?.into(),

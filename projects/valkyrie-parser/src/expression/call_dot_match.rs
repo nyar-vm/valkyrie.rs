@@ -1,6 +1,6 @@
 use super::*;
 impl crate::DotMatchCallNode {
-    pub fn build(&self, ctx: &ProgramContext) -> Validation<MatchCallNode> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<MatchCallNode> {
         let monadic = self.op_and_then.is_some();
         Success {
             value: MatchCallNode {

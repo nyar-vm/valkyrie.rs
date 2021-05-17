@@ -1947,7 +1947,8 @@ fn parse_main_infix(state: Input) -> Output {
             static REGEX: OnceLock<Regex> = OnceLock::new();
             REGEX.get_or_init(|| {
                 Regex::new(
-                    "^(?x)([+\\-*⁒÷/%]=?
+                    "^(?x)([+\\-*٪⁒÷/%]=?
+    | /%|%%
     | [√^]
     # start with ?, !, =
     | [?]=
@@ -1995,7 +1996,7 @@ fn parse_main_suffix(state: Input) -> Output {
             REGEX.get_or_init(|| {
                 Regex::new(
                     "^(?x)([!]
-    | [%‰‱]
+    | [٪⁒%‰‱]
     | [′″‴⁗]
     | [℃℉])",
                 )

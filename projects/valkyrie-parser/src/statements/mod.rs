@@ -1,11 +1,14 @@
-use crate::{helpers::ProgramContext, OpNamespaceNode};
+use crate::{
+    helpers::{ProgramContext, ProgramState},
+    OpNamespaceNode,
+};
 use nyar_error::{Success, Validation};
-use valkyrie_ast::{ExpressionNode, ImportStatement, NamespaceDeclaration, NamespaceKind, ProgramRoot, StatementNode};
+use valkyrie_ast::*;
 mod import;
 mod namespace;
 
 impl crate::ProgramNode {
-    pub fn build(&self, ctx: &ProgramContext) -> Validation<ProgramRoot> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<ProgramRoot> {
         let mut errors = vec![];
         let mut statements = vec![];
         for node in &self.statement {
@@ -16,7 +19,7 @@ impl crate::ProgramNode {
 }
 
 impl crate::StatementNode {
-    pub fn build(&self, ctx: &ProgramContext) -> Validation<StatementNode> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<StatementNode> {
         let value = match self {
             Self::DefineNamespace(v) => v.build(ctx).into(),
             Self::DefineImport(v) => v.build(ctx)?.into(),
@@ -34,7 +37,7 @@ impl crate::StatementNode {
 }
 
 impl crate::MainStatementNode {
-    pub fn build(&self, ctx: &ProgramContext) -> Validation<StatementNode> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<StatementNode> {
         let expr = self.main_expression.build(ctx)?;
         let eos = self.eos.is_some();
         let ex = ExpressionNode { omit: eos, body: expr, span: self.span.clone() };

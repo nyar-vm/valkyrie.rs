@@ -3,6 +3,7 @@ use super::*;
 impl Debug for ClassTerm {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         match self {
+            Self::Macro(v) => Debug::fmt(v, f),
             Self::Field(v) => Debug::fmt(v, f),
             Self::Method(v) => Debug::fmt(v, f),
             Self::Domain(v) => Debug::fmt(v, f),

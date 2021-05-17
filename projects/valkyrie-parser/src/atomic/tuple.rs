@@ -2,7 +2,7 @@ use super::*;
 use nyar_error::{NyarError, SyntaxError};
 
 impl TupleLiteralStrictNode {
-    pub fn build(&self, ctx: &ProgramContext) -> Validation<TupleNode> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<TupleNode> {
         let mut errors = vec![];
         let mut terms = vec![];
         for x in &self.tuple_pair {
@@ -16,13 +16,13 @@ impl TupleLiteralStrictNode {
 }
 
 impl TupleLiteralNode {
-    pub fn build(&self, ctx: &ProgramContext) -> Validation<TupleNode> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<TupleNode> {
         self.tuple_terms.build(ctx).map(|terms| TupleNode { kind: Default::default(), terms, span: self.span.clone() })
     }
 }
 
 impl TupleTermsNode {
-    pub fn build(&self, ctx: &ProgramContext) -> Validation<ArgumentsList> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<ArgumentsList> {
         let mut errors = vec![];
         let mut terms = vec![];
         for x in &self.tuple_pair {
@@ -33,7 +33,7 @@ impl TupleTermsNode {
 }
 
 impl TuplePairNode {
-    pub fn build(&self, ctx: &ProgramContext) -> Validation<TupleTermNode> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<TupleTermNode> {
         let key = match &self.tuple_key {
             Some(v) => Some(v.build(ctx)?),
             None => None,
@@ -44,7 +44,7 @@ impl TuplePairNode {
 }
 
 impl TupleKeyNode {
-    pub fn build(&self, ctx: &ProgramContext) -> Result<IdentifierNode, NyarError> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Result<IdentifierNode, NyarError> {
         match self {
             Self::Identifier(v) => Ok(v.build(ctx)),
             Self::TextRaw(v) => Ok(v.build_id(ctx)),
@@ -56,7 +56,7 @@ impl TupleKeyNode {
 }
 
 impl crate::TupleCallNode {
-    pub fn build(&self, ctx: &ProgramContext) -> Validation<ApplyCallNode> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<ApplyCallNode> {
         let monadic = self.op_and_then.is_some();
         let arguments = match &self.tuple_literal {
             Some(s) => s.build(ctx)?.terms,
@@ -69,7 +69,7 @@ impl crate::TupleCallNode {
     }
 }
 impl crate::InlineTupleCallNode {
-    pub fn build(&self, ctx: &ProgramContext) -> Validation<ApplyCallNode> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<ApplyCallNode> {
         let monadic = self.op_and_then.is_some();
         let arguments = self.tuple_literal.build(ctx)?.terms;
         Success {

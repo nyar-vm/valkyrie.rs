@@ -1,110 +1,106 @@
-ProgramRoot {
-    statements: [
-        NamespaceDeclaration {
-            kind: Standalone,
-            path: expression,
-        },
-        ExpressionNode {
-            omit: false,
-            body: DotCallNode {
-                monadic: false,
-                base: a,
-                term: 1,
-                span: 115..117,
+NamespaceDeclaration {
+    kind: Standalone,
+    path: expression,
+}
+ExpressionNode {
+    omit: false,
+    body: DotCallNode {
+        monadic: false,
+        base: a,
+        term: 1,
+        span: 115..117,
+    },
+    span: 114..118,
+}
+ExpressionNode {
+    omit: false,
+    body: DotCallNode {
+        monadic: false,
+        base: a,
+        term: 1,
+        span: 124..126,
+    },
+    span: 118..128,
+}
+ExpressionNode {
+    omit: false,
+    body: SubscriptCallNode {
+        kind: Ordinal,
+        base: a,
+        monadic: false,
+        terms: [
+            Index {
+                index: 1,
             },
-            span: 114..118,
-        },
-        ExpressionNode {
-            omit: false,
-            body: DotCallNode {
-                monadic: false,
-                base: a,
-                term: 1,
-                span: 124..126,
+        ],
+        span: 129..132,
+    },
+    span: 128..134,
+}
+ExpressionNode {
+    omit: false,
+    body: SubscriptCallNode {
+        kind: Ordinal,
+        base: a,
+        monadic: false,
+        terms: [
+            Index {
+                index: 2,
             },
-            span: 118..128,
-        },
-        ExpressionNode {
-            omit: false,
-            body: SubscriptCallNode {
-                kind: Ordinal,
-                base: a,
-                monadic: false,
-                terms: [
-                    Index {
-                        index: 1,
-                    },
-                ],
-                span: 129..132,
+        ],
+        span: 135..151,
+    },
+    span: 134..153,
+}
+ExpressionNode {
+    omit: false,
+    body: a,
+    span: 153..155,
+}
+ExpressionNode {
+    omit: false,
+    body: RangeNode {
+        kind: Offset,
+        terms: [
+            Index {
+                index: 3,
             },
-            span: 128..134,
-        },
-        ExpressionNode {
-            omit: false,
-            body: SubscriptCallNode {
-                kind: Ordinal,
-                base: a,
-                monadic: false,
-                terms: [
-                    Index {
-                        index: 2,
-                    },
-                ],
-                span: 135..151,
+            Index {
+                index: 4,
             },
-            span: 134..153,
-        },
-        ExpressionNode {
-            omit: false,
-            body: a,
-            span: 153..155,
-        },
-        ExpressionNode {
-            omit: false,
-            body: RangeNode {
-                kind: Offset,
-                terms: [
-                    Index {
-                        index: 3,
-                    },
-                    Index {
-                        index: 4,
-                    },
-                ],
-                span: 155..160,
+        ],
+        span: 155..160,
+    },
+    span: 155..162,
+}
+ExpressionNode {
+    omit: false,
+    body: a,
+    span: 162..164,
+}
+ExpressionNode {
+    omit: false,
+    body: RangeNode {
+        kind: Offset,
+        terms: [
+            Index {
+                index: 5,
             },
-            span: 155..162,
-        },
-        ExpressionNode {
-            omit: false,
-            body: a,
-            span: 162..164,
-        },
-        ExpressionNode {
-            omit: false,
-            body: RangeNode {
-                kind: Offset,
-                terms: [
-                    Index {
-                        index: 5,
-                    },
-                ],
-                span: 164..167,
+        ],
+        span: 164..167,
+    },
+    span: 164..168,
+}
+ExpressionNode {
+    omit: false,
+    body: RangeNode {
+        kind: Offset,
+        terms: [
+            Index {
+                index: 6,
             },
-            span: 164..168,
-        },
-        ExpressionNode {
-            omit: false,
-            body: RangeNode {
-                kind: Offset,
-                terms: [
-                    Index {
-                        index: 6,
-                    },
-                ],
-                span: 168..171,
-            },
-            span: 168..172,
-        },
-    ],
+        ],
+        span: 168..171,
+    },
+    span: 168..172,
 }

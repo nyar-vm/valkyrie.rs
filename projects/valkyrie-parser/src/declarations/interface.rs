@@ -1,7 +1,7 @@
 use super::*;
 
 impl crate::DefineTraitNode {
-    pub fn build(&self, ctx: &ProgramContext) -> Validation<TraitDeclaration> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<TraitDeclaration> {
         Success { value: TraitDeclaration { name: self.identifier.build(ctx), terms: vec![] }, diagnostics: vec![] }
     }
 }

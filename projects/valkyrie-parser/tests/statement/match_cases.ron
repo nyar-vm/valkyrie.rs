@@ -1,18 +1,14 @@
-ProgramRoot {
-    statements: [
-        ExpressionNode {
-            omit: false,
-            body: MatchStatement {
-                kind: Typing,
-                bind: None,
-                main: Placeholder,
-                patterns: PatternBlock {
-                    branches: [],
-                    span: 0..0,
-                },
-                span: 0..37,
-            },
-            span: 0..38,
+ExpressionNode {
+    omit: false,
+    body: MatchStatement {
+        kind: Typing,
+        bind: None,
+        main: Placeholder,
+        patterns: PatternBlock {
+            branches: [],
+            span: 0..0,
         },
-    ],
+        span: 0..37,
+    },
+    span: 0..38,
 }

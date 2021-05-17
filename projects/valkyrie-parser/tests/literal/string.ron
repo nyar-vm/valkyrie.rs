@@ -1,83 +1,79 @@
-ProgramRoot {
-    statements: [
-        NamespaceDeclaration {
-            kind: Standalone,
-            path: tests∷literal∷escape,
-        },
-        ExpressionNode {
-            omit: true,
-            body: '',
-            span: 42..45,
-        },
-        ExpressionNode {
-            omit: true,
-            body: '',
-            span: 46..49,
-        },
-        ExpressionNode {
-            omit: true,
-            body: '\'',
-            span: 60..64,
-        },
-        ExpressionNode {
-            omit: true,
-            body: '"',
-            span: 65..69,
-        },
-        ExpressionNode {
-            omit: true,
-            body: f'\\n',
-            span: 81..87,
-        },
-        ExpressionNode {
-            omit: true,
-            body: r'\\n',
-            span: 88..94,
-        },
-        ExpressionNode {
-            omit: true,
-            body: '\\\n',
-            span: 95..100,
-        },
-        ExpressionNode {
-            omit: true,
-            body: '\\u{24}',
-            span: 111..120,
-        },
-        ExpressionNode {
-            omit: true,
-            body: '\\u{03D6}',
-            span: 121..132,
-        },
-        ExpressionNode {
-            omit: true,
-            body: '\\u{000024}',
-            span: 133..146,
-        },
-        ExpressionNode {
-            omit: true,
-            body: '\\u{99999999}',
-            span: 147..162,
-        },
-        ExpressionNode {
-            omit: true,
-            body: '\\n',
-            span: 163..168,
-        },
-        ExpressionNode {
-            omit: true,
-            body: '\\a',
-            span: 169..174,
-        },
-        ExpressionNode {
-            omit: false,
-            body: re'\n# comment\nab[cd]\n',
-            span: 176..200,
-        },
-        ExpressionNode {
-            omit: false,
-            body: xml'\n<list>xml</list>\n',
-            span: 200..224,
-        },
-    ],
+NamespaceDeclaration {
+    kind: Standalone,
+    path: tests∷literal∷escape,
+}
+ExpressionNode {
+    omit: true,
+    body: '',
+    span: 42..45,
+}
+ExpressionNode {
+    omit: true,
+    body: '',
+    span: 46..49,
+}
+ExpressionNode {
+    omit: true,
+    body: '\'',
+    span: 60..64,
+}
+ExpressionNode {
+    omit: true,
+    body: '"',
+    span: 65..69,
+}
+ExpressionNode {
+    omit: true,
+    body: f'\\n',
+    span: 81..87,
+}
+ExpressionNode {
+    omit: true,
+    body: r'\\n',
+    span: 88..94,
+}
+ExpressionNode {
+    omit: true,
+    body: '\\\n',
+    span: 95..100,
+}
+ExpressionNode {
+    omit: true,
+    body: '\\u{24}',
+    span: 111..120,
+}
+ExpressionNode {
+    omit: true,
+    body: '\\u{03D6}',
+    span: 121..132,
+}
+ExpressionNode {
+    omit: true,
+    body: '\\u{000024}',
+    span: 133..146,
+}
+ExpressionNode {
+    omit: true,
+    body: '\\u{99999999}',
+    span: 147..162,
+}
+ExpressionNode {
+    omit: true,
+    body: '\\n',
+    span: 163..168,
+}
+ExpressionNode {
+    omit: true,
+    body: '\\a',
+    span: 169..174,
+}
+ExpressionNode {
+    omit: false,
+    body: re'\n# comment\nab[cd]\n',
+    span: 176..200,
+}
+ExpressionNode {
+    omit: false,
+    body: xml'\n<list>xml</list>\n',
+    span: 200..224,
 }

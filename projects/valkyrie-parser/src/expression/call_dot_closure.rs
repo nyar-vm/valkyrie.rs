@@ -1,6 +1,6 @@
 use super::*;
 impl crate::DotClosureCallNode {
-    pub fn build(&self, ctx: &ProgramContext) -> Validation<ClosureCallNode> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<ClosureCallNode> {
         let monadic = self.op_and_then.is_some();
         Success {
             value: ClosureCallNode {

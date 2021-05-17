@@ -1,40 +1,36 @@
-ProgramRoot {
-    statements: [
-        ExpressionNode {
-            omit: false,
-            body: if,
-            span: 0..3,
+ExpressionNode {
+    omit: false,
+    body: if,
+    span: 0..3,
+}
+ExpressionNode {
+    omit: false,
+    body: ApplyCallNode {
+        monadic: false,
+        caller: condition1,
+        arguments: ArgumentsList {
+            terms: [],
         },
-        ExpressionNode {
-            omit: false,
-            body: ApplyCallNode {
-                monadic: false,
-                caller: condition1,
-                arguments: ArgumentsList {
-                    terms: [],
-                },
-                body: None,
-                span: 13..148,
-            },
-            span: 3..153,
+        body: None,
+        span: 13..148,
+    },
+    span: 3..153,
+}
+ExpressionNode {
+    omit: false,
+    body: if,
+    span: 153..156,
+}
+VariableDeclaration {
+    pattern: Tuple(
+        TuplePatternNode {
+            bind: None,
+            name: None,
+            terms: [],
+            span: 0..0,
         },
-        ExpressionNode {
-            omit: false,
-            body: if,
-            span: 153..156,
-        },
-        VariableDeclaration {
-            pattern: Tuple(
-                TuplePatternNode {
-                    bind: None,
-                    name: None,
-                    terms: [],
-                    span: 0..0,
-                },
-            ),
-            type_hint: None,
-            body: None,
-            span: 156..276,
-        },
-    ],
+    ),
+    type_hint: None,
+    body: None,
+    span: 156..276,
 }

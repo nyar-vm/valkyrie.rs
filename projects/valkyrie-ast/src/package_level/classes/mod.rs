@@ -39,6 +39,7 @@ pub struct ClassDeclaration {
 #[derive(Clone, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum ClassTerm {
+    Macro(ProceduralNode),
     Field(FieldDeclaration),
     Method(MethodDeclaration),
     Domain(DomainDeclaration),
@@ -95,6 +96,7 @@ pub struct MethodDeclaration {
     /// The range of the declaration.
     pub span: Range<u32>,
 }
+
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct DomainDeclaration {

@@ -1,7 +1,7 @@
 use super::*;
 
 impl crate::DefineUnionNode {
-    pub fn build(&self, ctx: &ProgramContext) -> Validation<UnionDeclaration> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<UnionDeclaration> {
         let mut errors = vec![];
         // let terms = self.function_body.build(ctx).recover(&mut errors)?;
         let annotations = self.annotation_head.annotations(ctx).recover(&mut errors)?;

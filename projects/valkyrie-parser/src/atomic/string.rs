@@ -1,7 +1,7 @@
 use super::*;
 
 impl crate::TextLiteralNode {
-    pub fn build(&self, ctx: &ProgramContext) -> StringLiteralNode {
+    pub fn build(&self, ctx: &mut ProgramState) -> StringLiteralNode {
         let handler = self.identifier.as_ref().map(|v| v.build(ctx));
         let literal = self.text_raw.build();
         StringLiteralNode { literal, handler }
@@ -31,7 +31,7 @@ impl crate::TextRawNode {
         }
         StringTextNode { text: buffer, span: self.span.clone() }
     }
-    pub fn build_id(&self, ctx: &ProgramContext) -> IdentifierNode {
+    pub fn build_id(&self, ctx: &mut ProgramState) -> IdentifierNode {
         IdentifierNode { name: "".to_string(), span: ctx.file.with_range(self.get_range()) }
     }
 }

@@ -2,7 +2,7 @@ use super::*;
 use crate::KwWhileNode;
 
 impl crate::WhileStatementNode {
-    pub fn build(&self, ctx: &ProgramContext) -> Validation<WhileLoop> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<WhileLoop> {
         Success {
             value: WhileLoop {
                 kind: self.kw_while.build(),

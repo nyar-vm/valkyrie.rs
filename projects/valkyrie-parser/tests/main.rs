@@ -100,7 +100,9 @@ fn find_all(dir: &str, debug: bool) -> anyhow::Result<()> {
                     error.as_report().eprint(&cache)?
                 }
                 let mut out = File::create(path.with_extension("ron"))?;
-                out.write_all(format!("{:#?}", value).as_bytes())?;
+                for statement in &value.statements {
+                    out.write_all(format!("{:#?}\n", statement).as_bytes())?;
+                }
             }
             Failure { fatal, diagnostics } => {
                 for error in diagnostics {

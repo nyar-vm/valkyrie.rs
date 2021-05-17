@@ -1,9 +1,11 @@
-use crate::{helpers::ProgramContext, MainFactorNode};
+use crate::{
+    helpers::{ProgramContext, ProgramState},
+    MainFactorNode,
+};
 use nyar_error::{NyarError, Success, Validate, Validation};
 use pratt::{Affix, PrattParser, Precedence};
 use std::str::FromStr;
 use valkyrie_ast::*;
-
 mod annotations;
 mod call_dot;
 mod call_dot_closure;
@@ -12,7 +14,7 @@ mod call_generic;
 mod operators;
 
 impl crate::MainExpressionNode {
-    pub fn build(&self, ctx: &ProgramContext) -> Validation<ExpressionType> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<ExpressionType> {
         let mut stream = vec![];
         let (head, rest) = self.main_term.split_first().expect("at least one term");
         head.push_tokens(&mut stream, ctx)?;
@@ -26,7 +28,7 @@ impl crate::MainExpressionNode {
     }
 }
 impl crate::TypeExpressionNode {
-    pub fn build(&self, ctx: &ProgramContext) -> Validation<ExpressionType> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<ExpressionType> {
         let mut stream = vec![];
         let (head, rest) = self.type_term.split_first().expect("at least one term");
         head.push_tokens(&mut stream, ctx)?;
@@ -41,7 +43,7 @@ impl crate::TypeExpressionNode {
 }
 
 impl crate::MainTermNode {
-    fn push_tokens(&self, stream: &mut Vec<TokenStream>, ctx: &ProgramContext) -> Validation<()> {
+    fn push_tokens(&self, stream: &mut Vec<TokenStream>, ctx: &mut ProgramState) -> Validation<()> {
         for i in &self.main_prefix {
             stream.push(TokenStream::Prefix(i.as_operator()))
         }
@@ -54,7 +56,7 @@ impl crate::MainTermNode {
     }
 }
 impl crate::TypeTermNode {
-    fn push_tokens(&self, stream: &mut Vec<TokenStream>, ctx: &ProgramContext) -> Validation<()> {
+    fn push_tokens(&self, stream: &mut Vec<TokenStream>, ctx: &mut ProgramState) -> Validation<()> {
         for i in &self.type_prefix {
             stream.push(TokenStream::Prefix(i.as_operator()))
         }
@@ -138,7 +140,7 @@ where
 }
 
 impl crate::MainFactorNode {
-    pub fn build(&self, ctx: &ProgramContext) -> Validation<ExpressionType> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<ExpressionType> {
         match self {
             Self::Leading(v) => v.build(ctx),
             Self::GroupFactor(v) => v.main_expression.build(ctx),
@@ -154,7 +156,7 @@ impl crate::MainFactorNode {
     }
 }
 impl crate::TypeFactorNode {
-    pub fn build(&self, ctx: &ProgramContext) -> Validation<ExpressionType> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<ExpressionType> {
         match self {
             Self::Leading(v) => v.build(ctx),
             Self::TypeExpression(v) => v.build(ctx),
@@ -163,7 +165,7 @@ impl crate::TypeFactorNode {
 }
 
 impl crate::MainSuffixTermNode {
-    fn as_token(&self, ctx: &ProgramContext) -> Validation<TokenStream> {
+    fn as_token(&self, ctx: &mut ProgramState) -> Validation<TokenStream> {
         let token = match self {
             Self::InlineSuffixTerm(v) => v.as_token(ctx)?,
             Self::DotMatchCall(v) => TokenStream::DotMatch(v.build(ctx)?),
@@ -175,7 +177,7 @@ impl crate::MainSuffixTermNode {
 }
 
 impl crate::InlineSuffixTermNode {
-    fn as_token(&self, ctx: &ProgramContext) -> Validation<TokenStream> {
+    fn as_token(&self, ctx: &mut ProgramState) -> Validation<TokenStream> {
         let token = match self {
             Self::MainSuffix(v) => TokenStream::Postfix(v.as_operator()),
             Self::RangeCall(v) => TokenStream::Subscript(v.build(ctx)?),
@@ -188,7 +190,7 @@ impl crate::InlineSuffixTermNode {
 }
 
 impl crate::TypeSuffixTermNode {
-    fn as_token(&self, ctx: &ProgramContext) -> Validation<TokenStream> {
+    fn as_token(&self, ctx: &mut ProgramState) -> Validation<TokenStream> {
         let token = match self {
             Self::GenericHide(v) => TokenStream::Generic(v.build(ctx)?),
             Self::TypeSuffix(v) => TokenStream::Postfix(v.as_operator()),

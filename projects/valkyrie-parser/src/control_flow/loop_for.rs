@@ -2,7 +2,7 @@ use super::*;
 use valkyrie_ast::ForLoop;
 
 impl crate::ForStatementNode {
-    pub fn build(&self, ctx: &ProgramContext) -> Validation<ForLoop> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<ForLoop> {
         Success {
             value: ForLoop {
                 pattern: self.let_pattern.build(ctx)?,

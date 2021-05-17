@@ -17,7 +17,7 @@ mod string_like;
 
 pub use crate::{
     control_flow::{
-        control::{ControlNode, ControlType, RaiseNode, TailCallNode},
+        control::{ControlKind, ControlNode, RaiseNode, TailCallNode},
         do_catch::{MatchCallNode, MatchKind, MatchStatement},
         do_try::TryStatement,
         jmp_guard::{GuardPattern, GuardStatement},
@@ -27,9 +27,7 @@ pub use crate::{
         loop_while::{WhileConditionNode, WhileLoop, WhileLoopKind},
     },
     expression_level::{
-        annotations::{
-            AnnotationList, AnnotationNode, AnnotationPathNode, AttributeKind, AttributeNode, AttributeTerm, ModifierList,
-        },
+        annotations::{AnnotationNode, AttributeKind, AttributeList, AttributeTerm, ModifierList, ProceduralNode},
         argument::{ArgumentKey, ArgumentTerm, ArgumentsList},
         call_apply::ApplyCallNode,
         call_dot::{DotCallNode, DotCallTerm},

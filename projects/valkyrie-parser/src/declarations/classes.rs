@@ -1,8 +1,7 @@
 use super::*;
-use crate::ContinuationNode;
 
 impl crate::DefineClassNode {
-    pub fn build(&self, ctx: &ProgramContext) -> Validation<ClassDeclaration> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<ClassDeclaration> {
         let mut errors = vec![];
         let terms = self.class_block.build(ctx).recover(&mut errors)?;
         let annotations = self.annotation_head.annotations(ctx).recover(&mut errors)?;
@@ -23,7 +22,7 @@ impl crate::DefineClassNode {
 }
 
 impl crate::ClassBlockNode {
-    pub fn build(&self, ctx: &ProgramContext) -> Validation<Vec<ClassTerm>> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<Vec<ClassTerm>> {
         let mut terms = vec![];
         let mut errors = vec![];
         for term in &self.class_term {
@@ -47,7 +46,7 @@ impl crate::KwClassNode {
     }
 }
 impl crate::DefineFieldNode {
-    pub fn build(&self, ctx: &ProgramContext) -> Validation<FieldDeclaration> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<FieldDeclaration> {
         let name = self.identifier.build(ctx);
         Success {
             value: FieldDeclaration {
@@ -64,7 +63,7 @@ impl crate::DefineFieldNode {
 }
 
 impl crate::DefineMethodNode {
-    pub fn build(&self, ctx: &ProgramContext) -> Validation<MethodDeclaration> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<MethodDeclaration> {
         let mut errors = vec![];
         let name = self.namepath.build(ctx);
         let body = match &self.continuation {
@@ -89,7 +88,7 @@ impl crate::DefineMethodNode {
 }
 
 impl crate::DefineDomainNode {
-    pub fn build(&self, ctx: &ProgramContext) -> Validation<DomainDeclaration> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<DomainDeclaration> {
         // let name = self.class_block;
         Success {
             value: DomainDeclaration { body: self.class_block.build(ctx)?, span: self.span.clone() },

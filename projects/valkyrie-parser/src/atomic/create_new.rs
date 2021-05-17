@@ -1,7 +1,7 @@
 use super::*;
 
 impl crate::NewStatementNode {
-    pub fn build(&self, ctx: &ProgramContext) -> Validation<ConstructNewNode> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<ConstructNewNode> {
         Success {
             value: ConstructNewNode {
                 modifiers: vec![],

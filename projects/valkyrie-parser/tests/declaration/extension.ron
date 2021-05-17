@@ -1,17 +1,13 @@
-ProgramRoot {
-    statements: [
-        ExpressionNode {
-            omit: false,
-            body: ApplyCallNode {
-                monadic: false,
-                caller: extension,
-                arguments: ArgumentsList {
-                    terms: [],
-                },
-                body: None,
-                span: 10..15,
-            },
-            span: 1..17,
+ExpressionNode {
+    omit: false,
+    body: ApplyCallNode {
+        monadic: false,
+        caller: extension,
+        arguments: ArgumentsList {
+            terms: [],
         },
-    ],
+        body: None,
+        span: 10..15,
+    },
+    span: 1..17,
 }

@@ -15,7 +15,8 @@ pub struct TailCallNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ControlNode {
     /// The type of control flow
-    pub r#type: ControlType,
+    pub r#type: ControlKind,
+    pub label: IdentifierNode,
     /// The label of the control flow
     pub expression: Option<ExpressionNode>,
     /// The range of the node
@@ -35,7 +36,7 @@ pub struct RaiseNode {
 /// The control flow keywords
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum ControlType {
+pub enum ControlKind {
     /// `goto label`, can't construct from frontend
     Goto,
     /// `break label`, equivalent to `call/cc`

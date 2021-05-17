@@ -1,7 +1,8 @@
-ProgramRoot {
-    statements: [
-        ExtendsStatement {
-            methods: [],
-        },
-    ],
+ExpressionNode {
+    omit: false,
+    body: ConstructObjectNode {
+        base_classes: None,
+        span: 6..32,
+    },
+    span: 0..35,
 }

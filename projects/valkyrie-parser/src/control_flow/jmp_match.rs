@@ -1,7 +1,7 @@
 use super::*;
 
 impl crate::MatchExpressionNode {
-    pub fn build(&self, ctx: &ProgramContext) -> Validation<MatchStatement> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<MatchStatement> {
         Success {
             value: MatchStatement {
                 kind: self.kw_match.build(),
@@ -13,7 +13,7 @@ impl crate::MatchExpressionNode {
             diagnostics: vec![],
         }
     }
-    fn get_bind(&self, ctx: &ProgramContext) -> Option<IdentifierNode> {
+    fn get_bind(&self, ctx: &mut ProgramState) -> Option<IdentifierNode> {
         Some(self.identifier.as_ref()?.build(ctx))
     }
 }

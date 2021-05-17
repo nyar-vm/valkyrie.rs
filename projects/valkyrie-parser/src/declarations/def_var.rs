@@ -1,7 +1,7 @@
 use super::*;
 
 impl crate::DefineVariableNode {
-    pub fn build(&self, ctx: &ProgramContext) -> Validation<VariableDeclaration> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<VariableDeclaration> {
         Success {
             value: VariableDeclaration {
                 pattern: PatternNode::Tuple(Box::new(TuplePatternNode {

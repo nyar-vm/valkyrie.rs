@@ -1,7 +1,7 @@
 use super::*;
 
 impl crate::DotCallNode {
-    pub fn build(&self, ctx: &ProgramContext) -> Validation<DotCallNode> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<DotCallNode> {
         let monadic = self.op_and_then.is_some();
         Success {
             value: DotCallNode {
@@ -16,7 +16,7 @@ impl crate::DotCallNode {
 }
 
 impl crate::DotCallItemNode {
-    pub fn build(&self, ctx: &ProgramContext) -> Result<DotCallTerm, NyarError> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Result<DotCallTerm, NyarError> {
         match self {
             Self::Namepath(v) => Ok(DotCallTerm::Symbol(v.build(ctx))),
             Self::Integer(v) => {

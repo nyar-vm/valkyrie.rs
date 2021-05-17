@@ -1,48 +1,44 @@
-ProgramRoot {
-    statements: [
-        TraitDeclaration {
-            name: Identifier("A", 6..7),
-            terms: [],
-        },
-        TraitDeclaration {
-            name: Identifier("SemiGroup", 39..48),
-            terms: [],
-        },
-        TraitDeclaration {
-            name: Identifier("Monoid", 89..95),
-            terms: [],
-        },
-        TraitDeclaration {
-            name: Identifier("SemiGroup", 143..152),
-            terms: [],
-        },
-        TraitDeclaration {
-            name: Identifier("Functor", 199..206),
-            terms: [],
-        },
-        TraitDeclaration {
-            name: Identifier("Monoid", 281..287),
-            terms: [],
-        },
-        ExtendsStatement {
-            methods: [],
-        },
-        TraitDeclaration {
-            name: Identifier("Functor", 439..446),
-            terms: [],
-        },
-        TraitDeclaration {
-            name: Identifier("Functor", 533..540),
-            terms: [],
-        },
-        ExtendsStatement {
-            methods: [],
-        },
-        ExtendsStatement {
-            methods: [],
-        },
-        ExtendsStatement {
-            methods: [],
-        },
-    ],
+TraitDeclaration {
+    name: Identifier("A", 6..7),
+    terms: [],
+}
+TraitDeclaration {
+    name: Identifier("SemiGroup", 39..48),
+    terms: [],
+}
+TraitDeclaration {
+    name: Identifier("Monoid", 89..95),
+    terms: [],
+}
+TraitDeclaration {
+    name: Identifier("SemiGroup", 143..152),
+    terms: [],
+}
+TraitDeclaration {
+    name: Identifier("Functor", 199..206),
+    terms: [],
+}
+TraitDeclaration {
+    name: Identifier("Monoid", 281..287),
+    terms: [],
+}
+ExtendsStatement {
+    methods: [],
+}
+TraitDeclaration {
+    name: Identifier("Functor", 439..446),
+    terms: [],
+}
+TraitDeclaration {
+    name: Identifier("Functor", 533..540),
+    terms: [],
+}
+ExtendsStatement {
+    methods: [],
+}
+ExtendsStatement {
+    methods: [],
+}
+ExtendsStatement {
+    methods: [],
 }

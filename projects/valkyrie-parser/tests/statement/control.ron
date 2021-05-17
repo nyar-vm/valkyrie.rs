@@ -1,159 +1,155 @@
-ProgramRoot {
-    statements: [
-        ExpressionNode {
-            omit: true,
-            body: continue,
-            span: 0..9,
-        },
-        ExpressionNode {
-            omit: false,
-            body: continue,
-            span: 10..19,
-        },
-        ExpressionNode {
-            omit: true,
-            body: label,
-            span: 19..25,
-        },
-        ExpressionNode {
-            omit: true,
-            body: break,
-            span: 26..32,
-        },
-        ExpressionNode {
-            omit: false,
-            body: break,
-            span: 33..39,
-        },
-        ExpressionNode {
-            omit: true,
-            body: label,
-            span: 39..45,
-        },
-        ExpressionNode {
-            omit: true,
-            body: fallthrough,
-            span: 46..58,
-        },
-        ExpressionNode {
-            omit: false,
-            body: fallthrough,
-            span: 59..71,
-        },
-        ExpressionNode {
-            omit: true,
-            body: label,
-            span: 71..77,
-        },
-        ExpressionNode {
-            omit: true,
-            body: return,
-            span: 78..85,
-        },
-        ExpressionNode {
-            omit: false,
-            body: return,
-            span: 86..93,
-        },
-        ExpressionNode {
-            omit: true,
-            body: expression,
-            span: 93..104,
-        },
-        ExpressionNode {
-            omit: true,
-            body: raise,
-            span: 105..111,
-        },
-        ExpressionNode {
-            omit: false,
-            body: raise,
-            span: 112..118,
-        },
-        ExpressionNode {
-            omit: true,
-            body: expression,
-            span: 118..129,
-        },
-        ExpressionNode {
-            omit: true,
-            body: yield,
-            span: 130..136,
-        },
-        ExpressionNode {
-            omit: false,
-            body: yield,
-            span: 137..143,
-        },
-        ExpressionNode {
-            omit: true,
-            body: expression,
-            span: 143..154,
-        },
-        ExpressionNode {
-            omit: false,
-            body: yield,
-            span: 155..161,
-        },
-        ExpressionNode {
-            omit: false,
-            body: return,
-            span: 161..168,
-        },
-        ExpressionNode {
-            omit: true,
-            body: expression,
-            span: 168..179,
-        },
-        ExpressionNode {
-            omit: false,
-            body: yield,
-            span: 180..186,
-        },
-        ExpressionNode {
-            omit: true,
-            body: break,
-            span: 186..192,
-        },
-        ExpressionNode {
-            omit: false,
-            body: yield,
-            span: 193..199,
-        },
-        ExpressionNode {
-            omit: false,
-            body: break,
-            span: 199..205,
-        },
-        ExpressionNode {
-            omit: true,
-            body: label,
-            span: 205..211,
-        },
-        ExpressionNode {
-            omit: false,
-            body: yield,
-            span: 212..218,
-        },
-        ExpressionNode {
-            omit: true,
-            body: from,
-            span: 218..223,
-        },
-        ExpressionNode {
-            omit: false,
-            body: yield,
-            span: 224..230,
-        },
-        ExpressionNode {
-            omit: false,
-            body: from,
-            span: 230..235,
-        },
-        ExpressionNode {
-            omit: true,
-            body: expression,
-            span: 235..246,
-        },
-    ],
+ExpressionNode {
+    omit: true,
+    body: continue,
+    span: 0..9,
+}
+ExpressionNode {
+    omit: false,
+    body: continue,
+    span: 10..19,
+}
+ExpressionNode {
+    omit: true,
+    body: label,
+    span: 19..25,
+}
+ExpressionNode {
+    omit: true,
+    body: break,
+    span: 26..32,
+}
+ExpressionNode {
+    omit: false,
+    body: break,
+    span: 33..39,
+}
+ExpressionNode {
+    omit: true,
+    body: label,
+    span: 39..45,
+}
+ExpressionNode {
+    omit: true,
+    body: fallthrough,
+    span: 46..58,
+}
+ExpressionNode {
+    omit: false,
+    body: fallthrough,
+    span: 59..71,
+}
+ExpressionNode {
+    omit: true,
+    body: label,
+    span: 71..77,
+}
+ExpressionNode {
+    omit: true,
+    body: return,
+    span: 78..85,
+}
+ExpressionNode {
+    omit: false,
+    body: return,
+    span: 86..93,
+}
+ExpressionNode {
+    omit: true,
+    body: expression,
+    span: 93..104,
+}
+ExpressionNode {
+    omit: true,
+    body: raise,
+    span: 105..111,
+}
+ExpressionNode {
+    omit: false,
+    body: raise,
+    span: 112..118,
+}
+ExpressionNode {
+    omit: true,
+    body: expression,
+    span: 118..129,
+}
+ExpressionNode {
+    omit: true,
+    body: yield,
+    span: 130..136,
+}
+ExpressionNode {
+    omit: false,
+    body: yield,
+    span: 137..143,
+}
+ExpressionNode {
+    omit: true,
+    body: expression,
+    span: 143..154,
+}
+ExpressionNode {
+    omit: false,
+    body: yield,
+    span: 155..161,
+}
+ExpressionNode {
+    omit: false,
+    body: return,
+    span: 161..168,
+}
+ExpressionNode {
+    omit: true,
+    body: expression,
+    span: 168..179,
+}
+ExpressionNode {
+    omit: false,
+    body: yield,
+    span: 180..186,
+}
+ExpressionNode {
+    omit: true,
+    body: break,
+    span: 186..192,
+}
+ExpressionNode {
+    omit: false,
+    body: yield,
+    span: 193..199,
+}
+ExpressionNode {
+    omit: false,
+    body: break,
+    span: 199..205,
+}
+ExpressionNode {
+    omit: true,
+    body: label,
+    span: 205..211,
+}
+ExpressionNode {
+    omit: false,
+    body: yield,
+    span: 212..218,
+}
+ExpressionNode {
+    omit: true,
+    body: from,
+    span: 218..223,
+}
+ExpressionNode {
+    omit: false,
+    body: yield,
+    span: 224..230,
+}
+ExpressionNode {
+    omit: false,
+    body: from,
+    span: 230..235,
+}
+ExpressionNode {
+    omit: true,
+    body: expression,
+    span: 235..246,
 }

@@ -1,9 +1,9 @@
-use crate::ProgramContext;
+use crate::{helpers::ProgramState, ProgramContext};
 use nyar_error::{Success, Validation};
 use valkyrie_ast::*;
 
 impl crate::LetPatternNode {
-    pub fn build(&self, ctx: &ProgramContext) -> Validation<PatternNode> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<PatternNode> {
         match self {
             Self::BarePattern(v) => v.build(ctx),
             Self::StandardPattern(v) => v.build(ctx),
@@ -11,7 +11,7 @@ impl crate::LetPatternNode {
     }
 }
 impl crate::StandardPatternNode {
-    pub fn build(&self, ctx: &ProgramContext) -> Validation<PatternNode> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<PatternNode> {
         match self {
             Self::TuplePattern(v) => v.build(ctx),
         }
@@ -19,7 +19,7 @@ impl crate::StandardPatternNode {
 }
 
 impl crate::BarePatternNode {
-    pub fn build(&self, ctx: &ProgramContext) -> Validation<PatternNode> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<PatternNode> {
         let mut errors = vec![];
         let mut terms = vec![];
         for node in &self.bare_pattern_item {
@@ -31,7 +31,7 @@ impl crate::BarePatternNode {
 }
 
 impl crate::BarePatternItemNode {
-    pub fn build(&self, ctx: &ProgramContext) -> Validation<PatternNode> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<PatternNode> {
         let mut errors = vec![];
         let identifier = self.identifier.build(ctx);
         let id = IdentifierPattern { modifiers: Default::default(), identifier };
@@ -40,7 +40,7 @@ impl crate::BarePatternItemNode {
 }
 
 impl crate::TuplePatternNode {
-    pub fn build(&self, ctx: &ProgramContext) -> Validation<PatternNode> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<PatternNode> {
         let mut errors = vec![];
         let mut terms = vec![];
         for node in &self.pattern_item {
@@ -51,7 +51,7 @@ impl crate::TuplePatternNode {
     }
 }
 impl crate::PatternItemNode {
-    pub fn build(&self, ctx: &ProgramContext) -> Validation<PatternNode> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<PatternNode> {
         let value = match self {
             Self::OmitDict => PatternNode::Atom(Box::new(IdentifierPattern {
                 modifiers: Default::default(),
@@ -68,7 +68,7 @@ impl crate::PatternItemNode {
 }
 
 impl crate::TuplePatternItemNode {
-    pub fn build(&self, ctx: &ProgramContext) -> Validation<PatternNode> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<PatternNode> {
         let mut errors = vec![];
         let identifier = self.identifier.build(ctx);
         let id = IdentifierPattern { modifiers: Default::default(), identifier };

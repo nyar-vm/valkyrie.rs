@@ -1,8 +1,7 @@
 use super::*;
-use valkyrie_ast::{ImportGroupNode, ImportTermNode, NamePathNode};
 
 impl crate::DefineImportNode {
-    pub fn build(&self, ctx: &ProgramContext) -> Validation<ImportStatement> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<ImportStatement> {
         Success {
             value: ImportStatement {
                 annotation: Default::default(),

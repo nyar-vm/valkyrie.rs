@@ -11,7 +11,7 @@ pub enum StatementNode {
     /// The documentation node, must have acceptor underneath.
     Document(Box<DocumentationNode>),
     /// The annotation list node.
-    Annotation(Box<AnnotationList>),
+    Annotation(Box<AttributeList>),
     /// The namespace declaration node.
     Namespace(Box<NamespaceDeclaration>),
     /// The import statement node.
@@ -42,14 +42,6 @@ pub enum StatementNode {
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct StatementContext {}
-
-impl From<AttributeNode> for StatementNode {
-    fn from(value: AttributeNode) -> Self {
-        let list = AnnotationList { kind: value.kind, terms: vec![value.term], span: value.span };
-
-        StatementNode::Annotation(Box::new(list))
-    }
-}
 
 impl StatementNode {
     /// Create a new expression node

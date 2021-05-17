@@ -1,20 +1,16 @@
-ProgramRoot {
-    statements: [
-        NamespaceDeclaration {
-            kind: Standalone,
-            path: std,
-        },
-        NamespaceDeclaration {
-            kind: Main,
-            path: std∷string,
-        },
-        NamespaceDeclaration {
-            kind: Test,
-            path: std∷integer,
-        },
-        NamespaceDeclaration {
-            kind: Standalone,
-            path: std∷decimal,
-        },
-    ],
+NamespaceDeclaration {
+    kind: Standalone,
+    path: std,
+}
+NamespaceDeclaration {
+    kind: Main,
+    path: std∷string,
+}
+NamespaceDeclaration {
+    kind: Test,
+    path: std∷integer,
+}
+NamespaceDeclaration {
+    kind: Standalone,
+    path: std∷decimal,
 }

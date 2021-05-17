@@ -7,6 +7,6 @@ mod unions;
 mod def_var;
 mod extends;
 
-use crate::ProgramContext;
+use crate::{helpers::ProgramState, ContinuationNode, ProgramContext};
 use nyar_error::{Success, Validate, Validation};
 use valkyrie_ast::*;

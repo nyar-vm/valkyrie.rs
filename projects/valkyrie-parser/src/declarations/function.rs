@@ -2,7 +2,7 @@ use super::*;
 use crate::TypeReturnNode;
 
 impl crate::DefineFunctionNode {
-    pub fn build(&self, ctx: &ProgramContext) -> Validation<FunctionDeclaration> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<FunctionDeclaration> {
         let mut errors = vec![];
         let annotations = self.annotation_head.annotations(ctx).recover(&mut errors)?;
         let returning = self.function_middle.returns(ctx).recover(&mut errors)?;
@@ -32,7 +32,7 @@ impl crate::KwFunctionNode {
 }
 
 impl crate::FunctionMiddleNode {
-    pub fn returns(&self, ctx: &ProgramContext) -> Validation<FunctionReturnNode> {
+    pub fn returns(&self, ctx: &mut ProgramState) -> Validation<FunctionReturnNode> {
         let mut errors = vec![];
         let typing = match &self.type_return {
             Some(s) => Some(s.type_expression.build(ctx)?),
@@ -43,7 +43,7 @@ impl crate::FunctionMiddleNode {
 }
 
 impl crate::ContinuationNode {
-    pub fn build(&self, ctx: &ProgramContext) -> Validation<StatementBlock> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<StatementBlock> {
         let mut diagnostics = vec![];
         let mut terms = vec![];
         for term in &self.main_statement {
