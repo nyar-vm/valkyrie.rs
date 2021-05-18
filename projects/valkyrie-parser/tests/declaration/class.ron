@@ -226,15 +226,13 @@ ClassDeclaration {
             body: Some(
                 StatementBlock {
                     terms: [
-                        ExpressionNode {
-                            omit: false,
-                            body: return,
-                            span: 474..481,
-                        },
-                        ExpressionNode {
-                            omit: false,
-                            body: 1,
-                            span: 481..487,
+                        ControlNode {
+                            kind: Return,
+                            label: "",
+                            expression: Some(
+                                1,
+                            ),
+                            span: 474..482,
                         },
                     ],
                     span: 464..488,
@@ -291,15 +289,13 @@ ClassDeclaration {
                             },
                             span: 519..576,
                         },
-                        ExpressionNode {
-                            omit: false,
-                            body: return,
-                            span: 576..583,
-                        },
-                        ExpressionNode {
-                            omit: false,
-                            body: _a,
-                            span: 583..590,
+                        ControlNode {
+                            kind: Return,
+                            label: "",
+                            expression: Some(
+                                _a,
+                            ),
+                            span: 576..585,
                         },
                     ],
                     span: 509..591,
@@ -810,19 +806,17 @@ ClassDeclaration {
             body: Some(
                 StatementBlock {
                     terms: [
-                        ExpressionNode {
-                            omit: false,
-                            body: return,
-                            span: 1641..1648,
-                        },
-                        ExpressionNode {
-                            omit: false,
-                            body: InfixNode {
-                                infix: /,
-                                lhs: self,
-                                rhs: rhs,
-                            },
-                            span: 1648..1663,
+                        ControlNode {
+                            kind: Return,
+                            label: "",
+                            expression: Some(
+                                InfixNode {
+                                    infix: /,
+                                    lhs: self,
+                                    rhs: rhs,
+                                },
+                            ),
+                            span: 1641..1658,
                         },
                     ],
                     span: 1631..1664,
@@ -853,33 +847,31 @@ ClassDeclaration {
             body: Some(
                 StatementBlock {
                     terms: [
-                        ExpressionNode {
-                            omit: false,
-                            body: return,
-                            span: 1731..1738,
-                        },
-                        ExpressionNode {
-                            omit: false,
-                            body: ApplyCallNode {
-                                monadic: false,
-                                caller: DotCallNode {
+                        ControlNode {
+                            kind: Return,
+                            label: "",
+                            expression: Some(
+                                ApplyCallNode {
                                     monadic: false,
-                                    base: self,
-                                    term: append,
-                                    span: 1742..1749,
+                                    caller: DotCallNode {
+                                        monadic: false,
+                                        base: self,
+                                        term: append,
+                                        span: 1742..1749,
+                                    },
+                                    arguments: ArgumentsList {
+                                        terms: [
+                                            TupleTermNode {
+                                                key: None,
+                                                value: other,
+                                            },
+                                        ],
+                                    },
+                                    body: None,
+                                    span: 1749..1756,
                                 },
-                                arguments: ArgumentsList {
-                                    terms: [
-                                        TupleTermNode {
-                                            key: None,
-                                            value: other,
-                                        },
-                                    ],
-                                },
-                                body: None,
-                                span: 1749..1756,
-                            },
-                            span: 1738..1761,
+                            ),
+                            span: 1731..1756,
                         },
                     ],
                     span: 1721..1762,

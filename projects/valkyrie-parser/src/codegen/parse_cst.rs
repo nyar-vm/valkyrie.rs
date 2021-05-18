@@ -72,6 +72,7 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::ControlFlow => parse_control_flow(state),
         ValkyrieRule::JumpLabel => parse_jump_label(state),
         ValkyrieRule::MainStatement => parse_main_statement(state),
+        ValkyrieRule::ExpressionStatement => parse_expression_statement(state),
         ValkyrieRule::MatchExpression => parse_match_expression(state),
         ValkyrieRule::SwitchStatement => parse_switch_statement(state),
         ValkyrieRule::MatchTerms => parse_match_terms(state),
@@ -235,7 +236,6 @@ fn parse_statement(state: Input) -> Output {
     state.rule(ValkyrieRule::Statement, |s| {
         Err(s)
             .or_else(|s| parse_define_namespace(s).and_then(|s| s.tag_node("define_namespace")))
-            .or_else(|s| parse_define_import(s).and_then(|s| s.tag_node("define_import")))
             .or_else(|s| parse_define_class(s).and_then(|s| s.tag_node("define_class")))
             .or_else(|s| parse_define_union(s).and_then(|s| s.tag_node("define_union")))
             .or_else(|s| parse_define_enumerate(s).and_then(|s| s.tag_node("define_enumerate")))
@@ -243,7 +243,6 @@ fn parse_statement(state: Input) -> Output {
             .or_else(|s| parse_define_extends(s).and_then(|s| s.tag_node("define_extends")))
             .or_else(|s| parse_define_function(s).and_then(|s| s.tag_node("define_function")))
             .or_else(|s| parse_define_variable(s).and_then(|s| s.tag_node("define_variable")))
-            .or_else(|s| parse_control_flow(s).and_then(|s| s.tag_node("control_flow")))
             .or_else(|s| parse_main_statement(s).and_then(|s| s.tag_node("main_statement")))
     })
 }
@@ -959,6 +958,10 @@ fn parse_define_trait(state: Input) -> Output {
     state.rule(ValkyrieRule::DefineTrait, |s| {
         s.sequence(|s| {
             Ok(s)
+                .and_then(|s| s.optional(|s| parse_define_template(s).and_then(|s| s.tag_node("define_template"))))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_annotation_head(s).and_then(|s| s.tag_node("annotation_head")))
+                .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_kw_trait(s).and_then(|s| s.tag_node("kw_trait")))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
@@ -1508,6 +1511,16 @@ fn parse_control_flow(state: Input) -> Output {
     state.rule(ValkyrieRule::ControlFlow, |s| {
         s.sequence(|s| {
             Ok(s)
+                .and_then(|s| {
+                    s.repeat(0..4294967295, |s| {
+                        s.sequence(|s| {
+                            Ok(s)
+                                .and_then(|s| builtin_ignore(s))
+                                .and_then(|s| parse_annotation_term(s).and_then(|s| s.tag_node("annotation_term")))
+                        })
+                    })
+                })
+                .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_kw_control(s).and_then(|s| s.tag_node("kw_control")))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| s.optional(|s| parse_jump_label(s).and_then(|s| s.tag_node("jump_label"))))
@@ -1529,6 +1542,15 @@ fn parse_jump_label(state: Input) -> Output {
 #[inline]
 fn parse_main_statement(state: Input) -> Output {
     state.rule(ValkyrieRule::MainStatement, |s| {
+        Err(s)
+            .or_else(|s| parse_define_import(s).and_then(|s| s.tag_node("define_import")))
+            .or_else(|s| parse_control_flow(s).and_then(|s| s.tag_node("control_flow")))
+            .or_else(|s| parse_expression_statement(s).and_then(|s| s.tag_node("expression_statement")))
+    })
+}
+#[inline]
+fn parse_expression_statement(state: Input) -> Output {
+    state.rule(ValkyrieRule::ExpressionStatement, |s| {
         s.sequence(|s| {
             Ok(s)
                 .and_then(|s| {
@@ -3553,47 +3575,24 @@ fn parse_op_bind(state: Input) -> Output {
 #[inline]
 fn parse_kw_control(state: Input) -> Output {
     state.rule(ValkyrieRule::KW_CONTROL, |s| {
-        Err(s)
-            .or_else(|s| builtin_text(s, "continue", false).and_then(|s| s.tag_node("continue")))
-            .or_else(|s| {
-                builtin_regex(s, {
-                    static REGEX: OnceLock<Regex> = OnceLock::new();
-                    REGEX.get_or_init(|| Regex::new("^(?x)(raise|throw)").unwrap())
-                })
-                .and_then(|s| s.tag_node("raise"))
+        s.match_regex({
+            static REGEX: OnceLock<Regex> = OnceLock::new();
+            REGEX.get_or_init(|| {
+                Regex::new(
+                    "^(?x)(continue
+    | break
+    | fallthrough!?
+    | raise | throw
+    | return
+    | resume
+    | yield\\p{White_Space}+break
+    | yield\\p{White_Space}+from
+    | yield\\p{White_Space}+wait
+    | yield(\\p{White_Space}+return)?)",
+                )
+                .unwrap()
             })
-            .or_else(|s| builtin_text(s, "break", false).and_then(|s| s.tag_node("break")))
-            .or_else(|s| builtin_text(s, "fallthrough", false).and_then(|s| s.tag_node("fallthrough")))
-            .or_else(|s| builtin_text(s, "return", false).and_then(|s| s.tag_node("return")))
-            .or_else(|s| builtin_text(s, "resume", false).and_then(|s| s.tag_node("resume")))
-            .or_else(|s| {
-                builtin_regex(s, {
-                    static REGEX: OnceLock<Regex> = OnceLock::new();
-                    REGEX.get_or_init(|| Regex::new("^(?x)(yield\\p{White_Space}+break)").unwrap())
-                })
-                .and_then(|s| s.tag_node("yield_break"))
-            })
-            .or_else(|s| {
-                builtin_regex(s, {
-                    static REGEX: OnceLock<Regex> = OnceLock::new();
-                    REGEX.get_or_init(|| Regex::new("^(?x)(yield\\p{White_Space}+from)").unwrap())
-                })
-                .and_then(|s| s.tag_node("yield_from"))
-            })
-            .or_else(|s| {
-                builtin_regex(s, {
-                    static REGEX: OnceLock<Regex> = OnceLock::new();
-                    REGEX.get_or_init(|| Regex::new("^(?x)(yield\\p{White_Space}+wait)").unwrap())
-                })
-                .and_then(|s| s.tag_node("yield_send"))
-            })
-            .or_else(|s| {
-                builtin_regex(s, {
-                    static REGEX: OnceLock<Regex> = OnceLock::new();
-                    REGEX.get_or_init(|| Regex::new("^(?x)(yield(\\p{White_Space}+return)?)").unwrap())
-                })
-                .and_then(|s| s.tag_node("yield_return"))
-            })
+        })
     })
 }
 #[inline]

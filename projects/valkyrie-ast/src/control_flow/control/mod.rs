@@ -60,6 +60,8 @@ pub enum ControlKind {
     YieldBreak,
     /// `yield from ^label`
     YieldFrom,
+    /// `yield wait ^label`
+    YieldSend,
 }
 impl ValkyrieNode for RaiseNode {
     fn get_range(&self) -> Range<usize> {

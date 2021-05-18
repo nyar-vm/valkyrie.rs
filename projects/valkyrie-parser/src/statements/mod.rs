@@ -1,6 +1,6 @@
 use crate::{
     helpers::{ProgramContext, ProgramState},
-    OpNamespaceNode,
+    MainStatementNode, OpNamespaceNode,
 };
 use nyar_error::{Success, Validation};
 use valkyrie_ast::*;
@@ -22,7 +22,6 @@ impl crate::StatementNode {
     pub fn build(&self, ctx: &mut ProgramState) -> Validation<StatementNode> {
         let value = match self {
             Self::DefineNamespace(v) => v.build(ctx).into(),
-            Self::DefineImport(v) => v.build(ctx)?.into(),
             Self::DefineClass(v) => v.build(ctx)?.into(),
             Self::DefineEnumerate(v) => v.build(ctx)?.into(),
             Self::DefineFunction(v) => v.build(ctx)?.into(),
@@ -30,7 +29,6 @@ impl crate::StatementNode {
             Self::DefineTrait(v) => v.build(ctx)?.into(),
             Self::DefineExtends(v) => v.build(ctx)?.into(),
             Self::DefineUnion(v) => v.build(ctx)?.into(),
-            Self::ControlFlow(v) => v.build(ctx)?.into(),
             Self::MainStatement(v) => v.build(ctx)?,
         };
         Success { value, diagnostics: vec![] }
@@ -39,9 +37,11 @@ impl crate::StatementNode {
 
 impl crate::MainStatementNode {
     pub fn build(&self, ctx: &mut ProgramState) -> Validation<StatementNode> {
-        let expr = self.main_expression.build(ctx)?;
-        let eos = self.eos.is_some();
-        let ex = ExpressionNode { omit: eos, body: expr, span: self.span.clone() };
-        Success { value: StatementNode::Expression(Box::new(ex)), diagnostics: vec![] }
+        let value = match self {
+            Self::ControlFlow(v) => v.build(ctx)?.into(),
+            Self::DefineImport(v) => v.build(ctx)?.into(),
+            Self::ExpressionStatement(v) => v.build(ctx)?.into(),
+        };
+        Success { value, diagnostics: vec![] }
     }
 }

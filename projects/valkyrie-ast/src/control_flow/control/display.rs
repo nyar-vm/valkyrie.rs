@@ -5,15 +5,17 @@ impl ControlKind {
     pub fn as_str(&self) -> &'static str {
         match self {
             Self::Goto => "goto",
+            Self::Raise => "raise",
             Self::Break => "break",
             Self::Continue => "continue",
             Self::Fallthrough => "fallthrough",
+            Self::FallthroughUnchecked => "fallthrough!",
             Self::Return => "return",
             Self::Resume => "resume",
-            Self::Yield => "yield",
             Self::YieldReturn => "yield return",
             Self::YieldBreak => "yield break",
             Self::YieldFrom => "yield from",
+            Self::YieldSend => "yield wait",
         }
     }
 }

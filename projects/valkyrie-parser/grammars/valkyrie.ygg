@@ -9,7 +9,6 @@ entry class Program {
 // === statements === -----------------------------------------------------------------
 union Statement {
     | DefineNamespace
-    | DefineImport
     | DefineClass
     | DefineUnion
     | DefineEnumerate
@@ -17,7 +16,6 @@ union Statement {
     | DefineExtends
     | DefineFunction
     | DefineVariable
-    | ControlFlow
     | MainStatement
 }
 /// Used to isolate expressions and control whether to output the expression
@@ -183,7 +181,8 @@ union UnionTerm {
     | EOS_FREE
 }
 class DefineVariant {
-    AnnotationTerm* Identifier ClassBlock?
+    AnnotationTerm*
+    Identifier ClassBlock?
 }
 @style(keyword)
 class KW_UNION {
@@ -191,6 +190,8 @@ class KW_UNION {
 }
 // === identifier === --------------------------------------------------------------------------------------------------
 class DefineTrait {
+    DefineTemplate?
+    AnnotationHead
     KW_TRAIT Identifier DefineGeneric? DefineInherit? TypeHint? ClassBlock ^EOS?
 }
 class DefineExtends {
@@ -300,13 +301,19 @@ class IfGuard {
 }
 // === controls === ----------------------------------------------------------------------------------------------------
 class ControlFlow {
+    AnnotationTerm*
     KW_CONTROL JumpLabel? MainExpression?
 }
 atomic class JumpLabel {
     '^' Identifier
 }
 // === expression === --------------------------------------------------------------------------------------------------
-class MainStatement {
+union MainStatement {
+    | DefineImport
+    | ControlFlow
+    | ExpressionStatement
+}
+class ExpressionStatement {
     AnnotationTerm* MainExpression OP_AND_THEN? EOS?
 }
 // === match/catch/switch === ------------------------------------------------------------------------------------------
@@ -764,18 +771,18 @@ token {
 }
 @railway(false)
 @style(keyword)
-class KW_CONTROL {
-    | 'continue'                        #Continue
-    | /raise|throw/                     #Raise
-    | 'break'                           #Break
-    | 'fallthrough!?'                    #Fallthrough
-    | 'fallthrough'                     #Fallthrough
-    | 'return'                          #Return
-    | 'resume'                          #Resume
-    | /yield\p{White_Space}+break/      #YieldBreak
-    | /yield\p{White_Space}+from/       #YieldFrom
-    | /yield\p{White_Space}+wait/       #YieldSend
-    | /yield(\p{White_Space}+return)?/  #YieldReturn
+text class KW_CONTROL {
+    / continue
+    | break
+    | fallthrough!?
+    | raise | throw
+    | return
+    | resume
+    | yield\p{White_Space}+break
+    | yield\p{White_Space}+from
+    | yield\p{White_Space}+wait
+    | yield(\p{White_Space}+return)?
+    /
 }
 @railway(false)
 @style(keyword)

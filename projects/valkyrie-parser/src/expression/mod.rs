@@ -14,6 +14,15 @@ mod call_generic;
 mod control_flow;
 mod operators;
 
+impl crate::ExpressionStatementNode {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<StatementNode> {
+        let expr = self.main_expression.build(ctx)?;
+        let eos = self.eos.is_some();
+        let ex = ExpressionNode { omit: eos, body: expr, span: self.span.clone() };
+        Success { value: StatementNode::Expression(Box::new(ex)), diagnostics: vec![] }
+    }
+}
+
 impl crate::MainExpressionNode {
     pub fn build(&self, ctx: &mut ProgramState) -> Validation<ExpressionType> {
         let mut stream = vec![];

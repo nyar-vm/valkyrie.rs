@@ -100,6 +100,7 @@ pub enum ValkyrieRule {
     ControlFlow,
     JumpLabel,
     MainStatement,
+    ExpressionStatement,
     MatchExpression,
     SwitchStatement,
     MatchTerms,
@@ -317,6 +318,7 @@ impl YggdrasilRule for ValkyrieRule {
             Self::ControlFlow => "",
             Self::JumpLabel => "",
             Self::MainStatement => "",
+            Self::ExpressionStatement => "",
             Self::MatchExpression => "",
             Self::SwitchStatement => "",
             Self::MatchTerms => "",
@@ -466,12 +468,10 @@ pub struct ProgramNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum StatementNode {
-    ControlFlow(ControlFlowNode),
     DefineClass(DefineClassNode),
     DefineEnumerate(DefineEnumerateNode),
     DefineExtends(DefineExtendsNode),
     DefineFunction(DefineFunctionNode),
-    DefineImport(DefineImportNode),
     DefineNamespace(DefineNamespaceNode),
     DefineTrait(DefineTraitNode),
     DefineUnion(DefineUnionNode),
@@ -763,9 +763,11 @@ pub struct KwUnionNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct DefineTraitNode {
+    pub annotation_head: AnnotationHeadNode,
     pub class_block: ClassBlockNode,
     pub define_generic: Option<DefineGenericNode>,
     pub define_inherit: Option<DefineInheritNode>,
+    pub define_template: Option<DefineTemplateNode>,
     pub identifier: IdentifierNode,
     pub kw_trait: KwTraitNode,
     pub type_hint: Option<TypeHintNode>,
@@ -971,6 +973,7 @@ pub struct IfGuardNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ControlFlowNode {
+    pub annotation_term: Vec<AnnotationTermNode>,
     pub jump_label: Option<JumpLabelNode>,
     pub kw_control: KwControlNode,
     pub main_expression: Option<MainExpressionNode>,
@@ -984,7 +987,14 @@ pub struct JumpLabelNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct MainStatementNode {
+pub enum MainStatementNode {
+    ControlFlow(ControlFlowNode),
+    DefineImport(DefineImportNode),
+    ExpressionStatement(ExpressionStatementNode),
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ExpressionStatementNode {
     pub annotation_term: Vec<AnnotationTermNode>,
     pub eos: Option<EosNode>,
     pub main_expression: MainExpressionNode,
@@ -1736,17 +1746,9 @@ pub struct OpBindNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum KwControlNode {
-    Break,
-    Continue,
-    Fallthrough,
-    Raise,
-    Resume,
-    Return,
-    YieldBreak,
-    YieldFrom,
-    YieldReturn,
-    YieldSend,
+pub struct KwControlNode {
+    pub text: String,
+    pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]

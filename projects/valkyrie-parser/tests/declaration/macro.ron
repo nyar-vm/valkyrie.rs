@@ -276,15 +276,13 @@ FunctionDeclaration {
                 },
                 span: 584..612,
             },
-            ExpressionNode {
-                omit: false,
-                body: return,
-                span: 612..619,
-            },
-            ExpressionNode {
-                omit: false,
-                body: 0,
-                span: 619..621,
+            ControlNode {
+                kind: Return,
+                label: "",
+                expression: Some(
+                    0,
+                ),
+                span: 612..620,
             },
         ],
         span: 578..622,

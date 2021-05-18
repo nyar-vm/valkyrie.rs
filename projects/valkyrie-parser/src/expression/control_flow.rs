@@ -63,17 +63,30 @@ impl crate::ControlFlowNode {
 
 impl crate::KwControlNode {
     pub fn build(&self, _: &mut ProgramState) -> ControlKind {
-        match self {
-            Self::Break => ControlKind::Break,
-            Self::Continue => ControlKind::Continue,
-            Self::Fallthrough => ControlKind::Fallthrough,
-            Self::Raise => ControlKind::Resume,
-            Self::Resume => ControlKind::Continue,
-            Self::Return => ControlKind::Continue,
-            Self::YieldBreak => ControlKind::Continue,
-            Self::YieldFrom => ControlKind::Continue,
-            Self::YieldReturn => ControlKind::Continue,
-            Self::YieldSend => ControlKind::Continue,
+        match self.text.as_str() {
+            "break" => ControlKind::Break,
+            "continue" => ControlKind::Continue,
+            "fallthrough" => ControlKind::Fallthrough,
+            "fallthrough!" => ControlKind::FallthroughUnchecked,
+            "goto" => ControlKind::Goto,
+            "raise" => ControlKind::Raise,
+            "return" => ControlKind::Return,
+            "resume" => ControlKind::Resume,
+            s if s.starts_with("yield") => {
+                if s.ends_with("break") {
+                    ControlKind::YieldBreak
+                }
+                else if s.ends_with("from") {
+                    ControlKind::YieldFrom
+                }
+                else if s.ends_with("wait") {
+                    ControlKind::YieldSend
+                }
+                else {
+                    ControlKind::YieldReturn
+                }
+            }
+            _ => unreachable!("Invalid control flow keyword `{}`", self.text),
         }
     }
 }
