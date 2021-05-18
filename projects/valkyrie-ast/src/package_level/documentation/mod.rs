@@ -2,23 +2,22 @@ use super::*;
 
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct DocumentationNode {
-    pub documentation: String,
-    /// The range of the node
-    pub span: Range<u32>,
+pub struct DocumentationList {
+    /// Spans of this documentation
+    pub terms: Vec<StringTextNode>,
 }
 
-impl DocumentationNode {
+impl DocumentationList {
     pub fn is_empty(&self) -> bool {
-        self.documentation.trim().is_empty()
+        self.terms.is_empty()
     }
 }
 
 #[cfg(feature = "pretty-print")]
-impl PrettyPrint for DocumentationNode {
+impl PrettyPrint for DocumentationList {
     fn pretty(&self, _: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(0);
-        for (index, line) in self.documentation.lines().enumerate() {
+        for (index, line) in self.terms.lines().enumerate() {
             if index != 0 {
                 terms += PrettyTree::Hardline
             }

@@ -63,10 +63,8 @@ pub struct ConstructObjectNode {
 pub struct FieldDeclaration {
     /// The name of this field
     pub name: IdentifierNode,
-    /// The documentation of the declaration.
-    pub document: DocumentationNode,
     /// The modifiers of the declaration.
-    pub modifiers: ModifierList,
+    pub annotations: AnnotationNode,
     /// The type hint of this field
     pub typing: Option<ExpressionNode>,
     /// The default value of this field
@@ -79,12 +77,10 @@ pub struct FieldDeclaration {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct MethodDeclaration {
-    /// The documentation of the node.
-    pub document: DocumentationNode,
-    /// The modifiers of the node.
-    pub modifiers: ModifierList,
     /// `method_name()`
-    pub method_name: NamePathNode,
+    pub name: NamePathNode,
+    /// The modifiers of the node.
+    pub annotations: AnnotationNode,
     /// `method_name<T>()`
     pub generic: Option<ParametersList>,
     /// `method_name(arguments)`

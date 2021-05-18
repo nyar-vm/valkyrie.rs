@@ -10,7 +10,7 @@ mod display;
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct AnnotationNode {
     /// The documentations of the statement
-    pub documents: DocumentationNode,
+    pub documents: DocumentationList,
     /// The attributes of the statement
     pub attributes: AttributeList,
     /// The modifiers of the statement

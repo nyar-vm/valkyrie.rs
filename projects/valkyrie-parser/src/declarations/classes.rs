@@ -47,17 +47,12 @@ impl crate::KwClassNode {
 }
 impl crate::DefineFieldNode {
     pub fn build(&self, ctx: &mut ProgramState) -> Validation<FieldDeclaration> {
+        let mut errors = vec![];
         let name = self.identifier.build(ctx);
+        let annotations = self.annotation_mix.annotations(ctx).recover(&mut errors)?;
         Success {
-            value: FieldDeclaration {
-                document: Default::default(),
-                modifiers: self.annotation_mix.modifiers(ctx),
-                name: name,
-                typing: None,
-                default: None,
-                span: self.span.clone(),
-            },
-            diagnostics: vec![],
+            value: FieldDeclaration { annotations, name, typing: None, default: None, span: self.span.clone() },
+            diagnostics: errors,
         }
     }
 }
@@ -71,11 +66,11 @@ impl crate::DefineMethodNode {
             None => None,
         };
         let returns = self.function_middle.returns(ctx).recover(&mut errors)?;
+        let annotations = self.annotation_mix.annotations(ctx).recover(&mut errors)?;
         Success {
             value: MethodDeclaration {
-                document: Default::default(),
-                modifiers: self.annotation_mix.modifiers(ctx),
-                method_name: name,
+                annotations,
+                name,
                 generic: None,
                 arguments: Default::default(),
                 returns,

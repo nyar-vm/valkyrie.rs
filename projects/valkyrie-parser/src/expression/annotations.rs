@@ -9,11 +9,16 @@ use super::*;
 // )"#;
 
 impl crate::AnnotationMixNode {
-    pub fn modifiers(&self, ctx: &mut ProgramState) -> ModifierList {
-        ModifierList { terms: self.modifier_ahead.iter().map(|s| s.identifier.build(ctx)).collect() }
-    }
-    pub fn document(&self, _: &mut ProgramState) -> DocumentationNode {
-        DocumentationNode { documentation: "".to_string(), span: Default::default() }
+    pub fn annotations(&self, ctx: &mut ProgramState) -> Validation<AnnotationNode> {
+        let mut errors = vec![];
+        Success {
+            value: AnnotationNode {
+                documents: DocumentationList { terms: vec![] },
+                attributes: Default::default(),
+                modifiers: ModifierList { terms: self.modifier_ahead.iter().map(|s| s.identifier.build(ctx)).collect() },
+            },
+            diagnostics: errors,
+        }
     }
 }
 
@@ -22,7 +27,7 @@ impl crate::AnnotationHeadNode {
         let mut errors = vec![];
         Success {
             value: AnnotationNode {
-                documents: DocumentationNode { documentation: "".to_string(), span: Default::default() },
+                documents: DocumentationList { terms: vec![] },
                 attributes: Default::default(),
                 modifiers: ModifierList { terms: self.modifier_call.iter().map(|s| s.identifier.build(ctx)).collect() },
             },

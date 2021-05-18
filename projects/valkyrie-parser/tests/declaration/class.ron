@@ -66,25 +66,15 @@ ClassDeclaration {
     terms: [
         FieldDeclaration {
             name: Identifier("virtual", 240..247),
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: ModifierList {
-                terms: [],
-            },
+            annotations: Empty,
             typing: None,
             default: None,
             span: 240..252,
         },
         FieldDeclaration {
             name: Identifier("base1", 260..265),
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: ModifierList {
-                terms: [
+            annotations: Annotation {
+                modifiers: [
                     Identifier("inherit", 252..259),
                 ],
             },
@@ -94,12 +84,8 @@ ClassDeclaration {
         },
         FieldDeclaration {
             name: Identifier("base2", 286..291),
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: ModifierList {
-                terms: [
+            annotations: Annotation {
+                modifiers: [
                     Identifier("inherit", 278..285),
                 ],
             },
@@ -109,12 +95,8 @@ ClassDeclaration {
         },
         FieldDeclaration {
             name: Identifier("base3", 312..317),
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: ModifierList {
-                terms: [
+            annotations: Annotation {
+                modifiers: [
                     Identifier("inherit", 304..311),
                 ],
             },
@@ -135,26 +117,14 @@ ClassDeclaration {
     terms: [
         FieldDeclaration {
             name: Identifier("item1", 362..367),
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: ModifierList {
-                terms: [],
-            },
+            annotations: Empty,
             typing: None,
             default: None,
             span: 362..371,
         },
         FieldDeclaration {
             name: Identifier("item2", 377..382),
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: ModifierList {
-                terms: [],
-            },
+            annotations: Empty,
             typing: None,
             default: None,
             span: 377..386,
@@ -171,19 +141,15 @@ ClassDeclaration {
     auto_traits: [],
     terms: [
         MethodDeclaration {
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: ModifierList {
-                terms: [
-                    Identifier("pub", 429..432),
-                    Identifier("static", 433..439),
-                ],
-            },
-            method_name: NamePathNode {
+            name: NamePathNode {
                 names: [
                     Identifier("a", 440..441),
+                ],
+            },
+            annotations: Annotation {
+                modifiers: [
+                    Identifier("pub", 429..432),
+                    Identifier("static", 433..439),
                 ],
             },
             generic: None,
@@ -242,30 +208,20 @@ ClassDeclaration {
         },
         FieldDeclaration {
             name: Identifier("_a", 493..495),
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: ModifierList {
-                terms: [],
-            },
+            annotations: Empty,
             typing: None,
             default: None,
             span: 493..495,
         },
         MethodDeclaration {
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: ModifierList {
-                terms: [
-                    Identifier("get", 501..504),
-                ],
-            },
-            method_name: NamePathNode {
+            name: NamePathNode {
                 names: [
                     Identifier("a", 505..506),
+                ],
+            },
+            annotations: Annotation {
+                modifiers: [
+                    Identifier("get", 501..504),
                 ],
             },
             generic: None,
@@ -304,18 +260,14 @@ ClassDeclaration {
             span: 501..591,
         },
         MethodDeclaration {
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: ModifierList {
-                terms: [
-                    Identifier("set", 596..599),
-                ],
-            },
-            method_name: NamePathNode {
+            name: NamePathNode {
                 names: [
                     Identifier("a", 600..601),
+                ],
+            },
+            annotations: Annotation {
+                modifiers: [
+                    Identifier("set", 596..599),
                 ],
             },
             generic: None,
@@ -342,18 +294,12 @@ ClassDeclaration {
             span: 596..630,
         },
         MethodDeclaration {
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: ModifierList {
-                terms: [],
-            },
-            method_name: NamePathNode {
+            name: NamePathNode {
                 names: [
                     Identifier("into", 635..639),
                 ],
             },
+            annotations: Empty,
             generic: None,
             arguments: ArgumentsList {
                 terms: [],
@@ -428,12 +374,8 @@ ClassDeclaration {
     terms: [
         FieldDeclaration {
             name: Identifier("virtual", 990..997),
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: ModifierList {
-                terms: [
+            annotations: Annotation {
+                modifiers: [
                     Identifier("public", 983..989),
                 ],
             },
@@ -443,12 +385,8 @@ ClassDeclaration {
         },
         FieldDeclaration {
             name: Identifier("x_base", 1010..1016),
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: ModifierList {
-                terms: [
+            annotations: Annotation {
+                modifiers: [
                     Identifier("inherit", 1002..1009),
                 ],
             },
@@ -458,38 +396,22 @@ ClassDeclaration {
         },
         FieldDeclaration {
             name: Identifier("private", 1029..1036),
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: ModifierList {
-                terms: [],
-            },
+            annotations: Empty,
             typing: None,
             default: None,
             span: 1029..1037,
         },
         FieldDeclaration {
             name: Identifier("inline", 1037..1043),
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: ModifierList {
-                terms: [],
-            },
+            annotations: Empty,
             typing: None,
             default: None,
             span: 1037..1048,
         },
         FieldDeclaration {
             name: Identifier("_y_base", 1056..1063),
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: ModifierList {
-                terms: [
+            annotations: Annotation {
+                modifiers: [
                     Identifier("inherit", 1048..1055),
                 ],
             },
@@ -498,18 +420,12 @@ ClassDeclaration {
             span: 1048..1070,
         },
         MethodDeclaration {
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: ModifierList {
-                terms: [],
-            },
-            method_name: NamePathNode {
+            name: NamePathNode {
                 names: [
                     Identifier("constructor", 1077..1088),
                 ],
             },
+            annotations: Empty,
             generic: None,
             arguments: ArgumentsList {
                 terms: [],
@@ -535,18 +451,12 @@ ClassDeclaration {
     auto_traits: [],
     terms: [
         MethodDeclaration {
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: ModifierList {
-                terms: [],
-            },
-            method_name: NamePathNode {
+            name: NamePathNode {
                 names: [
                     Identifier("启动", 1200..1206),
                 ],
             },
+            annotations: Empty,
             generic: None,
             arguments: ArgumentsList {
                 terms: [],
@@ -569,18 +479,14 @@ ClassDeclaration {
             span: 1200..1289,
         },
         MethodDeclaration {
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: ModifierList {
-                terms: [
-                    Identifier("get", 1294..1297),
-                ],
-            },
-            method_name: NamePathNode {
+            name: NamePathNode {
                 names: [
                     Identifier("value", 1298..1303),
+                ],
+            },
+            annotations: Annotation {
+                modifiers: [
+                    Identifier("get", 1294..1297),
                 ],
             },
             generic: None,
@@ -605,18 +511,14 @@ ClassDeclaration {
             span: 1294..1339,
         },
         MethodDeclaration {
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: ModifierList {
-                terms: [
-                    Identifier("set", 1344..1347),
-                ],
-            },
-            method_name: NamePathNode {
+            name: NamePathNode {
                 names: [
                     Identifier("value", 1348..1353),
+                ],
+            },
+            annotations: Annotation {
+                modifiers: [
+                    Identifier("set", 1344..1347),
                 ],
             },
             generic: None,
@@ -651,12 +553,8 @@ ClassDeclaration {
     terms: [
         FieldDeclaration {
             name: Identifier("type", 1417..1423),
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: ModifierList {
-                terms: [
+            annotations: Annotation {
+                modifiers: [
                     Identifier("public", 1403..1409),
                     Identifier("static", 1410..1416),
                 ],
@@ -667,56 +565,34 @@ ClassDeclaration {
         },
         FieldDeclaration {
             name: Identifier("unknown_all", 1446..1457),
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: ModifierList {
-                terms: [],
-            },
+            annotations: Empty,
             typing: None,
             default: None,
             span: 1446..1457,
         },
         FieldDeclaration {
             name: Identifier("default_value", 1463..1476),
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: ModifierList {
-                terms: [],
-            },
+            annotations: Empty,
             typing: None,
             default: None,
             span: 1463..1479,
         },
         FieldDeclaration {
             name: Identifier("infer_type", 1485..1495),
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: ModifierList {
-                terms: [],
-            },
+            annotations: Empty,
             typing: None,
             default: None,
             span: 1485..1502,
         },
         MethodDeclaration {
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: ModifierList {
-                terms: [
-                    Identifier("get", 1508..1511),
-                ],
-            },
-            method_name: NamePathNode {
+            name: NamePathNode {
                 names: [
                     Identifier("property", 1512..1520),
+                ],
+            },
+            annotations: Annotation {
+                modifiers: [
+                    Identifier("get", 1508..1511),
                 ],
             },
             generic: None,
@@ -733,18 +609,14 @@ ClassDeclaration {
             span: 1508..1525,
         },
         MethodDeclaration {
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: ModifierList {
-                terms: [
-                    Identifier("set", 1531..1534),
-                ],
-            },
-            method_name: NamePathNode {
+            name: NamePathNode {
                 names: [
                     Identifier("property", 1535..1543),
+                ],
+            },
+            annotations: Annotation {
+                modifiers: [
+                    Identifier("set", 1531..1534),
                 ],
             },
             generic: None,
@@ -761,18 +633,12 @@ ClassDeclaration {
             span: 1531..1548,
         },
         MethodDeclaration {
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: ModifierList {
-                terms: [],
-            },
-            method_name: NamePathNode {
+            name: NamePathNode {
                 names: [
                     Identifier("method", 1554..1560),
                 ],
             },
+            annotations: Empty,
             generic: None,
             arguments: ArgumentsList {
                 terms: [],
@@ -782,18 +648,14 @@ ClassDeclaration {
             span: 1554..1562,
         },
         MethodDeclaration {
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: ModifierList {
-                terms: [
-                    Identifier("infix", 1585..1590),
-                ],
-            },
-            method_name: NamePathNode {
+            name: NamePathNode {
                 names: [
                     Identifier("/", 1591..1594),
+                ],
+            },
+            annotations: Annotation {
+                modifiers: [
+                    Identifier("infix", 1585..1590),
                 ],
             },
             generic: None,
@@ -825,18 +687,12 @@ ClassDeclaration {
             span: 1570..1664,
         },
         MethodDeclaration {
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: ModifierList {
-                terms: [],
-            },
-            method_name: NamePathNode {
+            name: NamePathNode {
                 names: [
                     Identifier("join", 1681..1685),
                 ],
             },
+            annotations: Empty,
             generic: None,
             arguments: ArgumentsList {
                 terms: [],
@@ -902,12 +758,8 @@ ClassDeclaration {
     terms: [
         FieldDeclaration {
             name: Identifier("field1", 1907..1913),
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: ModifierList {
-                terms: [
+            annotations: Annotation {
+                modifiers: [
                     Identifier("readonly", 1894..1902),
                 ],
             },
@@ -917,12 +769,8 @@ ClassDeclaration {
         },
         FieldDeclaration {
             name: Identifier("field 2", 1933..1942),
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: ModifierList {
-                terms: [
+            annotations: Annotation {
+                modifiers: [
                     Identifier("readonly", 1924..1932),
                 ],
             },
@@ -932,12 +780,8 @@ ClassDeclaration {
         },
         FieldDeclaration {
             name: Identifier("main", 1985..1989),
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: ModifierList {
-                terms: [
+            annotations: Annotation {
+                modifiers: [
                     Identifier("class", 1953..1960),
                     Identifier("static", 1964..1970),
                     Identifier("void", 1975..1979),
@@ -949,12 +793,8 @@ ClassDeclaration {
         },
         FieldDeclaration {
             name: Identifier("fields", 2005..2011),
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: ModifierList {
-                terms: [
+            annotations: Annotation {
+                modifiers: [
                     Identifier("mut", 1995..1998),
                 ],
             },
@@ -963,18 +803,12 @@ ClassDeclaration {
             span: 1995..2026,
         },
         MethodDeclaration {
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: ModifierList {
-                terms: [],
-            },
-            method_name: NamePathNode {
+            name: NamePathNode {
                 names: [
                     Identifier("try_add", 2055..2062),
                 ],
             },
+            annotations: Empty,
             generic: None,
             arguments: ArgumentsList {
                 terms: [],

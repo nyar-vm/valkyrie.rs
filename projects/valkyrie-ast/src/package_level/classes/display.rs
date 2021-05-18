@@ -57,7 +57,7 @@ impl Lispify for ClassDeclaration {
 impl PrettyPrint for FieldDeclaration {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(4);
-        terms += self.modifiers.pretty(theme);
+        terms += self.annotations.pretty(theme);
         terms += theme.argument(self.name.name.to_string(), false);
         if let Some(typing) = &self.r#type {
             terms += theme.operator(":");
@@ -81,7 +81,7 @@ impl Lispify for FieldDeclaration {
         let mut lisp = Lisp::new(10);
         lisp += Lisp::keyword("class/field");
         lisp += self.name.lispify();
-        lisp += self.modifiers.lispify();
+        lisp += self.annotations.lispify();
         if let Some(typing) = &self.r#type {
             lisp += Lisp::keyword(":");
             lisp += typing.lispify();
@@ -97,8 +97,8 @@ impl Lispify for FieldDeclaration {
 impl PrettyPrint for MethodDeclaration {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(10);
-        terms += self.modifiers.pretty(theme);
-        terms += theme.operator(self.method_name.to_string());
+        terms += self.annotations.pretty(theme);
+        terms += theme.operator(self.name.to_string());
         if let Some(typing) = &self.generic {
             if !typing.terms.is_empty() {
                 terms += typing.pretty(theme);
@@ -127,8 +127,8 @@ impl Lispify for MethodDeclaration {
     fn lispify(&self) -> Self::Output {
         let mut lisp = Lisp::new(4);
         lisp += Lisp::keyword("class/method");
-        lisp += self.method_name.lispify();
-        lisp += self.modifiers.lispify();
+        lisp += self.name.lispify();
+        lisp += self.annotations.lispify();
         if let Some(generic) = &self.generic {
             if !generic.terms.is_empty() {
                 lisp += generic.lispify();

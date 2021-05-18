@@ -32,7 +32,7 @@ pub enum UnionTerm {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct VariantDeclaration {
     /// The documentation of the node.
-    pub document: DocumentationNode,
+    pub document: DocumentationList,
     pub modifiers: ModifierList,
     pub field_name: IdentifierNode,
     pub r#type: ExpressionNode,

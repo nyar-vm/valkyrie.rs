@@ -47,7 +47,7 @@ pub use crate::{
         classes::{
             ClassDeclaration, ClassKind, ClassTerm, ConstructObjectNode, DomainDeclaration, FieldDeclaration, MethodDeclaration,
         },
-        documentation::DocumentationNode,
+        documentation::DocumentationList,
         flags::{EncodeDeclaration, FlagDeclaration, FlagKind, FlagTerm},
         function::{FunctionDeclaration, FunctionDeclarationInline, FunctionKind, FunctionReturnNode, StatementBlock},
         guarantee::{EffectTypeNode, GuaranteeNode},

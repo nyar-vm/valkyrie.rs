@@ -47,7 +47,7 @@ pub enum FlagTerm {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct EncodeDeclaration {
     /// The documentation for this field.
-    pub documentation: DocumentationNode,
+    pub documentation: DocumentationList,
     /// The identifier of the field.
     pub name: IdentifierNode,
     /// The value of the field if exists.

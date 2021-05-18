@@ -9,7 +9,7 @@ pub enum StatementNode {
     /// Placeholder for when the parser fails to parse a statement.
     Nothing,
     /// The documentation node, must have acceptor underneath.
-    Document(Box<DocumentationNode>),
+    Document(Box<DocumentationList>),
     /// The annotation list node.
     Annotation(Box<AttributeList>),
     /// The namespace declaration node.

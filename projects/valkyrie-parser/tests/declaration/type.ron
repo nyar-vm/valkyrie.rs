@@ -112,18 +112,12 @@ ClassDeclaration {
         DomainDeclaration {
             body: [
                 MethodDeclaration {
-                    document: DocumentationNode {
-                        documentation: "",
-                        span: 0..0,
-                    },
-                    modifiers: ModifierList {
-                        terms: [],
-                    },
-                    method_name: NamePathNode {
+                    name: NamePathNode {
                         names: [
                             Identifier("requires", 165..173),
                         ],
                     },
+                    annotations: Empty,
                     generic: None,
                     arguments: ArgumentsList {
                         terms: [],
@@ -148,18 +142,12 @@ ClassDeclaration {
                     span: 165..209,
                 },
                 MethodDeclaration {
-                    document: DocumentationNode {
-                        documentation: "",
-                        span: 0..0,
-                    },
-                    modifiers: ModifierList {
-                        terms: [],
-                    },
-                    method_name: NamePathNode {
+                    name: NamePathNode {
                         names: [
                             Identifier("ensures", 218..225),
                         ],
                     },
+                    annotations: Empty,
                     generic: None,
                     arguments: ArgumentsList {
                         terms: [],

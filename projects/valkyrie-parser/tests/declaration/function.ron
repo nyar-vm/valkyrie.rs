@@ -429,13 +429,7 @@ ClassDeclaration {
     terms: [
         FieldDeclaration {
             name: Identifier("fields", 1765..1771),
-            document: DocumentationNode {
-                documentation: "",
-                span: 0..0,
-            },
-            modifiers: ModifierList {
-                terms: [],
-            },
+            annotations: Empty,
             typing: None,
             default: None,
             span: 1765..1771,
