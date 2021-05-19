@@ -171,6 +171,7 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::Decimal => parse_decimal(state),
         ValkyrieRule::DecimalX => parse_decimal_x(state),
         ValkyrieRule::PROPORTION => parse_proportion(state),
+        ValkyrieRule::NS_CONCAT => parse_ns_concat(state),
         ValkyrieRule::COLON => parse_colon(state),
         ValkyrieRule::ARROW1 => parse_arrow_1(state),
         ValkyrieRule::COMMA => parse_comma(state),
@@ -206,6 +207,7 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::KW_IN => parse_kw_in(state),
         ValkyrieRule::KW_IS => parse_kw_is(state),
         ValkyrieRule::KW_AS => parse_kw_as(state),
+        ValkyrieRule::Shebang => parse_shebang(state),
         ValkyrieRule::WhiteSpace => parse_white_space(state),
         ValkyrieRule::SkipSpace => parse_skip_space(state),
         ValkyrieRule::Comment => parse_comment(state),
@@ -217,6 +219,7 @@ fn parse_program(state: Input) -> Output {
     state.rule(ValkyrieRule::Program, |s| {
         s.sequence(|s| {
             Ok(s)
+                .and_then(|s| s.optional(|s| parse_shebang(s).and_then(|s| s.tag_node("shebang"))))
                 .and_then(|s| {
                     s.repeat(0..4294967295, |s| {
                         s.sequence(|s| {
@@ -374,12 +377,7 @@ fn parse_import_all(state: Input) -> Output {
             Ok(s)
                 .and_then(|s| parse_namepath_free(s).and_then(|s| s.tag_node("namepath_free")))
                 .and_then(|s| builtin_ignore(s))
-                .and_then(|s| {
-                    builtin_regex(s, {
-                        static REGEX: OnceLock<Regex> = OnceLock::new();
-                        REGEX.get_or_init(|| Regex::new("^(?x)([.∷]|::)").unwrap())
-                    })
-                })
+                .and_then(|s| parse_ns_concat(s))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_op_import_all(s).and_then(|s| s.tag_node("op_import_all")))
         })
@@ -392,14 +390,7 @@ fn parse_import_block(state: Input) -> Output {
             Ok(s)
                 .and_then(|s| parse_namepath_free(s).and_then(|s| s.tag_node("namepath_free")))
                 .and_then(|s| builtin_ignore(s))
-                .and_then(|s| {
-                    s.optional(|s| {
-                        builtin_regex(s, {
-                            static REGEX: OnceLock<Regex> = OnceLock::new();
-                            REGEX.get_or_init(|| Regex::new("^(?x)([.∷]|::)").unwrap())
-                        })
-                    })
-                })
+                .and_then(|s| s.optional(|s| parse_ns_concat(s)))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| builtin_text(s, "{", false))
                 .and_then(|s| {
@@ -428,12 +419,7 @@ fn parse_import_macro(state: Input) -> Output {
                         Ok(s)
                             .and_then(|s| parse_namepath_free(s).and_then(|s| s.tag_node("namepath_free")))
                             .and_then(|s| builtin_ignore(s))
-                            .and_then(|s| {
-                                builtin_regex(s, {
-                                    static REGEX: OnceLock<Regex> = OnceLock::new();
-                                    REGEX.get_or_init(|| Regex::new("^(?x)([.∷]|::)").unwrap())
-                                })
-                            })
+                            .and_then(|s| parse_ns_concat(s))
                             .and_then(|s| builtin_ignore(s))
                             .and_then(|s| parse_import_macro_item(s).and_then(|s| s.tag_node("import_macro_item")))
                             .and_then(|s| builtin_ignore(s))
@@ -1995,7 +1981,7 @@ fn parse_main_infix(state: Input) -> Output {
             REGEX.get_or_init(|| {
                 Regex::new(
                     "^(?x)([+\\-*٪⁒÷/%]=?
-    | /%|%%
+    | /%=? | %%=?
     | [√^]
     # start with ?, !, =
     | [?]=
@@ -2006,8 +1992,9 @@ fn parse_main_infix(state: Input) -> Output {
     # start with &, |
     | [&|]{1,3}
     | [∧⊼⩟∨⊽⊻]
-    # range, contains
+    # start with .
     | [.]{1,2}[<=]
+    | [.]=
     | [∈∊∉∋∍∌]
     | (not\\s+)?in
     | is(\\s+not)?
@@ -3495,6 +3482,15 @@ fn parse_proportion(state: Input) -> Output {
     })
 }
 #[inline]
+fn parse_ns_concat(state: Input) -> Output {
+    state.rule(ValkyrieRule::NS_CONCAT, |s| {
+        s.match_regex({
+            static REGEX: OnceLock<Regex> = OnceLock::new();
+            REGEX.get_or_init(|| Regex::new("^(?x)([.∷/]|::)").unwrap())
+        })
+    })
+}
+#[inline]
 fn parse_colon(state: Input) -> Output {
     state.rule(ValkyrieRule::COLON, |s| {
         s.match_regex({
@@ -3789,6 +3785,14 @@ fn parse_kw_as(state: Input) -> Output {
     state.rule(ValkyrieRule::KW_AS, |s| s.match_string("as", false))
 }
 #[inline]
+fn parse_shebang(state: Input) -> Output {
+    state.rule(ValkyrieRule::Shebang, |s| {
+        s.sequence(|s| {
+            Ok(s).and_then(|s| builtin_text(s, "#!", false)).and_then(|s| parse_eol(s).and_then(|s| s.tag_node("eol")))
+        })
+    })
+}
+#[inline]
 fn parse_white_space(state: Input) -> Output {
     state.rule(ValkyrieRule::WhiteSpace, |s| {
         s.match_regex({
@@ -3812,12 +3816,7 @@ fn parse_comment(state: Input) -> Output {
         Err(s)
             .or_else(|s| {
                 s.sequence(|s| {
-                    Ok(s).and_then(|s| builtin_text(s, "//", false)).and_then(|s| {
-                        builtin_regex(s, {
-                            static REGEX: OnceLock<Regex> = OnceLock::new();
-                            REGEX.get_or_init(|| Regex::new("^(?x)([^\\n\\r]*)").unwrap())
-                        })
-                    })
+                    Ok(s).and_then(|s| builtin_text(s, "//", false)).and_then(|s| parse_eol(s).and_then(|s| s.tag_node("eol")))
                 })
             })
             .or_else(|s| {

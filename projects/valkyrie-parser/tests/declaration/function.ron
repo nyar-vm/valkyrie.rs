@@ -151,8 +151,55 @@ FunctionDeclaration {
         terms: [
             ExpressionNode {
                 omit: false,
-                body: ConstructObjectNode {
-                    base_classes: None,
+                body: LambdaNode {
+                    annotations: Empty,
+                    generic: None,
+                    arguments: ArgumentsList {
+                        terms: [],
+                    },
+                    returns: Auto,
+                    body: StatementBlock {
+                        terms: [
+                            WhileLoop {
+                                kind: While,
+                                condition: Unconditional,
+                                then: StatementBlock {
+                                    terms: [
+                                        ExpressionNode {
+                                            omit: false,
+                                            body: InfixNode {
+                                                infix: +=,
+                                                lhs: count,
+                                                rhs: 1,
+                                            },
+                                            span: 318..341,
+                                        },
+                                        ExpressionNode {
+                                            omit: false,
+                                            body: ApplyCallNode {
+                                                monadic: false,
+                                                caller: print,
+                                                arguments: ArgumentsList {
+                                                    terms: [
+                                                        TupleTermNode {
+                                                            key: None,
+                                                            value: '{lhs} {rhs}',
+                                                        },
+                                                    ],
+                                                },
+                                                body: None,
+                                                span: 346..361,
+                                            },
+                                            span: 341..370,
+                                        },
+                                    ],
+                                    span: 304..371,
+                                },
+                                span: 287..376,
+                            },
+                        ],
+                        span: 277..377,
+                    },
                     span: 259..377,
                 },
                 span: 259..382,
@@ -490,8 +537,43 @@ FunctionDeclaration {
                     monadic: false,
                     caller: DotCallNode {
                         monadic: false,
-                        base: ConstructObjectNode {
-                            base_classes: None,
+                        base: LambdaNode {
+                            annotations: Empty,
+                            generic: None,
+                            arguments: ArgumentsList {
+                                terms: [],
+                            },
+                            returns: ReturnType {
+                                main: T,
+                            },
+                            body: StatementBlock {
+                                terms: [
+                                    ExpressionNode {
+                                        omit: false,
+                                        body: ApplyCallNode {
+                                            monadic: false,
+                                            caller: DotCallNode {
+                                                monadic: false,
+                                                base: w,
+                                                term: write,
+                                                span: 1982..1988,
+                                            },
+                                            arguments: ArgumentsList {
+                                                terms: [
+                                                    TupleTermNode {
+                                                        key: None,
+                                                        value: this,
+                                                    },
+                                                ],
+                                            },
+                                            body: None,
+                                            span: 1988..1994,
+                                        },
+                                        span: 1981..1999,
+                                    },
+                                ],
+                                span: 1971..2000,
+                            },
                             span: 1945..2000,
                         },
                         term: call,

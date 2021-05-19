@@ -1,5 +1,4 @@
 use super::*;
-use crate::{FlagTermNode, MainExpressionNode};
 
 impl crate::DefineEnumerateNode {
     pub fn build(&self, ctx: &mut ProgramState) -> Validation<FlagDeclaration> {

@@ -199,6 +199,7 @@ pub enum ValkyrieRule {
     Decimal,
     DecimalX,
     PROPORTION,
+    NS_CONCAT,
     COLON,
     ARROW1,
     COMMA,
@@ -234,6 +235,7 @@ pub enum ValkyrieRule {
     KW_IN,
     KW_IS,
     KW_AS,
+    Shebang,
     WhiteSpace,
     SkipSpace,
     Comment,
@@ -417,6 +419,7 @@ impl YggdrasilRule for ValkyrieRule {
             Self::Decimal => "",
             Self::DecimalX => "",
             Self::PROPORTION => "",
+            Self::NS_CONCAT => "",
             Self::COLON => "",
             Self::ARROW1 => "",
             Self::COMMA => "",
@@ -452,6 +455,7 @@ impl YggdrasilRule for ValkyrieRule {
             Self::KW_IN => "",
             Self::KW_IS => "",
             Self::KW_AS => "",
+            Self::Shebang => "",
             Self::WhiteSpace => "",
             Self::SkipSpace => "",
             Self::Comment => "",
@@ -462,6 +466,7 @@ impl YggdrasilRule for ValkyrieRule {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ProgramNode {
+    pub shebang: Option<ShebangNode>,
     pub statement: Vec<StatementNode>,
     pub span: Range<u32>,
 }
@@ -1692,6 +1697,11 @@ pub struct ProportionNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct NsConcatNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ColonNode {
     pub span: Range<u32>,
 }
@@ -1868,6 +1878,12 @@ pub struct KwAsNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ShebangNode {
+    // Missing rule EOL
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct WhiteSpaceNode {
     pub span: Range<u32>,
 }
@@ -1879,5 +1895,6 @@ pub struct SkipSpaceNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct CommentNode {
+    // Missing rule EOL
     pub span: Range<u32>,
 }

@@ -1,8 +1,15 @@
 ExpressionNode {
     omit: false,
-    body: ConstructObjectNode {
-        base_classes: None,
-        span: 6..32,
-    },
-    span: 0..35,
+    body: a,
+    span: 14..16,
+}
+ExpressionNode {
+    omit: false,
+    body: b,
+    span: 16..18,
+}
+ExpressionNode {
+    omit: false,
+    body: c,
+    span: 18..20,
 }

@@ -172,44 +172,40 @@ FunctionDeclaration {
     returns: Auto,
     body: StatementBlock {
         terms: [
-            ExpressionNode {
-                omit: false,
-                body: WhileLoop {
-                    kind: While,
-                    condition: Unconditional,
-                    then: StatementBlock {
-                        terms: [
-                            ExpressionNode {
-                                omit: false,
-                                body: InfixNode {
-                                    infix: +=,
-                                    lhs: count,
-                                    rhs: 1,
-                                },
-                                span: 449..468,
+            WhileLoop {
+                kind: While,
+                condition: Unconditional,
+                then: StatementBlock {
+                    terms: [
+                        ExpressionNode {
+                            omit: false,
+                            body: InfixNode {
+                                infix: +=,
+                                lhs: count,
+                                rhs: 1,
                             },
-                            ExpressionNode {
-                                omit: false,
-                                body: ApplyCallNode {
-                                    monadic: false,
-                                    caller: print,
-                                    arguments: ArgumentsList {
-                                        terms: [
-                                            TupleTermNode {
-                                                key: None,
-                                                value: '{lhs} {rhs}',
-                                            },
-                                        ],
-                                    },
-                                    body: None,
-                                    span: 473..488,
+                            span: 449..468,
+                        },
+                        ExpressionNode {
+                            omit: false,
+                            body: ApplyCallNode {
+                                monadic: false,
+                                caller: print,
+                                arguments: ArgumentsList {
+                                    terms: [
+                                        TupleTermNode {
+                                            key: None,
+                                            value: '{lhs} {rhs}',
+                                        },
+                                    ],
                                 },
-                                span: 468..493,
+                                body: None,
+                                span: 473..488,
                             },
-                        ],
-                        span: 439..494,
-                    },
-                    span: 422..499,
+                            span: 468..493,
+                        },
+                    ],
+                    span: 439..494,
                 },
                 span: 422..499,
             },

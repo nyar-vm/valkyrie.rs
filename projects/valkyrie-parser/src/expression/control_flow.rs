@@ -54,8 +54,13 @@ impl crate::ControlFlowNode {
             Some(s) => Some(s.build(ctx)?),
             None => None,
         };
+        let label = match &self.jump_label {
+            Some(s) => s.identifier.build(ctx).name,
+            None => String::new(),
+        };
+
         Success {
-            value: ControlNode { kind: self.kw_control.build(ctx), label: "".to_string(), expression, span: self.span.clone() },
+            value: ControlNode { kind: self.kw_control.build(ctx), label, expression, span: self.span.clone() },
             diagnostics: vec![],
         }
     }
