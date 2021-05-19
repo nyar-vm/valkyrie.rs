@@ -1,155 +1,77 @@
-ExpressionNode {
-    omit: true,
-    body: continue,
-    span: 0..9,
+Control {
+    kind: Continue,
+    span: 0..8,
 }
-ExpressionNode {
-    omit: false,
-    body: continue,
-    span: 10..19,
+Control {
+    kind: Continue,
+    expression: label,
+    span: 10..24,
 }
-ExpressionNode {
-    omit: true,
-    body: label,
-    span: 19..25,
+Control {
+    kind: Break,
+    span: 26..31,
 }
-ExpressionNode {
-    omit: true,
-    body: break,
-    span: 26..32,
+Control {
+    kind: Break,
+    expression: label,
+    span: 33..44,
 }
-ExpressionNode {
-    omit: false,
-    body: break,
-    span: 33..39,
+Control {
+    kind: Fallthrough,
+    span: 46..57,
 }
-ExpressionNode {
-    omit: true,
-    body: label,
-    span: 39..45,
+Control {
+    kind: Fallthrough,
+    expression: label,
+    span: 59..76,
 }
-ExpressionNode {
-    omit: true,
-    body: fallthrough,
-    span: 46..58,
+Control {
+    kind: Return,
+    span: 78..84,
 }
-ExpressionNode {
-    omit: false,
-    body: fallthrough,
-    span: 59..71,
+Control {
+    kind: Return,
+    expression: expression,
+    span: 86..103,
 }
-ExpressionNode {
-    omit: true,
-    body: label,
-    span: 71..77,
+Control {
+    kind: Raise,
+    span: 105..110,
 }
-ExpressionNode {
-    omit: true,
-    body: return,
-    span: 78..85,
+Control {
+    kind: Raise,
+    expression: expression,
+    span: 112..128,
 }
-ExpressionNode {
-    omit: false,
-    body: return,
-    span: 86..93,
+Control {
+    kind: YieldReturn,
+    span: 130..135,
 }
-ExpressionNode {
-    omit: true,
-    body: expression,
-    span: 93..104,
+Control {
+    kind: YieldReturn,
+    expression: expression,
+    span: 137..153,
 }
-ExpressionNode {
-    omit: true,
-    body: raise,
-    span: 105..111,
+Control {
+    kind: YieldReturn,
+    expression: expression,
+    span: 155..178,
 }
-ExpressionNode {
-    omit: false,
-    body: raise,
-    span: 112..118,
+Control {
+    kind: YieldBreak,
+    span: 180..191,
 }
-ExpressionNode {
-    omit: true,
-    body: expression,
-    span: 118..129,
+Control {
+    kind: YieldBreak,
+    expression: label,
+    span: 193..210,
 }
-ExpressionNode {
-    omit: true,
-    body: yield,
-    span: 130..136,
+Control {
+    kind: YieldFrom,
+    span: 212..222,
 }
-ExpressionNode {
-    omit: false,
-    body: yield,
-    span: 137..143,
-}
-ExpressionNode {
-    omit: true,
-    body: expression,
-    span: 143..154,
-}
-ExpressionNode {
-    omit: false,
-    body: yield,
-    span: 155..161,
-}
-ExpressionNode {
-    omit: false,
-    body: return,
-    span: 161..168,
-}
-ExpressionNode {
-    omit: true,
-    body: expression,
-    span: 168..179,
-}
-ExpressionNode {
-    omit: false,
-    body: yield,
-    span: 180..186,
-}
-ExpressionNode {
-    omit: true,
-    body: break,
-    span: 186..192,
-}
-ExpressionNode {
-    omit: false,
-    body: yield,
-    span: 193..199,
-}
-ExpressionNode {
-    omit: false,
-    body: break,
-    span: 199..205,
-}
-ExpressionNode {
-    omit: true,
-    body: label,
-    span: 205..211,
-}
-ExpressionNode {
-    omit: false,
-    body: yield,
-    span: 212..218,
-}
-ExpressionNode {
-    omit: true,
-    body: from,
-    span: 218..223,
-}
-ExpressionNode {
-    omit: false,
-    body: yield,
-    span: 224..230,
-}
-ExpressionNode {
-    omit: false,
-    body: from,
-    span: 230..235,
-}
-ExpressionNode {
-    omit: true,
-    body: expression,
-    span: 235..246,
+Control {
+    kind: YieldFrom,
+    expression: expression,
+    span: 224..245,
 }

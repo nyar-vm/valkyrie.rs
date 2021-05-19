@@ -220,12 +220,9 @@ FunctionDeclaration {
                 },
                 span: 463..491,
             },
-            ControlNode {
+            Control {
                 kind: Return,
-                label: "",
-                expression: Some(
-                    0,
-                ),
+                expression: 0,
                 span: 491..499,
             },
         ],

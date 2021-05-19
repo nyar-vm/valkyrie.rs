@@ -312,6 +312,7 @@ union MainStatement {
     | DefineImport
     | ControlFlow
     | ExpressionStatement
+    | EOS
 }
 class ExpressionStatement {
     AnnotationTerm* MainExpression OP_AND_THEN? EOS?

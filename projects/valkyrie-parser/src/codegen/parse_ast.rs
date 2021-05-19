@@ -1891,6 +1891,7 @@ impl YggdrasilNode for MainStatementNode {
         match self {
             Self::ControlFlow(s) => s.get_range(),
             Self::DefineImport(s) => s.get_range(),
+            Self::Eos(s) => s.get_range(),
             Self::ExpressionStatement(s) => s.get_range(),
         }
     }
@@ -1901,6 +1902,9 @@ impl YggdrasilNode for MainStatementNode {
         }
         if let Ok(s) = pair.take_tagged_one::<DefineImportNode>(Cow::Borrowed("define_import")) {
             return Ok(Self::DefineImport(s));
+        }
+        if let Ok(s) = pair.take_tagged_one::<EosNode>(Cow::Borrowed("eos")) {
+            return Ok(Self::Eos(s));
         }
         if let Ok(s) = pair.take_tagged_one::<ExpressionStatementNode>(Cow::Borrowed("expression_statement")) {
             return Ok(Self::ExpressionStatement(s));

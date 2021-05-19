@@ -11,7 +11,7 @@ pub struct TailCallNode {
 }
 
 /// always equivalent to a statement that returns `( )`, and cannot be used as an `rvalue`.
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Clone, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ControlNode {
     /// The type of control flow

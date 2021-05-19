@@ -192,12 +192,9 @@ ClassDeclaration {
             body: Some(
                 StatementBlock {
                     terms: [
-                        ControlNode {
+                        Control {
                             kind: Return,
-                            label: "",
-                            expression: Some(
-                                1,
-                            ),
+                            expression: 1,
                             span: 474..482,
                         },
                     ],
@@ -245,12 +242,9 @@ ClassDeclaration {
                             },
                             span: 519..576,
                         },
-                        ControlNode {
+                        Control {
                             kind: Return,
-                            label: "",
-                            expression: Some(
-                                _a,
-                            ),
+                            expression: _a,
                             span: 576..585,
                         },
                     ],
@@ -668,16 +662,13 @@ ClassDeclaration {
             body: Some(
                 StatementBlock {
                     terms: [
-                        ControlNode {
+                        Control {
                             kind: Return,
-                            label: "",
-                            expression: Some(
-                                InfixNode {
-                                    infix: /,
-                                    lhs: self,
-                                    rhs: rhs,
-                                },
-                            ),
+                            expression: InfixNode {
+                                infix: /,
+                                lhs: self,
+                                rhs: rhs,
+                            },
                             span: 1641..1658,
                         },
                     ],
@@ -703,30 +694,27 @@ ClassDeclaration {
             body: Some(
                 StatementBlock {
                     terms: [
-                        ControlNode {
+                        Control {
                             kind: Return,
-                            label: "",
-                            expression: Some(
-                                ApplyCallNode {
+                            expression: ApplyCallNode {
+                                monadic: false,
+                                caller: DotCallNode {
                                     monadic: false,
-                                    caller: DotCallNode {
-                                        monadic: false,
-                                        base: self,
-                                        term: append,
-                                        span: 1742..1749,
-                                    },
-                                    arguments: ArgumentsList {
-                                        terms: [
-                                            TupleTermNode {
-                                                key: None,
-                                                value: other,
-                                            },
-                                        ],
-                                    },
-                                    body: None,
-                                    span: 1749..1756,
+                                    base: self,
+                                    term: append,
+                                    span: 1742..1749,
                                 },
-                            ),
+                                arguments: ArgumentsList {
+                                    terms: [
+                                        TupleTermNode {
+                                            key: None,
+                                            value: other,
+                                        },
+                                    ],
+                                },
+                                body: None,
+                                span: 1749..1756,
+                            },
                             span: 1731..1756,
                         },
                     ],

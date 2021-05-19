@@ -10,10 +10,11 @@ mod namespace;
 impl crate::ProgramNode {
     pub fn build(&self, ctx: &mut ProgramState) -> Validation<ProgramRoot> {
         let mut errors = vec![];
-        let mut statements = vec![];
+        let mut terms = vec![];
         for node in &self.statement {
-            node.build(ctx).append(&mut statements, &mut errors)
+            node.build(ctx).append(&mut terms, &mut errors)
         }
+        let statements = terms.into_iter().filter(|s| !matches!(s, StatementNode::Nothing)).collect();
         Success { value: ProgramRoot { statements }, diagnostics: errors }
     }
 }
@@ -41,6 +42,7 @@ impl crate::MainStatementNode {
             Self::ControlFlow(v) => v.build(ctx)?.into(),
             Self::DefineImport(v) => v.build(ctx)?.into(),
             Self::ExpressionStatement(v) => v.build(ctx)?.into(),
+            Self::Eos(_) => StatementNode::Nothing,
         };
         Success { value, diagnostics: vec![] }
     }

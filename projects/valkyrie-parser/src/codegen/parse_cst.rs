@@ -1546,6 +1546,7 @@ fn parse_main_statement(state: Input) -> Output {
             .or_else(|s| parse_define_import(s).and_then(|s| s.tag_node("define_import")))
             .or_else(|s| parse_control_flow(s).and_then(|s| s.tag_node("control_flow")))
             .or_else(|s| parse_expression_statement(s).and_then(|s| s.tag_node("expression_statement")))
+            .or_else(|s| parse_eos(s).and_then(|s| s.tag_node("eos")))
     })
 }
 #[inline]

@@ -990,6 +990,7 @@ pub struct JumpLabelNode {
 pub enum MainStatementNode {
     ControlFlow(ControlFlowNode),
     DefineImport(DefineImportNode),
+    Eos(EosNode),
     ExpressionStatement(ExpressionStatementNode),
 }
 #[derive(Clone, Debug, Hash)]

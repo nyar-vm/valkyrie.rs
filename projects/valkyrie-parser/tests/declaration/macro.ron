@@ -276,12 +276,9 @@ FunctionDeclaration {
                 },
                 span: 584..612,
             },
-            ControlNode {
+            Control {
                 kind: Return,
-                label: "",
-                expression: Some(
-                    0,
-                ),
+                expression: 0,
                 span: 612..620,
             },
         ],

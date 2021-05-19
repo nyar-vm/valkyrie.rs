@@ -25,6 +25,22 @@ impl Display for ControlKind {
         f.write_str(self.as_str())
     }
 }
+
+impl Debug for ControlNode {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        let w = &mut f.debug_struct("Control");
+        w.field("kind", &self.kind);
+        if !self.label.is_empty() {
+            w.field("label", &self.label);
+        }
+        if let Some(e) = &self.expression {
+            w.field("expression", e);
+        }
+        w.field("span", &self.span);
+        w.finish()
+    }
+}
+
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for RaiseNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
