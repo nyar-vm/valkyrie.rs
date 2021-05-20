@@ -1,116 +1,98 @@
 VariableDeclaration {
-    pattern: Tuple(
-        TuplePatternNode {
-            bind: None,
-            name: None,
-            terms: [],
-            span: 0..0,
-        },
-    ),
+    pattern: TuplePatternNode {
+        bind: None,
+        name: None,
+        terms: [],
+        span: 0..0,
+    },
     type_hint: None,
     body: None,
     span: 0..6,
 }
 VariableDeclaration {
-    pattern: Tuple(
-        TuplePatternNode {
-            bind: None,
-            name: None,
-            terms: [],
-            span: 0..0,
-        },
-    ),
+    pattern: TuplePatternNode {
+        bind: None,
+        name: None,
+        terms: [],
+        span: 0..0,
+    },
     type_hint: None,
     body: None,
     span: 7..18,
 }
 VariableDeclaration {
-    pattern: Tuple(
-        TuplePatternNode {
-            bind: None,
-            name: None,
-            terms: [],
-            span: 0..0,
-        },
-    ),
+    pattern: TuplePatternNode {
+        bind: None,
+        name: None,
+        terms: [],
+        span: 0..0,
+    },
     type_hint: None,
     body: None,
     span: 19..29,
 }
 VariableDeclaration {
-    pattern: Tuple(
-        TuplePatternNode {
-            bind: None,
-            name: None,
-            terms: [],
-            span: 0..0,
-        },
-    ),
+    pattern: TuplePatternNode {
+        bind: None,
+        name: None,
+        terms: [],
+        span: 0..0,
+    },
     type_hint: None,
     body: None,
     span: 30..45,
 }
 VariableDeclaration {
-    pattern: Tuple(
-        TuplePatternNode {
-            bind: None,
-            name: None,
-            terms: [],
-            span: 0..0,
-        },
-    ),
+    pattern: TuplePatternNode {
+        bind: None,
+        name: None,
+        terms: [],
+        span: 0..0,
+    },
     type_hint: None,
     body: None,
     span: 48..58,
 }
 VariableDeclaration {
-    pattern: Tuple(
-        TuplePatternNode {
-            bind: None,
-            name: None,
-            terms: [],
-            span: 0..0,
-        },
-    ),
+    pattern: TuplePatternNode {
+        bind: None,
+        name: None,
+        terms: [],
+        span: 0..0,
+    },
     type_hint: None,
     body: None,
     span: 59..76,
 }
 VariableDeclaration {
-    pattern: Tuple(
-        TuplePatternNode {
-            bind: None,
-            name: None,
-            terms: [],
-            span: 0..0,
-        },
-    ),
+    pattern: TuplePatternNode {
+        bind: None,
+        name: None,
+        terms: [],
+        span: 0..0,
+    },
     type_hint: None,
     body: None,
     span: 78..109,
 }
 VariableDeclaration {
-    pattern: Tuple(
-        TuplePatternNode {
-            bind: None,
-            name: None,
-            terms: [],
-            span: 0..0,
-        },
-    ),
+    pattern: TuplePatternNode {
+        bind: None,
+        name: None,
+        terms: [],
+        span: 0..0,
+    },
     type_hint: None,
     body: None,
     span: 110..150,
 }
 VariableDeclaration {
-    pattern: Tuple(
-        TuplePatternNode {
-            bind: None,
-            name: None,
-            terms: [],
-            span: 0..0,
-        },
-    ),
+    pattern: TuplePatternNode {
+        bind: None,
+        name: None,
+        terms: [],
+        span: 0..0,
+    },
     type_hint: None,
     body: None,
     span: 152..163,

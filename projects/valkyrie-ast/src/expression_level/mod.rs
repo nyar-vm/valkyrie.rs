@@ -123,10 +123,6 @@ pub enum ExpressionType {
     Match(Box<MatchStatement>),
     /// - Standalone expression
     Try(Box<TryStatement>),
-    /// The while loop statement node.
-    While(Box<WhileLoop>),
-    /// The for loop statement node.
-    For(Box<ForLoop>),
     /// - Postfix expression
     ApplyCall(Box<ApplyCallNode>),
     /// - Postfix expression
@@ -141,21 +137,6 @@ pub enum ExpressionType {
     DotMatchCall(Box<MatchCallNode>),
     /// - REPL Reference
     OutputReference(Box<OutputNode>),
-}
-
-/// Temporary node for resolve postfix calls
-#[derive(Clone, PartialEq, Eq, Hash, From)]
-pub enum PostfixCallPart {
-    /// - Any expression
-    Apply(ApplyCallNode),
-    /// - Any expression
-    View(SubscriptCallNode),
-    /// - Any expression
-    Generic(GenericCallNode),
-    /// - Standalone expression
-    Lambda(ClosureCallNode),
-    /// - Standalone expression
-    Match(MatchCallNode),
 }
 
 impl Default for ExpressionContext {

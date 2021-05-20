@@ -100,7 +100,7 @@ pub enum ValkyrieRule {
     ControlFlow,
     JumpLabel,
     MainStatement,
-    ExpressionStatement,
+    ExpressionRoot,
     MatchExpression,
     SwitchStatement,
     MatchTerms,
@@ -320,7 +320,7 @@ impl YggdrasilRule for ValkyrieRule {
             Self::ControlFlow => "",
             Self::JumpLabel => "",
             Self::MainStatement => "",
-            Self::ExpressionStatement => "",
+            Self::ExpressionRoot => "",
             Self::MatchExpression => "",
             Self::SwitchStatement => "",
             Self::MatchTerms => "",
@@ -996,11 +996,13 @@ pub enum MainStatementNode {
     ControlFlow(ControlFlowNode),
     DefineImport(DefineImportNode),
     Eos(EosNode),
-    ExpressionStatement(ExpressionStatementNode),
+    ExpressionRoot(ExpressionRootNode),
+    ForStatement(ForStatementNode),
+    WhileStatement(WhileStatementNode),
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ExpressionStatementNode {
+pub struct ExpressionRootNode {
     pub annotation_term: Vec<AnnotationTermNode>,
     pub eos: Option<EosNode>,
     pub main_expression: MainExpressionNode,
@@ -1123,7 +1125,6 @@ pub struct MainTermNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum MainFactorNode {
     DefineLambda(DefineLambdaNode),
-    ForStatement(ForStatementNode),
     GroupFactor(GroupFactorNode),
     Leading(LeadingNode),
     MatchExpression(MatchExpressionNode),
@@ -1131,7 +1132,6 @@ pub enum MainFactorNode {
     ObjectStatement(ObjectStatementNode),
     SwitchStatement(SwitchStatementNode),
     TryStatement(TryStatementNode),
-    WhileStatement(WhileStatementNode),
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]

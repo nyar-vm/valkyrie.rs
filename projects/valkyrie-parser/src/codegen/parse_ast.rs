@@ -1893,7 +1893,9 @@ impl YggdrasilNode for MainStatementNode {
             Self::ControlFlow(s) => s.get_range(),
             Self::DefineImport(s) => s.get_range(),
             Self::Eos(s) => s.get_range(),
-            Self::ExpressionStatement(s) => s.get_range(),
+            Self::ExpressionRoot(s) => s.get_range(),
+            Self::ForStatement(s) => s.get_range(),
+            Self::WhileStatement(s) => s.get_range(),
         }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
@@ -1907,8 +1909,14 @@ impl YggdrasilNode for MainStatementNode {
         if let Ok(s) = pair.take_tagged_one::<EosNode>(Cow::Borrowed("eos")) {
             return Ok(Self::Eos(s));
         }
-        if let Ok(s) = pair.take_tagged_one::<ExpressionStatementNode>(Cow::Borrowed("expression_statement")) {
-            return Ok(Self::ExpressionStatement(s));
+        if let Ok(s) = pair.take_tagged_one::<ExpressionRootNode>(Cow::Borrowed("expression_root")) {
+            return Ok(Self::ExpressionRoot(s));
+        }
+        if let Ok(s) = pair.take_tagged_one::<ForStatementNode>(Cow::Borrowed("for_statement")) {
+            return Ok(Self::ForStatement(s));
+        }
+        if let Ok(s) = pair.take_tagged_one::<WhileStatementNode>(Cow::Borrowed("while_statement")) {
+            return Ok(Self::WhileStatement(s));
         }
         Err(YggdrasilError::invalid_node(ValkyrieRule::MainStatement, _span))
     }
@@ -1922,7 +1930,7 @@ impl FromStr for MainStatementNode {
     }
 }
 #[automatically_derived]
-impl YggdrasilNode for ExpressionStatementNode {
+impl YggdrasilNode for ExpressionRootNode {
     type Rule = ValkyrieRule;
 
     fn get_range(&self) -> Range<usize> {
@@ -1942,11 +1950,11 @@ impl YggdrasilNode for ExpressionStatementNode {
     }
 }
 #[automatically_derived]
-impl FromStr for ExpressionStatementNode {
+impl FromStr for ExpressionRootNode {
     type Err = YggdrasilError<ValkyrieRule>;
 
     fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
-        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::ExpressionStatement)?)
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::ExpressionRoot)?)
     }
 }
 #[automatically_derived]
@@ -2364,7 +2372,6 @@ impl YggdrasilNode for MainFactorNode {
     fn get_range(&self) -> Range<usize> {
         match self {
             Self::DefineLambda(s) => s.get_range(),
-            Self::ForStatement(s) => s.get_range(),
             Self::GroupFactor(s) => s.get_range(),
             Self::Leading(s) => s.get_range(),
             Self::MatchExpression(s) => s.get_range(),
@@ -2372,16 +2379,12 @@ impl YggdrasilNode for MainFactorNode {
             Self::ObjectStatement(s) => s.get_range(),
             Self::SwitchStatement(s) => s.get_range(),
             Self::TryStatement(s) => s.get_range(),
-            Self::WhileStatement(s) => s.get_range(),
         }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
         if let Ok(s) = pair.take_tagged_one::<DefineLambdaNode>(Cow::Borrowed("define_lambda")) {
             return Ok(Self::DefineLambda(s));
-        }
-        if let Ok(s) = pair.take_tagged_one::<ForStatementNode>(Cow::Borrowed("for_statement")) {
-            return Ok(Self::ForStatement(s));
         }
         if let Ok(s) = pair.take_tagged_one::<GroupFactorNode>(Cow::Borrowed("group_factor")) {
             return Ok(Self::GroupFactor(s));
@@ -2403,9 +2406,6 @@ impl YggdrasilNode for MainFactorNode {
         }
         if let Ok(s) = pair.take_tagged_one::<TryStatementNode>(Cow::Borrowed("try_statement")) {
             return Ok(Self::TryStatement(s));
-        }
-        if let Ok(s) = pair.take_tagged_one::<WhileStatementNode>(Cow::Borrowed("while_statement")) {
-            return Ok(Self::WhileStatement(s));
         }
         Err(YggdrasilError::invalid_node(ValkyrieRule::MainFactor, _span))
     }

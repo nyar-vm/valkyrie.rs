@@ -7,18 +7,6 @@ impl Default for ExpressionType {
     }
 }
 
-impl Debug for PostfixCallPart {
-    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        match self {
-            Self::Apply(call) => Debug::fmt(call, f),
-            Self::View(call) => Debug::fmt(call, f),
-            Self::Generic(call) => Debug::fmt(call, f),
-            Self::Lambda(call) => Debug::fmt(call, f),
-            Self::Match(call) => Debug::fmt(call, f),
-        }
-    }
-}
-
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for ExpressionNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
@@ -99,8 +87,7 @@ impl ValkyrieNode for ExpressionType {
             Self::Try(node) => node.get_range(),
             Self::Match(node) => node.get_range(),
             Self::DotMatchCall(node) => node.get_range(),
-            Self::While(node) => node.get_range(),
-            Self::For(node) => node.get_range(),
+
             Self::Formatted(node) => node.get_range(),
             Self::OutputReference(node) => node.get_range(),
             Self::Array(node) => node.get_range(),

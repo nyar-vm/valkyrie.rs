@@ -32,6 +32,10 @@ pub enum StatementNode {
     Variable(Box<VariableDeclaration>),
     /// The guard statement node.
     Guard(Box<GuardStatement>),
+    /// The while loop statement node.
+    While(Box<WhileLoop>),
+    /// The for loop statement node.
+    For(Box<ForLoop>),
     /// The argument argument node.
     Control(Box<ControlNode>),
     /// The argument argument node.

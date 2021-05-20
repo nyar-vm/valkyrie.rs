@@ -289,14 +289,12 @@ ExpressionNode {
     span: 167..170,
 }
 VariableDeclaration {
-    pattern: Tuple(
-        TuplePatternNode {
-            bind: None,
-            name: None,
-            terms: [],
-            span: 0..0,
-        },
-    ),
+    pattern: TuplePatternNode {
+        bind: None,
+        name: None,
+        terms: [],
+        span: 0..0,
+    },
     type_hint: None,
     body: None,
     span: 170..219,
@@ -307,14 +305,12 @@ ExpressionNode {
     span: 219..222,
 }
 VariableDeclaration {
-    pattern: Tuple(
-        TuplePatternNode {
-            bind: None,
-            name: None,
-            terms: [],
-            span: 0..0,
-        },
-    ),
+    pattern: TuplePatternNode {
+        bind: None,
+        name: None,
+        terms: [],
+        span: 0..0,
+    },
     type_hint: None,
     body: None,
     span: 222..267,

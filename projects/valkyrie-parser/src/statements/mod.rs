@@ -41,7 +41,9 @@ impl crate::MainStatementNode {
         let value = match self {
             Self::ControlFlow(v) => v.build(ctx)?.into(),
             Self::DefineImport(v) => v.build(ctx)?.into(),
-            Self::ExpressionStatement(v) => v.build(ctx)?.into(),
+            Self::ForStatement(v) => v.build(ctx)?.into(),
+            Self::WhileStatement(v) => v.build(ctx)?.into(),
+            Self::ExpressionRoot(v) => v.build(ctx)?.into(),
             Self::Eos(_) => StatementNode::Nothing,
         };
         Success { value, diagnostics: vec![] }

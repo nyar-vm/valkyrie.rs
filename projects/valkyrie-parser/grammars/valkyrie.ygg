@@ -311,10 +311,12 @@ atomic class JumpLabel {
 union MainStatement {
     | DefineImport
     | ControlFlow
-    | ExpressionStatement
+    | WhileStatement
+    | ForStatement
+    | ExpressionRoot
     | EOS
 }
-class ExpressionStatement {
+class ExpressionRoot {
     AnnotationTerm* MainExpression OP_AND_THEN? EOS?
 }
 // === match/catch/switch === ------------------------------------------------------------------------------------------
@@ -380,8 +382,6 @@ atomic class MainTerm {
 union MainFactor {
     | SwitchStatement
     | TryStatement
-    | WhileStatement
-    | ForStatement
     | MatchExpression
     | DefineLambda
     | ObjectStatement

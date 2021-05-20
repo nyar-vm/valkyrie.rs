@@ -72,7 +72,7 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::ControlFlow => parse_control_flow(state),
         ValkyrieRule::JumpLabel => parse_jump_label(state),
         ValkyrieRule::MainStatement => parse_main_statement(state),
-        ValkyrieRule::ExpressionStatement => parse_expression_statement(state),
+        ValkyrieRule::ExpressionRoot => parse_expression_root(state),
         ValkyrieRule::MatchExpression => parse_match_expression(state),
         ValkyrieRule::SwitchStatement => parse_switch_statement(state),
         ValkyrieRule::MatchTerms => parse_match_terms(state),
@@ -1531,13 +1531,15 @@ fn parse_main_statement(state: Input) -> Output {
         Err(s)
             .or_else(|s| parse_define_import(s).and_then(|s| s.tag_node("define_import")))
             .or_else(|s| parse_control_flow(s).and_then(|s| s.tag_node("control_flow")))
-            .or_else(|s| parse_expression_statement(s).and_then(|s| s.tag_node("expression_statement")))
+            .or_else(|s| parse_while_statement(s).and_then(|s| s.tag_node("while_statement")))
+            .or_else(|s| parse_for_statement(s).and_then(|s| s.tag_node("for_statement")))
+            .or_else(|s| parse_expression_root(s).and_then(|s| s.tag_node("expression_root")))
             .or_else(|s| parse_eos(s).and_then(|s| s.tag_node("eos")))
     })
 }
 #[inline]
-fn parse_expression_statement(state: Input) -> Output {
-    state.rule(ValkyrieRule::ExpressionStatement, |s| {
+fn parse_expression_root(state: Input) -> Output {
+    state.rule(ValkyrieRule::ExpressionRoot, |s| {
         s.sequence(|s| {
             Ok(s)
                 .and_then(|s| {
@@ -1878,8 +1880,6 @@ fn parse_main_factor(state: Input) -> Output {
         Err(s)
             .or_else(|s| parse_switch_statement(s).and_then(|s| s.tag_node("switch_statement")))
             .or_else(|s| parse_try_statement(s).and_then(|s| s.tag_node("try_statement")))
-            .or_else(|s| parse_while_statement(s).and_then(|s| s.tag_node("while_statement")))
-            .or_else(|s| parse_for_statement(s).and_then(|s| s.tag_node("for_statement")))
             .or_else(|s| parse_match_expression(s).and_then(|s| s.tag_node("match_expression")))
             .or_else(|s| parse_define_lambda(s).and_then(|s| s.tag_node("define_lambda")))
             .or_else(|s| parse_object_statement(s).and_then(|s| s.tag_node("object_statement")))

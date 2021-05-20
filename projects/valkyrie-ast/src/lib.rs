@@ -41,7 +41,7 @@ pub use crate::{
         range::{RangeKind, RangeNode, RangeTermNode},
         symbol::{BooleanNode, IdentifierNode, LambdaSlotItem, LambdaSlotNode, NamePathNode, NullNode, OutputNode},
         tuple::{TupleKind, TupleNode, TupleTermNode},
-        ExpressionContext, ExpressionNode, ExpressionType, PostfixCallPart, TypingExpression,
+        ExpressionContext, ExpressionNode, ExpressionType, TypingExpression,
     },
     package_level::{
         classes::{

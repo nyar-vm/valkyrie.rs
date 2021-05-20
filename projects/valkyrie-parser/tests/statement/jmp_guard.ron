@@ -22,14 +22,12 @@ ExpressionNode {
     span: 153..156,
 }
 VariableDeclaration {
-    pattern: Tuple(
-        TuplePatternNode {
-            bind: None,
-            name: None,
-            terms: [],
-            span: 0..0,
-        },
-    ),
+    pattern: TuplePatternNode {
+        bind: None,
+        name: None,
+        terms: [],
+        span: 0..0,
+    },
     type_hint: None,
     body: None,
     span: 156..276,

@@ -54,6 +54,20 @@ impl PrettyPrint for PatternStatements {
         terms.indent(4)
     }
 }
+
+impl Debug for PatternNode {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        match self {
+            Self::Symbol(v) => Debug::fmt(v, f),
+            Self::Tuple(v) => Debug::fmt(v, f),
+            Self::Class(v) => Debug::fmt(v, f),
+            Self::Union(v) => Debug::fmt(v, f),
+            Self::Array(v) => Debug::fmt(v, f),
+            Self::Atom(v) => Debug::fmt(v, f),
+        }
+    }
+}
+
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for PatternNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {

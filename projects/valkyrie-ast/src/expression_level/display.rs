@@ -32,8 +32,6 @@ impl Debug for ExpressionType {
             Self::DotMatchCall(node) => Debug::fmt(node, f),
             Self::OutputReference(node) => Debug::fmt(node, f),
             Self::DotCall(node) => Debug::fmt(node, f),
-            Self::While(node) => Debug::fmt(node, f),
-            Self::For(node) => Debug::fmt(node, f),
         }
     }
 }

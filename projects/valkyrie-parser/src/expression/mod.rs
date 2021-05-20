@@ -14,7 +14,7 @@ mod call_generic;
 mod control_flow;
 mod operators;
 
-impl crate::ExpressionStatementNode {
+impl crate::ExpressionRootNode {
     pub fn build(&self, ctx: &mut ProgramState) -> Validation<StatementNode> {
         let expr = self.main_expression.build(ctx)?;
         let eos = self.eos.is_some();
@@ -160,8 +160,6 @@ impl crate::MainFactorNode {
             Self::TryStatement(v) => v.build(ctx).map(Into::into),
             Self::MatchExpression(v) => v.build(ctx).map(Into::into),
             Self::SwitchStatement(v) => v.build(ctx).map(Into::into),
-            Self::ForStatement(v) => v.build(ctx).map(Into::into),
-            Self::WhileStatement(v) => v.build(ctx).map(Into::into),
         }
     }
 }

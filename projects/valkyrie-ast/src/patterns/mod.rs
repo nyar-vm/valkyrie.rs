@@ -2,7 +2,10 @@ mod display;
 
 use crate::{ArgumentKey, ExpressionNode, IdentifierNode, ModifierList, NamePathNode, StatementNode};
 use alloc::{boxed::Box, vec, vec::Vec};
-use core::ops::Range;
+use core::{
+    fmt::{Debug, Formatter},
+    ops::Range,
+};
 use deriver::From;
 #[cfg(feature = "pretty-print")]
 use pretty_print::{
@@ -119,7 +122,7 @@ pub struct PatternCaseNode {
 /// for mut i, mut j in range
 /// for [tuple] in
 /// ```
-#[derive(Clone, Debug, PartialEq, Eq, Hash, From)]
+#[derive(Clone, PartialEq, Eq, Hash, From)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum PatternNode {
     /// `a, 'string', number, bool`
