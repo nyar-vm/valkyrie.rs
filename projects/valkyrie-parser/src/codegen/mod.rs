@@ -1879,7 +1879,6 @@ pub struct KwAsNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ShebangNode {
-    // Missing rule EOL
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -1895,6 +1894,5 @@ pub struct SkipSpaceNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct CommentNode {
-    // Missing rule EOL
     pub span: Range<u32>,
 }

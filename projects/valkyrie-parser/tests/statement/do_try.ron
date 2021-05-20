@@ -8,7 +8,7 @@ ExpressionNode {
         handler: None,
         body: StatementBlock {
             terms: [],
-            span: 0..0,
+            span: 32..36,
         },
         span: 28..36,
     },
@@ -17,10 +17,15 @@ ExpressionNode {
 ExpressionNode {
     omit: false,
     body: TryStatement {
-        handler: None,
+        handler: Some(
+            UnaryNode {
+                prefix: ℃,
+                base: String,
+            },
+        ),
         body: StatementBlock {
             terms: [],
-            span: 0..0,
+            span: 50..54,
         },
         span: 38..54,
     },
@@ -29,10 +34,25 @@ ExpressionNode {
 ExpressionNode {
     omit: false,
     body: TryStatement {
-        handler: None,
+        handler: Some(
+            GenericCallNode {
+                monadic: false,
+                base: Option,
+                terms: ArgumentsList {
+                    terms: [
+                        TupleTermNode {
+                            key: None,
+                            value: T,
+                        },
+                    ],
+                },
+                associated: [],
+                span: 66..69,
+            },
+        ),
         body: StatementBlock {
             terms: [],
-            span: 0..0,
+            span: 70..74,
         },
         span: 56..74,
     },
@@ -45,10 +65,48 @@ ExpressionNode {
         base: MatchCallNode {
             monadic: false,
             base: TryStatement {
-                handler: None,
+                handler: Some(
+                    GenericCallNode {
+                        monadic: false,
+                        base: Result,
+                        terms: ArgumentsList {
+                            terms: [
+                                TupleTermNode {
+                                    key: None,
+                                    value: T,
+                                },
+                                TupleTermNode {
+                                    key: None,
+                                    value: Noop,
+                                },
+                            ],
+                        },
+                        associated: [],
+                        span: 86..95,
+                    },
+                ),
                 body: StatementBlock {
-                    terms: [],
-                    span: 0..0,
+                    terms: [
+                        ExpressionNode {
+                            omit: true,
+                            body: ApplyCallNode {
+                                monadic: false,
+                                caller: print,
+                                arguments: ArgumentsList {
+                                    terms: [
+                                        TupleTermNode {
+                                            key: None,
+                                            value: 'try',
+                                        },
+                                    ],
+                                },
+                                body: None,
+                                span: 107..114,
+                            },
+                            span: 102..115,
+                        },
+                    ],
+                    span: 96..117,
                 },
                 span: 76..117,
             },

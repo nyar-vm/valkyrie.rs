@@ -6,12 +6,24 @@ mod display;
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct LambdaNode {
-    /// The lambda arguments
-    pub arguments: StatementBlock,
-    /// The body statements
-    pub body: Vec<StatementNode>,
-    /// The range of the node
+    /// The modifiers of the node.
+    pub annotations: AnnotationNode,
+    /// `method_name<T>()`
+    pub generic: Option<ParametersList>,
+    /// `method_name(arguments)`
+    pub arguments: ArgumentsList,
+    /// `: ReturnType / [EffectType]`
+    pub returns: FunctionReturnNode,
+    /// `{ body }`
+    pub body: StatementBlock,
+    /// The range of the declaration.
     pub span: Range<u32>,
+}
+
+impl ValkyrieNode for LambdaNode {
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
+    }
 }
 
 /// `object.{ lambda(args), ... }`

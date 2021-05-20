@@ -3788,7 +3788,7 @@ fn parse_kw_as(state: Input) -> Output {
 fn parse_shebang(state: Input) -> Output {
     state.rule(ValkyrieRule::Shebang, |s| {
         s.sequence(|s| {
-            Ok(s).and_then(|s| builtin_text(s, "#!", false)).and_then(|s| parse_eol(s).and_then(|s| s.tag_node("eol")))
+            Ok(s).and_then(|s| builtin_text(s, "#!", false)).and_then(|s| s.match_char_if(|c| c != '\n' && c != '\r'))
         })
     })
 }
@@ -3816,7 +3816,7 @@ fn parse_comment(state: Input) -> Output {
         Err(s)
             .or_else(|s| {
                 s.sequence(|s| {
-                    Ok(s).and_then(|s| builtin_text(s, "//", false)).and_then(|s| parse_eol(s).and_then(|s| s.tag_node("eol")))
+                    Ok(s).and_then(|s| builtin_text(s, "//", false)).and_then(|s| s.match_char_if(|c| c != '\n' && c != '\r'))
                 })
             })
             .or_else(|s| {

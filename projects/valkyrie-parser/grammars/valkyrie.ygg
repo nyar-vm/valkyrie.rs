@@ -679,6 +679,7 @@ atomic class ModifierCall ^ {
 atomic class ModifierAhead -> ModifierCall ^ {
     !IDENTIFIER_STOP ^Identifier
 }
+@railway(false)
 class KEYWORDS_STOP {
     / template | generic
     | class | structure
@@ -688,6 +689,7 @@ class KEYWORDS_STOP {
     | extends?
     /
 }
+@railway(false)
 atomic class IDENTIFIER_STOP {
     Identifier ~ /[\\[\\](){}<>⟨:∷,.;∈=]|in|is/
 }
@@ -822,7 +824,7 @@ token {
 }
 // === ignores === -----------------------------------------------------------------------------------------------------
 atomic class Shebang {
-    '#!' EOL
+    '#!' ROL
 }
 @railway(false)
 class WhiteSpace {
@@ -834,6 +836,6 @@ hide class SkipSpace {
 }
 @style(comment)
 hide class Comment {
-    | '//' EOL
+    | '//' ROL
     | '/*' '*/'
 }

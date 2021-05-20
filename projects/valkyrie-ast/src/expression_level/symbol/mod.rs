@@ -2,11 +2,13 @@ use super::*;
 
 mod display;
 
+/// A node representing a identifier.
 #[derive(Clone, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct IdentifierNode {
+    /// The name of the identifier.
     pub name: String,
-    /// The location of the file
+    /// The location of this identifier.
     pub span: FileSpan,
 }
 
@@ -110,8 +112,8 @@ impl NamePathNode {
     }
     /// Calculate range by first and last elements
     pub fn get_range(&self) -> Range<usize> {
-        let head = self.names.first().map(|x| x.span.get_start()).unwrap_or_default() as usize;
-        let tail = self.names.last().map(|x| x.span.get_end()).unwrap_or_default() as usize;
+        let head = self.names.first().map(|x| x.span.get_start()).unwrap_or_default();
+        let tail = self.names.last().map(|x| x.span.get_end()).unwrap_or_default();
         head..tail
     }
 }

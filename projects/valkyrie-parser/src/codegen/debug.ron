@@ -18476,13 +18476,9 @@ GrammarInfo {
                                 },
                             },
                             Expression {
-                                tag: Identifier("EOL", 22070..22073),
+                                tag: None,
                                 remark: false,
-                                body: RuleReference {
-                                    name: Identifier("EOL", 22070..22073),
-                                    boxed: false,
-                                    inline: false,
-                                },
+                                body: ROL,
                             },
                         ],
                     },
@@ -18594,13 +18590,9 @@ GrammarInfo {
                                             },
                                         },
                                         Expression {
-                                            tag: Identifier("EOL", 22243..22246),
+                                            tag: None,
                                             remark: false,
-                                            body: RuleReference {
-                                                name: Identifier("EOL", 22243..22246),
-                                                boxed: false,
-                                                inline: false,
-                                            },
+                                            body: ROL,
                                         },
                                     ],
                                 },

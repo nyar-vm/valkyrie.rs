@@ -1,11 +1,16 @@
 use super::*;
+use crate::TypeExpressionNode;
+use nyar_error::Validate;
 use valkyrie_ast::TryStatement;
 
 impl crate::TryStatementNode {
     pub fn build(&self, ctx: &mut ProgramState) -> Validation<TryStatement> {
-        Success {
-            value: TryStatement { handler: None, body: Default::default(), span: self.span.clone() },
-            diagnostics: vec![],
-        }
+        let mut errors = vec![];
+        let body = self.continuation.build(ctx).recover(&mut errors)?;
+        let handler = match &self.type_expression {
+            Some(s) => Some(s.build(ctx)?),
+            None => None,
+        };
+        Success { value: TryStatement { handler, body, span: self.span.clone() }, diagnostics: errors }
     }
 }

@@ -86,6 +86,8 @@ pub enum ExpressionType {
     /// - Atomic expression
     Boolean(Box<BooleanNode>),
     /// - Atomic expression
+    Lambda(Box<LambdaNode>),
+    /// - Atomic expression
     Slot(Box<LambdaSlotNode>),
     /// - Atomic expression
     Symbol(Box<NamePathNode>),
@@ -128,7 +130,7 @@ pub enum ExpressionType {
     /// - Postfix expression
     ApplyCall(Box<ApplyCallNode>),
     /// - Postfix expression
-    LambdaCall(Box<ClosureCallNode>),
+    ClosureCall(Box<ClosureCallNode>),
     /// - Postfix expression
     SubscriptCall(Box<SubscriptCallNode>),
     /// - Postfix expression

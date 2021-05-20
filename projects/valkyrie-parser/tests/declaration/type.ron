@@ -287,8 +287,74 @@ FunctionDeclaration {
                         terms: [
                             TupleTermNode {
                                 key: None,
-                                value: ConstructObjectNode {
-                                    base_classes: None,
+                                value: LambdaNode {
+                                    annotations: Empty,
+                                    generic: None,
+                                    arguments: ArgumentsList {
+                                        terms: [],
+                                    },
+                                    returns: Auto,
+                                    body: StatementBlock {
+                                        terms: [
+                                            ExpressionNode {
+                                                omit: false,
+                                                body: InfixNode {
+                                                    infix: ==,
+                                                    lhs: ApplyCallNode {
+                                                        monadic: false,
+                                                        caller: DotCallNode {
+                                                            monadic: false,
+                                                            base: InfixNode {
+                                                                infix: ∧,
+                                                                lhs: ApplyCallNode {
+                                                                    monadic: false,
+                                                                    caller: DotCallNode {
+                                                                        monadic: false,
+                                                                        base: InfixNode {
+                                                                            infix: ∧,
+                                                                            lhs: InfixNode {
+                                                                                infix: ⩽,
+                                                                                lhs: 0,
+                                                                                rhs: i,
+                                                                            },
+                                                                            rhs: InfixNode {
+                                                                                infix: <,
+                                                                                lhs: i,
+                                                                                rhs: a,
+                                                                            },
+                                                                        },
+                                                                        term: len,
+                                                                        span: 503..507,
+                                                                    },
+                                                                    arguments: ArgumentsList {
+                                                                        terms: [],
+                                                                    },
+                                                                    body: None,
+                                                                    span: 507..509,
+                                                                },
+                                                                rhs: a,
+                                                            },
+                                                            term: lookup,
+                                                            span: 514..521,
+                                                        },
+                                                        arguments: ArgumentsList {
+                                                            terms: [
+                                                                TupleTermNode {
+                                                                    key: None,
+                                                                    value: i,
+                                                                },
+                                                            ],
+                                                        },
+                                                        body: None,
+                                                        span: 521..524,
+                                                    },
+                                                    rhs: 0,
+                                                },
+                                                span: 488..534,
+                                            },
+                                        ],
+                                        span: 478..535,
+                                    },
                                     span: 461..535,
                                 },
                             },

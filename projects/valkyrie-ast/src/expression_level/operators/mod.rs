@@ -359,6 +359,7 @@ impl ValkyrieOperator {
     }
 }
 
+/// An expression node with unary operator and base expression
 #[derive(Clone, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct UnaryNode {
@@ -367,7 +368,7 @@ pub struct UnaryNode {
     ///   The expression that the operator is applied to
     pub base: ExpressionType,
 }
-
+/// An expression node with binary operator and two expressions
 #[derive(Clone, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct BinaryNode {
@@ -379,6 +380,7 @@ pub struct BinaryNode {
     pub rhs: ExpressionType,
 }
 
+/// An operator node with kind and range
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct OperatorNode {
