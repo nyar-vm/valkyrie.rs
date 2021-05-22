@@ -49,12 +49,12 @@ pub struct StatementContext {}
 
 impl StatementNode {
     /// Create a new expression node
-    pub fn expression(body: ExpressionType, span: Range<u32>) -> Self {
+    pub fn expression(body: ExpressionKind, span: Range<u32>) -> Self {
         Self::Expression(Box::new(ExpressionNode { omit: false, body, span: span.clone() }))
     }
     /// Create a new raw text node
     pub fn text<S: ToString>(s: S, span: Range<u32>) -> Self {
         let literal = StringTextNode { text: s.to_string(), span: span.clone() };
-        Self::expression(ExpressionType::Text(Box::new(literal)), span)
+        Self::expression(ExpressionKind::Text(Box::new(literal)), span)
     }
 }

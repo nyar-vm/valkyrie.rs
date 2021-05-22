@@ -34,9 +34,9 @@ pub struct ForLoop {
     /// `for pattern`
     pub pattern: PatternNode,
     /// `in iterator`
-    pub iterator: ExpressionType,
+    pub iterator: ExpressionKind,
     /// `if condition`
-    pub condition: Option<ExpressionType>,
+    pub condition: Option<ExpressionKind>,
     /// `{ body }`
     pub then: StatementBlock,
     /// The range of the node

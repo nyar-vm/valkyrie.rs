@@ -51,7 +51,7 @@ pub struct EncodeDeclaration {
     /// The identifier of the field.
     pub name: IdentifierNode,
     /// The value of the field if exists.
-    pub value: Option<ExpressionType>,
+    pub value: Option<ExpressionKind>,
     /// The range of the node.
     pub span: Range<u32>,
 }

@@ -366,7 +366,7 @@ pub struct UnaryNode {
     ///   The operator of the node
     pub operator: OperatorNode,
     ///   The expression that the operator is applied to
-    pub base: ExpressionType,
+    pub base: ExpressionKind,
 }
 /// An expression node with binary operator and two expressions
 #[derive(Clone, PartialEq, Eq, Hash)]
@@ -375,9 +375,9 @@ pub struct BinaryNode {
     ///  The operator of the node
     pub infix: OperatorNode,
     ///  The left hand side of the node
-    pub lhs: ExpressionType,
+    pub lhs: ExpressionKind,
     ///  The right hand side of the node
-    pub rhs: ExpressionType,
+    pub rhs: ExpressionKind,
 }
 
 /// An operator node with kind and range

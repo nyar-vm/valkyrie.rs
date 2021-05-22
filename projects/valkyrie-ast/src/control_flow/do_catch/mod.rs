@@ -21,7 +21,7 @@ pub struct MatchStatement {
     /// `match bind := expr { ... }`
     pub bind: Option<IdentifierNode>,
     /// `match expr { ... }`
-    pub main: ExpressionType,
+    pub main: ExpressionKind,
     /// The patterns of the match statement
     pub patterns: PatternBlock,
     /// The range of the node
@@ -35,7 +35,7 @@ pub struct MatchCallNode {
     /// expr?.match { }
     pub monadic: bool,
     /// The basement expression
-    pub base: ExpressionType,
+    pub base: ExpressionKind,
     /// The kind of the match statement
     pub kind: MatchKind,
     /// The patterns of the match statement
@@ -56,7 +56,7 @@ impl MatchKind {
 
 impl MatchCallNode {
     /// Replace placeholder with actual expression
-    pub fn with_base(self, base: ExpressionType) -> Self {
+    pub fn with_base(self, base: ExpressionKind) -> Self {
         Self { base, ..self }
     }
 }

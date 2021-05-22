@@ -33,7 +33,7 @@ pub struct ClosureCallNode {
     /// Weather it is a monadic call
     pub monadic: bool,
     /// called
-    pub base: ExpressionType,
+    pub base: ExpressionKind,
     /// trailing closure
     pub trailing: StatementBlock,
     /// The range of the node
@@ -47,7 +47,7 @@ impl ValkyrieNode for ClosureCallNode {
 }
 impl ClosureCallNode {
     /// Replace placeholder with actual expression
-    pub fn with_base(self, base: ExpressionType) -> Self {
+    pub fn with_base(self, base: ExpressionKind) -> Self {
         Self { base, ..self }
     }
 }

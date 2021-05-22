@@ -13,7 +13,7 @@ use valkyrie_ast::NullNode;
 // |   ⍜(_*[01])*        # binary
 
 impl crate::NumberNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Result<ExpressionType, NyarError> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Result<ExpressionKind, NyarError> {
         let n = match self {
             Self::Decimal(v) => v.build(ctx)?,
             Self::DecimalX(v) => v.build(ctx)?,
@@ -23,7 +23,7 @@ impl crate::NumberNode {
 }
 
 impl crate::DecimalNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Result<ExpressionType, NyarError> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Result<ExpressionKind, NyarError> {
         let mut n = NumberLiteralNode::new(10, self.span.clone());
         n.set_integer(&self.lhs.text, ctx.file, self.lhs.span.start as usize)?;
         if let Some(s) = &self.rhs {
@@ -44,7 +44,7 @@ impl crate::DecimalNode {
 }
 
 impl crate::DecimalXNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Result<ExpressionType, NyarError> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Result<ExpressionKind, NyarError> {
         let mut n = NumberLiteralNode::new(self.base.as_base(ctx)?, self.span.clone());
         n.set_integer(&self.lhs.text, ctx.file, self.lhs.span.start as usize)?;
         if let Some(s) = &self.rhs {
@@ -94,7 +94,7 @@ impl crate::IntegerNode {
 }
 
 impl SpecialNode {
-    pub fn build(&self) -> ExpressionType {
+    pub fn build(&self) -> ExpressionKind {
         match self.text.as_str() {
             "false" => BooleanNode { value: false, span: self.span.clone() }.into(),
             "true" => BooleanNode { value: true, span: self.span.clone() }.into(),

@@ -28,7 +28,7 @@ pub struct TemplateOpenNode {}
 #[derive(Clone, Debug, Eq, PartialEq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct TemplateInlineNode {
-    pub body: Vec<ExpressionType>,
+    pub body: Vec<ExpressionKind>,
 }
 
 /// `{% end %}`

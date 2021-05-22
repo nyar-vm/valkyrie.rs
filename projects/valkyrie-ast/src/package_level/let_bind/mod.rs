@@ -18,7 +18,7 @@ mod display;
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct VariableDeclaration {
     pub pattern: PatternNode,
-    pub type_hint: Option<ExpressionType>,
+    pub type_hint: Option<ExpressionKind>,
     pub body: Option<ExpressionNode>,
     pub span: Range<u32>,
 }

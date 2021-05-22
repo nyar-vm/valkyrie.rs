@@ -1,6 +1,6 @@
 use super::*;
 
-impl Debug for ExpressionType {
+impl Debug for ExpressionKind {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         match self {
             Self::Placeholder => f.write_str("Placeholder"),
@@ -45,7 +45,7 @@ impl Lispify for ExpressionNode {
     }
 }
 #[cfg(feature = "lispify")]
-impl Lispify for ExpressionType {
+impl Lispify for ExpressionKind {
     type Output = Lisp;
 
     fn lispify(&self) -> Self::Output {

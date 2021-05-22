@@ -52,7 +52,7 @@ pub struct CollectorNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum CollectorTerm {
     /// A simple item to append
-    Item(ExpressionType),
+    Item(ExpressionKind),
 }
 
 impl ValkyrieNode for ConstructNewNode {

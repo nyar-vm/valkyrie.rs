@@ -18,7 +18,7 @@ mod string;
 mod tuple;
 
 impl LeadingNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Validation<ExpressionType> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<ExpressionKind> {
         let value = match self {
             Self::Special(v) => v.build(),
             Self::Number(v) => v.build(ctx)?.into(),

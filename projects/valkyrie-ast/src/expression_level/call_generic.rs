@@ -7,7 +7,7 @@ pub struct GenericCallNode {
     /// `this?::<T>`
     pub monadic: bool,
     /// `A`
-    pub base: ExpressionType,
+    pub base: ExpressionKind,
     /// The raw string of the number.
     pub terms: ArgumentsList,
     /// The associated type or method
@@ -25,7 +25,7 @@ impl ValkyrieNode for GenericCallNode {
 
 impl GenericCallNode {
     /// Replace placeholder with actual expression
-    pub fn with_base(self, base: ExpressionType) -> Self {
+    pub fn with_base(self, base: ExpressionKind) -> Self {
         Self { base, ..self }
     }
 }

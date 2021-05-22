@@ -1,7 +1,4 @@
-use crate::{
-    helpers::{ProgramContext, ProgramState},
-    MainFactorNode,
-};
+use crate::helpers::ProgramState;
 use nyar_error::{NyarError, Success, Validate, Validation};
 use pratt::{Affix, PrattParser, Precedence};
 use std::str::FromStr;
@@ -24,7 +21,7 @@ impl crate::ExpressionRootNode {
 }
 
 impl crate::MainExpressionNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Validation<ExpressionType> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<ExpressionKind> {
         let mut stream = vec![];
         let (head, rest) = self.main_term.split_first().expect("at least one term");
         head.push_tokens(&mut stream, ctx)?;
@@ -38,7 +35,7 @@ impl crate::MainExpressionNode {
     }
 }
 impl crate::TypeExpressionNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Validation<ExpressionType> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<ExpressionKind> {
         let mut stream = vec![];
         let (head, rest) = self.type_term.split_first().expect("at least one term");
         head.push_tokens(&mut stream, ctx)?;
@@ -85,7 +82,7 @@ struct ExpressionResolver;
 enum TokenStream {
     Prefix(OperatorNode),
     Infix(OperatorNode),
-    Term(ExpressionType),
+    Term(ExpressionKind),
     Postfix(OperatorNode),
     Subscript(SubscriptCallNode),
     Generic(GenericCallNode),
@@ -101,7 +98,7 @@ where
 {
     type Error = NyarError;
     type Input = TokenStream;
-    type Output = ExpressionType;
+    type Output = ExpressionKind;
 
     fn query(&mut self, input: &Self::Input) -> Result<Affix, Self::Error> {
         let affix = match input {
@@ -150,7 +147,7 @@ where
 }
 
 impl crate::MainFactorNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Validation<ExpressionType> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<ExpressionKind> {
         match self {
             Self::Leading(v) => v.build(ctx),
             Self::GroupFactor(v) => v.main_expression.build(ctx),
@@ -164,7 +161,7 @@ impl crate::MainFactorNode {
     }
 }
 impl crate::TypeFactorNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Validation<ExpressionType> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<ExpressionKind> {
         match self {
             Self::Leading(v) => v.build(ctx),
             Self::TypeExpression(v) => v.build(ctx),

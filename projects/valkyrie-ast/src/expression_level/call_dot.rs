@@ -18,7 +18,7 @@ pub struct DotCallNode {
     /// Weather it is a monadic call
     pub monadic: bool,
     /// The caller of argument
-    pub base: ExpressionType,
+    pub base: ExpressionKind,
     /// The call arguments
     pub term: DotCallTerm,
     /// The range of the number.
@@ -54,7 +54,7 @@ impl ValkyrieNode for DotCallNode {
 }
 impl DotCallNode {
     /// Replace placeholder with actual expression
-    pub fn with_base(self, base: ExpressionType) -> Self {
+    pub fn with_base(self, base: ExpressionKind) -> Self {
         Self { base, ..self }
     }
 }

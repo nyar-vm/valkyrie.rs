@@ -19,7 +19,7 @@ pub struct ControlNode {
     /// In theory, all jumps need a destination
     pub label: String,
     /// The label of the control flow
-    pub expression: Option<ExpressionType>,
+    pub expression: Option<ExpressionKind>,
     /// The range of the node
     pub span: Range<u32>,
 }
@@ -29,7 +29,7 @@ pub struct ControlNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct RaiseNode {
     /// The raised expression
-    pub expression: Option<ExpressionType>,
+    pub expression: Option<ExpressionKind>,
     /// The range of the node
     pub span: Range<u32>,
 }

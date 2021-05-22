@@ -19,6 +19,7 @@ path = "../valkyrie-ast"
 
 [dependencies.yggdrasil-rt]
 version = "0.0.15"
+path = 'C:\Users\Dell\CLionProjects\yggdrasil.rs\projects\ygg-rt'
 
 [dependencies.nyar-error]
 version = "0.1.9"

@@ -36,16 +36,16 @@ pub enum RangeTermNode {
     /// The index kind
     Index {
         /// The index of range
-        index: ExpressionType,
+        index: ExpressionKind,
     },
     /// The range
     Range {
         /// The first element in range
-        head: Option<ExpressionType>,
+        head: Option<ExpressionKind>,
         /// The middle element in range
-        tail: Option<ExpressionType>,
+        tail: Option<ExpressionKind>,
         /// The
-        step: Option<ExpressionType>,
+        step: Option<ExpressionKind>,
     },
 }
 

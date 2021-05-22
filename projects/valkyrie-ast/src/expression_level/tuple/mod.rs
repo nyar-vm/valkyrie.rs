@@ -29,7 +29,7 @@ pub struct TupleNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct TupleTermNode {
     pub key: Option<IdentifierNode>,
-    pub value: ExpressionType,
+    pub value: ExpressionKind,
 }
 
 impl ValkyrieNode for TupleNode {

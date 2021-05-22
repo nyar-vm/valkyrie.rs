@@ -7,7 +7,7 @@ pub struct SubscriptCallNode {
     /// kind of
     pub kind: RangeKind,
     /// `array`
-    pub base: ExpressionType,
+    pub base: ExpressionKind,
     /// `array?[0]`
     pub monadic: bool,
     /// `array[1, 2:3]`
@@ -22,7 +22,7 @@ impl ValkyrieNode for SubscriptCallNode {
 }
 impl SubscriptCallNode {
     /// Replace placeholder with actual expression
-    pub fn with_base(self, base: ExpressionType) -> Self {
+    pub fn with_base(self, base: ExpressionKind) -> Self {
         Self { base, ..self }
     }
     /// The linked method name

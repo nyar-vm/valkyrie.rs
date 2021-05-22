@@ -1,7 +1,7 @@
 use super::*;
 use crate::helper::ValkyrieNode;
 
-impl Default for ExpressionType {
+impl Default for ExpressionKind {
     fn default() -> Self {
         Self::Placeholder
     }
@@ -15,7 +15,7 @@ impl PrettyPrint for ExpressionNode {
 }
 
 #[cfg(feature = "pretty-print")]
-impl PrettyPrint for ExpressionType {
+impl PrettyPrint for ExpressionKind {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         match self {
             Self::Placeholder => unreachable!(),
@@ -59,7 +59,7 @@ impl PrettyPrint for PostfixCallPart {
     }
 }
 
-impl ValkyrieNode for ExpressionType {
+impl ValkyrieNode for ExpressionKind {
     fn get_range(&self) -> Range<usize> {
         match self {
             Self::Placeholder => unreachable!(),

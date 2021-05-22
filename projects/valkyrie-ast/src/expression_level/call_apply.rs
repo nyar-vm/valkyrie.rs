@@ -18,7 +18,7 @@ pub struct ApplyCallNode {
     /// Weather it is a monadic call
     pub monadic: bool,
     /// The caller of argument
-    pub caller: ExpressionType,
+    pub caller: ExpressionKind,
     /// The raw string of the number.
     pub arguments: ArgumentsList,
     /// The raw string of the number.
@@ -35,7 +35,7 @@ impl ValkyrieNode for ApplyCallNode {
 
 impl ApplyCallNode {
     /// Replace placeholder with actual expression
-    pub fn with_base(self, base: ExpressionType) -> Self {
+    pub fn with_base(self, base: ExpressionKind) -> Self {
         Self { caller: base, ..self }
     }
 }

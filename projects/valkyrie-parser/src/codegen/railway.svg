@@ -68,54 +68,66 @@ svg.railroad .character > rect {
 <text class="comment" id="Program" x="64" y="39">
 Program</text>
 <g class="sequence">
+<g class="character">
+<rect height="22" rx="10" ry="10" width="132" x="104" y="23"/>
+<text x="170" y="39">
+START_OF_INPUT</text>
+</g>
+<g class="character">
+<rect height="22" rx="10" ry="10" width="52" x="246" y="23"/>
+<text x="272" y="39">
+HIDE</text>
+</g>
 <g class="optional">
-<path d=" M 104 34 h 24 m -24 0 a 12 12 0 0 0 12 -12 v 0 a 12 12 0 0 1 12 -12 h 76 m -35 0 l -5 -5 m 0 10 l 5 -5 m 35 0 a 12 12 0 0 1 12 12 v 0 a 12 12 0 0 0 12 12 h -24"/>
+<path d=" M 308 34 h 24 m -24 0 a 12 12 0 0 0 12 -12 v 0 a 12 12 0 0 1 12 -12 h 76 m -35 0 l -5 -5 m 0 10 l 5 -5 m 35 0 a 12 12 0 0 1 12 12 v 0 a 12 12 0 0 0 12 12 h -24"/>
 <a class="link" xlink:href="#Shebang">
 <g class="symbol">
-<rect height="22" width="76" x="128" y="23"/>
-<text x="166" y="39">
+<rect height="22" width="76" x="332" y="23"/>
+<text x="370" y="39">
 Shebang</text>
 </g>
 </a>
 </g>
 <g class="repeat">
-<path d=" M 238 34 h 12 m 154 0 h 12 m -12 0 a 12 12 0 0 1 12 12 v 7 a 12 12 0 0 1 -12 12 m -52 0 h -102 m 54 0 l 5 -5 m 0 10 l -5 -5 m -54 0 a 12 12 0 0 1 -12 -12 v -7 a 12 12 0 0 1 12 -12"/>
-<text class="comment" x="378" y="70">
+<path d=" M 442 34 h 12 m 154 0 h 12 m -12 0 a 12 12 0 0 1 12 12 v 7 a 12 12 0 0 1 -12 12 m -52 0 h -102 m 54 0 l 5 -5 m 0 10 l -5 -5 m -54 0 a 12 12 0 0 1 -12 -12 v -7 a 12 12 0 0 1 12 -12"/>
+<text class="comment" x="582" y="70">
 [0, ∞]</text>
 <g class="sequence">
 <g class="character">
-<rect height="22" rx="10" ry="10" width="52" x="250" y="23"/>
-<text x="276" y="39">
+<rect height="22" rx="10" ry="10" width="52" x="454" y="23"/>
+<text x="480" y="39">
 HIDE</text>
 </g>
 <a class="link" xlink:href="#Statement">
 <g class="symbol">
-<rect height="22" width="92" x="312" y="23"/>
-<text x="358" y="39">
+<rect height="22" width="92" x="516" y="23"/>
+<text x="562" y="39">
 Statement</text>
 </g>
 </a>
-<path d=" M 302 34 h 10"/>
+<path d=" M 506 34 h 10"/>
 </g>
 </g>
 <g class="character">
-<rect height="22" rx="10" ry="10" width="52" x="426" y="23"/>
-<text x="452" y="39">
+<rect height="22" rx="10" ry="10" width="52" x="630" y="23"/>
+<text x="656" y="39">
 HIDE</text>
 </g>
 <g class="character">
-<rect height="22" rx="10" ry="10" width="116" x="488" y="23"/>
-<text x="546" y="39">
+<rect height="22" rx="10" ry="10" width="116" x="692" y="23"/>
+<text x="750" y="39">
 END_OF_INPUT</text>
 </g>
-<path d=" M 228 34 h 10"/>
-<path d=" M 416 34 h 10"/>
-<path d=" M 478 34 h 10"/>
+<path d=" M 236 34 h 10"/>
+<path d=" M 298 34 h 10"/>
+<path d=" M 432 34 h 10"/>
+<path d=" M 620 34 h 10"/>
+<path d=" M 682 34 h 10"/>
 </g>
-<path d=" M 614 34 h 5 a 5 5 0 0 1 5 -5 a 5 5 0 0 1 5 5 a 5 5 0 0 1 -5 5 a 5 5 0 0 1 -5 -5"/>
+<path d=" M 818 34 h 5 a 5 5 0 0 1 5 -5 a 5 5 0 0 1 5 5 a 5 5 0 0 1 -5 5 a 5 5 0 0 1 -5 -5"/>
 <path d=" M 25 34 h 10"/>
 <path d=" M 94 34 h 10"/>
-<path d=" M 604 34 h 10"/>
+<path d=" M 808 34 h 10"/>
 </g>
 <g class="sequence">
 <path d=" M 10 98 a 5 5 0 0 1 5 -5 a 5 5 0 0 1 5 5 a 5 5 0 0 1 -5 5 a 5 5 0 0 1 -5 -5 m 10 0 h 5"/>

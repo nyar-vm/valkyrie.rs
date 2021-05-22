@@ -219,6 +219,8 @@ fn parse_program(state: Input) -> Output {
     state.rule(ValkyrieRule::Program, |s| {
         s.sequence(|s| {
             Ok(s)
+                .and_then(|s| s.start_of_input())
+                .and_then(|s| builtin_ignore(s))
                 .and_then(|s| s.optional(|s| parse_shebang(s).and_then(|s| s.tag_node("shebang"))))
                 .and_then(|s| {
                     s.repeat(0..4294967295, |s| {
@@ -3787,9 +3789,7 @@ fn parse_kw_as(state: Input) -> Output {
 #[inline]
 fn parse_shebang(state: Input) -> Output {
     state.rule(ValkyrieRule::Shebang, |s| {
-        s.sequence(|s| {
-            Ok(s).and_then(|s| builtin_text(s, "#!", false)).and_then(|s| s.match_char_if(|c| c != '\n' && c != '\r'))
-        })
+        s.sequence(|s| Ok(s).and_then(|s| builtin_text(s, "#!", false)).and_then(|s| s.rest_of_line()))
     })
 }
 #[inline]
@@ -3814,11 +3814,7 @@ fn parse_skip_space(state: Input) -> Output {
 fn parse_comment(state: Input) -> Output {
     state.rule(ValkyrieRule::Comment, |s| {
         Err(s)
-            .or_else(|s| {
-                s.sequence(|s| {
-                    Ok(s).and_then(|s| builtin_text(s, "//", false)).and_then(|s| s.match_char_if(|c| c != '\n' && c != '\r'))
-                })
-            })
+            .or_else(|s| s.sequence(|s| Ok(s).and_then(|s| builtin_text(s, "//", false)).and_then(|s| s.rest_of_line())))
             .or_else(|s| {
                 s.sequence(|s| Ok(s).and_then(|s| builtin_text(s, "/*", false)).and_then(|s| builtin_text(s, "*/", false)))
             })

@@ -3,7 +3,7 @@ pub mod string_html;
 pub mod string_literal;
 pub mod string_template;
 
-use crate::{helper::ValkyrieNode, ExpressionType, IdentifierNode};
+use crate::{helper::ValkyrieNode, ExpressionKind, IdentifierNode};
 use alloc::{
     string::{String, ToString},
     vec::Vec,

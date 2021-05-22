@@ -4,7 +4,7 @@ grammar Valkyrie {
 
 // === statements === -----------------------------------------------------------------
 atomic class Program {
-    Shebang? (HIDE Statement)* ~ EOI
+    SOI ~ Shebang? (HIDE Statement)* ~ EOI
 }
 // === statements === -----------------------------------------------------------------
 union Statement {

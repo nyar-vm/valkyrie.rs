@@ -49,7 +49,7 @@ pub struct ExpressionNode {
     /// Weather to omit to results
     pub omit: bool,
     /// The expression body
-    pub body: ExpressionType,
+    pub body: ExpressionKind,
     /// The range of the node
     pub span: Range<u32>,
 }
@@ -58,7 +58,7 @@ pub struct ExpressionNode {
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 pub struct TypingExpression {
     /// The type level expression body
-    pub body: ExpressionType,
+    pub body: ExpressionKind,
     /// The range of the node
     pub span: Range<u32>,
 }
@@ -78,7 +78,7 @@ pub struct ExpressionContext {
 /// The base expression type
 #[derive(Clone, PartialEq, Eq, Hash, From)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum ExpressionType {
+pub enum ExpressionKind {
     /// - Placeholder expression
     Placeholder,
     /// - Atomic expression
@@ -168,7 +168,7 @@ impl TypingExpression {
     }
 }
 
-impl ExpressionType {
+impl ExpressionKind {
     /// Build a new binary expression
     pub fn binary(o: OperatorNode, lhs: Self, rhs: Self) -> Self {
         Self::Infix(Box::new(BinaryNode { infix: o, lhs, rhs }))

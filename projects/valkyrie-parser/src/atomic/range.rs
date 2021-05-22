@@ -63,7 +63,7 @@ impl crate::RangeCallNode {
         Success {
             value: SubscriptCallNode {
                 kind: RangeKind::Ordinal,
-                base: ExpressionType::Placeholder,
+                base: ExpressionKind::Placeholder,
                 monadic,
                 terms,
                 span: self.span.clone(),

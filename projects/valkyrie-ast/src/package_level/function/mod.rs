@@ -57,9 +57,9 @@ pub struct StatementBlock {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct FunctionReturnNode {
     /// The return type of this function
-    pub typing: Option<ExpressionType>,
+    pub typing: Option<ExpressionKind>,
     /// The perform effects of this function
-    pub effect: Vec<ExpressionType>,
+    pub effect: Vec<ExpressionKind>,
 }
 
 impl StatementBlock {
