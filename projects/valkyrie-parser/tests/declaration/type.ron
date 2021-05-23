@@ -290,7 +290,8 @@ FunctionDeclaration {
                                 value: LambdaNode {
                                     annotations: Empty,
                                     generic: None,
-                                    arguments: ArgumentsList {
+                                    parameters: ParametersList {
+                                        kind: Expression,
                                         terms: [],
                                     },
                                     returns: Auto,

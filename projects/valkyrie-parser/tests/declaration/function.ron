@@ -154,7 +154,8 @@ FunctionDeclaration {
                 body: LambdaNode {
                     annotations: Empty,
                     generic: None,
-                    arguments: ArgumentsList {
+                    parameters: ParametersList {
+                        kind: Expression,
                         terms: [],
                     },
                     returns: Auto,
@@ -540,7 +541,8 @@ FunctionDeclaration {
                         base: LambdaNode {
                             annotations: Empty,
                             generic: None,
-                            arguments: ArgumentsList {
+                            parameters: ParametersList {
+                                kind: Expression,
                                 terms: [],
                             },
                             returns: ReturnType {

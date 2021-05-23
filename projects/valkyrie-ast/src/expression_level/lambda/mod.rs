@@ -11,7 +11,7 @@ pub struct LambdaNode {
     /// `method_name<T>()`
     pub generic: Option<ParametersList>,
     /// `method_name(arguments)`
-    pub arguments: ArgumentsList,
+    pub parameters: ParametersList,
     /// `: ReturnType / [EffectType]`
     pub returns: FunctionReturnNode,
     /// `{ body }`

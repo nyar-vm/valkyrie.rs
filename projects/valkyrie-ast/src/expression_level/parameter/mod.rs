@@ -21,8 +21,6 @@ pub struct ParametersList {
     pub kind: ParameterKind,
     /// The raw string of the number.
     pub terms: Vec<ParameterTerm>,
-    /// The range of the node
-    pub span: Range<u32>,
 }
 
 /// `T: Type = type_expression`
@@ -60,4 +58,15 @@ pub enum ParameterTerm {
         key: IdentifierNode,
         bound: Option<ExpressionNode>,
     },
+}
+
+impl Default for ParameterKind {
+    fn default() -> Self {
+        Self::Expression
+    }
+}
+impl Default for ParametersList {
+    fn default() -> Self {
+        Self { kind: ParameterKind::default(), terms: vec![] }
+    }
 }

@@ -1,5 +1,5 @@
 use super::*;
-use crate::TypeReturnNode;
+use crate::{ParameterItemNode, TypeReturnNode};
 
 impl crate::DefineFunctionNode {
     pub fn build(&self, ctx: &mut ProgramState) -> Validation<FunctionDeclaration> {
@@ -7,6 +7,7 @@ impl crate::DefineFunctionNode {
         let annotations = self.annotation_head.annotations(ctx).recover(&mut errors)?;
         let returning = self.function_middle.returns(ctx).recover(&mut errors)?;
         let body = self.continuation.build(ctx).recover(&mut errors)?;
+
         Success {
             value: FunctionDeclaration {
                 name: self.namepath.build(ctx),
@@ -39,6 +40,28 @@ impl crate::FunctionMiddleNode {
             None => None,
         };
         Success { value: FunctionReturnNode { typing, effect: vec![] }, diagnostics: errors }
+    }
+    pub fn parameters(&self, ctx: &mut ProgramState) -> Validation<ParametersList> {
+        let mut errors = vec![];
+        let mut terms = vec![];
+        for term in &self.function_parameters.parameter_item {
+            term.build(ctx).append(&mut terms, &mut errors)
+        }
+        Success { value: ParametersList { kind: ParameterKind::Expression, terms: vec![] }, diagnostics: errors }
+    }
+}
+
+impl ParameterItemNode {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<ParameterTerm> {
+        let mut diagnostics = vec![];
+        let value = match self {
+            ParameterItemNode::LMark => ParameterTerm::LMark,
+            ParameterItemNode::OmitDict => ParameterTerm::LMark,
+            ParameterItemNode::OmitList => ParameterTerm::LMark,
+            ParameterItemNode::ParameterPair(_) => ParameterTerm::LMark,
+            ParameterItemNode::RMark => ParameterTerm::RMark,
+        };
+        Success { value, diagnostics }
     }
 }
 
