@@ -25,6 +25,7 @@ impl crate::TypePrefixNode {
             "!" => Not,
             "+" => CovariantType,
             "-" => ContravariantType,
+            "&" => Box,
             _ => unimplemented!("{} is a unknown prefix operator", self.text),
         };
         OperatorNode { kind: o, span: self.span.clone() }

@@ -604,7 +604,7 @@ atomic class GenericParameter {
     (GenericParameterPair (HIDE ^COMMA ~ GenericParameterPair)* (HIDE ^COMMA)?)?
 }
 class GenericParameterPair {
-    Identifier (Colon TypeExpression)? ('=' TypeExpression)?
+    Identifier (^Colon bound:TypeExpression)? ('=' default:TypeExpression)?
 }
 // === generic call === ------------------------------------------------------------------------------------------------
 class GenericCall {

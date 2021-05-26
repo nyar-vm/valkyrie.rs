@@ -104,7 +104,7 @@ impl PrettyPrint for MethodDeclaration {
                 terms += typing.pretty(theme);
             }
         }
-        terms += self.arguments.pretty(theme);
+        terms += self.parameters.pretty(theme);
         if let Some(typing) = &self.returns {
             terms += typing.pretty(theme);
         }
@@ -134,7 +134,7 @@ impl Lispify for MethodDeclaration {
                 lisp += generic.lispify();
             }
         }
-        lisp += self.arguments.lispify();
+        lisp += self.parameters.lispify();
         match &self.returns {
             Some(ty) => {
                 lisp += Lisp::keyword("return/type") + ty.lispify();

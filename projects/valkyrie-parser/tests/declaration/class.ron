@@ -169,9 +169,7 @@ ClassDeclaration {
                 ],
             },
             generic: None,
-            arguments: ArgumentsList {
-                terms: [],
-            },
+            parameters: [],
             returns: ReturnType {
                 main: GenericCallNode {
                     monadic: false,
@@ -238,9 +236,7 @@ ClassDeclaration {
                 ],
             },
             generic: None,
-            arguments: ArgumentsList {
-                terms: [],
-            },
+            parameters: [],
             returns: Auto,
             body: Some(
                 StatementBlock {
@@ -281,9 +277,7 @@ ClassDeclaration {
                 ],
             },
             generic: None,
-            arguments: ArgumentsList {
-                terms: [],
-            },
+            parameters: [],
             returns: Auto,
             body: Some(
                 StatementBlock {
@@ -310,10 +304,17 @@ ClassDeclaration {
                 ],
             },
             annotations: Empty,
-            generic: None,
-            arguments: ArgumentsList {
-                terms: [],
-            },
+            generic: Some(
+                [
+                    Single {
+                        annotations: Empty,
+                        key: Identifier("bool", 642..646),
+                        bound: None,
+                        default: None,
+                    },
+                ],
+            ),
+            parameters: [],
             returns: Auto,
             body: Some(
                 StatementBlock {
@@ -520,9 +521,7 @@ ClassDeclaration {
             },
             annotations: Empty,
             generic: None,
-            arguments: ArgumentsList {
-                terms: [],
-            },
+            parameters: [],
             returns: Auto,
             body: Some(
                 StatementBlock {
@@ -567,9 +566,14 @@ ClassDeclaration {
             },
             annotations: Empty,
             generic: None,
-            arguments: ArgumentsList {
-                terms: [],
-            },
+            parameters: [
+                Single {
+                    annotations: Empty,
+                    key: Identifier("self", 1207..1211),
+                    bound: None,
+                    default: None,
+                },
+            ],
             returns: ReturnType {
                 main: Unit,
             },
@@ -599,9 +603,7 @@ ClassDeclaration {
                 ],
             },
             generic: None,
-            arguments: ArgumentsList {
-                terms: [],
-            },
+            parameters: [],
             returns: ReturnType {
                 main: Integer,
             },
@@ -631,9 +633,7 @@ ClassDeclaration {
                 ],
             },
             generic: None,
-            arguments: ArgumentsList {
-                terms: [],
-            },
+            parameters: [],
             returns: Auto,
             body: Some(
                 StatementBlock {
@@ -705,9 +705,7 @@ ClassDeclaration {
                 ],
             },
             generic: None,
-            arguments: ArgumentsList {
-                terms: [],
-            },
+            parameters: [],
             returns: Auto,
             body: Some(
                 StatementBlock {
@@ -729,9 +727,7 @@ ClassDeclaration {
                 ],
             },
             generic: None,
-            arguments: ArgumentsList {
-                terms: [],
-            },
+            parameters: [],
             returns: Auto,
             body: Some(
                 StatementBlock {
@@ -749,9 +745,7 @@ ClassDeclaration {
             },
             annotations: Empty,
             generic: None,
-            arguments: ArgumentsList {
-                terms: [],
-            },
+            parameters: [],
             returns: Auto,
             body: None,
             span: 1554..1562,
@@ -783,9 +777,22 @@ ClassDeclaration {
                 ],
             },
             generic: None,
-            arguments: ArgumentsList {
-                terms: [],
-            },
+            parameters: [
+                Single {
+                    annotations: Empty,
+                    key: Identifier("self", 1595..1599),
+                    bound: None,
+                    default: None,
+                },
+                Single {
+                    annotations: Empty,
+                    key: Identifier("rhs", 1601..1604),
+                    bound: Some(
+                        Self,
+                    ),
+                    default: None,
+                },
+            ],
             returns: ReturnType {
                 main: Self,
             },
@@ -830,10 +837,34 @@ ClassDeclaration {
                     },
                 ],
             },
-            generic: None,
-            arguments: ArgumentsList {
-                terms: [],
-            },
+            generic: Some(
+                [
+                    Single {
+                        annotations: Empty,
+                        key: Identifier("T", 1688..1689),
+                        bound: None,
+                        default: None,
+                    },
+                ],
+            ),
+            parameters: [
+                Single {
+                    annotations: Empty,
+                    key: Identifier("self", 1699..1703),
+                    bound: Some(
+                        T,
+                    ),
+                    default: None,
+                },
+                Single {
+                    annotations: Empty,
+                    key: Identifier("other", 1708..1713),
+                    bound: Some(
+                        T,
+                    ),
+                    default: None,
+                },
+            ],
             returns: ReturnType {
                 main: T,
             },
@@ -1020,9 +1051,20 @@ ClassDeclaration {
                 ],
             },
             generic: None,
-            arguments: ArgumentsList {
-                terms: [],
-            },
+            parameters: [
+                Single {
+                    annotations: Empty,
+                    key: Identifier("self", 2073..2077),
+                    bound: None,
+                    default: None,
+                },
+                Single {
+                    annotations: Empty,
+                    key: Identifier("args", 2079..2083),
+                    bound: None,
+                    default: None,
+                },
+            ],
             returns: Auto,
             body: Some(
                 StatementBlock {

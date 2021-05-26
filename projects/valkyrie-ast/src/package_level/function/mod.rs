@@ -25,8 +25,10 @@ pub struct FunctionDeclaration {
     /// Thy type parameters of this function
     pub generic: Option<ParametersList>,
     // The value parameters of this function
-    pub arguments: ArgumentsList,
+    pub parameters: ParametersList,
+    /// The return type of this function
     pub returns: FunctionReturnNode,
+    /// The body of this function
     pub body: StatementBlock,
 }
 

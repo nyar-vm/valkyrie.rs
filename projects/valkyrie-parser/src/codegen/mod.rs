@@ -1423,9 +1423,9 @@ pub struct GenericParameterNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct GenericParameterPairNode {
-    // Missing rule Colon
     pub identifier: IdentifierNode,
-    pub type_expression: Vec<TypeExpressionNode>,
+    pub bound: Option<TypeExpressionNode>,
+    pub default: Option<TypeExpressionNode>,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]

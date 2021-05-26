@@ -7918,6 +7918,7 @@ HIDE</text>
 <g class="optional">
 <path d=" M 374 9245 h 24 m -24 0 a 12 12 0 0 0 12 -12 v 0 a 12 12 0 0 1 12 -12 h 264 m -129 0 l -5 -5 m 0 10 l 5 -5 m 129 0 a 12 12 0 0 1 12 12 v 0 a 12 12 0 0 0 12 12 h -24"/>
 <g class="sequence">
+<g class="sequence">
 <a class="link" xlink:href="#Colon">
 <g class="symbol">
 <rect height="22" width="60" x="398" y="9234"/>
@@ -7930,6 +7931,8 @@ Colon</text>
 <text x="494" y="9250">
 HIDE</text>
 </g>
+<path d=" M 458 9245 h 10"/>
+</g>
 <a class="link" xlink:href="#TypeExpression">
 <g class="symbol">
 <rect height="22" width="132" x="530" y="9234"/>
@@ -7937,7 +7940,6 @@ HIDE</text>
 TypeExpression</text>
 </g>
 </a>
-<path d=" M 458 9245 h 10"/>
 <path d=" M 520 9245 h 10"/>
 </g>
 </g>
@@ -7949,6 +7951,7 @@ HIDE</text>
 <g class="optional">
 <path d=" M 758 9245 h 24 m -24 0 a 12 12 0 0 0 12 -12 v 0 a 12 12 0 0 1 12 -12 h 232 m -113 0 l -5 -5 m 0 10 l 5 -5 m 113 0 a 12 12 0 0 1 12 12 v 0 a 12 12 0 0 0 12 12 h -24"/>
 <g class="sequence">
+<g class="sequence">
 <g class="string">
 <rect height="22" rx="10" ry="10" width="28" x="782" y="9234"/>
 <text x="796" y="9250">
@@ -7959,6 +7962,8 @@ HIDE</text>
 <text x="846" y="9250">
 HIDE</text>
 </g>
+<path d=" M 810 9245 h 10"/>
+</g>
 <a class="link" xlink:href="#TypeExpression">
 <g class="symbol">
 <rect height="22" width="132" x="882" y="9234"/>
@@ -7966,7 +7971,6 @@ HIDE</text>
 TypeExpression</text>
 </g>
 </a>
-<path d=" M 810 9245 h 10"/>
 <path d=" M 872 9245 h 10"/>
 </g>
 </g>

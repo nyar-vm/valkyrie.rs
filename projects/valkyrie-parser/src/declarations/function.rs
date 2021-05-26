@@ -7,17 +7,18 @@ impl crate::DefineFunctionNode {
     pub fn build(&self, ctx: &mut ProgramState) -> Validation<FunctionDeclaration> {
         let mut errors = vec![];
         let annotations = self.annotation_head.annotations(ctx).recover(&mut errors)?;
-        let returning = self.function_middle.returns(ctx).recover(&mut errors)?;
+        let parameters = self.function_middle.parameters(ctx).recover(&mut errors)?;
+        let generic = self.function_middle.generic(ctx).recover(&mut errors)?;
+        let returns = self.function_middle.returns(ctx).recover(&mut errors)?;
         let body = self.continuation.build(ctx).recover(&mut errors)?;
-
         Success {
             value: FunctionDeclaration {
                 name: self.namepath.build(ctx),
                 kind: self.kw_function.build(),
                 annotations,
-                generic: None,
-                arguments: Default::default(),
-                returns: returning,
+                generic,
+                parameters,
+                returns,
                 body,
             },
             diagnostics: errors,
@@ -81,18 +82,15 @@ impl GenericParameterPairNode {
     pub fn build(&self, ctx: &mut ProgramState) -> Validation<ParameterTerm> {
         let mut diagnostics = vec![];
         let key = self.identifier.build(ctx);
-        // let bound = match &self.type_expression {
-        //     Some(s) => Some(s.type_expression.build(ctx)?),
-        //     None => None,
-        // };
-        // let default = match &self.type_expression {
-        //     Some(s) => Some(s.main_expression.build(ctx)?),
-        //     None => None,
-        // };
-        Success {
-            value: ParameterTerm::Single { annotations: Default::default(), key, bound: None, default: None },
-            diagnostics,
-        }
+        let bound = match &self.bound {
+            Some(s) => Some(s.build(ctx)?),
+            None => None,
+        };
+        let default = match &self.default {
+            Some(s) => Some(s.build(ctx)?),
+            None => None,
+        };
+        Success { value: ParameterTerm::Single { annotations: Default::default(), key, bound, default }, diagnostics }
     }
 }
 impl ParameterItemNode {

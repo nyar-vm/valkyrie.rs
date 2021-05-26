@@ -30,7 +30,7 @@ impl PrettyPrint for FunctionDeclaration {
         if let Some(gen) = &self.generic {
             terms += gen.pretty(theme);
         }
-        terms += self.arguments.pretty(theme);
+        terms += self.parameters.pretty(theme);
         if let Some(ret) = &self.r#return {
             terms += ": ";
             terms += ret.typing.pretty(theme);
@@ -50,7 +50,7 @@ impl Lispify for FunctionDeclaration {
         if let Some(generic) = &self.generic {
             lisp += generic.lispify();
         }
-        lisp += self.arguments.lispify();
+        lisp += self.parameters.lispify();
         if let Some(r#return) = &self.r#return {
             lisp += r#return.lispify();
         }

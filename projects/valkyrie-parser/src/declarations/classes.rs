@@ -59,25 +59,19 @@ impl crate::DefineFieldNode {
 
 impl crate::DefineMethodNode {
     pub fn build(&self, ctx: &mut ProgramState) -> Validation<MethodDeclaration> {
-        let mut errors = vec![];
+        let mut diagnostics = vec![];
         let name = self.namepath.build(ctx);
         let body = match &self.continuation {
-            Some(s) => Some(s.build(ctx).recover(&mut errors)?),
+            Some(s) => Some(s.build(ctx).recover(&mut diagnostics)?),
             None => None,
         };
-        let returns = self.function_middle.returns(ctx).recover(&mut errors)?;
-        let annotations = self.annotation_mix.annotations(ctx).recover(&mut errors)?;
+        let parameters = self.function_middle.parameters(ctx).recover(&mut diagnostics)?;
+        let generic = self.function_middle.generic(ctx).recover(&mut diagnostics)?;
+        let returns = self.function_middle.returns(ctx).recover(&mut diagnostics)?;
+        let annotations = self.annotation_mix.annotations(ctx).recover(&mut diagnostics)?;
         Success {
-            value: MethodDeclaration {
-                annotations,
-                name,
-                generic: None,
-                arguments: Default::default(),
-                returns,
-                body,
-                span: self.span.clone(),
-            },
-            diagnostics: errors,
+            value: MethodDeclaration { annotations, name, generic, parameters, returns, body, span: self.span.clone() },
+            diagnostics,
         }
     }
 }

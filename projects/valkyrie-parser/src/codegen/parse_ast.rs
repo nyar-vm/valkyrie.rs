@@ -3511,11 +3511,9 @@ impl YggdrasilNode for GenericParameterPairNode {
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
         Ok(Self {
-            // Missing rule Colon
             identifier: pair.take_tagged_one::<IdentifierNode>(Cow::Borrowed("identifier"))?,
-            type_expression: pair
-                .take_tagged_items::<TypeExpressionNode>(Cow::Borrowed("type_expression"))
-                .collect::<Result<Vec<_>, _>>()?,
+            bound: pair.take_tagged_option::<TypeExpressionNode>(Cow::Borrowed("bound")),
+            default: pair.take_tagged_option::<TypeExpressionNode>(Cow::Borrowed("default")),
             span: Range { start: _span.start() as u32, end: _span.end() as u32 },
         })
     }

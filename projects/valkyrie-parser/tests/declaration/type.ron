@@ -119,9 +119,7 @@ ClassDeclaration {
                     },
                     annotations: Empty,
                     generic: None,
-                    arguments: ArgumentsList {
-                        terms: [],
-                    },
+                    parameters: [],
                     returns: Auto,
                     body: Some(
                         StatementBlock {
@@ -149,9 +147,7 @@ ClassDeclaration {
                     },
                     annotations: Empty,
                     generic: None,
-                    arguments: ArgumentsList {
-                        terms: [],
-                    },
+                    parameters: [],
                     returns: Auto,
                     body: Some(
                         StatementBlock {
@@ -176,9 +172,7 @@ FunctionDeclaration {
     kind: Micro,
     annotations: Empty,
     generic: None,
-    arguments: ArgumentsList {
-        terms: [],
-    },
+    parameters: [],
     returns: ReturnType {
         main: i32,
     },
@@ -218,9 +212,7 @@ FunctionDeclaration {
         ],
     },
     generic: None,
-    arguments: ArgumentsList {
-        terms: [],
-    },
+    parameters: [],
     returns: ReturnType {
         main: TupleNode {
             kind: Tuple,
@@ -286,9 +278,19 @@ FunctionDeclaration {
         ],
     },
     generic: None,
-    arguments: ArgumentsList {
-        terms: [],
-    },
+    parameters: [
+        Single {
+            annotations: Empty,
+            key: Identifier("a", 427..428),
+            bound: Some(
+                UnaryNode {
+                    prefix: &,
+                    base: MyArray,
+                },
+            ),
+            default: None,
+        },
+    ],
     returns: ReturnType {
         main: bool,
     },

@@ -2732,9 +2732,10 @@ fn parse_generic_parameter_pair(state: Input) -> Output {
                     s.optional(|s| {
                         s.sequence(|s| {
                             Ok(s)
-                                .and_then(|s| parse_colon(s).and_then(|s| s.tag_node("colon")))
-                                .and_then(|s| builtin_ignore(s))
-                                .and_then(|s| parse_type_expression(s).and_then(|s| s.tag_node("type_expression")))
+                                .and_then(|s| {
+                                    s.sequence(|s| Ok(s).and_then(|s| parse_colon(s)).and_then(|s| builtin_ignore(s)))
+                                })
+                                .and_then(|s| parse_type_expression(s).and_then(|s| s.tag_node("bound")))
                         })
                     })
                 })
@@ -2743,9 +2744,12 @@ fn parse_generic_parameter_pair(state: Input) -> Output {
                     s.optional(|s| {
                         s.sequence(|s| {
                             Ok(s)
-                                .and_then(|s| builtin_text(s, "=", false))
-                                .and_then(|s| builtin_ignore(s))
-                                .and_then(|s| parse_type_expression(s).and_then(|s| s.tag_node("type_expression")))
+                                .and_then(|s| {
+                                    s.sequence(|s| {
+                                        Ok(s).and_then(|s| builtin_text(s, "=", false)).and_then(|s| builtin_ignore(s))
+                                    })
+                                })
+                                .and_then(|s| parse_type_expression(s).and_then(|s| s.tag_node("default")))
                         })
                     })
                 })

@@ -7,9 +7,7 @@ FunctionDeclaration {
     kind: Micro,
     annotations: Empty,
     generic: None,
-    arguments: ArgumentsList {
-        terms: [],
-    },
+    parameters: [],
     returns: Auto,
     body: StatementBlock {
         terms: [],
@@ -29,9 +27,7 @@ FunctionDeclaration {
         ],
     },
     generic: None,
-    arguments: ArgumentsList {
-        terms: [],
-    },
+    parameters: [],
     returns: Auto,
     body: StatementBlock {
         terms: [],
@@ -47,9 +43,24 @@ FunctionDeclaration {
     kind: Micro,
     annotations: Empty,
     generic: None,
-    arguments: ArgumentsList {
-        terms: [],
-    },
+    parameters: [
+        Single {
+            annotations: Empty,
+            key: Identifier("self", 64..68),
+            bound: None,
+            default: None,
+        },
+        Single {
+            annotations: Empty,
+            key: Identifier("list", 73..77),
+            bound: Some(
+                List,
+            ),
+            default: None,
+        },
+        LMark,
+        RMark,
+    ],
     returns: Auto,
     body: StatementBlock {
         terms: [],
@@ -65,9 +76,18 @@ FunctionDeclaration {
     kind: Micro,
     annotations: Empty,
     generic: None,
-    arguments: ArgumentsList {
-        terms: [],
-    },
+    parameters: [
+        Single {
+            annotations: Empty,
+            key: Identifier("input", 111..116),
+            bound: Some(
+                Integer,
+            ),
+            default: Some(
+                0,
+            ),
+        },
+    ],
     returns: Auto,
     body: StatementBlock {
         terms: [],
@@ -83,9 +103,7 @@ FunctionDeclaration {
     kind: Micro,
     annotations: Empty,
     generic: None,
-    arguments: ArgumentsList {
-        terms: [],
-    },
+    parameters: [],
     returns: ReturnType {
         main: Integer,
     },
@@ -103,9 +121,7 @@ FunctionDeclaration {
     kind: Micro,
     annotations: Empty,
     generic: None,
-    arguments: ArgumentsList {
-        terms: [],
-    },
+    parameters: [],
     returns: Auto,
     body: StatementBlock {
         terms: [],
@@ -125,9 +141,34 @@ FunctionDeclaration {
         ],
     },
     generic: None,
-    arguments: ArgumentsList {
-        terms: [],
-    },
+    parameters: [
+        Single {
+            annotations: Empty,
+            key: Identifier("self", 247..251),
+            bound: None,
+            default: None,
+        },
+        LMark,
+        Single {
+            annotations: Empty,
+            key: Identifier("input", 256..261),
+            bound: Some(
+                Integer,
+            ),
+            default: Some(
+                0,
+            ),
+        },
+        RMark,
+        Single {
+            annotations: Empty,
+            key: Identifier("list", 280..284),
+            bound: Some(
+                List,
+            ),
+            default: None,
+        },
+    ],
     returns: ReturnType {
         main: Integer,
     },

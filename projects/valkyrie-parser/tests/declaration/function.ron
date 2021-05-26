@@ -7,9 +7,7 @@ FunctionDeclaration {
     kind: Micro,
     annotations: Empty,
     generic: None,
-    arguments: ArgumentsList {
-        terms: [],
-    },
+    parameters: [],
     returns: Auto,
     body: StatementBlock {
         terms: [],
@@ -25,9 +23,7 @@ FunctionDeclaration {
     kind: Macro,
     annotations: Empty,
     generic: None,
-    arguments: ArgumentsList {
-        terms: [],
-    },
+    parameters: [],
     returns: ReturnType {
         main: R,
     },
@@ -45,9 +41,32 @@ FunctionDeclaration {
     kind: Micro,
     annotations: Empty,
     generic: None,
-    arguments: ArgumentsList {
-        terms: [],
-    },
+    parameters: [
+        Single {
+            annotations: Empty,
+            key: Identifier("a", 56..57),
+            bound: None,
+            default: None,
+        },
+        Single {
+            annotations: Empty,
+            key: Identifier("k", 59..60),
+            bound: Some(
+                T,
+            ),
+            default: None,
+        },
+        Single {
+            annotations: Empty,
+            key: Identifier("p", 65..66),
+            bound: Some(
+                U,
+            ),
+            default: Some(
+                1,
+            ),
+        },
+    ],
     returns: ReturnType {
         main: R,
     },
@@ -83,10 +102,32 @@ FunctionDeclaration {
     },
     kind: Micro,
     annotations: Empty,
-    generic: None,
-    arguments: ArgumentsList {
-        terms: [],
-    },
+    generic: Some(
+        [
+            Single {
+                annotations: Empty,
+                key: Identifier("G", 124..125),
+                bound: None,
+                default: None,
+            },
+            Single {
+                annotations: Empty,
+                key: Identifier("R", 127..128),
+                bound: None,
+                default: None,
+            },
+        ],
+    ),
+    parameters: [
+        Single {
+            annotations: Empty,
+            key: Identifier("g", 130..131),
+            bound: Some(
+                G,
+            ),
+            default: None,
+        },
+    ],
     returns: ReturnType {
         main: R,
     },
@@ -140,10 +181,26 @@ FunctionDeclaration {
     },
     kind: Macro,
     annotations: Empty,
-    generic: None,
-    arguments: ArgumentsList {
-        terms: [],
-    },
+    generic: Some(
+        [
+            Single {
+                annotations: Empty,
+                key: Identifier("L", 207..208),
+                bound: None,
+                default: None,
+            },
+        ],
+    ),
+    parameters: [
+        Single {
+            annotations: Empty,
+            key: Identifier("lhs", 210..213),
+            bound: Some(
+                L,
+            ),
+            default: None,
+        },
+    ],
     returns: ReturnType {
         main: String,
     },
@@ -153,7 +210,16 @@ FunctionDeclaration {
                 omit: false,
                 body: LambdaNode {
                     annotations: Empty,
-                    generic: None,
+                    generic: Some(
+                        [
+                            Single {
+                                annotations: Empty,
+                                key: Identifier("R", 266..267),
+                                bound: None,
+                                default: None,
+                            },
+                        ],
+                    ),
                     parameters: [
                         Single {
                             annotations: Empty,
@@ -235,9 +301,29 @@ FunctionDeclaration {
         ],
     },
     generic: None,
-    arguments: ArgumentsList {
-        terms: [],
-    },
+    parameters: [
+        Single {
+            annotations: Empty,
+            key: Identifier("args", 430..434),
+            bound: Some(
+                GenericCallNode {
+                    monadic: false,
+                    base: List,
+                    terms: ArgumentsList {
+                        terms: [
+                            TupleTermNode {
+                                key: None,
+                                value: String,
+                            },
+                        ],
+                    },
+                    associated: [],
+                    span: 440..448,
+                },
+            ),
+            default: None,
+        },
+    ],
     returns: ReturnType {
         main: int,
     },
@@ -292,9 +378,7 @@ FunctionDeclaration {
     kind: Micro,
     annotations: Empty,
     generic: None,
-    arguments: ArgumentsList {
-        terms: [],
-    },
+    parameters: [],
     returns: Auto,
     body: StatementBlock {
         terms: [],
@@ -312,9 +396,50 @@ FunctionDeclaration {
     kind: Micro,
     annotations: Empty,
     generic: None,
-    arguments: ArgumentsList {
-        terms: [],
-    },
+    parameters: [
+        Single {
+            annotations: Empty,
+            key: Identifier("position_only", 614..627),
+            bound: None,
+            default: None,
+        },
+        LMark,
+        Single {
+            annotations: Empty,
+            key: Identifier("free", 690..694),
+            bound: Some(
+                int,
+            ),
+            default: Some(
+                1,
+            ),
+        },
+        RMark,
+        Single {
+            annotations: Empty,
+            key: Identifier("name_only", 761..770),
+            bound: None,
+            default: None,
+        },
+        Single {
+            annotations: Empty,
+            key: Identifier("name", 989..993),
+            bound: None,
+            default: None,
+        },
+        Single {
+            annotations: Empty,
+            key: Identifier("list_catch", 1141..1151),
+            bound: None,
+            default: None,
+        },
+        Single {
+            annotations: Empty,
+            key: Identifier("dict_catch", 1295..1305),
+            bound: None,
+            default: None,
+        },
+    ],
     returns: Auto,
     body: StatementBlock {
         terms: [
@@ -336,9 +461,16 @@ FunctionDeclaration {
     kind: Micro,
     annotations: Empty,
     generic: None,
-    arguments: ArgumentsList {
-        terms: [],
-    },
+    parameters: [
+        Single {
+            annotations: Empty,
+            key: Identifier("effect", 1354..1360),
+            bound: Some(
+                int,
+            ),
+            default: None,
+        },
+    ],
     returns: ReturnType {
         main: Equirecursive,
     },
@@ -355,10 +487,23 @@ FunctionDeclaration {
     },
     kind: Macro,
     annotations: Empty,
-    generic: None,
-    arguments: ArgumentsList {
-        terms: [],
-    },
+    generic: Some(
+        [
+            Single {
+                annotations: Empty,
+                key: Identifier("R", 1407..1408),
+                bound: None,
+                default: None,
+            },
+            Single {
+                annotations: Empty,
+                key: Identifier("P", 1410..1411),
+                bound: None,
+                default: None,
+            },
+        ],
+    ),
+    parameters: [],
     returns: ReturnType {
         main: R,
     },
@@ -382,9 +527,32 @@ FunctionDeclaration {
         ],
     },
     generic: None,
-    arguments: ArgumentsList {
-        terms: [],
-    },
+    parameters: [
+        Single {
+            annotations: Empty,
+            key: Identifier("min", 1470..1473),
+            bound: Some(
+                int,
+            ),
+            default: None,
+        },
+        Single {
+            annotations: Empty,
+            key: Identifier("max", 1480..1483),
+            bound: Some(
+                int,
+            ),
+            default: None,
+        },
+        Single {
+            annotations: Empty,
+            key: Identifier("step", 1490..1494),
+            bound: Some(
+                int,
+            ),
+            default: None,
+        },
+    ],
     returns: ReturnType {
         main: Range,
     },
@@ -440,9 +608,32 @@ FunctionDeclaration {
     kind: Micro,
     annotations: Empty,
     generic: None,
-    arguments: ArgumentsList {
-        terms: [],
-    },
+    parameters: [
+        Single {
+            annotations: Empty,
+            key: Identifier("a", 1658..1659),
+            bound: None,
+            default: None,
+        },
+        Single {
+            annotations: Empty,
+            key: Identifier("k", 1661..1662),
+            bound: Some(
+                T,
+            ),
+            default: None,
+        },
+        Single {
+            annotations: Empty,
+            key: Identifier("p", 1667..1668),
+            bound: Some(
+                U,
+            ),
+            default: Some(
+                1,
+            ),
+        },
+    ],
     returns: ReturnType {
         main: R,
     },
@@ -532,9 +723,14 @@ FunctionDeclaration {
         ],
     },
     generic: None,
-    arguments: ArgumentsList {
-        terms: [],
-    },
+    parameters: [
+        Single {
+            annotations: Empty,
+            key: Identifier("args", 1835..1839),
+            bound: None,
+            default: None,
+        },
+    ],
     returns: Auto,
     body: StatementBlock {
         terms: [
@@ -563,10 +759,28 @@ FunctionDeclaration {
             main,
         ],
     },
-    generic: None,
-    arguments: ArgumentsList {
-        terms: [],
-    },
+    generic: Some(
+        [
+            Single {
+                annotations: Empty,
+                key: Identifier("P", 1902..1903),
+                bound: None,
+                default: None,
+            },
+        ],
+    ),
+    parameters: [
+        Single {
+            annotations: Empty,
+            key: Identifier("w", 1907..1908),
+            bound: Some(
+                Write,
+            ),
+            default: None,
+        },
+        LMark,
+        LMark,
+    ],
     returns: Auto,
     body: StatementBlock {
         terms: [
@@ -669,9 +883,35 @@ FunctionDeclaration {
         ],
     },
     generic: None,
-    arguments: ArgumentsList {
-        terms: [],
-    },
+    parameters: [
+        Single {
+            annotations: Empty,
+            key: Identifier("args", 2074..2078),
+            bound: Some(
+                GenericCallNode {
+                    monadic: false,
+                    base: List,
+                    terms: ArgumentsList {
+                        terms: [
+                            TupleTermNode {
+                                key: None,
+                                value: String,
+                            },
+                        ],
+                    },
+                    associated: [],
+                    span: 2084..2096,
+                },
+            ),
+            default: None,
+        },
+        Single {
+            annotations: Empty,
+            key: Identifier("a", 2098..2099),
+            bound: None,
+            default: None,
+        },
+    ],
     returns: Auto,
     body: StatementBlock {
         terms: [
