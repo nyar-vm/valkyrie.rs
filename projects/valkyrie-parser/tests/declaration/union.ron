@@ -3,7 +3,25 @@ NamespaceDeclaration {
     path: std∷create∷test,
 }
 UnionDeclaration {
-    annotations: Empty,
+    annotations: Annotation {
+        attributes: AttributeList {
+            terms: [
+                AttributeTerm {
+                    kind: Normal,
+                    path: NamePathNode {
+                        names: [
+                            Identifier("tag", 101..104),
+                        ],
+                    },
+                    variant: [],
+                    arguments: ArgumentsList {
+                        terms: [],
+                    },
+                    domain: None,
+                },
+            ],
+        },
+    },
     name: Identifier("Union1", 111..117),
     layout: None,
     derive_traits: [],
@@ -11,7 +29,25 @@ UnionDeclaration {
     span: 100..120,
 }
 UnionDeclaration {
-    annotations: Empty,
+    annotations: Annotation {
+        attributes: AttributeList {
+            terms: [
+                AttributeTerm {
+                    kind: Normal,
+                    path: NamePathNode {
+                        names: [
+                            Identifier("tag", 151..154),
+                        ],
+                    },
+                    variant: [],
+                    arguments: ArgumentsList {
+                        terms: [],
+                    },
+                    domain: None,
+                },
+            ],
+        },
+    },
     name: Identifier("Union2", 167..173),
     layout: None,
     derive_traits: [],
@@ -19,7 +55,25 @@ UnionDeclaration {
     span: 150..242,
 }
 UnionDeclaration {
-    annotations: Empty,
+    annotations: Annotation {
+        attributes: AttributeList {
+            terms: [
+                AttributeTerm {
+                    kind: Normal,
+                    path: NamePathNode {
+                        names: [
+                            Identifier("tag", 276..279),
+                        ],
+                    },
+                    variant: [],
+                    arguments: ArgumentsList {
+                        terms: [],
+                    },
+                    domain: None,
+                },
+            ],
+        },
+    },
     name: Identifier("Union3", 293..299),
     layout: None,
     derive_traits: [],

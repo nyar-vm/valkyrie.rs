@@ -38,11 +38,13 @@ pub enum ParameterTerm {
     /// `#annotation modifier a: Type = default`
     Single {
         /// The modifiers apply on the parameter
-        modifiers: ModifierList,
+        annotations: AnnotationNode,
         /// The name
         key: IdentifierNode,
-        bound: Option<ExpressionNode>,
-        default: Option<ExpressionNode>,
+        /// The type boundary of the parameter
+        bound: Option<ExpressionKind>,
+        /// The default value of the parameter
+        default: Option<ExpressionKind>,
     },
     /// `#annotation modifier ..list: Type`
     UnpackList {

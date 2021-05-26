@@ -7,6 +7,7 @@ impl crate::DefineLambdaNode {
         let body = self.continuation.build(ctx).recover(&mut errors)?;
         let returns = self.function_middle.returns(ctx).recover(&mut errors)?;
         let parameters = self.function_middle.parameters(ctx).recover(&mut errors)?;
+
         Success {
             value: LambdaNode {
                 annotations: Default::default(),

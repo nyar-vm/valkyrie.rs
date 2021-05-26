@@ -1,5 +1,5 @@
 use super::*;
-use crate::{ParameterItemNode, TypeReturnNode};
+use crate::{ParameterDefaultNode, ParameterItemNode, ParameterPairNode, TypeReturnNode};
 
 impl crate::DefineFunctionNode {
     pub fn build(&self, ctx: &mut ProgramState) -> Validation<FunctionDeclaration> {
@@ -47,7 +47,7 @@ impl crate::FunctionMiddleNode {
         for term in &self.function_parameters.parameter_item {
             term.build(ctx).append(&mut terms, &mut errors)
         }
-        Success { value: ParametersList { kind: ParameterKind::Expression, terms: vec![] }, diagnostics: errors }
+        Success { value: ParametersList { kind: ParameterKind::Expression, terms }, diagnostics: errors }
     }
 }
 
@@ -58,10 +58,27 @@ impl ParameterItemNode {
             ParameterItemNode::LMark => ParameterTerm::LMark,
             ParameterItemNode::OmitDict => ParameterTerm::LMark,
             ParameterItemNode::OmitList => ParameterTerm::LMark,
-            ParameterItemNode::ParameterPair(_) => ParameterTerm::LMark,
+            ParameterItemNode::ParameterPair(v) => v.build(ctx)?,
             ParameterItemNode::RMark => ParameterTerm::RMark,
         };
         Success { value, diagnostics }
+    }
+}
+
+impl ParameterPairNode {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<ParameterTerm> {
+        let mut diagnostics = vec![];
+        let key = self.identifier.build(ctx);
+        let bound = match &self.type_hint {
+            Some(s) => Some(s.type_expression.build(ctx)?),
+            None => None,
+        };
+        let default = match &self.parameter_default {
+            Some(s) => Some(s.main_expression.build(ctx)?),
+            None => None,
+        };
+
+        Success { value: ParameterTerm::Single { annotations: Default::default(), key, bound, default }, diagnostics }
     }
 }
 

@@ -200,7 +200,25 @@ FunctionDeclaration {
         ],
     },
     kind: Micro,
-    annotations: Empty,
+    annotations: Annotation {
+        attributes: AttributeList {
+            terms: [
+                AttributeTerm {
+                    kind: Normal,
+                    path: NamePathNode {
+                        names: [
+                            Identifier("ensures", 285..292),
+                        ],
+                    },
+                    variant: [],
+                    arguments: ArgumentsList {
+                        terms: [],
+                    },
+                    domain: None,
+                },
+            ],
+        },
+    },
     generic: None,
     arguments: ArgumentsList {
         terms: [],
@@ -292,7 +310,16 @@ FunctionDeclaration {
                                     generic: None,
                                     parameters: ParametersList {
                                         kind: Expression,
-                                        terms: [],
+                                        terms: [
+                                            Single {
+                                                annotations: Empty,
+                                                key: Identifier("i", 468..469),
+                                                bound: Some(
+                                                    usize,
+                                                ),
+                                                default: None,
+                                            },
+                                        ],
                                     },
                                     returns: Auto,
                                     body: StatementBlock {

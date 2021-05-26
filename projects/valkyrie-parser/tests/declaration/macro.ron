@@ -24,6 +24,23 @@ FunctionDeclaration {
     },
     kind: Macro,
     annotations: Annotation {
+        attributes: AttributeList {
+            terms: [
+                AttributeTerm {
+                    kind: Normal,
+                    path: NamePathNode {
+                        names: [
+                            Identifier("derive", 124..130),
+                        ],
+                    },
+                    variant: [],
+                    arguments: ArgumentsList {
+                        terms: [],
+                    },
+                    domain: None,
+                },
+            ],
+        },
         modifiers: [
             Identifier("derived", 172..179),
         ],

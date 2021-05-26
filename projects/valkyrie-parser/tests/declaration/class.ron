@@ -49,7 +49,25 @@ ClassDeclaration {
 ClassDeclaration {
     name: Identifier("Inherit1", 168..176),
     kind: Class,
-    annotations: Empty,
+    annotations: Annotation {
+        attributes: AttributeList {
+            terms: [
+                AttributeTerm {
+                    kind: Normal,
+                    path: NamePathNode {
+                        names: [
+                            Identifier("derive", 114..120),
+                        ],
+                    },
+                    variant: [],
+                    arguments: ArgumentsList {
+                        terms: [],
+                    },
+                    domain: None,
+                },
+            ],
+        },
+    },
     generic: None,
     base_classes: None,
     auto_traits: [],
@@ -313,7 +331,51 @@ ClassDeclaration {
 ClassDeclaration {
     name: Identifier("A", 738..739),
     kind: Class,
-    annotations: Empty,
+    annotations: Annotation {
+        attributes: AttributeList {
+            terms: [
+                AttributeTerm {
+                    kind: Normal,
+                    path: NamePathNode {
+                        names: [
+                            Identifier("Copy", 675..679),
+                        ],
+                    },
+                    variant: [],
+                    arguments: ArgumentsList {
+                        terms: [],
+                    },
+                    domain: None,
+                },
+                AttributeTerm {
+                    kind: Normal,
+                    path: NamePathNode {
+                        names: [
+                            Identifier("Debug", 688..693),
+                        ],
+                    },
+                    variant: [],
+                    arguments: ArgumentsList {
+                        terms: [],
+                    },
+                    domain: None,
+                },
+                AttributeTerm {
+                    kind: Normal,
+                    path: NamePathNode {
+                        names: [
+                            Identifier("derive", 704..710),
+                        ],
+                    },
+                    variant: [],
+                    arguments: ArgumentsList {
+                        terms: [],
+                    },
+                    domain: None,
+                },
+            ],
+        },
+    },
     generic: None,
     base_classes: None,
     auto_traits: [],
@@ -324,6 +386,49 @@ ClassDeclaration {
     name: Identifier("Empty3", 863..869),
     kind: Class,
     annotations: Annotation {
+        attributes: AttributeList {
+            terms: [
+                AttributeTerm {
+                    kind: Normal,
+                    path: NamePathNode {
+                        names: [
+                            Identifier("Encode", 754..760),
+                        ],
+                    },
+                    variant: [],
+                    arguments: ArgumentsList {
+                        terms: [],
+                    },
+                    domain: None,
+                },
+                AttributeTerm {
+                    kind: Normal,
+                    path: NamePathNode {
+                        names: [
+                            Identifier("Decode", 762..768),
+                        ],
+                    },
+                    variant: [],
+                    arguments: ArgumentsList {
+                        terms: [],
+                    },
+                    domain: None,
+                },
+                AttributeTerm {
+                    kind: Normal,
+                    path: NamePathNode {
+                        names: [
+                            Identifier("derive", 771..777),
+                        ],
+                    },
+                    variant: [],
+                    arguments: ArgumentsList {
+                        terms: [],
+                    },
+                    domain: None,
+                },
+            ],
+        },
         modifiers: [
             Identifier("public", 803..809),
             Identifier("static", 810..816),
@@ -439,7 +544,25 @@ ClassDeclaration {
 ClassDeclaration {
     name: Identifier("原神", 1149..1155),
     kind: Class,
-    annotations: Empty,
+    annotations: Annotation {
+        attributes: AttributeList {
+            terms: [
+                AttributeTerm {
+                    kind: Normal,
+                    path: NamePathNode {
+                        names: [
+                            Identifier("derive", 1104..1110),
+                        ],
+                    },
+                    variant: [],
+                    arguments: ArgumentsList {
+                        terms: [],
+                    },
+                    domain: None,
+                },
+            ],
+        },
+    },
     generic: None,
     base_classes: None,
     auto_traits: [],
@@ -648,6 +771,23 @@ ClassDeclaration {
                 ],
             },
             annotations: Annotation {
+                attributes: AttributeList {
+                    terms: [
+                        AttributeTerm {
+                            kind: Normal,
+                            path: NamePathNode {
+                                names: [
+                                    Identifier("decorator", 1571..1580),
+                                ],
+                            },
+                            variant: [],
+                            arguments: ArgumentsList {
+                                terms: [],
+                            },
+                            domain: None,
+                        },
+                    ],
+                },
                 modifiers: [
                     Identifier("infix", 1585..1590),
                 ],
@@ -683,7 +823,25 @@ ClassDeclaration {
                     Identifier("join", 1681..1685),
                 ],
             },
-            annotations: Empty,
+            annotations: Annotation {
+                attributes: AttributeList {
+                    terms: [
+                        AttributeTerm {
+                            kind: Normal,
+                            path: NamePathNode {
+                                names: [
+                                    Identifier("inline", 1670..1676),
+                                ],
+                            },
+                            variant: [],
+                            arguments: ArgumentsList {
+                                terms: [],
+                            },
+                            domain: None,
+                        },
+                    ],
+                },
+            },
             generic: None,
             arguments: ArgumentsList {
                 terms: [],
@@ -729,7 +887,25 @@ ClassDeclaration {
 ClassDeclaration {
     name: Identifier("TestClass", 1812..1821),
     kind: Class,
-    annotations: Empty,
+    annotations: Annotation {
+        attributes: AttributeList {
+            terms: [
+                AttributeTerm {
+                    kind: Normal,
+                    path: NamePathNode {
+                        names: [
+                            Identifier("derive", 1767..1773),
+                        ],
+                    },
+                    variant: [],
+                    arguments: ArgumentsList {
+                        terms: [],
+                    },
+                    domain: None,
+                },
+            ],
+        },
+    },
     generic: None,
     base_classes: None,
     auto_traits: [],
@@ -739,7 +915,25 @@ ClassDeclaration {
 ClassDeclaration {
     name: Identifier("Class", 1865..1870),
     kind: Class,
-    annotations: Empty,
+    annotations: Annotation {
+        attributes: AttributeList {
+            terms: [
+                AttributeTerm {
+                    kind: Normal,
+                    path: NamePathNode {
+                        names: [
+                            Identifier("derive", 1829..1835),
+                        ],
+                    },
+                    variant: [],
+                    arguments: ArgumentsList {
+                        terms: [],
+                    },
+                    domain: None,
+                },
+            ],
+        },
+    },
     generic: None,
     base_classes: None,
     auto_traits: [],
@@ -747,6 +941,23 @@ ClassDeclaration {
         FieldDeclaration {
             name: Identifier("field1", 1907..1913),
             annotations: Annotation {
+                attributes: AttributeList {
+                    terms: [
+                        AttributeTerm {
+                            kind: Normal,
+                            path: NamePathNode {
+                                names: [
+                                    Identifier("call", 1885..1889),
+                                ],
+                            },
+                            variant: [],
+                            arguments: ArgumentsList {
+                                terms: [],
+                            },
+                            domain: None,
+                        },
+                    ],
+                },
                 modifiers: [
                     Identifier("readonly", 1894..1902),
                 ],
@@ -796,7 +1007,38 @@ ClassDeclaration {
                     Identifier("try_add", 2055..2062),
                 ],
             },
-            annotations: Empty,
+            annotations: Annotation {
+                attributes: AttributeList {
+                    terms: [
+                        AttributeTerm {
+                            kind: Normal,
+                            path: NamePathNode {
+                                names: [
+                                    Identifier("call1", 2034..2039),
+                                ],
+                            },
+                            variant: [],
+                            arguments: ArgumentsList {
+                                terms: [],
+                            },
+                            domain: None,
+                        },
+                        AttributeTerm {
+                            kind: Normal,
+                            path: NamePathNode {
+                                names: [
+                                    Identifier("call2", 2045..2050),
+                                ],
+                            },
+                            variant: [],
+                            arguments: ArgumentsList {
+                                terms: [],
+                            },
+                            domain: None,
+                        },
+                    ],
+                },
+            },
             generic: None,
             arguments: ArgumentsList {
                 terms: [],

@@ -156,7 +156,16 @@ FunctionDeclaration {
                     generic: None,
                     parameters: ParametersList {
                         kind: Expression,
-                        terms: [],
+                        terms: [
+                            Single {
+                                annotations: Empty,
+                                key: Identifier("rhs", 269..272),
+                                bound: Some(
+                                    R,
+                                ),
+                                default: None,
+                            },
+                        ],
                     },
                     returns: Auto,
                     body: StatementBlock {
@@ -467,7 +476,25 @@ FunctionDeclaration {
 ClassDeclaration {
     name: Identifier("TClass", 1752..1758),
     kind: Class,
-    annotations: Empty,
+    annotations: Annotation {
+        attributes: AttributeList {
+            terms: [
+                AttributeTerm {
+                    kind: Normal,
+                    path: NamePathNode {
+                        names: [
+                            Identifier("derive", 1716..1722),
+                        ],
+                    },
+                    variant: [],
+                    arguments: ArgumentsList {
+                        terms: [],
+                    },
+                    domain: None,
+                },
+            ],
+        },
+    },
     generic: None,
     base_classes: None,
     auto_traits: [],
@@ -492,7 +519,25 @@ FunctionDeclaration {
         ],
     },
     kind: Micro,
-    annotations: Empty,
+    annotations: Annotation {
+        attributes: AttributeList {
+            terms: [
+                AttributeTerm {
+                    kind: Normal,
+                    path: NamePathNode {
+                        names: [
+                            Identifier("derive", 1813..1819),
+                        ],
+                    },
+                    variant: [],
+                    arguments: ArgumentsList {
+                        terms: [],
+                    },
+                    domain: None,
+                },
+            ],
+        },
+    },
     generic: None,
     arguments: ArgumentsList {
         terms: [],
@@ -543,7 +588,16 @@ FunctionDeclaration {
                             generic: None,
                             parameters: ParametersList {
                                 kind: Expression,
-                                terms: [],
+                                terms: [
+                                    Single {
+                                        annotations: Empty,
+                                        key: Identifier("args", 1953..1957),
+                                        bound: None,
+                                        default: None,
+                                    },
+                                    LMark,
+                                    LMark,
+                                ],
                             },
                             returns: ReturnType {
                                 main: T,
@@ -601,6 +655,23 @@ FunctionDeclaration {
     },
     kind: Micro,
     annotations: Annotation {
+        attributes: AttributeList {
+            terms: [
+                AttributeTerm {
+                    kind: Normal,
+                    path: NamePathNode {
+                        names: [
+                            Identifier("require", 2018..2025),
+                        ],
+                    },
+                    variant: [],
+                    arguments: ArgumentsList {
+                        terms: [],
+                    },
+                    domain: None,
+                },
+            ],
+        },
         modifiers: [
             Identifier("public", 2032..2038),
             Identifier("static", 2039..2045),
