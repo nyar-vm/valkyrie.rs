@@ -42,6 +42,13 @@ impl PrettyPrint for AttributeNode {
         terms.into()
     }
 }
+
+impl Debug for AttributeList {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        f.debug_list().entries(self.terms.iter()).finish()
+    }
+}
+
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for AttributeList {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
@@ -72,9 +79,15 @@ impl PrettyPrint for AttributeName {
     }
 }
 
-impl Display for ModifierList {
+impl Debug for ModifierList {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         f.debug_list().entries(self.terms.iter()).finish()
+    }
+}
+
+impl Display for ModifierList {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        f.debug_list().entries(self.terms.iter().map(|v| WrapDisplay::new(&v.name))).finish()
     }
 }
 

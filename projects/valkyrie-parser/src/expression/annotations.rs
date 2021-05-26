@@ -1,7 +1,7 @@
 use super::*;
 use crate::{
     utils::{build_annotation_terms, build_annotation_terms_mix},
-    AttributeItemNode,
+    AnnotationTermMixNode, AnnotationTermNode, AttributeItemNode, ClassBlockNode,
 };
 
 // static PREFIX: &'static str = r#"^(?x)(
@@ -34,6 +34,12 @@ impl AttributeItemNode {
     pub fn build(&self, ctx: &mut ProgramState) -> Validation<AttributeTerm> {
         let mut diagnostics = vec![];
         let path = self.namepath.build(ctx);
+        // let domain = match &self.class_block {
+        //     Some(s) => {
+        //         Some(s.build(ctx).recover(&mut diagnostics)?)
+        //     }
+        //     None => {None}
+        // };
         Success {
             value: AttributeTerm {
                 kind: Default::default(),
@@ -44,5 +50,37 @@ impl AttributeItemNode {
             },
             diagnostics,
         }
+    }
+}
+impl AnnotationTermNode {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<AttributeList> {
+        let mut diagnostics = vec![];
+        let mut terms = vec![];
+        match self {
+            Self::AttributeCall(v) => v.attribute_item.build(ctx).append(&mut terms, &mut diagnostics),
+            Self::AttributeList(v) => {
+                for x in &v.attribute_item {
+                    x.build(ctx).append(&mut terms, &mut diagnostics)
+                }
+            }
+        }
+        Success { value: AttributeList { terms }, diagnostics }
+    }
+}
+
+impl AnnotationTermMixNode {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<AttributeList> {
+        let mut diagnostics = vec![];
+        let mut terms = vec![];
+        match self {
+            Self::AttributeCall(v) => v.attribute_item.build(ctx).append(&mut terms, &mut diagnostics),
+            Self::ProceduralCall(v) => v.attribute_item.build(ctx).append(&mut terms, &mut diagnostics),
+            Self::AttributeList(v) => {
+                for x in &v.attribute_item {
+                    x.build(ctx).append(&mut terms, &mut diagnostics)
+                }
+            }
+        }
+        Success { value: AttributeList { terms }, diagnostics }
     }
 }

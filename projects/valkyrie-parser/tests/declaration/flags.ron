@@ -47,23 +47,21 @@ FlagDeclaration {
     name: Identifier("Extend1", 279..286),
     kind: Juxtapose,
     annotations: Annotation {
-        attributes: AttributeList {
-            terms: [
-                AttributeTerm {
-                    kind: Normal,
-                    path: NamePathNode {
-                        names: [
-                            Identifier("layout", 262..268),
-                        ],
-                    },
-                    variant: [],
-                    arguments: ArgumentsList {
-                        terms: [],
-                    },
-                    domain: None,
+        attributes: [
+            AttributeTerm {
+                kind: Normal,
+                path: NamePathNode {
+                    names: [
+                        Identifier("layout", 262..268),
+                    ],
                 },
-            ],
-        },
+                variant: [],
+                arguments: ArgumentsList {
+                    terms: [],
+                },
+                domain: None,
+            },
+        ],
     },
     layout: None,
     implements: [],

@@ -3,9 +3,7 @@ NamespaceDeclaration {
     path: test∷import,
 }
 ImportStatement {
-    annotation: AttributeList {
-        terms: [],
-    },
+    annotation: [],
     term: Group(
         ImportGroupNode {
             path: NamePathNode {
@@ -17,9 +15,7 @@ ImportStatement {
     span: 24..30,
 }
 ImportStatement {
-    annotation: AttributeList {
-        terms: [],
-    },
+    annotation: [],
     term: Group(
         ImportGroupNode {
             path: NamePathNode {
@@ -31,9 +27,7 @@ ImportStatement {
     span: 31..41,
 }
 ImportStatement {
-    annotation: AttributeList {
-        terms: [],
-    },
+    annotation: [],
     term: Group(
         ImportGroupNode {
             path: NamePathNode {
@@ -45,9 +39,7 @@ ImportStatement {
     span: 43..55,
 }
 ImportStatement {
-    annotation: AttributeList {
-        terms: [],
-    },
+    annotation: [],
     term: Group(
         ImportGroupNode {
             path: NamePathNode {
@@ -59,9 +51,7 @@ ImportStatement {
     span: 55..73,
 }
 ImportStatement {
-    annotation: AttributeList {
-        terms: [],
-    },
+    annotation: [],
     term: Group(
         ImportGroupNode {
             path: NamePathNode {
@@ -73,9 +63,7 @@ ImportStatement {
     span: 73..102,
 }
 ImportStatement {
-    annotation: AttributeList {
-        terms: [],
-    },
+    annotation: [],
     term: Group(
         ImportGroupNode {
             path: NamePathNode {
@@ -87,9 +75,7 @@ ImportStatement {
     span: 102..115,
 }
 ImportStatement {
-    annotation: AttributeList {
-        terms: [],
-    },
+    annotation: [],
     term: Group(
         ImportGroupNode {
             path: NamePathNode {
@@ -101,9 +87,7 @@ ImportStatement {
     span: 115..129,
 }
 ImportStatement {
-    annotation: AttributeList {
-        terms: [],
-    },
+    annotation: [],
     term: Group(
         ImportGroupNode {
             path: NamePathNode {
@@ -115,9 +99,7 @@ ImportStatement {
     span: 129..145,
 }
 ImportStatement {
-    annotation: AttributeList {
-        terms: [],
-    },
+    annotation: [],
     term: Group(
         ImportGroupNode {
             path: NamePathNode {
@@ -129,9 +111,7 @@ ImportStatement {
     span: 145..161,
 }
 ImportStatement {
-    annotation: AttributeList {
-        terms: [],
-    },
+    annotation: [],
     term: Group(
         ImportGroupNode {
             path: NamePathNode {
@@ -143,9 +123,7 @@ ImportStatement {
     span: 161..355,
 }
 ImportStatement {
-    annotation: AttributeList {
-        terms: [],
-    },
+    annotation: [],
     term: Group(
         ImportGroupNode {
             path: NamePathNode {
@@ -157,9 +135,7 @@ ImportStatement {
     span: 355..376,
 }
 ImportStatement {
-    annotation: AttributeList {
-        terms: [],
-    },
+    annotation: [],
     term: Group(
         ImportGroupNode {
             path: NamePathNode {
@@ -171,9 +147,7 @@ ImportStatement {
     span: 377..406,
 }
 ImportStatement {
-    annotation: AttributeList {
-        terms: [],
-    },
+    annotation: [],
     term: Group(
         ImportGroupNode {
             path: NamePathNode {

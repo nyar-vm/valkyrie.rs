@@ -154,19 +154,16 @@ FunctionDeclaration {
                 body: LambdaNode {
                     annotations: Empty,
                     generic: None,
-                    parameters: ParametersList {
-                        kind: Expression,
-                        terms: [
-                            Single {
-                                annotations: Empty,
-                                key: Identifier("rhs", 269..272),
-                                bound: Some(
-                                    R,
-                                ),
-                                default: None,
-                            },
-                        ],
-                    },
+                    parameters: [
+                        Single {
+                            annotations: Empty,
+                            key: Identifier("rhs", 269..272),
+                            bound: Some(
+                                R,
+                            ),
+                            default: None,
+                        },
+                    ],
                     returns: Auto,
                     body: StatementBlock {
                         terms: [
@@ -232,9 +229,9 @@ FunctionDeclaration {
     kind: Micro,
     annotations: Annotation {
         modifiers: [
-            Identifier("public", 395..401),
-            Identifier("static", 402..408),
-            Identifier("final", 409..414),
+            public,
+            static,
+            final,
         ],
     },
     generic: None,
@@ -381,7 +378,7 @@ FunctionDeclaration {
     kind: Micro,
     annotations: Annotation {
         modifiers: [
-            Identifier("inline", 1433..1439),
+            inline,
         ],
     },
     generic: None,
@@ -477,23 +474,21 @@ ClassDeclaration {
     name: Identifier("TClass", 1752..1758),
     kind: Class,
     annotations: Annotation {
-        attributes: AttributeList {
-            terms: [
-                AttributeTerm {
-                    kind: Normal,
-                    path: NamePathNode {
-                        names: [
-                            Identifier("derive", 1716..1722),
-                        ],
-                    },
-                    variant: [],
-                    arguments: ArgumentsList {
-                        terms: [],
-                    },
-                    domain: None,
+        attributes: [
+            AttributeTerm {
+                kind: Normal,
+                path: NamePathNode {
+                    names: [
+                        Identifier("derive", 1716..1722),
+                    ],
                 },
-            ],
-        },
+                variant: [],
+                arguments: ArgumentsList {
+                    terms: [],
+                },
+                domain: None,
+            },
+        ],
     },
     generic: None,
     base_classes: None,
@@ -520,23 +515,21 @@ FunctionDeclaration {
     },
     kind: Micro,
     annotations: Annotation {
-        attributes: AttributeList {
-            terms: [
-                AttributeTerm {
-                    kind: Normal,
-                    path: NamePathNode {
-                        names: [
-                            Identifier("derive", 1813..1819),
-                        ],
-                    },
-                    variant: [],
-                    arguments: ArgumentsList {
-                        terms: [],
-                    },
-                    domain: None,
+        attributes: [
+            AttributeTerm {
+                kind: Normal,
+                path: NamePathNode {
+                    names: [
+                        Identifier("derive", 1813..1819),
+                    ],
                 },
-            ],
-        },
+                variant: [],
+                arguments: ArgumentsList {
+                    terms: [],
+                },
+                domain: None,
+            },
+        ],
     },
     generic: None,
     arguments: ArgumentsList {
@@ -563,11 +556,11 @@ FunctionDeclaration {
     kind: Micro,
     annotations: Annotation {
         modifiers: [
-            Identifier("public", 1857..1863),
-            Identifier("static", 1864..1870),
-            Identifier("void", 1871..1875),
-            Identifier("fun", 1876..1879),
-            Identifier("main", 1880..1884),
+            public,
+            static,
+            void,
+            fun,
+            main,
         ],
     },
     generic: None,
@@ -586,19 +579,16 @@ FunctionDeclaration {
                         base: LambdaNode {
                             annotations: Empty,
                             generic: None,
-                            parameters: ParametersList {
-                                kind: Expression,
-                                terms: [
-                                    Single {
-                                        annotations: Empty,
-                                        key: Identifier("args", 1953..1957),
-                                        bound: None,
-                                        default: None,
-                                    },
-                                    LMark,
-                                    LMark,
-                                ],
-                            },
+                            parameters: [
+                                Single {
+                                    annotations: Empty,
+                                    key: Identifier("args", 1953..1957),
+                                    bound: None,
+                                    default: None,
+                                },
+                                LMark,
+                                LMark,
+                            ],
                             returns: ReturnType {
                                 main: T,
                             },
@@ -655,29 +645,27 @@ FunctionDeclaration {
     },
     kind: Micro,
     annotations: Annotation {
-        attributes: AttributeList {
-            terms: [
-                AttributeTerm {
-                    kind: Normal,
-                    path: NamePathNode {
-                        names: [
-                            Identifier("require", 2018..2025),
-                        ],
-                    },
-                    variant: [],
-                    arguments: ArgumentsList {
-                        terms: [],
-                    },
-                    domain: None,
+        attributes: [
+            AttributeTerm {
+                kind: Normal,
+                path: NamePathNode {
+                    names: [
+                        Identifier("require", 2018..2025),
+                    ],
                 },
-            ],
-        },
+                variant: [],
+                arguments: ArgumentsList {
+                    terms: [],
+                },
+                domain: None,
+            },
+        ],
         modifiers: [
-            Identifier("public", 2032..2038),
-            Identifier("static", 2039..2045),
-            Identifier("void", 2046..2050),
-            Identifier("fun", 2051..2054),
-            Identifier("main", 2055..2059),
+            public,
+            static,
+            void,
+            fun,
+            main,
         ],
     },
     generic: None,

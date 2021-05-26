@@ -24,25 +24,23 @@ FunctionDeclaration {
     },
     kind: Macro,
     annotations: Annotation {
-        attributes: AttributeList {
-            terms: [
-                AttributeTerm {
-                    kind: Normal,
-                    path: NamePathNode {
-                        names: [
-                            Identifier("derive", 124..130),
-                        ],
-                    },
-                    variant: [],
-                    arguments: ArgumentsList {
-                        terms: [],
-                    },
-                    domain: None,
+        attributes: [
+            AttributeTerm {
+                kind: Normal,
+                path: NamePathNode {
+                    names: [
+                        Identifier("derive", 124..130),
+                    ],
                 },
-            ],
-        },
+                variant: [],
+                arguments: ArgumentsList {
+                    terms: [],
+                },
+                domain: None,
+            },
+        ],
         modifiers: [
-            Identifier("derived", 172..179),
+            derived,
         ],
     },
     generic: None,
@@ -64,7 +62,7 @@ FunctionDeclaration {
     kind: Macro,
     annotations: Annotation {
         modifiers: [
-            Identifier("implicit", 200..208),
+            implicit,
         ],
     },
     generic: None,
@@ -244,9 +242,9 @@ FunctionDeclaration {
     kind: Micro,
     annotations: Annotation {
         modifiers: [
-            Identifier("public", 512..518),
-            Identifier("static", 519..525),
-            Identifier("final", 526..531),
+            public,
+            static,
+            final,
         ],
     },
     generic: None,

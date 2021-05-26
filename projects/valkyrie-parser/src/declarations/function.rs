@@ -1,5 +1,7 @@
 use super::*;
-use crate::{ParameterDefaultNode, ParameterItemNode, ParameterPairNode, TypeReturnNode};
+use crate::{
+    DefineGenericNode, GenericParameterPairNode, ParameterDefaultNode, ParameterItemNode, ParameterPairNode, TypeReturnNode,
+};
 
 impl crate::DefineFunctionNode {
     pub fn build(&self, ctx: &mut ProgramState) -> Validation<FunctionDeclaration> {
@@ -49,17 +51,59 @@ impl crate::FunctionMiddleNode {
         }
         Success { value: ParametersList { kind: ParameterKind::Expression, terms }, diagnostics: errors }
     }
+    pub fn generic(&self, ctx: &mut ProgramState) -> Validation<Option<ParametersList>> {
+        let mut errors = vec![];
+        let mut terms = vec![];
+        match &self.define_generic {
+            Some(s) => {
+                for term in &s.generic_parameter.generic_parameter_pair {
+                    term.build(ctx).append(&mut terms, &mut errors)
+                }
+                Success { value: Some(ParametersList { kind: ParameterKind::Generic, terms }), diagnostics: errors }
+            }
+            None => Success { value: None, diagnostics: errors },
+        }
+    }
 }
 
+impl DefineGenericNode {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<ParametersList> {
+        let mut diagnostics = vec![];
+        let mut terms = vec![];
+        for term in &self.generic_parameter.generic_parameter_pair {
+            term.build(ctx).append(&mut terms, &mut diagnostics)
+        }
+        Success { value: ParametersList { kind: ParameterKind::Generic, terms }, diagnostics }
+    }
+}
+
+impl GenericParameterPairNode {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<ParameterTerm> {
+        let mut diagnostics = vec![];
+        let key = self.identifier.build(ctx);
+        // let bound = match &self.type_expression {
+        //     Some(s) => Some(s.type_expression.build(ctx)?),
+        //     None => None,
+        // };
+        // let default = match &self.type_expression {
+        //     Some(s) => Some(s.main_expression.build(ctx)?),
+        //     None => None,
+        // };
+        Success {
+            value: ParameterTerm::Single { annotations: Default::default(), key, bound: None, default: None },
+            diagnostics,
+        }
+    }
+}
 impl ParameterItemNode {
     pub fn build(&self, ctx: &mut ProgramState) -> Validation<ParameterTerm> {
         let mut diagnostics = vec![];
         let value = match self {
-            ParameterItemNode::LMark => ParameterTerm::LMark,
-            ParameterItemNode::OmitDict => ParameterTerm::LMark,
-            ParameterItemNode::OmitList => ParameterTerm::LMark,
-            ParameterItemNode::ParameterPair(v) => v.build(ctx)?,
-            ParameterItemNode::RMark => ParameterTerm::RMark,
+            Self::LMark => ParameterTerm::LMark,
+            Self::OmitDict => ParameterTerm::LMark,
+            Self::OmitList => ParameterTerm::LMark,
+            Self::ParameterPair(v) => v.build(ctx)?,
+            Self::RMark => ParameterTerm::RMark,
         };
         Success { value, diagnostics }
     }
@@ -77,7 +121,6 @@ impl ParameterPairNode {
             Some(s) => Some(s.main_expression.build(ctx)?),
             None => None,
         };
-
         Success { value: ParameterTerm::Single { annotations: Default::default(), key, bound, default }, diagnostics }
     }
 }

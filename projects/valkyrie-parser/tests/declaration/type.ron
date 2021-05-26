@@ -201,23 +201,21 @@ FunctionDeclaration {
     },
     kind: Micro,
     annotations: Annotation {
-        attributes: AttributeList {
-            terms: [
-                AttributeTerm {
-                    kind: Normal,
-                    path: NamePathNode {
-                        names: [
-                            Identifier("ensures", 285..292),
-                        ],
-                    },
-                    variant: [],
-                    arguments: ArgumentsList {
-                        terms: [],
-                    },
-                    domain: None,
+        attributes: [
+            AttributeTerm {
+                kind: Normal,
+                path: NamePathNode {
+                    names: [
+                        Identifier("ensures", 285..292),
+                    ],
                 },
-            ],
-        },
+                variant: [],
+                arguments: ArgumentsList {
+                    terms: [],
+                },
+                domain: None,
+            },
+        ],
     },
     generic: None,
     arguments: ArgumentsList {
@@ -284,7 +282,7 @@ FunctionDeclaration {
     kind: Micro,
     annotations: Annotation {
         modifiers: [
-            Identifier("predicate", 397..406),
+            predicate,
         ],
     },
     generic: None,
@@ -308,19 +306,16 @@ FunctionDeclaration {
                                 value: LambdaNode {
                                     annotations: Empty,
                                     generic: None,
-                                    parameters: ParametersList {
-                                        kind: Expression,
-                                        terms: [
-                                            Single {
-                                                annotations: Empty,
-                                                key: Identifier("i", 468..469),
-                                                bound: Some(
-                                                    usize,
-                                                ),
-                                                default: None,
-                                            },
-                                        ],
-                                    },
+                                    parameters: [
+                                        Single {
+                                            annotations: Empty,
+                                            key: Identifier("i", 468..469),
+                                            bound: Some(
+                                                usize,
+                                            ),
+                                            default: None,
+                                        },
+                                    ],
                                     returns: Auto,
                                     body: StatementBlock {
                                         terms: [

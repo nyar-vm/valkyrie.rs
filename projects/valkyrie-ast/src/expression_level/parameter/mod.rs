@@ -1,4 +1,3 @@
-#[cfg(feature = "pretty-print")]
 mod display;
 
 use super::*;
@@ -14,7 +13,7 @@ pub enum ParameterKind {
 }
 
 /// `micro f(t: Type = default)` or `class F⦓T: Trait = Default⦔`
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Clone, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ParametersList {
     /// The kind of the parameter node

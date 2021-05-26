@@ -44,7 +44,7 @@ pub enum AttributeKind {
 }
 
 /// `@[module∷name.function(args), module∷name.function2(args)] <CAPTURE>`
-#[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
+#[derive(Clone, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct AttributeList {
     /// The modifiers in group
@@ -70,12 +70,13 @@ pub struct AttributeTerm {
 /// `public static final synchronized class Main {}`
 ///
 /// - Auxiliary parsing function, not instantiable.
-#[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
+#[derive(Clone, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ModifierList {
     /// The modifiers in group
     pub terms: Vec<IdentifierNode>,
 }
+
 impl Default for AttributeKind {
     fn default() -> Self {
         Self::Normal
@@ -93,7 +94,11 @@ impl AnnotationNode {
         self.documents.is_empty() && self.attributes.is_empty() && self.modifiers.is_empty()
     }
 }
-
+impl From<AttributeList> for AnnotationNode {
+    fn from(value: AttributeList) -> Self {
+        Self { documents: Default::default(), attributes: value, modifiers: Default::default() }
+    }
+}
 impl AttributeKind {
     /// Returns the string representation of the macro kind.
     pub fn as_str(&self) -> &'static str {

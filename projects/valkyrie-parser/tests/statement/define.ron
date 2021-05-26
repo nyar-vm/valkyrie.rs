@@ -25,7 +25,7 @@ FunctionDeclaration {
     kind: Micro,
     annotations: Annotation {
         modifiers: [
-            Identifier("eager", 21..26),
+            eager,
         ],
     },
     generic: None,
@@ -121,7 +121,7 @@ FunctionDeclaration {
     kind: Micro,
     annotations: Annotation {
         modifiers: [
-            Identifier("lazy", 222..226),
+            lazy,
         ],
     },
     generic: None,

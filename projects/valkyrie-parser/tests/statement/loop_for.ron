@@ -4,9 +4,7 @@ ForLoop {
         name: None,
         terms: [
             IdentifierPattern {
-                modifiers: ModifierList {
-                    terms: [],
-                },
+                modifiers: [],
                 identifier: Identifier("i", 4..5),
             },
         ],
@@ -32,9 +30,7 @@ ForLoop {
         name: None,
         terms: [
             IdentifierPattern {
-                modifiers: ModifierList {
-                    terms: [],
-                },
+                modifiers: [],
                 identifier: Identifier("i", 36..37),
             },
         ],
@@ -54,9 +50,7 @@ ForLoop {
         name: None,
         terms: [
             IdentifierPattern {
-                modifiers: ModifierList {
-                    terms: [],
-                },
+                modifiers: [],
                 identifier: Identifier("i", 62..63),
             },
         ],
@@ -76,15 +70,11 @@ ForLoop {
         name: None,
         terms: [
             IdentifierPattern {
-                modifiers: ModifierList {
-                    terms: [],
-                },
+                modifiers: [],
                 identifier: Identifier("k", 104..105),
             },
             IdentifierPattern {
-                modifiers: ModifierList {
-                    terms: [],
-                },
+                modifiers: [],
                 identifier: Identifier("v", 107..108),
             },
         ],
@@ -100,15 +90,11 @@ ForLoop {
                     name: None,
                     terms: [
                         IdentifierPattern {
-                            modifiers: ModifierList {
-                                terms: [],
-                            },
+                            modifiers: [],
                             identifier: Identifier("i", 129..130),
                         },
                         IdentifierPattern {
-                            modifiers: ModifierList {
-                                terms: [],
-                            },
+                            modifiers: [],
                             identifier: Identifier("j", 132..133),
                         },
                     ],
@@ -139,15 +125,11 @@ ForLoop {
         name: None,
         terms: [
             IdentifierPattern {
-                modifiers: ModifierList {
-                    terms: [],
-                },
+                modifiers: [],
                 identifier: Identifier("k", 176..177),
             },
             IdentifierPattern {
-                modifiers: ModifierList {
-                    terms: [],
-                },
+                modifiers: [],
                 identifier: Identifier("v", 183..184),
             },
         ],
