@@ -1,15 +1,3 @@
-ExpressionNode {
-    omit: false,
-    body: a,
-    span: 14..16,
-}
-ExpressionNode {
-    omit: false,
-    body: b,
-    span: 16..18,
-}
-ExpressionNode {
-    omit: false,
-    body: c,
-    span: 18..20,
-}
+a
+b
+c

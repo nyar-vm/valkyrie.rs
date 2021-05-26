@@ -12,16 +12,9 @@ ForLoop {
     },
     iterator: Placeholder,
     condition: None,
-    then: StatementBlock {
-        terms: [
-            ExpressionNode {
-                omit: false,
-                body: looping,
-                span: 20..28,
-            },
-        ],
-        span: 14..29,
-    },
+    then: [
+        looping,
+    ],
     span: 0..32,
 }
 ForLoop {
@@ -38,10 +31,7 @@ ForLoop {
     },
     iterator: Placeholder,
     condition: None,
-    then: StatementBlock {
-        terms: [],
-        span: 51..55,
-    },
+    then: [],
     span: 32..56,
 }
 ForLoop {
@@ -58,10 +48,7 @@ ForLoop {
     },
     iterator: Placeholder,
     condition: None,
-    then: StatementBlock {
-        terms: [],
-        span: 92..96,
-    },
+    then: [],
     span: 58..97,
 }
 ForLoop {
@@ -82,41 +69,31 @@ ForLoop {
     },
     iterator: Placeholder,
     condition: None,
-    then: StatementBlock {
-        terms: [
-            ForLoop {
-                pattern: TuplePatternNode {
-                    bind: None,
-                    name: None,
-                    terms: [
-                        IdentifierPattern {
-                            modifiers: [],
-                            identifier: Identifier("i", 129..130),
-                        },
-                        IdentifierPattern {
-                            modifiers: [],
-                            identifier: Identifier("j", 132..133),
-                        },
-                    ],
-                    span: 0..0,
-                },
-                iterator: Placeholder,
-                condition: None,
-                then: StatementBlock {
-                    terms: [
-                        ExpressionNode {
-                            omit: false,
-                            body: looping,
-                            span: 153..165,
-                        },
-                    ],
-                    span: 143..166,
-                },
-                span: 124..167,
+    then: [
+        ForLoop {
+            pattern: TuplePatternNode {
+                bind: None,
+                name: None,
+                terms: [
+                    IdentifierPattern {
+                        modifiers: [],
+                        identifier: Identifier("i", 129..130),
+                    },
+                    IdentifierPattern {
+                        modifiers: [],
+                        identifier: Identifier("j", 132..133),
+                    },
+                ],
+                span: 0..0,
             },
-        ],
-        span: 118..168,
-    },
+            iterator: Placeholder,
+            condition: None,
+            then: [
+                looping,
+            ],
+            span: 124..167,
+        },
+    ],
     span: 99..171,
 }
 ForLoop {
@@ -137,15 +114,8 @@ ForLoop {
     },
     iterator: Placeholder,
     condition: None,
-    then: StatementBlock {
-        terms: [
-            ExpressionNode {
-                omit: false,
-                body: looping,
-                span: 210..218,
-            },
-        ],
-        span: 204..219,
-    },
+    then: [
+        looping,
+    ],
     span: 171..221,
 }

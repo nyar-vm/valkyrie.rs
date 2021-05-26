@@ -6,13 +6,10 @@ FunctionDeclaration {
     },
     kind: Micro,
     annotations: Empty,
-    generic: None,
+    generics: [],
     parameters: [],
     returns: Auto,
-    body: StatementBlock {
-        terms: [],
-        span: 13..17,
-    },
+    body: [],
 }
 FunctionDeclaration {
     name: NamePathNode {
@@ -22,15 +19,12 @@ FunctionDeclaration {
     },
     kind: Macro,
     annotations: Empty,
-    generic: None,
+    generics: [],
     parameters: [],
     returns: ReturnType {
         main: R,
     },
-    body: StatementBlock {
-        terms: [],
-        span: 35..39,
-    },
+    body: [],
 }
 FunctionDeclaration {
     name: NamePathNode {
@@ -40,7 +34,7 @@ FunctionDeclaration {
     },
     kind: Micro,
     annotations: Empty,
-    generic: None,
+    generics: [],
     parameters: [
         Single {
             annotations: Empty,
@@ -70,29 +64,22 @@ FunctionDeclaration {
     returns: ReturnType {
         main: R,
     },
-    body: StatementBlock {
-        terms: [
-            ExpressionNode {
-                omit: false,
-                body: ApplyCallNode {
-                    monadic: false,
-                    caller: print,
-                    arguments: ArgumentsList {
-                        terms: [
-                            TupleTermNode {
-                                key: None,
-                                value: 'Hello, world!',
-                            },
-                        ],
+    body: [
+        ApplyCallNode {
+            monadic: false,
+            caller: print,
+            arguments: ArgumentsList {
+                terms: [
+                    TupleTermNode {
+                        key: None,
+                        value: 'Hello, world!',
                     },
-                    body: None,
-                    span: 91..108,
-                },
-                span: 86..109,
+                ],
             },
-        ],
-        span: 80..110,
-    },
+            body: None,
+            span: 91..108,
+        },
+    ],
 }
 FunctionDeclaration {
     name: NamePathNode {
@@ -102,22 +89,20 @@ FunctionDeclaration {
     },
     kind: Micro,
     annotations: Empty,
-    generic: Some(
-        [
-            Single {
-                annotations: Empty,
-                key: Identifier("G", 124..125),
-                bound: None,
-                default: None,
-            },
-            Single {
-                annotations: Empty,
-                key: Identifier("R", 127..128),
-                bound: None,
-                default: None,
-            },
-        ],
-    ),
+    generics: [
+        Single {
+            annotations: Empty,
+            key: Identifier("G", 124..125),
+            bound: None,
+            default: None,
+        },
+        Single {
+            annotations: Empty,
+            key: Identifier("R", 127..128),
+            bound: None,
+            default: None,
+        },
+    ],
     parameters: [
         Single {
             annotations: Empty,
@@ -131,47 +116,32 @@ FunctionDeclaration {
     returns: ReturnType {
         main: R,
     },
-    body: StatementBlock {
-        terms: [
-            ExpressionNode {
-                omit: false,
-                body: InfixNode {
-                    infix: +,
-                    lhs: 1,
-                    rhs: 1,
-                },
-                span: 147..157,
-            },
-            ExpressionNode {
-                omit: false,
-                body: InfixNode {
-                    infix: ∈,
-                    lhs: a,
-                    rhs: b,
-                },
-                span: 157..168,
-            },
-            ExpressionNode {
-                omit: false,
-                body: ApplyCallNode {
-                    monadic: false,
-                    caller: print,
-                    arguments: ArgumentsList {
-                        terms: [
-                            TupleTermNode {
-                                key: None,
-                                value: 'Hello, world!',
-                            },
-                        ],
+    body: [
+        InfixNode {
+            infix: +,
+            lhs: 1,
+            rhs: 1,
+        },
+        InfixNode {
+            infix: ∈,
+            lhs: a,
+            rhs: b,
+        },
+        ApplyCallNode {
+            monadic: false,
+            caller: print,
+            arguments: ArgumentsList {
+                terms: [
+                    TupleTermNode {
+                        key: None,
+                        value: 'Hello, world!',
                     },
-                    body: None,
-                    span: 173..190,
-                },
-                span: 168..191,
+                ],
             },
-        ],
-        span: 141..192,
-    },
+            body: None,
+            span: 173..190,
+        },
+    ],
 }
 FunctionDeclaration {
     name: NamePathNode {
@@ -181,16 +151,14 @@ FunctionDeclaration {
     },
     kind: Macro,
     annotations: Empty,
-    generic: Some(
-        [
-            Single {
-                annotations: Empty,
-                key: Identifier("L", 207..208),
-                bound: None,
-                default: None,
-            },
-        ],
-    ),
+    generics: [
+        Single {
+            annotations: Empty,
+            key: Identifier("L", 207..208),
+            bound: None,
+            default: None,
+        },
+    ],
     parameters: [
         Single {
             annotations: Empty,
@@ -204,87 +172,60 @@ FunctionDeclaration {
     returns: ReturnType {
         main: String,
     },
-    body: StatementBlock {
-        terms: [
-            ExpressionNode {
-                omit: false,
-                body: LambdaNode {
+    body: [
+        LambdaNode {
+            annotations: Empty,
+            generics: [
+                Single {
                     annotations: Empty,
-                    generic: Some(
-                        [
-                            Single {
-                                annotations: Empty,
-                                key: Identifier("R", 266..267),
-                                bound: None,
-                                default: None,
-                            },
-                        ],
+                    key: Identifier("R", 266..267),
+                    bound: None,
+                    default: None,
+                },
+            ],
+            parameters: [
+                Single {
+                    annotations: Empty,
+                    key: Identifier("rhs", 269..272),
+                    bound: Some(
+                        R,
                     ),
-                    parameters: [
-                        Single {
-                            annotations: Empty,
-                            key: Identifier("rhs", 269..272),
-                            bound: Some(
-                                R,
-                            ),
-                            default: None,
+                    default: None,
+                },
+            ],
+            returns: Auto,
+            body: [
+                WhileLoop {
+                    kind: While,
+                    condition: Unconditional,
+                    then: [
+                        InfixNode {
+                            infix: +=,
+                            lhs: count,
+                            rhs: 1,
+                        },
+                        ApplyCallNode {
+                            monadic: false,
+                            caller: print,
+                            arguments: ArgumentsList {
+                                terms: [
+                                    TupleTermNode {
+                                        key: None,
+                                        value: '{lhs} {rhs}',
+                                    },
+                                ],
+                            },
+                            body: None,
+                            span: 346..361,
                         },
                     ],
-                    returns: Auto,
-                    body: StatementBlock {
-                        terms: [
-                            WhileLoop {
-                                kind: While,
-                                condition: Unconditional,
-                                then: StatementBlock {
-                                    terms: [
-                                        ExpressionNode {
-                                            omit: false,
-                                            body: InfixNode {
-                                                infix: +=,
-                                                lhs: count,
-                                                rhs: 1,
-                                            },
-                                            span: 318..341,
-                                        },
-                                        ExpressionNode {
-                                            omit: false,
-                                            body: ApplyCallNode {
-                                                monadic: false,
-                                                caller: print,
-                                                arguments: ArgumentsList {
-                                                    terms: [
-                                                        TupleTermNode {
-                                                            key: None,
-                                                            value: '{lhs} {rhs}',
-                                                        },
-                                                    ],
-                                                },
-                                                body: None,
-                                                span: 346..361,
-                                            },
-                                            span: 341..370,
-                                        },
-                                    ],
-                                    span: 304..371,
-                                },
-                                span: 287..376,
-                            },
-                        ],
-                        span: 277..377,
-                    },
-                    span: 259..377,
+                    span: 287..376,
                 },
-                span: 259..382,
-            },
-            ExpressionNode {
-                omit: false,
-                body: '{count}',
-                span: 382..392,
-            },
-        ],
-        span: 228..393,
-    },
+            ],
+            span: 259..377,
+        },
+        '{count}',
+    ],
 }
 FunctionDeclaration {
     name: NamePathNode {
@@ -300,7 +241,7 @@ FunctionDeclaration {
             final,
         ],
     },
-    generic: None,
+    generics: [],
     parameters: [
         Single {
             annotations: Empty,
@@ -327,47 +268,40 @@ FunctionDeclaration {
     returns: ReturnType {
         main: int,
     },
-    body: StatementBlock {
-        terms: [
-            ExpressionNode {
-                omit: false,
-                body: ApplyCallNode {
-                    monadic: false,
-                    caller: ApplyCallNode {
-                        monadic: false,
-                        caller: outer,
-                        arguments: ArgumentsList {
-                            terms: [
-                                TupleTermNode {
-                                    key: None,
-                                    value: 'Hello',
-                                },
-                            ],
+    body: [
+        ApplyCallNode {
+            monadic: false,
+            caller: ApplyCallNode {
+                monadic: false,
+                caller: outer,
+                arguments: ArgumentsList {
+                    terms: [
+                        TupleTermNode {
+                            key: None,
+                            value: 'Hello',
                         },
-                        body: None,
-                        span: 468..477,
-                    },
-                    arguments: ArgumentsList {
-                        terms: [
-                            TupleTermNode {
-                                key: None,
-                                value: 'world',
-                            },
-                        ],
-                    },
-                    body: None,
-                    span: 477..486,
+                    ],
                 },
-                span: 463..491,
+                body: None,
+                span: 468..477,
             },
-            Control {
-                kind: Return,
-                expression: 0,
-                span: 491..499,
+            arguments: ArgumentsList {
+                terms: [
+                    TupleTermNode {
+                        key: None,
+                        value: 'world',
+                    },
+                ],
             },
-        ],
-        span: 457..501,
-    },
+            body: None,
+            span: 477..486,
+        },
+        Control {
+            kind: Return,
+            expression: 0,
+            span: 491..499,
+        },
+    ],
 }
 FunctionDeclaration {
     name: NamePathNode {
@@ -377,13 +311,10 @@ FunctionDeclaration {
     },
     kind: Micro,
     annotations: Empty,
-    generic: None,
+    generics: [],
     parameters: [],
     returns: Auto,
-    body: StatementBlock {
-        terms: [],
-        span: 519..521,
-    },
+    body: [],
 }
 FunctionDeclaration {
     name: NamePathNode {
@@ -395,7 +326,7 @@ FunctionDeclaration {
     },
     kind: Micro,
     annotations: Empty,
-    generic: None,
+    generics: [],
     parameters: [
         Single {
             annotations: Empty,
@@ -441,16 +372,9 @@ FunctionDeclaration {
         },
     ],
     returns: Auto,
-    body: StatementBlock {
-        terms: [
-            ExpressionNode {
-                omit: false,
-                body: markdown'*italic*',
-                span: 1314..1333,
-            },
-        ],
-        span: 1308..1334,
-    },
+    body: [
+        markdown'*italic*',
+    ],
 }
 FunctionDeclaration {
     name: NamePathNode {
@@ -460,7 +384,7 @@ FunctionDeclaration {
     },
     kind: Micro,
     annotations: Empty,
-    generic: None,
+    generics: [],
     parameters: [
         Single {
             annotations: Empty,
@@ -474,10 +398,7 @@ FunctionDeclaration {
     returns: ReturnType {
         main: Equirecursive,
     },
-    body: StatementBlock {
-        terms: [],
-        span: 1384..1388,
-    },
+    body: [],
 }
 FunctionDeclaration {
     name: NamePathNode {
@@ -487,30 +408,25 @@ FunctionDeclaration {
     },
     kind: Macro,
     annotations: Empty,
-    generic: Some(
-        [
-            Single {
-                annotations: Empty,
-                key: Identifier("R", 1407..1408),
-                bound: None,
-                default: None,
-            },
-            Single {
-                annotations: Empty,
-                key: Identifier("P", 1410..1411),
-                bound: None,
-                default: None,
-            },
-        ],
-    ),
+    generics: [
+        Single {
+            annotations: Empty,
+            key: Identifier("R", 1407..1408),
+            bound: None,
+            default: None,
+        },
+        Single {
+            annotations: Empty,
+            key: Identifier("P", 1410..1411),
+            bound: None,
+            default: None,
+        },
+    ],
     parameters: [],
     returns: ReturnType {
         main: R,
     },
-    body: StatementBlock {
-        terms: [],
-        span: 1424..1428,
-    },
+    body: [],
 }
 FunctionDeclaration {
     name: NamePathNode {
@@ -526,7 +442,7 @@ FunctionDeclaration {
             inline,
         ],
     },
-    generic: None,
+    generics: [],
     parameters: [
         Single {
             annotations: Empty,
@@ -556,48 +472,41 @@ FunctionDeclaration {
     returns: ReturnType {
         main: Range,
     },
-    body: StatementBlock {
-        terms: [
-            ExpressionNode {
-                omit: false,
-                body: ConstructNewNode {
-                    modifiers: [],
-                    namepath: NamePathNode {
-                        names: [
-                            Identifier("std", 1523..1526),
-                            Identifier("iterator", 1528..1536),
-                            Identifier("Range", 1538..1543),
-                        ],
-                    },
-                    generic: GenericCallNode {
-                        monadic: false,
-                        base: Placeholder,
-                        terms: ArgumentsList {
-                            terms: [],
-                        },
-                        associated: [],
-                        span: 0..0,
-                    },
-                    arguments: ApplyCallNode {
-                        monadic: false,
-                        caller: Placeholder,
-                        arguments: ArgumentsList {
-                            terms: [],
-                        },
-                        body: None,
-                        span: 0..0,
-                    },
-                    body: CollectorNode {
-                        terms: [],
-                        span: 0..0,
-                    },
-                    span: 1514..1644,
-                },
-                span: 1514..1644,
+    body: [
+        ConstructNewNode {
+            modifiers: [],
+            namepath: NamePathNode {
+                names: [
+                    Identifier("std", 1523..1526),
+                    Identifier("iterator", 1528..1536),
+                    Identifier("Range", 1538..1543),
+                ],
             },
-        ],
-        span: 1508..1645,
-    },
+            generic: GenericCallNode {
+                monadic: false,
+                base: Placeholder,
+                terms: ArgumentsList {
+                    terms: [],
+                },
+                associated: [],
+                span: 0..0,
+            },
+            arguments: ApplyCallNode {
+                monadic: false,
+                caller: Placeholder,
+                arguments: ArgumentsList {
+                    terms: [],
+                },
+                body: None,
+                span: 0..0,
+            },
+            body: CollectorNode {
+                terms: [],
+                span: 0..0,
+            },
+            span: 1514..1644,
+        },
+    ],
 }
 FunctionDeclaration {
     name: NamePathNode {
@@ -607,7 +516,7 @@ FunctionDeclaration {
     },
     kind: Micro,
     annotations: Empty,
-    generic: None,
+    generics: [],
     parameters: [
         Single {
             annotations: Empty,
@@ -637,29 +546,22 @@ FunctionDeclaration {
     returns: ReturnType {
         main: R,
     },
-    body: StatementBlock {
-        terms: [
-            ExpressionNode {
-                omit: false,
-                body: ApplyCallNode {
-                    monadic: false,
-                    caller: print,
-                    arguments: ArgumentsList {
-                        terms: [
-                            TupleTermNode {
-                                key: None,
-                                value: 'Hello, world!',
-                            },
-                        ],
+    body: [
+        ApplyCallNode {
+            monadic: false,
+            caller: print,
+            arguments: ArgumentsList {
+                terms: [
+                    TupleTermNode {
+                        key: None,
+                        value: 'Hello, world!',
                     },
-                    body: None,
-                    span: 1693..1710,
-                },
-                span: 1688..1711,
+                ],
             },
-        ],
-        span: 1682..1712,
-    },
+            body: None,
+            span: 1693..1710,
+        },
+    ],
 }
 ClassDeclaration {
     name: Identifier("TClass", 1752..1758),
@@ -722,7 +624,7 @@ FunctionDeclaration {
             },
         ],
     },
-    generic: None,
+    generics: [],
     parameters: [
         Single {
             annotations: Empty,
@@ -732,16 +634,9 @@ FunctionDeclaration {
         },
     ],
     returns: Auto,
-    body: StatementBlock {
-        terms: [
-            ExpressionNode {
-                omit: false,
-                body: block,
-                span: 1847..1853,
-            },
-        ],
-        span: 1841..1854,
-    },
+    body: [
+        block,
+    ],
 }
 FunctionDeclaration {
     name: NamePathNode {
@@ -759,16 +654,14 @@ FunctionDeclaration {
             main,
         ],
     },
-    generic: Some(
-        [
-            Single {
-                annotations: Empty,
-                key: Identifier("P", 1902..1903),
-                bound: None,
-                default: None,
-            },
-        ],
-    ),
+    generics: [
+        Single {
+            annotations: Empty,
+            key: Identifier("P", 1902..1903),
+            bound: None,
+            default: None,
+        },
+    ],
     parameters: [
         Single {
             annotations: Empty,
@@ -782,74 +675,60 @@ FunctionDeclaration {
         LMark,
     ],
     returns: Auto,
-    body: StatementBlock {
-        terms: [
-            ExpressionNode {
-                omit: false,
-                body: ApplyCallNode {
-                    monadic: false,
-                    caller: DotCallNode {
-                        monadic: false,
-                        base: LambdaNode {
+    body: [
+        ApplyCallNode {
+            monadic: false,
+            caller: DotCallNode {
+                monadic: false,
+                base: LambdaNode {
+                    annotations: Empty,
+                    generics: [],
+                    parameters: [
+                        Single {
                             annotations: Empty,
-                            generic: None,
-                            parameters: [
-                                Single {
-                                    annotations: Empty,
-                                    key: Identifier("args", 1953..1957),
-                                    bound: None,
-                                    default: None,
-                                },
-                                LMark,
-                                LMark,
-                            ],
-                            returns: ReturnType {
-                                main: T,
+                            key: Identifier("args", 1953..1957),
+                            bound: None,
+                            default: None,
+                        },
+                        LMark,
+                        LMark,
+                    ],
+                    returns: ReturnType {
+                        main: T,
+                    },
+                    body: [
+                        ApplyCallNode {
+                            monadic: false,
+                            caller: DotCallNode {
+                                monadic: false,
+                                base: w,
+                                term: write,
+                                span: 1982..1988,
                             },
-                            body: StatementBlock {
+                            arguments: ArgumentsList {
                                 terms: [
-                                    ExpressionNode {
-                                        omit: false,
-                                        body: ApplyCallNode {
-                                            monadic: false,
-                                            caller: DotCallNode {
-                                                monadic: false,
-                                                base: w,
-                                                term: write,
-                                                span: 1982..1988,
-                                            },
-                                            arguments: ArgumentsList {
-                                                terms: [
-                                                    TupleTermNode {
-                                                        key: None,
-                                                        value: this,
-                                                    },
-                                                ],
-                                            },
-                                            body: None,
-                                            span: 1988..1994,
-                                        },
-                                        span: 1981..1999,
+                                    TupleTermNode {
+                                        key: None,
+                                        value: this,
                                     },
                                 ],
-                                span: 1971..2000,
                             },
-                            span: 1945..2000,
+                            body: None,
+                            span: 1988..1994,
                         },
-                        term: call,
-                        span: 2005..2010,
-                    },
-                    arguments: ArgumentsList {
-                        terms: [],
-                    },
-                    body: None,
-                    span: 2010..2012,
+                    ],
+                    span: 1945..2000,
                 },
-                span: 1932..2013,
+                term: call,
+                span: 2005..2010,
             },
-        ],
-        span: 1926..2014,
-    },
+            arguments: ArgumentsList {
+                terms: [],
+            },
+            body: None,
+            span: 2010..2012,
+        },
+    ],
 }
 FunctionDeclaration {
     name: NamePathNode {
@@ -882,7 +761,7 @@ FunctionDeclaration {
             main,
         ],
     },
-    generic: None,
+    generics: [],
     parameters: [
         Single {
             annotations: Empty,
@@ -913,38 +792,27 @@ FunctionDeclaration {
         },
     ],
     returns: Auto,
-    body: StatementBlock {
-        terms: [
-            ExpressionNode {
-                omit: false,
-                body: InfixNode {
+    body: [
+        InfixNode {
+            infix: /@,
+            lhs: InfixNode {
+                infix: /@,
+                lhs: InfixNode {
                     infix: /@,
-                    lhs: InfixNode {
-                        infix: /@,
-                        lhs: InfixNode {
-                            infix: /@,
-                            lhs: a,
-                            rhs: b,
-                        },
-                        rhs: c,
-                    },
-                    rhs: UnaryNode {
-                        prefix: ⁒,
-                        base: d,
-                    },
+                    lhs: a,
+                    rhs: b,
                 },
-                span: 2107..2131,
+                rhs: c,
             },
-            ExpressionNode {
-                omit: false,
-                body: InfixNode {
-                    infix: ÷,
-                    lhs: 2,
-                    rhs: 3,
-                },
-                span: 2131..2138,
+            rhs: UnaryNode {
+                prefix: ⁒,
+                base: d,
             },
-        ],
-        span: 2101..2139,
-    },
+        },
+        InfixNode {
+            infix: ÷,
+            lhs: 2,
+            rhs: 3,
+        },
+    ],
 }

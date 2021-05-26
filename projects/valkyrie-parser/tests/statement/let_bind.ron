@@ -97,16 +97,12 @@ VariableDeclaration {
     body: None,
     span: 152..163,
 }
-ExpressionNode {
-    omit: false,
-    body: ApplyCallNode {
-        monadic: false,
-        caller: b,
-        arguments: ArgumentsList {
-            terms: [],
-        },
-        body: None,
-        span: 164..170,
+ApplyCallNode {
+    monadic: false,
+    caller: b,
+    arguments: ArgumentsList {
+        terms: [],
     },
-    span: 163..171,
+    body: None,
+    span: 164..170,
 }

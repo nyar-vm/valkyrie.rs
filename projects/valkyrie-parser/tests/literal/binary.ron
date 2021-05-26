@@ -2,53 +2,13 @@ NamespaceDeclaration {
     kind: Standalone,
     path: tests∷literal∷number,
 }
-ExpressionNode {
-    omit: true,
-    body: 0_b0,
-    span: 35..39,
-}
-ExpressionNode {
-    omit: true,
-    body: 0_b1,
-    span: 40..44,
-}
-ExpressionNode {
-    omit: true,
-    body: 0_b10,
-    span: 45..50,
-}
-ExpressionNode {
-    omit: true,
-    body: 0_b11,
-    span: 51..56,
-}
-ExpressionNode {
-    omit: true,
-    body: 0_x0,
-    span: 58..62,
-}
-ExpressionNode {
-    omit: true,
-    body: 0_x1,
-    span: 63..67,
-}
-ExpressionNode {
-    omit: true,
-    body: 0_xF,
-    span: 68..72,
-}
-ExpressionNode {
-    omit: true,
-    body: 0_xFF,
-    span: 73..78,
-}
-ExpressionNode {
-    omit: true,
-    body: 0_xFFF,
-    span: 79..85,
-}
-ExpressionNode {
-    omit: true,
-    body: 0_a_b_c_d,
-    span: 90..99,
-}
+0_b0
+0_b1
+0_b10
+0_b11
+0_x0
+0_x1
+0_xF
+0_xFF
+0_xFFF
+0_a_b_c_d

@@ -1,191 +1,63 @@
-ExpressionNode {
-    omit: true,
-    body: 0,
-    span: 16..18,
+0
+UnaryNode {
+    prefix: +,
+    base: 1,
 }
-ExpressionNode {
-    omit: true,
-    body: UnaryNode {
-        prefix: +,
-        base: 1,
-    },
-    span: 19..22,
+UnaryNode {
+    prefix: -,
+    base: 1,
 }
-ExpressionNode {
-    omit: true,
-    body: UnaryNode {
-        prefix: -,
-        base: 1,
-    },
-    span: 23..26,
+65536_i16
+4294967296_u32
+18446744073709551616_i64
+340282366920938463463374607431768211456_i128
+InfixNode {
+    infix: -,
+    lhs: 115792089237316195423570985008687907853269984665640564039457584007913129639936_i256,
+    rhs: 0.0,
 }
-ExpressionNode {
-    omit: true,
-    body: 65536_i16,
-    span: 27..37,
+UnaryNode {
+    prefix: +,
+    base: 0.0,
 }
-ExpressionNode {
-    omit: false,
-    body: 4294967296_u32,
-    span: 38..53,
+0.0
+UnaryNode {
+    prefix: +,
+    base: 123456.0,
 }
-ExpressionNode {
-    omit: false,
-    body: 18446744073709551616_i64,
-    span: 53..78,
+UnaryNode {
+    prefix: -,
+    base: 0.789,
 }
-ExpressionNode {
-    omit: false,
-    body: 340282366920938463463374607431768211456_i128,
-    span: 78..123,
-}
-ExpressionNode {
-    omit: true,
-    body: InfixNode {
-        infix: -,
-        lhs: 115792089237316195423570985008687907853269984665640564039457584007913129639936_i256,
-        rhs: 0.0,
-    },
-    span: 123..229,
-}
-ExpressionNode {
-    omit: true,
-    body: UnaryNode {
-        prefix: +,
-        base: 0.0,
-    },
-    span: 230..235,
-}
-ExpressionNode {
-    omit: true,
-    body: 0.0,
-    span: 236..240,
-}
-ExpressionNode {
-    omit: true,
-    body: UnaryNode {
-        prefix: +,
-        base: 123456.0,
-    },
-    span: 241..251,
-}
-ExpressionNode {
-    omit: true,
-    body: UnaryNode {
-        prefix: -,
-        base: 0.789,
-    },
-    span: 252..259,
-}
-ExpressionNode {
-    omit: true,
-    body: 42_f32,
-    span: 261..267,
-}
-ExpressionNode {
-    omit: true,
-    body: 42_f32,
-    span: 268..275,
-}
-ExpressionNode {
-    omit: true,
-    body: 42_f64,
-    span: 276..284,
-}
-ExpressionNode {
-    omit: false,
-    body: InfixNode {
+42_f32
+42_f32
+42_f64
+InfixNode {
+    infix: +,
+    lhs: InfixNode {
         infix: +,
         lhs: InfixNode {
             infix: +,
-            lhs: InfixNode {
-                infix: +,
-                lhs: 114,
-                rhs: 514_i,
-            },
-            rhs: 1919_j,
+            lhs: 114,
+            rhs: 514_i,
         },
-        rhs: 810_k,
+        rhs: 1919_j,
     },
-    span: 300..342,
+    rhs: 810_k,
 }
-ExpressionNode {
-    omit: true,
-    body: 42_f32,
-    span: 342..348,
-}
-ExpressionNode {
-    omit: true,
-    body: 42_f32,
-    span: 349..356,
-}
-ExpressionNode {
-    omit: true,
-    body: 42_f64,
-    span: 357..365,
-}
-ExpressionNode {
-    omit: true,
-    body: 1234,
-    span: 381..386,
-}
-ExpressionNode {
-    omit: true,
-    body: 1234_cm,
-    span: 387..394,
-}
-ExpressionNode {
-    omit: true,
-    body: 1234_cm,
-    span: 395..406,
-}
-ExpressionNode {
-    omit: true,
-    body: 1234_cm,
-    span: 407..422,
-}
-ExpressionNode {
-    omit: true,
-    body: 1234.56_埃米,
-    span: 423..437,
-}
-ExpressionNode {
-    omit: true,
-    body: 2⁑6,
-    span: 455..460,
-}
-ExpressionNode {
-    omit: true,
-    body: 2⁑6_f64,
-    span: 461..469,
-}
-ExpressionNode {
-    omit: true,
-    body: 2⁑6_f64,
-    span: 470..479,
-}
-ExpressionNode {
-    omit: true,
-    body: 2⁑6_f64,
-    span: 480..490,
-}
-ExpressionNode {
-    omit: true,
-    body: 11.2233⁑4_f32,
-    span: 491..508,
-}
-ExpressionNode {
-    omit: true,
-    body: 16⁂FF.0⁑-16,
-    span: 510..526,
-}
-ExpressionNode {
-    omit: true,
-    body: 36⁂XX.XX⁑36_f32,
-    span: 527..547,
-}
-ExpressionNode {
-    omit: true,
-    body: 16⁂0.FF⁑f16,
-    span: 548..564,
-}
+42_f32
+42_f32
+42_f64
+1234
+1234_cm
+1234_cm
+1234_cm
+1234.56_埃米
+2⁑6
+2⁑6_f64
+2⁑6_f64
+2⁑6_f64
+11.2233⁑4_f32
+16⁂FF.0⁑-16
+36⁂XX.XX⁑36_f32
+16⁂0.FF⁑f16

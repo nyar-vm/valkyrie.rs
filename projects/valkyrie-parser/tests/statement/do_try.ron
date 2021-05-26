@@ -2,127 +2,95 @@ NamespaceDeclaration {
     kind: Standalone,
     path: std∷create∷test,
 }
-ExpressionNode {
-    omit: false,
-    body: TryStatement {
-        handler: None,
-        body: StatementBlock {
-            terms: [],
-            span: 32..36,
-        },
-        span: 28..36,
-    },
-    span: 28..38,
+TryStatement {
+    handler: None,
+    body: [],
+    span: 28..36,
 }
-ExpressionNode {
-    omit: false,
-    body: TryStatement {
-        handler: Some(
-            UnaryNode {
-                prefix: ℃,
-                base: String,
-            },
-        ),
-        body: StatementBlock {
-            terms: [],
-            span: 50..54,
+TryStatement {
+    handler: Some(
+        UnaryNode {
+            prefix: ℃,
+            base: String,
         },
-        span: 38..54,
-    },
-    span: 38..56,
+    ),
+    body: [],
+    span: 38..54,
 }
-ExpressionNode {
-    omit: false,
-    body: TryStatement {
-        handler: Some(
-            GenericCallNode {
-                monadic: false,
-                base: Option,
-                terms: ArgumentsList {
-                    terms: [
-                        TupleTermNode {
-                            key: None,
-                            value: T,
-                        },
-                    ],
-                },
-                associated: [],
-                span: 66..69,
-            },
-        ),
-        body: StatementBlock {
-            terms: [],
-            span: 70..74,
-        },
-        span: 56..74,
-    },
-    span: 56..76,
-}
-ExpressionNode {
-    omit: false,
-    body: MatchCallNode {
-        monadic: true,
-        base: MatchCallNode {
+TryStatement {
+    handler: Some(
+        GenericCallNode {
             monadic: false,
-            base: TryStatement {
-                handler: Some(
-                    GenericCallNode {
-                        monadic: false,
-                        base: Result,
-                        terms: ArgumentsList {
-                            terms: [
-                                TupleTermNode {
-                                    key: None,
-                                    value: T,
-                                },
-                                TupleTermNode {
-                                    key: None,
-                                    value: Noop,
-                                },
-                            ],
-                        },
-                        associated: [],
-                        span: 86..95,
+            base: Option,
+            terms: ArgumentsList {
+                terms: [
+                    TupleTermNode {
+                        key: None,
+                        value: T,
                     },
-                ),
-                body: StatementBlock {
-                    terms: [
-                        ExpressionNode {
-                            omit: true,
-                            body: ApplyCallNode {
-                                monadic: false,
-                                caller: print,
-                                arguments: ArgumentsList {
-                                    terms: [
-                                        TupleTermNode {
-                                            key: None,
-                                            value: 'try',
-                                        },
-                                    ],
-                                },
-                                body: None,
-                                span: 107..114,
-                            },
-                            span: 102..115,
-                        },
-                    ],
-                    span: 96..117,
-                },
-                span: 76..117,
+                ],
             },
-            kind: Effect,
-            patterns: PatternBlock {
-                branches: [],
-                span: 0..0,
-            },
-            span: 118..181,
+            associated: [],
+            span: 66..69,
         },
-        kind: Typing,
+    ),
+    body: [],
+    span: 56..74,
+}
+MatchCallNode {
+    monadic: true,
+    base: MatchCallNode {
+        monadic: false,
+        base: TryStatement {
+            handler: Some(
+                GenericCallNode {
+                    monadic: false,
+                    base: Result,
+                    terms: ArgumentsList {
+                        terms: [
+                            TupleTermNode {
+                                key: None,
+                                value: T,
+                            },
+                            TupleTermNode {
+                                key: None,
+                                value: Noop,
+                            },
+                        ],
+                    },
+                    associated: [],
+                    span: 86..95,
+                },
+            ),
+            body: [
+                ApplyCallNode {
+                    monadic: false,
+                    caller: print,
+                    arguments: ArgumentsList {
+                        terms: [
+                            TupleTermNode {
+                                key: None,
+                                value: 'try',
+                            },
+                        ],
+                    },
+                    body: None,
+                    span: 107..114,
+                },
+            ],
+            span: 76..117,
+        },
+        kind: Effect,
         patterns: PatternBlock {
             branches: [],
             span: 0..0,
         },
-        span: 181..234,
+        span: 118..181,
     },
-    span: 76..235,
+    kind: Typing,
+    patterns: PatternBlock {
+        branches: [],
+        span: 0..0,
+    },
+    span: 181..234,
 }

@@ -1,35 +1,7 @@
-ExpressionNode {
-    omit: true,
-    body: '\\u{24}',
-    span: 0..9,
-}
-ExpressionNode {
-    omit: true,
-    body: '\\u{03D6}',
-    span: 10..21,
-}
-ExpressionNode {
-    omit: true,
-    body: '\\u{000024}',
-    span: 22..35,
-}
-ExpressionNode {
-    omit: true,
-    body: '\\u{99999999}',
-    span: 36..51,
-}
-ExpressionNode {
-    omit: true,
-    body: '\\n',
-    span: 52..57,
-}
-ExpressionNode {
-    omit: true,
-    body: '\\a',
-    span: 58..63,
-}
-ExpressionNode {
-    omit: true,
-    body: '\\\n',
-    span: 64..69,
-}
+'\\u{24}'
+'\\u{03D6}'
+'\\u{000024}'
+'\\u{99999999}'
+'\\n'
+'\\a'
+'\\\n'

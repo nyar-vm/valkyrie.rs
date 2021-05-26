@@ -1,37 +1,70 @@
-ExpressionNode {
-    omit: true,
-    body: GenericCallNode {
-        monadic: false,
-        base: Object,
-        terms: ArgumentsList {
-            terms: [],
-        },
-        associated: [],
-        span: 20..24,
+GenericCallNode {
+    monadic: false,
+    base: Object,
+    terms: ArgumentsList {
+        terms: [],
     },
-    span: 14..25,
+    associated: [],
+    span: 20..24,
 }
-ExpressionNode {
-    omit: true,
-    body: GenericCallNode {
-        monadic: false,
-        base: Object,
-        terms: ArgumentsList {
-            terms: [
-                TupleTermNode {
-                    key: None,
-                    value: T,
-                },
-            ],
-        },
-        associated: [],
-        span: 32..38,
+GenericCallNode {
+    monadic: false,
+    base: Object,
+    terms: ArgumentsList {
+        terms: [
+            TupleTermNode {
+                key: None,
+                value: T,
+            },
+        ],
     },
-    span: 26..39,
+    associated: [],
+    span: 32..38,
 }
-ExpressionNode {
-    omit: true,
-    body: GenericCallNode {
+GenericCallNode {
+    monadic: false,
+    base: Object,
+    terms: ArgumentsList {
+        terms: [
+            TupleTermNode {
+                key: None,
+                value: T,
+            },
+            TupleTermNode {
+                key: None,
+                value: U,
+            },
+        ],
+    },
+    associated: [],
+    span: 46..53,
+}
+GenericCallNode {
+    monadic: false,
+    base: Object,
+    terms: ArgumentsList {
+        terms: [],
+    },
+    associated: [],
+    span: 78..84,
+}
+GenericCallNode {
+    monadic: false,
+    base: Object,
+    terms: ArgumentsList {
+        terms: [
+            TupleTermNode {
+                key: None,
+                value: T,
+            },
+        ],
+    },
+    associated: [],
+    span: 92..99,
+}
+ApplyCallNode {
+    monadic: false,
+    caller: GenericCallNode {
         monadic: false,
         base: Object,
         terms: ArgumentsList {
@@ -47,77 +80,20 @@ ExpressionNode {
             ],
         },
         associated: [],
-        span: 46..53,
+        span: 107..116,
     },
-    span: 40..54,
-}
-ExpressionNode {
-    omit: true,
-    body: GenericCallNode {
-        monadic: false,
-        base: Object,
-        terms: ArgumentsList {
-            terms: [],
-        },
-        associated: [],
-        span: 78..84,
-    },
-    span: 72..85,
-}
-ExpressionNode {
-    omit: true,
-    body: GenericCallNode {
-        monadic: false,
-        base: Object,
-        terms: ArgumentsList {
-            terms: [
-                TupleTermNode {
-                    key: None,
-                    value: T,
-                },
-            ],
-        },
-        associated: [],
-        span: 92..99,
-    },
-    span: 86..100,
-}
-ExpressionNode {
-    omit: true,
-    body: ApplyCallNode {
-        monadic: false,
-        caller: GenericCallNode {
-            monadic: false,
-            base: Object,
-            terms: ArgumentsList {
-                terms: [
-                    TupleTermNode {
-                        key: None,
-                        value: T,
-                    },
-                    TupleTermNode {
-                        key: None,
-                        value: U,
-                    },
-                ],
+    arguments: ArgumentsList {
+        terms: [
+            TupleTermNode {
+                key: None,
+                value: 1,
             },
-            associated: [],
-            span: 107..116,
-        },
-        arguments: ArgumentsList {
-            terms: [
-                TupleTermNode {
-                    key: None,
-                    value: 1,
-                },
-                TupleTermNode {
-                    key: None,
-                    value: 2,
-                },
-            ],
-        },
-        body: None,
-        span: 116..122,
+            TupleTermNode {
+                key: None,
+                value: 2,
+            },
+        ],
     },
-    span: 101..123,
+    body: None,
+    span: 116..122,
 }

@@ -168,7 +168,7 @@ ClassDeclaration {
                     static,
                 ],
             },
-            generic: None,
+            generics: [],
             parameters: [],
             returns: ReturnType {
                 main: GenericCallNode {
@@ -204,16 +204,13 @@ ClassDeclaration {
                 },
             },
             body: Some(
-                StatementBlock {
-                    terms: [
-                        Control {
-                            kind: Return,
-                            expression: 1,
-                            span: 474..482,
-                        },
-                    ],
-                    span: 464..488,
-                },
+                [
+                    Control {
+                        kind: Return,
+                        expression: 1,
+                        span: 474..482,
+                    },
+                ],
             ),
             span: 429..488,
         },
@@ -235,33 +232,26 @@ ClassDeclaration {
                     get,
                 ],
             },
-            generic: None,
+            generics: [],
             parameters: [],
             returns: Auto,
             body: Some(
-                StatementBlock {
-                    terms: [
-                        ExpressionNode {
-                            omit: false,
-                            body: ApplyCallNode {
-                                monadic: false,
-                                caller: violate,
-                                arguments: ArgumentsList {
-                                    terms: [],
-                                },
-                                body: None,
-                                span: 526..567,
-                            },
-                            span: 519..576,
+                [
+                    ApplyCallNode {
+                        monadic: false,
+                        caller: violate,
+                        arguments: ArgumentsList {
+                            terms: [],
                         },
-                        Control {
-                            kind: Return,
-                            expression: _a,
-                            span: 576..585,
-                        },
-                    ],
-                    span: 509..591,
-                },
+                        body: None,
+                        span: 526..567,
+                    },
+                    Control {
+                        kind: Return,
+                        expression: _a,
+                        span: 576..585,
+                    },
+                ],
             ),
             span: 501..591,
         },
@@ -276,24 +266,17 @@ ClassDeclaration {
                     set,
                 ],
             },
-            generic: None,
+            generics: [],
             parameters: [],
             returns: Auto,
             body: Some(
-                StatementBlock {
-                    terms: [
-                        ExpressionNode {
-                            omit: false,
-                            body: InfixNode {
-                                infix: =,
-                                lhs: _a,
-                                rhs: value,
-                            },
-                            span: 614..629,
-                        },
-                    ],
-                    span: 604..630,
-                },
+                [
+                    InfixNode {
+                        infix: =,
+                        lhs: _a,
+                        rhs: value,
+                    },
+                ],
             ),
             span: 596..630,
         },
@@ -304,23 +287,18 @@ ClassDeclaration {
                 ],
             },
             annotations: Empty,
-            generic: Some(
-                [
-                    Single {
-                        annotations: Empty,
-                        key: Identifier("bool", 642..646),
-                        bound: None,
-                        default: None,
-                    },
-                ],
-            ),
+            generics: [
+                Single {
+                    annotations: Empty,
+                    key: Identifier("bool", 642..646),
+                    bound: None,
+                    default: None,
+                },
+            ],
             parameters: [],
             returns: Auto,
             body: Some(
-                StatementBlock {
-                    terms: [],
-                    span: 651..659,
-                },
+                [],
             ),
             span: 635..659,
         },
@@ -520,14 +498,11 @@ ClassDeclaration {
                 ],
             },
             annotations: Empty,
-            generic: None,
+            generics: [],
             parameters: [],
             returns: Auto,
             body: Some(
-                StatementBlock {
-                    terms: [],
-                    span: 1091..1099,
-                },
+                [],
             ),
             span: 1077..1099,
         },
@@ -565,7 +540,7 @@ ClassDeclaration {
                 ],
             },
             annotations: Empty,
-            generic: None,
+            generics: [],
             parameters: [
                 Single {
                     annotations: Empty,
@@ -578,16 +553,9 @@ ClassDeclaration {
                 main: Unit,
             },
             body: Some(
-                StatementBlock {
-                    terms: [
-                        ExpressionNode {
-                            omit: false,
-                            body: shell'F:\\Games\\Genshin Impact\\UnityCrashHandler64.exe',
-                            span: 1229..1288,
-                        },
-                    ],
-                    span: 1219..1289,
-                },
+                [
+                    shell'F:\\Games\\Genshin Impact\\UnityCrashHandler64.exe',
+                ],
             ),
             span: 1200..1289,
         },
@@ -602,22 +570,15 @@ ClassDeclaration {
                     get,
                 ],
             },
-            generic: None,
+            generics: [],
             parameters: [],
             returns: ReturnType {
                 main: Integer,
             },
             body: Some(
-                StatementBlock {
-                    terms: [
-                        ExpressionNode {
-                            omit: false,
-                            body: _integer,
-                            span: 1325..1338,
-                        },
-                    ],
-                    span: 1315..1339,
-                },
+                [
+                    _integer,
+                ],
             ),
             span: 1294..1339,
         },
@@ -632,20 +593,13 @@ ClassDeclaration {
                     set,
                 ],
             },
-            generic: None,
+            generics: [],
             parameters: [],
             returns: Auto,
             body: Some(
-                StatementBlock {
-                    terms: [
-                        ExpressionNode {
-                            omit: false,
-                            body: _integer,
-                            span: 1366..1379,
-                        },
-                    ],
-                    span: 1356..1380,
-                },
+                [
+                    _integer,
+                ],
             ),
             span: 1344..1380,
         },
@@ -704,14 +658,11 @@ ClassDeclaration {
                     get,
                 ],
             },
-            generic: None,
+            generics: [],
             parameters: [],
             returns: Auto,
             body: Some(
-                StatementBlock {
-                    terms: [],
-                    span: 1523..1525,
-                },
+                [],
             ),
             span: 1508..1525,
         },
@@ -726,14 +677,11 @@ ClassDeclaration {
                     set,
                 ],
             },
-            generic: None,
+            generics: [],
             parameters: [],
             returns: Auto,
             body: Some(
-                StatementBlock {
-                    terms: [],
-                    span: 1546..1548,
-                },
+                [],
             ),
             span: 1531..1548,
         },
@@ -744,7 +692,7 @@ ClassDeclaration {
                 ],
             },
             annotations: Empty,
-            generic: None,
+            generics: [],
             parameters: [],
             returns: Auto,
             body: None,
@@ -776,7 +724,7 @@ ClassDeclaration {
                     infix,
                 ],
             },
-            generic: None,
+            generics: [],
             parameters: [
                 Single {
                     annotations: Empty,
@@ -797,20 +745,17 @@ ClassDeclaration {
                 main: Self,
             },
             body: Some(
-                StatementBlock {
-                    terms: [
-                        Control {
-                            kind: Return,
-                            expression: InfixNode {
-                                infix: /,
-                                lhs: self,
-                                rhs: rhs,
-                            },
-                            span: 1641..1658,
+                [
+                    Control {
+                        kind: Return,
+                        expression: InfixNode {
+                            infix: /,
+                            lhs: self,
+                            rhs: rhs,
                         },
-                    ],
-                    span: 1631..1664,
-                },
+                        span: 1641..1658,
+                    },
+                ],
             ),
             span: 1570..1664,
         },
@@ -837,16 +782,14 @@ ClassDeclaration {
                     },
                 ],
             },
-            generic: Some(
-                [
-                    Single {
-                        annotations: Empty,
-                        key: Identifier("T", 1688..1689),
-                        bound: None,
-                        default: None,
-                    },
-                ],
-            ),
+            generics: [
+                Single {
+                    annotations: Empty,
+                    key: Identifier("T", 1688..1689),
+                    bound: None,
+                    default: None,
+                },
+            ],
             parameters: [
                 Single {
                     annotations: Empty,
@@ -869,34 +812,31 @@ ClassDeclaration {
                 main: T,
             },
             body: Some(
-                StatementBlock {
-                    terms: [
-                        Control {
-                            kind: Return,
-                            expression: ApplyCallNode {
+                [
+                    Control {
+                        kind: Return,
+                        expression: ApplyCallNode {
+                            monadic: false,
+                            caller: DotCallNode {
                                 monadic: false,
-                                caller: DotCallNode {
-                                    monadic: false,
-                                    base: self,
-                                    term: append,
-                                    span: 1742..1749,
-                                },
-                                arguments: ArgumentsList {
-                                    terms: [
-                                        TupleTermNode {
-                                            key: None,
-                                            value: other,
-                                        },
-                                    ],
-                                },
-                                body: None,
-                                span: 1749..1756,
+                                base: self,
+                                term: append,
+                                span: 1742..1749,
                             },
-                            span: 1731..1756,
+                            arguments: ArgumentsList {
+                                terms: [
+                                    TupleTermNode {
+                                        key: None,
+                                        value: other,
+                                    },
+                                ],
+                            },
+                            body: None,
+                            span: 1749..1756,
                         },
-                    ],
-                    span: 1721..1762,
-                },
+                        span: 1731..1756,
+                    },
+                ],
             ),
             span: 1669..1762,
         },
@@ -1050,7 +990,7 @@ ClassDeclaration {
                     },
                 ],
             },
-            generic: None,
+            generics: [],
             parameters: [
                 Single {
                     annotations: Empty,
@@ -1067,16 +1007,9 @@ ClassDeclaration {
             ],
             returns: Auto,
             body: Some(
-                StatementBlock {
-                    terms: [
-                        ExpressionNode {
-                            omit: false,
-                            body: block,
-                            span: 2097..2107,
-                        },
-                    ],
-                    span: 2087..2108,
-                },
+                [
+                    block,
+                ],
             ),
             span: 2033..2108,
         },

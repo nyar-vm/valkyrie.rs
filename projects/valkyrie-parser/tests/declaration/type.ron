@@ -1,105 +1,81 @@
-ExpressionNode {
-    omit: false,
-    body: type,
-    span: 0..5,
-}
-ExpressionNode {
-    omit: true,
-    body: GenericCallNode {
-        monadic: false,
-        base: InfixNode {
-            infix: =,
-            lhs: GenericCallNode {
-                monadic: false,
-                base: Result,
-                terms: ArgumentsList {
-                    terms: [
-                        TupleTermNode {
-                            key: None,
-                            value: T,
-                        },
-                    ],
-                },
-                associated: [],
-                span: 11..19,
-            },
-            rhs: std∷result∷Result,
-        },
-        terms: ArgumentsList {
-            terms: [
-                TupleTermNode {
-                    key: None,
-                    value: T,
-                },
-                TupleTermNode {
-                    key: None,
-                    value: Error,
-                },
-            ],
-        },
-        associated: [],
-        span: 40..54,
-    },
-    span: 5..55,
-}
-ExpressionNode {
-    omit: false,
-    body: type,
-    span: 59..64,
-}
-ExpressionNode {
-    omit: false,
-    body: ApplyCallNode {
-        monadic: false,
-        caller: GenericCallNode {
+type
+GenericCallNode {
+    monadic: false,
+    base: InfixNode {
+        infix: =,
+        lhs: GenericCallNode {
             monadic: false,
-            base: List,
+            base: Result,
             terms: ArgumentsList {
                 terms: [
                     TupleTermNode {
                         key: None,
-                        value: UnaryNode {
-                            prefix: +,
-                            base: T,
-                        },
-                    },
-                    TupleTermNode {
-                        key: None,
-                        value: UnaryNode {
-                            prefix: -,
-                            base: A,
-                        },
+                        value: T,
                     },
                 ],
             },
             associated: [],
-            span: 68..81,
+            span: 11..19,
         },
-        arguments: ArgumentsList {
-            terms: [],
-        },
-        body: None,
-        span: 81..85,
+        rhs: std∷result∷Result,
     },
-    span: 64..88,
-}
-ExpressionNode {
-    omit: false,
-    body: alias,
-    span: 88..94,
-}
-ExpressionNode {
-    omit: true,
-    body: InfixNode {
-        infix: =,
-        lhs: InfixNode {
-            infix: ∈,
-            lhs: type,
-            rhs: t,
-        },
-        rhs: Integer,
+    terms: ArgumentsList {
+        terms: [
+            TupleTermNode {
+                key: None,
+                value: T,
+            },
+            TupleTermNode {
+                key: None,
+                value: Error,
+            },
+        ],
     },
-    span: 94..113,
+    associated: [],
+    span: 40..54,
+}
+type
+ApplyCallNode {
+    monadic: false,
+    caller: GenericCallNode {
+        monadic: false,
+        base: List,
+        terms: ArgumentsList {
+            terms: [
+                TupleTermNode {
+                    key: None,
+                    value: UnaryNode {
+                        prefix: +,
+                        base: T,
+                    },
+                },
+                TupleTermNode {
+                    key: None,
+                    value: UnaryNode {
+                        prefix: -,
+                        base: A,
+                    },
+                },
+            ],
+        },
+        associated: [],
+        span: 68..81,
+    },
+    arguments: ArgumentsList {
+        terms: [],
+    },
+    body: None,
+    span: 81..85,
+}
+alias
+InfixNode {
+    infix: =,
+    lhs: InfixNode {
+        infix: ∈,
+        lhs: type,
+        rhs: t,
+    },
+    rhs: Integer,
 }
 ClassDeclaration {
     name: Identifier("Integer", 121..128),
@@ -118,24 +94,17 @@ ClassDeclaration {
                         ],
                     },
                     annotations: Empty,
-                    generic: None,
+                    generics: [],
                     parameters: [],
                     returns: Auto,
                     body: Some(
-                        StatementBlock {
-                            terms: [
-                                ExpressionNode {
-                                    omit: true,
-                                    body: InfixNode {
-                                        infix: >,
-                                        lhs: Self,
-                                        rhs: 0,
-                                    },
-                                    span: 190..199,
-                                },
-                            ],
-                            span: 176..209,
-                        },
+                        [
+                            InfixNode {
+                                infix: >,
+                                lhs: Self,
+                                rhs: 0,
+                            },
+                        ],
                     ),
                     span: 165..209,
                 },
@@ -146,14 +115,11 @@ ClassDeclaration {
                         ],
                     },
                     annotations: Empty,
-                    generic: None,
+                    generics: [],
                     parameters: [],
                     returns: Auto,
                     body: Some(
-                        StatementBlock {
-                            terms: [],
-                            span: 228..240,
-                        },
+                        [],
                     ),
                     span: 218..240,
                 },
@@ -171,21 +137,14 @@ FunctionDeclaration {
     },
     kind: Micro,
     annotations: Empty,
-    generic: None,
+    generics: [],
     parameters: [],
     returns: ReturnType {
         main: i32,
     },
-    body: StatementBlock {
-        terms: [
-            ExpressionNode {
-                omit: false,
-                body: 5,
-                span: 278..280,
-            },
-        ],
-        span: 272..281,
-    },
+    body: [
+        5,
+    ],
 }
 FunctionDeclaration {
     name: NamePathNode {
@@ -211,7 +170,7 @@ FunctionDeclaration {
             },
         ],
     },
-    generic: None,
+    generics: [],
     parameters: [],
     returns: ReturnType {
         main: TupleNode {
@@ -235,35 +194,28 @@ FunctionDeclaration {
             span: 357..373,
         },
     },
-    body: StatementBlock {
-        terms: [
-            ExpressionNode {
-                omit: false,
-                body: TupleNode {
-                    kind: Tuple,
-                    terms: ArgumentsList {
-                        terms: [
-                            TupleTermNode {
-                                key: None,
-                                value: 10,
-                            },
-                            TupleTermNode {
-                                key: None,
-                                value: 5,
-                            },
-                            TupleTermNode {
-                                key: None,
-                                value: 'a',
-                            },
-                        ],
+    body: [
+        TupleNode {
+            kind: Tuple,
+            terms: ArgumentsList {
+                terms: [
+                    TupleTermNode {
+                        key: None,
+                        value: 10,
                     },
-                    span: 380..392,
-                },
-                span: 380..393,
+                    TupleTermNode {
+                        key: None,
+                        value: 5,
+                    },
+                    TupleTermNode {
+                        key: None,
+                        value: 'a',
+                    },
+                ],
             },
-        ],
-        span: 374..394,
-    },
+            span: 380..392,
+        },
+    ],
 }
 FunctionDeclaration {
     name: NamePathNode {
@@ -277,7 +229,7 @@ FunctionDeclaration {
             predicate,
         ],
     },
-    generic: None,
+    generics: [],
     parameters: [
         Single {
             annotations: Empty,
@@ -294,103 +246,89 @@ FunctionDeclaration {
     returns: ReturnType {
         main: bool,
     },
-    body: StatementBlock {
-        terms: [
-            ExpressionNode {
-                omit: false,
-                body: ApplyCallNode {
-                    monadic: false,
-                    caller: forall,
-                    arguments: ArgumentsList {
-                        terms: [
-                            TupleTermNode {
-                                key: None,
-                                value: LambdaNode {
+    body: [
+        ApplyCallNode {
+            monadic: false,
+            caller: forall,
+            arguments: ArgumentsList {
+                terms: [
+                    TupleTermNode {
+                        key: None,
+                        value: LambdaNode {
+                            annotations: Empty,
+                            generics: [],
+                            parameters: [
+                                Single {
                                     annotations: Empty,
-                                    generic: None,
-                                    parameters: [
-                                        Single {
-                                            annotations: Empty,
-                                            key: Identifier("i", 468..469),
-                                            bound: Some(
-                                                usize,
-                                            ),
-                                            default: None,
-                                        },
-                                    ],
-                                    returns: Auto,
-                                    body: StatementBlock {
-                                        terms: [
-                                            ExpressionNode {
-                                                omit: false,
-                                                body: InfixNode {
-                                                    infix: ==,
-                                                    lhs: ApplyCallNode {
+                                    key: Identifier("i", 468..469),
+                                    bound: Some(
+                                        usize,
+                                    ),
+                                    default: None,
+                                },
+                            ],
+                            returns: Auto,
+                            body: [
+                                InfixNode {
+                                    infix: ==,
+                                    lhs: ApplyCallNode {
+                                        monadic: false,
+                                        caller: DotCallNode {
+                                            monadic: false,
+                                            base: InfixNode {
+                                                infix: ∧,
+                                                lhs: ApplyCallNode {
+                                                    monadic: false,
+                                                    caller: DotCallNode {
                                                         monadic: false,
-                                                        caller: DotCallNode {
-                                                            monadic: false,
-                                                            base: InfixNode {
-                                                                infix: ∧,
-                                                                lhs: ApplyCallNode {
-                                                                    monadic: false,
-                                                                    caller: DotCallNode {
-                                                                        monadic: false,
-                                                                        base: InfixNode {
-                                                                            infix: ∧,
-                                                                            lhs: InfixNode {
-                                                                                infix: ⩽,
-                                                                                lhs: 0,
-                                                                                rhs: i,
-                                                                            },
-                                                                            rhs: InfixNode {
-                                                                                infix: <,
-                                                                                lhs: i,
-                                                                                rhs: a,
-                                                                            },
-                                                                        },
-                                                                        term: len,
-                                                                        span: 503..507,
-                                                                    },
-                                                                    arguments: ArgumentsList {
-                                                                        terms: [],
-                                                                    },
-                                                                    body: None,
-                                                                    span: 507..509,
-                                                                },
+                                                        base: InfixNode {
+                                                            infix: ∧,
+                                                            lhs: InfixNode {
+                                                                infix: ⩽,
+                                                                lhs: 0,
+                                                                rhs: i,
+                                                            },
+                                                            rhs: InfixNode {
+                                                                infix: <,
+                                                                lhs: i,
                                                                 rhs: a,
                                                             },
-                                                            term: lookup,
-                                                            span: 514..521,
                                                         },
-                                                        arguments: ArgumentsList {
-                                                            terms: [
-                                                                TupleTermNode {
-                                                                    key: None,
-                                                                    value: i,
-                                                                },
-                                                            ],
-                                                        },
-                                                        body: None,
-                                                        span: 521..524,
+                                                        term: len,
+                                                        span: 503..507,
                                                     },
-                                                    rhs: 0,
+                                                    arguments: ArgumentsList {
+                                                        terms: [],
+                                                    },
+                                                    body: None,
+                                                    span: 507..509,
                                                 },
-                                                span: 488..534,
+                                                rhs: a,
                                             },
-                                        ],
-                                        span: 478..535,
+                                            term: lookup,
+                                            span: 514..521,
+                                        },
+                                        arguments: ArgumentsList {
+                                            terms: [
+                                                TupleTermNode {
+                                                    key: None,
+                                                    value: i,
+                                                },
+                                            ],
+                                        },
+                                        body: None,
+                                        span: 521..524,
                                     },
-                                    span: 461..535,
+                                    rhs: 0,
                                 },
-                            },
-                        ],
+                            ],
+                            span: 461..535,
+                        },
                     },
-                    body: None,
-                    span: 460..536,
-                },
-                span: 454..537,
+                ],
             },
-        ],
-        span: 448..538,
-    },
+            body: None,
+            span: 460..536,
+        },
+    ],
 }

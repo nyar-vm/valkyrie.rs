@@ -1,26 +1,14 @@
-ExpressionNode {
-    omit: false,
-    body: if,
-    span: 0..3,
-}
-ExpressionNode {
-    omit: false,
-    body: ApplyCallNode {
-        monadic: false,
-        caller: condition1,
-        arguments: ArgumentsList {
-            terms: [],
-        },
-        body: None,
-        span: 13..148,
+if
+ApplyCallNode {
+    monadic: false,
+    caller: condition1,
+    arguments: ArgumentsList {
+        terms: [],
     },
-    span: 3..153,
+    body: None,
+    span: 13..148,
 }
-ExpressionNode {
-    omit: false,
-    body: if,
-    span: 153..156,
-}
+if
 VariableDeclaration {
     pattern: TuplePatternNode {
         bind: None,

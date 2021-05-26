@@ -1,93 +1,69 @@
 WhileLoop {
     kind: While,
     condition: Unconditional,
-    then: StatementBlock {
-        terms: [],
-        span: 6..8,
-    },
+    then: [],
     span: 0..10,
 }
 WhileLoop {
     kind: While,
     condition: Unconditional,
-    then: StatementBlock {
-        terms: [
-            ExpressionNode {
-                omit: true,
-                body: ApplyCallNode {
+    then: [
+        ApplyCallNode {
+            monadic: false,
+            caller: print,
+            arguments: ArgumentsList {
+                terms: [
+                    TupleTermNode {
+                        key: None,
+                        value: 'Loop!',
+                    },
+                ],
+            },
+            body: None,
+            span: 32..41,
+        },
+        WhileLoop {
+            kind: While,
+            condition: Unconditional,
+            then: [
+                ApplyCallNode {
                     monadic: false,
                     caller: print,
                     arguments: ArgumentsList {
                         terms: [
                             TupleTermNode {
                                 key: None,
-                                value: 'Loop!',
+                                value: 'Deep loop!',
                             },
                         ],
                     },
                     body: None,
-                    span: 32..41,
+                    span: 74..88,
                 },
-                span: 27..42,
-            },
-            WhileLoop {
-                kind: While,
-                condition: Unconditional,
-                then: StatementBlock {
-                    terms: [
-                        ExpressionNode {
-                            omit: true,
-                            body: ApplyCallNode {
-                                monadic: false,
-                                caller: print,
-                                arguments: ArgumentsList {
-                                    terms: [
-                                        TupleTermNode {
-                                            key: None,
-                                            value: 'Deep loop!',
-                                        },
-                                    ],
-                                },
-                                body: None,
-                                span: 74..88,
-                            },
-                            span: 69..89,
-                        },
-                        WhileLoop {
-                            kind: While,
-                            condition: Unconditional,
-                            then: StatementBlock {
+                WhileLoop {
+                    kind: While,
+                    condition: Unconditional,
+                    then: [
+                        ApplyCallNode {
+                            monadic: false,
+                            caller: print,
+                            arguments: ArgumentsList {
                                 terms: [
-                                    ExpressionNode {
-                                        omit: true,
-                                        body: ApplyCallNode {
-                                            monadic: false,
-                                            caller: print,
-                                            arguments: ArgumentsList {
-                                                terms: [
-                                                    TupleTermNode {
-                                                        key: None,
-                                                        value: 'Deeper loop!',
-                                                    },
-                                                ],
-                                            },
-                                            body: None,
-                                            span: 130..146,
-                                        },
-                                        span: 125..147,
+                                    TupleTermNode {
+                                        key: None,
+                                        value: 'Deeper loop!',
                                     },
                                 ],
-                                span: 111..157,
                             },
-                            span: 98..162,
+                            body: None,
+                            span: 130..146,
                         },
                     ],
-                    span: 59..163,
+                    span: 98..162,
                 },
-                span: 47..164,
-            },
-        ],
-        span: 21..165,
-    },
+            ],
+            span: 47..164,
+        },
+    ],
     span: 10..166,
 }

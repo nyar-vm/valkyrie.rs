@@ -1,119 +1,90 @@
-ExpressionNode {
-    omit: true,
-    body: ApplyCallNode {
-        monadic: false,
-        caller: f,
-        arguments: ArgumentsList {
-            terms: [],
-        },
-        body: None,
-        span: 21..23,
+ApplyCallNode {
+    monadic: false,
+    caller: f,
+    arguments: ArgumentsList {
+        terms: [],
     },
-    span: 20..24,
+    body: None,
+    span: 21..23,
 }
-ExpressionNode {
-    omit: true,
-    body: ApplyCallNode {
-        monadic: false,
-        caller: f,
-        arguments: ArgumentsList {
-            terms: [
-                TupleTermNode {
-                    key: None,
-                    value: 1,
-                },
-            ],
-        },
-        body: None,
-        span: 26..29,
+ApplyCallNode {
+    monadic: false,
+    caller: f,
+    arguments: ArgumentsList {
+        terms: [
+            TupleTermNode {
+                key: None,
+                value: 1,
+            },
+        ],
     },
-    span: 25..30,
+    body: None,
+    span: 26..29,
 }
-ExpressionNode {
-    omit: true,
-    body: ApplyCallNode {
-        monadic: false,
-        caller: f,
-        arguments: ArgumentsList {
-            terms: [
-                TupleTermNode {
-                    key: Some(
-                        Identifier("k", 33..34),
-                    ),
-                    value: 1,
-                },
-            ],
-        },
-        body: None,
-        span: 32..38,
+ApplyCallNode {
+    monadic: false,
+    caller: f,
+    arguments: ArgumentsList {
+        terms: [
+            TupleTermNode {
+                key: Some(
+                    Identifier("k", 33..34),
+                ),
+                value: 1,
+            },
+        ],
     },
-    span: 31..39,
+    body: None,
+    span: 32..38,
 }
-ExpressionNode {
-    omit: false,
-    body: ApplyCallNode {
-        monadic: false,
-        caller: f,
-        arguments: ArgumentsList {
-            terms: [
-                TupleTermNode {
-                    key: None,
-                    value: null,
+ApplyCallNode {
+    monadic: false,
+    caller: f,
+    arguments: ArgumentsList {
+        terms: [
+            TupleTermNode {
+                key: None,
+                value: null,
+            },
+            TupleTermNode {
+                key: Some(
+                    Identifier("a", 48..49),
+                ),
+                value: 1,
+            },
+            TupleTermNode {
+                key: None,
+                value: UnaryNode {
+                    prefix: ⁑,
+                    base: args,
                 },
-                TupleTermNode {
-                    key: Some(
-                        Identifier("a", 48..49),
-                    ),
-                    value: 1,
+            },
+            TupleTermNode {
+                key: None,
+                value: UnaryNode {
+                    prefix: ⁂,
+                    base: kwargs,
                 },
-                TupleTermNode {
-                    key: None,
-                    value: UnaryNode {
-                        prefix: ⁑,
-                        base: args,
-                    },
-                },
-                TupleTermNode {
-                    key: None,
-                    value: UnaryNode {
-                        prefix: ⁂,
-                        base: kwargs,
-                    },
-                },
-            ],
-        },
-        body: None,
-        span: 41..72,
+            },
+        ],
     },
-    span: 40..92,
+    body: None,
+    span: 41..72,
 }
-ExpressionNode {
-    omit: true,
-    body: ApplyCallNode {
+ApplyCallNode {
+    monadic: false,
+    caller: ApplyCallNode {
         monadic: false,
         caller: ApplyCallNode {
             monadic: false,
             caller: ApplyCallNode {
                 monadic: false,
-                caller: ApplyCallNode {
-                    monadic: false,
-                    caller: f,
-                    arguments: ArgumentsList {
-                        terms: [],
-                    },
-                    body: None,
-                    span: 93..95,
-                },
+                caller: f,
                 arguments: ArgumentsList {
-                    terms: [
-                        TupleTermNode {
-                            key: None,
-                            value: 1,
-                        },
-                    ],
+                    terms: [],
                 },
                 body: None,
-                span: 95..98,
+                span: 93..95,
             },
             arguments: ArgumentsList {
                 terms: [
@@ -121,14 +92,10 @@ ExpressionNode {
                         key: None,
                         value: 1,
                     },
-                    TupleTermNode {
-                        key: None,
-                        value: 2,
-                    },
                 ],
             },
             body: None,
-            span: 98..104,
+            span: 95..98,
         },
         arguments: ArgumentsList {
             terms: [
@@ -140,158 +107,155 @@ ExpressionNode {
                     key: None,
                     value: 2,
                 },
-                TupleTermNode {
-                    key: None,
-                    value: 3,
-                },
             ],
         },
         body: None,
-        span: 104..113,
+        span: 98..104,
     },
-    span: 92..114,
+    arguments: ArgumentsList {
+        terms: [
+            TupleTermNode {
+                key: None,
+                value: 1,
+            },
+            TupleTermNode {
+                key: None,
+                value: 2,
+            },
+            TupleTermNode {
+                key: None,
+                value: 3,
+            },
+        ],
+    },
+    body: None,
+    span: 104..113,
 }
-ExpressionNode {
-    omit: true,
-    body: DotCallNode {
+DotCallNode {
+    monadic: false,
+    base: a,
+    term: b,
+    span: 129..131,
+}
+ApplyCallNode {
+    monadic: false,
+    caller: DotCallNode {
         monadic: false,
         base: a,
         term: b,
-        span: 129..131,
+        span: 134..136,
     },
-    span: 128..132,
+    arguments: ArgumentsList {
+        terms: [],
+    },
+    body: None,
+    span: 136..138,
 }
-ExpressionNode {
-    omit: true,
-    body: ApplyCallNode {
+ApplyCallNode {
+    monadic: false,
+    caller: DotCallNode {
         monadic: false,
-        caller: DotCallNode {
+        base: DotCallNode {
             monadic: false,
             base: a,
             term: b,
-            span: 134..136,
+            span: 141..143,
         },
-        arguments: ArgumentsList {
-            terms: [],
-        },
-        body: None,
-        span: 136..138,
+        term: c,
+        span: 143..145,
     },
-    span: 133..139,
-}
-ExpressionNode {
-    omit: true,
-    body: ApplyCallNode {
-        monadic: false,
-        caller: DotCallNode {
-            monadic: false,
-            base: DotCallNode {
-                monadic: false,
-                base: a,
-                term: b,
-                span: 141..143,
-            },
-            term: c,
-            span: 143..145,
-        },
-        arguments: ArgumentsList {
-            terms: [],
-        },
-        body: None,
-        span: 145..147,
+    arguments: ArgumentsList {
+        terms: [],
     },
-    span: 140..148,
+    body: None,
+    span: 145..147,
 }
-ExpressionNode {
-    omit: true,
-    body: ApplyCallNode {
+ApplyCallNode {
+    monadic: false,
+    caller: ApplyCallNode {
         monadic: false,
         caller: ApplyCallNode {
             monadic: false,
-            caller: ApplyCallNode {
+            caller: DotCallNode {
                 monadic: false,
-                caller: DotCallNode {
+                base: ApplyCallNode {
                     monadic: false,
-                    base: ApplyCallNode {
+                    caller: ApplyCallNode {
                         monadic: false,
-                        caller: ApplyCallNode {
+                        caller: DotCallNode {
                             monadic: false,
-                            caller: DotCallNode {
+                            base: ApplyCallNode {
                                 monadic: false,
-                                base: ApplyCallNode {
-                                    monadic: false,
-                                    caller: a,
-                                    arguments: ArgumentsList {
-                                        terms: [
-                                            TupleTermNode {
-                                                key: None,
-                                                value: 1,
-                                            },
-                                        ],
-                                    },
-                                    body: None,
-                                    span: 150..153,
+                                caller: a,
+                                arguments: ArgumentsList {
+                                    terms: [
+                                        TupleTermNode {
+                                            key: None,
+                                            value: 1,
+                                        },
+                                    ],
                                 },
-                                term: b,
-                                span: 153..155,
+                                body: None,
+                                span: 150..153,
                             },
-                            arguments: ArgumentsList {
-                                terms: [
-                                    TupleTermNode {
-                                        key: None,
-                                        value: 1,
-                                    },
-                                ],
-                            },
-                            body: None,
-                            span: 155..158,
+                            term: b,
+                            span: 153..155,
                         },
                         arguments: ArgumentsList {
                             terms: [
                                 TupleTermNode {
                                     key: None,
-                                    value: 2,
+                                    value: 1,
                                 },
                             ],
                         },
                         body: None,
-                        span: 158..161,
+                        span: 155..158,
                     },
-                    term: b,
-                    span: 161..163,
+                    arguments: ArgumentsList {
+                        terms: [
+                            TupleTermNode {
+                                key: None,
+                                value: 2,
+                            },
+                        ],
+                    },
+                    body: None,
+                    span: 158..161,
                 },
-                arguments: ArgumentsList {
-                    terms: [
-                        TupleTermNode {
-                            key: None,
-                            value: 1,
-                        },
-                    ],
-                },
-                body: None,
-                span: 163..166,
+                term: b,
+                span: 161..163,
             },
             arguments: ArgumentsList {
                 terms: [
                     TupleTermNode {
                         key: None,
-                        value: 2,
+                        value: 1,
                     },
                 ],
             },
             body: None,
-            span: 166..169,
+            span: 163..166,
         },
         arguments: ArgumentsList {
             terms: [
                 TupleTermNode {
                     key: None,
-                    value: 3,
+                    value: 2,
                 },
             ],
         },
         body: None,
-        span: 169..172,
+        span: 166..169,
     },
-    span: 149..173,
+    arguments: ArgumentsList {
+        terms: [
+            TupleTermNode {
+                key: None,
+                value: 3,
+            },
+        ],
+    },
+    body: None,
+    span: 169..172,
 }

@@ -23,7 +23,7 @@ pub struct FunctionDeclaration {
     /// The annotations of this function
     pub annotations: AnnotationNode,
     /// Thy type parameters of this function
-    pub generic: Option<ParametersList>,
+    pub generics: ParametersList,
     // The value parameters of this function
     pub parameters: ParametersList,
     /// The return type of this function
@@ -39,16 +39,17 @@ pub struct FunctionDeclarationInline {
     pub generic: ParametersList,
     /// The range of the number.
     pub arguments: ArgumentsList,
-    pub r#return: Option<ExpressionNode>,
+    pub returns: Option<ExpressionNode>,
     pub body: StatementBlock,
 }
 
 /// `{ a; b; c }`
 ///
 /// - Auxiliary parsing function, not instantiable.
-#[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
+#[derive(Clone, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct StatementBlock {
+    /// The statements of this block
     pub terms: Vec<StatementNode>,
     /// The range of the node
     pub span: Range<u32>,

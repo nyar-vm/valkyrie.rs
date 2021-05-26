@@ -66,11 +66,19 @@ impl crate::DefineMethodNode {
             None => None,
         };
         let parameters = self.function_middle.parameters(ctx).recover(&mut diagnostics)?;
-        let generic = self.function_middle.generic(ctx).recover(&mut diagnostics)?;
+        let generic = self.function_middle.generics(ctx).recover(&mut diagnostics)?;
         let returns = self.function_middle.returns(ctx).recover(&mut diagnostics)?;
         let annotations = self.annotation_mix.annotations(ctx).recover(&mut diagnostics)?;
         Success {
-            value: MethodDeclaration { annotations, name, generic, parameters, returns, body, span: self.span.clone() },
+            value: MethodDeclaration {
+                annotations,
+                name,
+                generics: generic,
+                parameters,
+                returns,
+                body,
+                span: self.span.clone(),
+            },
             diagnostics,
         }
     }

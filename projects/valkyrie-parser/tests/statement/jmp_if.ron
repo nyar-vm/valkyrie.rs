@@ -1,293 +1,157 @@
-ExpressionNode {
-    omit: false,
-    body: if,
-    span: 0..3,
-}
-ExpressionNode {
-    omit: false,
-    body: ApplyCallNode {
-        monadic: false,
-        caller: a,
-        arguments: ArgumentsList {
-            terms: [],
-        },
-        body: None,
-        span: 4..8,
+if
+ApplyCallNode {
+    monadic: false,
+    caller: a,
+    arguments: ArgumentsList {
+        terms: [],
     },
-    span: 3..9,
+    body: None,
+    span: 4..8,
 }
-ExpressionNode {
-    omit: false,
-    body: if,
-    span: 9..12,
-}
-ExpressionNode {
-    omit: false,
-    body: ApplyCallNode {
-        monadic: false,
-        caller: a,
-        arguments: ArgumentsList {
-            terms: [],
-        },
-        body: None,
-        span: 13..17,
+if
+ApplyCallNode {
+    monadic: false,
+    caller: a,
+    arguments: ArgumentsList {
+        terms: [],
     },
-    span: 12..18,
+    body: None,
+    span: 13..17,
 }
-ExpressionNode {
-    omit: false,
-    body: ApplyCallNode {
-        monadic: false,
-        caller: else,
-        arguments: ArgumentsList {
-            terms: [],
-        },
-        body: None,
-        span: 22..26,
+ApplyCallNode {
+    monadic: false,
+    caller: else,
+    arguments: ArgumentsList {
+        terms: [],
     },
-    span: 18..27,
+    body: None,
+    span: 22..26,
 }
-ExpressionNode {
-    omit: false,
-    body: if,
-    span: 27..30,
-}
-ExpressionNode {
-    omit: false,
-    body: ApplyCallNode {
-        monadic: false,
-        caller: a,
-        arguments: ArgumentsList {
-            terms: [],
-        },
-        body: None,
-        span: 31..35,
+if
+ApplyCallNode {
+    monadic: false,
+    caller: a,
+    arguments: ArgumentsList {
+        terms: [],
     },
-    span: 30..36,
+    body: None,
+    span: 31..35,
 }
-ExpressionNode {
-    omit: false,
-    body: else,
-    span: 36..41,
-}
-ExpressionNode {
-    omit: false,
-    body: if,
-    span: 41..44,
-}
-ExpressionNode {
-    omit: false,
-    body: ApplyCallNode {
-        monadic: false,
-        caller: b,
-        arguments: ArgumentsList {
-            terms: [],
-        },
-        body: None,
-        span: 45..49,
+else
+if
+ApplyCallNode {
+    monadic: false,
+    caller: b,
+    arguments: ArgumentsList {
+        terms: [],
     },
-    span: 44..50,
+    body: None,
+    span: 45..49,
 }
-ExpressionNode {
-    omit: false,
-    body: if,
-    span: 50..53,
-}
-ExpressionNode {
-    omit: false,
-    body: ApplyCallNode {
-        monadic: false,
-        caller: a,
-        arguments: ArgumentsList {
-            terms: [],
-        },
-        body: None,
-        span: 54..58,
+if
+ApplyCallNode {
+    monadic: false,
+    caller: a,
+    arguments: ArgumentsList {
+        terms: [],
     },
-    span: 53..59,
+    body: None,
+    span: 54..58,
 }
-ExpressionNode {
-    omit: false,
-    body: else,
-    span: 59..64,
-}
-ExpressionNode {
-    omit: false,
-    body: if,
-    span: 64..67,
-}
-ExpressionNode {
-    omit: false,
-    body: ApplyCallNode {
-        monadic: false,
-        caller: b,
-        arguments: ArgumentsList {
-            terms: [],
-        },
-        body: None,
-        span: 68..72,
+else
+if
+ApplyCallNode {
+    monadic: false,
+    caller: b,
+    arguments: ArgumentsList {
+        terms: [],
     },
-    span: 67..73,
+    body: None,
+    span: 68..72,
 }
-ExpressionNode {
-    omit: false,
-    body: ApplyCallNode {
-        monadic: false,
-        caller: else,
-        arguments: ArgumentsList {
-            terms: [],
-        },
-        body: None,
-        span: 77..81,
+ApplyCallNode {
+    monadic: false,
+    caller: else,
+    arguments: ArgumentsList {
+        terms: [],
     },
-    span: 73..82,
+    body: None,
+    span: 77..81,
 }
-ExpressionNode {
-    omit: false,
-    body: if,
-    span: 82..85,
-}
-ExpressionNode {
-    omit: false,
-    body: ApplyCallNode {
-        monadic: false,
-        caller: a,
-        arguments: ArgumentsList {
-            terms: [],
-        },
-        body: None,
-        span: 86..90,
+if
+ApplyCallNode {
+    monadic: false,
+    caller: a,
+    arguments: ArgumentsList {
+        terms: [],
     },
-    span: 85..91,
+    body: None,
+    span: 86..90,
 }
-ExpressionNode {
-    omit: false,
-    body: else,
-    span: 91..96,
-}
-ExpressionNode {
-    omit: false,
-    body: if,
-    span: 96..99,
-}
-ExpressionNode {
-    omit: false,
-    body: ApplyCallNode {
-        monadic: false,
-        caller: b,
-        arguments: ArgumentsList {
-            terms: [],
-        },
-        body: None,
-        span: 100..104,
+else
+if
+ApplyCallNode {
+    monadic: false,
+    caller: b,
+    arguments: ArgumentsList {
+        terms: [],
     },
-    span: 99..105,
+    body: None,
+    span: 100..104,
 }
-ExpressionNode {
-    omit: false,
-    body: else,
-    span: 105..110,
-}
-ExpressionNode {
-    omit: false,
-    body: if,
-    span: 110..113,
-}
-ExpressionNode {
-    omit: false,
-    body: ApplyCallNode {
-        monadic: false,
-        caller: c,
-        arguments: ArgumentsList {
-            terms: [],
-        },
-        body: None,
-        span: 114..118,
+else
+if
+ApplyCallNode {
+    monadic: false,
+    caller: c,
+    arguments: ArgumentsList {
+        terms: [],
     },
-    span: 113..119,
+    body: None,
+    span: 114..118,
 }
-ExpressionNode {
-    omit: false,
-    body: if,
-    span: 119..122,
-}
-ExpressionNode {
-    omit: false,
-    body: ApplyCallNode {
-        monadic: false,
-        caller: a,
-        arguments: ArgumentsList {
-            terms: [],
-        },
-        body: None,
-        span: 123..127,
+if
+ApplyCallNode {
+    monadic: false,
+    caller: a,
+    arguments: ArgumentsList {
+        terms: [],
     },
-    span: 122..128,
+    body: None,
+    span: 123..127,
 }
-ExpressionNode {
-    omit: false,
-    body: else,
-    span: 128..133,
-}
-ExpressionNode {
-    omit: false,
-    body: if,
-    span: 133..136,
-}
-ExpressionNode {
-    omit: false,
-    body: ApplyCallNode {
-        monadic: false,
-        caller: b,
-        arguments: ArgumentsList {
-            terms: [],
-        },
-        body: None,
-        span: 137..141,
+else
+if
+ApplyCallNode {
+    monadic: false,
+    caller: b,
+    arguments: ArgumentsList {
+        terms: [],
     },
-    span: 136..142,
+    body: None,
+    span: 137..141,
 }
-ExpressionNode {
-    omit: false,
-    body: else,
-    span: 142..147,
-}
-ExpressionNode {
-    omit: false,
-    body: if,
-    span: 147..150,
-}
-ExpressionNode {
-    omit: false,
-    body: ApplyCallNode {
-        monadic: false,
-        caller: c,
-        arguments: ArgumentsList {
-            terms: [],
-        },
-        body: None,
-        span: 151..155,
+else
+if
+ApplyCallNode {
+    monadic: false,
+    caller: c,
+    arguments: ArgumentsList {
+        terms: [],
     },
-    span: 150..156,
+    body: None,
+    span: 151..155,
 }
-ExpressionNode {
-    omit: false,
-    body: ApplyCallNode {
-        monadic: false,
-        caller: else,
-        arguments: ArgumentsList {
-            terms: [],
-        },
-        body: None,
-        span: 160..164,
+ApplyCallNode {
+    monadic: false,
+    caller: else,
+    arguments: ArgumentsList {
+        terms: [],
     },
-    span: 156..167,
+    body: None,
+    span: 160..164,
 }
-ExpressionNode {
-    omit: false,
-    body: if,
-    span: 167..170,
-}
+if
 VariableDeclaration {
     pattern: TuplePatternNode {
         bind: None,
@@ -299,11 +163,7 @@ VariableDeclaration {
     body: None,
     span: 170..219,
 }
-ExpressionNode {
-    omit: false,
-    body: if,
-    span: 219..222,
-}
+if
 VariableDeclaration {
     pattern: TuplePatternNode {
         bind: None,

@@ -1,14 +1,10 @@
-ExpressionNode {
-    omit: false,
-    body: MatchStatement {
-        kind: Typing,
-        bind: None,
-        main: Placeholder,
-        patterns: PatternBlock {
-            branches: [],
-            span: 0..0,
-        },
-        span: 0..37,
+MatchStatement {
+    kind: Typing,
+    bind: None,
+    main: Placeholder,
+    patterns: PatternBlock {
+        branches: [],
+        span: 0..0,
     },
-    span: 0..38,
+    span: 0..37,
 }

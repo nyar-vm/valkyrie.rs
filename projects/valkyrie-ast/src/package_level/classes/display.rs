@@ -99,7 +99,7 @@ impl PrettyPrint for MethodDeclaration {
         let mut terms = PrettySequence::new(10);
         terms += self.annotations.pretty(theme);
         terms += theme.operator(self.name.to_string());
-        if let Some(typing) = &self.generic {
+        if let Some(typing) = &self.generics {
             if !typing.terms.is_empty() {
                 terms += typing.pretty(theme);
             }
@@ -129,7 +129,7 @@ impl Lispify for MethodDeclaration {
         lisp += Lisp::keyword("class/method");
         lisp += self.name.lispify();
         lisp += self.annotations.lispify();
-        if let Some(generic) = &self.generic {
+        if let Some(generic) = &self.generics {
             if !generic.terms.is_empty() {
                 lisp += generic.lispify();
             }

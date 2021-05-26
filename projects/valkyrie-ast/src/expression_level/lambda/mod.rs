@@ -8,9 +8,9 @@ mod display;
 pub struct LambdaNode {
     /// The modifiers of the node.
     pub annotations: AnnotationNode,
-    /// `method_name<T>()`
-    pub generic: Option<ParametersList>,
-    /// `method_name(arguments)`
+    /// Thy type parameters of this function
+    pub generics: ParametersList,
+    /// Thy value parameters of this function
     pub parameters: ParametersList,
     /// `: ReturnType / [EffectType]`
     pub returns: FunctionReturnNode,

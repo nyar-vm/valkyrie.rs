@@ -2,6 +2,7 @@ use super::*;
 mod display;
 mod iters;
 
+/// The flags kind
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum FlagKind {
@@ -34,11 +35,13 @@ pub struct FlagDeclaration {
     /// The range of the node.
     pub span: Range<u32>,
 }
-
+/// Valid terms in the flags statement
 #[derive(Clone, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum FlagTerm {
+    /// `Name = number`
     Encode(EncodeDeclaration),
+    /// `method() { }`
     Method(MethodDeclaration),
 }
 

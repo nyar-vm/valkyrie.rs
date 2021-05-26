@@ -27,7 +27,7 @@ impl PrettyPrint for FunctionDeclaration {
         terms += theme.keyword(self.r#type.as_str());
         terms += " ";
         terms += self.name.pretty(theme);
-        if let Some(gen) = &self.generic {
+        if let Some(gen) = &self.generics {
             terms += gen.pretty(theme);
         }
         terms += self.parameters.pretty(theme);
@@ -47,7 +47,7 @@ impl Lispify for FunctionDeclaration {
         let mut lisp = Lisp::new(6);
         // lisp += self.r#type.lispify();
         lisp += self.name.lispify();
-        if let Some(generic) = &self.generic {
+        if let Some(generic) = &self.generics {
             lisp += generic.lispify();
         }
         lisp += self.parameters.lispify();
@@ -113,6 +113,13 @@ impl Lispify for FunctionEffectNode {
         todo!()
     }
 }
+
+impl Debug for StatementBlock {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        f.debug_list().entries(self.terms.iter()).finish()
+    }
+}
+
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for StatementBlock {
     /// ```vk

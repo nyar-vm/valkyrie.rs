@@ -1,42 +1,6 @@
-ExpressionNode {
-    omit: false,
-    body: ApplyCallNode {
-        monadic: false,
-        caller: SubscriptCallNode {
-            kind: Ordinal,
-            base: ApplyCallNode {
-                monadic: false,
-                caller: a,
-                arguments: ArgumentsList {
-                    terms: [
-                        TupleTermNode {
-                            key: None,
-                            value: 1,
-                        },
-                    ],
-                },
-                body: None,
-                span: 1..4,
-            },
-            monadic: false,
-            terms: [
-                Index {
-                    index: 2,
-                },
-            ],
-            span: 4..7,
-        },
-        arguments: ArgumentsList {
-            terms: [],
-        },
-        body: None,
-        span: 7..10,
-    },
-    span: 0..11,
-}
-ExpressionNode {
-    omit: false,
-    body: SubscriptCallNode {
+ApplyCallNode {
+    monadic: false,
+    caller: SubscriptCallNode {
         kind: Ordinal,
         base: ApplyCallNode {
             monadic: false,
@@ -50,21 +14,73 @@ ExpressionNode {
                 ],
             },
             body: None,
-            span: 12..18,
+            span: 1..4,
         },
         monadic: false,
         terms: [
             Index {
-                index: 3,
+                index: 2,
             },
         ],
-        span: 18..21,
+        span: 4..7,
     },
-    span: 11..22,
+    arguments: ArgumentsList {
+        terms: [],
+    },
+    body: None,
+    span: 7..10,
 }
-ExpressionNode {
-    omit: false,
-    body: ApplyCallNode {
+SubscriptCallNode {
+    kind: Ordinal,
+    base: ApplyCallNode {
+        monadic: false,
+        caller: a,
+        arguments: ArgumentsList {
+            terms: [
+                TupleTermNode {
+                    key: None,
+                    value: 1,
+                },
+            ],
+        },
+        body: None,
+        span: 12..18,
+    },
+    monadic: false,
+    terms: [
+        Index {
+            index: 3,
+        },
+    ],
+    span: 18..21,
+}
+ApplyCallNode {
+    monadic: false,
+    caller: SubscriptCallNode {
+        kind: Ordinal,
+        base: a,
+        monadic: false,
+        terms: [
+            Index {
+                index: 1,
+            },
+        ],
+        span: 23..26,
+    },
+    arguments: ArgumentsList {
+        terms: [
+            TupleTermNode {
+                key: None,
+                value: 2,
+            },
+        ],
+    },
+    body: None,
+    span: 26..32,
+}
+ApplyCallNode {
+    monadic: false,
+    caller: ApplyCallNode {
         monadic: false,
         caller: SubscriptCallNode {
             kind: Ordinal,
@@ -75,7 +91,37 @@ ExpressionNode {
                     index: 1,
                 },
             ],
-            span: 23..26,
+            span: 34..37,
+        },
+        arguments: ArgumentsList {
+            terms: [],
+        },
+        body: None,
+        span: 37..40,
+    },
+    arguments: ArgumentsList {
+        terms: [
+            TupleTermNode {
+                key: None,
+                value: 3,
+            },
+        ],
+    },
+    body: None,
+    span: 40..43,
+}
+SubscriptCallNode {
+    kind: Ordinal,
+    base: ApplyCallNode {
+        monadic: false,
+        caller: ApplyCallNode {
+            monadic: false,
+            caller: a,
+            arguments: ArgumentsList {
+                terms: [],
+            },
+            body: None,
+            span: 45..48,
         },
         arguments: ArgumentsList {
             terms: [
@@ -86,432 +132,294 @@ ExpressionNode {
             ],
         },
         body: None,
-        span: 26..32,
+        span: 48..51,
     },
-    span: 22..33,
+    monadic: false,
+    terms: [
+        Index {
+            index: 3,
+        },
+    ],
+    span: 51..54,
 }
-ExpressionNode {
-    omit: false,
-    body: ApplyCallNode {
-        monadic: false,
-        caller: ApplyCallNode {
+ApplyCallNode {
+    monadic: false,
+    caller: SubscriptCallNode {
+        kind: Ordinal,
+        base: ApplyCallNode {
             monadic: false,
-            caller: SubscriptCallNode {
-                kind: Ordinal,
-                base: a,
-                monadic: false,
-                terms: [
-                    Index {
-                        index: 1,
-                    },
-                ],
-                span: 34..37,
-            },
+            caller: a,
             arguments: ArgumentsList {
                 terms: [],
             },
             body: None,
-            span: 37..40,
-        },
-        arguments: ArgumentsList {
-            terms: [
-                TupleTermNode {
-                    key: None,
-                    value: 3,
-                },
-            ],
-        },
-        body: None,
-        span: 40..43,
-    },
-    span: 33..44,
-}
-ExpressionNode {
-    omit: false,
-    body: SubscriptCallNode {
-        kind: Ordinal,
-        base: ApplyCallNode {
-            monadic: false,
-            caller: ApplyCallNode {
-                monadic: false,
-                caller: a,
-                arguments: ArgumentsList {
-                    terms: [],
-                },
-                body: None,
-                span: 45..48,
-            },
-            arguments: ArgumentsList {
-                terms: [
-                    TupleTermNode {
-                        key: None,
-                        value: 2,
-                    },
-                ],
-            },
-            body: None,
-            span: 48..51,
+            span: 56..59,
         },
         monadic: false,
         terms: [
             Index {
-                index: 3,
+                index: 2,
             },
         ],
-        span: 51..54,
+        span: 59..62,
     },
-    span: 44..55,
-}
-ExpressionNode {
-    omit: false,
-    body: ApplyCallNode {
-        monadic: false,
-        caller: SubscriptCallNode {
-            kind: Ordinal,
-            base: ApplyCallNode {
-                monadic: false,
-                caller: a,
-                arguments: ArgumentsList {
-                    terms: [],
-                },
-                body: None,
-                span: 56..59,
+    arguments: ArgumentsList {
+        terms: [
+            TupleTermNode {
+                key: None,
+                value: 3,
             },
-            monadic: false,
-            terms: [
-                Index {
-                    index: 2,
-                },
-            ],
-            span: 59..62,
+        ],
+    },
+    body: None,
+    span: 62..65,
+}
+SubscriptCallNode {
+    kind: Ordinal,
+    base: ℤ,
+    monadic: false,
+    terms: [],
+    span: 71..73,
+}
+SubscriptCallNode {
+    kind: Ordinal,
+    base: ℤ,
+    monadic: false,
+    terms: [
+        Range {
+            head: None,
+            tail: None,
+            step: None,
         },
-        arguments: ArgumentsList {
-            terms: [
-                TupleTermNode {
-                    key: None,
-                    value: 3,
-                },
-            ],
+    ],
+    span: 78..81,
+}
+SubscriptCallNode {
+    kind: Ordinal,
+    base: ℤ,
+    monadic: false,
+    terms: [
+        Range {
+            head: Some(
+                head,
+            ),
+            tail: None,
+            step: None,
         },
-        body: None,
-        span: 62..65,
-    },
-    span: 55..68,
+    ],
+    span: 85..92,
 }
-ExpressionNode {
-    omit: false,
-    body: SubscriptCallNode {
-        kind: Ordinal,
-        base: ℤ,
-        monadic: false,
-        terms: [],
-        span: 71..73,
-    },
-    span: 68..75,
+SubscriptCallNode {
+    kind: Ordinal,
+    base: ℤ,
+    monadic: false,
+    terms: [
+        Range {
+            head: None,
+            tail: Some(
+                tail,
+            ),
+            step: None,
+        },
+    ],
+    span: 96..103,
 }
-ExpressionNode {
-    omit: false,
-    body: SubscriptCallNode {
-        kind: Ordinal,
-        base: ℤ,
-        monadic: false,
-        terms: [
-            Range {
-                head: None,
-                tail: None,
-                step: None,
-            },
-        ],
-        span: 78..81,
-    },
-    span: 75..82,
+SubscriptCallNode {
+    kind: Ordinal,
+    base: ℤ,
+    monadic: false,
+    terms: [
+        Range {
+            head: Some(
+                head,
+            ),
+            tail: Some(
+                tail,
+            ),
+            step: None,
+        },
+    ],
+    span: 107..118,
 }
-ExpressionNode {
-    omit: false,
-    body: SubscriptCallNode {
-        kind: Ordinal,
-        base: ℤ,
-        monadic: false,
-        terms: [
-            Range {
-                head: Some(
-                    head,
-                ),
-                tail: None,
-                step: None,
-            },
-        ],
-        span: 85..92,
-    },
-    span: 82..93,
+SubscriptCallNode {
+    kind: Ordinal,
+    base: ℤ,
+    monadic: false,
+    terms: [
+        Range {
+            head: None,
+            tail: None,
+            step: None,
+        },
+    ],
+    span: 123..127,
 }
-ExpressionNode {
-    omit: false,
-    body: SubscriptCallNode {
-        kind: Ordinal,
-        base: ℤ,
-        monadic: false,
-        terms: [
-            Range {
-                head: None,
-                tail: Some(
-                    tail,
-                ),
-                step: None,
-            },
-        ],
-        span: 96..103,
-    },
-    span: 93..104,
+SubscriptCallNode {
+    kind: Ordinal,
+    base: ℤ,
+    monadic: false,
+    terms: [
+        Range {
+            head: None,
+            tail: None,
+            step: None,
+        },
+    ],
+    span: 131..138,
 }
-ExpressionNode {
-    omit: false,
-    body: SubscriptCallNode {
-        kind: Ordinal,
-        base: ℤ,
-        monadic: false,
-        terms: [
-            Range {
-                head: Some(
-                    head,
-                ),
-                tail: Some(
-                    tail,
-                ),
-                step: None,
-            },
-        ],
-        span: 107..118,
-    },
-    span: 104..120,
+SubscriptCallNode {
+    kind: Ordinal,
+    base: ℤ,
+    monadic: false,
+    terms: [
+        Range {
+            head: Some(
+                head,
+            ),
+            tail: None,
+            step: None,
+        },
+    ],
+    span: 142..150,
 }
-ExpressionNode {
-    omit: false,
-    body: SubscriptCallNode {
-        kind: Ordinal,
-        base: ℤ,
-        monadic: false,
-        terms: [
-            Range {
-                head: None,
-                tail: None,
-                step: None,
-            },
-        ],
-        span: 123..127,
-    },
-    span: 120..128,
+SubscriptCallNode {
+    kind: Ordinal,
+    base: ℤ,
+    monadic: false,
+    terms: [
+        Range {
+            head: Some(
+                head,
+            ),
+            tail: None,
+            step: None,
+        },
+    ],
+    span: 154..163,
 }
-ExpressionNode {
-    omit: false,
-    body: SubscriptCallNode {
-        kind: Ordinal,
-        base: ℤ,
-        monadic: false,
-        terms: [
-            Range {
-                head: None,
-                tail: None,
-                step: None,
-            },
-        ],
-        span: 131..138,
-    },
-    span: 128..139,
+SubscriptCallNode {
+    kind: Ordinal,
+    base: ℤ,
+    monadic: false,
+    terms: [
+        Range {
+            head: None,
+            tail: Some(
+                tail,
+            ),
+            step: None,
+        },
+    ],
+    span: 167..175,
 }
-ExpressionNode {
-    omit: false,
-    body: SubscriptCallNode {
-        kind: Ordinal,
-        base: ℤ,
-        monadic: false,
-        terms: [
-            Range {
-                head: Some(
-                    head,
-                ),
-                tail: None,
-                step: None,
-            },
-        ],
-        span: 142..150,
-    },
-    span: 139..151,
+SubscriptCallNode {
+    kind: Ordinal,
+    base: ℤ,
+    monadic: false,
+    terms: [
+        Range {
+            head: None,
+            tail: None,
+            step: Some(
+                step,
+            ),
+        },
+    ],
+    span: 179..187,
 }
-ExpressionNode {
-    omit: false,
-    body: SubscriptCallNode {
-        kind: Ordinal,
-        base: ℤ,
-        monadic: false,
-        terms: [
-            Range {
-                head: Some(
-                    head,
-                ),
-                tail: None,
-                step: None,
-            },
-        ],
-        span: 154..163,
-    },
-    span: 151..164,
+SubscriptCallNode {
+    kind: Ordinal,
+    base: ℤ,
+    monadic: false,
+    terms: [
+        Range {
+            head: None,
+            tail: None,
+            step: Some(
+                step,
+            ),
+        },
+    ],
+    span: 191..200,
 }
-ExpressionNode {
-    omit: false,
-    body: SubscriptCallNode {
-        kind: Ordinal,
-        base: ℤ,
-        monadic: false,
-        terms: [
-            Range {
-                head: None,
-                tail: Some(
-                    tail,
-                ),
-                step: None,
-            },
-        ],
-        span: 167..175,
-    },
-    span: 164..176,
+SubscriptCallNode {
+    kind: Ordinal,
+    base: ℤ,
+    monadic: false,
+    terms: [
+        Range {
+            head: Some(
+                head,
+            ),
+            tail: Some(
+                tail,
+            ),
+            step: None,
+        },
+    ],
+    span: 204..216,
 }
-ExpressionNode {
-    omit: false,
-    body: SubscriptCallNode {
-        kind: Ordinal,
-        base: ℤ,
-        monadic: false,
-        terms: [
-            Range {
-                head: None,
-                tail: None,
-                step: Some(
-                    step,
-                ),
-            },
-        ],
-        span: 179..187,
-    },
-    span: 176..188,
+SubscriptCallNode {
+    kind: Ordinal,
+    base: ℤ,
+    monadic: false,
+    terms: [
+        Range {
+            head: None,
+            tail: Some(
+                tail,
+            ),
+            step: Some(
+                step,
+            ),
+        },
+    ],
+    span: 220..232,
 }
-ExpressionNode {
-    omit: false,
-    body: SubscriptCallNode {
-        kind: Ordinal,
-        base: ℤ,
-        monadic: false,
-        terms: [
-            Range {
-                head: None,
-                tail: None,
-                step: Some(
-                    step,
-                ),
-            },
-        ],
-        span: 191..200,
-    },
-    span: 188..201,
+SubscriptCallNode {
+    kind: Ordinal,
+    base: ℤ,
+    monadic: false,
+    terms: [
+        Index {
+            index: head∷step,
+        },
+    ],
+    span: 236..248,
 }
-ExpressionNode {
-    omit: false,
-    body: SubscriptCallNode {
-        kind: Ordinal,
-        base: ℤ,
-        monadic: false,
-        terms: [
-            Range {
-                head: Some(
-                    head,
-                ),
-                tail: Some(
-                    tail,
-                ),
-                step: None,
-            },
-        ],
-        span: 204..216,
-    },
-    span: 201..217,
+SubscriptCallNode {
+    kind: Ordinal,
+    base: ℤ,
+    monadic: false,
+    terms: [
+        Range {
+            head: Some(
+                head,
+            ),
+            tail: None,
+            step: Some(
+                step,
+            ),
+        },
+    ],
+    span: 252..265,
 }
-ExpressionNode {
-    omit: false,
-    body: SubscriptCallNode {
-        kind: Ordinal,
-        base: ℤ,
-        monadic: false,
-        terms: [
-            Range {
-                head: None,
-                tail: Some(
-                    tail,
-                ),
-                step: Some(
-                    step,
-                ),
-            },
-        ],
-        span: 220..232,
-    },
-    span: 217..233,
-}
-ExpressionNode {
-    omit: false,
-    body: SubscriptCallNode {
-        kind: Ordinal,
-        base: ℤ,
-        monadic: false,
-        terms: [
-            Index {
-                index: head∷step,
-            },
-        ],
-        span: 236..248,
-    },
-    span: 233..249,
-}
-ExpressionNode {
-    omit: false,
-    body: SubscriptCallNode {
-        kind: Ordinal,
-        base: ℤ,
-        monadic: false,
-        terms: [
-            Range {
-                head: Some(
-                    head,
-                ),
-                tail: None,
-                step: Some(
-                    step,
-                ),
-            },
-        ],
-        span: 252..265,
-    },
-    span: 249..266,
-}
-ExpressionNode {
-    omit: false,
-    body: SubscriptCallNode {
-        kind: Ordinal,
-        base: ℤ,
-        monadic: false,
-        terms: [
-            Range {
-                head: Some(
-                    head,
-                ),
-                tail: Some(
-                    tail,
-                ),
-                step: Some(
-                    step,
-                ),
-            },
-        ],
-        span: 269..285,
-    },
-    span: 266..287,
+SubscriptCallNode {
+    kind: Ordinal,
+    base: ℤ,
+    monadic: false,
+    terms: [
+        Range {
+            head: Some(
+                head,
+            ),
+            tail: Some(
+                tail,
+            ),
+            step: Some(
+                step,
+            ),
+        },
+    ],
+    span: 269..285,
 }

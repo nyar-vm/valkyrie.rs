@@ -2,286 +2,218 @@ NamespaceDeclaration {
     kind: Standalone,
     path: test∷literal,
 }
-ExpressionNode {
-    omit: true,
-    body: TupleNode {
-        kind: Tuple,
-        terms: ArgumentsList {
-            terms: [],
-        },
-        span: 34..36,
+TupleNode {
+    kind: Tuple,
+    terms: ArgumentsList {
+        terms: [],
     },
-    span: 34..37,
+    span: 34..36,
 }
-ExpressionNode {
-    omit: true,
-    body: 0,
-    span: 38..42,
-}
-ExpressionNode {
-    omit: true,
-    body: TupleNode {
-        kind: Tuple,
-        terms: ArgumentsList {
-            terms: [
-                TupleTermNode {
-                    key: None,
-                    value: 1,
-                },
-            ],
-        },
-        span: 43..48,
+0
+TupleNode {
+    kind: Tuple,
+    terms: ArgumentsList {
+        terms: [
+            TupleTermNode {
+                key: None,
+                value: 1,
+            },
+        ],
     },
-    span: 43..49,
+    span: 43..48,
 }
-ExpressionNode {
-    omit: true,
-    body: TupleNode {
-        kind: Tuple,
-        terms: ArgumentsList {
-            terms: [
-                TupleTermNode {
-                    key: None,
-                    value: 1,
-                },
-                TupleTermNode {
-                    key: None,
-                    value: 2,
-                },
-            ],
-        },
-        span: 50..56,
+TupleNode {
+    kind: Tuple,
+    terms: ArgumentsList {
+        terms: [
+            TupleTermNode {
+                key: None,
+                value: 1,
+            },
+            TupleTermNode {
+                key: None,
+                value: 2,
+            },
+        ],
     },
-    span: 50..57,
+    span: 50..56,
 }
-ExpressionNode {
-    omit: true,
-    body: TupleNode {
-        kind: Tuple,
-        terms: ArgumentsList {
-            terms: [
-                TupleTermNode {
-                    key: None,
-                    value: true,
-                },
-                TupleTermNode {
-                    key: None,
-                    value: TupleNode {
-                        kind: Tuple,
-                        terms: ArgumentsList {
-                            terms: [
-                                TupleTermNode {
-                                    key: None,
-                                    value: false,
-                                },
-                            ],
-                        },
-                        span: 65..73,
+TupleNode {
+    kind: Tuple,
+    terms: ArgumentsList {
+        terms: [
+            TupleTermNode {
+                key: None,
+                value: true,
+            },
+            TupleTermNode {
+                key: None,
+                value: TupleNode {
+                    kind: Tuple,
+                    terms: ArgumentsList {
+                        terms: [
+                            TupleTermNode {
+                                key: None,
+                                value: false,
+                            },
+                        ],
                     },
+                    span: 65..73,
                 },
-            ],
-        },
-        span: 58..74,
+            },
+        ],
     },
-    span: 58..75,
+    span: 58..74,
 }
-ExpressionNode {
-    omit: true,
-    body: TupleNode {
-        kind: Tuple,
-        terms: ArgumentsList {
-            terms: [],
-        },
-        span: 84..96,
-    },
-    span: 84..97,
-}
-ExpressionNode {
-    omit: true,
-    body: TupleNode {
-        kind: Tuple,
-        terms: ArgumentsList {
-            terms: [
-                TupleTermNode {
-                    key: Some(
-                        Identifier("a", 99..100),
-                    ),
-                    value: 1,
-                },
-                TupleTermNode {
-                    key: Some(
-                        Identifier("z", 105..106),
-                    ),
-                    value: 26,
-                },
-            ],
-        },
-        span: 98..111,
-    },
-    span: 98..112,
-}
-ExpressionNode {
-    omit: true,
-    body: TupleNode {
-        kind: Tuple,
-        terms: ArgumentsList {
-            terms: [
-                TupleTermNode {
-                    key: Some(
-                        Identifier("啊", 114..117),
-                    ),
-                    value: 1,
-                },
-                TupleTermNode {
-                    key: Some(
-                        Identifier("吧", 122..125),
-                    ),
-                    value: 2,
-                },
-                TupleTermNode {
-                    key: Some(
-                        Identifier("", 130..135),
-                    ),
-                    value: 3,
-                },
-                TupleTermNode {
-                    key: Some(
-                        Identifier("", 140..145),
-                    ),
-                    value: 4,
-                },
-            ],
-        },
-        span: 113..149,
-    },
-    span: 113..150,
-}
-ExpressionNode {
-    omit: true,
-    body: RangeNode {
-        kind: Offset,
+TupleNode {
+    kind: Tuple,
+    terms: ArgumentsList {
         terms: [],
-        span: 159..161,
     },
-    span: 159..162,
+    span: 84..96,
 }
-ExpressionNode {
-    omit: true,
-    body: RangeNode {
-        kind: Offset,
+TupleNode {
+    kind: Tuple,
+    terms: ArgumentsList {
         terms: [
-            Index {
-                index: 0,
+            TupleTermNode {
+                key: Some(
+                    Identifier("a", 99..100),
+                ),
+                value: 1,
+            },
+            TupleTermNode {
+                key: Some(
+                    Identifier("z", 105..106),
+                ),
+                value: 26,
             },
         ],
-        span: 163..166,
     },
-    span: 163..167,
+    span: 98..111,
 }
-ExpressionNode {
-    omit: true,
-    body: RangeNode {
-        kind: Offset,
+TupleNode {
+    kind: Tuple,
+    terms: ArgumentsList {
         terms: [
-            Index {
-                index: 1,
+            TupleTermNode {
+                key: Some(
+                    Identifier("啊", 114..117),
+                ),
+                value: 1,
+            },
+            TupleTermNode {
+                key: Some(
+                    Identifier("吧", 122..125),
+                ),
+                value: 2,
+            },
+            TupleTermNode {
+                key: Some(
+                    Identifier("", 130..135),
+                ),
+                value: 3,
+            },
+            TupleTermNode {
+                key: Some(
+                    Identifier("", 140..145),
+                ),
+                value: 4,
             },
         ],
-        span: 168..173,
     },
-    span: 168..174,
+    span: 113..149,
 }
-ExpressionNode {
-    omit: true,
-    body: RangeNode {
-        kind: Offset,
-        terms: [
-            Index {
-                index: 1,
-            },
-            Index {
-                index: 2,
-            },
-        ],
-        span: 175..181,
-    },
-    span: 175..182,
+RangeNode {
+    kind: Offset,
+    terms: [],
+    span: 159..161,
 }
-ExpressionNode {
-    omit: true,
-    body: RangeNode {
-        kind: Offset,
-        terms: [
-            Index {
-                index: true,
-            },
-            Index {
-                index: RangeNode {
-                    kind: Offset,
-                    terms: [
-                        Index {
-                            index: false,
-                        },
-                    ],
-                    span: 190..197,
-                },
-            },
-        ],
-        span: 183..198,
-    },
-    span: 183..199,
+RangeNode {
+    kind: Offset,
+    terms: [
+        Index {
+            index: 0,
+        },
+    ],
+    span: 163..166,
 }
-ExpressionNode {
-    omit: true,
-    body: RangeNode {
-        kind: Offset,
-        terms: [],
-        span: 209..211,
-    },
-    span: 209..212,
+RangeNode {
+    kind: Offset,
+    terms: [
+        Index {
+            index: 1,
+        },
+    ],
+    span: 168..173,
 }
-ExpressionNode {
-    omit: true,
-    body: RangeNode {
-        kind: Offset,
-        terms: [
-            Range {
-                head: None,
-                tail: None,
-                step: None,
-            },
-        ],
-        span: 213..216,
-    },
-    span: 213..217,
+RangeNode {
+    kind: Offset,
+    terms: [
+        Index {
+            index: 1,
+        },
+        Index {
+            index: 2,
+        },
+    ],
+    span: 175..181,
 }
-ExpressionNode {
-    omit: true,
-    body: RangeNode {
-        kind: Offset,
-        terms: [
-            Range {
-                head: None,
-                tail: None,
-                step: None,
+RangeNode {
+    kind: Offset,
+    terms: [
+        Index {
+            index: true,
+        },
+        Index {
+            index: RangeNode {
+                kind: Offset,
+                terms: [
+                    Index {
+                        index: false,
+                    },
+                ],
+                span: 190..197,
             },
-        ],
-        span: 218..222,
-    },
-    span: 218..223,
+        },
+    ],
+    span: 183..198,
 }
-ExpressionNode {
-    omit: true,
-    body: RangeNode {
-        kind: Offset,
-        terms: [
-            Range {
-                head: None,
-                tail: None,
-                step: None,
-            },
-        ],
-        span: 224..229,
-    },
-    span: 224..230,
+RangeNode {
+    kind: Offset,
+    terms: [],
+    span: 209..211,
+}
+RangeNode {
+    kind: Offset,
+    terms: [
+        Range {
+            head: None,
+            tail: None,
+            step: None,
+        },
+    ],
+    span: 213..216,
+}
+RangeNode {
+    kind: Offset,
+    terms: [
+        Range {
+            head: None,
+            tail: None,
+            step: None,
+        },
+    ],
+    span: 218..222,
+}
+RangeNode {
+    kind: Offset,
+    terms: [
+        Range {
+            head: None,
+            tail: None,
+            step: None,
+        },
+    ],
+    span: 224..229,
 }

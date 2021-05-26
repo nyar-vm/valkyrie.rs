@@ -1,174 +1,126 @@
-ExpressionNode {
-    omit: true,
-    body: UnaryNode {
-        prefix: +,
-        base: a,
-    },
-    span: 8..11,
+UnaryNode {
+    prefix: +,
+    base: a,
 }
-ExpressionNode {
-    omit: true,
-    body: UnaryNode {
-        prefix: -,
-        base: a,
-    },
-    span: 12..15,
+UnaryNode {
+    prefix: -,
+    base: a,
 }
-ExpressionNode {
-    omit: true,
-    body: UnaryNode {
+UnaryNode {
+    prefix: *,
+    base: var,
+}
+UnaryNode {
+    prefix: *,
+    base: UnaryNode {
         prefix: *,
         base: var,
     },
-    span: 46..51,
 }
-ExpressionNode {
-    omit: true,
-    body: UnaryNode {
-        prefix: *,
-        base: UnaryNode {
-            prefix: *,
-            base: var,
-        },
-    },
-    span: 52..58,
+UnaryNode {
+    prefix: ⅟,
+    base: a,
 }
-ExpressionNode {
-    omit: true,
-    body: UnaryNode {
-        prefix: ⅟,
-        base: a,
-    },
-    span: 119..124,
-}
-ExpressionNode {
-    omit: true,
-    body: InfixNode {
+InfixNode {
+    infix: +,
+    lhs: InfixNode {
         infix: +,
-        lhs: InfixNode {
-            infix: +,
-            lhs: UnaryNode {
-                prefix: √,
-                base: 2,
-            },
-            rhs: UnaryNode {
-                prefix: ∛,
-                base: 3,
-            },
+        lhs: UnaryNode {
+            prefix: √,
+            base: 2,
         },
         rhs: UnaryNode {
-            prefix: ∜,
-            base: 5,
+            prefix: ∛,
+            base: 3,
         },
     },
-    span: 134..153,
+    rhs: UnaryNode {
+        prefix: ∜,
+        base: 5,
+    },
 }
-ExpressionNode {
-    omit: true,
-    body: UnaryNode {
-        prefix: √,
-        base: InfixNode {
-            infix: +,
-            lhs: 2,
-            rhs: UnaryNode {
-                prefix: ∛,
-                base: InfixNode {
-                    infix: +,
-                    lhs: 3,
-                    rhs: UnaryNode {
-                        prefix: ∜,
-                        base: 5,
-                    },
+UnaryNode {
+    prefix: √,
+    base: InfixNode {
+        infix: +,
+        lhs: 2,
+        rhs: UnaryNode {
+            prefix: ∛,
+            base: InfixNode {
+                infix: +,
+                lhs: 3,
+                rhs: UnaryNode {
+                    prefix: ∜,
+                    base: 5,
                 },
             },
         },
     },
-    span: 154..177,
 }
-ExpressionNode {
-    omit: true,
-    body: UnaryNode {
-        prefix: √,
+UnaryNode {
+    prefix: √,
+    base: UnaryNode {
+        prefix: ∛,
         base: UnaryNode {
-            prefix: ∛,
-            base: UnaryNode {
-                prefix: ∜,
-                base: x,
-            },
+            prefix: ∜,
+            base: x,
         },
     },
-    span: 178..189,
 }
-ExpressionNode {
-    omit: true,
-    body: InfixNode {
+InfixNode {
+    infix: +,
+    lhs: UnaryNode {
+        prefix: ℃,
+        base: 20,
+    },
+    rhs: UnaryNode {
+        prefix: ℉,
+        base: 30,
+    },
+}
+InfixNode {
+    infix: +,
+    lhs: InfixNode {
         infix: +,
         lhs: UnaryNode {
-            prefix: ℃,
-            base: 20,
+            prefix: %,
+            base: 2,
         },
         rhs: UnaryNode {
-            prefix: ℉,
-            base: 30,
+            prefix: ‰,
+            base: 3,
         },
     },
-    span: 206..220,
+    rhs: UnaryNode {
+        prefix: ‱,
+        base: 5,
+    },
 }
-ExpressionNode {
-    omit: true,
-    body: InfixNode {
+UnaryNode {
+    prefix: ‱,
+    base: InfixNode {
         infix: +,
-        lhs: InfixNode {
+        lhs: UnaryNode {
+            prefix: %,
+            base: 2,
+        },
+        rhs: InfixNode {
             infix: +,
             lhs: UnaryNode {
-                prefix: %,
-                base: 2,
-            },
-            rhs: UnaryNode {
                 prefix: ‰,
                 base: 3,
             },
-        },
-        rhs: UnaryNode {
-            prefix: ‱,
-            base: 5,
+            rhs: 5,
         },
     },
-    span: 236..253,
 }
-ExpressionNode {
-    omit: true,
-    body: UnaryNode {
-        prefix: ‱,
-        base: InfixNode {
-            infix: +,
-            lhs: UnaryNode {
-                prefix: %,
-                base: 2,
-            },
-            rhs: InfixNode {
-                infix: +,
-                lhs: UnaryNode {
-                    prefix: ‰,
-                    base: 3,
-                },
-                rhs: 5,
-            },
-        },
-    },
-    span: 254..275,
-}
-ExpressionNode {
-    omit: true,
-    body: UnaryNode {
-        prefix: ‱,
+UnaryNode {
+    prefix: ‱,
+    base: UnaryNode {
+        prefix: ‰,
         base: UnaryNode {
-            prefix: ‰,
-            base: UnaryNode {
-                prefix: %,
-                base: x,
-            },
+            prefix: %,
+            base: x,
         },
     },
-    span: 276..285,
 }

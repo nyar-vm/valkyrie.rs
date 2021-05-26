@@ -20,7 +20,7 @@ impl Debug for StatementNode {
             Self::For(node) => Debug::fmt(node, f),
             Self::Guard(node) => Debug::fmt(node, f),
             Self::Control(node) => Debug::fmt(node, f),
-            Self::Expression(node) => Debug::fmt(node, f),
+            Self::Expression(node) => Debug::fmt(&node.body, f),
         }
     }
 }

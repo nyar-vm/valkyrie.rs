@@ -1,40 +1,8 @@
-ExpressionNode {
-    omit: false,
-    body: false,
-    span: 0..6,
-}
-ExpressionNode {
-    omit: false,
-    body: false,
-    span: 6..14,
-}
-ExpressionNode {
-    omit: false,
-    body: false,
-    span: 14..25,
-}
-ExpressionNode {
-    omit: false,
-    body: false,
-    span: 25..46,
-}
-ExpressionNode {
-    omit: false,
-    body: false,
-    span: 46..62,
-}
-ExpressionNode {
-    omit: false,
-    body: false,
-    span: 62..80,
-}
-ExpressionNode {
-    omit: false,
-    body: false,
-    span: 80..102,
-}
-ExpressionNode {
-    omit: false,
-    body: false,
-    span: 102..122,
-}
+false
+false
+false
+false
+false
+false
+false
+false
