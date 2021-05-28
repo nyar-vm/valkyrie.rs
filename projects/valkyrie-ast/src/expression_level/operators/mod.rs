@@ -5,6 +5,7 @@ mod display;
 
 mod logic;
 
+/// All builtin operator in valkyrie language
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum ValkyrieOperator {

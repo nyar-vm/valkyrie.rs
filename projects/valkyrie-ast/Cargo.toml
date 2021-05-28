@@ -18,8 +18,8 @@ serde = { version = "1.0.188", default-features = false, optional = true }
 
 [dependencies.nyar-error]
 version = "0.1.*"
-path = 'C:\Users\Dell\CLionProjects\nyar-vm\projects\nyar-error'
 features = ["pratt"]
+#path = 'C:\Users\Dell\CLionProjects\nyar-vm\projects\nyar-error'
 
 [dependencies.pretty-print]
 version = "0.1.9"

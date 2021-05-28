@@ -66,27 +66,17 @@ FunctionDeclaration {
     kind: Micro,
     annotations: Empty,
     generics: [
-        Single {
-            annotations: Empty,
-            key: Identifier("G", 242..243),
-            bound: None,
-            default: None,
+        Parameter {
+            key: "G",
         },
-        Single {
-            annotations: Empty,
-            key: Identifier("R", 245..246),
-            bound: None,
-            default: None,
+        Parameter {
+            key: "R",
         },
     ],
     parameters: [
-        Single {
-            annotations: Empty,
-            key: Identifier("g", 251..252),
-            bound: Some(
-                G,
-            ),
-            default: None,
+        Parameter {
+            key: "g",
+            bound: G,
         },
     ],
     returns: ReturnType {
@@ -128,21 +118,14 @@ FunctionDeclaration {
     kind: Macro,
     annotations: Empty,
     generics: [
-        Single {
-            annotations: Empty,
-            key: Identifier("L", 331..332),
-            bound: None,
-            default: None,
+        Parameter {
+            key: "L",
         },
     ],
     parameters: [
-        Single {
-            annotations: Empty,
-            key: Identifier("lhs", 337..340),
-            bound: Some(
-                L,
-            ),
-            default: None,
+        Parameter {
+            key: "lhs",
+            bound: L,
         },
     ],
     returns: ReturnType {
@@ -167,21 +150,14 @@ FunctionDeclaration {
     kind: Micro,
     annotations: Empty,
     generics: [
-        Single {
-            annotations: Empty,
-            key: Identifier("R", 402..403),
-            bound: None,
-            default: None,
+        Parameter {
+            key: "R",
         },
     ],
     parameters: [
-        Single {
-            annotations: Empty,
-            key: Identifier("rhs", 408..411),
-            bound: Some(
-                R,
-            ),
-            default: None,
+        Parameter {
+            key: "rhs",
+            bound: R,
         },
     ],
     returns: Auto,
@@ -231,26 +207,22 @@ FunctionDeclaration {
     },
     generics: [],
     parameters: [
-        Single {
-            annotations: Empty,
-            key: Identifier("args", 547..551),
-            bound: Some(
-                GenericCallNode {
-                    monadic: false,
-                    base: List,
-                    terms: ArgumentsList {
-                        terms: [
-                            TupleTermNode {
-                                key: None,
-                                value: String,
-                            },
-                        ],
-                    },
-                    associated: [],
-                    span: 557..569,
+        Parameter {
+            key: "args",
+            bound: GenericCallNode {
+                monadic: false,
+                base: List,
+                terms: ArgumentsList {
+                    terms: [
+                        TupleTermNode {
+                            key: None,
+                            value: String,
+                        },
+                    ],
                 },
-            ),
-            default: None,
+                associated: [],
+                span: 557..569,
+            },
         },
     ],
     returns: ReturnType {

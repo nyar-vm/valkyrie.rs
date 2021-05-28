@@ -231,16 +231,12 @@ FunctionDeclaration {
     },
     generics: [],
     parameters: [
-        Single {
-            annotations: Empty,
-            key: Identifier("a", 427..428),
-            bound: Some(
-                UnaryNode {
-                    prefix: &,
-                    base: MyArray,
-                },
-            ),
-            default: None,
+        Parameter {
+            key: "a",
+            bound: UnaryNode {
+                prefix: &,
+                base: MyArray,
+            },
         },
     ],
     returns: ReturnType {
@@ -258,13 +254,9 @@ FunctionDeclaration {
                             annotations: Empty,
                             generics: [],
                             parameters: [
-                                Single {
-                                    annotations: Empty,
-                                    key: Identifier("i", 468..469),
-                                    bound: Some(
-                                        usize,
-                                    ),
-                                    default: None,
+                                Parameter {
+                                    key: "i",
+                                    bound: usize,
                                 },
                             ],
                             returns: Auto,

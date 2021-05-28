@@ -23,7 +23,7 @@ pub struct ParametersList {
 }
 
 /// `T: Type = type_expression`
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Clone, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum ParameterTerm {
     /// `<`
@@ -59,6 +59,51 @@ pub enum ParameterTerm {
         key: IdentifierNode,
         bound: Option<ExpressionNode>,
     },
+}
+
+impl Debug for ParameterTerm {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        match self {
+            Self::LMark => f.write_str("<<<disable-index-parameters>>>"),
+            Self::RMark => f.write_str("<<<require-named-parameters>>>"),
+            Self::Single { annotations, key, bound, default } => {
+                let w = &mut f.debug_struct("Parameter");
+                w.field("key", &key.name);
+                if !annotations.is_empty() {
+                    w.field("annotations", annotations);
+                }
+                if let Some(bound) = bound {
+                    w.field("bound", bound);
+                }
+                if let Some(default) = default {
+                    w.field("default", default);
+                }
+                w.finish()
+            }
+            Self::UnpackList { modifiers, key, bound } => {
+                let w = &mut f.debug_struct("UnpackList");
+                w.field("key", &key.name);
+                if !modifiers.is_empty() {
+                    w.field("modifiers", modifiers);
+                }
+                if let Some(bound) = bound {
+                    w.field("bound", bound);
+                }
+                w.finish()
+            }
+            Self::UnpackDict { modifiers, key, bound } => {
+                let w = &mut f.debug_struct("UnpackDict");
+                w.field("key", &key.name);
+                if !modifiers.is_empty() {
+                    w.field("modifiers", modifiers);
+                }
+                if let Some(bound) = bound {
+                    w.field("bound", bound);
+                }
+                w.finish()
+            }
+        }
+    }
 }
 
 impl Default for ParameterKind {

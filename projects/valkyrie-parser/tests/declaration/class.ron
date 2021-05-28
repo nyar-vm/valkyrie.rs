@@ -288,11 +288,8 @@ ClassDeclaration {
             },
             annotations: Empty,
             generics: [
-                Single {
-                    annotations: Empty,
-                    key: Identifier("bool", 642..646),
-                    bound: None,
-                    default: None,
+                Parameter {
+                    key: "bool",
                 },
             ],
             parameters: [],
@@ -542,11 +539,8 @@ ClassDeclaration {
             annotations: Empty,
             generics: [],
             parameters: [
-                Single {
-                    annotations: Empty,
-                    key: Identifier("self", 1207..1211),
-                    bound: None,
-                    default: None,
+                Parameter {
+                    key: "self",
                 },
             ],
             returns: ReturnType {
@@ -726,19 +720,12 @@ ClassDeclaration {
             },
             generics: [],
             parameters: [
-                Single {
-                    annotations: Empty,
-                    key: Identifier("self", 1595..1599),
-                    bound: None,
-                    default: None,
+                Parameter {
+                    key: "self",
                 },
-                Single {
-                    annotations: Empty,
-                    key: Identifier("rhs", 1601..1604),
-                    bound: Some(
-                        Self,
-                    ),
-                    default: None,
+                Parameter {
+                    key: "rhs",
+                    bound: Self,
                 },
             ],
             returns: ReturnType {
@@ -783,29 +770,18 @@ ClassDeclaration {
                 ],
             },
             generics: [
-                Single {
-                    annotations: Empty,
-                    key: Identifier("T", 1688..1689),
-                    bound: None,
-                    default: None,
+                Parameter {
+                    key: "T",
                 },
             ],
             parameters: [
-                Single {
-                    annotations: Empty,
-                    key: Identifier("self", 1699..1703),
-                    bound: Some(
-                        T,
-                    ),
-                    default: None,
+                Parameter {
+                    key: "self",
+                    bound: T,
                 },
-                Single {
-                    annotations: Empty,
-                    key: Identifier("other", 1708..1713),
-                    bound: Some(
-                        T,
-                    ),
-                    default: None,
+                Parameter {
+                    key: "other",
+                    bound: T,
                 },
             ],
             returns: ReturnType {
@@ -992,17 +968,11 @@ ClassDeclaration {
             },
             generics: [],
             parameters: [
-                Single {
-                    annotations: Empty,
-                    key: Identifier("self", 2073..2077),
-                    bound: None,
-                    default: None,
+                Parameter {
+                    key: "self",
                 },
-                Single {
-                    annotations: Empty,
-                    key: Identifier("args", 2079..2083),
-                    bound: None,
-                    default: None,
+                Parameter {
+                    key: "args",
                 },
             ],
             returns: Auto,

@@ -38,22 +38,15 @@ FunctionDeclaration {
     annotations: Empty,
     generics: [],
     parameters: [
-        Single {
-            annotations: Empty,
-            key: Identifier("self", 64..68),
-            bound: None,
-            default: None,
+        Parameter {
+            key: "self",
         },
-        Single {
-            annotations: Empty,
-            key: Identifier("list", 73..77),
-            bound: Some(
-                List,
-            ),
-            default: None,
+        Parameter {
+            key: "list",
+            bound: List,
         },
-        LMark,
-        RMark,
+        <<<disable-positional-parameters>>>,
+        <<<required-named-parameters>>>,
     ],
     returns: Auto,
     body: [],
@@ -68,15 +61,10 @@ FunctionDeclaration {
     annotations: Empty,
     generics: [],
     parameters: [
-        Single {
-            annotations: Empty,
-            key: Identifier("input", 111..116),
-            bound: Some(
-                Integer,
-            ),
-            default: Some(
-                0,
-            ),
+        Parameter {
+            key: "input",
+            bound: Integer,
+            default: 0,
         },
     ],
     returns: Auto,
@@ -124,31 +112,19 @@ FunctionDeclaration {
     },
     generics: [],
     parameters: [
-        Single {
-            annotations: Empty,
-            key: Identifier("self", 247..251),
-            bound: None,
-            default: None,
+        Parameter {
+            key: "self",
         },
-        LMark,
-        Single {
-            annotations: Empty,
-            key: Identifier("input", 256..261),
-            bound: Some(
-                Integer,
-            ),
-            default: Some(
-                0,
-            ),
+        <<<disable-positional-parameters>>>,
+        Parameter {
+            key: "input",
+            bound: Integer,
+            default: 0,
         },
-        RMark,
-        Single {
-            annotations: Empty,
-            key: Identifier("list", 280..284),
-            bound: Some(
-                List,
-            ),
-            default: None,
+        <<<required-named-parameters>>>,
+        Parameter {
+            key: "list",
+            bound: List,
         },
     ],
     returns: ReturnType {

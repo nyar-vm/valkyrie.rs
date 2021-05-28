@@ -36,12 +36,17 @@ pub struct ClassDeclaration {
     pub span: Range<u32>,
 }
 
+/// Valid terms in the class statements
 #[derive(Clone, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum ClassTerm {
+    /// `@expand {}`
     Macro(ProceduralNode),
+    /// `field: Type = default`
     Field(FieldDeclaration),
+    /// `method()`
     Method(MethodDeclaration),
+    /// `domain { }`
     Domain(DomainDeclaration),
 }
 
@@ -73,11 +78,11 @@ pub struct FieldDeclaration {
     pub span: Range<u32>,
 }
 
-/// `method()`
+/// `#attribute modifier Trait::method(): Return / Effect { ... }`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct MethodDeclaration {
-    /// `method_name()`
+    /// The method name which may associated with a trait.
     pub name: NamePathNode,
     /// The modifiers of the node.
     pub annotations: AnnotationNode,
@@ -93,6 +98,7 @@ pub struct MethodDeclaration {
     pub span: Range<u32>,
 }
 
+/// `domain { field; method(); domain {} }`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct DomainDeclaration {

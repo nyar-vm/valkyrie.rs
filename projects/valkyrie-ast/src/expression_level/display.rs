@@ -19,7 +19,6 @@ impl Debug for ExpressionKind {
             Self::Infix(node) => Debug::fmt(node, f),
             Self::Tuple(node) => Debug::fmt(node, f),
             Self::Array(node) => Debug::fmt(node, f),
-            Self::Resume(node) => Debug::fmt(node, f),
             Self::If(node) => Debug::fmt(node, f),
             Self::IfLet(node) => Debug::fmt(node, f),
             Self::Switch(node) => Debug::fmt(node, f),

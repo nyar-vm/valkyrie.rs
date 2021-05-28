@@ -112,8 +112,6 @@ pub enum ExpressionKind {
     /// - Compound expression
     Array(Box<RangeNode>),
     /// - Standalone expression
-    Resume(Box<RaiseNode>),
-    /// - Standalone expression
     If(Box<IfStatement>),
     /// - Standalone expression
     IfLet(Box<GuardStatement>),
