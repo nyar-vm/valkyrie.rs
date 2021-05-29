@@ -9,27 +9,23 @@ impl crate::GenericCallNode {
                 vec![]
             }
         };
-
+        let term = GenericCallTerm::Generic(self.generic_terms.build(ctx)?);
         Success {
-            value: GenericCallNode {
-                monadic,
-                base: Default::default(),
-                terms: self.generic_terms.build(ctx)?,
-                associated,
-                span: self.span.clone(),
-            },
+            value: GenericCallNode { monadic, base: Default::default(), term, span: self.span.clone() },
             diagnostics: vec![],
         }
     }
 }
 impl crate::GenericHideNode {
-    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Validation<GenericCallNode> {
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Validation<GenericCallTerm> {
+        Success { value: GenericCallTerm::Generic(self.generic_terms.build(ctx)?), diagnostics: vec![] }
+    }
+    pub(crate) fn build_call(&self, ctx: &mut ProgramState) -> Validation<GenericCallNode> {
         Success {
             value: GenericCallNode {
                 monadic: false,
                 base: Default::default(),
-                terms: self.generic_terms.build(ctx)?,
-                associated: vec![],
+                term: self.build(ctx)?,
                 span: self.span.clone(),
             },
             diagnostics: vec![],

@@ -1,16 +1,15 @@
 GenericCallNode {
     monadic: false,
     base: Object,
-    terms: ArgumentsList {
+    term: ArgumentsList {
         terms: [],
     },
-    associated: [],
     span: 20..24,
 }
 GenericCallNode {
     monadic: false,
     base: Object,
-    terms: ArgumentsList {
+    term: ArgumentsList {
         terms: [
             TupleTermNode {
                 key: None,
@@ -18,13 +17,12 @@ GenericCallNode {
             },
         ],
     },
-    associated: [],
     span: 32..38,
 }
 GenericCallNode {
     monadic: false,
     base: Object,
-    terms: ArgumentsList {
+    term: ArgumentsList {
         terms: [
             TupleTermNode {
                 key: None,
@@ -36,22 +34,20 @@ GenericCallNode {
             },
         ],
     },
-    associated: [],
     span: 46..53,
 }
 GenericCallNode {
     monadic: false,
     base: Object,
-    terms: ArgumentsList {
+    term: ArgumentsList {
         terms: [],
     },
-    associated: [],
     span: 78..84,
 }
 GenericCallNode {
     monadic: false,
     base: Object,
-    terms: ArgumentsList {
+    term: ArgumentsList {
         terms: [
             TupleTermNode {
                 key: None,
@@ -59,7 +55,6 @@ GenericCallNode {
             },
         ],
     },
-    associated: [],
     span: 92..99,
 }
 ApplyCallNode {
@@ -67,7 +62,7 @@ ApplyCallNode {
     caller: GenericCallNode {
         monadic: false,
         base: Object,
-        terms: ArgumentsList {
+        term: ArgumentsList {
             terms: [
                 TupleTermNode {
                     key: None,
@@ -79,7 +74,6 @@ ApplyCallNode {
                 },
             ],
         },
-        associated: [],
         span: 107..116,
     },
     arguments: ArgumentsList {

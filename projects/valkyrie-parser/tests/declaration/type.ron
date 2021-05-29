@@ -6,7 +6,7 @@ GenericCallNode {
         lhs: GenericCallNode {
             monadic: false,
             base: Result,
-            terms: ArgumentsList {
+            term: ArgumentsList {
                 terms: [
                     TupleTermNode {
                         key: None,
@@ -14,12 +14,11 @@ GenericCallNode {
                     },
                 ],
             },
-            associated: [],
             span: 11..19,
         },
         rhs: std∷result∷Result,
     },
-    terms: ArgumentsList {
+    term: ArgumentsList {
         terms: [
             TupleTermNode {
                 key: None,
@@ -31,7 +30,6 @@ GenericCallNode {
             },
         ],
     },
-    associated: [],
     span: 40..54,
 }
 type
@@ -40,7 +38,7 @@ ApplyCallNode {
     caller: GenericCallNode {
         monadic: false,
         base: List,
-        terms: ArgumentsList {
+        term: ArgumentsList {
             terms: [
                 TupleTermNode {
                     key: None,
@@ -58,7 +56,6 @@ ApplyCallNode {
                 },
             ],
         },
-        associated: [],
         span: 68..81,
     },
     arguments: ArgumentsList {

@@ -212,7 +212,7 @@ FunctionDeclaration {
             bound: GenericCallNode {
                 monadic: false,
                 base: List,
-                terms: ArgumentsList {
+                term: ArgumentsList {
                     terms: [
                         TupleTermNode {
                             key: None,
@@ -220,7 +220,6 @@ FunctionDeclaration {
                         },
                     ],
                 },
-                associated: [],
                 span: 440..448,
             },
         },
@@ -291,13 +290,13 @@ FunctionDeclaration {
         Parameter {
             key: "position_only",
         },
-        <<<disable-positional-parameters>>>,
+        <<<disable-index-parameters>>>,
         Parameter {
             key: "free",
             bound: int,
             default: 1,
         },
-        <<<required-named-parameters>>>,
+        <<<require-named-parameters>>>,
         Parameter {
             key: "name_only",
         },
@@ -400,28 +399,24 @@ FunctionDeclaration {
                     Identifier("Range", 1538..1543),
                 ],
             },
-            generic: GenericCallNode {
-                monadic: false,
-                base: Placeholder,
+            generics: [
+                ArgumentsList {
+                    terms: [
+                        TupleTermNode {
+                            key: None,
+                            value: int,
+                        },
+                    ],
+                },
+            ],
+            arguments: TupleNode {
+                kind: Tuple,
                 terms: ArgumentsList {
                     terms: [],
                 },
-                associated: [],
-                span: 0..0,
+                span: 1552..1554,
             },
-            arguments: ApplyCallNode {
-                monadic: false,
-                caller: Placeholder,
-                arguments: ArgumentsList {
-                    terms: [],
-                },
-                body: None,
-                span: 0..0,
-            },
-            body: CollectorNode {
-                terms: [],
-                span: 0..0,
-            },
+            body: [],
             span: 1514..1644,
         },
     ],
@@ -567,8 +562,8 @@ FunctionDeclaration {
             key: "w",
             bound: Write,
         },
-        <<<disable-positional-parameters>>>,
-        <<<disable-positional-parameters>>>,
+        <<<disable-index-parameters>>>,
+        <<<disable-index-parameters>>>,
     ],
     returns: Auto,
     body: [
@@ -583,8 +578,8 @@ FunctionDeclaration {
                         Parameter {
                             key: "args",
                         },
-                        <<<disable-positional-parameters>>>,
-                        <<<disable-positional-parameters>>>,
+                        <<<disable-index-parameters>>>,
+                        <<<disable-index-parameters>>>,
                     ],
                     returns: ReturnType {
                         main: T,
@@ -661,7 +656,7 @@ FunctionDeclaration {
             bound: GenericCallNode {
                 monadic: false,
                 base: List,
-                terms: ArgumentsList {
+                term: ArgumentsList {
                     terms: [
                         TupleTermNode {
                             key: None,
@@ -669,7 +664,6 @@ FunctionDeclaration {
                         },
                     ],
                 },
-                associated: [],
                 span: 2084..2096,
             },
         },

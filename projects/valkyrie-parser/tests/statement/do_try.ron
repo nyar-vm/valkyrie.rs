@@ -22,7 +22,7 @@ TryStatement {
         GenericCallNode {
             monadic: false,
             base: Option,
-            terms: ArgumentsList {
+            term: ArgumentsList {
                 terms: [
                     TupleTermNode {
                         key: None,
@@ -30,7 +30,6 @@ TryStatement {
                     },
                 ],
             },
-            associated: [],
             span: 66..69,
         },
     ),
@@ -46,7 +45,7 @@ MatchCallNode {
                 GenericCallNode {
                     monadic: false,
                     base: Result,
-                    terms: ArgumentsList {
+                    term: ArgumentsList {
                         terms: [
                             TupleTermNode {
                                 key: None,
@@ -58,7 +57,6 @@ MatchCallNode {
                             },
                         ],
                     },
-                    associated: [],
                     span: 86..95,
                 },
             ),

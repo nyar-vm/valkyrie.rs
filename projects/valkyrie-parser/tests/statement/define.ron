@@ -45,8 +45,8 @@ FunctionDeclaration {
             key: "list",
             bound: List,
         },
-        <<<disable-positional-parameters>>>,
-        <<<required-named-parameters>>>,
+        <<<disable-index-parameters>>>,
+        <<<require-named-parameters>>>,
     ],
     returns: Auto,
     body: [],
@@ -115,13 +115,13 @@ FunctionDeclaration {
         Parameter {
             key: "self",
         },
-        <<<disable-positional-parameters>>>,
+        <<<disable-index-parameters>>>,
         Parameter {
             key: "input",
             bound: Integer,
             default: 0,
         },
-        <<<required-named-parameters>>>,
+        <<<require-named-parameters>>>,
         Parameter {
             key: "list",
             bound: List,

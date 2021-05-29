@@ -1,20 +1,27 @@
 use super::*;
 
-/// `A⦓T⦔` or `A::<T>`
-#[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
+/// `A⦓T⦔, A⟨T⟩, A::<T>`
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct GenericCallNode {
     /// `this?::<T>`
     pub monadic: bool,
-    /// `A`
+    /// `Base::<T>, ::<T as Trait>`
     pub base: ExpressionKind,
-    /// The raw string of the number.
-    pub terms: ArgumentsList,
-    /// The associated type or method
-    /// `A::<T as Trait>::Type::method`
-    pub associated: Vec<IdentifierNode>,
+    /// `A::<T>::Associated::<T as Trait>`
+    pub term: GenericCallTerm,
     /// The range of the node
     pub span: Range<u32>,
+}
+
+/// Call with static method
+#[derive(Clone, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum GenericCallTerm {
+    /// `T::Associated`
+    Associated(IdentifierNode),
+    /// `f::<T, U>`
+    Generic(ArgumentsList),
 }
 
 impl ValkyrieNode for GenericCallNode {

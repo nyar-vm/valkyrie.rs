@@ -1,6 +1,6 @@
 mod classes;
+mod def_fn;
 mod enumerate;
-mod function;
 mod interface;
 mod unions;
 

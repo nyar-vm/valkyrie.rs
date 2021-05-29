@@ -335,6 +335,7 @@ impl ValkyrieOperator {
             Self::Map => "/@",
         }
     }
+    /// Get the associativity of the operator.
     pub fn associativity(&self) -> Associativity {
         match self {
             ValkyrieOperator::Power => Associativity::Right,

@@ -31,7 +31,7 @@ pub use crate::{
         argument::{ArgumentKey, ArgumentTerm, ArgumentsList},
         call_apply::ApplyCallNode,
         call_dot::{DotCallNode, DotCallTerm},
-        call_generic::GenericCallNode,
+        call_generic::{GenericCallNode, GenericCallTerm},
         call_subscript::SubscriptCallNode,
         ctor::{CollectorNode, CollectorTerm, ConstructNewNode},
         lambda::{ClosureCallNode, LambdaNode},

@@ -4,7 +4,8 @@ use super::*;
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct SwitchStatement {
-    pub patterns: PatternBlock,
+    /// The patterns of the switch
+    pub patterns: Vec<PatternBranch>,
     /// The range of the node
     pub span: Range<u32>,
 }

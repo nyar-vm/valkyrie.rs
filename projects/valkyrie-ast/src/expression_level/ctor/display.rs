@@ -12,8 +12,8 @@ impl PrettyPrint for ConstructNewNode {
         terms += " ";
         terms += self.namepath.pretty(theme);
 
-        if !self.generic.terms.is_empty() {
-            terms += self.generic.pretty(theme);
+        if !self.generics.terms.is_empty() {
+            terms += self.generics.pretty(theme);
         }
         terms += self.arguments.pretty(theme);
         terms += self.body.pretty(theme);

@@ -133,3 +133,8 @@ impl crate::ContinuationNode {
         Success { value: StatementBlock { terms, span: self.span.clone() }, diagnostics }
     }
 }
+impl crate::TypeHintNode {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<ExpressionKind> {
+        self.type_expression.build(ctx)
+    }
+}

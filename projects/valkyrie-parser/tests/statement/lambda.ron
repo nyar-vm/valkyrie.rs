@@ -36,7 +36,9 @@ ApplyCallNode {
                         base: ClosureCallNode {
                             monadic: false,
                             base: chain,
-                            trailing: [],
+                            trailing: [
+                                body,
+                            ],
                             span: 53..62,
                         },
                         term: map,

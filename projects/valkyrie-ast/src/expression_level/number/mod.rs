@@ -2,6 +2,9 @@ mod display;
 
 use super::*;
 
+/// A lossless representation of the number literal
+///
+/// `base⁂digits.decimal⁑shift_unit;`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct NumberLiteralNode {

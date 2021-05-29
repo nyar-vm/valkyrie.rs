@@ -1,7 +1,13 @@
 use super::*;
+use crate::TypeHintNode;
 
 impl crate::ObjectStatementNode {
     pub fn build(&self, ctx: &mut ProgramState) -> Validation<ConstructObjectNode> {
-        Success { value: ConstructObjectNode { base_classes: None, span: self.span.clone() }, diagnostics: vec![] }
+        let mut diagnostics = vec![];
+        let bounds = match &self.type_hint {
+            Some(s) => Some(s.build(ctx)?),
+            None => None,
+        };
+        Success { value: ConstructObjectNode { base_classes: None, bounds, span: self.span.clone() }, diagnostics }
     }
 }

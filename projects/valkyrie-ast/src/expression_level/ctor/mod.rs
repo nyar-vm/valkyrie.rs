@@ -29,18 +29,18 @@ pub struct ConstructNewNode {
     pub modifiers: Vec<IdentifierNode>,
     /// The constructed type
     pub namepath: NamePathNode,
-    /// The construct generic
-    pub generic: GenericCallNode,
-    /// The constructor arguments
-    pub arguments: ApplyCallNode,
-    /// The builder arguments
+    /// `new List<T>()`
+    pub generics: Vec<GenericCallTerm>,
+    /// `new Stack()`
+    pub arguments: TupleNode,
+    /// `new List<T> { ... }`
     pub body: CollectorNode,
     /// The range of the node
     pub span: Range<u32>,
 }
 
 /// `{ 1: x, p: y, [a, b]: c, **list, ***dict }`
-#[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
+#[derive(Clone, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct CollectorNode {
     /// The collect terms
@@ -48,6 +48,13 @@ pub struct CollectorNode {
     /// The range of the node
     pub span: Range<u32>,
 }
+
+impl Debug for CollectorNode {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        f.debug_list().entries(self.terms.iter()).finish()
+    }
+}
+
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum CollectorTerm {

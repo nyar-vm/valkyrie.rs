@@ -178,7 +178,7 @@ ClassDeclaration {
                         lhs: GenericCallNode {
                             monadic: false,
                             base: Ref,
-                            terms: ArgumentsList {
+                            term: ArgumentsList {
                                 terms: [
                                     TupleTermNode {
                                         key: None,
@@ -186,12 +186,11 @@ ClassDeclaration {
                                     },
                                 ],
                             },
-                            associated: [],
                             span: 448..455,
                         },
                         rhs: Gc,
                     },
-                    terms: ArgumentsList {
+                    term: ArgumentsList {
                         terms: [
                             TupleTermNode {
                                 key: None,
@@ -199,7 +198,6 @@ ClassDeclaration {
                             },
                         ],
                     },
-                    associated: [],
                     span: 460..463,
                 },
             },

@@ -58,6 +58,8 @@ pub enum ClassTerm {
 pub struct ConstructObjectNode {
     /// The super class of the class.
     pub base_classes: Option<String>,
+    /// The traits that the class implements.
+    pub bounds: Option<ExpressionKind>,
     /// The range of the node
     pub span: Range<u32>,
 }

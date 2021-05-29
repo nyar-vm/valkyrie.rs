@@ -5,28 +5,15 @@ ConstructNewNode {
             Identifier("A", 4..5),
         ],
     },
-    generic: GenericCallNode {
-        monadic: false,
-        base: Placeholder,
+    generics: [],
+    arguments: TupleNode {
+        kind: Tuple,
         terms: ArgumentsList {
             terms: [],
         },
-        associated: [],
         span: 0..0,
     },
-    arguments: ApplyCallNode {
-        monadic: false,
-        caller: Placeholder,
-        arguments: ArgumentsList {
-            terms: [],
-        },
-        body: None,
-        span: 0..0,
-    },
-    body: CollectorNode {
-        terms: [],
-        span: 0..0,
-    },
+    body: [],
     span: 0..6,
 }
 ConstructNewNode {
@@ -36,28 +23,15 @@ ConstructNewNode {
             Identifier("B", 12..13),
         ],
     },
-    generic: GenericCallNode {
-        monadic: false,
-        base: Placeholder,
+    generics: [],
+    arguments: TupleNode {
+        kind: Tuple,
         terms: ArgumentsList {
             terms: [],
         },
-        associated: [],
-        span: 0..0,
+        span: 13..15,
     },
-    arguments: ApplyCallNode {
-        monadic: false,
-        caller: Placeholder,
-        arguments: ArgumentsList {
-            terms: [],
-        },
-        body: None,
-        span: 0..0,
-    },
-    body: CollectorNode {
-        terms: [],
-        span: 0..0,
-    },
+    body: [],
     span: 8..16,
 }
 ConstructNewNode {
@@ -67,28 +41,15 @@ ConstructNewNode {
             Identifier("C", 22..23),
         ],
     },
-    generic: GenericCallNode {
-        monadic: false,
-        base: Placeholder,
+    generics: [],
+    arguments: TupleNode {
+        kind: Tuple,
         terms: ArgumentsList {
             terms: [],
         },
-        associated: [],
         span: 0..0,
     },
-    arguments: ApplyCallNode {
-        monadic: false,
-        caller: Placeholder,
-        arguments: ArgumentsList {
-            terms: [],
-        },
-        body: None,
-        span: 0..0,
-    },
-    body: CollectorNode {
-        terms: [],
-        span: 0..0,
-    },
+    body: [],
     span: 18..29,
 }
 ConstructNewNode {
@@ -98,28 +59,19 @@ ConstructNewNode {
             Identifier("D", 35..36),
         ],
     },
-    generic: GenericCallNode {
-        monadic: false,
-        base: Placeholder,
+    generics: [
+        ArgumentsList {
+            terms: [],
+        },
+    ],
+    arguments: TupleNode {
+        kind: Tuple,
         terms: ArgumentsList {
             terms: [],
         },
-        associated: [],
         span: 0..0,
     },
-    arguments: ApplyCallNode {
-        monadic: false,
-        caller: Placeholder,
-        arguments: ArgumentsList {
-            terms: [],
-        },
-        body: None,
-        span: 0..0,
-    },
-    body: CollectorNode {
-        terms: [],
-        span: 0..0,
-    },
+    body: [],
     span: 31..41,
 }
 ConstructNewNode {
@@ -129,28 +81,19 @@ ConstructNewNode {
             Identifier("E", 47..48),
         ],
     },
-    generic: GenericCallNode {
-        monadic: false,
-        base: Placeholder,
+    generics: [
+        ArgumentsList {
+            terms: [],
+        },
+    ],
+    arguments: TupleNode {
+        kind: Tuple,
         terms: ArgumentsList {
             terms: [],
         },
-        associated: [],
-        span: 0..0,
+        span: 52..54,
     },
-    arguments: ApplyCallNode {
-        monadic: false,
-        caller: Placeholder,
-        arguments: ArgumentsList {
-            terms: [],
-        },
-        body: None,
-        span: 0..0,
-    },
-    body: CollectorNode {
-        terms: [],
-        span: 0..0,
-    },
+    body: [],
     span: 43..57,
 }
 ConstructNewNode {
@@ -160,28 +103,15 @@ ConstructNewNode {
             Identifier("List", 69..73),
         ],
     },
-    generic: GenericCallNode {
-        monadic: false,
-        base: Placeholder,
+    generics: [],
+    arguments: TupleNode {
+        kind: Tuple,
         terms: ArgumentsList {
             terms: [],
         },
-        associated: [],
         span: 0..0,
     },
-    arguments: ApplyCallNode {
-        monadic: false,
-        caller: Placeholder,
-        arguments: ArgumentsList {
-            terms: [],
-        },
-        body: None,
-        span: 0..0,
-    },
-    body: CollectorNode {
-        terms: [],
-        span: 0..0,
-    },
+    body: [],
     span: 59..90,
 }
 ConstructNewNode {
@@ -191,28 +121,24 @@ ConstructNewNode {
             Identifier("Integer", 94..101),
         ],
     },
-    generic: GenericCallNode {
-        monadic: false,
-        base: Placeholder,
+    generics: [
+        ArgumentsList {
+            terms: [
+                TupleTermNode {
+                    key: None,
+                    value: A,
+                },
+            ],
+        },
+    ],
+    arguments: TupleNode {
+        kind: Tuple,
         terms: ArgumentsList {
             terms: [],
         },
-        associated: [],
-        span: 0..0,
+        span: 106..108,
     },
-    arguments: ApplyCallNode {
-        monadic: false,
-        caller: Placeholder,
-        arguments: ArgumentsList {
-            terms: [],
-        },
-        body: None,
-        span: 0..0,
-    },
-    body: CollectorNode {
-        terms: [],
-        span: 0..0,
-    },
+    body: [],
     span: 90..115,
 }
 ConstructNewNode {
@@ -222,28 +148,24 @@ ConstructNewNode {
             Identifier("List", 125..129),
         ],
     },
-    generic: GenericCallNode {
-        monadic: false,
-        base: Placeholder,
+    generics: [
+        ArgumentsList {
+            terms: [
+                TupleTermNode {
+                    key: None,
+                    value: A,
+                },
+            ],
+        },
+    ],
+    arguments: TupleNode {
+        kind: Tuple,
         terms: ArgumentsList {
             terms: [],
         },
-        associated: [],
-        span: 0..0,
+        span: 135..137,
     },
-    arguments: ApplyCallNode {
-        monadic: false,
-        caller: Placeholder,
-        arguments: ArgumentsList {
-            terms: [],
-        },
-        body: None,
-        span: 0..0,
-    },
-    body: CollectorNode {
-        terms: [],
-        span: 0..0,
-    },
+    body: [],
     span: 115..144,
 }
 ConstructNewNode {
@@ -253,28 +175,20 @@ ConstructNewNode {
             Identifier("List", 154..158),
         ],
     },
-    generic: GenericCallNode {
-        monadic: false,
-        base: Placeholder,
+    generics: [],
+    arguments: TupleNode {
+        kind: Tuple,
         terms: ArgumentsList {
-            terms: [],
+            terms: [
+                TupleTermNode {
+                    key: None,
+                    value: 10,
+                },
+            ],
         },
-        associated: [],
-        span: 0..0,
+        span: 158..162,
     },
-    arguments: ApplyCallNode {
-        monadic: false,
-        caller: Placeholder,
-        arguments: ArgumentsList {
-            terms: [],
-        },
-        body: None,
-        span: 0..0,
-    },
-    body: CollectorNode {
-        terms: [],
-        span: 0..0,
-    },
+    body: [],
     span: 144..201,
 }
 ConstructNewNode {
@@ -284,28 +198,33 @@ ConstructNewNode {
             Identifier("List", 211..215),
         ],
     },
-    generic: GenericCallNode {
-        monadic: false,
-        base: Placeholder,
+    generics: [
+        ArgumentsList {
+            terms: [
+                TupleTermNode {
+                    key: Some(
+                        Identifier("T", 218..219),
+                    ),
+                    value: Integer,
+                },
+            ],
+        },
+    ],
+    arguments: TupleNode {
+        kind: Tuple,
         terms: ArgumentsList {
-            terms: [],
+            terms: [
+                TupleTermNode {
+                    key: Some(
+                        Identifier("capacity", 230..238),
+                    ),
+                    value: 10,
+                },
+            ],
         },
-        associated: [],
-        span: 0..0,
+        span: 229..243,
     },
-    arguments: ApplyCallNode {
-        monadic: false,
-        caller: Placeholder,
-        arguments: ArgumentsList {
-            terms: [],
-        },
-        body: None,
-        span: 0..0,
-    },
-    body: CollectorNode {
-        terms: [],
-        span: 0..0,
-    },
+    body: [],
     span: 201..282,
 }
 ConstructNewNode {
@@ -315,28 +234,15 @@ ConstructNewNode {
             Identifier("Object", 292..298),
         ],
     },
-    generic: GenericCallNode {
-        monadic: false,
-        base: Placeholder,
+    generics: [],
+    arguments: TupleNode {
+        kind: Tuple,
         terms: ArgumentsList {
             terms: [],
         },
-        associated: [],
         span: 0..0,
     },
-    arguments: ApplyCallNode {
-        monadic: false,
-        caller: Placeholder,
-        arguments: ArgumentsList {
-            terms: [],
-        },
-        body: None,
-        span: 0..0,
-    },
-    body: CollectorNode {
-        terms: [],
-        span: 0..0,
-    },
+    body: [],
     span: 282..375,
 }
 ConstructNewNode {
@@ -346,27 +252,28 @@ ConstructNewNode {
             Identifier("BaseballTeam", 388..400),
         ],
     },
-    generic: GenericCallNode {
-        monadic: false,
-        base: Placeholder,
+    generics: [
+        ArgumentsList {
+            terms: [
+                TupleTermNode {
+                    key: None,
+                    value: T,
+                },
+            ],
+        },
+    ],
+    arguments: TupleNode {
+        kind: Tuple,
         terms: ArgumentsList {
-            terms: [],
+            terms: [
+                TupleTermNode {
+                    key: None,
+                    value: args,
+                },
+            ],
         },
-        associated: [],
-        span: 0..0,
+        span: 406..412,
     },
-    arguments: ApplyCallNode {
-        monadic: false,
-        caller: Placeholder,
-        arguments: ArgumentsList {
-            terms: [],
-        },
-        body: None,
-        span: 0..0,
-    },
-    body: CollectorNode {
-        terms: [],
-        span: 0..0,
-    },
+    body: [],
     span: 375..849,
 }

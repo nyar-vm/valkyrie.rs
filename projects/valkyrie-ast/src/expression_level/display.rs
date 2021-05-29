@@ -77,3 +77,12 @@ impl Lispify for ExpressionKind {
         }
     }
 }
+
+impl Debug for GenericCallTerm {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        match self {
+            Self::Associated(v) => Debug::fmt(v, f),
+            Self::Generic(v) => Debug::fmt(v, f),
+        }
+    }
+}

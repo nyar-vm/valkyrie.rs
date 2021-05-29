@@ -197,7 +197,7 @@ impl crate::InlineSuffixTermNode {
 impl crate::TypeSuffixTermNode {
     fn as_token(&self, ctx: &mut ProgramState) -> Validation<TokenStream> {
         let token = match self {
-            Self::GenericHide(v) => TokenStream::Generic(v.build(ctx)?),
+            Self::GenericHide(v) => TokenStream::Generic(v.build_call(ctx)?),
             Self::TypeSuffix(v) => TokenStream::Postfix(v.as_operator()),
         };
         Success { value: token, diagnostics: vec![] }

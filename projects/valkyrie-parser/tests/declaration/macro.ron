@@ -212,7 +212,7 @@ FunctionDeclaration {
             bound: GenericCallNode {
                 monadic: false,
                 base: List,
-                terms: ArgumentsList {
+                term: ArgumentsList {
                     terms: [
                         TupleTermNode {
                             key: None,
@@ -220,7 +220,6 @@ FunctionDeclaration {
                         },
                     ],
                 },
-                associated: [],
                 span: 557..569,
             },
         },
