@@ -2,9 +2,41 @@ MatchStatement {
     kind: Typing,
     bind: None,
     main: Placeholder,
-    patterns: PatternBlock {
-        branches: [],
-        span: 0..0,
-    },
+    patterns: [
+        PatternBranch {
+            condition: Case(
+                PatternCaseNode {
+                    pattern: ExpressionNode {
+                        omit: false,
+                        body: Placeholder,
+                        span: 0..0,
+                    },
+                    guard: None,
+                    span: 0..0,
+                },
+            ),
+            statements: PatternStatements {
+                terms: [],
+            },
+            span: 14..28,
+        },
+        PatternBranch {
+            condition: Case(
+                PatternCaseNode {
+                    pattern: ExpressionNode {
+                        omit: false,
+                        body: Placeholder,
+                        span: 0..0,
+                    },
+                    guard: None,
+                    span: 0..0,
+                },
+            ),
+            statements: PatternStatements {
+                terms: [],
+            },
+            span: 28..36,
+        },
+    ],
     span: 0..37,
 }

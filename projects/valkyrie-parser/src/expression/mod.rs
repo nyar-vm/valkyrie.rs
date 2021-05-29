@@ -34,6 +34,20 @@ impl crate::MainExpressionNode {
         Success { value: expr, diagnostics: vec![] }
     }
 }
+impl crate::InlineExpressionNode {
+    pub fn build(&self, ctx: &mut ProgramState) -> Validation<ExpressionKind> {
+        let mut stream = vec![];
+        let (head, rest) = self.inline_term.split_first().expect("at least one term");
+        head.push_tokens(&mut stream, ctx)?;
+        for (infix, rhs) in self.main_infix.iter().zip(rest.iter()) {
+            stream.push(TokenStream::Infix(infix.as_operator()));
+            rhs.push_tokens(&mut stream, ctx).valid()?;
+        }
+        let mut parser = ExpressionResolver;
+        let expr = parser.parse(stream.into_iter()).valid()?;
+        Success { value: expr, diagnostics: vec![] }
+    }
+}
 impl crate::TypeExpressionNode {
     pub fn build(&self, ctx: &mut ProgramState) -> Validation<ExpressionKind> {
         let mut stream = vec![];
@@ -57,6 +71,19 @@ impl crate::MainTermNode {
         let main = self.main_factor.build(ctx).valid()?;
         stream.push(TokenStream::Term(main));
         for i in &self.main_suffix_term {
+            stream.push(i.as_token(ctx)?)
+        }
+        Success { value: (), diagnostics: vec![] }
+    }
+}
+impl crate::InlineTermNode {
+    fn push_tokens(&self, stream: &mut Vec<TokenStream>, ctx: &mut ProgramState) -> Validation<()> {
+        for i in &self.main_prefix {
+            stream.push(TokenStream::Prefix(i.as_operator()))
+        }
+        let main = self.main_factor.build(ctx).valid()?;
+        stream.push(TokenStream::Term(main));
+        for i in &self.inline_suffix_term {
             stream.push(i.as_token(ctx)?)
         }
         Success { value: (), diagnostics: vec![] }

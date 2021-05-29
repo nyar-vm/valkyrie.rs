@@ -4,15 +4,22 @@ use valkyrie_ast::{PatternBranch, PatternCaseNode, PatternCondition, PatternStat
 
 impl crate::MatchExpressionNode {
     pub fn build(&self, ctx: &mut ProgramState) -> Validation<MatchStatement> {
+        let mut diagnostics = vec![];
+        let mut patterns = vec![];
+        for x in &self.match_terms {
+            x.build(ctx, &mut patterns, &mut diagnostics)
+        }
+        self.inline_expression.build(ctx);
+
         Success {
             value: MatchStatement {
                 kind: self.kw_match.build(),
                 bind: self.get_bind(ctx),
                 main: Default::default(),
-                patterns: PatternBlock { branches: vec![], span: Default::default() },
+                patterns,
                 span: self.span.clone(),
             },
-            diagnostics: vec![],
+            diagnostics,
         }
     }
     fn get_bind(&self, ctx: &mut ProgramState) -> Option<IdentifierNode> {
