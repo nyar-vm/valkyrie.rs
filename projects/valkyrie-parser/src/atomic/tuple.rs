@@ -1,7 +1,7 @@
 use super::*;
 use nyar_error::{NyarError, SyntaxError};
 
-impl TupleLiteralStrictNode {
+impl crate::TupleLiteralStrictNode {
     pub fn build(&self, ctx: &mut ProgramState) -> Validation<TupleNode> {
         let mut errors = vec![];
         let mut terms = vec![];
@@ -15,13 +15,13 @@ impl TupleLiteralStrictNode {
     }
 }
 
-impl TupleLiteralNode {
+impl crate::TupleLiteralNode {
     pub fn build(&self, ctx: &mut ProgramState) -> Validation<TupleNode> {
         self.tuple_terms.build(ctx).map(|terms| TupleNode { kind: Default::default(), terms, span: self.span.clone() })
     }
 }
 
-impl TupleTermsNode {
+impl crate::TupleTermsNode {
     pub fn build(&self, ctx: &mut ProgramState) -> Validation<ArgumentsList> {
         let mut errors = vec![];
         let mut terms = vec![];
@@ -32,7 +32,7 @@ impl TupleTermsNode {
     }
 }
 
-impl TuplePairNode {
+impl crate::TuplePairNode {
     pub fn build(&self, ctx: &mut ProgramState) -> Validation<TupleTermNode> {
         let key = match &self.tuple_key {
             Some(v) => Some(v.build(ctx)?),
@@ -43,7 +43,7 @@ impl TuplePairNode {
     }
 }
 
-impl TupleKeyNode {
+impl crate::TupleKeyNode {
     pub fn build(&self, ctx: &mut ProgramState) -> Result<IdentifierNode, NyarError> {
         match self {
             Self::Identifier(v) => Ok(v.build(ctx)),

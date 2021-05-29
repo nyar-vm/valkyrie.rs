@@ -5,7 +5,7 @@ impl crate::SwitchStatementNode {
         let mut diagnostics = vec![];
         let mut patterns = vec![];
         for x in &self.match_terms {
-            x.build(ctx, &mut patterns, &mut diagnostics)
+            x.build(ctx, &mut patterns)?
         }
         Success { value: SwitchStatement { patterns, span: self.span.clone() }, diagnostics }
     }

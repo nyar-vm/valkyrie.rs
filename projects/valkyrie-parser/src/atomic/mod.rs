@@ -1,9 +1,6 @@
-use crate::{
-    helpers::ProgramState, LeadingNode, RangeLiteralNode, SpecialNode, SubscriptAxisNode, SubscriptOnlyNode,
-    SubscriptRangeNode, TupleKeyNode, TupleLiteralNode, TupleLiteralStrictNode, TuplePairNode, TupleTermsNode,
-};
-use nyar_error::{Success, Validation};
-use valkyrie_ast::*;
+use crate::helpers::ProgramState;
+use nyar_error::{Success, Validate, Validation};
+use valkyrie_ast::{TryStatement, *};
 use yggdrasil_rt::YggdrasilNode;
 mod bytes;
 mod create_lambda;
@@ -17,7 +14,7 @@ mod range;
 mod string;
 mod tuple;
 
-impl LeadingNode {
+impl crate::LeadingNode {
     pub fn build(&self, ctx: &mut ProgramState) -> Validation<ExpressionKind> {
         let value = match self {
             Self::Special(v) => v.build(),

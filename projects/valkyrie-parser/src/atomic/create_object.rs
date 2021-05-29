@@ -1,5 +1,4 @@
 use super::*;
-use crate::TypeHintNode;
 
 impl crate::ObjectStatementNode {
     pub fn build(&self, ctx: &mut ProgramState) -> Validation<ConstructObjectNode> {

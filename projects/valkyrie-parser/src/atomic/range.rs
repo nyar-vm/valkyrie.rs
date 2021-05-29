@@ -1,7 +1,7 @@
 use super::*;
 use valkyrie_ast::SubscriptCallNode;
 
-impl RangeLiteralNode {
+impl crate::RangeLiteralNode {
     pub fn build(&self, ctx: &mut ProgramState) -> Validation<RangeNode> {
         let mut errors = vec![];
         let mut value = RangeNode { kind: RangeKind::Ordinal, terms: vec![], span: Default::default() };
@@ -24,22 +24,22 @@ impl RangeLiteralNode {
     }
 }
 
-impl SubscriptAxisNode {
+impl crate::SubscriptAxisNode {
     pub fn build(&self, ctx: &mut ProgramState) -> Validation<RangeTermNode> {
         match self {
-            SubscriptAxisNode::SubscriptOnly(v) => v.build(ctx),
-            SubscriptAxisNode::SubscriptRange(v) => v.build(ctx),
+            Self::SubscriptOnly(v) => v.build(ctx),
+            Self::SubscriptRange(v) => v.build(ctx),
         }
     }
 }
 
-impl SubscriptOnlyNode {
+impl crate::SubscriptOnlyNode {
     pub fn build(&self, ctx: &mut ProgramState) -> Validation<RangeTermNode> {
         self.index.build(ctx).map(|v| RangeTermNode::Index { index: v })
     }
 }
 
-impl SubscriptRangeNode {
+impl crate::SubscriptRangeNode {
     pub fn build(&self, ctx: &mut ProgramState) -> Validation<RangeTermNode> {
         let head = match &self.head {
             Some(s) => Some(s.build(ctx)?),

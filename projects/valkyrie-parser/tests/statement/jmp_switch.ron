@@ -22,19 +22,11 @@ SwitchStatement {
             span: 22..34,
         },
         PatternBranch {
-            condition: Case(
-                PatternCaseNode {
-                    pattern: ExpressionNode {
-                        omit: false,
-                        body: Placeholder,
-                        span: 0..0,
-                    },
-                    guard: None,
-                    span: 0..0,
-                },
-            ),
+            condition: Else,
             statements: PatternStatements {
-                terms: [],
+                terms: [
+                    2,
+                ],
             },
             span: 36..43,
         },
@@ -95,19 +87,11 @@ SwitchStatement {
             span: 105..126,
         },
         PatternBranch {
-            condition: Case(
-                PatternCaseNode {
-                    pattern: ExpressionNode {
-                        omit: false,
-                        body: Placeholder,
-                        span: 0..0,
-                    },
-                    guard: None,
-                    span: 0..0,
-                },
-            ),
+            condition: Else,
             statements: PatternStatements {
-                terms: [],
+                terms: [
+                    d,
+                ],
             },
             span: 132..147,
         },

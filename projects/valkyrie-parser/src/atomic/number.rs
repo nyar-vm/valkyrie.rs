@@ -93,7 +93,7 @@ impl crate::IntegerNode {
     }
 }
 
-impl SpecialNode {
+impl crate::SpecialNode {
     pub fn build(&self) -> ExpressionKind {
         match self.text.as_str() {
             "false" => BooleanNode { value: false, span: self.span.clone() }.into(),

@@ -75,7 +75,7 @@ pub enum PatternCondition {
     /// `type Integer | Decimal:`
     Type(PatternTypeNode),
     /// `else:`
-    Else(PatternElseNode),
+    Else,
 }
 
 /// `case Some(a) | Success { value :a } if a > 0:`
@@ -320,14 +320,6 @@ pub struct PatternTypeNode {
     pub pattern: ExpressionNode,
     /// The range of the node
     pub guard: Option<PatternGuard>,
-    /// The range of the node
-    pub span: Range<u32>,
-}
-
-/// `else: ...`
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct PatternElseNode {
     /// The range of the node
     pub span: Range<u32>,
 }

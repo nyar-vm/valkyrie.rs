@@ -21,19 +21,11 @@ MatchStatement {
             span: 14..28,
         },
         PatternBranch {
-            condition: Case(
-                PatternCaseNode {
-                    pattern: ExpressionNode {
-                        omit: false,
-                        body: Placeholder,
-                        span: 0..0,
-                    },
-                    guard: None,
-                    span: 0..0,
-                },
-            ),
+            condition: Else,
             statements: PatternStatements {
-                terms: [],
+                terms: [
+                    1,
+                ],
             },
             span: 28..36,
         },
