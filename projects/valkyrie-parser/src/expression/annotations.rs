@@ -44,10 +44,17 @@ impl AnnotationTermNode {
     pub fn build(&self, ctx: &mut ProgramState) -> Result<AttributeList> {
         let mut terms = vec![];
         match self {
-            Self::AttributeCall(v) => v.attribute_item.build(ctx)?,
+            Self::AttributeCall(v) => terms.push(v.attribute_item.build(ctx)?),
             Self::AttributeList(v) => {
-                for x in &v.attribute_item {
-                    x.build(ctx).append(&mut terms, &mut ctx.errors)
+                for term in &v.attribute_item {
+                    match term.build(ctx) {
+                        Ok(o) => {
+                            terms.push(o);
+                        }
+                        Err(e) => {
+                            ctx.add_error(e);
+                        }
+                    }
                 }
             }
         }
@@ -59,11 +66,18 @@ impl AnnotationTermMixNode {
     pub fn build(&self, ctx: &mut ProgramState) -> Result<AttributeList> {
         let mut terms = vec![];
         match self {
-            Self::AttributeCall(v) => v.attribute_item.build(ctx)?,
-            Self::ProceduralCall(v) => v.attribute_item.build(ctx)?,
+            Self::AttributeCall(v) => terms.push(v.attribute_item.build(ctx)?),
+            Self::ProceduralCall(v) => terms.push(v.attribute_item.build(ctx)?),
             Self::AttributeList(v) => {
                 for x in &v.attribute_item {
-                    x.build(ctx).append(&mut terms, &mut ctx.errors)
+                    match x.build(ctx) {
+                        Ok(o) => {
+                            terms.push(o);
+                        }
+                        Err(e) => {
+                            ctx.add_error(e);
+                        }
+                    }
                 }
             }
         }

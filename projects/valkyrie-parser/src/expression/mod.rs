@@ -1,5 +1,5 @@
 use crate::helpers::ProgramState;
-use nyar_error::{NyarError, Success, Validate, Validation};
+use nyar_error::{NyarError, Result, Success, Validate, Validation};
 use pratt::{Affix, PrattParser, Precedence};
 use std::str::FromStr;
 use valkyrie_ast::*;
@@ -16,7 +16,7 @@ impl crate::ExpressionRootNode {
         let expr = self.main_expression.build(ctx)?;
         let eos = self.eos.is_some();
         let ex = ExpressionNode { omit: eos, body: expr, span: self.span.clone() };
-        Success { value: StatementNode::Expression(Box::new(ex)), diagnostics: vec![] }
+        Ok(StatementNode::Expression(Box::new(ex)))
     }
 }
 
@@ -27,11 +27,11 @@ impl crate::MainExpressionNode {
         head.push_tokens(&mut stream, ctx)?;
         for (infix, rhs) in self.main_infix.iter().zip(rest.iter()) {
             stream.push(TokenStream::Infix(infix.as_operator()));
-            rhs.push_tokens(&mut stream, ctx).valid()?;
+            rhs.push_tokens(&mut stream, ctx)?;
         }
         let mut parser = ExpressionResolver;
-        let expr = parser.parse(stream.into_iter()).valid()?;
-        Success { value: expr, diagnostics: vec![] }
+        let expr = parser.parse(stream.into_iter())?;
+        Ok(expr)
     }
 }
 impl crate::InlineExpressionNode {
@@ -41,11 +41,11 @@ impl crate::InlineExpressionNode {
         head.push_tokens(&mut stream, ctx)?;
         for (infix, rhs) in self.main_infix.iter().zip(rest.iter()) {
             stream.push(TokenStream::Infix(infix.as_operator()));
-            rhs.push_tokens(&mut stream, ctx).valid()?;
+            rhs.push_tokens(&mut stream, ctx)?;
         }
         let mut parser = ExpressionResolver;
-        let expr = parser.parse(stream.into_iter()).valid()?;
-        Success { value: expr, diagnostics: vec![] }
+        let expr = parser.parse(stream.into_iter())?;
+        Ok(expr)
     }
 }
 impl crate::TypeExpressionNode {
@@ -55,11 +55,11 @@ impl crate::TypeExpressionNode {
         head.push_tokens(&mut stream, ctx)?;
         for (infix, rhs) in self.type_infix.iter().zip(rest.iter()) {
             stream.push(TokenStream::Infix(infix.as_operator()));
-            rhs.push_tokens(&mut stream, ctx).valid()?;
+            rhs.push_tokens(&mut stream, ctx)?;
         }
         let mut parser = ExpressionResolver;
-        let expr = parser.parse(stream.into_iter()).valid()?;
-        Success { value: expr, diagnostics: vec![] }
+        let expr = parser.parse(stream.into_iter())?;
+        Ok(expr)
     }
 }
 
@@ -68,12 +68,12 @@ impl crate::MainTermNode {
         for i in &self.main_prefix {
             stream.push(TokenStream::Prefix(i.as_operator()))
         }
-        let main = self.main_factor.build(ctx).valid()?;
+        let main = self.main_factor.build(ctx)?;
         stream.push(TokenStream::Term(main));
         for i in &self.main_suffix_term {
             stream.push(i.as_token(ctx)?)
         }
-        Success { value: (), diagnostics: vec![] }
+        Ok(())
     }
 }
 impl crate::InlineTermNode {
@@ -81,12 +81,12 @@ impl crate::InlineTermNode {
         for i in &self.main_prefix {
             stream.push(TokenStream::Prefix(i.as_operator()))
         }
-        let main = self.main_factor.build(ctx).valid()?;
+        let main = self.main_factor.build(ctx)?;
         stream.push(TokenStream::Term(main));
         for i in &self.inline_suffix_term {
             stream.push(i.as_token(ctx)?)
         }
-        Success { value: (), diagnostics: vec![] }
+        Ok(())
     }
 }
 impl crate::TypeTermNode {
@@ -94,12 +94,12 @@ impl crate::TypeTermNode {
         for i in &self.type_prefix {
             stream.push(TokenStream::Prefix(i.as_operator()))
         }
-        let main = self.main_factor.build(ctx).valid()?;
+        let main = self.main_factor.build(ctx)?;
         stream.push(TokenStream::Term(main));
         for i in &self.type_suffix_term {
             stream.push(i.as_token(ctx)?)
         }
-        Success { value: (), diagnostics: vec![] }
+        Ok(())
     }
 }
 
@@ -127,7 +127,7 @@ where
     type Input = TokenStream;
     type Output = ExpressionKind;
 
-    fn query(&mut self, input: &Self::Input) -> Result<Affix, Self::Error> {
+    fn query(&mut self, input: &Self::Input) -> Result<Affix> {
         let affix = match input {
             TokenStream::Prefix(v) => Affix::Prefix(v.kind.precedence()),
             TokenStream::Infix(v) => Affix::Infix(v.kind.precedence(), v.kind.associativity()),
@@ -138,28 +138,28 @@ where
         Ok(affix)
     }
 
-    fn primary(&mut self, input: Self::Input) -> Result<Self::Output, Self::Error> {
+    fn primary(&mut self, input: Self::Input) -> Result<Self::Output> {
         match input {
             TokenStream::Term(v) => Ok(v),
             _ => unreachable!(),
         }
     }
 
-    fn infix(&mut self, lhs: Self::Output, op: Self::Input, rhs: Self::Output) -> Result<Self::Output, Self::Error> {
+    fn infix(&mut self, lhs: Self::Output, op: Self::Input, rhs: Self::Output) -> Result<Self::Output> {
         match op {
             TokenStream::Infix(v) => Ok(BinaryNode { infix: v, lhs, rhs }.into()),
             _ => unreachable!(),
         }
     }
 
-    fn prefix(&mut self, op: Self::Input, rhs: Self::Output) -> Result<Self::Output, Self::Error> {
+    fn prefix(&mut self, op: Self::Input, rhs: Self::Output) -> Result<Self::Output> {
         match op {
             TokenStream::Prefix(v) => Ok(UnaryNode { operator: v, base: rhs }.into()),
             _ => unreachable!(),
         }
     }
 
-    fn postfix(&mut self, lhs: Self::Output, op: Self::Input) -> Result<Self::Output, Self::Error> {
+    fn postfix(&mut self, lhs: Self::Output, op: Self::Input) -> Result<Self::Output> {
         match op {
             TokenStream::Postfix(v) => Ok(UnaryNode { operator: v, base: lhs }.into()),
             TokenStream::Subscript(call) => Ok(call.with_base(lhs).into()),
@@ -204,7 +204,7 @@ impl crate::MainSuffixTermNode {
             Self::DotClosureCall(v) => TokenStream::DotClosure(v.build(ctx)?),
             Self::TupleCall(v) => TokenStream::Apply(v.build(ctx)?),
         };
-        Success { value: token, diagnostics: vec![] }
+        Ok(token)
     }
 }
 
@@ -217,7 +217,7 @@ impl crate::InlineSuffixTermNode {
             Self::DotCall(v) => TokenStream::Dot(v.build(ctx)?),
             Self::GenericCall(v) => TokenStream::Generic(v.build(ctx)?),
         };
-        Success { value: token, diagnostics: vec![] }
+        Ok(token)
     }
 }
 
@@ -227,6 +227,6 @@ impl crate::TypeSuffixTermNode {
             Self::GenericHide(v) => TokenStream::Generic(v.build_call(ctx)?),
             Self::TypeSuffix(v) => TokenStream::Postfix(v.as_operator()),
         };
-        Success { value: token, diagnostics: vec![] }
+        Ok(token)
     }
 }

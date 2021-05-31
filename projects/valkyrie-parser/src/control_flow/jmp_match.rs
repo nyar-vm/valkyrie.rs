@@ -1,24 +1,20 @@
 use super::*;
 
 impl crate::MatchExpressionNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Validation<MatchStatement> {
-        let mut diagnostics = vec![];
+    pub fn build(&self, ctx: &mut ProgramState) -> Result<MatchStatement> {
         let mut patterns = vec![];
         for x in &self.match_terms {
             x.build(ctx, &mut patterns)?
         }
-        self.inline_expression.build(ctx);
+        self.inline_expression.build(ctx)?;
 
-        Success {
-            value: MatchStatement {
-                kind: self.kw_match.build(),
-                bind: self.get_bind(ctx),
-                main: Default::default(),
-                patterns,
-                span: self.span.clone(),
-            },
-            diagnostics,
-        }
+        Ok(MatchStatement {
+            kind: self.kw_match.build(),
+            bind: self.get_bind(ctx),
+            main: Default::default(),
+            patterns,
+            span: self.span.clone(),
+        })
     }
     fn get_bind(&self, ctx: &mut ProgramState) -> Option<IdentifierNode> {
         Some(self.identifier.as_ref()?.build(ctx))
@@ -36,13 +32,14 @@ impl KwMatchNode {
 
 impl crate::MatchTermsNode {
     pub fn build(&self, ctx: &mut ProgramState, ts: &mut Vec<PatternBranch>) -> Result<()> {
-        match self {
-            Self::MatchCase(v) => ts.push(v.build(ctx)?),
-            Self::MatchElse(v) => ts.push(v.build(ctx)?),
-            Self::MatchType(v) => ts.push(v.build(ctx)?),
-            Self::MatchWhen(v) => ts.push(v.build(ctx)?),
-            Self::Comma(_) => {}
-        }
+        let value = match self {
+            Self::MatchCase(v) => v.build(ctx)?,
+            Self::MatchElse(v) => v.build(ctx)?,
+            Self::MatchType(v) => v.build(ctx)?,
+            Self::MatchWhen(v) => v.build(ctx)?,
+            Self::Comma(_) => return Ok(()),
+        };
+        ts.push(value);
         Ok(())
     }
 }

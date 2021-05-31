@@ -121,6 +121,8 @@ pub enum ExpressionKind {
     Match(Box<MatchStatement>),
     /// - Standalone expression
     Try(Box<TryStatement>),
+    /// `@procedural() { }`
+    Procedural(Box<ProceduralNode>),
     /// - Postfix expression
     ApplyCall(Box<ApplyCallNode>),
     /// - Postfix expression

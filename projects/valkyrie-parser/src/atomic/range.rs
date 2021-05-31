@@ -1,31 +1,37 @@
 use super::*;
+use crate::SubscriptAxisNode;
 use valkyrie_ast::SubscriptCallNode;
 
 impl crate::RangeLiteralNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Validation<RangeNode> {
-        let mut errors = vec![];
+    pub fn build(&self, ctx: &mut ProgramState) -> Result<RangeNode> {
         let mut value = RangeNode { kind: RangeKind::Ordinal, terms: vec![], span: Default::default() };
         match self {
             Self::RangeLiteralIndex0(v) => {
-                for x in &v.subscript_axis {
-                    x.build(ctx).append(&mut value.terms, &mut errors)
+                for term in &v.subscript_axis {
+                    match term.build(ctx) {
+                        Ok(o) => value.terms.push(o),
+                        Err(e) => ctx.add_error(e),
+                    }
                 }
                 value.span = v.span.clone()
             }
             Self::RangeLiteralIndex1(v) => {
                 value.kind = RangeKind::Offset;
-                for x in &v.subscript_axis {
-                    x.build(ctx).append(&mut value.terms, &mut errors)
+                for term in &v.subscript_axis {
+                    match term.build(ctx) {
+                        Ok(o) => value.terms.push(o),
+                        Err(e) => ctx.add_error(e),
+                    }
                 }
                 value.span = v.span.clone()
             }
         }
-        Success { value, diagnostics: errors }
+        Ok(value)
     }
 }
 
 impl crate::SubscriptAxisNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Validation<RangeTermNode> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Result<RangeTermNode> {
         match self {
             Self::SubscriptOnly(v) => v.build(ctx),
             Self::SubscriptRange(v) => v.build(ctx),
@@ -34,13 +40,13 @@ impl crate::SubscriptAxisNode {
 }
 
 impl crate::SubscriptOnlyNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Validation<RangeTermNode> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Result<RangeTermNode> {
         self.index.build(ctx).map(|v| RangeTermNode::Index { index: v })
     }
 }
 
 impl crate::SubscriptRangeNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Validation<RangeTermNode> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Result<RangeTermNode> {
         let head = match &self.head {
             Some(s) => Some(s.build(ctx)?),
             None => None,
@@ -53,22 +59,19 @@ impl crate::SubscriptRangeNode {
             Some(s) => Some(s.build(ctx)?),
             None => None,
         };
-        Success { value: RangeTermNode::Range { head, tail, step }, diagnostics: vec![] }
+        Ok(RangeTermNode::Range { head, tail, step })
     }
 }
 impl crate::RangeCallNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Validation<SubscriptCallNode> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Result<SubscriptCallNode> {
         let monadic = self.op_and_then.is_some();
         let terms = self.range_literal.build(ctx)?.terms;
-        Success {
-            value: SubscriptCallNode {
-                kind: RangeKind::Ordinal,
-                base: ExpressionKind::Placeholder,
-                monadic,
-                terms,
-                span: self.span.clone(),
-            },
-            diagnostics: vec![],
-        }
+        Ok(SubscriptCallNode {
+            kind: RangeKind::Ordinal,
+            base: ExpressionKind::Placeholder,
+            monadic,
+            terms,
+            span: self.span.clone(),
+        })
     }
 }

@@ -29,6 +29,14 @@ pub struct ProceduralNode {
     pub arguments: ArgumentsList,
     /// The capture of this attribute.
     pub domain: Option<DomainDeclaration>,
+    /// The range of the node
+    pub span: Range<u32>,
+}
+
+impl ValkyrieNode for ProceduralNode {
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
+    }
 }
 
 /// A namepath is a series of identifiers separated by dots.

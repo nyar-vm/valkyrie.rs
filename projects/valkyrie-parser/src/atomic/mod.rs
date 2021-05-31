@@ -15,7 +15,7 @@ mod string;
 mod tuple;
 
 impl crate::LeadingNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Validation<ExpressionKind> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Result<ExpressionKind> {
         let value = match self {
             Self::Special(v) => v.build(),
             Self::Number(v) => v.build(ctx)?.into(),
@@ -26,6 +26,6 @@ impl crate::LeadingNode {
             Self::TupleLiteralStrict(v) => v.build(ctx)?.into(),
             Self::TextLiteral(v) => v.build(ctx).into(),
         };
-        Success { value, diagnostics: vec![] }
+        Ok(value)
     }
 }

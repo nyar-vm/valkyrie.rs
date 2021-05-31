@@ -4,25 +4,21 @@ use crate::{
 };
 
 impl crate::DefineFunctionNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Validation<FunctionDeclaration> {
-        let mut errors = vec![];
-        let annotations = self.annotation_head.annotations(ctx).recover(&mut errors)?;
-        let parameters = self.function_middle.parameters(ctx).recover(&mut errors)?;
-        let generic = self.function_middle.generics(ctx).recover(&mut errors)?;
-        let returns = self.function_middle.returns(ctx).recover(&mut errors)?;
-        let body = self.continuation.build(ctx).recover(&mut errors)?;
-        Success {
-            value: FunctionDeclaration {
-                name: self.namepath.build(ctx),
-                kind: self.kw_function.build(),
-                annotations,
-                generics: generic,
-                parameters,
-                returns,
-                body,
-            },
-            diagnostics: errors,
-        }
+    pub fn build(&self, ctx: &mut ProgramState) -> Result<FunctionDeclaration> {
+        let annotations = self.annotation_head.annotations(ctx)?;
+        let parameters = self.function_middle.parameters(ctx)?;
+        let generic = self.function_middle.generics(ctx)?;
+        let returns = self.function_middle.returns(ctx)?;
+        let body = self.continuation.build(ctx)?;
+        Ok(FunctionDeclaration {
+            name: self.namepath.build(ctx),
+            kind: self.kw_function.build(),
+            annotations,
+            generics: generic,
+            parameters,
+            returns,
+            body,
+        })
     }
 }
 
@@ -36,51 +32,68 @@ impl crate::KwFunctionNode {
 }
 
 impl crate::FunctionMiddleNode {
-    pub fn returns(&self, ctx: &mut ProgramState) -> Validation<FunctionReturnNode> {
-        let mut errors = vec![];
+    pub fn returns(&self, ctx: &mut ProgramState) -> Result<FunctionReturnNode> {
         let typing = match &self.type_return {
             Some(s) => Some(s.type_expression.build(ctx)?),
             None => None,
         };
-        Success { value: FunctionReturnNode { typing, effect: vec![] }, diagnostics: errors }
+        Ok(FunctionReturnNode { typing, effect: vec![] })
     }
-    pub fn parameters(&self, ctx: &mut ProgramState) -> Validation<ParametersList> {
-        let mut errors = vec![];
+    pub fn parameters(&self, ctx: &mut ProgramState) -> Result<ParametersList> {
         let mut terms = vec![];
         for term in &self.function_parameters.parameter_item {
-            term.build(ctx).append(&mut terms, &mut errors)
+            match term.build(ctx) {
+                Ok(s) => terms.push(s),
+                Err(e) => ctx.add_error(e),
+            }
         }
-        Success { value: ParametersList { kind: ParameterKind::Expression, terms }, diagnostics: errors }
+        Ok(ParametersList { kind: ParameterKind::Expression, terms })
     }
-    pub fn generics(&self, ctx: &mut ProgramState) -> Validation<ParametersList> {
-        let mut errors = vec![];
+    pub fn generics(&self, ctx: &mut ProgramState) -> Result<ParametersList> {
         let mut terms = vec![];
         match &self.define_generic {
             Some(s) => {
                 for term in &s.generic_parameter.generic_parameter_pair {
-                    term.build(ctx).append(&mut terms, &mut errors)
+                    match term.build(ctx) {
+                        Ok(s) => terms.push(s),
+                        Err(e) => ctx.add_error(e),
+                    }
                 }
             }
             None => {}
         }
-        Success { value: ParametersList { kind: ParameterKind::Generic, terms }, diagnostics: errors }
+        Ok(ParametersList { kind: ParameterKind::Generic, terms })
     }
 }
 
-impl DefineGenericNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Validation<ParametersList> {
-        let mut diagnostics = vec![];
+impl crate::GenericParameterNode {
+    pub fn build(&self, ctx: &mut ProgramState) -> Result<ParametersList> {
+        let mut terms = vec![];
+        for term in &self.generic_parameter_pair {
+            match term.build(ctx) {
+                Ok(s) => terms.push(s),
+                Err(e) => ctx.add_error(e),
+            }
+        }
+        Ok(ParametersList { kind: ParameterKind::Generic, terms })
+    }
+}
+
+impl crate::DefineGenericNode {
+    pub fn build(&self, ctx: &mut ProgramState) -> Result<ParametersList> {
         let mut terms = vec![];
         for term in &self.generic_parameter.generic_parameter_pair {
-            term.build(ctx).append(&mut terms, &mut diagnostics)
+            match term.build(ctx) {
+                Ok(s) => terms.push(s),
+                Err(e) => ctx.add_error(e),
+            }
         }
-        Success { value: ParametersList { kind: ParameterKind::Generic, terms }, diagnostics }
+        Ok(ParametersList { kind: ParameterKind::Generic, terms })
     }
 }
 
 impl GenericParameterPairNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Validation<ParameterTerm> {
-        let mut diagnostics = vec![];
+    pub fn build(&self, ctx: &mut ProgramState) -> Result<ParameterTerm> {
         let key = self.identifier.build(ctx);
         let bound = match &self.bound {
             Some(s) => Some(s.build(ctx)?),
@@ -90,12 +103,11 @@ impl GenericParameterPairNode {
             Some(s) => Some(s.build(ctx)?),
             None => None,
         };
-        Success { value: ParameterTerm::Single { annotations: Default::default(), key, bound, default }, diagnostics }
+        Ok(ParameterTerm::Single { annotations: Default::default(), key, bound, default })
     }
 }
 impl ParameterItemNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Validation<ParameterTerm> {
-        let mut diagnostics = vec![];
+    pub fn build(&self, ctx: &mut ProgramState) -> Result<ParameterTerm> {
         let value = match self {
             Self::LMark => ParameterTerm::LMark,
             Self::OmitDict => ParameterTerm::LMark,
@@ -103,13 +115,12 @@ impl ParameterItemNode {
             Self::ParameterPair(v) => v.build(ctx)?,
             Self::RMark => ParameterTerm::RMark,
         };
-        Success { value, diagnostics }
+        Ok(value)
     }
 }
 
 impl ParameterPairNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Validation<ParameterTerm> {
-        let mut diagnostics = vec![];
+    pub fn build(&self, ctx: &mut ProgramState) -> Result<ParameterTerm> {
         let key = self.identifier.build(ctx);
         let bound = match &self.type_hint {
             Some(s) => Some(s.type_expression.build(ctx)?),
@@ -119,22 +130,21 @@ impl ParameterPairNode {
             Some(s) => Some(s.main_expression.build(ctx)?),
             None => None,
         };
-        Success { value: ParameterTerm::Single { annotations: Default::default(), key, bound, default }, diagnostics }
+        Ok(ParameterTerm::Single { annotations: Default::default(), key, bound, default })
     }
 }
 
 impl crate::ContinuationNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Validation<StatementBlock> {
-        let mut diagnostics = vec![];
+    pub fn build(&self, ctx: &mut ProgramState) -> Result<StatementBlock> {
         let mut terms = vec![];
         for term in &self.main_statement {
             term.build(ctx, &mut terms)?
         }
-        Success { value: StatementBlock { terms, span: self.span.clone() }, diagnostics }
+        Ok(StatementBlock { terms, span: self.span.clone() })
     }
 }
 impl crate::TypeHintNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Validation<ExpressionKind> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Result<ExpressionKind> {
         self.type_expression.build(ctx)
     }
 }

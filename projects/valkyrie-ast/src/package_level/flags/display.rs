@@ -3,6 +3,7 @@ use super::*;
 impl Debug for FlagTerm {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         match self {
+            Self::Macro(v) => Debug::fmt(v, f),
             Self::Encode(v) => Debug::fmt(v, f),
             Self::Method(v) => Debug::fmt(v, f),
         }

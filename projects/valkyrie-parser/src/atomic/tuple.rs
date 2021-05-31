@@ -6,7 +6,7 @@ impl crate::TupleLiteralStrictNode {
         for term in &self.tuple_pair {
             match term.build(ctx) {
                 Ok(o) => terms.push(o),
-                Err(e) => ctx.errors.push(e),
+                Err(e) => ctx.add_error(e),
             }
         }
         Ok(TupleNode { kind: TupleKind::Tuple, terms: ArgumentsList { terms }, span: self.span.clone() })
@@ -25,7 +25,7 @@ impl crate::TupleTermsNode {
         for term in &self.tuple_pair {
             match term.build(ctx) {
                 Ok(o) => terms.push(o),
-                Err(e) => ctx.errors.push(e),
+                Err(e) => ctx.add_error(e),
             }
         }
         Ok(ArgumentsList { terms })

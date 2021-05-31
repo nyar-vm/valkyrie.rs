@@ -20,19 +20,29 @@ impl crate::DefineClassNode {
 impl crate::ClassBlockNode {
     pub fn build(&self, ctx: &mut ProgramState) -> Result<Vec<ClassTerm>> {
         let mut terms = vec![];
-        let mut errors = vec![];
         for term in &self.class_term {
-            match term {
-                crate::ClassTermNode::ProceduralCall(_) => {}
-                crate::ClassTermNode::DefineDomain(v) => v.build(ctx).map(ClassTerm::Domain).append(&mut terms, &mut errors),
-                crate::ClassTermNode::DefineField(v) => v.build(ctx).map(ClassTerm::Field).append(&mut terms, &mut errors),
-                crate::ClassTermNode::DefineMethod(v) => v.build(ctx).map(ClassTerm::Method).append(&mut terms, &mut errors),
-                crate::ClassTermNode::EosFree(_) => {}
+            match term.build(ctx) {
+                Ok(Some(s)) => terms.push(s),
+                Ok(None) => {}
+                Err(e) => ctx.add_error(e),
             }
         }
         Ok(terms)
     }
 }
+
+impl crate::ClassTermNode {
+    pub fn build(&self, ctx: &mut ProgramState) -> Result<Option<ClassTerm>> {
+        match self {
+            Self::ProceduralCall(v) => Ok(Some(ClassTerm::Macro(v.build(ctx)?))),
+            Self::DefineDomain(v) => Ok(Some(ClassTerm::Domain(v.build(ctx)?))),
+            Self::DefineField(v) => Ok(Some(ClassTerm::Field(v.build(ctx)?))),
+            Self::DefineMethod(v) => Ok(Some(ClassTerm::Method(v.build(ctx)?))),
+            Self::EosFree(_) => Ok(None),
+        }
+    }
+}
+
 impl crate::KwClassNode {
     pub fn build(&self) -> ClassKind {
         match self {

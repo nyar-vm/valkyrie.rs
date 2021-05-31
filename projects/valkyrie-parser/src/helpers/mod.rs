@@ -10,8 +10,9 @@ pub struct ProgramContext {
 pub(crate) struct ProgramState {
     pub file: FileID,
     pub looper: LooperState,
-    pub errors: Vec<NyarError>,
+    errors: Vec<NyarError>,
 }
+
 pub(crate) struct LooperState {
     pub id: usize,
     pub stack: Vec<usize>,
@@ -32,6 +33,12 @@ impl ProgramState {
     pub fn reset_looper(&mut self) {
         self.looper.id = 1;
         self.looper.stack.clear()
+    }
+    pub fn add_error<E>(&mut self, error: E)
+    where
+        E: Into<NyarError>,
+    {
+        self.errors.push(error.into())
     }
 }
 

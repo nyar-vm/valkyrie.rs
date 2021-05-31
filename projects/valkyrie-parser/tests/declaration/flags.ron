@@ -13,7 +13,40 @@ FlagDeclaration {
     annotations: Empty,
     layout: None,
     implements: [],
-    body: [],
+    body: [
+        EncodeDeclaration {
+            documentation: DocumentationList {
+                terms: [],
+            },
+            name: Identifier("A", 40..41),
+            value: None,
+            span: 40..46,
+        },
+        EncodeDeclaration {
+            documentation: DocumentationList {
+                terms: [],
+            },
+            name: Identifier("B", 46..47),
+            value: None,
+            span: 46..52,
+        },
+        EncodeDeclaration {
+            documentation: DocumentationList {
+                terms: [],
+            },
+            name: Identifier("C", 52..53),
+            value: None,
+            span: 52..58,
+        },
+        EncodeDeclaration {
+            documentation: DocumentationList {
+                terms: [],
+            },
+            name: Identifier("D", 58..59),
+            value: None,
+            span: 58..60,
+        },
+    ],
     span: 21..61,
 }
 FlagDeclaration {
@@ -22,7 +55,40 @@ FlagDeclaration {
     annotations: Empty,
     layout: None,
     implements: [],
-    body: [],
+    body: [
+        EncodeDeclaration {
+            documentation: DocumentationList {
+                terms: [],
+            },
+            name: Identifier("A", 81..82),
+            value: None,
+            span: 81..82,
+        },
+        EncodeDeclaration {
+            documentation: DocumentationList {
+                terms: [],
+            },
+            name: Identifier("B", 88..89),
+            value: None,
+            span: 88..89,
+        },
+        EncodeDeclaration {
+            documentation: DocumentationList {
+                terms: [],
+            },
+            name: Identifier("C", 95..96),
+            value: None,
+            span: 95..101,
+        },
+        EncodeDeclaration {
+            documentation: DocumentationList {
+                terms: [],
+            },
+            name: Identifier("D", 101..102),
+            value: None,
+            span: 101..103,
+        },
+    ],
     span: 62..104,
 }
 FlagDeclaration {
@@ -31,7 +97,64 @@ FlagDeclaration {
     annotations: Empty,
     layout: None,
     implements: [],
-    body: [],
+    body: [
+        EncodeDeclaration {
+            documentation: DocumentationList {
+                terms: [],
+            },
+            name: Identifier("A", 124..125),
+            value: Some(
+                InfixNode {
+                    infix: ^,
+                    lhs: 2,
+                    rhs: 0,
+                },
+            ),
+            span: 124..136,
+        },
+        EncodeDeclaration {
+            documentation: DocumentationList {
+                terms: [],
+            },
+            name: Identifier("Bb", 142..144),
+            value: Some(
+                InfixNode {
+                    infix: ^,
+                    lhs: 2,
+                    rhs: 1,
+                },
+            ),
+            span: 142..154,
+        },
+        EncodeDeclaration {
+            documentation: DocumentationList {
+                terms: [],
+            },
+            name: Identifier("Ccc", 160..163),
+            value: Some(
+                InfixNode {
+                    infix: ^,
+                    lhs: 2,
+                    rhs: 2,
+                },
+            ),
+            span: 160..172,
+        },
+        EncodeDeclaration {
+            documentation: DocumentationList {
+                terms: [],
+            },
+            name: Identifier("Dddd", 177..181),
+            value: Some(
+                InfixNode {
+                    infix: ^,
+                    lhs: 2,
+                    rhs: 3,
+                },
+            ),
+            span: 177..189,
+        },
+    ],
     span: 105..191,
 }
 FlagDeclaration {
@@ -40,7 +163,48 @@ FlagDeclaration {
     annotations: Empty,
     layout: None,
     implements: [],
-    body: [],
+    body: [
+        EncodeDeclaration {
+            documentation: DocumentationList {
+                terms: [],
+            },
+            name: Identifier("A", 211..212),
+            value: Some(
+                b'01',
+            ),
+            span: 211..220,
+        },
+        EncodeDeclaration {
+            documentation: DocumentationList {
+                terms: [],
+            },
+            name: Identifier("B", 225..226),
+            value: Some(
+                o'02',
+            ),
+            span: 225..234,
+        },
+        EncodeDeclaration {
+            documentation: DocumentationList {
+                terms: [],
+            },
+            name: Identifier("C", 239..240),
+            value: Some(
+                x'07',
+            ),
+            span: 239..248,
+        },
+        EncodeDeclaration {
+            documentation: DocumentationList {
+                terms: [],
+            },
+            name: Identifier("D", 253..254),
+            value: Some(
+                8,
+            ),
+            span: 253..258,
+        },
+    ],
     span: 192..260,
 }
 FlagDeclaration {
@@ -65,7 +229,35 @@ FlagDeclaration {
     },
     layout: None,
     implements: [],
-    body: [],
+    body: [
+        EncodeDeclaration {
+            documentation: DocumentationList {
+                terms: [],
+            },
+            name: Identifier("EEE", 307..310),
+            value: None,
+            span: 307..310,
+        },
+        MethodDeclaration {
+            name: NamePathNode {
+                names: [
+                    Identifier("name", 320..324),
+                ],
+            },
+            annotations: Annotation {
+                modifiers: [
+                    get,
+                ],
+            },
+            generics: [],
+            parameters: [],
+            returns: Auto,
+            body: Some(
+                [],
+            ),
+            span: 316..335,
+        },
+    ],
     span: 261..337,
 }
 FlagDeclaration {
@@ -74,6 +266,69 @@ FlagDeclaration {
     annotations: Empty,
     layout: None,
     implements: [],
-    body: [],
+    body: [
+        EncodeDeclaration {
+            documentation: DocumentationList {
+                terms: [],
+            },
+            name: Identifier("A", 361..362),
+            value: Some(
+                1,
+            ),
+            span: 361..366,
+        },
+        EncodeDeclaration {
+            documentation: DocumentationList {
+                terms: [],
+            },
+            name: Identifier("B", 374..375),
+            value: Some(
+                InfixNode {
+                    infix: ^,
+                    lhs: 2,
+                    rhs: 2,
+                },
+            ),
+            span: 374..383,
+        },
+        EncodeDeclaration {
+            documentation: DocumentationList {
+                terms: [],
+            },
+            name: Identifier("C", 391..392),
+            value: Some(
+                DotCallNode {
+                    monadic: false,
+                    base: InfixNode {
+                        infix: ∧,
+                        lhs: DotCallNode {
+                            monadic: false,
+                            base: Extend1,
+                            term: EEE,
+                            span: 402..406,
+                        },
+                        rhs: Base,
+                    },
+                    term: A,
+                    span: 414..416,
+                },
+            ),
+            span: 391..416,
+        },
+        EncodeDeclaration {
+            documentation: DocumentationList {
+                terms: [],
+            },
+            name: Identifier("D", 421..422),
+            value: Some(
+                InfixNode {
+                    infix: ∨,
+                    lhs: Self∷A,
+                    rhs: Self∷C,
+                },
+            ),
+            span: 421..443,
+        },
+    ],
     span: 339..445,
 }

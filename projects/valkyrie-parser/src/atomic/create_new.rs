@@ -1,8 +1,7 @@
 use super::*;
 
 impl crate::NewStatementNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Validation<ConstructNewNode> {
-        let mut diagnostics = vec![];
+    pub fn build(&self, ctx: &mut ProgramState) -> Result<ConstructNewNode> {
         let base = self.namepath.build(ctx);
         let generics = match &self.generic_hide {
             Some(s) => vec![s.build(ctx)?],
@@ -13,16 +12,13 @@ impl crate::NewStatementNode {
             None => TupleNode::default(),
         };
         // let returns = self.function_middle.returns(ctx).recover(&mut errors)?;
-        Success {
-            value: ConstructNewNode {
-                modifiers: vec![],
-                namepath: self.namepath.build(ctx),
-                generics,
-                arguments,
-                body: Default::default(),
-                span: self.span.clone(),
-            },
-            diagnostics,
-        }
+        Ok(ConstructNewNode {
+            modifiers: vec![],
+            namepath: self.namepath.build(ctx),
+            generics,
+            arguments,
+            body: Default::default(),
+            span: self.span.clone(),
+        })
     }
 }

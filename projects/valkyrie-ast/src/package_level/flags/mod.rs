@@ -36,9 +36,11 @@ pub struct FlagDeclaration {
     pub span: Range<u32>,
 }
 /// Valid terms in the flags statement
-#[derive(Clone, PartialEq, Eq, Hash)]
+#[derive(Clone, PartialEq, Eq, Hash, From)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum FlagTerm {
+    /// `@macro`
+    Macro(ProceduralNode),
     /// `Name = number`
     Encode(EncodeDeclaration),
     /// `method() { }`

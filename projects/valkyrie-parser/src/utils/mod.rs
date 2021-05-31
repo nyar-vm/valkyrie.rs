@@ -10,19 +10,23 @@ pub fn build_arguments(this: &Option<TupleTermsNode>, ctx: &mut ProgramState) ->
 }
 
 pub fn build_annotation_terms(this: &[AnnotationTermNode], ctx: &mut ProgramState) -> Result<AttributeList> {
-    let mut diagnostics = vec![];
     let mut terms = vec![];
     for term in this {
-        term.build(ctx).append(&mut terms, &mut diagnostics)
+        match term.build(ctx) {
+            Ok(o) => terms.push(o),
+            Err(e) => ctx.add_error(e),
+        }
     }
-    Success { value: AttributeList { terms: terms.into_iter().map(|v| v.terms).flatten().collect() }, diagnostics }
+    Ok(AttributeList { terms: terms.into_iter().map(|v| v.terms).flatten().collect() })
 }
 
 pub fn build_annotation_terms_mix(this: &[AnnotationTermMixNode], ctx: &mut ProgramState) -> Result<AttributeList> {
-    let mut diagnostics = vec![];
     let mut terms = vec![];
     for term in this {
-        term.build(ctx).append(&mut terms, &mut diagnostics)
+        match term.build(ctx) {
+            Ok(o) => terms.push(o),
+            Err(e) => ctx.add_error(e),
+        }
     }
-    Success { value: AttributeList { terms: terms.into_iter().map(|v| v.terms).flatten().collect() }, diagnostics }
+    Ok(AttributeList { terms: terms.into_iter().map(|v| v.terms).flatten().collect() })
 }

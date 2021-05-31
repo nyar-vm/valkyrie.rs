@@ -32,3 +32,10 @@ pub enum ArgumentKey {
     /// `key: a + b`
     Symbol(IdentifierNode),
 }
+
+impl ArgumentsList {
+    /// Create a new `ArgumentsList` with the given capacity.
+    pub fn new(capacity: usize) -> Self {
+        Self { terms: Vec::with_capacity(capacity) }
+    }
+}

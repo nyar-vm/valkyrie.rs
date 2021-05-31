@@ -49,7 +49,7 @@ use super::*;
 // )"#
 
 impl crate::ControlFlowNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Validation<ControlNode> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Result<ControlNode> {
         let expression = match &self.main_expression {
             Some(s) => Some(s.build(ctx)?),
             None => None,
@@ -59,10 +59,7 @@ impl crate::ControlFlowNode {
             None => String::new(),
         };
 
-        Success {
-            value: ControlNode { kind: self.kw_control.build(ctx), label, expression, span: self.span.clone() },
-            diagnostics: vec![],
-        }
+        Ok(ControlNode { kind: self.kw_control.build(ctx), label, expression, span: self.span.clone() })
     }
 }
 
