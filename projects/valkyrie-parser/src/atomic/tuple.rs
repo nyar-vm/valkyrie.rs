@@ -1,50 +1,50 @@
 use super::*;
-use nyar_error::{NyarError, SyntaxError};
 
 impl crate::TupleLiteralStrictNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Validation<TupleNode> {
-        let mut errors = vec![];
+    pub fn build(&self, ctx: &mut ProgramState) -> Result<TupleNode> {
         let mut terms = vec![];
-        for x in &self.tuple_pair {
-            x.build(ctx).append(&mut terms, &mut errors)
+        for term in &self.tuple_pair {
+            match term.build(ctx) {
+                Ok(o) => terms.push(o),
+                Err(e) => ctx.errors.push(e),
+            }
         }
-        Success {
-            value: TupleNode { kind: TupleKind::Tuple, terms: ArgumentsList { terms }, span: self.span.clone() },
-            diagnostics: errors,
-        }
+        Ok(TupleNode { kind: TupleKind::Tuple, terms: ArgumentsList { terms }, span: self.span.clone() })
     }
 }
 
 impl crate::TupleLiteralNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Validation<TupleNode> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Result<TupleNode> {
         self.tuple_terms.build(ctx).map(|terms| TupleNode { kind: Default::default(), terms, span: self.span.clone() })
     }
 }
 
 impl crate::TupleTermsNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Validation<ArgumentsList> {
-        let mut errors = vec![];
+    pub fn build(&self, ctx: &mut ProgramState) -> Result<ArgumentsList> {
         let mut terms = vec![];
-        for x in &self.tuple_pair {
-            x.build(ctx).append(&mut terms, &mut errors)
+        for term in &self.tuple_pair {
+            match term.build(ctx) {
+                Ok(o) => terms.push(o),
+                Err(e) => ctx.errors.push(e),
+            }
         }
-        Success { value: ArgumentsList { terms }, diagnostics: errors }
+        Ok(ArgumentsList { terms })
     }
 }
 
 impl crate::TuplePairNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Validation<TupleTermNode> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Result<TupleTermNode> {
         let key = match &self.tuple_key {
             Some(v) => Some(v.build(ctx)?),
             None => None,
         };
         let value = self.main_expression.build(ctx)?;
-        Success { value: TupleTermNode { key, value }, diagnostics: vec![] }
+        Ok(TupleTermNode { key, value })
     }
 }
 
 impl crate::TupleKeyNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Result<IdentifierNode, NyarError> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Result<IdentifierNode> {
         match self {
             Self::Identifier(v) => Ok(v.build(ctx)),
             Self::TextRaw(v) => Ok(v.build_id(ctx)),
@@ -56,25 +56,19 @@ impl crate::TupleKeyNode {
 }
 
 impl crate::TupleCallNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Validation<ApplyCallNode> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Result<ApplyCallNode> {
         let monadic = self.op_and_then.is_some();
         let arguments = match &self.tuple_literal {
             Some(s) => s.build(ctx)?.terms,
             None => ArgumentsList { terms: vec![] },
         };
-        Success {
-            value: ApplyCallNode { monadic, caller: Default::default(), arguments, body: None, span: self.span.clone() },
-            diagnostics: vec![],
-        }
+        Ok(ApplyCallNode { monadic, caller: Default::default(), arguments, body: None, span: self.span.clone() })
     }
 }
 impl crate::InlineTupleCallNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Validation<ApplyCallNode> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Result<ApplyCallNode> {
         let monadic = self.op_and_then.is_some();
         let arguments = self.tuple_literal.build(ctx)?.terms;
-        Success {
-            value: ApplyCallNode { monadic, caller: Default::default(), arguments, body: None, span: self.span.clone() },
-            diagnostics: vec![],
-        }
+        Ok(ApplyCallNode { monadic, caller: Default::default(), arguments, body: None, span: self.span.clone() })
     }
 }

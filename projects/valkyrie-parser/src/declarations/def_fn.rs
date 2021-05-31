@@ -128,7 +128,7 @@ impl crate::ContinuationNode {
         let mut diagnostics = vec![];
         let mut terms = vec![];
         for term in &self.main_statement {
-            term.build(ctx).append(&mut terms, &mut diagnostics)
+            term.build(ctx, &mut terms)?
         }
         Success { value: StatementBlock { terms, span: self.span.clone() }, diagnostics }
     }

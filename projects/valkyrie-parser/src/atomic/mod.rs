@@ -1,5 +1,5 @@
 use crate::helpers::ProgramState;
-use nyar_error::{Success, Validate, Validation};
+use nyar_error::{NyarError, Result, Success, SyntaxError, Validate, Validation};
 use valkyrie_ast::{TryStatement, *};
 use yggdrasil_rt::YggdrasilNode;
 mod bytes;

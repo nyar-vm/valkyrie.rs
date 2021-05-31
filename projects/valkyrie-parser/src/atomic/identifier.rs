@@ -27,12 +27,12 @@ impl crate::IdentifierNode {
 }
 
 impl crate::SlotNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Result<LambdaSlotNode, NyarError> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Result<LambdaSlotNode> {
         Ok(LambdaSlotNode { level: self.op_slot.span.len(), name: build_slot(&self.slot_item, ctx)?, span: self.span.clone() })
     }
 }
 
-fn build_slot(node: &Option<SlotItemNode>, ctx: &mut ProgramState) -> Result<LambdaSlotItem, NyarError> {
+fn build_slot(node: &Option<SlotItemNode>, ctx: &mut ProgramState) -> Result<LambdaSlotItem> {
     let node = match node {
         Some(SlotItemNode::Identifier(v)) => return Ok(LambdaSlotItem::Named(v.build(ctx))),
         Some(SlotItemNode::Integer(v)) => v.parse::<u64>(ctx)?,

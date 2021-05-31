@@ -93,7 +93,7 @@ impl crate::MatchElseNode {
     pub fn build(&self, ctx: &mut ProgramState) -> Result<PatternBranch> {
         let mut terms = vec![];
         for x in &self.match_statement {
-            x.main_statement.build(ctx).append(&mut terms, &mut ctx.errors)
+            x.main_statement.build(ctx, &mut terms)?
         }
         Ok(PatternBranch {
             condition: PatternCondition::Else,

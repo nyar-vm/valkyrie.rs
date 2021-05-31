@@ -19,30 +19,29 @@ impl crate::ProgramNode {
 
 impl crate::StatementNode {
     pub fn build(&self, ctx: &mut ProgramState, ts: &mut Vec<StatementNode>) -> Result<()> {
-        let value = match self {
-            Self::DefineNamespace(v) => v.build(ctx).into(),
-            Self::DefineClass(v) => v.build(ctx)?.into(),
-            Self::DefineEnumerate(v) => v.build(ctx)?.into(),
-            Self::DefineFunction(v) => v.build(ctx)?.into(),
-            Self::DefineVariable(v) => v.build(ctx)?.into(),
-            Self::DefineTrait(v) => v.build(ctx)?.into(),
-            Self::DefineExtends(v) => v.build(ctx)?.into(),
-            Self::DefineUnion(v) => v.build(ctx)?.into(),
-            Self::MainStatement(v) => v.build(ctx)?,
+        match self {
+            Self::DefineNamespace(v) => ts.push(v.build(ctx).into()),
+            Self::DefineClass(v) => ts.push(v.build(ctx)?.into()),
+            Self::DefineEnumerate(v) => ts.push(v.build(ctx)?.into()),
+            Self::DefineFunction(v) => ts.push(v.build(ctx)?.into()),
+            Self::DefineVariable(v) => ts.push(v.build(ctx)?.into()),
+            Self::DefineTrait(v) => ts.push(v.build(ctx)?.into()),
+            Self::DefineExtends(v) => ts.push(v.build(ctx)?.into()),
+            Self::DefineUnion(v) => ts.push(v.build(ctx)?.into()),
+            Self::MainStatement(v) => v.build(ctx, ts)?,
         };
-        ts.push(value);
         Ok(())
     }
 }
 
 impl crate::MainStatementNode {
     pub fn build(&self, ctx: &mut ProgramState, ts: &mut Vec<StatementNode>) -> Result<()> {
-        let value = match self {
-            Self::ControlFlow(v) => v.build(ctx)?.into(),
-            Self::DefineImport(v) => v.build(ctx)?.into(),
-            Self::ForStatement(v) => v.build(ctx)?.into(),
-            Self::WhileStatement(v) => v.build(ctx)?.into(),
-            Self::ExpressionRoot(v) => v.build(ctx)?.into(),
+        match self {
+            Self::ControlFlow(v) => ts.push(v.build(ctx)?.into()),
+            Self::DefineImport(v) => ts.push(v.build(ctx)?.into()),
+            Self::ForStatement(v) => ts.push(v.build(ctx)?.into()),
+            Self::WhileStatement(v) => ts.push(v.build(ctx)?.into()),
+            Self::ExpressionRoot(v) => ts.push(v.build(ctx)?.into()),
             Self::Eos(_) => {}
         };
         Ok(())

@@ -13,7 +13,7 @@ use valkyrie_ast::NullNode;
 // |   ⍜(_*[01])*        # binary
 
 impl crate::NumberNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Result<ExpressionKind, NyarError> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Result<ExpressionKind> {
         let n = match self {
             Self::Decimal(v) => v.build(ctx)?,
             Self::DecimalX(v) => v.build(ctx)?,
@@ -23,7 +23,7 @@ impl crate::NumberNode {
 }
 
 impl crate::DecimalNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Result<ExpressionKind, NyarError> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Result<ExpressionKind> {
         let mut n = NumberLiteralNode::new(10, self.span.clone());
         n.set_integer(&self.lhs.text, ctx.file, self.lhs.span.start as usize)?;
         if let Some(s) = &self.rhs {
@@ -44,7 +44,7 @@ impl crate::DecimalNode {
 }
 
 impl crate::DecimalXNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Result<ExpressionKind, NyarError> {
+    pub fn build(&self, ctx: &mut ProgramState) -> Result<ExpressionKind> {
         let mut n = NumberLiteralNode::new(self.base.as_base(ctx)?, self.span.clone());
         n.set_integer(&self.lhs.text, ctx.file, self.lhs.span.start as usize)?;
         if let Some(s) = &self.rhs {
@@ -72,7 +72,7 @@ impl crate::IntegerNode {
         let text = self.text.chars().filter(|c| c.is_digit(10)).collect();
         IdentifierNode { name: text, span: ctx.file.with_range(self.get_range()) }
     }
-    pub fn as_base(&self, ctx: &mut ProgramState) -> Result<u32, NyarError> {
+    pub fn as_base(&self, ctx: &mut ProgramState) -> Result<u32> {
         let span = ctx.file.with_range(self.get_range());
         match u32::from_str(&self.text) {
             Ok(o) if o >= 2 && o <= 36 => Ok(o),
@@ -80,7 +80,7 @@ impl crate::IntegerNode {
             Err(e) => Err(NyarError::syntax_error(e.to_string(), span)),
         }
     }
-    pub fn parse<T>(&self, ctx: &mut ProgramState) -> Result<T, NyarError>
+    pub fn parse<T>(&self, ctx: &mut ProgramState) -> Result<T>
     where
         T: FromStr,
         <T as FromStr>::Err: std::error::Error,
