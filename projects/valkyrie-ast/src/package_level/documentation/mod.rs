@@ -1,5 +1,6 @@
 use super::*;
 
+/// Documentation list
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct DocumentationList {

@@ -3,7 +3,7 @@ use crate::SubscriptAxisNode;
 use valkyrie_ast::SubscriptCallNode;
 
 impl crate::RangeLiteralNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Result<RangeNode> {
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<RangeNode> {
         let mut value = RangeNode { kind: RangeKind::Ordinal, terms: vec![], span: Default::default() };
         match self {
             Self::RangeLiteralIndex0(v) => {
@@ -31,7 +31,7 @@ impl crate::RangeLiteralNode {
 }
 
 impl crate::SubscriptAxisNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Result<RangeTermNode> {
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<RangeTermNode> {
         match self {
             Self::SubscriptOnly(v) => v.build(ctx),
             Self::SubscriptRange(v) => v.build(ctx),
@@ -40,13 +40,13 @@ impl crate::SubscriptAxisNode {
 }
 
 impl crate::SubscriptOnlyNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Result<RangeTermNode> {
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<RangeTermNode> {
         self.index.build(ctx).map(|v| RangeTermNode::Index { index: v })
     }
 }
 
 impl crate::SubscriptRangeNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Result<RangeTermNode> {
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<RangeTermNode> {
         let head = match &self.head {
             Some(s) => Some(s.build(ctx)?),
             None => None,
@@ -63,7 +63,7 @@ impl crate::SubscriptRangeNode {
     }
 }
 impl crate::RangeCallNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Result<SubscriptCallNode> {
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<SubscriptCallNode> {
         let monadic = self.op_and_then.is_some();
         let terms = self.range_literal.build(ctx)?.terms;
         Ok(SubscriptCallNode {

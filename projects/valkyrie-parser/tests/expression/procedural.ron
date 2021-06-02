@@ -1,7 +1,9 @@
 ProceduralNode {
     kind: Normal,
     path: NamePathNode {
-        names: [],
+        names: [
+            Identifier("call", 1..5),
+        ],
     },
     arguments: ArgumentsList {
         terms: [],
@@ -12,7 +14,9 @@ ProceduralNode {
 ProceduralNode {
     kind: Normal,
     path: NamePathNode {
-        names: [],
+        names: [
+            Identifier("call", 7..11),
+        ],
     },
     arguments: ArgumentsList {
         terms: [],
@@ -23,7 +27,9 @@ ProceduralNode {
 ProceduralNode {
     kind: Normal,
     path: NamePathNode {
-        names: [],
+        names: [
+            Identifier("call", 15..19),
+        ],
     },
     arguments: ArgumentsList {
         terms: [],
@@ -34,55 +40,141 @@ ProceduralNode {
 ProceduralNode {
     kind: Normal,
     path: NamePathNode {
-        names: [],
+        names: [
+            Identifier("call", 26..30),
+        ],
     },
     arguments: ArgumentsList {
         terms: [],
     },
-    domain: None,
+    domain: Some(
+        DomainDeclaration {
+            body: [
+                FieldDeclaration {
+                    name: Identifier("field", 38..43),
+                    annotations: Empty,
+                    typing: None,
+                    default: None,
+                    span: 38..44,
+                },
+            ],
+            span: 36..45,
+        },
+    ),
     span: 25..45,
 }
 ProceduralNode {
     kind: Normal,
     path: NamePathNode {
-        names: [],
+        names: [
+            Identifier("call", 47..51),
+        ],
     },
     arguments: ArgumentsList {
         terms: [],
     },
-    domain: None,
+    domain: Some(
+        DomainDeclaration {
+            body: [
+                FieldDeclaration {
+                    name: Identifier("field", 54..59),
+                    annotations: Empty,
+                    typing: None,
+                    default: None,
+                    span: 54..60,
+                },
+            ],
+            span: 52..61,
+        },
+    ),
     span: 46..61,
 }
 ProceduralNode {
     kind: Normal,
     path: NamePathNode {
-        names: [],
+        names: [
+            Identifier("call", 63..67),
+        ],
     },
     arguments: ArgumentsList {
         terms: [],
     },
-    domain: None,
+    domain: Some(
+        DomainDeclaration {
+            body: [
+                MethodDeclaration {
+                    name: NamePathNode {
+                        names: [
+                            Identifier("method", 70..76),
+                        ],
+                    },
+                    annotations: Empty,
+                    generics: [],
+                    parameters: [],
+                    returns: Auto,
+                    body: None,
+                    span: 70..78,
+                },
+            ],
+            span: 68..79,
+        },
+    ),
     span: 62..79,
 }
 ProceduralNode {
     kind: Normal,
     path: NamePathNode {
-        names: [],
+        names: [
+            Identifier("call", 81..85),
+        ],
     },
     arguments: ArgumentsList {
         terms: [],
     },
-    domain: None,
+    domain: Some(
+        DomainDeclaration {
+            body: [
+                MethodDeclaration {
+                    name: NamePathNode {
+                        names: [
+                            Identifier("method", 88..94),
+                        ],
+                    },
+                    annotations: Empty,
+                    generics: [],
+                    parameters: [],
+                    returns: Auto,
+                    body: Some(
+                        [],
+                    ),
+                    span: 88..99,
+                },
+            ],
+            span: 86..101,
+        },
+    ),
     span: 80..101,
 }
 ProceduralNode {
     kind: Normal,
     path: NamePathNode {
-        names: [],
+        names: [
+            Identifier("call", 103..107),
+        ],
     },
     arguments: ArgumentsList {
         terms: [],
     },
-    domain: None,
+    domain: Some(
+        DomainDeclaration {
+            body: [
+                DomainDeclaration {
+                    body: [],
+                    span: 110..119,
+                },
+            ],
+            span: 108..121,
+        },
+    ),
     span: 102..121,
 }

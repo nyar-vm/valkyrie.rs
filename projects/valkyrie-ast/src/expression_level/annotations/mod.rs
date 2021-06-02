@@ -121,6 +121,11 @@ impl AttributeKind {
 impl AttributeTerm {}
 
 impl AttributeList {
+    /// Create a new modifier list.
+    pub fn new(capacity: usize) -> Self {
+        Self { terms: Vec::with_capacity(capacity) }
+    }
+
     /// Check if the modifier is present.
     pub fn is_empty(&self) -> bool {
         self.terms.is_empty()

@@ -3,7 +3,7 @@ use nyar_error::{Result, Success, Validation};
 use valkyrie_ast::*;
 
 impl crate::LetPatternNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Result<PatternNode> {
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<PatternNode> {
         match self {
             Self::BarePattern(v) => v.build(ctx),
             Self::StandardPattern(v) => v.build(ctx),
@@ -11,7 +11,7 @@ impl crate::LetPatternNode {
     }
 }
 impl crate::StandardPatternNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Result<PatternNode> {
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<PatternNode> {
         match self {
             Self::TuplePattern(v) => v.build(ctx),
         }
@@ -19,7 +19,7 @@ impl crate::StandardPatternNode {
 }
 
 impl crate::BarePatternNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Result<PatternNode> {
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<PatternNode> {
         let mut terms = vec![];
         for node in &self.bare_pattern_item {
             match node.build(ctx) {
@@ -33,7 +33,7 @@ impl crate::BarePatternNode {
 }
 
 impl crate::BarePatternItemNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Result<PatternNode> {
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<PatternNode> {
         let identifier = self.identifier.build(ctx);
         let id = IdentifierPattern { modifiers: Default::default(), identifier };
         Ok(PatternNode::Atom(Box::new(id)))
@@ -41,7 +41,7 @@ impl crate::BarePatternItemNode {
 }
 
 impl crate::TuplePatternNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Result<PatternNode> {
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<PatternNode> {
         let mut terms = vec![];
         for node in &self.pattern_item {
             match node.build(ctx) {
@@ -54,7 +54,7 @@ impl crate::TuplePatternNode {
     }
 }
 impl crate::PatternItemNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Result<PatternNode> {
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<PatternNode> {
         let value = match self {
             Self::OmitDict => PatternNode::Atom(Box::new(IdentifierPattern {
                 modifiers: Default::default(),
@@ -71,7 +71,7 @@ impl crate::PatternItemNode {
 }
 
 impl crate::TuplePatternItemNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Result<PatternNode> {
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<PatternNode> {
         let identifier = self.identifier.build(ctx);
         let id = IdentifierPattern { modifiers: Default::default(), identifier };
         Ok(PatternNode::Atom(Box::new(id)))

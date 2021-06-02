@@ -1,7 +1,7 @@
 use super::*;
 
 impl crate::GenericCallNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Result<GenericCallNode> {
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<GenericCallNode> {
         let monadic = self.op_and_then.is_some();
         let associated = match &self.namepath {
             Some(s) => s.build(ctx).names,
@@ -23,7 +23,7 @@ impl crate::GenericHideNode {
 }
 
 impl crate::GenericTermsNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Result<ArgumentsList> {
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<ArgumentsList> {
         let mut list = ArgumentsList::new(self.generic_pair.len());
         for x in &self.generic_pair {
             match x.build(ctx) {
@@ -35,7 +35,7 @@ impl crate::GenericTermsNode {
     }
 }
 impl crate::GenericPairNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Result<TupleTermNode> {
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<TupleTermNode> {
         let key = self.get_key(ctx);
         let value = self.type_expression.build(ctx)?;
         Ok(TupleTermNode { key, value })

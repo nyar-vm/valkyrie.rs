@@ -1,7 +1,7 @@
 use super::*;
 
 impl crate::DefineEnumerateNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Result<FlagDeclaration> {
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<FlagDeclaration> {
         let mut terms = vec![];
         for term in &self.flag_term {
             match term.build(ctx) {
@@ -28,7 +28,7 @@ impl crate::DefineEnumerateNode {
 }
 
 impl crate::KwFlagsNode {
-    pub fn build(&self) -> FlagKind {
+    pub(crate) fn build(&self) -> FlagKind {
         match self {
             Self::Enum => FlagKind::Exclusive,
             Self::Flags => FlagKind::Juxtapose,
@@ -36,7 +36,7 @@ impl crate::KwFlagsNode {
     }
 }
 impl crate::FlagTermNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Result<Option<FlagTerm>> {
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<Option<FlagTerm>> {
         let value = match self {
             Self::ProceduralCall(v) => v.build(ctx)?.into(),
             Self::DefineMethod(v) => v.build(ctx)?.into(),
@@ -48,7 +48,7 @@ impl crate::FlagTermNode {
 }
 
 impl crate::FlagFieldNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Result<EncodeDeclaration> {
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<EncodeDeclaration> {
         let name = self.identifier.build(ctx);
         let value = match &self.main_expression {
             Some(s) => Some(s.build(ctx)?),

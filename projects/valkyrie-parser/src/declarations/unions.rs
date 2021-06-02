@@ -1,7 +1,7 @@
 use super::*;
 
 impl crate::DefineUnionNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Result<UnionDeclaration> {
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<UnionDeclaration> {
         // let terms = self.function_body.build(ctx).recover(&mut errors)?;
         let annotations = self.annotation_head.annotations(ctx)?;
         Ok(UnionDeclaration {
@@ -16,7 +16,7 @@ impl crate::DefineUnionNode {
 }
 
 impl crate::KwUnionNode {
-    // pub fn build(&self) -> FunctionType {
+    // pub(crate) fn build(&self) -> FunctionType {
     //     match self {
     //
     //     }

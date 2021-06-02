@@ -119,6 +119,7 @@ impl NamePathNode {
 }
 
 impl IdentifierNode {
+    /// Create a new identifier node with given name.
     pub fn new<S: ToString>(s: S) -> Self {
         Self { name: s.to_string(), span: Default::default() }
     }

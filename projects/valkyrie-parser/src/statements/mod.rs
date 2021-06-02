@@ -1,49 +1,49 @@
-use crate::{
-    helpers::{ProgramContext, ProgramState},
-    MainStatementNode, OpNamespaceNode,
-};
-use nyar_error::{Result, Success, Validation};
+use crate::helpers::ProgramState;
+use nyar_error::Result;
 use valkyrie_ast::*;
 mod import;
 mod namespace;
 
 impl crate::ProgramNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Result<ProgramRoot> {
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<ProgramRoot> {
         let mut statements = vec![];
         for node in &self.statement {
-            node.build(ctx, &mut statements)?
+            match node.build(ctx) {
+                Ok(o) => statements.extend(o),
+                Err(e) => ctx.add_error(e),
+            }
         }
         Ok(ProgramRoot { statements })
     }
 }
 
 impl crate::StatementNode {
-    pub fn build(&self, ctx: &mut ProgramState, ts: &mut Vec<StatementNode>) -> Result<()> {
-        match self {
-            Self::DefineNamespace(v) => ts.push(v.build(ctx).into()),
-            Self::DefineClass(v) => ts.push(v.build(ctx)?.into()),
-            Self::DefineEnumerate(v) => ts.push(v.build(ctx)?.into()),
-            Self::DefineFunction(v) => ts.push(v.build(ctx)?.into()),
-            Self::DefineVariable(v) => ts.push(v.build(ctx)?.into()),
-            Self::DefineTrait(v) => ts.push(v.build(ctx)?.into()),
-            Self::DefineExtends(v) => ts.push(v.build(ctx)?.into()),
-            Self::DefineUnion(v) => ts.push(v.build(ctx)?.into()),
-            Self::MainStatement(v) => v.build(ctx, ts)?,
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<Option<StatementNode>> {
+        let value = match self {
+            Self::DefineNamespace(v) => v.build(ctx).into(),
+            Self::DefineClass(v) => v.build(ctx)?.into(),
+            Self::DefineEnumerate(v) => v.build(ctx)?.into(),
+            Self::DefineFunction(v) => v.build(ctx)?.into(),
+            Self::DefineVariable(v) => v.build(ctx)?.into(),
+            Self::DefineTrait(v) => v.build(ctx)?.into(),
+            Self::DefineExtends(v) => v.build(ctx)?.into(),
+            Self::DefineUnion(v) => v.build(ctx)?.into(),
+            Self::MainStatement(v) => return v.build(ctx),
         };
-        Ok(())
+        Ok(Some(value))
     }
 }
 
 impl crate::MainStatementNode {
-    pub fn build(&self, ctx: &mut ProgramState, ts: &mut Vec<StatementNode>) -> Result<()> {
-        match self {
-            Self::ControlFlow(v) => ts.push(v.build(ctx)?.into()),
-            Self::DefineImport(v) => ts.push(v.build(ctx)?.into()),
-            Self::ForStatement(v) => ts.push(v.build(ctx)?.into()),
-            Self::WhileStatement(v) => ts.push(v.build(ctx)?.into()),
-            Self::ExpressionRoot(v) => ts.push(v.build(ctx)?.into()),
-            Self::Eos(_) => {}
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<Option<StatementNode>> {
+        let value = match self {
+            Self::ControlFlow(v) => v.build(ctx)?.into(),
+            Self::DefineImport(v) => v.build(ctx)?.into(),
+            Self::ForStatement(v) => v.build(ctx)?.into(),
+            Self::WhileStatement(v) => v.build(ctx)?.into(),
+            Self::ExpressionRoot(v) => v.build(ctx)?.into(),
+            Self::Eos(_) => return Ok(None),
         };
-        Ok(())
+        Ok(Some(value))
     }
 }

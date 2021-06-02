@@ -4,7 +4,7 @@ use crate::{
 };
 
 impl crate::DefineFunctionNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Result<FunctionDeclaration> {
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<FunctionDeclaration> {
         let annotations = self.annotation_head.annotations(ctx)?;
         let parameters = self.function_middle.parameters(ctx)?;
         let generic = self.function_middle.generics(ctx)?;
@@ -23,7 +23,7 @@ impl crate::DefineFunctionNode {
 }
 
 impl crate::KwFunctionNode {
-    pub fn build(&self) -> FunctionKind {
+    pub(crate) fn build(&self) -> FunctionKind {
         match self {
             Self::Micro => FunctionKind::Micro,
             Self::Macro => FunctionKind::Macro,
@@ -67,7 +67,7 @@ impl crate::FunctionMiddleNode {
 }
 
 impl crate::GenericParameterNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Result<ParametersList> {
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<ParametersList> {
         let mut terms = vec![];
         for term in &self.generic_parameter_pair {
             match term.build(ctx) {
@@ -80,7 +80,7 @@ impl crate::GenericParameterNode {
 }
 
 impl crate::DefineGenericNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Result<ParametersList> {
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<ParametersList> {
         let mut terms = vec![];
         for term in &self.generic_parameter.generic_parameter_pair {
             match term.build(ctx) {
@@ -93,7 +93,7 @@ impl crate::DefineGenericNode {
 }
 
 impl GenericParameterPairNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Result<ParameterTerm> {
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<ParameterTerm> {
         let key = self.identifier.build(ctx);
         let bound = match &self.bound {
             Some(s) => Some(s.build(ctx)?),
@@ -107,7 +107,7 @@ impl GenericParameterPairNode {
     }
 }
 impl ParameterItemNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Result<ParameterTerm> {
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<ParameterTerm> {
         let value = match self {
             Self::LMark => ParameterTerm::LMark,
             Self::OmitDict => ParameterTerm::LMark,
@@ -120,7 +120,7 @@ impl ParameterItemNode {
 }
 
 impl ParameterPairNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Result<ParameterTerm> {
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<ParameterTerm> {
         let key = self.identifier.build(ctx);
         let bound = match &self.type_hint {
             Some(s) => Some(s.type_expression.build(ctx)?),
@@ -135,16 +135,19 @@ impl ParameterPairNode {
 }
 
 impl crate::ContinuationNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Result<StatementBlock> {
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<StatementBlock> {
         let mut terms = vec![];
         for term in &self.main_statement {
-            term.build(ctx, &mut terms)?
+            match term.build(ctx) {
+                Ok(s) => terms.extend(s),
+                Err(e) => ctx.add_error(e),
+            }
         }
         Ok(StatementBlock { terms, span: self.span.clone() })
     }
 }
 impl crate::TypeHintNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Result<ExpressionKind> {
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<ExpressionKind> {
         self.type_expression.build(ctx)
     }
 }

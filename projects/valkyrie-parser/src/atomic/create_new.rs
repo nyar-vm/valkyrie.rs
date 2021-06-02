@@ -1,7 +1,7 @@
 use super::*;
 
 impl crate::NewStatementNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Result<ConstructNewNode> {
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<ConstructNewNode> {
         let base = self.namepath.build(ctx);
         let generics = match &self.generic_hide {
             Some(s) => vec![s.build(ctx)?],

@@ -49,7 +49,7 @@ use super::*;
 // )"#
 
 impl crate::ControlFlowNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Result<ControlNode> {
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<ControlNode> {
         let expression = match &self.main_expression {
             Some(s) => Some(s.build(ctx)?),
             None => None,
@@ -64,7 +64,7 @@ impl crate::ControlFlowNode {
 }
 
 impl crate::KwControlNode {
-    pub fn build(&self, _: &mut ProgramState) -> ControlKind {
+    pub(crate) fn build(&self, _: &mut ProgramState) -> ControlKind {
         match self.text.as_str() {
             "break" => ControlKind::Break,
             "continue" => ControlKind::Continue,

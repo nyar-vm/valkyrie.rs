@@ -1,7 +1,7 @@
 use super::*;
 
 impl crate::MatchExpressionNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Result<MatchStatement> {
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<MatchStatement> {
         let mut patterns = vec![];
         for x in &self.match_terms {
             x.build(ctx, &mut patterns)?
@@ -22,7 +22,7 @@ impl crate::MatchExpressionNode {
 }
 
 impl KwMatchNode {
-    pub fn build(&self) -> MatchKind {
+    pub(crate) fn build(&self) -> MatchKind {
         match self {
             KwMatchNode::Match => MatchKind::Typing,
             KwMatchNode::Catch => MatchKind::Effect,
@@ -31,7 +31,7 @@ impl KwMatchNode {
 }
 
 impl crate::MatchTermsNode {
-    pub fn build(&self, ctx: &mut ProgramState, ts: &mut Vec<PatternBranch>) -> Result<()> {
+    pub(crate) fn build(&self, ctx: &mut ProgramState, ts: &mut Vec<PatternBranch>) -> Result<()> {
         let value = match self {
             Self::MatchCase(v) => v.build(ctx)?,
             Self::MatchElse(v) => v.build(ctx)?,
@@ -45,7 +45,7 @@ impl crate::MatchTermsNode {
 }
 
 impl crate::MatchCaseNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Result<PatternBranch> {
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<PatternBranch> {
         Ok(PatternBranch {
             condition: PatternCondition::Case(PatternCaseNode {
                 pattern: Default::default(),
@@ -59,7 +59,7 @@ impl crate::MatchCaseNode {
 }
 
 impl crate::MatchTypeNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Result<PatternBranch> {
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<PatternBranch> {
         Ok(PatternBranch {
             condition: PatternCondition::Case(PatternCaseNode {
                 pattern: Default::default(),
@@ -73,7 +73,7 @@ impl crate::MatchTypeNode {
 }
 
 impl crate::MatchWhenNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Result<PatternBranch> {
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<PatternBranch> {
         Ok(PatternBranch {
             condition: PatternCondition::Case(PatternCaseNode {
                 pattern: Default::default(),
@@ -87,10 +87,13 @@ impl crate::MatchWhenNode {
 }
 
 impl crate::MatchElseNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Result<PatternBranch> {
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<PatternBranch> {
         let mut terms = vec![];
         for x in &self.match_statement {
-            x.main_statement.build(ctx, &mut terms)?
+            match x.main_statement.build(ctx) {
+                Ok(o) => terms.extend(o),
+                Err(e) => ctx.add_error(e),
+            }
         }
         Ok(PatternBranch {
             condition: PatternCondition::Else,

@@ -1,7 +1,7 @@
 use super::*;
 
 impl crate::ObjectStatementNode {
-    pub fn build(&self, ctx: &mut ProgramState) -> Result<ConstructObjectNode> {
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<ConstructObjectNode> {
         let bounds = match &self.type_hint {
             Some(s) => Some(s.build(ctx)?),
             None => None,
