@@ -1,7 +1,4 @@
 use super::*;
-use crate::{
-    DefineGenericNode, GenericParameterPairNode, ParameterDefaultNode, ParameterItemNode, ParameterPairNode, TypeReturnNode,
-};
 
 impl crate::DefineFunctionNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<FunctionDeclaration> {
@@ -92,7 +89,7 @@ impl crate::DefineGenericNode {
     }
 }
 
-impl GenericParameterPairNode {
+impl crate::GenericParameterPairNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<ParameterTerm> {
         let key = self.identifier.build(ctx);
         let bound = match &self.bound {
@@ -106,7 +103,7 @@ impl GenericParameterPairNode {
         Ok(ParameterTerm::Single { annotations: Default::default(), key, bound, default })
     }
 }
-impl ParameterItemNode {
+impl crate::ParameterItemNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<ParameterTerm> {
         let value = match self {
             Self::LMark => ParameterTerm::LMark,
@@ -119,7 +116,7 @@ impl ParameterItemNode {
     }
 }
 
-impl ParameterPairNode {
+impl crate::ParameterPairNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<ParameterTerm> {
         let key = self.identifier.build(ctx);
         let bound = match &self.type_hint {

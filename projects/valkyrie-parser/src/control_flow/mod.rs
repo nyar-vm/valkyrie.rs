@@ -2,9 +2,9 @@ mod jmp_match;
 mod jmp_switch;
 mod loop_for;
 mod loop_while;
-use crate::{helpers::ProgramState, KwMatchNode};
-use nyar_error::{Result, Success, Validation};
+use crate::helpers::ProgramState;
+use nyar_error::Result;
 use valkyrie_ast::{
     IdentifierNode, MatchKind, MatchStatement, PatternBranch, PatternCaseNode, PatternCondition, PatternStatements,
-    SwitchStatement, WhileConditionNode, WhileLoop, WhileLoopKind,
+    PatternTypeNode, PatternWhenNode, SwitchStatement, WhileConditionNode, WhileLoop, WhileLoopKind,
 };

@@ -5,19 +5,20 @@ SwitchStatement {
 SwitchStatement {
     patterns: [
         PatternBranch {
-            condition: Case(
-                PatternCaseNode {
-                    pattern: ExpressionNode {
+            condition: When(
+                PatternWhenNode {
+                    guard: ExpressionNode {
                         omit: false,
                         body: Placeholder,
                         span: 0..0,
                     },
-                    guard: None,
                     span: 0..0,
                 },
             ),
             statements: PatternStatements {
-                terms: [],
+                terms: [
+                    1,
+                ],
             },
             span: 22..34,
         },
@@ -48,13 +49,15 @@ SwitchStatement {
                 },
             ),
             statements: PatternStatements {
-                terms: [],
+                terms: [
+                    a,
+                ],
             },
             span: 59..76,
         },
         PatternBranch {
-            condition: Case(
-                PatternCaseNode {
+            condition: Type(
+                PatternTypeNode {
                     pattern: ExpressionNode {
                         omit: false,
                         body: Placeholder,
@@ -65,24 +68,27 @@ SwitchStatement {
                 },
             ),
             statements: PatternStatements {
-                terms: [],
+                terms: [
+                    b,
+                ],
             },
             span: 82..99,
         },
         PatternBranch {
-            condition: Case(
-                PatternCaseNode {
-                    pattern: ExpressionNode {
+            condition: When(
+                PatternWhenNode {
+                    guard: ExpressionNode {
                         omit: false,
                         body: Placeholder,
                         span: 0..0,
                     },
-                    guard: None,
                     span: 0..0,
                 },
             ),
             statements: PatternStatements {
-                terms: [],
+                terms: [
+                    c,
+                ],
             },
             span: 105..126,
         },

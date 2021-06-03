@@ -1,4 +1,12 @@
 use super::*;
+
+#[cfg(feature = "pretty-print")]
+impl PrettyPrint for PatternGuard {
+    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
+        theme.keyword("when").append(" ").append(self.condition.pretty(theme))
+    }
+}
+
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for PatternBlock {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {

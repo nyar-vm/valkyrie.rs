@@ -21,11 +21,11 @@ impl crate::MatchExpressionNode {
     }
 }
 
-impl KwMatchNode {
+impl crate::KwMatchNode {
     pub(crate) fn build(&self) -> MatchKind {
         match self {
-            KwMatchNode::Match => MatchKind::Typing,
-            KwMatchNode::Catch => MatchKind::Effect,
+            Self::Match => MatchKind::Typing,
+            Self::Catch => MatchKind::Effect,
         }
     }
 }
@@ -52,7 +52,7 @@ impl crate::MatchCaseNode {
                 guard: None,
                 span: Default::default(),
             }),
-            statements: PatternStatements { terms: vec![] },
+            statements: statements(&self.match_statement, ctx),
             span: self.span.clone(),
         })
     }
@@ -61,12 +61,12 @@ impl crate::MatchCaseNode {
 impl crate::MatchTypeNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<PatternBranch> {
         Ok(PatternBranch {
-            condition: PatternCondition::Case(PatternCaseNode {
+            condition: PatternCondition::Type(PatternTypeNode {
                 pattern: Default::default(),
                 guard: None,
                 span: Default::default(),
             }),
-            statements: PatternStatements { terms: vec![] },
+            statements: statements(&self.match_statement, ctx),
             span: self.span.clone(),
         })
     }
@@ -75,12 +75,8 @@ impl crate::MatchTypeNode {
 impl crate::MatchWhenNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<PatternBranch> {
         Ok(PatternBranch {
-            condition: PatternCondition::Case(PatternCaseNode {
-                pattern: Default::default(),
-                guard: None,
-                span: Default::default(),
-            }),
-            statements: PatternStatements { terms: vec![] },
+            condition: PatternCondition::When(PatternWhenNode { guard: Default::default(), span: Default::default() }),
+            statements: statements(&self.match_statement, ctx),
             span: self.span.clone(),
         })
     }
@@ -97,8 +93,19 @@ impl crate::MatchElseNode {
         }
         Ok(PatternBranch {
             condition: PatternCondition::Else,
-            statements: PatternStatements { terms },
+            statements: statements(&self.match_statement, ctx),
             span: self.span.clone(),
         })
     }
+}
+
+fn statements(statements: &[crate::MatchStatementNode], ctx: &mut ProgramState) -> PatternStatements {
+    let mut list = PatternStatements::new(statements.len());
+    for term in statements {
+        match term.main_statement.build(ctx) {
+            Ok(o) => list.terms.extend(o),
+            Err(e) => ctx.add_error(e),
+        }
+    }
+    list
 }

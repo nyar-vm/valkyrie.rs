@@ -1,6 +1,4 @@
 use super::*;
-use crate::SubscriptAxisNode;
-use valkyrie_ast::SubscriptCallNode;
 
 impl crate::RangeLiteralNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<RangeNode> {

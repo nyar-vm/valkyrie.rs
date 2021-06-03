@@ -16,7 +16,9 @@ MatchStatement {
                 },
             ),
             statements: PatternStatements {
-                terms: [],
+                terms: [
+                    a,
+                ],
             },
             span: 14..28,
         },

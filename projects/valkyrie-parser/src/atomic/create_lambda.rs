@@ -1,6 +1,4 @@
 use super::*;
-use crate::utils::build_annotation_terms;
-use nyar_error::Validate;
 
 impl crate::DefineLambdaNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<LambdaNode> {

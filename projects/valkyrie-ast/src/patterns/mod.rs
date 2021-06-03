@@ -333,9 +333,10 @@ pub struct PatternGuard {
     /// The range of the node
     pub span: Range<u32>,
 }
-#[cfg(feature = "pretty-print")]
-impl PrettyPrint for PatternGuard {
-    fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
-        theme.keyword("when").append(" ").append(self.condition.pretty(theme))
+
+impl PatternStatements {
+    /// Create a new pattern statement
+    pub fn new(capacity: usize) -> Self {
+        Self { terms: Vec::with_capacity(capacity) }
     }
 }

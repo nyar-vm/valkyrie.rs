@@ -1,5 +1,5 @@
 use crate::helpers::ProgramState;
-use nyar_error::{Result, Success, Validation};
+use nyar_error::Result;
 use valkyrie_ast::*;
 
 impl crate::LetPatternNode {

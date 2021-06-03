@@ -1,6 +1,6 @@
 use crate::ProgramNode;
 use nyar_error::{Failure, FileCache, FileID, NyarError, Success, Validation};
-use std::{ops::Range, str::FromStr};
+use std::str::FromStr;
 use valkyrie_ast::ProgramRoot;
 
 pub struct ProgramContext {
