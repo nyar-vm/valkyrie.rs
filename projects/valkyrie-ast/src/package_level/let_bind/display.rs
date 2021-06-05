@@ -1,4 +1,20 @@
 use super::*;
+
+impl Debug for VariableDeclaration {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        let w = &mut f.debug_struct("VariableDeclaration");
+        w.field("pattern", &self.pattern);
+        if let Some(type_hint) = &self.type_hint {
+            w.field("type", type_hint);
+        }
+        if let Some(body) = &self.body {
+            w.field("body", body);
+        }
+        w.field("span", &self.span);
+        w.finish()
+    }
+}
+
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for VariableDeclaration {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {

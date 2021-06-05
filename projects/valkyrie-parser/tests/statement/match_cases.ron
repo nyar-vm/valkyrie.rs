@@ -12,7 +12,7 @@ MatchStatement {
                         span: 0..0,
                     },
                     guard: None,
-                    span: 0..0,
+                    span: 14..28,
                 },
             ),
             statements: PatternStatements {

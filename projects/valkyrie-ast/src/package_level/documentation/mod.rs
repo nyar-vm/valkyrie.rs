@@ -9,6 +9,7 @@ pub struct DocumentationList {
 }
 
 impl DocumentationList {
+    /// Check if this documentation list is empty
     pub fn is_empty(&self) -> bool {
         self.terms.is_empty()
     }

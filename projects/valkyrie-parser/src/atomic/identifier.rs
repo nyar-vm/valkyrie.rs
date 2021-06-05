@@ -36,7 +36,7 @@ fn build_slot(node: &Option<SlotItemNode>, ctx: &mut ProgramState) -> Result<Lam
     let node = match node {
         Some(SlotItemNode::Identifier(v)) => return Ok(LambdaSlotItem::Named(v.build(ctx))),
         Some(SlotItemNode::Integer(v)) => v.parse::<u64>(ctx)?,
-        None => return Ok(LambdaSlotItem::Nothing),
+        None => return Ok(LambdaSlotItem::SelfType),
     };
     match NonZeroU64::new(node) {
         Some(s) => Ok(LambdaSlotItem::Index(s)),

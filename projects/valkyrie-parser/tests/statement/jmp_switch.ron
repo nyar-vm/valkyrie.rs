@@ -12,7 +12,7 @@ SwitchStatement {
                         body: Placeholder,
                         span: 0..0,
                     },
-                    span: 0..0,
+                    span: 22..34,
                 },
             ),
             statements: PatternStatements {
@@ -45,7 +45,7 @@ SwitchStatement {
                         span: 0..0,
                     },
                     guard: None,
-                    span: 0..0,
+                    span: 59..76,
                 },
             ),
             statements: PatternStatements {
@@ -64,7 +64,7 @@ SwitchStatement {
                         span: 0..0,
                     },
                     guard: None,
-                    span: 0..0,
+                    span: 82..99,
                 },
             ),
             statements: PatternStatements {
@@ -82,7 +82,7 @@ SwitchStatement {
                         body: Placeholder,
                         span: 0..0,
                     },
-                    span: 0..0,
+                    span: 105..126,
                 },
             ),
             statements: PatternStatements {

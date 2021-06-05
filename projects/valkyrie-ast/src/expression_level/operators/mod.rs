@@ -141,6 +141,7 @@ pub enum ValkyrieOperator {
     Hermitian,
 }
 
+/// Variants of all logical operators.
 #[repr(u8)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]

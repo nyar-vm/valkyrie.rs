@@ -73,16 +73,18 @@ pub struct LambdaSlotNode {
     /// The location of the slot
     pub span: Range<u32>,
 }
+
+/// `$, $0, $1, $x`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum LambdaSlotItem {
-    /// Automatically obtain a number based on context
-    Nothing,
-    /// The meta info of the slot
+    /// `$, $.call()`, Automatically obtain a number based on context
+    SelfType,
+    /// `$0, type_of($)`, The meta info of the slot
     MetaType,
-    /// The slot index from the lambda
+    /// `$1, $.arguments.1`, The slot index from the lambda
     Index(NonZeroU64),
-    /// The slot name from the lambda
+    /// `$x, $.arguments.x`, The slot name from the lambda
     Named(IdentifierNode),
 }
 

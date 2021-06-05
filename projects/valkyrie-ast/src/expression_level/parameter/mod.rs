@@ -49,14 +49,18 @@ pub enum ParameterTerm {
     UnpackList {
         /// The modifiers apply on the parameter
         modifiers: ModifierList,
+        /// The list receiver name
         key: IdentifierNode,
+        /// The type boundary of the parameter
         bound: Option<ExpressionNode>,
     },
     /// `#annotation modifier ...dict: Type`
     UnpackDict {
         /// The modifiers apply on the parameter
         modifiers: ModifierList,
+        /// The dict receiver name
         key: IdentifierNode,
+        /// The type boundary of the parameter
         bound: Option<ExpressionNode>,
     },
 }

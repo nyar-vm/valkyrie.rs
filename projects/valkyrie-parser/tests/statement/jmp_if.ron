@@ -159,8 +159,6 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
-    type_hint: None,
-    body: None,
     span: 170..219,
 }
 if
@@ -171,7 +169,5 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
-    type_hint: None,
-    body: None,
     span: 222..267,
 }

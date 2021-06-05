@@ -5,8 +5,6 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
-    type_hint: None,
-    body: None,
     span: 0..6,
 }
 VariableDeclaration {
@@ -16,8 +14,6 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
-    type_hint: None,
-    body: None,
     span: 8..23,
 }
 VariableDeclaration {
@@ -27,8 +23,6 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
-    type_hint: None,
-    body: None,
     span: 25..58,
 }
 VariableDeclaration {
@@ -38,8 +32,6 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
-    type_hint: None,
-    body: None,
     span: 60..92,
 }
 VariableDeclaration {
@@ -49,8 +41,6 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
-    type_hint: None,
-    body: None,
     span: 94..112,
 }
 VariableDeclaration {
@@ -60,8 +50,6 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
-    type_hint: None,
-    body: None,
     span: 114..131,
 }
 VariableDeclaration {
@@ -71,8 +59,6 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
-    type_hint: None,
-    body: None,
     span: 131..167,
 }
 VariableDeclaration {
@@ -82,8 +68,6 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
-    type_hint: None,
-    body: None,
     span: 169..196,
 }
 VariableDeclaration {
@@ -93,8 +77,6 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
-    type_hint: None,
-    body: None,
     span: 198..223,
 }
 VariableDeclaration {
@@ -104,8 +86,6 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
-    type_hint: None,
-    body: None,
     span: 223..248,
 }
 VariableDeclaration {
@@ -115,8 +95,6 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
-    type_hint: None,
-    body: None,
     span: 248..289,
 }
 VariableDeclaration {
@@ -126,8 +104,6 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
-    type_hint: None,
-    body: None,
     span: 289..313,
 }
 VariableDeclaration {
@@ -137,8 +113,6 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
-    type_hint: None,
-    body: None,
     span: 314..359,
 }
 VariableDeclaration {
@@ -148,8 +122,6 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
-    type_hint: None,
-    body: None,
     span: 359..374,
 }
 VariableDeclaration {
@@ -159,8 +131,6 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
-    type_hint: None,
-    body: None,
     span: 375..390,
 }
 VariableDeclaration {
@@ -170,8 +140,6 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
-    type_hint: None,
-    body: None,
     span: 391..412,
 }
 VariableDeclaration {
@@ -181,8 +149,6 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
-    type_hint: None,
-    body: None,
     span: 412..431,
 }
 VariableDeclaration {
@@ -192,8 +158,6 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
-    type_hint: None,
-    body: None,
     span: 431..449,
 }
 VariableDeclaration {
@@ -203,8 +167,6 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
-    type_hint: None,
-    body: None,
     span: 449..469,
 }
 VariableDeclaration {
@@ -214,8 +176,6 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
-    type_hint: None,
-    body: None,
     span: 469..514,
 }
 VariableDeclaration {
@@ -225,8 +185,6 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
-    type_hint: None,
-    body: None,
     span: 514..568,
 }
 VariableDeclaration {
@@ -236,8 +194,6 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
-    type_hint: None,
-    body: None,
     span: 568..583,
 }
 VariableDeclaration {
@@ -247,8 +203,6 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
-    type_hint: None,
-    body: None,
     span: 584..596,
 }
 VariableDeclaration {
@@ -258,8 +212,6 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
-    type_hint: None,
-    body: None,
     span: 596..635,
 }
 VariableDeclaration {
@@ -269,8 +221,6 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
-    type_hint: None,
-    body: None,
     span: 636..653,
 }
 VariableDeclaration {
@@ -280,8 +230,6 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
-    type_hint: None,
-    body: None,
     span: 653..672,
 }
 VariableDeclaration {
@@ -291,7 +239,5 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
-    type_hint: None,
-    body: None,
     span: 672..690,
 }

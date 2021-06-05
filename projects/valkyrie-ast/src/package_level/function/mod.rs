@@ -39,7 +39,9 @@ pub struct FunctionDeclarationInline {
     pub generic: ParametersList,
     /// The range of the number.
     pub arguments: ArgumentsList,
+    /// The return type of this function
     pub returns: Option<ExpressionNode>,
+    /// The body of this function
     pub body: StatementBlock,
 }
 
@@ -66,8 +68,12 @@ pub struct FunctionReturnNode {
 }
 
 impl StatementBlock {
+    /// Check if last statement has a semicolon
     pub fn last_semicolon(&self) -> bool {
-        todo!()
+        match self.terms.last() {
+            Some(StatementNode::Expression(s)) => s.omit,
+            _ => false,
+        }
     }
     pub fn fill_semicolon(&mut self) {
         todo!()

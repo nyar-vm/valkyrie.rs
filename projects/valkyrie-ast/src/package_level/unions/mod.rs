@@ -1,6 +1,5 @@
 use super::*;
 
-#[cfg(feature = "pretty-print")]
 mod display;
 
 mod iters;
@@ -20,22 +19,25 @@ pub struct UnionDeclaration {
     pub span: Range<u32>,
 }
 
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Clone, PartialEq, Eq, Hash, From)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum UnionTerm {
+    /// `@procedural`
+    Macro(ProceduralNode),
+    /// `Variant { }`
     Variant(VariantDeclaration),
+    /// `method()`
     Method(MethodDeclaration),
 }
 
-/// `field: Type = default`
+/// `Variant { }`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct VariantDeclaration {
-    /// The documentation of the node.
-    pub document: DocumentationList,
-    pub modifiers: ModifierList,
-    pub field_name: IdentifierNode,
-    pub r#type: ExpressionNode,
+    pub name: IdentifierNode,
+    /// The annotations of the variant declaration.
+    pub annotations: AnnotationNode,
+    pub type_hint: ExpressionKind,
     /// The range of the node
     pub span: Range<u32>,
 }

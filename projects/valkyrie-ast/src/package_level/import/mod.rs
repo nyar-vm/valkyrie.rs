@@ -7,8 +7,9 @@ mod display;
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ImportStatement {
+    /// The annotation of the import
     pub annotation: AttributeList,
-    // pub path: Option<StringLiteralNode>,
+    /// The term of the import
     pub term: ImportTermNode,
     /// The range of the node
     pub span: Range<u32>,
@@ -130,6 +131,7 @@ pub enum ImportState {
 }
 
 impl ImportResolvedItem {
+    /// Add external identifiers
     pub fn join_external(&self, name: &IdentifierNode) -> Self {
         todo!()
         // Self { annotation: Some(Arc::new(name.clone())), ..self.clone() }

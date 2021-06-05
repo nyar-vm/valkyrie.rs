@@ -5,8 +5,6 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
-    type_hint: None,
-    body: None,
     span: 0..6,
 }
 VariableDeclaration {
@@ -16,8 +14,6 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
-    type_hint: None,
-    body: None,
     span: 7..18,
 }
 VariableDeclaration {
@@ -27,8 +23,6 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
-    type_hint: None,
-    body: None,
     span: 19..29,
 }
 VariableDeclaration {
@@ -38,8 +32,6 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
-    type_hint: None,
-    body: None,
     span: 30..45,
 }
 VariableDeclaration {
@@ -49,8 +41,6 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
-    type_hint: None,
-    body: None,
     span: 48..58,
 }
 VariableDeclaration {
@@ -60,8 +50,6 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
-    type_hint: None,
-    body: None,
     span: 59..76,
 }
 VariableDeclaration {
@@ -71,8 +59,6 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
-    type_hint: None,
-    body: None,
     span: 78..109,
 }
 VariableDeclaration {
@@ -82,8 +68,6 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
-    type_hint: None,
-    body: None,
     span: 110..150,
 }
 VariableDeclaration {
@@ -93,8 +77,6 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
-    type_hint: None,
-    body: None,
     span: 152..163,
 }
 ApplyCallNode {

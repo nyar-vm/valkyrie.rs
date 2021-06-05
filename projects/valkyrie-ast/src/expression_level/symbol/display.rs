@@ -95,6 +95,7 @@ impl Lispify for NamePathNode {
 }
 
 impl BooleanNode {
+    /// Returns the string representation of the boolean value.
     pub fn as_str(&self) -> &'static str {
         match self.value {
             true => "true",
@@ -118,6 +119,7 @@ impl Lispify for BooleanNode {
     }
 }
 impl NullNode {
+    /// Returns the string representation of the null value.
     pub fn as_str(&self) -> &'static str {
         match self.nil {
             true => "nil",
