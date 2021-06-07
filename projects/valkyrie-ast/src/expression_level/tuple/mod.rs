@@ -28,7 +28,9 @@ pub struct TupleNode {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct TupleTermNode {
+    /// The key name of tuple
     pub key: Option<IdentifierNode>,
+    /// The value part of the tuple
     pub value: ExpressionKind,
 }
 

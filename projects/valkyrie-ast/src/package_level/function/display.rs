@@ -1,6 +1,7 @@
 use super::*;
 
 impl FunctionKind {
+    /// Get the string representation of the function kind
     pub fn as_str(&self) -> &'static str {
         match self {
             FunctionKind::Macro => "macro",

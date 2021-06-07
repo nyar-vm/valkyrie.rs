@@ -58,7 +58,7 @@ pub use crate::{
         program::ProgramRoot,
         statements::{StatementContext, StatementNode},
         traits::{ExtendsStatement, TraitDeclaration},
-        unions::{UnionDeclaration, VariantDeclaration},
+        unions::{UnionDeclaration, UnionTerm, VariantDeclaration},
     },
     patterns::{
         ArrayPatternNode, ClassPatternNode, IdentifierPattern, ImplicitCaseNode, PatternBlock, PatternBranch, PatternCaseNode,

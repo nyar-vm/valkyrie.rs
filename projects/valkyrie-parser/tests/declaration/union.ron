@@ -47,7 +47,44 @@ UnionDeclaration {
     name: Identifier("Union2", 167..173),
     layout: None,
     derive_traits: [],
-    terms: [],
+    terms: [
+        VariantDeclaration {
+            name: Identifier("Variant1", 180..188),
+            annotations: Empty,
+            body: None,
+            span: 180..193,
+        },
+        VariantDeclaration {
+            name: Identifier("Variant2", 193..201),
+            annotations: Empty,
+            body: Some(
+                DomainDeclaration {
+                    body: [],
+                    span: 202..204,
+                },
+            ),
+            span: 193..204,
+        },
+        VariantDeclaration {
+            name: Identifier("Variant3", 209..217),
+            annotations: Empty,
+            body: Some(
+                DomainDeclaration {
+                    body: [
+                        FieldDeclaration {
+                            name: Identifier("field1", 228..234),
+                            annotations: Empty,
+                            typing: None,
+                            default: None,
+                            span: 228..239,
+                        },
+                    ],
+                    span: 218..240,
+                },
+            ),
+            span: 209..240,
+        },
+    ],
     span: 150..242,
 }
 UnionDeclaration {
@@ -71,7 +108,58 @@ UnionDeclaration {
     name: Identifier("Union3", 293..299),
     layout: None,
     derive_traits: [],
-    terms: [],
+    terms: [
+        VariantDeclaration {
+            name: Identifier("Variant1", 306..314),
+            annotations: Empty,
+            body: None,
+            span: 306..314,
+        },
+        VariantDeclaration {
+            name: Identifier("Variant2", 320..328),
+            annotations: Empty,
+            body: Some(
+                DomainDeclaration {
+                    body: [],
+                    span: 329..331,
+                },
+            ),
+            span: 320..331,
+        },
+        VariantDeclaration {
+            name: Identifier("Variant3", 336..344),
+            annotations: Empty,
+            body: Some(
+                DomainDeclaration {
+                    body: [
+                        FieldDeclaration {
+                            name: Identifier("field1", 355..361),
+                            annotations: Empty,
+                            typing: None,
+                            default: None,
+                            span: 355..361,
+                        },
+                        FieldDeclaration {
+                            name: Identifier("field2", 371..377),
+                            annotations: Empty,
+                            typing: None,
+                            default: None,
+                            span: 371..377,
+                        },
+                        FieldDeclaration {
+                            name: Identifier("field3", 387..393),
+                            annotations: Empty,
+                            typing: None,
+                            default: None,
+                            span: 387..398,
+                        },
+                    ],
+                    span: 345..399,
+                },
+            ),
+            span: 336..399,
+        },
+    ],
     span: 275..402,
 }
 UnionDeclaration {
@@ -79,7 +167,100 @@ UnionDeclaration {
     name: Identifier("Union4", 410..416),
     layout: None,
     derive_traits: [],
-    terms: [],
+    terms: [
+        VariantDeclaration {
+            name: Identifier("Variant1", 423..431),
+            annotations: Empty,
+            body: Some(
+                DomainDeclaration {
+                    body: [
+                        FieldDeclaration {
+                            name: Identifier("field_a", 456..463),
+                            annotations: Annotation {
+                                modifiers: [
+                                    public,
+                                    static,
+                                ],
+                            },
+                            typing: None,
+                            default: None,
+                            span: 442..463,
+                        },
+                        MethodDeclaration {
+                            name: NamePathNode {
+                                names: [
+                                    Identifier("display", 493..500),
+                                ],
+                            },
+                            annotations: Annotation {
+                                modifiers: [
+                                    mut,
+                                    field_b,
+                                ],
+                            },
+                            generics: [],
+                            parameters: [
+                                Parameter {
+                                    key: "self",
+                                },
+                            ],
+                            returns: Auto,
+                            body: Some(
+                                [],
+                            ),
+                            span: 473..519,
+                        },
+                    ],
+                    span: 432..525,
+                },
+            ),
+            span: 423..525,
+        },
+        MethodDeclaration {
+            name: NamePathNode {
+                names: [
+                    Identifier("display", 531..538),
+                ],
+            },
+            annotations: Empty,
+            generics: [],
+            parameters: [
+                Parameter {
+                    key: "self",
+                },
+            ],
+            returns: Auto,
+            body: None,
+            span: 531..544,
+        },
+        MethodDeclaration {
+            name: NamePathNode {
+                names: [
+                    Identifier("method", 550..556),
+                ],
+            },
+            annotations: Empty,
+            generics: [],
+            parameters: [
+                Parameter {
+                    key: "self",
+                },
+            ],
+            returns: Auto,
+            body: Some(
+                [
+                    MatchStatement {
+                        kind: Typing,
+                        bind: None,
+                        main: Placeholder,
+                        patterns: [],
+                        span: 572..595,
+                    },
+                ],
+            ),
+            span: 550..601,
+        },
+    ],
     span: 404..603,
 }
 UnionDeclaration {
@@ -87,7 +268,26 @@ UnionDeclaration {
     name: Identifier("A", 636..637),
     layout: None,
     derive_traits: [],
-    terms: [],
+    terms: [
+        VariantDeclaration {
+            name: Identifier("A", 662..663),
+            annotations: Empty,
+            body: None,
+            span: 662..663,
+        },
+        VariantDeclaration {
+            name: Identifier("Bb", 669..671),
+            annotations: Empty,
+            body: None,
+            span: 669..671,
+        },
+        VariantDeclaration {
+            name: Identifier("Ccc", 677..680),
+            annotations: Empty,
+            body: None,
+            span: 677..680,
+        },
+    ],
     span: 630..683,
 }
 UnionDeclaration {
@@ -95,7 +295,33 @@ UnionDeclaration {
     name: Identifier("Option", 710..716),
     layout: None,
     derive_traits: [],
-    terms: [],
+    terms: [
+        VariantDeclaration {
+            name: Identifier("Some", 761..765),
+            annotations: Empty,
+            body: Some(
+                DomainDeclaration {
+                    body: [
+                        FieldDeclaration {
+                            name: Identifier("value", 776..781),
+                            annotations: Empty,
+                            typing: None,
+                            default: None,
+                            span: 776..789,
+                        },
+                    ],
+                    span: 766..790,
+                },
+            ),
+            span: 761..790,
+        },
+        VariantDeclaration {
+            name: Identifier("None", 813..817),
+            annotations: Empty,
+            body: None,
+            span: 813..817,
+        },
+    ],
     span: 704..820,
 }
 UnionDeclaration {
@@ -103,7 +329,46 @@ UnionDeclaration {
     name: Identifier("Result", 845..851),
     layout: None,
     derive_traits: [],
-    terms: [],
+    terms: [
+        VariantDeclaration {
+            name: Identifier("Success", 868..875),
+            annotations: Empty,
+            body: Some(
+                DomainDeclaration {
+                    body: [
+                        FieldDeclaration {
+                            name: Identifier("value", 886..891),
+                            annotations: Empty,
+                            typing: None,
+                            default: None,
+                            span: 886..899,
+                        },
+                    ],
+                    span: 876..900,
+                },
+            ),
+            span: 868..900,
+        },
+        VariantDeclaration {
+            name: Identifier("Failure", 905..912),
+            annotations: Empty,
+            body: Some(
+                DomainDeclaration {
+                    body: [
+                        FieldDeclaration {
+                            name: Identifier("error", 923..928),
+                            annotations: Empty,
+                            typing: None,
+                            default: None,
+                            span: 923..936,
+                        },
+                    ],
+                    span: 913..937,
+                },
+            ),
+            span: 905..937,
+        },
+    ],
     span: 822..939,
 }
 UnionDeclaration {
@@ -111,7 +376,263 @@ UnionDeclaration {
     name: Identifier("Validation", 947..957),
     layout: None,
     derive_traits: [],
-    terms: [],
+    terms: [
+        VariantDeclaration {
+            name: Identifier("Fine", 974..978),
+            annotations: Empty,
+            body: Some(
+                DomainDeclaration {
+                    body: [
+                        FieldDeclaration {
+                            name: Identifier("value", 989..994),
+                            annotations: Empty,
+                            typing: None,
+                            default: None,
+                            span: 989..997,
+                        },
+                        FieldDeclaration {
+                            name: Identifier("errors", 1007..1013),
+                            annotations: Empty,
+                            typing: None,
+                            default: None,
+                            span: 1007..1031,
+                        },
+                    ],
+                    span: 979..1032,
+                },
+            ),
+            span: 974..1032,
+        },
+        VariantDeclaration {
+            name: Identifier("Fail", 1038..1042),
+            annotations: Empty,
+            body: Some(
+                DomainDeclaration {
+                    body: [
+                        FieldDeclaration {
+                            name: Identifier("fatal", 1053..1058),
+                            annotations: Empty,
+                            typing: None,
+                            default: None,
+                            span: 1053..1061,
+                        },
+                        FieldDeclaration {
+                            name: Identifier("errors", 1071..1077),
+                            annotations: Empty,
+                            typing: None,
+                            default: None,
+                            span: 1071..1095,
+                        },
+                    ],
+                    span: 1043..1096,
+                },
+            ),
+            span: 1038..1096,
+        },
+        MethodDeclaration {
+            name: NamePathNode {
+                names: [
+                    Identifier("as_result", 1102..1111),
+                ],
+            },
+            annotations: Empty,
+            generics: [],
+            parameters: [
+                Parameter {
+                    key: "self",
+                },
+            ],
+            returns: ReturnType {
+                main: GenericCallNode {
+                    monadic: false,
+                    base: Result,
+                    term: ArgumentsList {
+                        terms: [
+                            TupleTermNode {
+                                key: None,
+                                value: T,
+                            },
+                            TupleTermNode {
+                                key: None,
+                                value: E,
+                            },
+                        ],
+                    },
+                    span: 1125..1135,
+                },
+            },
+            body: Some(
+                [
+                    MatchStatement {
+                        kind: Typing,
+                        bind: None,
+                        main: Placeholder,
+                        patterns: [
+                            PatternBranch {
+                                condition: Case(
+                                    PatternCaseNode {
+                                        pattern: ExpressionNode {
+                                            omit: false,
+                                            body: Placeholder,
+                                            span: 0..0,
+                                        },
+                                        guard: None,
+                                        span: 1171..1240,
+                                    },
+                                ),
+                                statements: PatternStatements {
+                                    terms: [
+                                        ApplyCallNode {
+                                            monadic: false,
+                                            caller: Success,
+                                            arguments: ArgumentsList {
+                                                terms: [
+                                                    TupleTermNode {
+                                                        key: None,
+                                                        value: value,
+                                                    },
+                                                ],
+                                            },
+                                            body: None,
+                                            span: 1220..1227,
+                                        },
+                                    ],
+                                },
+                                span: 1171..1240,
+                            },
+                            PatternBranch {
+                                condition: Case(
+                                    PatternCaseNode {
+                                        pattern: ExpressionNode {
+                                            omit: false,
+                                            body: Placeholder,
+                                            span: 0..0,
+                                        },
+                                        guard: None,
+                                        span: 1240..1305,
+                                    },
+                                ),
+                                statements: PatternStatements {
+                                    terms: [
+                                        ApplyCallNode {
+                                            monadic: false,
+                                            caller: Failure,
+                                            arguments: ArgumentsList {
+                                                terms: [
+                                                    TupleTermNode {
+                                                        key: None,
+                                                        value: fatal,
+                                                    },
+                                                ],
+                                            },
+                                            body: None,
+                                            span: 1289..1296,
+                                        },
+                                    ],
+                                },
+                                span: 1240..1305,
+                            },
+                        ],
+                        span: 1146..1306,
+                    },
+                ],
+            ),
+            span: 1102..1312,
+        },
+        MethodDeclaration {
+            name: NamePathNode {
+                names: [
+                    Identifier("as_option", 1317..1326),
+                ],
+            },
+            annotations: Empty,
+            generics: [],
+            parameters: [
+                Parameter {
+                    key: "self",
+                },
+            ],
+            returns: ReturnType {
+                main: GenericCallNode {
+                    monadic: false,
+                    base: Option,
+                    term: ArgumentsList {
+                        terms: [
+                            TupleTermNode {
+                                key: None,
+                                value: T,
+                            },
+                        ],
+                    },
+                    span: 1340..1347,
+                },
+            },
+            body: Some(
+                [
+                    MatchStatement {
+                        kind: Typing,
+                        bind: None,
+                        main: Placeholder,
+                        patterns: [
+                            PatternBranch {
+                                condition: Case(
+                                    PatternCaseNode {
+                                        pattern: ExpressionNode {
+                                            omit: false,
+                                            body: Placeholder,
+                                            span: 0..0,
+                                        },
+                                        guard: None,
+                                        span: 1383..1449,
+                                    },
+                                ),
+                                statements: PatternStatements {
+                                    terms: [
+                                        ApplyCallNode {
+                                            monadic: false,
+                                            caller: Some,
+                                            arguments: ArgumentsList {
+                                                terms: [
+                                                    TupleTermNode {
+                                                        key: None,
+                                                        value: value,
+                                                    },
+                                                ],
+                                            },
+                                            body: None,
+                                            span: 1429..1436,
+                                        },
+                                    ],
+                                },
+                                span: 1383..1449,
+                            },
+                            PatternBranch {
+                                condition: Case(
+                                    PatternCaseNode {
+                                        pattern: ExpressionNode {
+                                            omit: false,
+                                            body: Placeholder,
+                                            span: 0..0,
+                                        },
+                                        guard: None,
+                                        span: 1449..1504,
+                                    },
+                                ),
+                                statements: PatternStatements {
+                                    terms: [
+                                        None,
+                                    ],
+                                },
+                                span: 1449..1504,
+                            },
+                        ],
+                        span: 1358..1505,
+                    },
+                ],
+            ),
+            span: 1317..1511,
+        },
+    ],
     span: 941..1513,
 }
 ExtendsStatement {

@@ -34,10 +34,12 @@ pub enum UnionTerm {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct VariantDeclaration {
+    /// The name of variants
     pub name: IdentifierNode,
     /// The annotations of the variant declaration.
     pub annotations: AnnotationNode,
-    pub type_hint: ExpressionKind,
+    /// The main body of the variant
+    pub body: Vec<ClassTerm>,
     /// The range of the node
     pub span: Range<u32>,
 }

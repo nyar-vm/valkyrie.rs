@@ -75,6 +75,7 @@ impl StatementBlock {
             _ => false,
         }
     }
+    /// Fill statements with semicolon
     pub fn fill_semicolon(&mut self) {
         todo!()
     }

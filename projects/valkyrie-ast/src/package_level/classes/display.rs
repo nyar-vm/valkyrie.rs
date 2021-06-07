@@ -11,6 +11,7 @@ impl Debug for ClassTerm {
     }
 }
 impl ClassKind {
+    /// The keyword of class declaration
     pub fn as_str(&self) -> &'static str {
         match self {
             Self::Class => "class",
