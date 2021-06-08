@@ -31,7 +31,7 @@ pub enum UnionTerm {
 }
 
 /// `Variant { }`
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Clone, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct VariantDeclaration {
     /// The name of variants

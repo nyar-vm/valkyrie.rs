@@ -54,6 +54,23 @@ impl Lispify for ClassDeclaration {
         lisp
     }
 }
+
+impl Debug for FieldDeclaration {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        let w = &mut f.debug_struct("Field");
+        if !self.annotations.is_empty() {
+            w.field("annotations", &self.annotations);
+        }
+        w.field("name", &WrapDisplay::new(&self.name));
+        if let Some(typing) = &self.typing {
+            w.field("type", typing);
+        }
+        if let Some(default) = &self.default {
+            w.field("default", default);
+        }
+        w.finish()
+    }
+}
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for FieldDeclaration {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {

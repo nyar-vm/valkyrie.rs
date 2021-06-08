@@ -44,6 +44,19 @@ impl Debug for UnionTerm {
         }
     }
 }
+impl Debug for VariantDeclaration {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        let w = &mut f.debug_struct("Variant");
+        if !self.annotations.is_empty() {
+            w.field("annotations", &self.annotations);
+        }
+        w.field("name", &WrapDisplay::new(&self.name));
+        if !self.body.is_empty() {
+            w.field("body", &self.body);
+        }
+        w.finish()
+    }
+}
 
 #[cfg(feature = "lispify")]
 impl Lispify for VariantDeclaration {

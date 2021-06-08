@@ -48,41 +48,19 @@ UnionDeclaration {
     layout: None,
     derive_traits: [],
     terms: [
-        VariantDeclaration {
-            name: Identifier("Variant1", 180..188),
-            annotations: Empty,
-            body: None,
-            span: 180..193,
+        Variant {
+            name: Variant1,
         },
-        VariantDeclaration {
-            name: Identifier("Variant2", 193..201),
-            annotations: Empty,
-            body: Some(
-                DomainDeclaration {
-                    body: [],
-                    span: 202..204,
-                },
-            ),
-            span: 193..204,
+        Variant {
+            name: Variant2,
         },
-        VariantDeclaration {
-            name: Identifier("Variant3", 209..217),
-            annotations: Empty,
-            body: Some(
-                DomainDeclaration {
-                    body: [
-                        FieldDeclaration {
-                            name: Identifier("field1", 228..234),
-                            annotations: Empty,
-                            typing: None,
-                            default: None,
-                            span: 228..239,
-                        },
-                    ],
-                    span: 218..240,
+        Variant {
+            name: Variant3,
+            body: [
+                Field {
+                    name: field1,
                 },
-            ),
-            span: 209..240,
+            ],
         },
     ],
     span: 150..242,
@@ -109,55 +87,25 @@ UnionDeclaration {
     layout: None,
     derive_traits: [],
     terms: [
-        VariantDeclaration {
-            name: Identifier("Variant1", 306..314),
-            annotations: Empty,
-            body: None,
-            span: 306..314,
+        Variant {
+            name: Variant1,
         },
-        VariantDeclaration {
-            name: Identifier("Variant2", 320..328),
-            annotations: Empty,
-            body: Some(
-                DomainDeclaration {
-                    body: [],
-                    span: 329..331,
-                },
-            ),
-            span: 320..331,
+        Variant {
+            name: Variant2,
         },
-        VariantDeclaration {
-            name: Identifier("Variant3", 336..344),
-            annotations: Empty,
-            body: Some(
-                DomainDeclaration {
-                    body: [
-                        FieldDeclaration {
-                            name: Identifier("field1", 355..361),
-                            annotations: Empty,
-                            typing: None,
-                            default: None,
-                            span: 355..361,
-                        },
-                        FieldDeclaration {
-                            name: Identifier("field2", 371..377),
-                            annotations: Empty,
-                            typing: None,
-                            default: None,
-                            span: 371..377,
-                        },
-                        FieldDeclaration {
-                            name: Identifier("field3", 387..393),
-                            annotations: Empty,
-                            typing: None,
-                            default: None,
-                            span: 387..398,
-                        },
-                    ],
-                    span: 345..399,
+        Variant {
+            name: Variant3,
+            body: [
+                Field {
+                    name: field1,
                 },
-            ),
-            span: 336..399,
+                Field {
+                    name: field2,
+                },
+                Field {
+                    name: field3,
+                },
+            ],
         },
     ],
     span: 275..402,
@@ -168,53 +116,43 @@ UnionDeclaration {
     layout: None,
     derive_traits: [],
     terms: [
-        VariantDeclaration {
-            name: Identifier("Variant1", 423..431),
-            annotations: Empty,
-            body: Some(
-                DomainDeclaration {
-                    body: [
-                        FieldDeclaration {
-                            name: Identifier("field_a", 456..463),
-                            annotations: Annotation {
-                                modifiers: [
-                                    public,
-                                    static,
-                                ],
-                            },
-                            typing: None,
-                            default: None,
-                            span: 442..463,
-                        },
-                        MethodDeclaration {
-                            name: NamePathNode {
-                                names: [
-                                    Identifier("display", 493..500),
-                                ],
-                            },
-                            annotations: Annotation {
-                                modifiers: [
-                                    mut,
-                                    field_b,
-                                ],
-                            },
-                            generics: [],
-                            parameters: [
-                                Parameter {
-                                    key: "self",
-                                },
-                            ],
-                            returns: Auto,
-                            body: Some(
-                                [],
-                            ),
-                            span: 473..519,
+        Variant {
+            name: Variant1,
+            body: [
+                Field {
+                    annotations: Annotation {
+                        modifiers: [
+                            public,
+                            static,
+                        ],
+                    },
+                    name: field_a,
+                },
+                MethodDeclaration {
+                    name: NamePathNode {
+                        names: [
+                            Identifier("display", 493..500),
+                        ],
+                    },
+                    annotations: Annotation {
+                        modifiers: [
+                            mut,
+                            field_b,
+                        ],
+                    },
+                    generics: [],
+                    parameters: [
+                        Parameter {
+                            key: "self",
                         },
                     ],
-                    span: 432..525,
+                    returns: Auto,
+                    body: Some(
+                        [],
+                    ),
+                    span: 473..519,
                 },
-            ),
-            span: 423..525,
+            ],
         },
         MethodDeclaration {
             name: NamePathNode {
@@ -269,23 +207,14 @@ UnionDeclaration {
     layout: None,
     derive_traits: [],
     terms: [
-        VariantDeclaration {
-            name: Identifier("A", 662..663),
-            annotations: Empty,
-            body: None,
-            span: 662..663,
+        Variant {
+            name: A,
         },
-        VariantDeclaration {
-            name: Identifier("Bb", 669..671),
-            annotations: Empty,
-            body: None,
-            span: 669..671,
+        Variant {
+            name: Bb,
         },
-        VariantDeclaration {
-            name: Identifier("Ccc", 677..680),
-            annotations: Empty,
-            body: None,
-            span: 677..680,
+        Variant {
+            name: Ccc,
         },
     ],
     span: 630..683,
@@ -296,30 +225,16 @@ UnionDeclaration {
     layout: None,
     derive_traits: [],
     terms: [
-        VariantDeclaration {
-            name: Identifier("Some", 761..765),
-            annotations: Empty,
-            body: Some(
-                DomainDeclaration {
-                    body: [
-                        FieldDeclaration {
-                            name: Identifier("value", 776..781),
-                            annotations: Empty,
-                            typing: None,
-                            default: None,
-                            span: 776..789,
-                        },
-                    ],
-                    span: 766..790,
+        Variant {
+            name: Some,
+            body: [
+                Field {
+                    name: value,
                 },
-            ),
-            span: 761..790,
+            ],
         },
-        VariantDeclaration {
-            name: Identifier("None", 813..817),
-            annotations: Empty,
-            body: None,
-            span: 813..817,
+        Variant {
+            name: None,
         },
     ],
     span: 704..820,
@@ -330,43 +245,21 @@ UnionDeclaration {
     layout: None,
     derive_traits: [],
     terms: [
-        VariantDeclaration {
-            name: Identifier("Success", 868..875),
-            annotations: Empty,
-            body: Some(
-                DomainDeclaration {
-                    body: [
-                        FieldDeclaration {
-                            name: Identifier("value", 886..891),
-                            annotations: Empty,
-                            typing: None,
-                            default: None,
-                            span: 886..899,
-                        },
-                    ],
-                    span: 876..900,
+        Variant {
+            name: Success,
+            body: [
+                Field {
+                    name: value,
                 },
-            ),
-            span: 868..900,
+            ],
         },
-        VariantDeclaration {
-            name: Identifier("Failure", 905..912),
-            annotations: Empty,
-            body: Some(
-                DomainDeclaration {
-                    body: [
-                        FieldDeclaration {
-                            name: Identifier("error", 923..928),
-                            annotations: Empty,
-                            typing: None,
-                            default: None,
-                            span: 923..936,
-                        },
-                    ],
-                    span: 913..937,
+        Variant {
+            name: Failure,
+            body: [
+                Field {
+                    name: error,
                 },
-            ),
-            span: 905..937,
+            ],
         },
     ],
     span: 822..939,
@@ -377,57 +270,27 @@ UnionDeclaration {
     layout: None,
     derive_traits: [],
     terms: [
-        VariantDeclaration {
-            name: Identifier("Fine", 974..978),
-            annotations: Empty,
-            body: Some(
-                DomainDeclaration {
-                    body: [
-                        FieldDeclaration {
-                            name: Identifier("value", 989..994),
-                            annotations: Empty,
-                            typing: None,
-                            default: None,
-                            span: 989..997,
-                        },
-                        FieldDeclaration {
-                            name: Identifier("errors", 1007..1013),
-                            annotations: Empty,
-                            typing: None,
-                            default: None,
-                            span: 1007..1031,
-                        },
-                    ],
-                    span: 979..1032,
+        Variant {
+            name: Fine,
+            body: [
+                Field {
+                    name: value,
                 },
-            ),
-            span: 974..1032,
+                Field {
+                    name: errors,
+                },
+            ],
         },
-        VariantDeclaration {
-            name: Identifier("Fail", 1038..1042),
-            annotations: Empty,
-            body: Some(
-                DomainDeclaration {
-                    body: [
-                        FieldDeclaration {
-                            name: Identifier("fatal", 1053..1058),
-                            annotations: Empty,
-                            typing: None,
-                            default: None,
-                            span: 1053..1061,
-                        },
-                        FieldDeclaration {
-                            name: Identifier("errors", 1071..1077),
-                            annotations: Empty,
-                            typing: None,
-                            default: None,
-                            span: 1071..1095,
-                        },
-                    ],
-                    span: 1043..1096,
+        Variant {
+            name: Fail,
+            body: [
+                Field {
+                    name: fatal,
                 },
-            ),
-            span: 1038..1096,
+                Field {
+                    name: errors,
+                },
+            ],
         },
         MethodDeclaration {
             name: NamePathNode {

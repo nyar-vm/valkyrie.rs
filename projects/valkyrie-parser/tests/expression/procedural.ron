@@ -50,12 +50,8 @@ ProceduralNode {
     domain: Some(
         DomainDeclaration {
             body: [
-                FieldDeclaration {
-                    name: Identifier("field", 38..43),
-                    annotations: Empty,
-                    typing: None,
-                    default: None,
-                    span: 38..44,
+                Field {
+                    name: field,
                 },
             ],
             span: 36..45,
@@ -76,12 +72,8 @@ ProceduralNode {
     domain: Some(
         DomainDeclaration {
             body: [
-                FieldDeclaration {
-                    name: Identifier("field", 54..59),
-                    annotations: Empty,
-                    typing: None,
-                    default: None,
-                    span: 54..60,
+                Field {
+                    name: field,
                 },
             ],
             span: 52..61,

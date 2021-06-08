@@ -65,7 +65,7 @@ pub struct ConstructObjectNode {
 }
 
 /// `field: Type = default`
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Clone, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct FieldDeclaration {
     /// The name of this field

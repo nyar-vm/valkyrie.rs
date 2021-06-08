@@ -80,45 +80,32 @@ ClassDeclaration {
     base_classes: None,
     auto_traits: [],
     terms: [
-        FieldDeclaration {
-            name: Identifier("virtual", 240..247),
-            annotations: Empty,
-            typing: None,
-            default: None,
-            span: 240..252,
+        Field {
+            name: virtual,
         },
-        FieldDeclaration {
-            name: Identifier("base1", 260..265),
+        Field {
             annotations: Annotation {
                 modifiers: [
                     inherit,
                 ],
             },
-            typing: None,
-            default: None,
-            span: 252..272,
+            name: base1,
         },
-        FieldDeclaration {
-            name: Identifier("base2", 286..291),
+        Field {
             annotations: Annotation {
                 modifiers: [
                     inherit,
                 ],
             },
-            typing: None,
-            default: None,
-            span: 278..298,
+            name: base2,
         },
-        FieldDeclaration {
-            name: Identifier("base3", 312..317),
+        Field {
             annotations: Annotation {
                 modifiers: [
                     inherit,
                 ],
             },
-            typing: None,
-            default: None,
-            span: 304..324,
+            name: base3,
         },
     ],
     span: 219..329,
@@ -131,19 +118,11 @@ ClassDeclaration {
     base_classes: None,
     auto_traits: [],
     terms: [
-        FieldDeclaration {
-            name: Identifier("item1", 362..367),
-            annotations: Empty,
-            typing: None,
-            default: None,
-            span: 362..371,
+        Field {
+            name: item1,
         },
-        FieldDeclaration {
-            name: Identifier("item2", 377..382),
-            annotations: Empty,
-            typing: None,
-            default: None,
-            span: 377..386,
+        Field {
+            name: item2,
         },
     ],
     span: 329..392,
@@ -212,12 +191,8 @@ ClassDeclaration {
             ),
             span: 429..488,
         },
-        FieldDeclaration {
-            name: Identifier("_a", 493..495),
-            annotations: Empty,
-            typing: None,
-            default: None,
-            span: 493..495,
+        Field {
+            name: _a,
         },
         MethodDeclaration {
             name: NamePathNode {
@@ -439,52 +414,35 @@ ClassDeclaration {
     base_classes: None,
     auto_traits: [],
     terms: [
-        FieldDeclaration {
-            name: Identifier("virtual", 990..997),
+        Field {
             annotations: Annotation {
                 modifiers: [
                     public,
                 ],
             },
-            typing: None,
-            default: None,
-            span: 983..1002,
+            name: virtual,
         },
-        FieldDeclaration {
-            name: Identifier("x_base", 1010..1016),
+        Field {
             annotations: Annotation {
                 modifiers: [
                     inherit,
                 ],
             },
-            typing: None,
-            default: None,
-            span: 1002..1023,
+            name: x_base,
         },
-        FieldDeclaration {
-            name: Identifier("private", 1029..1036),
-            annotations: Empty,
-            typing: None,
-            default: None,
-            span: 1029..1037,
+        Field {
+            name: private,
         },
-        FieldDeclaration {
-            name: Identifier("inline", 1037..1043),
-            annotations: Empty,
-            typing: None,
-            default: None,
-            span: 1037..1048,
+        Field {
+            name: inline,
         },
-        FieldDeclaration {
-            name: Identifier("_y_base", 1056..1063),
+        Field {
             annotations: Annotation {
                 modifiers: [
                     inherit,
                 ],
             },
-            typing: None,
-            default: None,
-            span: 1048..1070,
+            name: _y_base,
         },
         MethodDeclaration {
             name: NamePathNode {
@@ -606,38 +564,23 @@ ClassDeclaration {
     base_classes: None,
     auto_traits: [],
     terms: [
-        FieldDeclaration {
-            name: Identifier("type", 1417..1423),
+        Field {
             annotations: Annotation {
                 modifiers: [
                     public,
                     static,
                 ],
             },
-            typing: None,
-            default: None,
-            span: 1403..1440,
+            name: type,
         },
-        FieldDeclaration {
-            name: Identifier("unknown_all", 1446..1457),
-            annotations: Empty,
-            typing: None,
-            default: None,
-            span: 1446..1457,
+        Field {
+            name: unknown_all,
         },
-        FieldDeclaration {
-            name: Identifier("default_value", 1463..1476),
-            annotations: Empty,
-            typing: None,
-            default: None,
-            span: 1463..1479,
+        Field {
+            name: default_value,
         },
-        FieldDeclaration {
-            name: Identifier("infer_type", 1485..1495),
-            annotations: Empty,
-            typing: None,
-            default: None,
-            span: 1485..1502,
+        Field {
+            name: infer_type,
         },
         MethodDeclaration {
             name: NamePathNode {
@@ -867,8 +810,7 @@ ClassDeclaration {
     base_classes: None,
     auto_traits: [],
     terms: [
-        FieldDeclaration {
-            name: Identifier("field1", 1907..1913),
+        Field {
             annotations: Annotation {
                 attributes: [
                     AttributeTerm {
@@ -889,23 +831,17 @@ ClassDeclaration {
                     readonly,
                 ],
             },
-            typing: None,
-            default: None,
-            span: 1884..1918,
+            name: field1,
         },
-        FieldDeclaration {
-            name: Identifier("field 2", 1933..1942),
+        Field {
             annotations: Annotation {
                 modifiers: [
                     readonly,
                 ],
             },
-            typing: None,
-            default: None,
-            span: 1924..1947,
+            name: field 2,
         },
-        FieldDeclaration {
-            name: Identifier("main", 1985..1989),
+        Field {
             annotations: Annotation {
                 modifiers: [
                     class,
@@ -913,20 +849,15 @@ ClassDeclaration {
                     void,
                 ],
             },
-            typing: None,
-            default: None,
-            span: 1953..1989,
+            name: main,
         },
-        FieldDeclaration {
-            name: Identifier("fields", 2005..2011),
+        Field {
             annotations: Annotation {
                 modifiers: [
                     mut,
                 ],
             },
-            typing: None,
-            default: None,
-            span: 1995..2026,
+            name: fields,
         },
         MethodDeclaration {
             name: NamePathNode {

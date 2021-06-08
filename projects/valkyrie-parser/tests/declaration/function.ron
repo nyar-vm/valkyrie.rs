@@ -488,12 +488,8 @@ ClassDeclaration {
     base_classes: None,
     auto_traits: [],
     terms: [
-        FieldDeclaration {
-            name: Identifier("fields", 1765..1771),
-            annotations: Empty,
-            typing: None,
-            default: None,
-            span: 1765..1771,
+        Field {
+            name: fields,
         },
     ],
     span: 1715..1776,
