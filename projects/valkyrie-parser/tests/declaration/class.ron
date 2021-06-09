@@ -718,6 +718,11 @@ ClassDeclaration {
             parameters: [
                 Parameter {
                     key: "self",
+                    annotations: Annotation {
+                        modifiers: [
+                            mut,
+                        ],
+                    },
                     bound: T,
                 },
                 Parameter {
@@ -899,6 +904,11 @@ ClassDeclaration {
             parameters: [
                 Parameter {
                     key: "self",
+                    annotations: Annotation {
+                        modifiers: [
+                            mut,
+                        ],
+                    },
                 },
                 Parameter {
                     key: "args",

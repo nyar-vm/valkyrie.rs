@@ -114,6 +114,11 @@ FunctionDeclaration {
     parameters: [
         Parameter {
             key: "self",
+            annotations: Annotation {
+                modifiers: [
+                    mut,
+                ],
+            },
         },
         <<<disable-index-parameters>>>,
         Parameter {

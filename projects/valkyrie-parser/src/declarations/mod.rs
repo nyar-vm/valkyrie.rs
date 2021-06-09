@@ -7,6 +7,9 @@ mod unions;
 mod def_var;
 mod extends;
 
-use crate::{helpers::ProgramState, utils::build_annotation_terms};
+use crate::{
+    helpers::ProgramState,
+    utils::{build_annotation_terms, build_modifier_ahead},
+};
 use nyar_error::Result;
 use valkyrie_ast::*;

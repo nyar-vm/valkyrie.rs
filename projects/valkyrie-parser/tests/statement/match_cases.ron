@@ -1,7 +1,7 @@
 MatchStatement {
     kind: Typing,
     bind: None,
-    main: Placeholder,
+    main: a,
     patterns: [
         PatternBranch {
             condition: Case(

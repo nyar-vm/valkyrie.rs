@@ -1,11 +1,9 @@
 use super::*;
+use crate::utils::build_match_terms;
 
 impl crate::SwitchStatementNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<SwitchStatement> {
-        let mut patterns = vec![];
-        for x in &self.match_terms {
-            x.build(ctx, &mut patterns)?
-        }
+        let patterns = build_match_terms(&self.match_terms, ctx);
         Ok(SwitchStatement { patterns, span: self.span.clone() })
     }
 }

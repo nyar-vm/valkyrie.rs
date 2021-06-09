@@ -85,6 +85,13 @@ pub struct ModifierList {
     pub terms: Vec<IdentifierNode>,
 }
 
+impl ModifierList {
+    /// Create a new modifier list with given capacity.
+    pub fn new(capacity: usize) -> Self {
+        Self { terms: Vec::with_capacity(capacity) }
+    }
+}
+
 impl Default for AttributeKind {
     fn default() -> Self {
         Self::Normal

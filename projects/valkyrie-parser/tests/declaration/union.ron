@@ -190,7 +190,7 @@ UnionDeclaration {
                     MatchStatement {
                         kind: Typing,
                         bind: None,
-                        main: Placeholder,
+                        main: self,
                         patterns: [],
                         span: 572..595,
                     },
@@ -329,7 +329,7 @@ UnionDeclaration {
                     MatchStatement {
                         kind: Typing,
                         bind: None,
-                        main: Placeholder,
+                        main: self,
                         patterns: [
                             PatternBranch {
                                 condition: Case(
@@ -435,7 +435,7 @@ UnionDeclaration {
                     MatchStatement {
                         kind: Typing,
                         bind: None,
-                        main: Placeholder,
+                        main: self,
                         patterns: [
                             PatternBranch {
                                 condition: Case(

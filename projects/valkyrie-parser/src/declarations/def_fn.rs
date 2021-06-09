@@ -134,14 +134,14 @@ impl crate::ParameterItemNode {
 impl crate::ParameterPairNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<ParameterTerm> {
         let key = self.identifier.build(ctx);
-        Ok(ParameterTerm::Single {
-            annotations: Default::default(),
-            key,
-            bound: self.build_bound(ctx),
-            default: self.build_default(ctx),
-        })
+        Ok(ParameterTerm::Single { annotations: self.annotations(ctx), key, bound: self.bound(ctx), default: self.value(ctx) })
     }
-    fn build_bound(&self, ctx: &mut ProgramState) -> Option<ExpressionKind> {
+    fn annotations(&self, ctx: &mut ProgramState) -> AnnotationNode {
+        let mut out = AnnotationNode::default();
+        out.modifiers = build_modifier_ahead(&self.modifier_ahead, ctx);
+        out
+    }
+    fn bound(&self, ctx: &mut ProgramState) -> Option<ExpressionKind> {
         match self.type_hint.as_ref()?.build(ctx) {
             Ok(o) => Some(o),
             Err(e) => {
@@ -150,7 +150,7 @@ impl crate::ParameterPairNode {
             }
         }
     }
-    fn build_default(&self, ctx: &mut ProgramState) -> Option<ExpressionKind> {
+    fn value(&self, ctx: &mut ProgramState) -> Option<ExpressionKind> {
         match self.parameter_default.as_ref()?.main_expression.build(ctx) {
             Ok(o) => Some(o),
             Err(e) => {

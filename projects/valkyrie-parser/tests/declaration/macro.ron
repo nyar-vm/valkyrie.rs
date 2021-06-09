@@ -209,6 +209,11 @@ FunctionDeclaration {
     parameters: [
         Parameter {
             key: "args",
+            annotations: Annotation {
+                modifiers: [
+                    mut,
+                ],
+            },
             bound: GenericCallNode {
                 monadic: false,
                 base: List,
