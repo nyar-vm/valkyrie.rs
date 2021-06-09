@@ -68,11 +68,11 @@ impl crate::IntegerNode {
     pub(crate) fn build(&self) -> NumberLiteralNode {
         NumberLiteralNode::new(10, self.span.clone())
     }
-    pub fn as_identifier(&self, ctx: &mut ProgramState) -> IdentifierNode {
+    pub(crate) fn as_identifier(&self, ctx: &mut ProgramState) -> IdentifierNode {
         let text = self.text.chars().filter(|c| c.is_digit(10)).collect();
         IdentifierNode { name: text, span: ctx.file.with_range(self.get_range()) }
     }
-    pub fn as_base(&self, ctx: &mut ProgramState) -> Result<u32> {
+    pub(crate) fn as_base(&self, ctx: &mut ProgramState) -> Result<u32> {
         let span = ctx.file.with_range(self.get_range());
         match u32::from_str(&self.text) {
             Ok(o) if o >= 2 && o <= 36 => Ok(o),
@@ -80,7 +80,7 @@ impl crate::IntegerNode {
             Err(e) => Err(NyarError::syntax_error(e.to_string(), span)),
         }
     }
-    pub fn parse<T>(&self, ctx: &mut ProgramState) -> Result<T>
+    pub(crate) fn parse<T>(&self, ctx: &mut ProgramState) -> Result<T>
     where
         T: FromStr,
         <T as FromStr>::Err: std::error::Error,

@@ -5,7 +5,7 @@ impl PrettyPrint for ConstructNewNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(5);
         terms += theme.keyword("new");
-        for m in &self.modifiers {
+        for m in &self.annotations {
             terms += " ";
             terms += theme.keyword(m.name.to_string());
         }

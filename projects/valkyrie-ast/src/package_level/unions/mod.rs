@@ -19,6 +19,7 @@ pub struct UnionDeclaration {
     pub span: Range<u32>,
 }
 
+/// A valid term in the union declaration.
 #[derive(Clone, PartialEq, Eq, Hash, From)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum UnionTerm {

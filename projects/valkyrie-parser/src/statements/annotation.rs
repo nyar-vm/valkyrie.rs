@@ -1,80 +1,79 @@
 use super::*;
-use valkyrie_ast::{AnnotationKind, AnnotationList, AnnotationNode, AnnotationPathNode, AnnotationTerm};
 
-impl ThisParser for AnnotationKind {
-    fn parse(input: ParseState) -> ParseResult<Self> {
-        input
-            .begin_choice()
-            .choose(|s| s.match_str("@@").map_inner(|_| AnnotationKind::Environment))
-            .choose(|s| s.match_str("@!").map_inner(|_| AnnotationKind::NonCapture))
-            .choose(|s| s.match_str("@").map_inner(|_| AnnotationKind::Normal))
-            .end_choice()
-    }
+// static PREFIX: &'static str = r#"^(?x)(
+//       [+\-±]
+//     | [¬!~]
+//     | [⅟√∛∜]
+//     | [*]{1,3}
+//     | [⁑⁂]
+// )"#;
 
-    fn lispify(&self) -> Lisp {
-        todo!()
-    }
-}
-
-impl ThisParser for AnnotationNode {
-    fn parse(input: ParseState) -> ParseResult<Self> {
-        let (state, kind) = AnnotationKind::parse(input)?;
-        let (state, term) = AnnotationTerm::parse(state.skip(ignore))?;
-
-        state.finish(AnnotationNode { kind, term, span: get_span(input, state) })
-    }
-
-    fn lispify(&self) -> Lisp {
-        AnnotationList::from(self.clone()).lispify()
+impl crate::AnnotationMixNode {
+    pub(crate) fn annotations(&self, ctx: &mut ProgramState) -> Result<AnnotationNode> {
+        let attributes = build_annotation_terms_mix(&self.annotation_term_mix, ctx)?;
+        let modifiers = ModifierList { terms: self.modifier_ahead.iter().map(|s| s.identifier.build(ctx)).collect() };
+        Ok(AnnotationNode { documents: DocumentationList { terms: vec![] }, attributes, modifiers })
     }
 }
 
-impl ThisParser for AnnotationTerm {
-    fn parse(input: ParseState) -> ParseResult<Self> {
-        let (state, name) = AnnotationPathNode::parse(input)?;
-
-        state.finish(AnnotationTerm { path: name, arguments: Default::default(), collects: Default::default() })
-    }
-
-    fn lispify(&self) -> Lisp {
-        self.path.lispify()
+impl crate::AnnotationHeadNode {
+    pub(crate) fn annotations(&self, ctx: &mut ProgramState) -> Result<AnnotationNode> {
+        let attributes = build_annotation_terms(&self.annotation_term, ctx)?;
+        let modifiers = ModifierList { terms: self.modifier_call.iter().map(|s| s.identifier.build(ctx)).collect() };
+        Ok(AnnotationNode { documents: DocumentationList { terms: vec![] }, attributes, modifiers })
     }
 }
 
-impl ThisParser for AnnotationPathNode {
-    /// `a::b::c.d.e.f`
-    fn parse(input: ParseState) -> ParseResult<Self> {
-        let (state, path) = input.match_fn(NamePathNode::parse)?;
-        let (state, names) = state.match_repeats(pare_dot_id)?;
-        state.finish(AnnotationPathNode::new(path, names, get_span(input, state)))
-    }
-
-    fn lispify(&self) -> Lisp {
-        Lisp::symbol(self.to_string())
+impl crate::AttributeItemNode {
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<AttributeTerm> {
+        let path = self.namepath.build(ctx);
+        // let domain = match &self.class_block {
+        //     Some(s) => {
+        //         Some(s.build(ctx)?)
+        //     }
+        //     None => {None}
+        // };
+        Ok(AttributeTerm { kind: Default::default(), path, variant: vec![], arguments: Default::default(), domain: None })
     }
 }
-
-/// ~ . ~ id
-fn pare_dot_id(input: ParseState) -> ParseResult<IdentifierNode> {
-    let (state, _) = input.skip(ignore).match_char('.')?;
-    let (state, id) = state.skip(ignore).match_fn(IdentifierNode::parse)?;
-    state.finish(id)
-}
-
-impl ThisParser for AnnotationList {
-    fn parse(input: ParseState) -> ParseResult<Self> {
-        let (state, kind) = AnnotationKind::parse(input)?;
-        let pattern = BracketPattern::new("[", "]");
-        let (state, terms) = pattern.consume(state.skip(ignore), ignore, AnnotationTerm::parse)?;
-        state.finish(AnnotationList { kind, terms: terms.body, span: get_span(input, state) })
-    }
-
-    fn lispify(&self) -> Lisp {
-        let mut lisp = Lisp::new(10);
-        lisp += Lisp::keyword("annotation/list");
-        for term in &self.terms {
-            lisp += term.lispify();
+impl crate::AnnotationTermNode {
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<AttributeList> {
+        let mut list = AttributeList::new(1);
+        match self {
+            Self::AttributeCall(v) => list.terms.push(v.attribute_item.build(ctx)?),
+            Self::AttributeList(v) => {
+                for term in &v.attribute_item {
+                    match term.build(ctx) {
+                        Ok(o) => list.terms.push(o),
+                        Err(e) => ctx.add_error(e),
+                    }
+                }
+            }
         }
-        lisp
+        Ok(list)
+    }
+}
+
+impl crate::AnnotationTermMixNode {
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<AttributeList> {
+        let mut list = AttributeList::new(1);
+        match self {
+            Self::AttributeCall(v) => list.terms.push(v.attribute_item.build(ctx)?),
+            Self::ProceduralCall(v) => list.terms.push(v.attribute_item.build(ctx)?),
+            Self::AttributeList(v) => {
+                for x in &v.attribute_item {
+                    match x.build(ctx) {
+                        Ok(o) => list.terms.push(o),
+                        Err(e) => ctx.add_error(e),
+                    }
+                }
+            }
+        }
+        Ok(list)
+    }
+}
+impl crate::ModifierAheadNode {
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> IdentifierNode {
+        self.identifier.build(ctx)
     }
 }

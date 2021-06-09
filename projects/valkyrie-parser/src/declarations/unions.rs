@@ -1,5 +1,4 @@
 use super::*;
-use crate::{utils::build_annotation_terms, ClassBlockNode, UnionTermNode};
 
 impl crate::DefineUnionNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<UnionDeclaration> {

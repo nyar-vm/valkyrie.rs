@@ -69,7 +69,7 @@ pub struct LambdaSlotNode {
     /// The repeat times of `$`
     pub level: usize,
     /// The name of the slot
-    pub name: LambdaSlotItem,
+    pub item: LambdaSlotItem,
     /// The location of the slot
     pub span: Range<u32>,
 }

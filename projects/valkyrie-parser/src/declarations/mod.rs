@@ -7,6 +7,6 @@ mod unions;
 mod def_var;
 mod extends;
 
-use crate::{helpers::ProgramState, FlagTermNode};
-use nyar_error::{Result, Success, Validate, Validation};
+use crate::{helpers::ProgramState, utils::build_annotation_terms};
+use nyar_error::Result;
 use valkyrie_ast::*;

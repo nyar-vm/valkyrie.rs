@@ -391,7 +391,11 @@ FunctionDeclaration {
     },
     body: [
         ConstructNewNode {
-            modifiers: [],
+            annotations: Annotation {
+                modifiers: [
+                    lazy,
+                ],
+            },
             namepath: NamePathNode {
                 names: [
                     Identifier("std", 1523..1526),

@@ -29,14 +29,14 @@ impl crate::KwFunctionNode {
 }
 
 impl crate::FunctionMiddleNode {
-    pub fn returns(&self, ctx: &mut ProgramState) -> Result<FunctionReturnNode> {
+    pub(crate) fn returns(&self, ctx: &mut ProgramState) -> Result<FunctionReturnNode> {
         let typing = match &self.type_return {
             Some(s) => Some(s.type_expression.build(ctx)?),
             None => None,
         };
         Ok(FunctionReturnNode { typing, effect: vec![] })
     }
-    pub fn parameters(&self, ctx: &mut ProgramState) -> Result<ParametersList> {
+    pub(crate) fn parameters(&self, ctx: &mut ProgramState) -> Result<ParametersList> {
         let mut terms = vec![];
         for term in &self.function_parameters.parameter_item {
             match term.build(ctx) {
@@ -46,7 +46,7 @@ impl crate::FunctionMiddleNode {
         }
         Ok(ParametersList { kind: ParameterKind::Expression, terms })
     }
-    pub fn generics(&self, ctx: &mut ProgramState) -> Result<ParametersList> {
+    pub(crate) fn generics(&self, ctx: &mut ProgramState) -> Result<ParametersList> {
         let mut terms = vec![];
         match &self.define_generic {
             Some(s) => {
@@ -92,15 +92,30 @@ impl crate::DefineGenericNode {
 impl crate::GenericParameterPairNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<ParameterTerm> {
         let key = self.identifier.build(ctx);
-        let bound = match &self.bound {
-            Some(s) => Some(s.build(ctx)?),
-            None => None,
-        };
-        let default = match &self.default {
-            Some(s) => Some(s.build(ctx)?),
-            None => None,
-        };
-        Ok(ParameterTerm::Single { annotations: Default::default(), key, bound, default })
+        Ok(ParameterTerm::Single {
+            annotations: Default::default(),
+            key,
+            bound: self.build_bound(ctx),
+            default: self.build_default(ctx),
+        })
+    }
+    fn build_bound(&self, ctx: &mut ProgramState) -> Option<ExpressionKind> {
+        match self.bound.as_ref()?.build(ctx) {
+            Ok(o) => Some(o),
+            Err(e) => {
+                ctx.add_error(e);
+                None
+            }
+        }
+    }
+    fn build_default(&self, ctx: &mut ProgramState) -> Option<ExpressionKind> {
+        match self.default.as_ref()?.build(ctx) {
+            Ok(o) => Some(o),
+            Err(e) => {
+                ctx.add_error(e);
+                None
+            }
+        }
     }
 }
 impl crate::ParameterItemNode {
@@ -119,15 +134,30 @@ impl crate::ParameterItemNode {
 impl crate::ParameterPairNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<ParameterTerm> {
         let key = self.identifier.build(ctx);
-        let bound = match &self.type_hint {
-            Some(s) => Some(s.type_expression.build(ctx)?),
-            None => None,
-        };
-        let default = match &self.parameter_default {
-            Some(s) => Some(s.main_expression.build(ctx)?),
-            None => None,
-        };
-        Ok(ParameterTerm::Single { annotations: Default::default(), key, bound, default })
+        Ok(ParameterTerm::Single {
+            annotations: Default::default(),
+            key,
+            bound: self.build_bound(ctx),
+            default: self.build_default(ctx),
+        })
+    }
+    fn build_bound(&self, ctx: &mut ProgramState) -> Option<ExpressionKind> {
+        match self.type_hint.as_ref()?.build(ctx) {
+            Ok(o) => Some(o),
+            Err(e) => {
+                ctx.add_error(e);
+                None
+            }
+        }
+    }
+    fn build_default(&self, ctx: &mut ProgramState) -> Option<ExpressionKind> {
+        match self.parameter_default.as_ref()?.main_expression.build(ctx) {
+            Ok(o) => Some(o),
+            Err(e) => {
+                ctx.add_error(e);
+                None
+            }
+        }
     }
 }
 

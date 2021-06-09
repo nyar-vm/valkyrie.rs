@@ -1,8 +1,4 @@
 use super::*;
-use crate::SlotItemNode;
-use nyar_error::NyarError;
-use std::num::NonZeroU64;
-use valkyrie_ast::{LambdaSlotItem, LambdaSlotNode};
 
 impl crate::NamepathNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> NamePathNode {
@@ -28,18 +24,25 @@ impl crate::IdentifierNode {
 
 impl crate::SlotNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<LambdaSlotNode> {
-        Ok(LambdaSlotNode { level: self.op_slot.span.len(), name: build_slot(&self.slot_item, ctx)?, span: self.span.clone() })
+        Ok(LambdaSlotNode { level: self.op_slot.span.len(), item: self.item(ctx)?, span: self.span.clone() })
+    }
+    fn item(&self, ctx: &mut ProgramState) -> Result<LambdaSlotItem> {
+        match &self.slot_item {
+            Some(s) => s.build(ctx),
+            None => return Ok(LambdaSlotItem::SelfType),
+        }
     }
 }
 
-fn build_slot(node: &Option<SlotItemNode>, ctx: &mut ProgramState) -> Result<LambdaSlotItem> {
-    let node = match node {
-        Some(SlotItemNode::Identifier(v)) => return Ok(LambdaSlotItem::Named(v.build(ctx))),
-        Some(SlotItemNode::Integer(v)) => v.parse::<u64>(ctx)?,
-        None => return Ok(LambdaSlotItem::SelfType),
-    };
-    match NonZeroU64::new(node) {
-        Some(s) => Ok(LambdaSlotItem::Index(s)),
-        None => Ok(LambdaSlotItem::MetaType),
+impl crate::SlotItemNode {
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<LambdaSlotItem> {
+        let value = match self {
+            Self::Identifier(v) => LambdaSlotItem::Named(v.build(ctx)),
+            Self::Integer(v) => match NonZeroU64::new(v.parse::<u64>(ctx)?) {
+                Some(s) => LambdaSlotItem::Index(s),
+                None => LambdaSlotItem::MetaType,
+            },
+        };
+        Ok(value)
     }
 }

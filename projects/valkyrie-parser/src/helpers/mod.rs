@@ -1,3 +1,5 @@
+#![allow(unused)]
+
 use crate::ProgramNode;
 use nyar_error::{Failure, FileCache, FileID, NyarError, Success, Validation};
 use std::str::FromStr;

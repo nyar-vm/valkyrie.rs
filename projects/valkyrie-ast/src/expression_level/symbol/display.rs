@@ -76,7 +76,7 @@ impl Lispify for IdentifierNode {
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for LambdaSlotNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
-        theme.keyword(format!("${}", self.name))
+        theme.keyword(format!("${}", self.item))
     }
 }
 #[cfg(feature = "pretty-print")]
