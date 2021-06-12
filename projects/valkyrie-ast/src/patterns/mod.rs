@@ -1,6 +1,6 @@
 mod display;
 
-use crate::{ArgumentKey, ExpressionNode, IdentifierNode, ModifierList, NamePathNode, StatementNode};
+use crate::{ArgumentKey, ExpressionKind, ExpressionNode, IdentifierNode, ModifierList, NamePathNode, StatementNode};
 use alloc::{boxed::Box, vec, vec::Vec};
 use core::{
     fmt::{Debug, Formatter},
@@ -85,7 +85,7 @@ pub struct PatternCaseNode {
     /// `case bind <- Some(a)`
     pub pattern: ExpressionNode,
     /// `case a | b | c`
-    pub guard: Option<PatternGuard>,
+    pub guard: Option<ExpressionKind>,
     /// The range of the node
     pub span: Range<u32>,
 }
@@ -318,18 +318,8 @@ pub struct PatternWhenNode {
 pub struct PatternTypeNode {
     /// The type of the pattern
     pub pattern: ExpressionNode,
-    /// The range of the node
-    pub guard: Option<PatternGuard>,
-    /// The range of the node
-    pub span: Range<u32>,
-}
-
-/// `when a > 0 && a < 10`
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct PatternGuard {
-    /// The post condition of the pattern
-    pub condition: ExpressionNode,
+    /// `when a > 0 && a < 10`
+    pub guard: Option<ExpressionKind>,
     /// The range of the node
     pub span: Range<u32>,
 }

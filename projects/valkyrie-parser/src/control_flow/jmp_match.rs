@@ -1,4 +1,5 @@
 use super::*;
+use crate::{utils::build_if_guard, IfGuardNode};
 
 impl crate::MatchExpressionNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<MatchStatement> {
@@ -46,7 +47,7 @@ impl crate::MatchCaseNode {
         })
     }
     fn build_node(&self, ctx: &mut ProgramState) -> Result<PatternCaseNode> {
-        Ok(PatternCaseNode { pattern: Default::default(), guard: None, span: self.span.clone() })
+        Ok(PatternCaseNode { pattern: Default::default(), guard: build_if_guard(&self.if_guard, ctx), span: self.span.clone() })
     }
 }
 

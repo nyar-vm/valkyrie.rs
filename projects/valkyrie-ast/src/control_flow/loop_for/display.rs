@@ -16,7 +16,7 @@ impl PrettyPrint for ForLoop {
             terms += " ";
             terms += s.pretty(theme);
         }
-        terms += self.then.pretty(theme);
+        terms += self.body.pretty(theme);
         terms.into()
     }
 }
@@ -33,7 +33,7 @@ impl Lispify for ForLoop {
             lisp += Lisp::keyword("condition");
             lisp += cond.lispify();
         }
-        lisp += self.then.terms.iter().map(|s| s.lispify()).collect::<Lisp>();
+        lisp += self.body.terms.iter().map(|s| s.lispify()).collect::<Lisp>();
         lisp
     }
 }

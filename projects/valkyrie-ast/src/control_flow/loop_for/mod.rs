@@ -1,4 +1,5 @@
 use super::*;
+use crate::GuardPattern;
 
 mod display;
 
@@ -38,7 +39,7 @@ pub struct ForLoop {
     /// `if condition`
     pub condition: Option<ExpressionKind>,
     /// `{ body }`
-    pub then: StatementBlock,
+    pub body: StatementBlock,
     /// The range of the node
     pub span: Range<u32>,
 }

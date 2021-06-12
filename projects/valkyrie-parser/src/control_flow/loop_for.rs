@@ -1,4 +1,5 @@
 use super::*;
+use crate::utils::build_if_guard;
 use valkyrie_ast::ForLoop;
 
 impl crate::ForStatementNode {
@@ -6,8 +7,8 @@ impl crate::ForStatementNode {
         Ok(ForLoop {
             pattern: self.let_pattern.build(ctx)?,
             iterator: Default::default(),
-            condition: None,
-            then: self.continuation.build(ctx)?,
+            condition: build_if_guard(&self.if_guard, ctx),
+            body: self.continuation.build(ctx)?,
             span: self.span.clone(),
         })
     }

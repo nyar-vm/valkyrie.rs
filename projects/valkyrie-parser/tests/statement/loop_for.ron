@@ -47,7 +47,13 @@ ForLoop {
         span: 0..0,
     },
     iterator: Placeholder,
-    condition: None,
+    condition: Some(
+        InfixNode {
+            infix: >,
+            lhs: i,
+            rhs: 0,
+        },
+    ),
     then: [],
     span: 58..97,
 }
@@ -113,7 +119,13 @@ ForLoop {
         span: 0..0,
     },
     iterator: Placeholder,
-    condition: None,
+    condition: Some(
+        InfixNode {
+            infix: >,
+            lhs: k,
+            rhs: 0,
+        },
+    ),
     then: [
         looping,
     ],

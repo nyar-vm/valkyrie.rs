@@ -49,7 +49,7 @@ pub use crate::{
         },
         documentation::DocumentationList,
         flags::{EncodeDeclaration, FlagDeclaration, FlagKind, FlagTerm},
-        function::{FunctionDeclaration, FunctionDeclarationInline, FunctionKind, FunctionReturnNode, StatementBlock},
+        function::{FunctionDeclaration, FunctionKind, FunctionReturnNode, StatementBlock},
         guarantee::{EffectTypeNode, GuaranteeNode},
         import::{ImportAliasNode, ImportGroupNode, ImportResolvedItem, ImportState, ImportStatement, ImportTermNode},
         labeled::{GotoStatement, LabelStatement},
@@ -62,8 +62,7 @@ pub use crate::{
     },
     patterns::{
         ArrayPatternNode, ClassPatternNode, IdentifierPattern, ImplicitCaseNode, PatternBlock, PatternBranch, PatternCaseNode,
-        PatternCondition, PatternGuard, PatternNode, PatternStatements, PatternTypeNode, PatternWhenNode, TuplePatternNode,
-        UnionPatternNode,
+        PatternCondition, PatternNode, PatternStatements, PatternTypeNode, PatternWhenNode, TuplePatternNode, UnionPatternNode,
     },
     string_like::{
         string_formatter::{ExpressionFormatted, StringFormatter},

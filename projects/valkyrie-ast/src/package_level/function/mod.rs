@@ -32,19 +32,6 @@ pub struct FunctionDeclaration {
     pub body: StatementBlock,
 }
 
-/// `function(args) -> type := body`
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct FunctionDeclarationInline {
-    pub generic: ParametersList,
-    /// The range of the number.
-    pub arguments: ArgumentsList,
-    /// The return type of this function
-    pub returns: Option<ExpressionNode>,
-    /// The body of this function
-    pub body: StatementBlock,
-}
-
 /// `{ a; b; c }`
 ///
 /// - Auxiliary parsing function, not instantiable.
