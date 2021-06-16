@@ -13,7 +13,7 @@ pub struct TraitDeclaration {
     /// The name of the trait
     pub name: IdentifierNode,
     /// the needed fields(zero parameter method, get + set)
-    pub terms: Vec<FieldDeclaration>,
+    pub terms: Vec<ClassTerm>,
 }
 
 /// `extends path::A: Debug {}`
@@ -21,7 +21,7 @@ pub struct TraitDeclaration {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ExtendsStatement {
     /// The additional methods
-    pub methods: Vec<MethodDeclaration>,
+    pub body: Vec<ClassTerm>,
 }
 
 // pub enum TraitKind {

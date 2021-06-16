@@ -136,6 +136,7 @@ impl ImportResolvedItem {
         todo!()
         // Self { annotation: Some(Arc::new(name.clone())), ..self.clone() }
     }
+    /// Join import names
     pub fn join_name(&self, name: &IdentifierNode) -> Self {
         let mut path = self.path.clone();
         path.push(name.clone());

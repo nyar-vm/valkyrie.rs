@@ -12,7 +12,7 @@ ForLoop {
     },
     iterator: Placeholder,
     condition: None,
-    then: [
+    body: [
         looping,
     ],
     span: 0..32,
@@ -31,7 +31,7 @@ ForLoop {
     },
     iterator: Placeholder,
     condition: None,
-    then: [],
+    body: [],
     span: 32..56,
 }
 ForLoop {
@@ -54,7 +54,7 @@ ForLoop {
             rhs: 0,
         },
     ),
-    then: [],
+    body: [],
     span: 58..97,
 }
 ForLoop {
@@ -75,7 +75,7 @@ ForLoop {
     },
     iterator: Placeholder,
     condition: None,
-    then: [
+    body: [
         ForLoop {
             pattern: TuplePatternNode {
                 bind: None,
@@ -94,7 +94,7 @@ ForLoop {
             },
             iterator: Placeholder,
             condition: None,
-            then: [
+            body: [
                 looping,
             ],
             span: 124..167,
@@ -126,7 +126,7 @@ ForLoop {
             rhs: 0,
         },
     ),
-    then: [
+    body: [
         looping,
     ],
     span: 171..221,

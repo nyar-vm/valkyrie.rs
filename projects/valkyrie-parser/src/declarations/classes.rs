@@ -63,16 +63,17 @@ impl crate::DefineFieldNode {
 
 impl crate::DefineMethodNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<MethodDeclaration> {
-        let name = self.namepath.build(ctx);
-        let body = match &self.continuation {
-            Some(s) => Some(s.build(ctx)?),
-            None => None,
-        };
-        let parameters = self.function_middle.parameters(ctx)?;
-        let generic = self.function_middle.generics(ctx)?;
         let returns = self.function_middle.returns(ctx)?;
         let annotations = self.annotation_mix.annotations(ctx)?;
-        Ok(MethodDeclaration { annotations, name, generics: generic, parameters, returns, body, span: self.span.clone() })
+        Ok(MethodDeclaration {
+            annotations,
+            name: self.namepath.build(ctx),
+            generics: self.function_middle.generics(ctx),
+            parameters: self.function_middle.parameters(ctx),
+            returns,
+            body: self.continuation.as_ref().map(|s| s.build(ctx)),
+            span: self.span.clone(),
+        })
     }
 }
 

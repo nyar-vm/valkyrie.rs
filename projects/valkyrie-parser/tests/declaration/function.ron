@@ -509,7 +509,11 @@ ClassDeclaration {
     span: 1715..1776,
 }
 ExtendsStatement {
-    methods: [],
+    body: [
+        Field {
+            name: functions,
+        },
+    ],
 }
 FunctionDeclaration {
     name: NamePathNode {

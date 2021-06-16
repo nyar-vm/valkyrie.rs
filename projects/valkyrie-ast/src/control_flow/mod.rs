@@ -1,6 +1,7 @@
 use crate::{
-    helper::ValkyrieNode, patterns::PatternBlock, ArgumentKey, ElseStatement, ExpressionKind, ExpressionNode, IdentifierNode,
-    PatternBranch, PatternNode, StatementBlock, StatementNode, SwitchStatement, TuplePatternNode, WhileConditionNode,
+    helper::ValkyrieNode, patterns::PatternBlock, ArgumentKey, ElseStatement, ExpressionKind, ExpressionNode, GuardPattern,
+    IdentifierNode, PatternBranch, PatternNode, StatementBlock, StatementNode, SwitchStatement, TuplePatternNode,
+    WhileConditionNode,
 };
 use alloc::{boxed::Box, string::String, vec::Vec};
 use core::{

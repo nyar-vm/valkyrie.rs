@@ -6,7 +6,7 @@ impl crate::WhileStatementNode {
         Ok(WhileLoop {
             kind: self.kw_while.build(),
             condition: WhileConditionNode::Unconditional,
-            then: self.continuation.build(ctx)?,
+            then: self.continuation.build(ctx),
             span: self.span.clone(),
         })
     }

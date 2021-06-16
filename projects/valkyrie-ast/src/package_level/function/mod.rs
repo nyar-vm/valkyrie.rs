@@ -44,6 +44,13 @@ pub struct StatementBlock {
     pub span: Range<u32>,
 }
 
+impl StatementBlock {
+    /// Create a new statement block
+    pub fn new(capacity: usize, span: &Range<u32>) -> Self {
+        Self { terms: Vec::with_capacity(capacity), span: span.clone() }
+    }
+}
+
 /// `fun name(): ReturnType / [EffectType]`
 #[derive(Clone, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]

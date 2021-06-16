@@ -91,6 +91,7 @@ impl crate::TypeInfixNode {
         use ValkyrieOperator::*;
         let o = match self.text.as_str() {
             "+" => Plus,
+            "->" => CovariantType,
             _ => unimplemented!("{} is a unknown infix type operator", self.text),
         };
         OperatorNode { kind: o, span: self.span.clone() }
