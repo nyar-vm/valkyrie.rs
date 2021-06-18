@@ -1,5 +1,4 @@
 use super::*;
-use crate::{FunctionParametersNode, TypeEffectNode};
 
 impl crate::DefineFunctionNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<FunctionDeclaration> {

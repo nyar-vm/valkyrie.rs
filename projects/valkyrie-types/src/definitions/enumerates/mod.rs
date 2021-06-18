@@ -35,8 +35,8 @@ impl ValkyrieEnumerateItem {
 impl Valhalla {
     pub(crate) fn load_flags(&mut self, o: FlagDeclaration) -> Validation<()> {
         match o.kind {
-            FlagKind::Exclusive => self.load_enum(o),
-            FlagKind::Juxtapose => self.load_flag(o),
+            FlagKind::Enumerate => self.load_enum(o),
+            FlagKind::Flags => self.load_flag(o),
         }
     }
     fn load_enum(&mut self, o: FlagDeclaration) -> Validation<()> {

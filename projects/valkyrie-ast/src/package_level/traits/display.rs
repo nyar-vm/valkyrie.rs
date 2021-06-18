@@ -1,4 +1,17 @@
 use super::*;
+
+impl Debug for TraitDeclaration {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        let w = &mut match &self.kind {
+            TraitKind::Trait => f.debug_struct("Trait"),
+            TraitKind::Interface => f.debug_struct("Interface"),
+        };
+        w.field("name", &self.name);
+        w.field("terms", &self.terms);
+        w.finish()
+    }
+}
+
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for TraitDeclaration {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
@@ -29,6 +42,7 @@ impl Lispify for TraitDeclaration {
         out
     }
 }
+
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for ExtendsStatement {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
@@ -42,5 +56,15 @@ impl Lispify for ExtendsStatement {
 
     fn lispify(&self) -> Self::Output {
         Lisp::keyword("extends")
+    }
+}
+
+impl Debug for TraitTerm {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        match self {
+            Self::Macro(v) => Debug::fmt(v, f),
+            Self::Field(v) => Debug::fmt(v, f),
+            Self::Method(v) => Debug::fmt(v, f),
+        }
     }
 }

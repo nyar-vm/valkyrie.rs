@@ -1,380 +1,44 @@
-TraitDeclaration {
+Trait {
     name: Identifier("A", 6..7),
     terms: [],
 }
-TraitDeclaration {
+Trait {
     name: Identifier("SemiGroup", 39..48),
     terms: [],
 }
-TraitDeclaration {
+Trait {
     name: Identifier("Monoid", 89..95),
     terms: [],
 }
-TraitDeclaration {
+Trait {
     name: Identifier("SemiGroup", 143..152),
     terms: [],
 }
-TraitDeclaration {
+Trait {
     name: Identifier("Functor", 199..206),
     terms: [],
 }
-TraitDeclaration {
+Trait {
     name: Identifier("Monoid", 281..287),
     terms: [],
 }
 ExtendsStatement {
-    body: [
-        MethodDeclaration {
-            name: NamePathNode {
-                names: [
-                    Identifier("combine", 373..380),
-                ],
-            },
-            annotations: Empty,
-            generics: [],
-            parameters: [
-                Parameter {
-                    key: "self",
-                },
-                Parameter {
-                    key: "y",
-                    bound: Self,
-                },
-            ],
-            returns: Auto,
-            body: Some(
-                [
-                    ApplyCallNode {
-                        monadic: false,
-                        caller: DotCallNode {
-                            monadic: false,
-                            base: self,
-                            term: concat,
-                            span: 401..408,
-                        },
-                        arguments: ArgumentsList {
-                            terms: [
-                                TupleTermNode {
-                                    key: None,
-                                    value: y,
-                                },
-                            ],
-                        },
-                        body: None,
-                        span: 408..411,
-                    },
-                ],
-            ),
-            span: 373..412,
-        },
-        MethodDeclaration {
-            name: NamePathNode {
-                names: [
-                    Identifier("unit", 417..421),
-                ],
-            },
-            annotations: Empty,
-            generics: [],
-            parameters: [],
-            returns: Auto,
-            body: Some(
-                [
-                    '',
-                ],
-            ),
-            span: 417..428,
-        },
-    ],
+    body: [],
 }
-TraitDeclaration {
+Trait {
     name: Identifier("Functor", 439..446),
     terms: [],
 }
-TraitDeclaration {
+Trait {
     name: Identifier("Functor", 533..540),
     terms: [],
 }
 ExtendsStatement {
-    body: [
-        MethodDeclaration {
-            name: NamePathNode {
-                names: [
-                    Identifier("map", 664..667),
-                ],
-            },
-            annotations: Empty,
-            generics: [
-                Parameter {
-                    key: "A",
-                },
-                Parameter {
-                    key: "B",
-                },
-                Parameter {
-                    key: "F",
-                    bound: InfixNode {
-                        infix: +,
-                        lhs: FnMut,
-                        rhs: B,
-                    },
-                },
-            ],
-            parameters: [
-                Parameter {
-                    key: "self",
-                    bound: GenericCallNode {
-                        monadic: false,
-                        base: Option,
-                        term: ArgumentsList {
-                            terms: [
-                                TupleTermNode {
-                                    key: None,
-                                    value: A,
-                                },
-                            ],
-                        },
-                        span: 705..712,
-                    },
-                },
-                Parameter {
-                    key: "f",
-                    bound: F,
-                },
-            ],
-            returns: ReturnType {
-                main: GenericCallNode {
-                    monadic: false,
-                    base: Option,
-                    term: ArgumentsList {
-                        terms: [
-                            TupleTermNode {
-                                key: None,
-                                value: B,
-                            },
-                        ],
-                    },
-                    span: 729..736,
-                },
-            },
-            body: Some(
-                [
-                    MatchStatement {
-                        kind: Typing,
-                        bind: None,
-                        main: self,
-                        patterns: [
-                            PatternBranch {
-                                condition: Case(
-                                    PatternCaseNode {
-                                        pattern: ExpressionNode {
-                                            omit: false,
-                                            body: Placeholder,
-                                            span: 0..0,
-                                        },
-                                        guard: None,
-                                        span: 772..797,
-                                    },
-                                ),
-                                statements: PatternStatements {
-                                    terms: [
-                                        ApplyCallNode {
-                                            monadic: false,
-                                            caller: Some,
-                                            arguments: ArgumentsList {
-                                                terms: [
-                                                    TupleTermNode {
-                                                        key: None,
-                                                        value: ApplyCallNode {
-                                                            monadic: false,
-                                                            caller: f,
-                                                            arguments: ArgumentsList {
-                                                                terms: [
-                                                                    TupleTermNode {
-                                                                        key: None,
-                                                                        value: a,
-                                                                    },
-                                                                ],
-                                                            },
-                                                            body: None,
-                                                            span: 793..796,
-                                                        },
-                                                    },
-                                                ],
-                                            },
-                                            body: None,
-                                            span: 791..797,
-                                        },
-                                    ],
-                                },
-                                span: 772..797,
-                            },
-                            PatternBranch {
-                                condition: Case(
-                                    PatternCaseNode {
-                                        pattern: ExpressionNode {
-                                            omit: false,
-                                            body: Placeholder,
-                                            span: 0..0,
-                                        },
-                                        guard: None,
-                                        span: 811..821,
-                                    },
-                                ),
-                                statements: PatternStatements {
-                                    terms: [],
-                                },
-                                span: 811..821,
-                            },
-                        ],
-                        span: 747..832,
-                    },
-                ],
-            ),
-            span: 664..838,
-        },
-    ],
+    body: [],
 }
 ExtendsStatement {
-    body: [
-        MethodDeclaration {
-            name: NamePathNode {
-                names: [
-                    Identifier("fmap", 892..896),
-                ],
-            },
-            annotations: Empty,
-            generics: [
-                Parameter {
-                    key: "B",
-                },
-            ],
-            parameters: [
-                Parameter {
-                    key: "self",
-                },
-                Parameter {
-                    key: "f",
-                    bound: InfixNode {
-                        infix: +,
-                        lhs: A,
-                        rhs: B,
-                    },
-                },
-            ],
-            returns: ReturnType {
-                main: GenericCallNode {
-                    monadic: false,
-                    base: Array,
-                    term: ArgumentsList {
-                        terms: [
-                            TupleTermNode {
-                                key: None,
-                                value: B,
-                            },
-                        ],
-                    },
-                    span: 929..936,
-                },
-            },
-            body: Some(
-                [
-                    Control {
-                        kind: Return,
-                        expression: ApplyCallNode {
-                            monadic: false,
-                            caller: map,
-                            arguments: ArgumentsList {
-                                terms: [
-                                    TupleTermNode {
-                                        key: None,
-                                        value: f,
-                                    },
-                                    TupleTermNode {
-                                        key: None,
-                                        value: self,
-                                    },
-                                ],
-                            },
-                            body: None,
-                            span: 957..966,
-                        },
-                        span: 947..966,
-                    },
-                ],
-            ),
-            span: 892..972,
-        },
-    ],
+    body: [],
 }
 ExtendsStatement {
-    body: [
-        MethodDeclaration {
-            name: NamePathNode {
-                names: [
-                    Identifier("fmap", 1054..1058),
-                ],
-            },
-            annotations: Empty,
-            generics: [
-                Parameter {
-                    key: "B",
-                },
-            ],
-            parameters: [
-                Parameter {
-                    key: "self",
-                },
-                Parameter {
-                    key: "f",
-                    bound: InfixNode {
-                        infix: +,
-                        lhs: A,
-                        rhs: B,
-                    },
-                },
-            ],
-            returns: ReturnType {
-                main: GenericCallNode {
-                    monadic: false,
-                    base: Array,
-                    term: ArgumentsList {
-                        terms: [
-                            TupleTermNode {
-                                key: None,
-                                value: B,
-                            },
-                        ],
-                    },
-                    span: 1091..1098,
-                },
-            },
-            body: Some(
-                [
-                    Control {
-                        kind: Return,
-                        expression: ApplyCallNode {
-                            monadic: false,
-                            caller: map,
-                            arguments: ArgumentsList {
-                                terms: [
-                                    TupleTermNode {
-                                        key: None,
-                                        value: f,
-                                    },
-                                    TupleTermNode {
-                                        key: None,
-                                        value: self,
-                                    },
-                                ],
-                            },
-                            body: None,
-                            span: 1119..1128,
-                        },
-                        span: 1109..1128,
-                    },
-                ],
-            ),
-            span: 1054..1134,
-        },
-    ],
+    body: [],
 }

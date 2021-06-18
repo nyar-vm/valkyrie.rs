@@ -5,20 +5,14 @@ impl crate::DefineEnumerateNode {
         let mut terms = vec![];
         for term in &self.flag_term {
             match term.build(ctx) {
-                Ok(Some(s)) => {
-                    terms.push(s);
-                }
-                Ok(None) => {}
-                Err(e) => {
-                    ctx.add_error(e);
-                }
+                Ok(s) => terms.extend(s),
+                Err(e) => ctx.add_error(e),
             }
         }
-        let annotations = self.annotation_head.annotations(ctx)?;
         Ok(FlagDeclaration {
+            annotations: self.annotation_head.annotations(ctx)?,
             name: self.identifier.build(ctx),
             kind: self.kw_flags.build(),
-            annotations,
             layout: None,
             implements: vec![],
             body: terms,
@@ -30,8 +24,8 @@ impl crate::DefineEnumerateNode {
 impl crate::KwFlagsNode {
     pub(crate) fn build(&self) -> FlagKind {
         match self {
-            Self::Enum => FlagKind::Exclusive,
-            Self::Flags => FlagKind::Juxtapose,
+            Self::Enum => FlagKind::Enumerate,
+            Self::Flags => FlagKind::Flags,
         }
     }
 }
@@ -49,11 +43,20 @@ impl crate::FlagTermNode {
 
 impl crate::FlagFieldNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<EncodeDeclaration> {
-        let name = self.identifier.build(ctx);
-        let value = match &self.main_expression {
-            Some(s) => Some(s.build(ctx)?),
-            None => None,
-        };
-        Ok(EncodeDeclaration { documentation: Default::default(), name, value, span: self.span.clone() })
+        Ok(EncodeDeclaration {
+            annotations: Default::default(),
+            name: self.identifier.build(ctx),
+            value: self.value(ctx),
+            span: self.span.clone(),
+        })
+    }
+    fn value(&self, ctx: &mut ProgramState) -> Option<ExpressionKind> {
+        match self.main_expression.as_ref()?.build(ctx) {
+            Ok(o) => Some(o),
+            Err(e) => {
+                ctx.add_error(e);
+                None
+            }
+        }
     }
 }

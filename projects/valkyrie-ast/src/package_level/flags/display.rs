@@ -1,12 +1,26 @@
 use super::*;
 
-impl Debug for FlagTerm {
+impl Debug for FlagDeclaration {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        match self {
-            Self::Macro(v) => Debug::fmt(v, f),
-            Self::Encode(v) => Debug::fmt(v, f),
-            Self::Method(v) => Debug::fmt(v, f),
+        let w = &mut match self.kind {
+            FlagKind::Enumerate => f.debug_struct("Enumerate"),
+            FlagKind::Flags => f.debug_struct("Flags"),
+        };
+        if !self.annotations.is_empty() {
+            w.field("annotations", &self.annotations);
         }
+        w.field("name", &self.name);
+        w.field("terms", &self.body);
+        match &self.layout {
+            Some(inherits) => w.field("layout", inherits),
+            _ => w.field("layout", "auto"),
+        }
+        if let Some(inherits) = &self.implements {
+            w.field("implements", inherits);
+        }
+        w.field("body", &self.body);
+        w.field("span", &self.span);
+        w.finish()
     }
 }
 
@@ -21,6 +35,17 @@ impl PrettyPrint for FlagDeclaration {
         terms.into()
     }
 }
+
+impl Debug for FlagTerm {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        match self {
+            Self::Macro(v) => Debug::fmt(v, f),
+            Self::Encode(v) => Debug::fmt(v, f),
+            Self::Method(v) => Debug::fmt(v, f),
+        }
+    }
+}
+
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for EncodeDeclaration {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {

@@ -1,5 +1,4 @@
 use super::*;
-use crate::{utils::build_if_guard, IfGuardNode};
 
 impl crate::MatchExpressionNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<MatchStatement> {

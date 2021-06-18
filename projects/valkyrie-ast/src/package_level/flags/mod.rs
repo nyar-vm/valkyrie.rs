@@ -6,10 +6,10 @@ mod iters;
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum FlagKind {
-    /// aka. `enumerate`,
-    Exclusive,
-    /// aka. `flags`
-    Juxtapose,
+    /// `enumerate`, exclusive encoding number
+    Enumerate,
+    /// `flags`, juxtapose encoding number
+    Flags,
 }
 
 /// a number that encodes special semantics
@@ -17,24 +17,25 @@ pub enum FlagKind {
 /// `enumerate Bit(8bits): Trait { FlagA, FlagB }`
 ///
 /// `flags Bit(8bits): Trait { FlagA, FlagB }`
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Clone, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct FlagDeclaration {
-    /// The name of the flag.
-    pub name: IdentifierNode,
     /// The kind of the flag statement
     pub kind: FlagKind,
     /// The annotations of this flag.
     pub annotations: AnnotationNode,
+    /// The name of the flag.
+    pub name: IdentifierNode,
     /// `(8bits)`
-    pub layout: Option<ExpressionNode>,
+    pub layout: Option<NumberLiteralNode>,
     /// `: Trait`
-    pub implements: Vec<String>,
+    pub implements: Option<ExpressionKind>,
     /// `{ FlagA, FlagB }`
     pub body: Vec<FlagTerm>,
     /// The range of the node.
     pub span: Range<u32>,
 }
+
 /// Valid terms in the flags statement
 #[derive(Clone, PartialEq, Eq, Hash, From)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -52,7 +53,7 @@ pub enum FlagTerm {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct EncodeDeclaration {
     /// The documentation for this field.
-    pub documentation: DocumentationList,
+    pub annotations: AnnotationNode,
     /// The identifier of the field.
     pub name: IdentifierNode,
     /// The value of the field if exists.

@@ -2,7 +2,7 @@ FlagDeclaration {
     name: Identifier("Empty1", 10..16),
     kind: Exclusive,
     annotations: Empty,
-    layout: None,
+    inherits: None,
     implements: [],
     body: [],
     span: 0..19,
@@ -11,37 +11,29 @@ FlagDeclaration {
     name: Identifier("Terms1", 27..33),
     kind: Juxtapose,
     annotations: Empty,
-    layout: None,
+    inherits: None,
     implements: [],
     body: [
         EncodeDeclaration {
-            documentation: DocumentationList {
-                terms: [],
-            },
+            annotations: Empty,
             name: Identifier("A", 40..41),
             value: None,
             span: 40..46,
         },
         EncodeDeclaration {
-            documentation: DocumentationList {
-                terms: [],
-            },
+            annotations: Empty,
             name: Identifier("B", 46..47),
             value: None,
             span: 46..52,
         },
         EncodeDeclaration {
-            documentation: DocumentationList {
-                terms: [],
-            },
+            annotations: Empty,
             name: Identifier("C", 52..53),
             value: None,
             span: 52..58,
         },
         EncodeDeclaration {
-            documentation: DocumentationList {
-                terms: [],
-            },
+            annotations: Empty,
             name: Identifier("D", 58..59),
             value: None,
             span: 58..60,
@@ -53,37 +45,29 @@ FlagDeclaration {
     name: Identifier("Terms2", 68..74),
     kind: Juxtapose,
     annotations: Empty,
-    layout: None,
+    inherits: None,
     implements: [],
     body: [
         EncodeDeclaration {
-            documentation: DocumentationList {
-                terms: [],
-            },
+            annotations: Empty,
             name: Identifier("A", 81..82),
             value: None,
             span: 81..82,
         },
         EncodeDeclaration {
-            documentation: DocumentationList {
-                terms: [],
-            },
+            annotations: Empty,
             name: Identifier("B", 88..89),
             value: None,
             span: 88..89,
         },
         EncodeDeclaration {
-            documentation: DocumentationList {
-                terms: [],
-            },
+            annotations: Empty,
             name: Identifier("C", 95..96),
             value: None,
             span: 95..101,
         },
         EncodeDeclaration {
-            documentation: DocumentationList {
-                terms: [],
-            },
+            annotations: Empty,
             name: Identifier("D", 101..102),
             value: None,
             span: 101..103,
@@ -95,13 +79,11 @@ FlagDeclaration {
     name: Identifier("Terms3", 111..117),
     kind: Juxtapose,
     annotations: Empty,
-    layout: None,
+    inherits: None,
     implements: [],
     body: [
         EncodeDeclaration {
-            documentation: DocumentationList {
-                terms: [],
-            },
+            annotations: Empty,
             name: Identifier("A", 124..125),
             value: Some(
                 InfixNode {
@@ -113,9 +95,7 @@ FlagDeclaration {
             span: 124..136,
         },
         EncodeDeclaration {
-            documentation: DocumentationList {
-                terms: [],
-            },
+            annotations: Empty,
             name: Identifier("Bb", 142..144),
             value: Some(
                 InfixNode {
@@ -127,9 +107,7 @@ FlagDeclaration {
             span: 142..154,
         },
         EncodeDeclaration {
-            documentation: DocumentationList {
-                terms: [],
-            },
+            annotations: Empty,
             name: Identifier("Ccc", 160..163),
             value: Some(
                 InfixNode {
@@ -141,9 +119,7 @@ FlagDeclaration {
             span: 160..172,
         },
         EncodeDeclaration {
-            documentation: DocumentationList {
-                terms: [],
-            },
+            annotations: Empty,
             name: Identifier("Dddd", 177..181),
             value: Some(
                 InfixNode {
@@ -161,13 +137,11 @@ FlagDeclaration {
     name: Identifier("Terms4", 198..204),
     kind: Juxtapose,
     annotations: Empty,
-    layout: None,
+    inherits: None,
     implements: [],
     body: [
         EncodeDeclaration {
-            documentation: DocumentationList {
-                terms: [],
-            },
+            annotations: Empty,
             name: Identifier("A", 211..212),
             value: Some(
                 b'01',
@@ -175,9 +149,7 @@ FlagDeclaration {
             span: 211..220,
         },
         EncodeDeclaration {
-            documentation: DocumentationList {
-                terms: [],
-            },
+            annotations: Empty,
             name: Identifier("B", 225..226),
             value: Some(
                 o'02',
@@ -185,9 +157,7 @@ FlagDeclaration {
             span: 225..234,
         },
         EncodeDeclaration {
-            documentation: DocumentationList {
-                terms: [],
-            },
+            annotations: Empty,
             name: Identifier("C", 239..240),
             value: Some(
                 x'07',
@@ -195,9 +165,7 @@ FlagDeclaration {
             span: 239..248,
         },
         EncodeDeclaration {
-            documentation: DocumentationList {
-                terms: [],
-            },
+            annotations: Empty,
             name: Identifier("D", 253..254),
             value: Some(
                 8,
@@ -227,13 +195,11 @@ FlagDeclaration {
             },
         ],
     },
-    layout: None,
+    inherits: None,
     implements: [],
     body: [
         EncodeDeclaration {
-            documentation: DocumentationList {
-                terms: [],
-            },
+            annotations: Empty,
             name: Identifier("EEE", 307..310),
             value: None,
             span: 307..310,
@@ -264,13 +230,11 @@ FlagDeclaration {
     name: Identifier("ManyFlags", 345..354),
     kind: Juxtapose,
     annotations: Empty,
-    layout: None,
+    inherits: None,
     implements: [],
     body: [
         EncodeDeclaration {
-            documentation: DocumentationList {
-                terms: [],
-            },
+            annotations: Empty,
             name: Identifier("A", 361..362),
             value: Some(
                 1,
@@ -278,9 +242,7 @@ FlagDeclaration {
             span: 361..366,
         },
         EncodeDeclaration {
-            documentation: DocumentationList {
-                terms: [],
-            },
+            annotations: Empty,
             name: Identifier("B", 374..375),
             value: Some(
                 InfixNode {
@@ -292,9 +254,7 @@ FlagDeclaration {
             span: 374..383,
         },
         EncodeDeclaration {
-            documentation: DocumentationList {
-                terms: [],
-            },
+            annotations: Empty,
             name: Identifier("C", 391..392),
             value: Some(
                 DotCallNode {
@@ -316,9 +276,7 @@ FlagDeclaration {
             span: 391..416,
         },
         EncodeDeclaration {
-            documentation: DocumentationList {
-                terms: [],
-            },
+            annotations: Empty,
             name: Identifier("D", 421..422),
             value: Some(
                 InfixNode {

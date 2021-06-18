@@ -10,6 +10,7 @@ mod extends;
 use crate::{
     helpers::ProgramState,
     utils::{build_annotation_terms, build_modifier_ahead},
+    FunctionParametersNode, TypeEffectNode,
 };
 use nyar_error::Result;
 use valkyrie_ast::*;
