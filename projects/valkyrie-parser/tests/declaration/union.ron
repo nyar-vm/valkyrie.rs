@@ -499,5 +499,77 @@ UnionDeclaration {
     span: 941..1513,
 }
 ExtendsStatement {
-    body: [],
+    implements: None,
+    body: [
+        MethodDeclaration {
+            name: NamePathNode {
+                names: [
+                    Identifier("is_fine", 1563..1570),
+                ],
+            },
+            annotations: Empty,
+            generics: [],
+            parameters: [
+                Parameter {
+                    key: "self",
+                },
+            ],
+            returns: ReturnType {
+                main: bool,
+            },
+            body: Some(
+                [
+                    ProceduralNode {
+                        kind: Normal,
+                        path: NamePathNode {
+                            names: [
+                                Identifier("matches", 1594..1601),
+                            ],
+                        },
+                        arguments: ArgumentsList {
+                            terms: [],
+                        },
+                        domain: None,
+                        span: 1593..1625,
+                    },
+                ],
+            ),
+            span: 1563..1626,
+        },
+        MethodDeclaration {
+            name: NamePathNode {
+                names: [
+                    Identifier("is_fail", 1631..1638),
+                ],
+            },
+            annotations: Empty,
+            generics: [],
+            parameters: [
+                Parameter {
+                    key: "self",
+                },
+            ],
+            returns: ReturnType {
+                main: bool,
+            },
+            body: Some(
+                [
+                    ProceduralNode {
+                        kind: Normal,
+                        path: NamePathNode {
+                            names: [
+                                Identifier("matches", 1662..1669),
+                            ],
+                        },
+                        arguments: ArgumentsList {
+                            terms: [],
+                        },
+                        domain: None,
+                        span: 1661..1693,
+                    },
+                ],
+            ),
+            span: 1631..1694,
+        },
+    ],
 }

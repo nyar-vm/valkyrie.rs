@@ -44,6 +44,8 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::KW_UNION => parse_kw_union(state),
         ValkyrieRule::DefineTrait => parse_define_trait(state),
         ValkyrieRule::DefineExtends => parse_define_extends(state),
+        ValkyrieRule::TraitBlock => parse_trait_block(state),
+        ValkyrieRule::TraitTerm => parse_trait_term(state),
         ValkyrieRule::KW_TRAIT => parse_kw_trait(state),
         ValkyrieRule::DefineFunction => parse_define_function(state),
         ValkyrieRule::DefineLambda => parse_define_lambda(state),
@@ -961,7 +963,7 @@ fn parse_define_trait(state: Input) -> Output {
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| s.optional(|s| parse_type_hint(s).and_then(|s| s.tag_node("type_hint"))))
                 .and_then(|s| builtin_ignore(s))
-                .and_then(|s| parse_class_block(s).and_then(|s| s.tag_node("class_block")))
+                .and_then(|s| parse_trait_block(s).and_then(|s| s.tag_node("trait_block")))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| s.optional(|s| parse_eos(s)))
         })
@@ -982,10 +984,41 @@ fn parse_define_extends(state: Input) -> Output {
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| s.optional(|s| parse_type_hint(s).and_then(|s| s.tag_node("type_hint"))))
                 .and_then(|s| builtin_ignore(s))
-                .and_then(|s| parse_class_block(s).and_then(|s| s.tag_node("class_block")))
+                .and_then(|s| parse_trait_block(s).and_then(|s| s.tag_node("trait_block")))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| s.optional(|s| parse_eos(s)))
         })
+    })
+}
+#[inline]
+fn parse_trait_block(state: Input) -> Output {
+    state.rule(ValkyrieRule::TraitBlock, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| builtin_text(s, "{", false))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| {
+                    s.repeat(0..4294967295, |s| {
+                        s.sequence(|s| {
+                            Ok(s)
+                                .and_then(|s| builtin_ignore(s))
+                                .and_then(|s| parse_trait_term(s).and_then(|s| s.tag_node("trait_term")))
+                        })
+                    })
+                })
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| builtin_text(s, "}", false))
+        })
+    })
+}
+#[inline]
+fn parse_trait_term(state: Input) -> Output {
+    state.rule(ValkyrieRule::TraitTerm, |s| {
+        Err(s)
+            .or_else(|s| parse_procedural_call(s).and_then(|s| s.tag_node("procedural_call")))
+            .or_else(|s| parse_define_method(s).and_then(|s| s.tag_node("define_method")))
+            .or_else(|s| parse_define_field(s).and_then(|s| s.tag_node("define_field")))
+            .or_else(|s| parse_eos_free(s).and_then(|s| s.tag_node("eos_free")))
     })
 }
 #[inline]

@@ -72,6 +72,8 @@ pub enum ValkyrieRule {
     KW_UNION,
     DefineTrait,
     DefineExtends,
+    TraitBlock,
+    TraitTerm,
     KW_TRAIT,
     DefineFunction,
     DefineLambda,
@@ -293,6 +295,8 @@ impl YggdrasilRule for ValkyrieRule {
             Self::KW_UNION => "",
             Self::DefineTrait => "",
             Self::DefineExtends => "",
+            Self::TraitBlock => "",
+            Self::TraitTerm => "",
             Self::KW_TRAIT => "",
             Self::DefineFunction => "",
             Self::DefineLambda => "",
@@ -771,12 +775,12 @@ pub struct KwUnionNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct DefineTraitNode {
     pub annotation_head: AnnotationHeadNode,
-    pub class_block: ClassBlockNode,
     pub define_generic: Option<DefineGenericNode>,
     pub define_inherit: Option<DefineInheritNode>,
     pub define_template: Option<DefineTemplateNode>,
     pub identifier: IdentifierNode,
     pub kw_trait: KwTraitNode,
+    pub trait_block: TraitBlockNode,
     pub type_hint: Option<TypeHintNode>,
     pub span: Range<u32>,
 }
@@ -784,12 +788,26 @@ pub struct DefineTraitNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct DefineExtendsNode {
     pub annotation_head: AnnotationHeadNode,
-    pub class_block: ClassBlockNode,
     pub define_template: Option<DefineTemplateNode>,
     pub kw_extends: KwExtendsNode,
+    pub trait_block: TraitBlockNode,
     pub type_expression: TypeExpressionNode,
     pub type_hint: Option<TypeHintNode>,
     pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct TraitBlockNode {
+    pub trait_term: Vec<TraitTermNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum TraitTermNode {
+    DefineField(DefineFieldNode),
+    DefineMethod(DefineMethodNode),
+    EosFree(EosFreeNode),
+    ProceduralCall(ProceduralCallNode),
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]

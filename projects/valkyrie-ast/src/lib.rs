@@ -57,7 +57,7 @@ pub use crate::{
         namespace::{NamespaceDeclaration, NamespaceKind},
         program::ProgramRoot,
         statements::{StatementContext, StatementNode},
-        traits::{ExtendsStatement, TraitDeclaration, TraitKind},
+        traits::{ExtendsStatement, TraitDeclaration, TraitKind, TraitTerm},
         unions::{UnionDeclaration, UnionTerm, VariantDeclaration},
     },
     patterns::{

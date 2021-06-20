@@ -22,7 +22,7 @@ pub struct VariableDeclaration {
     /// The type of the variable
     pub type_hint: Option<ExpressionKind>,
     /// The default value of the variable
-    pub body: Option<ExpressionNode>,
+    pub body: Option<ExpressionKind>,
     /// The range of the node
     pub span: Range<u32>,
 }

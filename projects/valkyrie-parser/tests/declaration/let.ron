@@ -21,6 +21,13 @@ VariableDeclaration {
         },
         span: 15..17,
     },
+    body: TupleNode {
+        kind: Tuple,
+        terms: ArgumentsList {
+            terms: [],
+        },
+        span: 20..22,
+    },
     span: 8..23,
 }
 VariableDeclaration {
@@ -29,6 +36,25 @@ VariableDeclaration {
         name: None,
         terms: [],
         span: 0..0,
+    },
+    body: TupleNode {
+        kind: Tuple,
+        terms: ArgumentsList {
+            terms: [
+                TupleTermNode {
+                    key: None,
+                    value: i32,
+                },
+                TupleTermNode {
+                    key: None,
+                    value: UnaryNode {
+                        prefix: &,
+                        base: i32,
+                    },
+                },
+            ],
+        },
+        span: 46..57,
     },
     span: 25..58,
 }
@@ -67,6 +93,21 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
+    body: RangeNode {
+        kind: Offset,
+        terms: [
+            Index {
+                index: 1,
+            },
+            Index {
+                index: 2,
+            },
+            Index {
+                index: 3,
+            },
+        ],
+        span: 102..111,
+    },
     span: 94..112,
 }
 VariableDeclaration {
@@ -76,6 +117,7 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
+    body: 1,
     span: 114..131,
 }
 VariableDeclaration {
@@ -101,6 +143,18 @@ VariableDeclaration {
         },
         span: 147..157,
     },
+    body: RangeNode {
+        kind: Offset,
+        terms: [
+            Index {
+                index: 1,
+            },
+            Index {
+                index: 2,
+            },
+        ],
+        span: 160..166,
+    },
     span: 131..167,
 }
 VariableDeclaration {
@@ -109,6 +163,26 @@ VariableDeclaration {
         name: None,
         terms: [],
         span: 0..0,
+    },
+    body: TupleNode {
+        kind: Tuple,
+        terms: ArgumentsList {
+            terms: [
+                TupleTermNode {
+                    key: None,
+                    value: 1,
+                },
+                TupleTermNode {
+                    key: None,
+                    value: 2,
+                },
+                TupleTermNode {
+                    key: None,
+                    value: 3,
+                },
+            ],
+        },
+        span: 186..195,
     },
     span: 169..196,
 }
@@ -119,6 +193,18 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
+    body: RangeNode {
+        kind: Offset,
+        terms: [
+            Index {
+                index: 1,
+            },
+            Index {
+                index: 2,
+            },
+        ],
+        span: 215..221,
+    },
     span: 198..223,
 }
 VariableDeclaration {
@@ -127,6 +213,22 @@ VariableDeclaration {
         name: None,
         terms: [],
         span: 0..0,
+    },
+    body: TupleNode {
+        kind: Tuple,
+        terms: ArgumentsList {
+            terms: [
+                TupleTermNode {
+                    key: None,
+                    value: 1,
+                },
+                TupleTermNode {
+                    key: None,
+                    value: 2,
+                },
+            ],
+        },
+        span: 240..246,
     },
     span: 223..248,
 }
@@ -137,6 +239,24 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
+    body: ApplyCallNode {
+        monadic: false,
+        caller: Fraction,
+        arguments: ArgumentsList {
+            terms: [
+                TupleTermNode {
+                    key: None,
+                    value: 1,
+                },
+                TupleTermNode {
+                    key: None,
+                    value: 2,
+                },
+            ],
+        },
+        body: None,
+        span: 281..287,
+    },
     span: 248..289,
 }
 VariableDeclaration {
@@ -145,6 +265,21 @@ VariableDeclaration {
         name: None,
         terms: [],
         span: 0..0,
+    },
+    body: RangeNode {
+        kind: Offset,
+        terms: [
+            Index {
+                index: 0,
+            },
+            Index {
+                index: 1.0,
+            },
+            Index {
+                index: 2.0,
+            },
+        ],
+        span: 299..312,
     },
     span: 289..313,
 }
@@ -155,6 +290,33 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
+    body: RangeNode {
+        kind: Offset,
+        terms: [
+            Index {
+                index: 1_s,
+            },
+            Index {
+                index: UnaryNode {
+                    prefix: -,
+                    base: 1.0_ms,
+                },
+            },
+            Index {
+                index: 0_us,
+            },
+            Index {
+                index: UnaryNode {
+                    prefix: +,
+                    base: 1_μs,
+                },
+            },
+            Index {
+                index: 0_m/s,
+            },
+        ],
+        span: 325..357,
+    },
     span: 314..359,
 }
 VariableDeclaration {
@@ -164,6 +326,7 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
+    body: '',
     span: 359..374,
 }
 VariableDeclaration {
@@ -173,6 +336,7 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
+    body: 'a',
     span: 375..390,
 }
 VariableDeclaration {
@@ -182,6 +346,7 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
+    body: 'a',
     span: 391..412,
 }
 VariableDeclaration {
@@ -191,6 +356,7 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
+    body: r'a',
     span: 412..431,
 }
 VariableDeclaration {
@@ -200,6 +366,7 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
+    body: t'a{0}',
     span: 431..449,
 }
 VariableDeclaration {
@@ -209,6 +376,7 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
+    body: re'[^0-9]',
     span: 449..469,
 }
 VariableDeclaration {
@@ -218,6 +386,7 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
+    body: json'\n{\n    key: "value"\n}\n',
     span: 469..514,
 }
 VariableDeclaration {
@@ -226,6 +395,52 @@ VariableDeclaration {
         name: None,
         terms: [],
         span: 0..0,
+    },
+    body: RangeNode {
+        kind: Offset,
+        terms: [
+            Index {
+                index: InfixNode {
+                    infix: ..=,
+                    lhs: UnaryNode {
+                        prefix: -,
+                        base: 1,
+                    },
+                    rhs: UnaryNode {
+                        prefix: +,
+                        base: 1,
+                    },
+                },
+            },
+            Index {
+                index: InfixNode {
+                    infix: ..<,
+                    lhs: UnaryNode {
+                        prefix: -,
+                        base: a,
+                    },
+                    rhs: UnaryNode {
+                        prefix: +,
+                        base: a,
+                    },
+                },
+            },
+            Index {
+                index: InfixNode {
+                    infix: ..=,
+                    lhs: 'a',
+                    rhs: 'z',
+                },
+            },
+            Index {
+                index: InfixNode {
+                    infix: ..<,
+                    lhs: 'A',
+                    rhs: 'Z',
+                },
+            },
+        ],
+        span: 526..566,
     },
     span: 514..568,
 }
@@ -236,6 +451,7 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
+    body: b,
     span: 568..583,
 }
 VariableDeclaration {
@@ -244,6 +460,15 @@ VariableDeclaration {
         name: None,
         terms: [],
         span: 0..0,
+    },
+    body: ApplyCallNode {
+        monadic: false,
+        caller: a,
+        arguments: ArgumentsList {
+            terms: [],
+        },
+        body: None,
+        span: 593..595,
     },
     span: 584..596,
 }
@@ -254,6 +479,63 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
+    body: SubscriptCallNode {
+        kind: Ordinal,
+        base: ApplyCallNode {
+            monadic: false,
+            caller: GenericCallNode {
+                monadic: false,
+                base: a,
+                term: ArgumentsList {
+                    terms: [
+                        TupleTermNode {
+                            key: None,
+                            value: a,
+                        },
+                    ],
+                },
+                span: 605..612,
+            },
+            arguments: ArgumentsList {
+                terms: [],
+            },
+            body: None,
+            span: 612..614,
+        },
+        monadic: false,
+        terms: [
+            Range {
+                head: None,
+                tail: None,
+                step: None,
+            },
+            Range {
+                head: None,
+                tail: None,
+                step: None,
+            },
+            Range {
+                head: Some(
+                    1,
+                ),
+                tail: None,
+                step: Some(
+                    UnaryNode {
+                        prefix: -,
+                        base: 1,
+                    },
+                ),
+            },
+            Range {
+                head: None,
+                tail: Some(
+                    0,
+                ),
+                step: None,
+            },
+        ],
+        span: 614..634,
+    },
     span: 596..635,
 }
 VariableDeclaration {
@@ -262,6 +544,21 @@ VariableDeclaration {
         name: None,
         terms: [],
         span: 0..0,
+    },
+    body: SubscriptCallNode {
+        kind: Ordinal,
+        base: a,
+        monadic: false,
+        terms: [
+            Index {
+                index: InfixNode {
+                    infix: >,
+                    lhs: a,
+                    rhs: 0,
+                },
+            },
+        ],
+        span: 645..652,
     },
     span: 636..653,
 }
@@ -272,6 +569,20 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
+    body: ApplyCallNode {
+        monadic: false,
+        caller: f'{:?}',
+        arguments: ArgumentsList {
+            terms: [
+                TupleTermNode {
+                    key: None,
+                    value: t,
+                },
+            ],
+        },
+        body: None,
+        span: 668..671,
+    },
     span: 653..672,
 }
 VariableDeclaration {
@@ -280,6 +591,20 @@ VariableDeclaration {
         name: None,
         terms: [],
         span: 0..0,
+    },
+    body: ApplyCallNode {
+        monadic: false,
+        caller: cf'%d',
+        arguments: ArgumentsList {
+            terms: [
+                TupleTermNode {
+                    key: None,
+                    value: t,
+                },
+            ],
+        },
+        body: None,
+        span: 686..689,
     },
     span: 672..690,
 }

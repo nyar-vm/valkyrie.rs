@@ -1,5 +1,5 @@
 use super::*;
-use crate::utils::build_type_hint;
+use crate::utils::{build_parameter_default, build_type_hint};
 
 impl crate::DefineFunctionNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<FunctionDeclaration> {
@@ -144,22 +144,13 @@ impl crate::ParameterPairNode {
             annotations: self.annotations(ctx),
             key,
             bound: build_type_hint(&self.type_hint, ctx),
-            default: self.value(ctx),
+            default: build_parameter_default(&self.parameter_default, ctx),
         })
     }
     fn annotations(&self, ctx: &mut ProgramState) -> AnnotationNode {
         let mut out = AnnotationNode::default();
         out.modifiers = build_modifier_ahead(&self.modifier_ahead, ctx);
         out
-    }
-    fn value(&self, ctx: &mut ProgramState) -> Option<ExpressionKind> {
-        match self.parameter_default.as_ref()?.main_expression.build(ctx) {
-            Ok(o) => Some(o),
-            Err(e) => {
-                ctx.add_error(e);
-                None
-            }
-        }
     }
 }
 

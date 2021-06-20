@@ -7,7 +7,14 @@ impl Debug for TraitDeclaration {
             TraitKind::Interface => f.debug_struct("Interface"),
         };
         w.field("name", &self.name);
-        w.field("terms", &self.terms);
+        if let Some(g) = &self.generics {
+            w.field("generics", g);
+        }
+        if let Some(g) = &self.implements {
+            w.field("implements", g);
+        }
+
+        w.field("body", &self.body);
         w.finish()
     }
 }
@@ -27,7 +34,7 @@ impl Lispify for TraitDeclaration {
         let mut out = Lisp::new(10);
         out += Lisp::keyword("trait");
         out += Lisp::string(self.name.to_string());
-        for field in &self.terms {
+        for field in &self.body {
             let mut inside = Lisp::new(10);
             inside += Lisp::keyword("trait/field");
             inside += Lisp::string(field.name.to_string());

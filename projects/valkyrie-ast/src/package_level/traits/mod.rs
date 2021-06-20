@@ -21,20 +21,25 @@ pub struct TraitDeclaration {
     /// The name of the trait
     pub name: IdentifierNode,
     /// The generic parameters
-    pub generic: Option<ParametersList>,
+    pub generics: Option<ParametersList>,
+    /// `trait A: Debug { }`, the trait bounds
+    pub implements: Option<ExpressionKind>,
     /// the needed fields(zero parameter method, get + set)
-    pub terms: Vec<TraitTerm>,
+    pub body: Vec<TraitTerm>,
 }
 
 /// `extends path::A: Debug {}`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ExtendsStatement {
+    /// `extends A: Debug { }`, the trait bounds
+    pub implements: Option<ExpressionKind>,
     /// The additional methods
     pub body: Vec<TraitTerm>,
 }
 
-#[derive(Clone, PartialEq, Eq, Hash)]
+/// The valid terms in a trait body.
+#[derive(Clone, PartialEq, Eq, Hash, From)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum TraitTerm {
     /// `@expand {}`
@@ -44,7 +49,3 @@ pub enum TraitTerm {
     /// `method()`
     Method(MethodDeclaration),
 }
-
-// pub enum TraitKind {
-//     Interface,
-// }

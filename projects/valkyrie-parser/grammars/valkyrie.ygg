@@ -192,12 +192,21 @@ class KW_UNION {
 class DefineTrait {
     DefineTemplate?
     AnnotationHead
-    KW_TRAIT Identifier DefineGeneric? DefineInherit? TypeHint? ClassBlock ^EOS?
+    KW_TRAIT Identifier DefineGeneric? DefineInherit? TypeHint? TraitBlock ^EOS?
 }
 class DefineExtends {
     DefineTemplate?
     AnnotationHead
-    KW_EXTENDS TypeExpression TypeHint? ClassBlock ^EOS?
+    KW_EXTENDS TypeExpression TypeHint? TraitBlock ^EOS?
+}
+class TraitBlock {
+    '{' TraitTerm* '}'
+}
+union TraitTerm {
+    | ProceduralCall
+    | DefineMethod
+    | DefineField
+    | EOS_FREE
 }
 @style(keyword)
 union KW_TRAIT {
