@@ -6,9 +6,13 @@ impl PrettyPrint for PatternGuard {
         theme.keyword("when").append(" ").append(self.condition.pretty(theme))
     }
 }
-
+impl Debug for PatternsList {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        f.debug_list().entries(self.branches.iter()).finish()
+    }
+}
 #[cfg(feature = "pretty-print")]
-impl PrettyPrint for PatternBlock {
+impl PrettyPrint for PatternsList {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(10);
         terms += "{";

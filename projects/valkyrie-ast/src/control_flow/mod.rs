@@ -1,5 +1,5 @@
 use crate::{
-    helper::ValkyrieNode, patterns::PatternBlock, ArgumentKey, ElseStatement, ExpressionKind, ExpressionNode, GuardPattern,
+    helper::ValkyrieNode, patterns::PatternsList, ArgumentKey, ElseStatement, ExpressionKind, ExpressionNode, GuardPattern,
     IdentifierNode, PatternBranch, PatternNode, StatementBlock, StatementNode, SwitchStatement, TuplePatternNode,
     WhileConditionNode,
 };

@@ -1,11 +1,8 @@
 use super::*;
+use crate::utils::build_type_hint;
 
 impl crate::ObjectStatementNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<ConstructObjectNode> {
-        let bounds = match &self.type_hint {
-            Some(s) => Some(s.build(ctx)?),
-            None => None,
-        };
-        Ok(ConstructObjectNode { base_classes: None, bounds, span: self.span.clone() })
+        Ok(ConstructObjectNode { base_classes: None, bounds: build_type_hint(&self.type_hint, ctx), span: self.span.clone() })
     }
 }

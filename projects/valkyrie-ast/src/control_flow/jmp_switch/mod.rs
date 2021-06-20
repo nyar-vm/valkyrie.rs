@@ -5,7 +5,7 @@ use super::*;
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct SwitchStatement {
     /// The patterns of the switch
-    pub patterns: Vec<PatternBranch>,
+    pub patterns: PatternsList,
     /// The range of the node
     pub span: Range<u32>,
 }

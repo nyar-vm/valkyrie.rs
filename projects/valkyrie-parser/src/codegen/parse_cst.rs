@@ -75,6 +75,7 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::ExpressionRoot => parse_expression_root(state),
         ValkyrieRule::MatchExpression => parse_match_expression(state),
         ValkyrieRule::SwitchStatement => parse_switch_statement(state),
+        ValkyrieRule::MatchBlock => parse_match_block(state),
         ValkyrieRule::MatchTerms => parse_match_terms(state),
         ValkyrieRule::MatchType => parse_match_type(state),
         ValkyrieRule::MatchCase => parse_match_case(state),
@@ -1607,19 +1608,7 @@ fn parse_match_expression(state: Input) -> Output {
                         })
                 })
                 .and_then(|s| builtin_ignore(s))
-                .and_then(|s| builtin_text(s, "{", false))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| {
-                    s.repeat(0..4294967295, |s| {
-                        s.sequence(|s| {
-                            Ok(s)
-                                .and_then(|s| builtin_ignore(s))
-                                .and_then(|s| parse_match_terms(s).and_then(|s| s.tag_node("match_terms")))
-                        })
-                    })
-                })
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| builtin_text(s, "}", false))
+                .and_then(|s| parse_match_block(s).and_then(|s| s.tag_node("match_block")))
         })
     })
 }
@@ -1630,6 +1619,15 @@ fn parse_switch_statement(state: Input) -> Output {
             Ok(s)
                 .and_then(|s| parse_kw_switch(s).and_then(|s| s.tag_node("kw_switch")))
                 .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_match_block(s).and_then(|s| s.tag_node("match_block")))
+        })
+    })
+}
+#[inline]
+fn parse_match_block(state: Input) -> Output {
+    state.rule(ValkyrieRule::MatchBlock, |s| {
+        s.sequence(|s| {
+            Ok(s)
                 .and_then(|s| builtin_text(s, "{", false))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| {
@@ -1822,18 +1820,7 @@ fn parse_dot_match_call(state: Input) -> Output {
                     })
                 })
                 .and_then(|s| s.optional(|s| parse_white_space(s)))
-                .and_then(|s| builtin_text(s, "{", false))
-                .and_then(|s| {
-                    s.repeat(0..4294967295, |s| {
-                        s.sequence(|s| {
-                            Ok(s)
-                                .and_then(|s| builtin_ignore(s))
-                                .and_then(|s| parse_match_terms(s).and_then(|s| s.tag_node("match_terms")))
-                        })
-                    })
-                })
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| builtin_text(s, "}", false))
+                .and_then(|s| parse_match_block(s).and_then(|s| s.tag_node("match_block")))
         })
     })
 }

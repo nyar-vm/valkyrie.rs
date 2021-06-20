@@ -11,9 +11,8 @@ impl Debug for FlagDeclaration {
         }
         w.field("name", &self.name);
         w.field("terms", &self.body);
-        match &self.layout {
-            Some(inherits) => w.field("layout", inherits),
-            _ => w.field("layout", "auto"),
+        if let Some(inherits) = &self.layout {
+            w.field("layout", inherits);
         }
         if let Some(inherits) = &self.implements {
             w.field("implements", inherits);

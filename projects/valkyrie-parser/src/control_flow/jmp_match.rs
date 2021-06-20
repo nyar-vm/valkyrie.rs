@@ -1,4 +1,5 @@
 use super::*;
+use valkyrie_ast::PatternsList;
 
 impl crate::MatchExpressionNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<MatchStatement> {
@@ -6,12 +7,25 @@ impl crate::MatchExpressionNode {
             kind: self.kw_match.build(),
             bind: self.get_bind(ctx),
             main: self.inline_expression.build(ctx)?,
-            patterns: build_match_terms(&self.match_terms, ctx),
+            patterns: self.match_block.build(ctx),
             span: self.span.clone(),
         })
     }
     fn get_bind(&self, ctx: &mut ProgramState) -> Option<IdentifierNode> {
         Some(self.identifier.as_ref()?.build(ctx))
+    }
+}
+
+impl crate::MatchBlockNode {
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> PatternsList {
+        let mut list = PatternsList::new(self.match_terms.len(), &self.span);
+        for term in &self.match_terms {
+            match term.build(ctx) {
+                Ok(o) => list.branches.extend(o),
+                Err(e) => ctx.add_error(e),
+            }
+        }
+        list
     }
 }
 

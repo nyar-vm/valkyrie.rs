@@ -6,6 +6,7 @@ impl crate::MainPrefixNode {
             "!" => Not,
             "+" => Positive,
             "-" => Negative,
+            "&" => Box,
             "*" => Unbox,
             "⅟" => Reciprocal,
             "√" => Roots(2),

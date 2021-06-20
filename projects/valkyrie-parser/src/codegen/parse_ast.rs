@@ -1972,9 +1972,7 @@ impl YggdrasilNode for MatchExpressionNode {
             identifier: pair.take_tagged_option::<IdentifierNode>(Cow::Borrowed("identifier")),
             inline_expression: pair.take_tagged_one::<InlineExpressionNode>(Cow::Borrowed("inline_expression"))?,
             kw_match: pair.take_tagged_one::<KwMatchNode>(Cow::Borrowed("kw_match"))?,
-            match_terms: pair
-                .take_tagged_items::<MatchTermsNode>(Cow::Borrowed("match_terms"))
-                .collect::<Result<Vec<_>, _>>()?,
+            match_block: pair.take_tagged_one::<MatchBlockNode>(Cow::Borrowed("match_block"))?,
             span: Range { start: _span.start() as u32, end: _span.end() as u32 },
         })
     }
@@ -1998,9 +1996,7 @@ impl YggdrasilNode for SwitchStatementNode {
         let _span = pair.get_span();
         Ok(Self {
             kw_switch: pair.take_tagged_one::<KwSwitchNode>(Cow::Borrowed("kw_switch"))?,
-            match_terms: pair
-                .take_tagged_items::<MatchTermsNode>(Cow::Borrowed("match_terms"))
-                .collect::<Result<Vec<_>, _>>()?,
+            match_block: pair.take_tagged_one::<MatchBlockNode>(Cow::Borrowed("match_block"))?,
             span: Range { start: _span.start() as u32, end: _span.end() as u32 },
         })
     }
@@ -2011,6 +2007,31 @@ impl FromStr for SwitchStatementNode {
 
     fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
         Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::SwitchStatement)?)
+    }
+}
+#[automatically_derived]
+impl YggdrasilNode for MatchBlockNode {
+    type Rule = ValkyrieRule;
+
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
+    }
+    fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
+        let _span = pair.get_span();
+        Ok(Self {
+            match_terms: pair
+                .take_tagged_items::<MatchTermsNode>(Cow::Borrowed("match_terms"))
+                .collect::<Result<Vec<_>, _>>()?,
+            span: Range { start: _span.start() as u32, end: _span.end() as u32 },
+        })
+    }
+}
+#[automatically_derived]
+impl FromStr for MatchBlockNode {
+    type Err = YggdrasilError<ValkyrieRule>;
+
+    fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::MatchBlock)?)
     }
 }
 #[automatically_derived]
@@ -2296,9 +2317,7 @@ impl YggdrasilNode for DotMatchCallNode {
             bind_r: pair.take_tagged_option::<BindRNode>(Cow::Borrowed("bind_r")),
             identifier: pair.take_tagged_option::<IdentifierNode>(Cow::Borrowed("identifier")),
             kw_match: pair.take_tagged_one::<KwMatchNode>(Cow::Borrowed("kw_match"))?,
-            match_terms: pair
-                .take_tagged_items::<MatchTermsNode>(Cow::Borrowed("match_terms"))
-                .collect::<Result<Vec<_>, _>>()?,
+            match_block: pair.take_tagged_one::<MatchBlockNode>(Cow::Borrowed("match_block"))?,
             op_and_then: pair.take_tagged_option::<OpAndThenNode>(Cow::Borrowed("op_and_then")),
             span: Range { start: _span.start() as u32, end: _span.end() as u32 },
         })

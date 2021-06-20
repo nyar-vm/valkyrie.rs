@@ -14,9 +14,9 @@ use pretty_print::{
 };
 
 /// A pattern match statement block
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Clone, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct PatternBlock {
+pub struct PatternsList {
     /// Branches of the pattern match
     pub branches: Vec<PatternBranch>,
     /// The range of the node
@@ -322,6 +322,12 @@ pub struct PatternTypeNode {
     pub guard: Option<ExpressionKind>,
     /// The range of the node
     pub span: Range<u32>,
+}
+impl PatternsList {
+    /// Create a new pattern block
+    pub fn new(capacity: usize, span: &Range<u32>) -> Self {
+        Self { branches: Vec::with_capacity(capacity), span: span.clone() }
+    }
 }
 
 impl PatternStatements {

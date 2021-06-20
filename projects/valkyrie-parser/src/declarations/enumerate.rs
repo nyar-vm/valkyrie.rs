@@ -14,7 +14,7 @@ impl crate::DefineEnumerateNode {
             name: self.identifier.build(ctx),
             kind: self.kw_flags.build(),
             layout: None,
-            implements: vec![],
+            implements: None,
             body: terms,
             span: self.span.clone(),
         })

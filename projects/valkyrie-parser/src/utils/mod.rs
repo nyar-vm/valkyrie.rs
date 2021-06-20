@@ -1,6 +1,6 @@
 use crate::{
     helpers::ProgramState, AnnotationTermMixNode, AnnotationTermNode, IfGuardNode, MatchTermsNode, ModifierAheadNode,
-    TupleTermsNode,
+    TupleTermsNode, TypeHintNode,
 };
 use nyar_error::Result;
 use valkyrie_ast::{ArgumentsList, AttributeList, ExpressionKind, ModifierList, PatternBranch};
@@ -20,6 +20,16 @@ pub(crate) fn build_if_guard(this: &Option<IfGuardNode>, ctx: &mut ProgramState)
         }
     }
 }
+pub(crate) fn build_type_hint(this: &Option<TypeHintNode>, ctx: &mut ProgramState) -> Option<ExpressionKind> {
+    match this.as_ref()?.build(ctx) {
+        Ok(o) => Some(o),
+        Err(e) => {
+            ctx.add_error(e);
+            None
+        }
+    }
+}
+
 pub(crate) fn build_modifier_ahead(this: &[ModifierAheadNode], ctx: &mut ProgramState) -> ModifierList {
     ModifierList { terms: this.iter().map(|s| s.build(ctx)).collect() }
 }
@@ -44,14 +54,4 @@ pub(crate) fn build_annotation_terms_mix(this: &[AnnotationTermMixNode], ctx: &m
         }
     }
     Ok(AttributeList { terms: terms.into_iter().map(|v| v.terms).flatten().collect() })
-}
-pub(crate) fn build_match_terms(this: &[MatchTermsNode], ctx: &mut ProgramState) -> Vec<PatternBranch> {
-    let mut terms = Vec::with_capacity(this.len());
-    for term in this {
-        match term.build(ctx) {
-            Ok(o) => terms.extend(o),
-            Err(e) => ctx.add_error(e),
-        }
-    }
-    terms
 }

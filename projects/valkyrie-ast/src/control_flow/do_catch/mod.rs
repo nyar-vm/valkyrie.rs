@@ -23,7 +23,7 @@ pub struct MatchStatement {
     /// `match expr { ... }`
     pub main: ExpressionKind,
     /// The patterns of the match statement
-    pub patterns: Vec<PatternBranch>,
+    pub patterns: PatternsList,
     /// The range of the node
     pub span: Range<u32>,
 }
@@ -39,7 +39,7 @@ pub struct MatchCallNode {
     /// The kind of the match statement
     pub kind: MatchKind,
     /// The patterns of the match statement
-    pub patterns: PatternBlock,
+    pub patterns: PatternsList,
     /// The range of the node
     pub span: Range<u32>,
 }

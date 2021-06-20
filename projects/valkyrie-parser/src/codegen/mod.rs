@@ -103,6 +103,7 @@ pub enum ValkyrieRule {
     ExpressionRoot,
     MatchExpression,
     SwitchStatement,
+    MatchBlock,
     MatchTerms,
     MatchType,
     MatchCase,
@@ -323,6 +324,7 @@ impl YggdrasilRule for ValkyrieRule {
             Self::ExpressionRoot => "",
             Self::MatchExpression => "",
             Self::SwitchStatement => "",
+            Self::MatchBlock => "",
             Self::MatchTerms => "",
             Self::MatchType => "",
             Self::MatchCase => "",
@@ -1017,13 +1019,19 @@ pub struct MatchExpressionNode {
     pub identifier: Option<IdentifierNode>,
     pub inline_expression: InlineExpressionNode,
     pub kw_match: KwMatchNode,
-    pub match_terms: Vec<MatchTermsNode>,
+    pub match_block: MatchBlockNode,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct SwitchStatementNode {
     pub kw_switch: KwSwitchNode,
+    pub match_block: MatchBlockNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct MatchBlockNode {
     pub match_terms: Vec<MatchTermsNode>,
     pub span: Range<u32>,
 }
@@ -1102,7 +1110,7 @@ pub struct DotMatchCallNode {
     pub bind_r: Option<BindRNode>,
     pub identifier: Option<IdentifierNode>,
     pub kw_match: KwMatchNode,
-    pub match_terms: Vec<MatchTermsNode>,
+    pub match_block: MatchBlockNode,
     pub op_and_then: Option<OpAndThenNode>,
     pub span: Range<u32>,
 }

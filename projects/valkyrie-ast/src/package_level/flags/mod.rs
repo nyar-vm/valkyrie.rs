@@ -26,11 +26,11 @@ pub struct FlagDeclaration {
     pub annotations: AnnotationNode,
     /// The name of the flag.
     pub name: IdentifierNode,
-    /// `(8bits)`
-    pub layout: Option<NumberLiteralNode>,
-    /// `: Trait`
+    /// `flags Flag(8bits)`
+    pub layout: Option<ExpressionKind>,
+    /// `flags Flag: Trait`
     pub implements: Option<ExpressionKind>,
-    /// `{ FlagA, FlagB }`
+    /// `flags Flag { FlagA, FlagB }`
     pub body: Vec<FlagTerm>,
     /// The range of the node.
     pub span: Range<u32>,

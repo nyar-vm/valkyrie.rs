@@ -61,8 +61,9 @@ pub use crate::{
         unions::{UnionDeclaration, UnionTerm, VariantDeclaration},
     },
     patterns::{
-        ArrayPatternNode, ClassPatternNode, IdentifierPattern, ImplicitCaseNode, PatternBlock, PatternBranch, PatternCaseNode,
-        PatternCondition, PatternNode, PatternStatements, PatternTypeNode, PatternWhenNode, TuplePatternNode, UnionPatternNode,
+        ArrayPatternNode, ClassPatternNode, IdentifierPattern, ImplicitCaseNode, PatternBranch, PatternCaseNode,
+        PatternCondition, PatternNode, PatternStatements, PatternTypeNode, PatternWhenNode, PatternsList, TuplePatternNode,
+        UnionPatternNode,
     },
     string_like::{
         string_formatter::{ExpressionFormatted, StringFormatter},
