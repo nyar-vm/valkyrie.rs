@@ -1,6 +1,8 @@
 mod display;
 
-use crate::{ArgumentKey, ExpressionKind, ExpressionNode, IdentifierNode, ModifierList, NamePathNode, StatementNode};
+use crate::{
+    ArgumentKey, ExpressionKind, ExpressionNode, IdentifierNode, ModifierList, NamePathNode, StatementBlock, StatementNode,
+};
 use alloc::{boxed::Box, vec, vec::Vec};
 use core::{
     fmt::{Debug, Formatter},
@@ -30,17 +32,9 @@ pub struct PatternBranch {
     /// The condition of the branch
     pub condition: PatternCondition,
     /// The continuation of the branch
-    pub statements: PatternStatements,
+    pub continuation: StatementBlock,
     /// The range of the node
     pub span: Range<u32>,
-}
-
-/// The continuation of a pattern branch
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct PatternStatements {
-    /// The statements of the branch
-    pub terms: Vec<StatementNode>,
 }
 
 /// All valid branches of a pattern match statement
@@ -65,7 +59,7 @@ pub struct PatternStatements {
 ///         print("Unknown error")
 /// }
 /// ```
-#[derive(Clone, Debug, PartialEq, Eq, Hash, From)]
+#[derive(Clone, PartialEq, Eq, Hash, From)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum PatternCondition {
     /// `case Some(a) | Success { value :a }:`
@@ -78,12 +72,23 @@ pub enum PatternCondition {
     Else,
 }
 
+impl Debug for PatternCondition {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        match self {
+            Self::Case(v) => Debug::fmt(v, f),
+            Self::When(v) => Debug::fmt(v, f),
+            Self::Type(v) => Debug::fmt(v, f),
+            Self::Else => f.write_str("Guaranteed"),
+        }
+    }
+}
+
 /// `case Some(a) | Success { value :a } if a > 0:`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct PatternCaseNode {
     /// `case bind <- Some(a)`
-    pub pattern: ExpressionNode,
+    pub pattern: PatternNode,
     /// `case a | b | c`
     pub guard: Option<ExpressionKind>,
     /// The range of the node
@@ -290,7 +295,7 @@ pub struct ImplicitCaseNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct PatternWhenNode {
     /// The condition of the when
-    pub guard: ExpressionNode,
+    pub guard: ExpressionKind,
     /// The range of the node
     pub span: Range<u32>,
 }
@@ -317,7 +322,7 @@ pub struct PatternWhenNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct PatternTypeNode {
     /// The type of the pattern
-    pub pattern: ExpressionNode,
+    pub typing: ExpressionKind,
     /// `when a > 0 && a < 10`
     pub guard: Option<ExpressionKind>,
     /// The range of the node
@@ -327,12 +332,5 @@ impl PatternsList {
     /// Create a new pattern block
     pub fn new(capacity: usize, span: &Range<u32>) -> Self {
         Self { branches: Vec::with_capacity(capacity), span: span.clone() }
-    }
-}
-
-impl PatternStatements {
-    /// Create a new pattern statement
-    pub fn new(capacity: usize) -> Self {
-        Self { terms: Vec::with_capacity(capacity) }
     }
 }

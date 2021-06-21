@@ -4,31 +4,24 @@ MatchStatement {
     main: a,
     patterns: [
         PatternBranch {
-            condition: Case(
-                PatternCaseNode {
-                    pattern: ExpressionNode {
-                        omit: false,
-                        body: Placeholder,
-                        span: 0..0,
-                    },
-                    guard: None,
-                    span: 14..28,
+            condition: PatternCaseNode {
+                pattern: IdentifierPattern {
+                    modifiers: [],
+                    identifier: Identifier("", 0..0),
                 },
-            ),
-            statements: PatternStatements {
-                terms: [
-                    a,
-                ],
+                guard: None,
+                span: 14..28,
             },
+            continuation: [
+                a,
+            ],
             span: 14..28,
         },
         PatternBranch {
-            condition: Else,
-            statements: PatternStatements {
-                terms: [
-                    1,
-                ],
-            },
+            condition: Guaranteed,
+            continuation: [
+                1,
+            ],
             span: 28..36,
         },
     ],

@@ -5,30 +5,20 @@ SwitchStatement {
 SwitchStatement {
     patterns: [
         PatternBranch {
-            condition: When(
-                PatternWhenNode {
-                    guard: ExpressionNode {
-                        omit: false,
-                        body: Placeholder,
-                        span: 0..0,
-                    },
-                    span: 22..34,
-                },
-            ),
-            statements: PatternStatements {
-                terms: [
-                    1,
-                ],
+            condition: PatternWhenNode {
+                guard: true,
+                span: 22..34,
             },
+            continuation: [
+                1,
+            ],
             span: 22..34,
         },
         PatternBranch {
-            condition: Else,
-            statements: PatternStatements {
-                terms: [
-                    2,
-                ],
-            },
+            condition: Guaranteed,
+            continuation: [
+                2,
+            ],
             span: 36..43,
         },
     ],
@@ -37,68 +27,49 @@ SwitchStatement {
 SwitchStatement {
     patterns: [
         PatternBranch {
-            condition: Case(
-                PatternCaseNode {
-                    pattern: ExpressionNode {
-                        omit: false,
-                        body: Placeholder,
-                        span: 0..0,
-                    },
-                    guard: None,
-                    span: 59..76,
+            condition: PatternCaseNode {
+                pattern: IdentifierPattern {
+                    modifiers: [],
+                    identifier: Identifier("", 0..0),
                 },
-            ),
-            statements: PatternStatements {
-                terms: [
-                    a,
-                ],
+                guard: None,
+                span: 59..76,
             },
+            continuation: [
+                a,
+            ],
             span: 59..76,
         },
         PatternBranch {
-            condition: Type(
-                PatternTypeNode {
-                    pattern: ExpressionNode {
-                        omit: false,
-                        body: Placeholder,
-                        span: 0..0,
-                    },
-                    guard: None,
-                    span: 82..99,
-                },
-            ),
-            statements: PatternStatements {
-                terms: [
-                    b,
-                ],
+            condition: PatternTypeNode {
+                typing: B,
+                guard: None,
+                span: 82..99,
             },
+            continuation: [
+                b,
+            ],
             span: 82..99,
         },
         PatternBranch {
-            condition: When(
-                PatternWhenNode {
-                    guard: ExpressionNode {
-                        omit: false,
-                        body: Placeholder,
-                        span: 0..0,
-                    },
-                    span: 105..126,
+            condition: PatternWhenNode {
+                guard: InfixNode {
+                    infix: >,
+                    lhs: c,
+                    rhs: 0,
                 },
-            ),
-            statements: PatternStatements {
-                terms: [
-                    c,
-                ],
+                span: 105..126,
             },
+            continuation: [
+                c,
+            ],
             span: 105..126,
         },
         PatternBranch {
-            condition: Else,
-            statements: PatternStatements {
-                terms: [
-                    d,
-                ],
-            },
+            condition: Guaranteed,
+            continuation: [
+                d,
+            ],
             span: 132..147,
         },
     ],

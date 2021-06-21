@@ -1,5 +1,4 @@
 use super::*;
-use valkyrie_ast::PatternsList;
 
 impl crate::MatchExpressionNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<MatchStatement> {
@@ -55,38 +54,42 @@ impl crate::MatchCaseNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<PatternBranch> {
         Ok(PatternBranch {
             condition: PatternCondition::Case(self.build_node(ctx)?),
-            statements: statements(&self.match_statement, ctx),
+            continuation: match_statements(&self.match_statement, ctx),
             span: self.span.clone(),
         })
     }
     fn build_node(&self, ctx: &mut ProgramState) -> Result<PatternCaseNode> {
-        Ok(PatternCaseNode { pattern: Default::default(), guard: build_if_guard(&self.if_guard, ctx), span: self.span.clone() })
+        Ok(PatternCaseNode {
+            pattern: self.case_pattern.build(ctx)?,
+            guard: build_if_guard(&self.if_guard, ctx),
+            span: self.span.clone(),
+        })
     }
 }
 
 impl crate::MatchTypeNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<PatternBranch> {
-        Ok(PatternBranch {
-            condition: PatternCondition::Type(self.build_node(ctx)?),
-            statements: statements(&self.match_statement, ctx),
-            span: self.span.clone(),
-        })
+        // avoid block by condition
+        let continuation = match_statements(&self.match_statement, ctx);
+        Ok(PatternBranch { condition: PatternCondition::Type(self.build_node(ctx)?), continuation, span: self.span.clone() })
     }
     fn build_node(&self, ctx: &mut ProgramState) -> Result<PatternTypeNode> {
-        Ok(PatternTypeNode { pattern: Default::default(), guard: None, span: self.span.clone() })
+        Ok(PatternTypeNode {
+            typing: self.type_expression.build(ctx)?,
+            guard: build_if_guard(&self.if_guard, ctx),
+            span: self.span.clone(),
+        })
     }
 }
 
 impl crate::MatchWhenNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<PatternBranch> {
-        Ok(PatternBranch {
-            condition: PatternCondition::When(self.build_node(ctx)?),
-            statements: statements(&self.match_statement, ctx),
-            span: self.span.clone(),
-        })
+        // avoid block by condition
+        let continuation = match_statements(&self.match_statement, ctx);
+        Ok(PatternBranch { condition: PatternCondition::When(self.build_node(ctx)?), continuation, span: self.span.clone() })
     }
     fn build_node(&self, ctx: &mut ProgramState) -> Result<PatternWhenNode> {
-        Ok(PatternWhenNode { guard: Default::default(), span: self.span.clone() })
+        Ok(PatternWhenNode { guard: self.inline_expression.build(ctx)?, span: self.span.clone() })
     }
 }
 
@@ -94,19 +97,32 @@ impl crate::MatchElseNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<PatternBranch> {
         Ok(PatternBranch {
             condition: PatternCondition::Else,
-            statements: statements(&self.match_statement, ctx),
+            continuation: match_statements(&self.match_statement, ctx),
             span: self.span.clone(),
         })
     }
 }
 
-fn statements(statements: &[crate::MatchStatementNode], ctx: &mut ProgramState) -> PatternStatements {
-    let mut list = PatternStatements::new(statements.len());
+impl crate::CasePatternNode {
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<PatternNode> {
+        match self {
+            Self::Namepath(v) => Ok(PatternNode::Atom(Box::new(IdentifierPattern {
+                modifiers: Default::default(),
+                identifier: IdentifierNode { name: "".to_string(), span: Default::default() },
+            }))),
+            Self::StandardPattern(v) => v.build(ctx),
+        }
+    }
+}
+
+fn match_statements(statements: &[crate::MatchStatementNode], ctx: &mut ProgramState) -> StatementBlock {
+    let mut list = StatementBlock::new(statements.len(), &Default::default());
     for term in statements {
         match term.main_statement.build(ctx) {
             Ok(o) => list.terms.extend(o),
             Err(e) => ctx.add_error(e),
         }
     }
+    list.update_span();
     list
 }

@@ -684,6 +684,40 @@ text atomic class TEXT_CONTENT3 { (!'"""' ANY)+ }
 text atomic class TEXT_CONTENT4 { (!"'''" ANY)+ }
 text atomic class TEXT_CONTENT5 { (!'""""' ANY)+ }
 text atomic class TEXT_CONTENT6 { (!"''''" ANY)+ }
+// === string interpolation === ----------------------------------------------------------------------------------------
+class StringElements {
+    StringElement* EOI
+}
+union StringElement {
+    | StringInterpolation
+    | StringFormatter
+    | EscapeCharacter
+    | EscapeUnicode
+    | StringInterpolationEscape
+}
+class StringInterpolation {
+    '{' MainExpression (^COLON StringFormatter)? '}'
+}
+class StringFormatter {
+    /[^{}]+/
+}
+atomic class EscapeCharacter {
+    '\' ANY
+}
+union StringInterpolationEscape {
+    | '{{' #BraceLeft
+    | '}}' #BraceRight
+    | StringInterpolationText
+}
+atomic class EscapeUnicode {
+    '\u' '{' ~ code:EscapeUnicodeCode ~ '}'
+}
+class EscapeUnicodeCode {
+    /[0-9a-fA-F]+/
+}
+class StringInterpolationText {
+    /[^{}\\]+/
+}
 // === modifier === --------------------------------------------------------------------------------------------------
 atomic class ModifierCall ^ {
     !KEYWORDS_STOP ^Identifier

@@ -486,65 +486,62 @@ ExtendsStatement {
                         main: self,
                         patterns: [
                             PatternBranch {
-                                condition: Case(
-                                    PatternCaseNode {
-                                        pattern: ExpressionNode {
-                                            omit: false,
-                                            body: Placeholder,
-                                            span: 0..0,
-                                        },
-                                        guard: None,
-                                        span: 772..797,
-                                    },
-                                ),
-                                statements: PatternStatements {
-                                    terms: [
-                                        ApplyCallNode {
-                                            monadic: false,
-                                            caller: Some,
-                                            arguments: ArgumentsList {
-                                                terms: [
-                                                    TupleTermNode {
-                                                        key: None,
-                                                        value: ApplyCallNode {
-                                                            monadic: false,
-                                                            caller: f,
-                                                            arguments: ArgumentsList {
-                                                                terms: [
-                                                                    TupleTermNode {
-                                                                        key: None,
-                                                                        value: a,
-                                                                    },
-                                                                ],
-                                                            },
-                                                            body: None,
-                                                            span: 793..796,
-                                                        },
-                                                    },
-                                                ],
+                                condition: PatternCaseNode {
+                                    pattern: TuplePatternNode {
+                                        bind: None,
+                                        name: None,
+                                        terms: [
+                                            IdentifierPattern {
+                                                modifiers: [],
+                                                identifier: Identifier("a", 782..783),
                                             },
-                                            body: None,
-                                            span: 791..797,
-                                        },
-                                    ],
+                                        ],
+                                        span: 0..0,
+                                    },
+                                    guard: None,
+                                    span: 772..797,
                                 },
+                                continuation: [
+                                    ApplyCallNode {
+                                        monadic: false,
+                                        caller: Some,
+                                        arguments: ArgumentsList {
+                                            terms: [
+                                                TupleTermNode {
+                                                    key: None,
+                                                    value: ApplyCallNode {
+                                                        monadic: false,
+                                                        caller: f,
+                                                        arguments: ArgumentsList {
+                                                            terms: [
+                                                                TupleTermNode {
+                                                                    key: None,
+                                                                    value: a,
+                                                                },
+                                                            ],
+                                                        },
+                                                        body: None,
+                                                        span: 793..796,
+                                                    },
+                                                },
+                                            ],
+                                        },
+                                        body: None,
+                                        span: 791..797,
+                                    },
+                                ],
                                 span: 772..797,
                             },
                             PatternBranch {
-                                condition: Case(
-                                    PatternCaseNode {
-                                        pattern: ExpressionNode {
-                                            omit: false,
-                                            body: Placeholder,
-                                            span: 0..0,
-                                        },
-                                        guard: None,
-                                        span: 811..821,
+                                condition: PatternCaseNode {
+                                    pattern: IdentifierPattern {
+                                        modifiers: [],
+                                        identifier: Identifier("", 0..0),
                                     },
-                                ),
-                                statements: PatternStatements {
-                                    terms: [],
+                                    guard: None,
+                                    span: 811..821,
                                 },
+                                continuation: [],
                                 span: 811..821,
                             },
                         ],

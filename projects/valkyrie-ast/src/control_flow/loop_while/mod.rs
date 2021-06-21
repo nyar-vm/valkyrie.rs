@@ -57,10 +57,12 @@ pub enum WhileLoopKind {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum WhileConditionNode {
-    /// `true` in while loop and `false` in until loop
+    /// `while { }`
     Unconditional,
-    Case,
-    Expression(Box<ExpressionNode>),
+    /// `while true {}`
+    Expression(ExpressionNode),
+    /// `while let Some(_) = ... {}`
+    Case(PatternNode),
 }
 
 impl ValkyrieNode for WhileLoop {

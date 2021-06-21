@@ -2145,6 +2145,7 @@ impl YggdrasilNode for MatchTypeNode {
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
         Ok(Self {
+            if_guard: pair.take_tagged_option::<IfGuardNode>(Cow::Borrowed("if_guard")),
             kw_type: pair.take_tagged_one::<KwTypeNode>(Cow::Borrowed("kw_type"))?,
             match_statement: pair
                 .take_tagged_items::<MatchStatementNode>(Cow::Borrowed("match_statement"))
@@ -4089,6 +4090,232 @@ impl FromStr for TextContent6Node {
 
     fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
         Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::TEXT_CONTENT6)?)
+    }
+}
+#[automatically_derived]
+impl YggdrasilNode for StringElementsNode {
+    type Rule = ValkyrieRule;
+
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
+    }
+    fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
+        let _span = pair.get_span();
+        Ok(Self {
+            string_element: pair
+                .take_tagged_items::<StringElementNode>(Cow::Borrowed("string_element"))
+                .collect::<Result<Vec<_>, _>>()?,
+            span: Range { start: _span.start() as u32, end: _span.end() as u32 },
+        })
+    }
+}
+#[automatically_derived]
+impl FromStr for StringElementsNode {
+    type Err = YggdrasilError<ValkyrieRule>;
+
+    fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::StringElements)?)
+    }
+}
+#[automatically_derived]
+impl YggdrasilNode for StringElementNode {
+    type Rule = ValkyrieRule;
+
+    fn get_range(&self) -> Range<usize> {
+        match self {
+            Self::EscapeCharacter(s) => s.get_range(),
+            Self::EscapeUnicode(s) => s.get_range(),
+            Self::StringFormatter(s) => s.get_range(),
+            Self::StringInterpolation(s) => s.get_range(),
+            Self::StringInterpolationEscape(s) => s.get_range(),
+        }
+    }
+    fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
+        let _span = pair.get_span();
+        if let Ok(s) = pair.take_tagged_one::<EscapeCharacterNode>(Cow::Borrowed("escape_character")) {
+            return Ok(Self::EscapeCharacter(s));
+        }
+        if let Ok(s) = pair.take_tagged_one::<EscapeUnicodeNode>(Cow::Borrowed("escape_unicode")) {
+            return Ok(Self::EscapeUnicode(s));
+        }
+        if let Ok(s) = pair.take_tagged_one::<StringFormatterNode>(Cow::Borrowed("string_formatter")) {
+            return Ok(Self::StringFormatter(s));
+        }
+        if let Ok(s) = pair.take_tagged_one::<StringInterpolationNode>(Cow::Borrowed("string_interpolation")) {
+            return Ok(Self::StringInterpolation(s));
+        }
+        if let Ok(s) = pair.take_tagged_one::<StringInterpolationEscapeNode>(Cow::Borrowed("string_interpolation_escape")) {
+            return Ok(Self::StringInterpolationEscape(s));
+        }
+        Err(YggdrasilError::invalid_node(ValkyrieRule::StringElement, _span))
+    }
+}
+#[automatically_derived]
+impl FromStr for StringElementNode {
+    type Err = YggdrasilError<ValkyrieRule>;
+
+    fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::StringElement)?)
+    }
+}
+#[automatically_derived]
+impl YggdrasilNode for StringInterpolationNode {
+    type Rule = ValkyrieRule;
+
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
+    }
+    fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
+        let _span = pair.get_span();
+        Ok(Self {
+            main_expression: pair.take_tagged_one::<MainExpressionNode>(Cow::Borrowed("main_expression"))?,
+            string_formatter: pair.take_tagged_option::<StringFormatterNode>(Cow::Borrowed("string_formatter")),
+            span: Range { start: _span.start() as u32, end: _span.end() as u32 },
+        })
+    }
+}
+#[automatically_derived]
+impl FromStr for StringInterpolationNode {
+    type Err = YggdrasilError<ValkyrieRule>;
+
+    fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::StringInterpolation)?)
+    }
+}
+#[automatically_derived]
+impl YggdrasilNode for StringFormatterNode {
+    type Rule = ValkyrieRule;
+
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
+    }
+    fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
+        let _span = pair.get_span();
+        Ok(Self { span: Range { start: _span.start() as u32, end: _span.end() as u32 } })
+    }
+}
+#[automatically_derived]
+impl FromStr for StringFormatterNode {
+    type Err = YggdrasilError<ValkyrieRule>;
+
+    fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::StringFormatter)?)
+    }
+}
+#[automatically_derived]
+impl YggdrasilNode for EscapeCharacterNode {
+    type Rule = ValkyrieRule;
+
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
+    }
+    fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
+        let _span = pair.get_span();
+        Ok(Self { span: Range { start: _span.start() as u32, end: _span.end() as u32 } })
+    }
+}
+#[automatically_derived]
+impl FromStr for EscapeCharacterNode {
+    type Err = YggdrasilError<ValkyrieRule>;
+
+    fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::EscapeCharacter)?)
+    }
+}
+#[automatically_derived]
+impl YggdrasilNode for StringInterpolationEscapeNode {
+    type Rule = ValkyrieRule;
+
+    fn get_range(&self) -> Range<usize> {
+        match self {
+            Self::BraceLeft => Range::default(),
+            Self::BraceRight => Range::default(),
+            Self::StringInterpolationText(s) => s.get_range(),
+        }
+    }
+    fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
+        let _span = pair.get_span();
+        if let Some(_) = pair.find_first_tag("brace_left") {
+            return Ok(Self::BraceLeft);
+        }
+        if let Some(_) = pair.find_first_tag("brace_right") {
+            return Ok(Self::BraceRight);
+        }
+        if let Ok(s) = pair.take_tagged_one::<StringInterpolationTextNode>(Cow::Borrowed("string_interpolation_text")) {
+            return Ok(Self::StringInterpolationText(s));
+        }
+        Err(YggdrasilError::invalid_node(ValkyrieRule::StringInterpolationEscape, _span))
+    }
+}
+#[automatically_derived]
+impl FromStr for StringInterpolationEscapeNode {
+    type Err = YggdrasilError<ValkyrieRule>;
+
+    fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::StringInterpolationEscape)?)
+    }
+}
+#[automatically_derived]
+impl YggdrasilNode for EscapeUnicodeNode {
+    type Rule = ValkyrieRule;
+
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
+    }
+    fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
+        let _span = pair.get_span();
+        Ok(Self {
+            code: pair.take_tagged_one::<EscapeUnicodeCodeNode>(Cow::Borrowed("code"))?,
+            span: Range { start: _span.start() as u32, end: _span.end() as u32 },
+        })
+    }
+}
+#[automatically_derived]
+impl FromStr for EscapeUnicodeNode {
+    type Err = YggdrasilError<ValkyrieRule>;
+
+    fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::EscapeUnicode)?)
+    }
+}
+#[automatically_derived]
+impl YggdrasilNode for EscapeUnicodeCodeNode {
+    type Rule = ValkyrieRule;
+
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
+    }
+    fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
+        let _span = pair.get_span();
+        Ok(Self { span: Range { start: _span.start() as u32, end: _span.end() as u32 } })
+    }
+}
+#[automatically_derived]
+impl FromStr for EscapeUnicodeCodeNode {
+    type Err = YggdrasilError<ValkyrieRule>;
+
+    fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::EscapeUnicodeCode)?)
+    }
+}
+#[automatically_derived]
+impl YggdrasilNode for StringInterpolationTextNode {
+    type Rule = ValkyrieRule;
+
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
+    }
+    fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
+        let _span = pair.get_span();
+        Ok(Self { span: Range { start: _span.start() as u32, end: _span.end() as u32 } })
+    }
+}
+#[automatically_derived]
+impl FromStr for StringInterpolationTextNode {
+    type Err = YggdrasilError<ValkyrieRule>;
+
+    fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::StringInterpolationText)?)
     }
 }
 #[automatically_derived]

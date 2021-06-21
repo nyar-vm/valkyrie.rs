@@ -182,6 +182,15 @@ pub enum ValkyrieRule {
     TEXT_CONTENT4,
     TEXT_CONTENT5,
     TEXT_CONTENT6,
+    StringElements,
+    StringElement,
+    StringInterpolation,
+    StringFormatter,
+    EscapeCharacter,
+    StringInterpolationEscape,
+    EscapeUnicode,
+    EscapeUnicodeCode,
+    StringInterpolationText,
     ModifierCall,
     ModifierAhead,
     KEYWORDS_STOP,
@@ -405,6 +414,15 @@ impl YggdrasilRule for ValkyrieRule {
             Self::TEXT_CONTENT4 => "",
             Self::TEXT_CONTENT5 => "",
             Self::TEXT_CONTENT6 => "",
+            Self::StringElements => "",
+            Self::StringElement => "",
+            Self::StringInterpolation => "",
+            Self::StringFormatter => "",
+            Self::EscapeCharacter => "",
+            Self::StringInterpolationEscape => "",
+            Self::EscapeUnicode => "",
+            Self::EscapeUnicodeCode => "",
+            Self::StringInterpolationText => "",
             Self::ModifierCall => "",
             Self::ModifierAhead => "",
             Self::KEYWORDS_STOP => "",
@@ -1065,6 +1083,7 @@ pub enum MatchTermsNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct MatchTypeNode {
+    pub if_guard: Option<IfGuardNode>,
     pub kw_type: KwTypeNode,
     pub match_statement: Vec<MatchStatementNode>,
     pub type_expression: TypeExpressionNode,
@@ -1589,6 +1608,61 @@ pub struct TextContent5Node {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct TextContent6Node {
     pub text: String,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct StringElementsNode {
+    pub string_element: Vec<StringElementNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum StringElementNode {
+    EscapeCharacter(EscapeCharacterNode),
+    EscapeUnicode(EscapeUnicodeNode),
+    StringFormatter(StringFormatterNode),
+    StringInterpolation(StringInterpolationNode),
+    StringInterpolationEscape(StringInterpolationEscapeNode),
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct StringInterpolationNode {
+    pub main_expression: MainExpressionNode,
+    pub string_formatter: Option<StringFormatterNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct StringFormatterNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct EscapeCharacterNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum StringInterpolationEscapeNode {
+    BraceLeft,
+    BraceRight,
+    StringInterpolationText(StringInterpolationTextNode),
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct EscapeUnicodeNode {
+    pub code: EscapeUnicodeCodeNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct EscapeUnicodeCodeNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct StringInterpolationTextNode {
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]

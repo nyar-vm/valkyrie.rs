@@ -81,35 +81,27 @@ MatchCallNode {
         kind: Effect,
         patterns: [
             PatternBranch {
-                condition: Type(
-                    PatternTypeNode {
-                        pattern: ExpressionNode {
-                            omit: false,
-                            body: Placeholder,
-                            span: 0..0,
-                        },
-                        guard: None,
-                        span: 131..180,
-                    },
-                ),
-                statements: PatternStatements {
-                    terms: [
-                        ApplyCallNode {
-                            monadic: false,
-                            caller: print,
-                            arguments: ArgumentsList {
-                                terms: [
-                                    TupleTermNode {
-                                        key: None,
-                                        value: 'RuntimeError',
-                                    },
-                                ],
-                            },
-                            body: None,
-                            span: 163..179,
-                        },
-                    ],
+                condition: PatternTypeNode {
+                    typing: RuntimeError,
+                    guard: None,
+                    span: 131..180,
                 },
+                continuation: [
+                    ApplyCallNode {
+                        monadic: false,
+                        caller: print,
+                        arguments: ArgumentsList {
+                            terms: [
+                                TupleTermNode {
+                                    key: None,
+                                    value: 'RuntimeError',
+                                },
+                            ],
+                        },
+                        body: None,
+                        span: 163..179,
+                    },
+                ],
                 span: 131..180,
             },
         ],
@@ -118,35 +110,37 @@ MatchCallNode {
     kind: Typing,
     patterns: [
         PatternBranch {
-            condition: Case(
-                PatternCaseNode {
-                    pattern: ExpressionNode {
-                        omit: false,
-                        body: Placeholder,
-                        span: 0..0,
-                    },
-                    guard: None,
-                    span: 196..231,
-                },
-            ),
-            statements: PatternStatements {
-                terms: [
-                    ApplyCallNode {
-                        monadic: false,
-                        caller: print,
-                        arguments: ArgumentsList {
-                            terms: [
-                                TupleTermNode {
-                                    key: None,
-                                    value: 'Some',
-                                },
-                            ],
+            condition: PatternCaseNode {
+                pattern: TuplePatternNode {
+                    bind: None,
+                    name: None,
+                    terms: [
+                        IdentifierPattern {
+                            modifiers: [],
+                            identifier: Identifier("_", 206..207),
                         },
-                        body: None,
-                        span: 223..231,
-                    },
-                ],
+                    ],
+                    span: 0..0,
+                },
+                guard: None,
+                span: 196..231,
             },
+            continuation: [
+                ApplyCallNode {
+                    monadic: false,
+                    caller: print,
+                    arguments: ArgumentsList {
+                        terms: [
+                            TupleTermNode {
+                                key: None,
+                                value: 'Some',
+                            },
+                        ],
+                    },
+                    body: None,
+                    span: 223..231,
+                },
+            ],
             span: 196..231,
         },
     ],

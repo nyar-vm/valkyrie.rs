@@ -36,7 +36,7 @@ impl PrettyPrint for PatternsList {
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for PatternBranch {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
-        theme.concat(vec![self.condition.pretty(theme), self.statements.pretty(theme)])
+        theme.concat(vec![self.condition.pretty(theme), self.continuation.pretty(theme)])
     }
 }
 #[cfg(feature = "pretty-print")]
@@ -192,7 +192,7 @@ impl PrettyPrint for PatternWhenNode {
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for PatternTypeNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
-        theme.concat(vec![theme.keyword("type"), " ".into(), self.pattern.pretty(theme)])
+        theme.concat(vec![theme.keyword("type"), " ".into(), self.typing.pretty(theme)])
     }
 }
 #[cfg(feature = "pretty-print")]

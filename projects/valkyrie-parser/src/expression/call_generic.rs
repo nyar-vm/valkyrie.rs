@@ -3,12 +3,6 @@ use super::*;
 impl crate::GenericCallNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<GenericCallNode> {
         let monadic = self.op_and_then.is_some();
-        let associated = match &self.namepath {
-            Some(s) => s.build(ctx).names,
-            None => {
-                vec![]
-            }
-        };
         let term = GenericCallTerm::Generic(self.generic_terms.build(ctx)?);
         Ok(GenericCallNode { monadic, base: Default::default(), term, span: self.span.clone() })
     }

@@ -24,7 +24,7 @@ pub struct FunctionDeclaration {
     pub annotations: AnnotationNode,
     /// Thy type parameters of this function
     pub generics: ParametersList,
-    // The value parameters of this function
+    /// The value parameters of this function
     pub parameters: ParametersList,
     /// The return type of this function
     pub returns: FunctionReturnNode,
@@ -48,6 +48,11 @@ impl StatementBlock {
     /// Create a new statement block
     pub fn new(capacity: usize, span: &Range<u32>) -> Self {
         Self { terms: Vec::with_capacity(capacity), span: span.clone() }
+    }
+    /// Update span by the first and last statement
+    pub fn update_span(&mut self) {
+        if let Some(_first) = self.terms.first() {}
+        if let Some(_last) = self.terms.last() {}
     }
 }
 
