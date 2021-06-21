@@ -156,13 +156,13 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::TEXT_CONTENT6 => parse_text_content_6(state),
         ValkyrieRule::StringElements => parse_string_elements(state),
         ValkyrieRule::StringElement => parse_string_element(state),
-        ValkyrieRule::StringInterpolation => parse_string_interpolation(state),
-        ValkyrieRule::StringFormatter => parse_string_formatter(state),
         ValkyrieRule::EscapeCharacter => parse_escape_character(state),
-        ValkyrieRule::StringInterpolationEscape => parse_string_interpolation_escape(state),
         ValkyrieRule::EscapeUnicode => parse_escape_unicode(state),
         ValkyrieRule::EscapeUnicodeCode => parse_escape_unicode_code(state),
+        ValkyrieRule::StringInterpolationSimple => parse_string_interpolation_simple(state),
         ValkyrieRule::StringInterpolationText => parse_string_interpolation_text(state),
+        ValkyrieRule::StringFormatter => parse_string_formatter(state),
+        ValkyrieRule::StringInterpolationComplex => parse_string_interpolation_complex(state),
         ValkyrieRule::ModifierCall => parse_modifier_call(state),
         ValkyrieRule::ModifierAhead => parse_modifier_ahead(state),
         ValkyrieRule::KEYWORDS_STOP => parse_keywords_stop(state),
@@ -1033,10 +1033,9 @@ fn parse_trait_term(state: Input) -> Output {
 #[inline]
 fn parse_kw_trait(state: Input) -> Output {
     state.rule(ValkyrieRule::KW_TRAIT, |s| {
-        s.match_regex({
-            static REGEX: OnceLock<Regex> = OnceLock::new();
-            REGEX.get_or_init(|| Regex::new("^(?x)(trait|interface)").unwrap())
-        })
+        Err(s)
+            .or_else(|s| builtin_text(s, "trait", false).and_then(|s| s.tag_node("trait")))
+            .or_else(|s| builtin_text(s, "interface", false).and_then(|s| s.tag_node("interface")))
     })
 }
 #[inline]
@@ -2013,7 +2012,7 @@ fn parse_main_infix(state: Input) -> Output {
             static REGEX: OnceLock<Regex> = OnceLock::new();
             REGEX.get_or_init(|| {
                 Regex::new(
-                    "^(?x)([+\\-*٪⁒÷/%]=?
+                    "^(?x)([+-*٪⁒÷/%]=?
     | /%=? | %%=?
     | [√^]
     # start with ?, !, =
@@ -3213,59 +3212,19 @@ fn parse_string_elements(state: Input) -> Output {
 fn parse_string_element(state: Input) -> Output {
     state.rule(ValkyrieRule::StringElement, |s| {
         Err(s)
-            .or_else(|s| parse_string_interpolation(s).and_then(|s| s.tag_node("string_interpolation")))
-            .or_else(|s| parse_string_formatter(s).and_then(|s| s.tag_node("string_formatter")))
             .or_else(|s| parse_escape_character(s).and_then(|s| s.tag_node("escape_character")))
             .or_else(|s| parse_escape_unicode(s).and_then(|s| s.tag_node("escape_unicode")))
-            .or_else(|s| parse_string_interpolation_escape(s).and_then(|s| s.tag_node("string_interpolation_escape")))
-    })
-}
-#[inline]
-fn parse_string_interpolation(state: Input) -> Output {
-    state.rule(ValkyrieRule::StringInterpolation, |s| {
-        s.sequence(|s| {
-            Ok(s)
-                .and_then(|s| builtin_text(s, "{", false))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| parse_main_expression(s).and_then(|s| s.tag_node("main_expression")))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| {
-                    s.optional(|s| {
-                        s.sequence(|s| {
-                            Ok(s)
-                                .and_then(|s| parse_colon(s))
-                                .and_then(|s| builtin_ignore(s))
-                                .and_then(|s| parse_string_formatter(s).and_then(|s| s.tag_node("string_formatter")))
-                        })
-                    })
-                })
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| builtin_text(s, "}", false))
-        })
-    })
-}
-#[inline]
-fn parse_string_formatter(state: Input) -> Output {
-    state.rule(ValkyrieRule::StringFormatter, |s| {
-        s.match_regex({
-            static REGEX: OnceLock<Regex> = OnceLock::new();
-            REGEX.get_or_init(|| Regex::new("^(?x)([^{}]+)").unwrap())
-        })
+            .or_else(|s| parse_string_interpolation_simple(s).and_then(|s| s.tag_node("string_interpolation_simple")))
+            .or_else(|s| parse_string_interpolation_complex(s).and_then(|s| s.tag_node("string_interpolation_complex")))
     })
 }
 #[inline]
 fn parse_escape_character(state: Input) -> Output {
     state.rule(ValkyrieRule::EscapeCharacter, |s| {
-        s.sequence(|s| Ok(s).and_then(|s| builtin_text(s, "\\", false)).and_then(|s| builtin_any(s)))
-    })
-}
-#[inline]
-fn parse_string_interpolation_escape(state: Input) -> Output {
-    state.rule(ValkyrieRule::StringInterpolationEscape, |s| {
-        Err(s)
-            .or_else(|s| builtin_text(s, "{{", false).and_then(|s| s.tag_node("brace_left")))
-            .or_else(|s| builtin_text(s, "}}", false).and_then(|s| s.tag_node("brace_right")))
-            .or_else(|s| parse_string_interpolation_text(s).and_then(|s| s.tag_node("string_interpolation_text")))
+        s.match_regex({
+            static REGEX: OnceLock<Regex> = OnceLock::new();
+            REGEX.get_or_init(|| Regex::new("^(?x)(.|{{|}})").unwrap())
+        })
     })
 }
 #[inline]
@@ -3297,11 +3256,74 @@ fn parse_escape_unicode_code(state: Input) -> Output {
     })
 }
 #[inline]
+fn parse_string_interpolation_simple(state: Input) -> Output {
+    state.rule(ValkyrieRule::StringInterpolationSimple, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| builtin_text(s, "{", false))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_main_expression(s).and_then(|s| s.tag_node("main_expression")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| {
+                    s.optional(|s| {
+                        s.sequence(|s| {
+                            Ok(s)
+                                .and_then(|s| parse_colon(s))
+                                .and_then(|s| builtin_ignore(s))
+                                .and_then(|s| parse_string_formatter(s).and_then(|s| s.tag_node("string_formatter")))
+                        })
+                    })
+                })
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| builtin_text(s, "}", false))
+        })
+    })
+}
+#[inline]
 fn parse_string_interpolation_text(state: Input) -> Output {
     state.rule(ValkyrieRule::StringInterpolationText, |s| {
         s.match_regex({
             static REGEX: OnceLock<Regex> = OnceLock::new();
             REGEX.get_or_init(|| Regex::new("^(?x)([^{}\\]+)").unwrap())
+        })
+    })
+}
+#[inline]
+fn parse_string_formatter(state: Input) -> Output {
+    state.rule(ValkyrieRule::StringFormatter, |s| {
+        s.match_regex({
+            static REGEX: OnceLock<Regex> = OnceLock::new();
+            REGEX.get_or_init(|| Regex::new("^(?x)([^}]+)").unwrap())
+        })
+    })
+}
+#[inline]
+fn parse_string_interpolation_complex(state: Input) -> Output {
+    state.rule(ValkyrieRule::StringInterpolationComplex, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| builtin_text(s, "{", false))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_main_expression(s).and_then(|s| s.tag_node("main_expression")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| {
+                    s.repeat(0..4294967295, |s| {
+                        s.sequence(|s| {
+                            Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| {
+                                s.sequence(|s| {
+                                    Ok(s)
+                                        .and_then(|s| parse_comma(s))
+                                        .and_then(|s| builtin_ignore(s))
+                                        .and_then(|s| parse_parameter_item(s).and_then(|s| s.tag_node("parameter_item")))
+                                })
+                            })
+                        })
+                    })
+                })
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| s.optional(|s| parse_comma(s)))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| builtin_text(s, "}", false))
         })
     })
 }
@@ -3354,7 +3376,7 @@ fn parse_identifier_stop(state: Input) -> Output {
                 .and_then(|s| {
                     builtin_regex(s, {
                         static REGEX: OnceLock<Regex> = OnceLock::new();
-                        REGEX.get_or_init(|| Regex::new("^(?x)([\\[\\](){}<>⟨:∷,.;∈=]|in|is)").unwrap())
+                        REGEX.get_or_init(|| Regex::new("^(?x)([[](){}<>⟨:∷,.;∈=]|in|is)").unwrap())
                     })
                 })
         })

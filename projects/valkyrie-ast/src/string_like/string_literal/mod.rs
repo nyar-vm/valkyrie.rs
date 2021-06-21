@@ -1,5 +1,5 @@
 use super::*;
-use nyar_error::FileSpan;
+use nyar_error::{FileSpan, Validation};
 
 mod display;
 
@@ -22,6 +22,15 @@ pub struct StringLiteralNode {
     /// The unit of the number, if any.
     pub handler: Option<IdentifierNode>,
 }
+
+/// A string interpreter
+pub trait StringInterpreter {
+    /// The output type of the interpreter
+    type Output;
+    /// Interpret the string
+    fn interpret(&mut self, text: &StringTextNode) -> Validation<Self::Output>;
+}
+
 impl ValkyrieNode for StringTextNode {
     fn get_range(&self) -> Range<usize> {
         Range { start: self.span.start as usize, end: self.span.end as usize }
@@ -35,6 +44,7 @@ impl ValkyrieNode for StringLiteralNode {
         }
     }
 }
+
 impl StringTextNode {
     /// Create a new raw text node
     pub fn new<S: ToString>(value: S, span: Range<u32>) -> Self {

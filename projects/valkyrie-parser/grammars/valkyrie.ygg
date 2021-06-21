@@ -1,11 +1,16 @@
 grammar Valkyrie {
-    patterns: ["*.vk", "*.valkyrie"]
+//    patterns: ("*.vk", "*.valkyrie"),
+//    parser: {
+//        text_raw: {
+//            rust: crate::helpers::parse_text_raw
+//        }
+//    }
 }
-
 // === statements === -----------------------------------------------------------------
 atomic class Program {
     SOI ~ Shebang? (HIDE Statement)* ~ EOI
 }
+
 // === statements === -----------------------------------------------------------------
 union Statement {
     | DefineNamespace
@@ -58,7 +63,7 @@ class ImportAll { NamepathFree ^NS_CONCAT OP_IMPORT_ALL }
 atomic class ImportBlock  {
     NamepathFree ~ ^NS_CONCAT? ~ '{' (HIDE (ImportTerm|^EOS_FREE))* ~ '}'
 }
-/// `import package::module::#macro as @macro`
+/// `import package::module::@macro as @macro`
 class ImportMacro  {
     NamepathFree ^NS_CONCAT ImportMacroItem ^KW_AS alias:ImportMacroItem
 }
@@ -87,7 +92,7 @@ class TemplateStatement {
     //  | Identifier RequireBlock
 }
 class TemplateImplements {
-      KW_IMPLEMENTS // TypeExpression
+    KW_IMPLEMENTS // TypeExpression
 }
 class WhereBlock {
     KW_WHERE '{' WhereBound* '}'
@@ -280,9 +285,9 @@ class BarePatternItem {
 }
 /// `Class(a, mut b, #mut c, ..d, e: Some(_))`
 class TuplePattern {
-   | Namepath? '(' (PatternItem (^COMMA PatternItem)* ^COMMA?)? ')'
-   | Namepath? '{' (PatternItem (^COMMA PatternItem)* ^COMMA?)? '}'
-   | '[' (PatternItem (^COMMA PatternItem)* ^COMMA?)? ']'
+    | Namepath? '(' (PatternItem (^COMMA PatternItem)* ^COMMA?)? ')'
+    | Namepath? '{' (PatternItem (^COMMA PatternItem)* ^COMMA?)? '}'
+    | '[' (PatternItem (^COMMA PatternItem)* ^COMMA?)? ']'
 }
 union PatternItem {
     | TuplePatternItem
@@ -404,7 +409,6 @@ union MainFactor {
 atomic class GroupFactor {
     '(' ~ MainExpression ~ ')'
 }
-
 union Leading {
     | ProceduralCall
     | TupleLiteralStrict
@@ -444,7 +448,7 @@ text class TypePrefix {
 @railway(false)
 @style(operator)
 text class MainInfix ^ {
-    / [+\\-*٪⁒÷\/%]=?
+    / [+\-*٪⁒÷\/%]=?
     | \/%=? | %%=?
     | [√^]
     # start with ?, !, =
@@ -529,7 +533,7 @@ class NewBlock {
     '{' (NewPair (EOS_FREE NewPair)* EOS_FREE?)? '}'
 }
 atomic class NewPair {
-    (NewPairKey ~ Colon HIDE)? MainExpression
+    (NewPairKey ~ COLON HIDE)? MainExpression
 }
 union NewPairKey {
     | Identifier
@@ -550,13 +554,13 @@ atomic class DotClosureCall {
 }
 // === tuple === -------------------------------------------------------------------------------------------------------
 atomic class InlineTupleCall {
-     ^WhiteSpace? OP_AND_THEN? ^WhiteSpace? TupleLiteral
+    ^WhiteSpace? OP_AND_THEN? ^WhiteSpace? TupleLiteral
 }
 atomic class TupleCall {
-     ^WhiteSpace? OP_AND_THEN? ^WhiteSpace? (
+    ^WhiteSpace? OP_AND_THEN? ^WhiteSpace? (
         | TupleLiteral (^WhiteSpace? Continuation)?
         | Continuation
-     )
+    )
 }
 class TupleLiteral {
     '(' TupleTerms ')'
@@ -570,7 +574,7 @@ atomic class TupleTerms {
     (TuplePair (HIDE ^COMMA ~ TuplePair)* (HIDE ^COMMA)?)?
 }
 class TuplePair {
-    (TupleKey Colon)? MainExpression
+    (TupleKey COLON)? MainExpression
 }
 union TupleKey {
     | Identifier
@@ -616,7 +620,7 @@ atomic class GenericParameter {
     (GenericParameterPair (HIDE ^COMMA ~ GenericParameterPair)* (HIDE ^COMMA)?)?
 }
 class GenericParameterPair {
-    Identifier (^Colon bound:TypeExpression)? ('=' default:TypeExpression)?
+    Identifier (^COLON bound:TypeExpression)? ('=' default:TypeExpression)?
 }
 // === generic call === ------------------------------------------------------------------------------------------------
 class GenericCall {
@@ -634,7 +638,7 @@ atomic class GenericTerms {
     (GenericPair (HIDE ^COMMA ~ GenericPair)* (HIDE ^COMMA)?)?
 }
 class GenericPair {
-    (Identifier Colon)? TypeExpression
+    (Identifier COLON)? TypeExpression
 }
 // === annotation === --------------------------------------------------------------------------------------------------
 class AnnotationHead {
@@ -689,25 +693,13 @@ class StringElements {
     StringElement* EOI
 }
 union StringElement {
-    | StringInterpolation
-    | StringFormatter
     | EscapeCharacter
     | EscapeUnicode
-    | StringInterpolationEscape
+    | StringInterpolationSimple
+    | StringInterpolationComplex
 }
-class StringInterpolation {
-    '{' MainExpression (^COLON StringFormatter)? '}'
-}
-class StringFormatter {
-    /[^{}]+/
-}
-atomic class EscapeCharacter {
-    '\' ANY
-}
-union StringInterpolationEscape {
-    | '{{' #BraceLeft
-    | '}}' #BraceRight
-    | StringInterpolationText
+atomic text class EscapeCharacter {
+    /\.|\{\{|\}\}/
 }
 atomic class EscapeUnicode {
     '\u' '{' ~ code:EscapeUnicodeCode ~ '}'
@@ -715,8 +707,18 @@ atomic class EscapeUnicode {
 class EscapeUnicodeCode {
     /[0-9a-fA-F]+/
 }
+class StringInterpolationSimple {
+    '{' MainExpression (^COLON StringFormatter)? '}'
+}
 class StringInterpolationText {
     /[^{}\\]+/
+}
+class StringFormatter {
+    /[^}]+/
+}
+/// `{ expression, 'argument', time: A }`
+class StringInterpolationComplex {
+    '{' MainExpression (^COMMA ParameterItem)* ^COMMA? '}'
 }
 // === modifier === --------------------------------------------------------------------------------------------------
 atomic class ModifierCall ^ {
@@ -737,7 +739,7 @@ class KEYWORDS_STOP {
 }
 @railway(false)
 atomic class IDENTIFIER_STOP {
-    Identifier ~ /[\\[\\](){}<>⟨:∷,.;∈=]|in|is/
+    Identifier ~ /[\[\](){}<>⟨:∷,.;∈=]|in|is/
 }
 // === identifier === --------------------------------------------------------------------------------------------------
 atomic class Slot {
@@ -810,6 +812,7 @@ token {
     OFFSET_R: '⁆'
     OP_SLOT: /[$]{1,3}/
 }
+
 class PROPORTION2 -> PROPORTION {
     /[.．∷]|::/
 }
@@ -843,7 +846,6 @@ token {
     // === class === ---------------------------------------------------------------------------------------------------
     KW_TEMPLATE: /template|generic/
     KW_WHERE: /where/
-    KW_TRAIT: /trait|interface/
     KW_IMPLEMENTS: /implements?/
     KW_EXTENDS: /extends?/
     KW_INHERITS: /inherits?/
