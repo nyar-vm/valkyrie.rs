@@ -135,6 +135,7 @@ impl IdentifierNode {
         self.span.set_range(range);
         self
     }
+    /// Whether this identifier needs escaping
     pub fn is_normal(&self) -> bool {
         self.name.starts_with(|c: char| c.is_ascii_lowercase())
     }

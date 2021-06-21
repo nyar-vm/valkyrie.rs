@@ -2,34 +2,32 @@ use super::*;
 
 impl crate::DefineClassNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<ClassDeclaration> {
-        let terms = self.class_block.build(ctx)?;
-        let annotations = self.annotation_head.annotations(ctx)?;
         Ok(ClassDeclaration {
             kind: self.kw_class.build(),
-            annotations,
+            annotations: self.annotation_head.annotations(ctx),
             name: self.identifier.build(ctx),
             generic: None,
             base_classes: None,
             auto_traits: vec![],
-            terms,
+            terms: self.class_block.build(ctx),
             span: self.span.clone(),
         })
     }
 }
 
 impl crate::ClassBlockNode {
-    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<Vec<ClassTerm>> {
-        let mut terms = vec![];
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Vec<ClassTerm> {
+        let mut terms = Vec::with_capacity(self.class_term.len());
         for term in &self.class_term {
             match term.build(ctx) {
                 Ok(s) => terms.extend(s),
                 Err(e) => ctx.add_error(e),
             }
         }
-        Ok(terms)
+        terms
     }
     pub(crate) fn build_domain(&self, ctx: &mut ProgramState) -> Result<DomainDeclaration> {
-        Ok(DomainDeclaration { body: self.build(ctx)?, span: self.span.clone() })
+        Ok(DomainDeclaration { body: self.build(ctx), span: self.span.clone() })
     }
 }
 
@@ -80,6 +78,6 @@ impl crate::DefineMethodNode {
 impl crate::DefineDomainNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<DomainDeclaration> {
         // let name = self.class_block;
-        Ok(DomainDeclaration { body: self.class_block.build(ctx)?, span: self.span.clone() })
+        Ok(DomainDeclaration { body: self.class_block.build(ctx), span: self.span.clone() })
     }
 }

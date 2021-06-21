@@ -2,7 +2,7 @@ NamespaceDeclaration {
     kind: Standalone,
     path: std∷create∷test,
 }
-UnionDeclaration {
+Union {
     annotations: Annotation {
         attributes: [
             AttributeTerm {
@@ -20,13 +20,11 @@ UnionDeclaration {
             },
         ],
     },
-    name: Identifier("Union1", 111..117),
-    layout: None,
-    derive_traits: [],
-    terms: [],
+    name: Union1,
+    body: [],
     span: 100..120,
 }
-UnionDeclaration {
+Union {
     annotations: Annotation {
         attributes: [
             AttributeTerm {
@@ -44,10 +42,8 @@ UnionDeclaration {
             },
         ],
     },
-    name: Identifier("Union2", 167..173),
-    layout: None,
-    derive_traits: [],
-    terms: [
+    name: Union2,
+    body: [
         Variant {
             name: Variant1,
         },
@@ -65,7 +61,7 @@ UnionDeclaration {
     ],
     span: 150..242,
 }
-UnionDeclaration {
+Union {
     annotations: Annotation {
         attributes: [
             AttributeTerm {
@@ -83,10 +79,8 @@ UnionDeclaration {
             },
         ],
     },
-    name: Identifier("Union3", 293..299),
-    layout: None,
-    derive_traits: [],
-    terms: [
+    name: Union3,
+    body: [
         Variant {
             name: Variant1,
         },
@@ -110,12 +104,9 @@ UnionDeclaration {
     ],
     span: 275..402,
 }
-UnionDeclaration {
-    annotations: Empty,
-    name: Identifier("Union4", 410..416),
-    layout: None,
-    derive_traits: [],
-    terms: [
+Union {
+    name: Union4,
+    body: [
         Variant {
             name: Variant1,
             body: [
@@ -201,12 +192,14 @@ UnionDeclaration {
     ],
     span: 404..603,
 }
-UnionDeclaration {
-    annotations: Empty,
-    name: Identifier("A", 636..637),
-    layout: None,
-    derive_traits: [],
-    terms: [
+Union {
+    name: A,
+    implements: InfixNode {
+        infix: +,
+        lhs: A,
+        rhs: B,
+    },
+    body: [
         Variant {
             name: A,
         },
@@ -219,12 +212,9 @@ UnionDeclaration {
     ],
     span: 630..683,
 }
-UnionDeclaration {
-    annotations: Empty,
-    name: Identifier("Option", 710..716),
-    layout: None,
-    derive_traits: [],
-    terms: [
+Union {
+    name: Option,
+    body: [
         Variant {
             name: Some,
             body: [
@@ -239,12 +229,9 @@ UnionDeclaration {
     ],
     span: 704..820,
 }
-UnionDeclaration {
-    annotations: Empty,
-    name: Identifier("Result", 845..851),
-    layout: None,
-    derive_traits: [],
-    terms: [
+Union {
+    name: Result,
+    body: [
         Variant {
             name: Success,
             body: [
@@ -264,12 +251,9 @@ UnionDeclaration {
     ],
     span: 822..939,
 }
-UnionDeclaration {
-    annotations: Empty,
-    name: Identifier("Validation", 947..957),
-    layout: None,
-    derive_traits: [],
-    terms: [
+Union {
+    name: Validation,
+    body: [
         Variant {
             name: Fine,
             body: [

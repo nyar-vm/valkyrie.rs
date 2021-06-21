@@ -1,5 +1,4 @@
 use super::*;
-use crate::TraitTermNode;
 
 impl crate::DefineTraitNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<TraitDeclaration> {

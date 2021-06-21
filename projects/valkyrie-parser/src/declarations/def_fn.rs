@@ -3,15 +3,13 @@ use crate::utils::{build_parameter_default, build_type_hint};
 
 impl crate::DefineFunctionNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<FunctionDeclaration> {
-        let annotations = self.annotation_head.annotations(ctx)?;
-        let returns = self.function_middle.returns(ctx)?;
         Ok(FunctionDeclaration {
-            name: self.namepath.build(ctx),
             kind: self.kw_function.build(),
-            annotations,
+            annotations: self.annotation_head.annotations(ctx),
+            name: self.namepath.build(ctx),
             generics: self.function_middle.generics(ctx),
             parameters: self.function_middle.parameters(ctx),
-            returns,
+            returns: self.function_middle.returns(ctx)?,
             body: self.continuation.build(ctx),
         })
     }

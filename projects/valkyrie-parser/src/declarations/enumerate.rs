@@ -10,7 +10,7 @@ impl crate::DefineEnumerateNode {
             }
         }
         Ok(FlagDeclaration {
-            annotations: self.annotation_head.annotations(ctx)?,
+            annotations: self.annotation_head.annotations(ctx),
             name: self.identifier.build(ctx),
             kind: self.kw_flags.build(),
             layout: None,

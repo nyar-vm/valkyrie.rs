@@ -2,14 +2,12 @@ use super::*;
 
 impl crate::DefineUnionNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<UnionDeclaration> {
-        // let terms = self.function_body.build(ctx).recover(&mut errors)?;
-        let annotations = self.annotation_head.annotations(ctx)?;
         Ok(UnionDeclaration {
-            annotations,
+            annotations: self.annotation_head.annotations(ctx),
             name: self.identifier.build(ctx),
-            layout: None,
-            derive_traits: vec![],
-            terms: self.terms(ctx),
+            inherits: vec![],
+            implements: build_type_hint(&self.type_hint, ctx),
+            body: self.terms(ctx),
             span: self.span.clone(),
         })
     }
@@ -48,22 +46,17 @@ impl crate::UnionTermNode {
 }
 impl crate::DefineVariantNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<VariantDeclaration> {
-        let name = self.identifier.build(ctx);
-        let annotations = build_annotation_terms(&self.annotation_term, ctx)?.into();
-        Ok(VariantDeclaration { name, annotations, body: self.domain(ctx), span: self.span.clone() })
+        Ok(VariantDeclaration {
+            name: self.identifier.build(ctx),
+            annotations: build_annotation_terms(&self.annotation_term, ctx).into(),
+            body: self.domain(ctx),
+            span: self.span.clone(),
+        })
     }
     fn domain(&self, ctx: &mut ProgramState) -> Vec<ClassTerm> {
         match &self.class_block {
-            Some(body) => match body.build(ctx) {
-                Ok(o) => o,
-                Err(e) => {
-                    ctx.add_error(e);
-                    vec![]
-                }
-            },
-            None => {
-                vec![]
-            }
+            Some(body) => body.build(ctx),
+            None => vec![],
         }
     }
 }

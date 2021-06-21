@@ -350,7 +350,7 @@ union MatchTerms {
     | COMMA
 }
 class MatchType {
-    KW_TYPE TypeExpression ^COLON MatchStatement*
+    KW_TYPE TypeExpression IfGuard? ^COLON MatchStatement*
 }
 class MatchCase {
     KW_CASE CasePattern IfGuard? ^COLON MatchStatement*

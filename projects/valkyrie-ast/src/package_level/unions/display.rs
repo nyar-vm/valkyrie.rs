@@ -1,5 +1,24 @@
 use super::*;
 
+impl Debug for UnionDeclaration {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        let w = &mut f.debug_struct("Union");
+        if !self.annotations.is_empty() {
+            w.field("annotations", &self.annotations);
+        }
+        w.field("name", &WrapDisplay::new(&self.name));
+        if !self.inherits.is_empty() {
+            w.field("inherits", &self.inherits);
+        }
+        if let Some(i) = &self.implements {
+            w.field("implements", i);
+        }
+        w.field("body", &self.body);
+        w.field("span", &self.span);
+        w.finish()
+    }
+}
+
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for UnionDeclaration {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
@@ -7,7 +26,7 @@ impl PrettyPrint for UnionDeclaration {
         terms += theme.keyword("union");
         terms += " ";
         terms += self.name.pretty(theme);
-        terms += self.terms.pretty(theme);
+        terms += self.body.pretty(theme);
         terms.into()
     }
 }

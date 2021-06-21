@@ -76,6 +76,7 @@ impl StatementBlock {
 }
 
 impl FunctionReturnNode {
+    /// Check weather the return type and effects are empty
     pub fn is_empty(&self) -> bool {
         self.typing.is_none() && self.effect.is_empty()
     }

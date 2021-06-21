@@ -159,6 +159,15 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
+    body: ApplyCallNode {
+        monadic: false,
+        caller: point,
+        arguments: ArgumentsList {
+            terms: [],
+        },
+        body: None,
+        span: 188..217,
+    },
     span: 170..219,
 }
 if
@@ -168,6 +177,15 @@ VariableDeclaration {
         name: None,
         terms: [],
         span: 0..0,
+    },
+    body: ApplyCallNode {
+        monadic: false,
+        caller: x,
+        arguments: ArgumentsList {
+            terms: [],
+        },
+        body: None,
+        span: 244..266,
     },
     span: 222..267,
 }

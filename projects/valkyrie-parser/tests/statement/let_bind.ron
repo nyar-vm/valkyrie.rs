@@ -24,6 +24,7 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
+    body: 1,
     span: 19..29,
 }
 VariableDeclaration {
@@ -34,6 +35,7 @@ VariableDeclaration {
         span: 0..0,
     },
     type: int,
+    body: 1,
     span: 30..45,
 }
 VariableDeclaration {
@@ -73,6 +75,18 @@ VariableDeclaration {
         },
         span: 93..100,
     },
+    body: TupleNode {
+        kind: Tuple,
+        terms: ArgumentsList {
+            terms: [
+                TupleTermNode {
+                    key: None,
+                    value: 1,
+                },
+            ],
+        },
+        span: 103..108,
+    },
     span: 78..109,
 }
 VariableDeclaration {
@@ -98,6 +112,22 @@ VariableDeclaration {
         },
         span: 130..140,
     },
+    body: TupleNode {
+        kind: Tuple,
+        terms: ArgumentsList {
+            terms: [
+                TupleTermNode {
+                    key: None,
+                    value: 1,
+                },
+                TupleTermNode {
+                    key: None,
+                    value: 1,
+                },
+            ],
+        },
+        span: 143..149,
+    },
     span: 110..150,
 }
 VariableDeclaration {
@@ -107,6 +137,7 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
+    body: if,
     span: 152..163,
 }
 ApplyCallNode {

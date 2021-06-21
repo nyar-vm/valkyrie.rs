@@ -55,6 +55,7 @@ impl Debug for CollectorNode {
     }
 }
 
+/// A valid term in a collector
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum CollectorTerm {

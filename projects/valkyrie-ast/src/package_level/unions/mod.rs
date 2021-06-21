@@ -5,16 +5,19 @@ mod display;
 mod iters;
 
 /// `union Name(Super): Trait {}`
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Clone, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct UnionDeclaration {
     /// The annotations of this union
     pub annotations: AnnotationNode,
     /// The range of the number.
     pub name: IdentifierNode,
-    pub layout: Option<String>,
-    pub derive_traits: Vec<String>,
-    pub terms: Vec<UnionTerm>,
+    /// `union A(Union)`, the super unions
+    pub inherits: Vec<ExpressionKind>,
+    /// `union A: Debug { }`, the trait bounds
+    pub implements: Option<ExpressionKind>,
+    /// The variants of this union
+    pub body: Vec<UnionTerm>,
     /// The text range of the statement
     pub span: Range<u32>,
 }

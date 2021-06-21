@@ -16,5 +16,14 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
+    body: ApplyCallNode {
+        monadic: false,
+        caller: point,
+        arguments: ArgumentsList {
+            terms: [],
+        },
+        body: None,
+        span: 174..275,
+    },
     span: 156..276,
 }

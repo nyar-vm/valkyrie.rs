@@ -4,7 +4,9 @@ use super::*;
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct GotoStatement {
+    /// The goto path
     pub path: Vec<String>,
+    /// The range of the node
     pub span: Range<u32>,
 }
 
