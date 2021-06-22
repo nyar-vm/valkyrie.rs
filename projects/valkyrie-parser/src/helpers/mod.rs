@@ -11,7 +11,6 @@ pub struct ProgramContext {
 
 pub(crate) struct ProgramState {
     pub file: FileID,
-    pub looper: LooperState,
     errors: Vec<NyarError>,
 }
 
@@ -22,19 +21,7 @@ pub(crate) struct LooperState {
 
 impl ProgramState {
     pub fn new(file: FileID) -> Self {
-        Self { file, looper: LooperState { id: 1, stack: vec![] }, errors: vec![] }
-    }
-    pub fn enter_looper(&mut self) -> String {
-        self.looper.stack.push(self.looper.id);
-        format!("looper-{}", self.looper.id)
-    }
-    pub fn exit_looper(&mut self) {
-        self.looper.id += 1;
-        self.looper.id = self.looper.stack.pop().expect("looper stack is empty");
-    }
-    pub fn reset_looper(&mut self) {
-        self.looper.id = 1;
-        self.looper.stack.clear()
+        Self { file, errors: vec![] }
     }
     pub fn add_error<E>(&mut self, error: E)
     where

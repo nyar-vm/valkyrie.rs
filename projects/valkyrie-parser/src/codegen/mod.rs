@@ -1624,6 +1624,7 @@ pub enum StringElementNode {
     EscapeUnicode(EscapeUnicodeNode),
     StringInterpolationComplex(StringInterpolationComplexNode),
     StringInterpolationSimple(StringInterpolationSimpleNode),
+    StringInterpolationText(StringInterpolationTextNode),
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -1640,6 +1641,7 @@ pub struct EscapeUnicodeNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct EscapeUnicodeCodeNode {
+    pub text: String,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -1652,11 +1654,13 @@ pub struct StringInterpolationSimpleNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct StringInterpolationTextNode {
+    pub text: String,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct StringFormatterNode {
+    pub text: String,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]

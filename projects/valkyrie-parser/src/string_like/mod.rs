@@ -1,4 +1,4 @@
-mod formatted;
+pub mod formatted;
 mod raw;
 // mod template;
 

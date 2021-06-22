@@ -4,7 +4,7 @@ use nyar_error::{FileSpan, Validation};
 mod display;
 
 /// Pure text of a string literal.
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct StringTextNode {
     /// The unescaped text of the string.

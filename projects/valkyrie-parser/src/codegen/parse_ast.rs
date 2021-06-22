@@ -4136,6 +4136,7 @@ impl YggdrasilNode for StringElementNode {
             Self::EscapeUnicode(s) => s.get_range(),
             Self::StringInterpolationComplex(s) => s.get_range(),
             Self::StringInterpolationSimple(s) => s.get_range(),
+            Self::StringInterpolationText(s) => s.get_range(),
         }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
@@ -4151,6 +4152,9 @@ impl YggdrasilNode for StringElementNode {
         }
         if let Ok(s) = pair.take_tagged_one::<StringInterpolationSimpleNode>(Cow::Borrowed("string_interpolation_simple")) {
             return Ok(Self::StringInterpolationSimple(s));
+        }
+        if let Ok(s) = pair.take_tagged_one::<StringInterpolationTextNode>(Cow::Borrowed("string_interpolation_text")) {
+            return Ok(Self::StringInterpolationText(s));
         }
         Err(YggdrasilError::invalid_node(ValkyrieRule::StringElement, _span))
     }
@@ -4215,7 +4219,7 @@ impl YggdrasilNode for EscapeUnicodeCodeNode {
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
-        Ok(Self { span: Range { start: _span.start() as u32, end: _span.end() as u32 } })
+        Ok(Self { text: pair.get_string(), span: Range { start: _span.start() as u32, end: _span.end() as u32 } })
     }
 }
 #[automatically_derived]
@@ -4259,7 +4263,7 @@ impl YggdrasilNode for StringInterpolationTextNode {
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
-        Ok(Self { span: Range { start: _span.start() as u32, end: _span.end() as u32 } })
+        Ok(Self { text: pair.get_string(), span: Range { start: _span.start() as u32, end: _span.end() as u32 } })
     }
 }
 #[automatically_derived]
@@ -4279,7 +4283,7 @@ impl YggdrasilNode for StringFormatterNode {
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
-        Ok(Self { span: Range { start: _span.start() as u32, end: _span.end() as u32 } })
+        Ok(Self { text: pair.get_string(), span: Range { start: _span.start() as u32, end: _span.end() as u32 } })
     }
 }
 #[automatically_derived]

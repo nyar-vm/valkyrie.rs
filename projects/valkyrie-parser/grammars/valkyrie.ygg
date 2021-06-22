@@ -1,16 +1,15 @@
 grammar Valkyrie {
-//    patterns: ("*.vk", "*.valkyrie"),
-//    parser: {
-//        text_raw: {
-//            rust: crate::helpers::parse_text_raw
-//        }
-//    }
+    patterns: ("*.vk", "*.valkyrie"),
+    parser: {
+        text_raw: {
+            rust: crate::helpers::parse_text_raw
+        }
+    }
 }
 // === statements === -----------------------------------------------------------------
 atomic class Program {
     SOI ~ Shebang? (HIDE Statement)* ~ EOI
 }
-
 // === statements === -----------------------------------------------------------------
 union Statement {
     | DefineNamespace
@@ -448,7 +447,7 @@ text class TypePrefix {
 @railway(false)
 @style(operator)
 text class MainInfix ^ {
-    / [+\-*٪⁒÷\/%]=?
+    / [+\\-*٪⁒÷\/%]=?
     | \/%=? | %%=?
     | [√^]
     # start with ?, !, =
@@ -689,31 +688,32 @@ text atomic class TEXT_CONTENT4 { (!"'''" ANY)+ }
 text atomic class TEXT_CONTENT5 { (!'""""' ANY)+ }
 text atomic class TEXT_CONTENT6 { (!"''''" ANY)+ }
 // === string interpolation === ----------------------------------------------------------------------------------------
-class StringElements {
+atomic class StringElements {
     StringElement* EOI
 }
 union StringElement {
-    | EscapeCharacter
     | EscapeUnicode
+    | EscapeCharacter
     | StringInterpolationSimple
     | StringInterpolationComplex
+    | StringInterpolationText
 }
 atomic text class EscapeCharacter {
-    /\.|\{\{|\}\}/
+    /\\\\.|\{\{|\}\}/
 }
 atomic class EscapeUnicode {
     '\u' '{' ~ code:EscapeUnicodeCode ~ '}'
 }
-class EscapeUnicodeCode {
-    /[0-9a-fA-F]+/
+text class EscapeUnicodeCode {
+    /[0-9a-zA-Z]*/
 }
 class StringInterpolationSimple {
     '{' MainExpression (^COLON StringFormatter)? '}'
 }
-class StringInterpolationText {
-    /[^{}\\]+/
+text class StringInterpolationText {
+    /[^{}\\\\]+/
 }
-class StringFormatter {
+text class StringFormatter {
     /[^}]+/
 }
 /// `{ expression, 'argument', time: A }`
@@ -812,7 +812,6 @@ token {
     OFFSET_R: '⁆'
     OP_SLOT: /[$]{1,3}/
 }
-
 class PROPORTION2 -> PROPORTION {
     /[.．∷]|::/
 }
@@ -832,10 +831,10 @@ text class KW_CONTROL {
     | raise | throw
     | return
     | resume
-    | yield\p{White_Space}+break
-    | yield\p{White_Space}+from
-    | yield\p{White_Space}+wait
-    | yield(\p{White_Space}+return)?
+    | yield\s+break
+    | yield\s+from
+    | yield\s+wait
+    | yield(\s+return)?
     /
 }
 @railway(false)

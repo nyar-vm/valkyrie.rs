@@ -1,7 +1,7 @@
 use nyar_error::{third_party::Url, FileID};
 use std::path::PathBuf;
-use valkyrie_ast::ProgramRoot;
-use valkyrie_parser::{MainStatementNode, ProgramContext, RangeLiteralNode};
+use valkyrie_ast::{ProgramRoot, StringInterpreter, StringTextNode};
+use valkyrie_parser::{MainStatementNode, ProgramContext, RangeLiteralNode, StringFormatterBuilder};
 
 use super::*;
 
@@ -39,6 +39,35 @@ fn debug() {
 (true, (true, ), ((true, (()))));
     "#;
     debug_literal(raw).unwrap();
+}
+
+#[test]
+fn debug_formatter() {
+    let mut cache = FileCache::default();
+    let text = r#"abcde
+{{\n\r}}
+\u{123}
+\u{AZ}
+\u{12345678}
+{a}
+{b:fmt}"#;
+    let id = cache.load_text(text, "debug.v");
+
+    let mut f = StringFormatterBuilder::new(id);
+    match f.interpret(&StringTextNode { text: text.to_string(), span: Default::default() }) {
+        Success { value, diagnostics } => {
+            println!("Long Form:\n{:#?}", value);
+            for error in diagnostics {
+                error.as_report().eprint(&cache).unwrap();
+            }
+        }
+        Failure { fatal, diagnostics } => {
+            fatal.as_report().eprint(&cache).unwrap();
+            for error in diagnostics {
+                error.as_report().eprint(&cache).unwrap();
+            }
+        }
+    }
 }
 
 // #[test]

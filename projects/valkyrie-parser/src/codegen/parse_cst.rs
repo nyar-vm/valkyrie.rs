@@ -2012,7 +2012,7 @@ fn parse_main_infix(state: Input) -> Output {
             static REGEX: OnceLock<Regex> = OnceLock::new();
             REGEX.get_or_init(|| {
                 Regex::new(
-                    "^(?x)([+-*٪⁒÷/%]=?
+                    "^(?x)([+\\-*٪⁒÷/%]=?
     | /%=? | %%=?
     | [√^]
     # start with ?, !, =
@@ -3194,16 +3194,7 @@ fn parse_string_elements(state: Input) -> Output {
     state.rule(ValkyrieRule::StringElements, |s| {
         s.sequence(|s| {
             Ok(s)
-                .and_then(|s| {
-                    s.repeat(0..4294967295, |s| {
-                        s.sequence(|s| {
-                            Ok(s)
-                                .and_then(|s| builtin_ignore(s))
-                                .and_then(|s| parse_string_element(s).and_then(|s| s.tag_node("string_element")))
-                        })
-                    })
-                })
-                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| s.repeat(0..4294967295, |s| parse_string_element(s).and_then(|s| s.tag_node("string_element"))))
                 .and_then(|s| s.end_of_input())
         })
     })
@@ -3212,10 +3203,11 @@ fn parse_string_elements(state: Input) -> Output {
 fn parse_string_element(state: Input) -> Output {
     state.rule(ValkyrieRule::StringElement, |s| {
         Err(s)
-            .or_else(|s| parse_escape_character(s).and_then(|s| s.tag_node("escape_character")))
             .or_else(|s| parse_escape_unicode(s).and_then(|s| s.tag_node("escape_unicode")))
+            .or_else(|s| parse_escape_character(s).and_then(|s| s.tag_node("escape_character")))
             .or_else(|s| parse_string_interpolation_simple(s).and_then(|s| s.tag_node("string_interpolation_simple")))
             .or_else(|s| parse_string_interpolation_complex(s).and_then(|s| s.tag_node("string_interpolation_complex")))
+            .or_else(|s| parse_string_interpolation_text(s).and_then(|s| s.tag_node("string_interpolation_text")))
     })
 }
 #[inline]
@@ -3223,7 +3215,7 @@ fn parse_escape_character(state: Input) -> Output {
     state.rule(ValkyrieRule::EscapeCharacter, |s| {
         s.match_regex({
             static REGEX: OnceLock<Regex> = OnceLock::new();
-            REGEX.get_or_init(|| Regex::new("^(?x)(.|{{|}})").unwrap())
+            REGEX.get_or_init(|| Regex::new("^(?x)(\\\\.|\\{\\{|\\}\\})").unwrap())
         })
     })
 }
@@ -3251,7 +3243,7 @@ fn parse_escape_unicode_code(state: Input) -> Output {
     state.rule(ValkyrieRule::EscapeUnicodeCode, |s| {
         s.match_regex({
             static REGEX: OnceLock<Regex> = OnceLock::new();
-            REGEX.get_or_init(|| Regex::new("^(?x)([0-9a-fA-F]+)").unwrap())
+            REGEX.get_or_init(|| Regex::new("^(?x)([0-9a-zA-Z]*)").unwrap())
         })
     })
 }
@@ -3284,7 +3276,7 @@ fn parse_string_interpolation_text(state: Input) -> Output {
     state.rule(ValkyrieRule::StringInterpolationText, |s| {
         s.match_regex({
             static REGEX: OnceLock<Regex> = OnceLock::new();
-            REGEX.get_or_init(|| Regex::new("^(?x)([^{}\\]+)").unwrap())
+            REGEX.get_or_init(|| Regex::new("^(?x)([^{}\\\\]+)").unwrap())
         })
     })
 }
@@ -3376,7 +3368,7 @@ fn parse_identifier_stop(state: Input) -> Output {
                 .and_then(|s| {
                     builtin_regex(s, {
                         static REGEX: OnceLock<Regex> = OnceLock::new();
-                        REGEX.get_or_init(|| Regex::new("^(?x)([[](){}<>⟨:∷,.;∈=]|in|is)").unwrap())
+                        REGEX.get_or_init(|| Regex::new("^(?x)([\\[\\](){}<>⟨:∷,.;∈=]|in|is)").unwrap())
                     })
                 })
         })
@@ -3756,10 +3748,10 @@ fn parse_kw_control(state: Input) -> Output {
     | raise | throw
     | return
     | resume
-    | yield\\p{White_Space}+break
-    | yield\\p{White_Space}+from
-    | yield\\p{White_Space}+wait
-    | yield(\\p{White_Space}+return)?)",
+    | yield\\s+break
+    | yield\\s+from
+    | yield\\s+wait
+    | yield(\\s+return)?)",
                 )
                 .unwrap()
             })
