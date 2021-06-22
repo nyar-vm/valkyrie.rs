@@ -73,24 +73,24 @@ atomic union ImportMacroItem {
 // === template === ----------------------------------------------------------------------------------------------------
 
 // === template === ----------------------------------------------------------------------------------------------------
-class DefineTemplate {
+class DefineConstraint {
     AnnotationHead
-    KW_TEMPLATE TemplateParameters? TemplateBlock
+    KW_CONSTRAINT ConstraintParameters? ConstraintBlock
 }
-class TemplateParameters {
+class ConstraintParameters {
     | Identifier (^COMMA Identifier)* ^COMMA?
     | '<' Identifier (^COMMA Identifier)* ^COMMA? '>'
     | '⟨' Identifier (^COMMA Identifier)* ^COMMA? '⟩'
 }
-class TemplateBlock {
-    '{' (TemplateStatement | TemplateImplements | EOS_FREE)* '}'
+class ConstraintBlock {
+    '{' (ConstraintStatement | ConstraintImplements | EOS_FREE)* '}'
 }
-class TemplateStatement {
+class ConstraintStatement {
     WhereBlock
     //  | KW_RETURN TypeExpression
     //  | Identifier RequireBlock
 }
-class TemplateImplements {
+class ConstraintImplements {
     KW_IMPLEMENTS // TypeExpression
 }
 class WhereBlock {
@@ -105,7 +105,7 @@ class WhereBound {
 //}
 // === classes === -----------------------------------------------------------------------------------------------------
 class DefineClass {
-    DefineTemplate?
+    DefineConstraint?
     AnnotationHead
     KW_CLASS Identifier DefineGeneric? DefineInherit? TypeHint? ClassBlock ^EOS?
 }
@@ -174,7 +174,7 @@ union KW_FLAGS {
 }
 // === identifier === --------------------------------------------------------------------------------------------------
 class DefineUnion {
-    DefineTemplate?
+    DefineConstraint?
     AnnotationHead
     KW_UNION Identifier DefineGeneric? DefineInherit? TypeHint? '{' UnionTerm* '}'
 }
@@ -194,12 +194,12 @@ class KW_UNION {
 }
 // === identifier === --------------------------------------------------------------------------------------------------
 class DefineTrait {
-    DefineTemplate?
+    DefineConstraint?
     AnnotationHead
     KW_TRAIT Identifier DefineGeneric? DefineInherit? TypeHint? TraitBlock ^EOS?
 }
 class DefineExtends {
-    DefineTemplate?
+    DefineConstraint?
     AnnotationHead
     KW_EXTENDS TypeExpression TypeHint? TraitBlock ^EOS?
 }
@@ -311,6 +311,18 @@ class ForStatement {
 }
 class IfGuard {
     KW_IF InlineExpression
+}
+atomic class ForTemplate {
+    ForTemplateBegin ForTemplateElse? ForTemplateEnd
+}
+class ForTemplateBegin {
+    TEMPLATE_S KW_FOR LetPattern KW_IN InlineExpression? IfGuard? TEMPLATE_E
+}
+class ForTemplateElse {
+    TEMPLATE_S KW_ELSE TEMPLATE_E
+}
+class ForTemplateEnd {
+    TEMPLATE_S KW_END KW_FOR? TEMPLATE_E
 }
 // === controls === ----------------------------------------------------------------------------------------------------
 class ControlFlow {
@@ -673,7 +685,8 @@ class AttributeItem {
 atomic class TextLiteral {
     Identifier? TextRaw
 }
-atomic class TextRaw {
+@parser(text_raw)
+fake atomic class TextRaw {
     | '""""' TEXT_CONTENT5 '""""'
     | "''''" TEXT_CONTENT6 "''''"
     | '"""' TEXT_CONTENT3 '"""'
@@ -681,6 +694,9 @@ atomic class TextRaw {
     | '"' TEXT_CONTENT1 '"'
     | "'" TEXT_CONTENT2 "'"
 }
+fake class Text_L { HIDE }
+fake class Text_R { HIDE }
+fake class Text_X { HIDE }
 text atomic class TEXT_CONTENT1 { [^"]* }
 text atomic class TEXT_CONTENT2 { [^']* }
 text atomic class TEXT_CONTENT3 { (!'"""' ANY)+ }
@@ -688,10 +704,10 @@ text atomic class TEXT_CONTENT4 { (!"'''" ANY)+ }
 text atomic class TEXT_CONTENT5 { (!'""""' ANY)+ }
 text atomic class TEXT_CONTENT6 { (!"''''" ANY)+ }
 // === string interpolation === ----------------------------------------------------------------------------------------
-atomic class StringElements {
-    StringElement* EOI
+atomic class StringInterpolations {
+    StringInterpolationTerm* EOI
 }
-union StringElement {
+union StringInterpolationTerm {
     | EscapeUnicode
     | EscapeCharacter
     | StringInterpolationSimple
@@ -718,7 +734,18 @@ text class StringFormatter {
 }
 /// `{ expression, 'argument', time: A }`
 class StringInterpolationComplex {
-    '{' MainExpression (^COMMA ParameterItem)* ^COMMA? '}'
+    '{' MainExpression (^COMMA TuplePair)* ^COMMA? '}'
+}
+// === string template === ---------------------------------------------------------------------------------------------
+atomic class StringTemplates {
+    StringTemplateTerm* EOI
+}
+union StringTemplateTerm {
+    | ForTemplate
+    | ExpressionTemplate
+}
+class ExpressionTemplate {
+    TEMPLATE_S MainExpression TEMPLATE_E
 }
 // === modifier === --------------------------------------------------------------------------------------------------
 atomic class ModifierCall ^ {
@@ -801,16 +828,22 @@ atomic class DecimalX ^ {
 }
 // === keywords === ----------------------------------------------------------------------------------------------------
 @railway(false)
-token {
+atomic token {
     PROPORTION: /∷|::/
     NS_CONCAT: /[.∷\/]|::/
     COLON: [:：]
     ARROW1: /[:：⟶]|->/
     COMMA: [,，]
     DOT:   [.．]
+    OP_SLOT: /[$]{1,3}/
+    // brackets
     OFFSET_L: '⁅'
     OFFSET_R: '⁆'
-    OP_SLOT: /[$]{1,3}/
+    TEMPLATE_S: (^TEMPLATE_L TEMPLATE_M?)
+    TEMPLATE_E: (TEMPLATE_M? ^TEMPLATE_R)
+    TEMPLATE_L: '<%'
+    TEMPLATE_R: '%>'
+    TEMPLATE_M: [-_~.=]
 }
 class PROPORTION2 -> PROPORTION {
     /[.．∷]|::/
@@ -840,29 +873,30 @@ text class KW_CONTROL {
 @railway(false)
 @style(keyword)
 token {
-    KW_NAMESPACE: /namespace/
-    KW_IMPORT: /using/
+    KW_NAMESPACE: 'namespace'
+    KW_IMPORT: 'using'
     // === class === ---------------------------------------------------------------------------------------------------
-    KW_TEMPLATE: /template|generic/
-    KW_WHERE: /where/
+    KW_CONSTRAINT: /template|generic|constraint/
+    KW_WHERE: 'where'
     KW_IMPLEMENTS: /implements?/
     KW_EXTENDS: /extends?/
     KW_INHERITS: /inherits?/
     // === looping === -------------------------------------------------------------------------------------------------
-    KW_FOR: /for/
+    KW_FOR: 'for'
+    KW_END: 'end'
     // === constructor === ---------------------------------------------------------------------------------------------
-    KW_LET: /let/
-    KW_NEW: /new/
-    KW_OBJECT: /object/
-    KW_LAMBDA: /lambda/
+    KW_LET: 'let'
+    KW_NEW: 'new'
+    KW_OBJECT: 'object'
+    KW_LAMBDA: 'lambda'
     // === if/switch/catch/match === -----------------------------------------------------------------------------------
-    KW_IF: /if/
-    KW_SWITCH: /switch/
-    KW_TRY: /try/
-    KW_TYPE: /type/
-    KW_CASE: /case/
-    KW_WHEN: /when/
-    KW_ELSE: /else/
+    KW_IF: 'if'
+    KW_SWITCH: 'switch'
+    KW_TRY: 'try'
+    KW_TYPE: 'type'
+    KW_CASE: 'case'
+    KW_WHEN: 'when'
+    KW_ELSE: 'else'
     // === operators === -----------------------------------------------------------------------------------------------
     KW_NOT: 'not'
     KW_IN: /in|∈/

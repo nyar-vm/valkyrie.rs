@@ -43,11 +43,11 @@ pub enum ValkyrieRule {
     ImportBlock,
     ImportMacro,
     ImportMacroItem,
-    DefineTemplate,
-    TemplateParameters,
-    TemplateBlock,
-    TemplateStatement,
-    TemplateImplements,
+    DefineConstraint,
+    ConstraintParameters,
+    ConstraintBlock,
+    ConstraintStatement,
+    ConstraintImplements,
     WhereBlock,
     WhereBound,
     DefineClass,
@@ -99,6 +99,10 @@ pub enum ValkyrieRule {
     KW_WHILE,
     ForStatement,
     IfGuard,
+    ForTemplate,
+    ForTemplateBegin,
+    ForTemplateElse,
+    ForTemplateEnd,
     ControlFlow,
     JumpLabel,
     MainStatement,
@@ -176,14 +180,17 @@ pub enum ValkyrieRule {
     AttributeItem,
     TextLiteral,
     TextRaw,
+    Text_L,
+    Text_R,
+    Text_X,
     TEXT_CONTENT1,
     TEXT_CONTENT2,
     TEXT_CONTENT3,
     TEXT_CONTENT4,
     TEXT_CONTENT5,
     TEXT_CONTENT6,
-    StringElements,
-    StringElement,
+    StringInterpolations,
+    StringInterpolationTerm,
     EscapeCharacter,
     EscapeUnicode,
     EscapeUnicodeCode,
@@ -191,6 +198,9 @@ pub enum ValkyrieRule {
     StringInterpolationText,
     StringFormatter,
     StringInterpolationComplex,
+    StringTemplates,
+    StringTemplateTerm,
+    ExpressionTemplate,
     ModifierCall,
     ModifierAhead,
     KEYWORDS_STOP,
@@ -216,9 +226,14 @@ pub enum ValkyrieRule {
     ARROW1,
     COMMA,
     DOT,
+    OP_SLOT,
     OFFSET_L,
     OFFSET_R,
-    OP_SLOT,
+    TEMPLATE_S,
+    TEMPLATE_E,
+    TEMPLATE_L,
+    TEMPLATE_R,
+    TEMPLATE_M,
     PROPORTION2,
     OP_IMPORT_ALL,
     OP_AND_THEN,
@@ -226,12 +241,13 @@ pub enum ValkyrieRule {
     KW_CONTROL,
     KW_NAMESPACE,
     KW_IMPORT,
-    KW_TEMPLATE,
+    KW_CONSTRAINT,
     KW_WHERE,
     KW_IMPLEMENTS,
     KW_EXTENDS,
     KW_INHERITS,
     KW_FOR,
+    KW_END,
     KW_LET,
     KW_NEW,
     KW_OBJECT,
@@ -275,11 +291,11 @@ impl YggdrasilRule for ValkyrieRule {
             Self::ImportBlock => "",
             Self::ImportMacro => "",
             Self::ImportMacroItem => "",
-            Self::DefineTemplate => "",
-            Self::TemplateParameters => "",
-            Self::TemplateBlock => "",
-            Self::TemplateStatement => "",
-            Self::TemplateImplements => "",
+            Self::DefineConstraint => "",
+            Self::ConstraintParameters => "",
+            Self::ConstraintBlock => "",
+            Self::ConstraintStatement => "",
+            Self::ConstraintImplements => "",
             Self::WhereBlock => "",
             Self::WhereBound => "",
             Self::DefineClass => "",
@@ -331,6 +347,10 @@ impl YggdrasilRule for ValkyrieRule {
             Self::KW_WHILE => "",
             Self::ForStatement => "",
             Self::IfGuard => "",
+            Self::ForTemplate => "",
+            Self::ForTemplateBegin => "",
+            Self::ForTemplateElse => "",
+            Self::ForTemplateEnd => "",
             Self::ControlFlow => "",
             Self::JumpLabel => "",
             Self::MainStatement => "",
@@ -408,14 +428,17 @@ impl YggdrasilRule for ValkyrieRule {
             Self::AttributeItem => "",
             Self::TextLiteral => "",
             Self::TextRaw => "",
+            Self::Text_L => "",
+            Self::Text_R => "",
+            Self::Text_X => "",
             Self::TEXT_CONTENT1 => "",
             Self::TEXT_CONTENT2 => "",
             Self::TEXT_CONTENT3 => "",
             Self::TEXT_CONTENT4 => "",
             Self::TEXT_CONTENT5 => "",
             Self::TEXT_CONTENT6 => "",
-            Self::StringElements => "",
-            Self::StringElement => "",
+            Self::StringInterpolations => "",
+            Self::StringInterpolationTerm => "",
             Self::EscapeCharacter => "",
             Self::EscapeUnicode => "",
             Self::EscapeUnicodeCode => "",
@@ -423,6 +446,9 @@ impl YggdrasilRule for ValkyrieRule {
             Self::StringInterpolationText => "",
             Self::StringFormatter => "",
             Self::StringInterpolationComplex => "",
+            Self::StringTemplates => "",
+            Self::StringTemplateTerm => "",
+            Self::ExpressionTemplate => "",
             Self::ModifierCall => "",
             Self::ModifierAhead => "",
             Self::KEYWORDS_STOP => "",
@@ -448,9 +474,14 @@ impl YggdrasilRule for ValkyrieRule {
             Self::ARROW1 => "",
             Self::COMMA => "",
             Self::DOT => "",
+            Self::OP_SLOT => "",
             Self::OFFSET_L => "",
             Self::OFFSET_R => "",
-            Self::OP_SLOT => "",
+            Self::TEMPLATE_S => "",
+            Self::TEMPLATE_E => "",
+            Self::TEMPLATE_L => "",
+            Self::TEMPLATE_R => "",
+            Self::TEMPLATE_M => "",
             Self::PROPORTION2 => "",
             Self::OP_IMPORT_ALL => "",
             Self::OP_AND_THEN => "",
@@ -458,12 +489,13 @@ impl YggdrasilRule for ValkyrieRule {
             Self::KW_CONTROL => "",
             Self::KW_NAMESPACE => "",
             Self::KW_IMPORT => "",
-            Self::KW_TEMPLATE => "",
+            Self::KW_CONSTRAINT => "",
             Self::KW_WHERE => "",
             Self::KW_IMPLEMENTS => "",
             Self::KW_EXTENDS => "",
             Self::KW_INHERITS => "",
             Self::KW_FOR => "",
+            Self::KW_END => "",
             Self::KW_LET => "",
             Self::KW_NEW => "",
             Self::KW_OBJECT => "",
@@ -584,36 +616,36 @@ pub enum ImportMacroItemNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct DefineTemplateNode {
+pub struct DefineConstraintNode {
     pub annotation_head: AnnotationHeadNode,
-    pub kw_template: KwTemplateNode,
-    pub template_block: TemplateBlockNode,
-    pub template_parameters: Option<TemplateParametersNode>,
+    pub constraint_block: ConstraintBlockNode,
+    pub constraint_parameters: Option<ConstraintParametersNode>,
+    pub kw_constraint: KwConstraintNode,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct TemplateParametersNode {
+pub struct ConstraintParametersNode {
     pub identifier: Vec<IdentifierNode>,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct TemplateBlockNode {
+pub struct ConstraintBlockNode {
+    pub constraint_implements: Vec<ConstraintImplementsNode>,
+    pub constraint_statement: Vec<ConstraintStatementNode>,
     pub eos_free: Vec<EosFreeNode>,
-    pub template_implements: Vec<TemplateImplementsNode>,
-    pub template_statement: Vec<TemplateStatementNode>,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct TemplateStatementNode {
+pub struct ConstraintStatementNode {
     pub where_block: WhereBlockNode,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct TemplateImplementsNode {
+pub struct ConstraintImplementsNode {
     pub kw_implements: KwImplementsNode,
     pub span: Range<u32>,
 }
@@ -635,9 +667,9 @@ pub struct WhereBoundNode {
 pub struct DefineClassNode {
     pub annotation_head: AnnotationHeadNode,
     pub class_block: ClassBlockNode,
+    pub define_constraint: Option<DefineConstraintNode>,
     pub define_generic: Option<DefineGenericNode>,
     pub define_inherit: Option<DefineInheritNode>,
-    pub define_template: Option<DefineTemplateNode>,
     pub identifier: IdentifierNode,
     pub kw_class: KwClassNode,
     pub type_hint: Option<TypeHintNode>,
@@ -759,9 +791,9 @@ pub enum KwFlagsNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct DefineUnionNode {
     pub annotation_head: AnnotationHeadNode,
+    pub define_constraint: Option<DefineConstraintNode>,
     pub define_generic: Option<DefineGenericNode>,
     pub define_inherit: Option<DefineInheritNode>,
-    pub define_template: Option<DefineTemplateNode>,
     pub identifier: IdentifierNode,
     pub kw_union: KwUnionNode,
     pub type_hint: Option<TypeHintNode>,
@@ -793,9 +825,9 @@ pub struct KwUnionNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct DefineTraitNode {
     pub annotation_head: AnnotationHeadNode,
+    pub define_constraint: Option<DefineConstraintNode>,
     pub define_generic: Option<DefineGenericNode>,
     pub define_inherit: Option<DefineInheritNode>,
-    pub define_template: Option<DefineTemplateNode>,
     pub identifier: IdentifierNode,
     pub kw_trait: KwTraitNode,
     pub trait_block: TraitBlockNode,
@@ -806,7 +838,7 @@ pub struct DefineTraitNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct DefineExtendsNode {
     pub annotation_head: AnnotationHeadNode,
-    pub define_template: Option<DefineTemplateNode>,
+    pub define_constraint: Option<DefineConstraintNode>,
     pub kw_extends: KwExtendsNode,
     pub trait_block: TraitBlockNode,
     pub type_expression: TypeExpressionNode,
@@ -1012,6 +1044,43 @@ pub struct ForStatementNode {
 pub struct IfGuardNode {
     pub inline_expression: InlineExpressionNode,
     pub kw_if: KwIfNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ForTemplateNode {
+    pub for_template_begin: ForTemplateBeginNode,
+    pub for_template_else: Option<ForTemplateElseNode>,
+    pub for_template_end: ForTemplateEndNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ForTemplateBeginNode {
+    pub if_guard: Option<IfGuardNode>,
+    pub inline_expression: Option<InlineExpressionNode>,
+    pub kw_for: KwForNode,
+    pub kw_in: KwInNode,
+    pub let_pattern: LetPatternNode,
+    pub template_e: TemplateENode,
+    pub template_s: TemplateSNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ForTemplateElseNode {
+    pub kw_else: KwElseNode,
+    pub template_e: TemplateENode,
+    pub template_s: TemplateSNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ForTemplateEndNode {
+    pub kw_end: KwEndNode,
+    pub kw_for: Option<KwForNode>,
+    pub template_e: TemplateENode,
+    pub template_s: TemplateSNode,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -1577,6 +1646,21 @@ pub struct TextRawNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct TextLNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct TextRNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct TextXNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct TextContent1Node {
     pub text: String,
     pub span: Range<u32>,
@@ -1613,13 +1697,13 @@ pub struct TextContent6Node {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct StringElementsNode {
-    pub string_element: Vec<StringElementNode>,
+pub struct StringInterpolationsNode {
+    pub string_interpolation_term: Vec<StringInterpolationTermNode>,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum StringElementNode {
+pub enum StringInterpolationTermNode {
     EscapeCharacter(EscapeCharacterNode),
     EscapeUnicode(EscapeUnicodeNode),
     StringInterpolationComplex(StringInterpolationComplexNode),
@@ -1667,7 +1751,27 @@ pub struct StringFormatterNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct StringInterpolationComplexNode {
     pub main_expression: MainExpressionNode,
-    pub parameter_item: Vec<ParameterItemNode>,
+    pub tuple_pair: Vec<TuplePairNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct StringTemplatesNode {
+    pub string_template_term: Vec<StringTemplateTermNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum StringTemplateTermNode {
+    ExpressionTemplate(ExpressionTemplateNode),
+    ForTemplate(ForTemplateNode),
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ExpressionTemplateNode {
+    pub main_expression: MainExpressionNode,
+    pub template_e: TemplateENode,
+    pub template_s: TemplateSNode,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -1827,6 +1931,11 @@ pub struct DotNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct OpSlotNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct OffsetLNode {
     pub span: Range<u32>,
 }
@@ -1837,7 +1946,29 @@ pub struct OffsetRNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct OpSlotNode {
+pub struct TemplateSNode {
+    pub template_l: TemplateLNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct TemplateENode {
+    pub template_r: TemplateRNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct TemplateLNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct TemplateRNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct TemplateMNode {
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -1878,7 +2009,7 @@ pub struct KwImportNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct KwTemplateNode {
+pub struct KwConstraintNode {
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -1904,6 +2035,11 @@ pub struct KwInheritsNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct KwForNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct KwEndNode {
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]

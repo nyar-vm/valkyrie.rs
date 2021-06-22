@@ -65,7 +65,7 @@ pub use crate::{
         PatternCondition, PatternNode, PatternTypeNode, PatternWhenNode, PatternsList, TuplePatternNode, UnionPatternNode,
     },
     string_like::{
-        string_formatter::{StringFormatted, StringFormattedTerm},
+        string_formatter::{StringFormatterNode, StringFormatterTerm},
         string_literal::{StringInterpreter, StringLiteralNode, StringTextNode},
         string_template::{
             StringTemplateNode, TemplateCloseNode, TemplateCommentNode, TemplateInlineNode, TemplateLineType, TemplateOpenNode,

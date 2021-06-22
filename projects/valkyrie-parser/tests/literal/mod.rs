@@ -46,12 +46,10 @@ fn debug_formatter() {
     let mut cache = FileCache::default();
     let text = r#"abcde
 {{\n\r}}
-\u{123}
-\u{AZ}
-\u{12345678}
+\u{123} \u{AZ} \u{12345678}
 {a}
 {b:fmt}"#;
-    let id = cache.load_text(text, "debug.v");
+    let id = cache.load_text(text, "<anonymous>");
 
     let mut f = StringFormatterBuilder::new(id);
     match f.interpret(&StringTextNode { text: text.to_string(), span: Default::default() }) {

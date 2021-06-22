@@ -23,7 +23,7 @@ version = "0.0.16"
 
 [dependencies.nyar-error]
 version = "0.1.10"
-#path = 'C:\Users\Dell\CLionProjects\nyar-vm\projects\nyar-error'
+path = 'C:\Users\Dell\CLionProjects\nyar-vm\projects\nyar-error'
 features = ["pratt", "yggdrasil-rt"]
 
 [dev-dependencies]

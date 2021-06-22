@@ -15,11 +15,11 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::ImportBlock => parse_import_block(state),
         ValkyrieRule::ImportMacro => parse_import_macro(state),
         ValkyrieRule::ImportMacroItem => parse_import_macro_item(state),
-        ValkyrieRule::DefineTemplate => parse_define_template(state),
-        ValkyrieRule::TemplateParameters => parse_template_parameters(state),
-        ValkyrieRule::TemplateBlock => parse_template_block(state),
-        ValkyrieRule::TemplateStatement => parse_template_statement(state),
-        ValkyrieRule::TemplateImplements => parse_template_implements(state),
+        ValkyrieRule::DefineConstraint => parse_define_constraint(state),
+        ValkyrieRule::ConstraintParameters => parse_constraint_parameters(state),
+        ValkyrieRule::ConstraintBlock => parse_constraint_block(state),
+        ValkyrieRule::ConstraintStatement => parse_constraint_statement(state),
+        ValkyrieRule::ConstraintImplements => parse_constraint_implements(state),
         ValkyrieRule::WhereBlock => parse_where_block(state),
         ValkyrieRule::WhereBound => parse_where_bound(state),
         ValkyrieRule::DefineClass => parse_define_class(state),
@@ -71,6 +71,10 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::KW_WHILE => parse_kw_while(state),
         ValkyrieRule::ForStatement => parse_for_statement(state),
         ValkyrieRule::IfGuard => parse_if_guard(state),
+        ValkyrieRule::ForTemplate => parse_for_template(state),
+        ValkyrieRule::ForTemplateBegin => parse_for_template_begin(state),
+        ValkyrieRule::ForTemplateElse => parse_for_template_else(state),
+        ValkyrieRule::ForTemplateEnd => parse_for_template_end(state),
         ValkyrieRule::ControlFlow => parse_control_flow(state),
         ValkyrieRule::JumpLabel => parse_jump_label(state),
         ValkyrieRule::MainStatement => parse_main_statement(state),
@@ -148,14 +152,17 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::AttributeItem => parse_attribute_item(state),
         ValkyrieRule::TextLiteral => parse_text_literal(state),
         ValkyrieRule::TextRaw => parse_text_raw(state),
+        ValkyrieRule::Text_L => parse_text_l(state),
+        ValkyrieRule::Text_R => parse_text_r(state),
+        ValkyrieRule::Text_X => parse_text_x(state),
         ValkyrieRule::TEXT_CONTENT1 => parse_text_content_1(state),
         ValkyrieRule::TEXT_CONTENT2 => parse_text_content_2(state),
         ValkyrieRule::TEXT_CONTENT3 => parse_text_content_3(state),
         ValkyrieRule::TEXT_CONTENT4 => parse_text_content_4(state),
         ValkyrieRule::TEXT_CONTENT5 => parse_text_content_5(state),
         ValkyrieRule::TEXT_CONTENT6 => parse_text_content_6(state),
-        ValkyrieRule::StringElements => parse_string_elements(state),
-        ValkyrieRule::StringElement => parse_string_element(state),
+        ValkyrieRule::StringInterpolations => parse_string_interpolations(state),
+        ValkyrieRule::StringInterpolationTerm => parse_string_interpolation_term(state),
         ValkyrieRule::EscapeCharacter => parse_escape_character(state),
         ValkyrieRule::EscapeUnicode => parse_escape_unicode(state),
         ValkyrieRule::EscapeUnicodeCode => parse_escape_unicode_code(state),
@@ -163,6 +170,9 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::StringInterpolationText => parse_string_interpolation_text(state),
         ValkyrieRule::StringFormatter => parse_string_formatter(state),
         ValkyrieRule::StringInterpolationComplex => parse_string_interpolation_complex(state),
+        ValkyrieRule::StringTemplates => parse_string_templates(state),
+        ValkyrieRule::StringTemplateTerm => parse_string_template_term(state),
+        ValkyrieRule::ExpressionTemplate => parse_expression_template(state),
         ValkyrieRule::ModifierCall => parse_modifier_call(state),
         ValkyrieRule::ModifierAhead => parse_modifier_ahead(state),
         ValkyrieRule::KEYWORDS_STOP => parse_keywords_stop(state),
@@ -188,9 +198,14 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::ARROW1 => parse_arrow_1(state),
         ValkyrieRule::COMMA => parse_comma(state),
         ValkyrieRule::DOT => parse_dot(state),
+        ValkyrieRule::OP_SLOT => parse_op_slot(state),
         ValkyrieRule::OFFSET_L => parse_offset_l(state),
         ValkyrieRule::OFFSET_R => parse_offset_r(state),
-        ValkyrieRule::OP_SLOT => parse_op_slot(state),
+        ValkyrieRule::TEMPLATE_S => parse_template_s(state),
+        ValkyrieRule::TEMPLATE_E => parse_template_e(state),
+        ValkyrieRule::TEMPLATE_L => parse_template_l(state),
+        ValkyrieRule::TEMPLATE_R => parse_template_r(state),
+        ValkyrieRule::TEMPLATE_M => parse_template_m(state),
         ValkyrieRule::PROPORTION2 => parse_proportion_2(state),
         ValkyrieRule::OP_IMPORT_ALL => parse_op_import_all(state),
         ValkyrieRule::OP_AND_THEN => parse_op_and_then(state),
@@ -198,12 +213,13 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::KW_CONTROL => parse_kw_control(state),
         ValkyrieRule::KW_NAMESPACE => parse_kw_namespace(state),
         ValkyrieRule::KW_IMPORT => parse_kw_import(state),
-        ValkyrieRule::KW_TEMPLATE => parse_kw_template(state),
+        ValkyrieRule::KW_CONSTRAINT => parse_kw_constraint(state),
         ValkyrieRule::KW_WHERE => parse_kw_where(state),
         ValkyrieRule::KW_IMPLEMENTS => parse_kw_implements(state),
         ValkyrieRule::KW_EXTENDS => parse_kw_extends(state),
         ValkyrieRule::KW_INHERITS => parse_kw_inherits(state),
         ValkyrieRule::KW_FOR => parse_kw_for(state),
+        ValkyrieRule::KW_END => parse_kw_end(state),
         ValkyrieRule::KW_LET => parse_kw_let(state),
         ValkyrieRule::KW_NEW => parse_kw_new(state),
         ValkyrieRule::KW_OBJECT => parse_kw_object(state),
@@ -468,23 +484,23 @@ fn parse_import_macro_item(state: Input) -> Output {
     })
 }
 #[inline]
-fn parse_define_template(state: Input) -> Output {
-    state.rule(ValkyrieRule::DefineTemplate, |s| {
+fn parse_define_constraint(state: Input) -> Output {
+    state.rule(ValkyrieRule::DefineConstraint, |s| {
         s.sequence(|s| {
             Ok(s)
                 .and_then(|s| parse_annotation_head(s).and_then(|s| s.tag_node("annotation_head")))
                 .and_then(|s| builtin_ignore(s))
-                .and_then(|s| parse_kw_template(s).and_then(|s| s.tag_node("kw_template")))
+                .and_then(|s| parse_kw_constraint(s).and_then(|s| s.tag_node("kw_constraint")))
                 .and_then(|s| builtin_ignore(s))
-                .and_then(|s| s.optional(|s| parse_template_parameters(s).and_then(|s| s.tag_node("template_parameters"))))
+                .and_then(|s| s.optional(|s| parse_constraint_parameters(s).and_then(|s| s.tag_node("constraint_parameters"))))
                 .and_then(|s| builtin_ignore(s))
-                .and_then(|s| parse_template_block(s).and_then(|s| s.tag_node("template_block")))
+                .and_then(|s| parse_constraint_block(s).and_then(|s| s.tag_node("constraint_block")))
         })
     })
 }
 #[inline]
-fn parse_template_parameters(state: Input) -> Output {
-    state.rule(ValkyrieRule::TemplateParameters, |s| {
+fn parse_constraint_parameters(state: Input) -> Output {
+    state.rule(ValkyrieRule::ConstraintParameters, |s| {
         Err(s)
             .or_else(|s| {
                 s.sequence(|s| {
@@ -566,8 +582,8 @@ fn parse_template_parameters(state: Input) -> Output {
     })
 }
 #[inline]
-fn parse_template_block(state: Input) -> Output {
-    state.rule(ValkyrieRule::TemplateBlock, |s| {
+fn parse_constraint_block(state: Input) -> Output {
+    state.rule(ValkyrieRule::ConstraintBlock, |s| {
         s.sequence(|s| {
             Ok(s)
                 .and_then(|s| builtin_text(s, "{", false))
@@ -577,8 +593,10 @@ fn parse_template_block(state: Input) -> Output {
                         s.sequence(|s| {
                             Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| {
                                 Err(s)
-                                    .or_else(|s| parse_template_statement(s).and_then(|s| s.tag_node("template_statement")))
-                                    .or_else(|s| parse_template_implements(s).and_then(|s| s.tag_node("template_implements")))
+                                    .or_else(|s| parse_constraint_statement(s).and_then(|s| s.tag_node("constraint_statement")))
+                                    .or_else(|s| {
+                                        parse_constraint_implements(s).and_then(|s| s.tag_node("constraint_implements"))
+                                    })
                                     .or_else(|s| parse_eos_free(s).and_then(|s| s.tag_node("eos_free")))
                             })
                         })
@@ -590,12 +608,12 @@ fn parse_template_block(state: Input) -> Output {
     })
 }
 #[inline]
-fn parse_template_statement(state: Input) -> Output {
-    state.rule(ValkyrieRule::TemplateStatement, |s| parse_where_block(s).and_then(|s| s.tag_node("where_block")))
+fn parse_constraint_statement(state: Input) -> Output {
+    state.rule(ValkyrieRule::ConstraintStatement, |s| parse_where_block(s).and_then(|s| s.tag_node("where_block")))
 }
 #[inline]
-fn parse_template_implements(state: Input) -> Output {
-    state.rule(ValkyrieRule::TemplateImplements, |s| parse_kw_implements(s).and_then(|s| s.tag_node("kw_implements")))
+fn parse_constraint_implements(state: Input) -> Output {
+    state.rule(ValkyrieRule::ConstraintImplements, |s| parse_kw_implements(s).and_then(|s| s.tag_node("kw_implements")))
 }
 #[inline]
 fn parse_where_block(state: Input) -> Output {
@@ -629,7 +647,7 @@ fn parse_define_class(state: Input) -> Output {
     state.rule(ValkyrieRule::DefineClass, |s| {
         s.sequence(|s| {
             Ok(s)
-                .and_then(|s| s.optional(|s| parse_define_template(s).and_then(|s| s.tag_node("define_template"))))
+                .and_then(|s| s.optional(|s| parse_define_constraint(s).and_then(|s| s.tag_node("define_constraint"))))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_annotation_head(s).and_then(|s| s.tag_node("annotation_head")))
                 .and_then(|s| builtin_ignore(s))
@@ -888,7 +906,7 @@ fn parse_define_union(state: Input) -> Output {
     state.rule(ValkyrieRule::DefineUnion, |s| {
         s.sequence(|s| {
             Ok(s)
-                .and_then(|s| s.optional(|s| parse_define_template(s).and_then(|s| s.tag_node("define_template"))))
+                .and_then(|s| s.optional(|s| parse_define_constraint(s).and_then(|s| s.tag_node("define_constraint"))))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_annotation_head(s).and_then(|s| s.tag_node("annotation_head")))
                 .and_then(|s| builtin_ignore(s))
@@ -958,7 +976,7 @@ fn parse_define_trait(state: Input) -> Output {
     state.rule(ValkyrieRule::DefineTrait, |s| {
         s.sequence(|s| {
             Ok(s)
-                .and_then(|s| s.optional(|s| parse_define_template(s).and_then(|s| s.tag_node("define_template"))))
+                .and_then(|s| s.optional(|s| parse_define_constraint(s).and_then(|s| s.tag_node("define_constraint"))))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_annotation_head(s).and_then(|s| s.tag_node("annotation_head")))
                 .and_then(|s| builtin_ignore(s))
@@ -983,7 +1001,7 @@ fn parse_define_extends(state: Input) -> Output {
     state.rule(ValkyrieRule::DefineExtends, |s| {
         s.sequence(|s| {
             Ok(s)
-                .and_then(|s| s.optional(|s| parse_define_template(s).and_then(|s| s.tag_node("define_template"))))
+                .and_then(|s| s.optional(|s| parse_define_constraint(s).and_then(|s| s.tag_node("define_constraint"))))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_annotation_head(s).and_then(|s| s.tag_node("annotation_head")))
                 .and_then(|s| builtin_ignore(s))
@@ -1533,6 +1551,66 @@ fn parse_if_guard(state: Input) -> Output {
                 .and_then(|s| parse_kw_if(s).and_then(|s| s.tag_node("kw_if")))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_inline_expression(s).and_then(|s| s.tag_node("inline_expression")))
+        })
+    })
+}
+#[inline]
+fn parse_for_template(state: Input) -> Output {
+    state.rule(ValkyrieRule::ForTemplate, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| parse_for_template_begin(s).and_then(|s| s.tag_node("for_template_begin")))
+                .and_then(|s| s.optional(|s| parse_for_template_else(s).and_then(|s| s.tag_node("for_template_else"))))
+                .and_then(|s| parse_for_template_end(s).and_then(|s| s.tag_node("for_template_end")))
+        })
+    })
+}
+#[inline]
+fn parse_for_template_begin(state: Input) -> Output {
+    state.rule(ValkyrieRule::ForTemplateBegin, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| parse_template_s(s).and_then(|s| s.tag_node("template_s")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_kw_for(s).and_then(|s| s.tag_node("kw_for")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_let_pattern(s).and_then(|s| s.tag_node("let_pattern")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_kw_in(s).and_then(|s| s.tag_node("kw_in")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| s.optional(|s| parse_inline_expression(s).and_then(|s| s.tag_node("inline_expression"))))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| s.optional(|s| parse_if_guard(s).and_then(|s| s.tag_node("if_guard"))))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_template_e(s).and_then(|s| s.tag_node("template_e")))
+        })
+    })
+}
+#[inline]
+fn parse_for_template_else(state: Input) -> Output {
+    state.rule(ValkyrieRule::ForTemplateElse, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| parse_template_s(s).and_then(|s| s.tag_node("template_s")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_kw_else(s).and_then(|s| s.tag_node("kw_else")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_template_e(s).and_then(|s| s.tag_node("template_e")))
+        })
+    })
+}
+#[inline]
+fn parse_for_template_end(state: Input) -> Output {
+    state.rule(ValkyrieRule::ForTemplateEnd, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| parse_template_s(s).and_then(|s| s.tag_node("template_s")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_kw_end(s).and_then(|s| s.tag_node("kw_end")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| s.optional(|s| parse_kw_for(s).and_then(|s| s.tag_node("kw_for"))))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_template_e(s).and_then(|s| s.tag_node("template_e")))
         })
     })
 }
@@ -3128,6 +3206,18 @@ fn parse_text_raw(state: Input) -> Output {
     })
 }
 #[inline]
+fn parse_text_l(state: Input) -> Output {
+    state.rule(ValkyrieRule::Text_L, |s| builtin_ignore(s))
+}
+#[inline]
+fn parse_text_r(state: Input) -> Output {
+    state.rule(ValkyrieRule::Text_R, |s| builtin_ignore(s))
+}
+#[inline]
+fn parse_text_x(state: Input) -> Output {
+    state.rule(ValkyrieRule::Text_X, |s| builtin_ignore(s))
+}
+#[inline]
 fn parse_text_content_1(state: Input) -> Output {
     state.rule(ValkyrieRule::TEXT_CONTENT1, |s| {
         s.repeat(0..4294967295, |s| {
@@ -3190,18 +3280,22 @@ fn parse_text_content_6(state: Input) -> Output {
     })
 }
 #[inline]
-fn parse_string_elements(state: Input) -> Output {
-    state.rule(ValkyrieRule::StringElements, |s| {
+fn parse_string_interpolations(state: Input) -> Output {
+    state.rule(ValkyrieRule::StringInterpolations, |s| {
         s.sequence(|s| {
             Ok(s)
-                .and_then(|s| s.repeat(0..4294967295, |s| parse_string_element(s).and_then(|s| s.tag_node("string_element"))))
+                .and_then(|s| {
+                    s.repeat(0..4294967295, |s| {
+                        parse_string_interpolation_term(s).and_then(|s| s.tag_node("string_interpolation_term"))
+                    })
+                })
                 .and_then(|s| s.end_of_input())
         })
     })
 }
 #[inline]
-fn parse_string_element(state: Input) -> Output {
-    state.rule(ValkyrieRule::StringElement, |s| {
+fn parse_string_interpolation_term(state: Input) -> Output {
+    state.rule(ValkyrieRule::StringInterpolationTerm, |s| {
         Err(s)
             .or_else(|s| parse_escape_unicode(s).and_then(|s| s.tag_node("escape_unicode")))
             .or_else(|s| parse_escape_character(s).and_then(|s| s.tag_node("escape_character")))
@@ -3306,7 +3400,7 @@ fn parse_string_interpolation_complex(state: Input) -> Output {
                                     Ok(s)
                                         .and_then(|s| parse_comma(s))
                                         .and_then(|s| builtin_ignore(s))
-                                        .and_then(|s| parse_parameter_item(s).and_then(|s| s.tag_node("parameter_item")))
+                                        .and_then(|s| parse_tuple_pair(s).and_then(|s| s.tag_node("tuple_pair")))
                                 })
                             })
                         })
@@ -3316,6 +3410,39 @@ fn parse_string_interpolation_complex(state: Input) -> Output {
                 .and_then(|s| s.optional(|s| parse_comma(s)))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| builtin_text(s, "}", false))
+        })
+    })
+}
+#[inline]
+fn parse_string_templates(state: Input) -> Output {
+    state.rule(ValkyrieRule::StringTemplates, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| {
+                    s.repeat(0..4294967295, |s| parse_string_template_term(s).and_then(|s| s.tag_node("string_template_term")))
+                })
+                .and_then(|s| s.end_of_input())
+        })
+    })
+}
+#[inline]
+fn parse_string_template_term(state: Input) -> Output {
+    state.rule(ValkyrieRule::StringTemplateTerm, |s| {
+        Err(s)
+            .or_else(|s| parse_for_template(s).and_then(|s| s.tag_node("for_template")))
+            .or_else(|s| parse_expression_template(s).and_then(|s| s.tag_node("expression_template")))
+    })
+}
+#[inline]
+fn parse_expression_template(state: Input) -> Output {
+    state.rule(ValkyrieRule::ExpressionTemplate, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| parse_template_s(s).and_then(|s| s.tag_node("template_s")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_main_expression(s).and_then(|s| s.tag_node("main_expression")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_template_e(s).and_then(|s| s.tag_node("template_e")))
         })
     })
 }
@@ -3693,6 +3820,15 @@ fn parse_dot(state: Input) -> Output {
     })
 }
 #[inline]
+fn parse_op_slot(state: Input) -> Output {
+    state.rule(ValkyrieRule::OP_SLOT, |s| {
+        s.match_regex({
+            static REGEX: OnceLock<Regex> = OnceLock::new();
+            REGEX.get_or_init(|| Regex::new("^(?x)([$]{1,3})").unwrap())
+        })
+    })
+}
+#[inline]
 fn parse_offset_l(state: Input) -> Output {
     state.rule(ValkyrieRule::OFFSET_L, |s| s.match_string("⁅", false))
 }
@@ -3701,11 +3837,39 @@ fn parse_offset_r(state: Input) -> Output {
     state.rule(ValkyrieRule::OFFSET_R, |s| s.match_string("⁆", false))
 }
 #[inline]
-fn parse_op_slot(state: Input) -> Output {
-    state.rule(ValkyrieRule::OP_SLOT, |s| {
+fn parse_template_s(state: Input) -> Output {
+    state.rule(ValkyrieRule::TEMPLATE_S, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| parse_template_l(s).and_then(|s| s.tag_node("template_l")))
+                .and_then(|s| s.optional(|s| parse_template_m(s)))
+        })
+    })
+}
+#[inline]
+fn parse_template_e(state: Input) -> Output {
+    state.rule(ValkyrieRule::TEMPLATE_E, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| s.optional(|s| parse_template_m(s)))
+                .and_then(|s| parse_template_r(s).and_then(|s| s.tag_node("template_r")))
+        })
+    })
+}
+#[inline]
+fn parse_template_l(state: Input) -> Output {
+    state.rule(ValkyrieRule::TEMPLATE_L, |s| s.match_string("<%", false))
+}
+#[inline]
+fn parse_template_r(state: Input) -> Output {
+    state.rule(ValkyrieRule::TEMPLATE_R, |s| s.match_string("%>", false))
+}
+#[inline]
+fn parse_template_m(state: Input) -> Output {
+    state.rule(ValkyrieRule::TEMPLATE_M, |s| {
         s.match_regex({
             static REGEX: OnceLock<Regex> = OnceLock::new();
-            REGEX.get_or_init(|| Regex::new("^(?x)([$]{1,3})").unwrap())
+            REGEX.get_or_init(|| Regex::new("^(?x)([-_~.=])").unwrap())
         })
     })
 }
@@ -3760,39 +3924,24 @@ fn parse_kw_control(state: Input) -> Output {
 }
 #[inline]
 fn parse_kw_namespace(state: Input) -> Output {
-    state.rule(ValkyrieRule::KW_NAMESPACE, |s| {
-        s.match_regex({
-            static REGEX: OnceLock<Regex> = OnceLock::new();
-            REGEX.get_or_init(|| Regex::new("^(?x)(namespace)").unwrap())
-        })
-    })
+    state.rule(ValkyrieRule::KW_NAMESPACE, |s| s.match_string("namespace", false))
 }
 #[inline]
 fn parse_kw_import(state: Input) -> Output {
-    state.rule(ValkyrieRule::KW_IMPORT, |s| {
-        s.match_regex({
-            static REGEX: OnceLock<Regex> = OnceLock::new();
-            REGEX.get_or_init(|| Regex::new("^(?x)(using)").unwrap())
-        })
-    })
+    state.rule(ValkyrieRule::KW_IMPORT, |s| s.match_string("using", false))
 }
 #[inline]
-fn parse_kw_template(state: Input) -> Output {
-    state.rule(ValkyrieRule::KW_TEMPLATE, |s| {
+fn parse_kw_constraint(state: Input) -> Output {
+    state.rule(ValkyrieRule::KW_CONSTRAINT, |s| {
         s.match_regex({
             static REGEX: OnceLock<Regex> = OnceLock::new();
-            REGEX.get_or_init(|| Regex::new("^(?x)(template|generic)").unwrap())
+            REGEX.get_or_init(|| Regex::new("^(?x)(template|generic|constraint)").unwrap())
         })
     })
 }
 #[inline]
 fn parse_kw_where(state: Input) -> Output {
-    state.rule(ValkyrieRule::KW_WHERE, |s| {
-        s.match_regex({
-            static REGEX: OnceLock<Regex> = OnceLock::new();
-            REGEX.get_or_init(|| Regex::new("^(?x)(where)").unwrap())
-        })
-    })
+    state.rule(ValkyrieRule::KW_WHERE, |s| s.match_string("where", false))
 }
 #[inline]
 fn parse_kw_implements(state: Input) -> Output {
@@ -3823,111 +3972,55 @@ fn parse_kw_inherits(state: Input) -> Output {
 }
 #[inline]
 fn parse_kw_for(state: Input) -> Output {
-    state.rule(ValkyrieRule::KW_FOR, |s| {
-        s.match_regex({
-            static REGEX: OnceLock<Regex> = OnceLock::new();
-            REGEX.get_or_init(|| Regex::new("^(?x)(for)").unwrap())
-        })
-    })
+    state.rule(ValkyrieRule::KW_FOR, |s| s.match_string("for", false))
+}
+#[inline]
+fn parse_kw_end(state: Input) -> Output {
+    state.rule(ValkyrieRule::KW_END, |s| s.match_string("end", false))
 }
 #[inline]
 fn parse_kw_let(state: Input) -> Output {
-    state.rule(ValkyrieRule::KW_LET, |s| {
-        s.match_regex({
-            static REGEX: OnceLock<Regex> = OnceLock::new();
-            REGEX.get_or_init(|| Regex::new("^(?x)(let)").unwrap())
-        })
-    })
+    state.rule(ValkyrieRule::KW_LET, |s| s.match_string("let", false))
 }
 #[inline]
 fn parse_kw_new(state: Input) -> Output {
-    state.rule(ValkyrieRule::KW_NEW, |s| {
-        s.match_regex({
-            static REGEX: OnceLock<Regex> = OnceLock::new();
-            REGEX.get_or_init(|| Regex::new("^(?x)(new)").unwrap())
-        })
-    })
+    state.rule(ValkyrieRule::KW_NEW, |s| s.match_string("new", false))
 }
 #[inline]
 fn parse_kw_object(state: Input) -> Output {
-    state.rule(ValkyrieRule::KW_OBJECT, |s| {
-        s.match_regex({
-            static REGEX: OnceLock<Regex> = OnceLock::new();
-            REGEX.get_or_init(|| Regex::new("^(?x)(object)").unwrap())
-        })
-    })
+    state.rule(ValkyrieRule::KW_OBJECT, |s| s.match_string("object", false))
 }
 #[inline]
 fn parse_kw_lambda(state: Input) -> Output {
-    state.rule(ValkyrieRule::KW_LAMBDA, |s| {
-        s.match_regex({
-            static REGEX: OnceLock<Regex> = OnceLock::new();
-            REGEX.get_or_init(|| Regex::new("^(?x)(lambda)").unwrap())
-        })
-    })
+    state.rule(ValkyrieRule::KW_LAMBDA, |s| s.match_string("lambda", false))
 }
 #[inline]
 fn parse_kw_if(state: Input) -> Output {
-    state.rule(ValkyrieRule::KW_IF, |s| {
-        s.match_regex({
-            static REGEX: OnceLock<Regex> = OnceLock::new();
-            REGEX.get_or_init(|| Regex::new("^(?x)(if)").unwrap())
-        })
-    })
+    state.rule(ValkyrieRule::KW_IF, |s| s.match_string("if", false))
 }
 #[inline]
 fn parse_kw_switch(state: Input) -> Output {
-    state.rule(ValkyrieRule::KW_SWITCH, |s| {
-        s.match_regex({
-            static REGEX: OnceLock<Regex> = OnceLock::new();
-            REGEX.get_or_init(|| Regex::new("^(?x)(switch)").unwrap())
-        })
-    })
+    state.rule(ValkyrieRule::KW_SWITCH, |s| s.match_string("switch", false))
 }
 #[inline]
 fn parse_kw_try(state: Input) -> Output {
-    state.rule(ValkyrieRule::KW_TRY, |s| {
-        s.match_regex({
-            static REGEX: OnceLock<Regex> = OnceLock::new();
-            REGEX.get_or_init(|| Regex::new("^(?x)(try)").unwrap())
-        })
-    })
+    state.rule(ValkyrieRule::KW_TRY, |s| s.match_string("try", false))
 }
 #[inline]
 fn parse_kw_type(state: Input) -> Output {
-    state.rule(ValkyrieRule::KW_TYPE, |s| {
-        s.match_regex({
-            static REGEX: OnceLock<Regex> = OnceLock::new();
-            REGEX.get_or_init(|| Regex::new("^(?x)(type)").unwrap())
-        })
-    })
+    state.rule(ValkyrieRule::KW_TYPE, |s| s.match_string("type", false))
 }
 #[inline]
 fn parse_kw_case(state: Input) -> Output {
-    state.rule(ValkyrieRule::KW_CASE, |s| {
-        s.match_regex({
-            static REGEX: OnceLock<Regex> = OnceLock::new();
-            REGEX.get_or_init(|| Regex::new("^(?x)(case)").unwrap())
-        })
-    })
+    state.rule(ValkyrieRule::KW_CASE, |s| s.match_string("case", false))
 }
 #[inline]
 fn parse_kw_when(state: Input) -> Output {
-    state.rule(ValkyrieRule::KW_WHEN, |s| {
-        s.match_regex({
-            static REGEX: OnceLock<Regex> = OnceLock::new();
-            REGEX.get_or_init(|| Regex::new("^(?x)(when)").unwrap())
-        })
-    })
+    state.rule(ValkyrieRule::KW_WHEN, |s| s.match_string("when", false))
 }
 #[inline]
 fn parse_kw_else(state: Input) -> Output {
-    state.rule(ValkyrieRule::KW_ELSE, |s| {
-        s.match_regex({
-            static REGEX: OnceLock<Regex> = OnceLock::new();
-            REGEX.get_or_init(|| Regex::new("^(?x)(else)").unwrap())
-        })
-    })
+    state.rule(ValkyrieRule::KW_ELSE, |s| s.match_string("else", false))
 }
 #[inline]
 fn parse_kw_not(state: Input) -> Output {

@@ -1,23 +1,24 @@
 use super::*;
+use core::fmt::Debug;
 
 mod display;
 
-use crate::{ArgumentTerm, ExpressionNode, StringTextNode};
+use crate::{ArgumentTerm, ExpressionNode, StringTextNode, TupleTermNode};
 
 #[doc = include_str!("readme.md")]
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct StringFormatted {
+pub struct StringFormatterNode {
     /// The raw string of the number.
-    pub terms: Vec<StringFormattedTerm>,
+    pub terms: Vec<StringFormatterTerm>,
     /// The range of the node
     pub span: Range<u32>,
 }
 
 /// `\r, \u{00FF}, {{, }}`
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Clone, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum StringFormattedTerm {
+pub enum StringFormatterTerm {
     /// `abc \r\u{12}`
     Text {
         /// The unescaped string of the number.
@@ -43,17 +44,17 @@ pub enum StringFormattedTerm {
         /// The raw string of the number.
         argument: ExpressionKind,
         /// The format arguments
-        formatters: Vec<ArgumentTerm>,
+        formatters: Vec<TupleTermNode>,
     },
 }
 
-impl ValkyrieNode for StringFormatted {
+impl ValkyrieNode for StringFormatterNode {
     fn get_range(&self) -> Range<usize> {
         Range { start: self.span.start as usize, end: self.span.end as usize }
     }
 }
 
-impl StringFormatted {
+impl StringFormatterNode {
     /// Create a string formatter
     pub fn new(capacity: usize, span: &Range<u32>) -> Self {
         Self { terms: Vec::with_capacity(capacity), span: span.clone() }
