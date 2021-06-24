@@ -22,7 +22,7 @@ impl Display for StringLiteralNode {
         if let Some(unit) = &self.handler {
             f.write_str(&unit.name)?;
         }
-        Display::fmt(&self.as_raw(), f)
+        Display::fmt(&self.literal, f)
     }
 }
 

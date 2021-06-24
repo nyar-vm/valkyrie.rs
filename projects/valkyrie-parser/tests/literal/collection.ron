@@ -68,29 +68,22 @@ TupleNode {
 TupleNode {
     kind: Tuple,
     terms: ArgumentsList {
-        terms: [],
-    },
-    span: 84..96,
-}
-TupleNode {
-    kind: Tuple,
-    terms: ArgumentsList {
         terms: [
             TupleTermNode {
                 key: Some(
-                    Identifier("a", 99..100),
+                    Identifier("a", 91..92),
                 ),
                 value: 1,
             },
             TupleTermNode {
                 key: Some(
-                    Identifier("z", 105..106),
+                    Identifier("z", 97..98),
                 ),
                 value: 26,
             },
         ],
     },
-    span: 98..111,
+    span: 84..103,
 }
 TupleNode {
     kind: Tuple,
@@ -98,36 +91,36 @@ TupleNode {
         terms: [
             TupleTermNode {
                 key: Some(
-                    Identifier("啊", 114..117),
+                    Identifier("啊", 106..109),
                 ),
                 value: 1,
             },
             TupleTermNode {
                 key: Some(
-                    Identifier("吧", 122..125),
+                    Identifier("吧", 114..117),
                 ),
                 value: 2,
             },
             TupleTermNode {
                 key: Some(
-                    Identifier("", 130..135),
+                    Identifier("", 122..127),
                 ),
                 value: 3,
             },
             TupleTermNode {
                 key: Some(
-                    Identifier("", 140..145),
+                    Identifier("", 132..137),
                 ),
                 value: 4,
             },
         ],
     },
-    span: 113..149,
+    span: 105..141,
 }
 RangeNode {
     kind: Offset,
     terms: [],
-    span: 159..161,
+    span: 151..153,
 }
 RangeNode {
     kind: Offset,
@@ -136,7 +129,7 @@ RangeNode {
             index: 0,
         },
     ],
-    span: 163..166,
+    span: 155..158,
 }
 RangeNode {
     kind: Offset,
@@ -145,7 +138,7 @@ RangeNode {
             index: 1,
         },
     ],
-    span: 168..173,
+    span: 160..165,
 }
 RangeNode {
     kind: Offset,
@@ -157,7 +150,7 @@ RangeNode {
             index: 2,
         },
     ],
-    span: 175..181,
+    span: 167..173,
 }
 RangeNode {
     kind: Offset,
@@ -173,16 +166,16 @@ RangeNode {
                         index: false,
                     },
                 ],
-                span: 190..197,
+                span: 182..189,
             },
         },
     ],
-    span: 183..198,
+    span: 175..190,
 }
 RangeNode {
     kind: Offset,
     terms: [],
-    span: 209..211,
+    span: 201..203,
 }
 RangeNode {
     kind: Offset,
@@ -193,7 +186,7 @@ RangeNode {
             step: None,
         },
     ],
-    span: 213..216,
+    span: 205..208,
 }
 RangeNode {
     kind: Offset,
@@ -204,7 +197,7 @@ RangeNode {
             step: None,
         },
     ],
-    span: 218..222,
+    span: 210..214,
 }
 RangeNode {
     kind: Offset,
@@ -215,5 +208,5 @@ RangeNode {
             step: None,
         },
     ],
-    span: 224..229,
+    span: 216..221,
 }

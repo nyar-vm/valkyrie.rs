@@ -1,4 +1,5 @@
 pub mod classes;
+pub mod constraints;
 pub mod documentation;
 pub mod flags;
 pub mod function;
@@ -10,9 +11,8 @@ pub mod license;
 pub mod namespace;
 pub mod program;
 pub mod statements;
-pub mod unions;
-
 pub mod traits;
+pub mod unions;
 
 use crate::{
     helper::{ValkyrieNode, WrapDisplay},

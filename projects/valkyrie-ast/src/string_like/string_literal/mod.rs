@@ -61,9 +61,6 @@ impl StringLiteralNode {
     pub fn as_raw(&self) -> StringTextNode {
         self.literal.clone()
     }
-    pub fn as_escaped(&self) -> String {
-        self.literal.text.clone()
-    }
 
     /// Attack a handler to the unit of the number.
     pub fn with_handler(self, handler: IdentifierNode) -> Self {

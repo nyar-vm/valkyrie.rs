@@ -8,9 +8,9 @@ use crate::{ArgumentTerm, ExpressionNode, StringTextNode, TupleTermNode};
 #[doc = include_str!("readme.md")]
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct StringFormatterNode {
+pub struct FormatterNode {
     /// The raw string of the number.
-    pub terms: Vec<StringFormatterTerm>,
+    pub terms: Vec<FormatterTerm>,
     /// The range of the node
     pub span: Range<u32>,
 }
@@ -18,7 +18,7 @@ pub struct StringFormatterNode {
 /// `\r, \u{00FF}, {{, }}`
 #[derive(Clone, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum StringFormatterTerm {
+pub enum FormatterTerm {
     /// `abc \r\u{12}`
     Text {
         /// The unescaped string of the number.
@@ -48,13 +48,13 @@ pub enum StringFormatterTerm {
     },
 }
 
-impl ValkyrieNode for StringFormatterNode {
+impl ValkyrieNode for FormatterNode {
     fn get_range(&self) -> Range<usize> {
         Range { start: self.span.start as usize, end: self.span.end as usize }
     }
 }
 
-impl StringFormatterNode {
+impl FormatterNode {
     /// Create a string formatter
     pub fn new(capacity: usize, span: &Range<u32>) -> Self {
         Self { terms: Vec::with_capacity(capacity), span: span.clone() }

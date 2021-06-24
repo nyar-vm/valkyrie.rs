@@ -1,7 +1,7 @@
 use crate::{helpers::ProgramState, StringInterpolationsNode};
 use nyar_error::{Failure, FileID, NyarError, Result, Success, SyntaxError, Validation};
 use std::{mem::take, ops::Range, str::FromStr};
-use valkyrie_ast::{StringFormatterNode, StringFormatterTerm, StringInterpreter, StringTextNode};
+use valkyrie_ast::{FormatterNode, FormatterTerm, StringInterpreter, StringTextNode};
 use yggdrasil_rt::YggdrasilNode;
 
 /// Build a formatted string
@@ -19,7 +19,7 @@ use yggdrasil_rt::YggdrasilNode;
 pub struct StringFormatterBuilder {
     file: FileID,
     buffer: StringTextNode,
-    terms: Vec<StringFormatterTerm>,
+    terms: Vec<FormatterTerm>,
     errors: Vec<NyarError>,
 }
 
@@ -37,13 +37,13 @@ impl StringFormatterBuilder {
     fn push_buffer(&mut self) {
         if !self.buffer.text.is_empty() {
             let unescaped = take(&mut self.buffer);
-            self.terms.push(StringFormatterTerm::Text { unescaped });
+            self.terms.push(FormatterTerm::Text { unescaped });
         }
     }
 }
 
 impl StringInterpreter for StringFormatterBuilder {
-    type Output = StringFormatterNode;
+    type Output = FormatterNode;
 
     fn interpret(&mut self, text: &StringTextNode) -> Validation<Self::Output> {
         match StringInterpolationsNode::from_str(&text.text) {
@@ -57,8 +57,8 @@ impl StringInterpreter for StringFormatterBuilder {
 }
 
 impl crate::StringInterpolationsNode {
-    fn build(&self, ctx: &mut StringFormatterBuilder) -> StringFormatterNode {
-        let mut list = StringFormatterNode::new(self.string_interpolation_term.len(), &self.span);
+    fn build(&self, ctx: &mut StringFormatterBuilder) -> FormatterNode {
+        let mut list = FormatterNode::new(self.string_interpolation_term.len(), &self.span);
         for x in self.string_interpolation_term.iter() {
             if let Err(e) = x.build(ctx) {
                 ctx.errors.push(e)
@@ -131,7 +131,7 @@ impl crate::StringInterpolationSimpleNode {
         ctx.push_buffer();
         let argument = self.main_expression.build(&mut ProgramState::new(ctx.file))?;
         let formatter = self.string_formatter.as_ref().map(|v| v.build(ctx));
-        ctx.terms.push(StringFormatterTerm::Simple { argument, formatter });
+        ctx.terms.push(FormatterTerm::Simple { argument, formatter });
         Ok(())
     }
 }
@@ -153,7 +153,7 @@ impl crate::StringInterpolationComplexNode {
             }
         }
 
-        ctx.terms.push(StringFormatterTerm::Complex { argument, formatters });
+        ctx.terms.push(FormatterTerm::Complex { argument, formatters });
         Ok(())
     }
 }

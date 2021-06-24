@@ -1,6 +1,7 @@
 mod display;
 use super::*;
 
+/// The kind of namespace
 #[derive(Copy, Clone, Debug, Eq, PartialEq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum NamespaceKind {

@@ -1,6 +1,6 @@
 use super::*;
 
-impl Debug for StringFormatterTerm {
+impl Debug for FormatterTerm {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         match self {
             Self::Text { unescaped } => {
@@ -27,7 +27,7 @@ impl Debug for StringFormatterTerm {
 }
 
 #[cfg(feature = "pretty-print")]
-impl PrettyPrint for StringFormatterTerm {
+impl PrettyPrint for FormatterTerm {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         todo!()
     }

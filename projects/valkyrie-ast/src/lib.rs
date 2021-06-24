@@ -47,6 +47,7 @@ pub use crate::{
         classes::{
             ClassDeclaration, ClassKind, ClassTerm, ConstructObjectNode, DomainDeclaration, FieldDeclaration, MethodDeclaration,
         },
+        constraints::{ConstraintDeclaration, ConstraintTerm},
         documentation::DocumentationList,
         flags::{EncodeDeclaration, FlagDeclaration, FlagKind, FlagTerm},
         function::{FunctionDeclaration, FunctionKind, FunctionReturnNode, StatementBlock},
@@ -65,10 +66,10 @@ pub use crate::{
         PatternCondition, PatternNode, PatternTypeNode, PatternWhenNode, PatternsList, TuplePatternNode, UnionPatternNode,
     },
     string_like::{
-        string_formatter::{StringFormatterNode, StringFormatterTerm},
+        string_formatter::{FormatterNode, FormatterTerm},
         string_literal::{StringInterpreter, StringLiteralNode, StringTextNode},
         string_template::{
-            StringTemplateNode, TemplateCloseNode, TemplateCommentNode, TemplateInlineNode, TemplateLineType, TemplateOpenNode,
+            TemplateCloseNode, TemplateCommentNode, TemplateInlineNode, TemplateLineType, TemplateNode, TemplateOpenNode,
         },
     },
 };

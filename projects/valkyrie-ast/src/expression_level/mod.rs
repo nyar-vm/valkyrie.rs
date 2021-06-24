@@ -98,7 +98,7 @@ pub enum ExpressionKind {
     /// - Atomic expression
     String(Box<StringLiteralNode>),
     /// - Atomic expression
-    Formatted(Box<StringFormatterNode>),
+    Formatted(Box<FormatterNode>),
     /// - Atomic expression
     New(Box<ConstructNewNode>),
     /// - Atomic expression

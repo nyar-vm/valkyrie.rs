@@ -108,6 +108,7 @@ impl NamePathNode {
     {
         Self { names: names.into_iter().collect() }
     }
+    /// Push a new identifier to the name path.
     pub fn join<I: IntoIterator<Item = IdentifierNode>>(mut self, other: I) -> Self {
         self.names.extend(other);
         self
