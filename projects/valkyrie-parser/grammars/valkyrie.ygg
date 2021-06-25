@@ -876,7 +876,7 @@ token {
     KW_NAMESPACE: 'namespace'
     KW_IMPORT: 'using'
     // === class === ---------------------------------------------------------------------------------------------------
-    KW_CONSTRAINT: /template|generic|constraint/
+    KW_CONSTRAINT: /template|generic|constraint|∀/
     KW_WHERE: 'where'
     KW_IMPLEMENTS: /implements?/
     KW_EXTENDS: /extends?/

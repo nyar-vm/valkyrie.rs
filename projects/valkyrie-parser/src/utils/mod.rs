@@ -1,9 +1,9 @@
 use crate::{
-    helpers::ProgramState, AnnotationTermMixNode, AnnotationTermNode, IfGuardNode, ModifierAheadNode, ParameterDefaultNode,
-    TupleTermsNode, TypeHintNode,
+    helpers::ProgramState, AnnotationTermMixNode, AnnotationTermNode, DefineConstraintNode, IfGuardNode, ModifierAheadNode,
+    ParameterDefaultNode, TupleTermsNode, TypeHintNode,
 };
 use nyar_error::Result;
-use valkyrie_ast::{ArgumentsList, AttributeList, ExpressionKind, ModifierList};
+use valkyrie_ast::{ArgumentsList, AttributeList, ConstraintDeclaration, ExpressionKind, ModifierList};
 
 pub(crate) fn build_arguments(this: &Option<TupleTermsNode>, ctx: &mut ProgramState) -> Result<ArgumentsList> {
     match this {
@@ -20,6 +20,13 @@ pub(crate) fn build_if_guard(this: &Option<IfGuardNode>, ctx: &mut ProgramState)
         }
     }
 }
+pub(crate) fn build_constraint(this: &Option<DefineConstraintNode>, ctx: &mut ProgramState) -> ConstraintDeclaration {
+    match this {
+        Some(s) => s.build(ctx),
+        None => ConstraintDeclaration::default(),
+    }
+}
+
 pub(crate) fn build_type_hint(this: &Option<TypeHintNode>, ctx: &mut ProgramState) -> Option<ExpressionKind> {
     match this.as_ref()?.build(ctx) {
         Ok(o) => Some(o),

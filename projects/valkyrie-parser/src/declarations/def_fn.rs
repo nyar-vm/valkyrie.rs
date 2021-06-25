@@ -1,5 +1,4 @@
 use super::*;
-use crate::utils::{build_parameter_default, build_type_hint};
 
 impl crate::DefineFunctionNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<FunctionDeclaration> {
@@ -39,7 +38,7 @@ impl crate::FunctionMiddleNode {
             }
         };
 
-        Ok(FunctionReturnNode { typing, effect: effect })
+        Ok(FunctionReturnNode { typing, effect })
     }
     pub(crate) fn parameters(&self, ctx: &mut ProgramState) -> ParametersList {
         self.function_parameters.build(ctx)
@@ -61,7 +60,7 @@ impl crate::FunctionMiddleNode {
     }
 }
 
-impl FunctionParametersNode {
+impl crate::FunctionParametersNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> ParametersList {
         let mut list = ParametersList::new(self.parameter_item.len(), ParameterKind::Expression);
         for term in &self.parameter_item {

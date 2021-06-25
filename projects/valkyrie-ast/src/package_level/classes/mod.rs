@@ -14,8 +14,8 @@ pub enum ClassKind {
     Structure,
 }
 
-/// `class Name(Super): Trait {}`
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[doc = include_str!("readme.md")]
+#[derive(Clone, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ClassDeclaration {
     /// The name of the class.
@@ -27,13 +27,43 @@ pub struct ClassDeclaration {
     /// The parameter arguments of the class.
     pub generic: Option<ParametersList>,
     /// The super class of the class.
-    pub base_classes: Option<String>,
+    pub inherits: Option<String>,
     /// The traits that the class implements.
-    pub auto_traits: Vec<String>,
+    pub implements: Vec<String>,
     /// All fields declared in this block, exclude extensions.
     pub terms: Vec<ClassTerm>,
     /// The range of the number.
     pub span: Range<u32>,
+}
+
+impl Debug for ClassDeclaration {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        let w = &mut match self.kind {
+            ClassKind::Class => f.debug_struct("Class"),
+            ClassKind::Structure => f.debug_struct("Structure"),
+        };
+        // if !self.constraint.is_empty() {
+        //     w.field("constraint", &self.constraint);
+        // }
+        if !self.annotations.is_empty() {
+            w.field("annotations", &self.annotations);
+        }
+        w.field("name", &WrapDisplay::new(&self.name));
+        if let Some(s) = &self.generic {
+            w.field("generic", s);
+        }
+        if let Some(s) = &self.inherits {
+            w.field("inherits", s);
+        }
+        if !self.implements.is_empty() {
+            w.field("implements", &self.implements);
+        }
+        if !self.terms.is_empty() {
+            w.field("terms", &self.terms);
+        }
+        w.field("span", &self.span);
+        w.finish()
+    }
 }
 
 /// Valid terms in the class statements

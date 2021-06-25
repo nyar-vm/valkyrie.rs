@@ -74,13 +74,8 @@ InfixNode {
     },
     rhs: Integer,
 }
-ClassDeclaration {
-    name: Identifier("Integer", 121..128),
-    kind: Class,
-    annotations: Empty,
-    generic: None,
-    base_classes: None,
-    auto_traits: [],
+Class {
+    name: Integer,
     terms: [
         DomainDeclaration {
             body: [

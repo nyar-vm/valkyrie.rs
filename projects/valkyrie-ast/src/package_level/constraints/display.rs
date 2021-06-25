@@ -18,7 +18,7 @@ impl PrettyPrint for ConstraintDeclaration {
         terms += theme.keyword("class");
         terms += " ";
         terms += self.name.pretty(theme);
-        if let Some(gen) = &self.generic {
+        if let Some(gen) = &self.generics {
             terms += gen.pretty(theme);
         }
         terms += " ";

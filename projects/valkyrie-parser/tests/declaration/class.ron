@@ -2,53 +2,28 @@ NamespaceDeclaration {
     kind: Standalone,
     path: declaration∷classes,
 }
-ClassDeclaration {
-    name: Identifier("Base1", 39..44),
-    kind: Class,
-    annotations: Empty,
-    generic: None,
-    base_classes: None,
-    auto_traits: [],
-    terms: [],
+Class {
+    name: Base1,
     span: 33..49,
 }
-ClassDeclaration {
-    name: Identifier("Base2", 55..60),
-    kind: Class,
-    annotations: Empty,
-    generic: None,
-    base_classes: None,
-    auto_traits: [],
-    terms: [],
+Class {
+    name: Base2,
     span: 49..67,
 }
-ClassDeclaration {
-    name: Identifier("Base3", 77..82),
-    kind: Structure,
-    annotations: Empty,
-    generic: None,
-    base_classes: None,
-    auto_traits: [],
-    terms: [],
+Structure {
+    name: Base3,
     span: 67..89,
 }
-ClassDeclaration {
-    name: Identifier("B", 101..102),
-    kind: Class,
+Class {
     annotations: Annotation {
         modifiers: [
             value,
         ],
     },
-    generic: None,
-    base_classes: None,
-    auto_traits: [],
-    terms: [],
+    name: B,
     span: 89..113,
 }
-ClassDeclaration {
-    name: Identifier("Inherit1", 168..176),
-    kind: Class,
+Class {
     annotations: Annotation {
         attributes: [
             AttributeTerm {
@@ -66,19 +41,11 @@ ClassDeclaration {
             },
         ],
     },
-    generic: None,
-    base_classes: None,
-    auto_traits: [],
-    terms: [],
+    name: Inherit1,
     span: 113..219,
 }
-ClassDeclaration {
-    name: Identifier("Inherit2", 225..233),
-    kind: Class,
-    annotations: Empty,
-    generic: None,
-    base_classes: None,
-    auto_traits: [],
+Class {
+    name: Inherit2,
     terms: [
         Field {
             name: virtual,
@@ -110,13 +77,8 @@ ClassDeclaration {
     ],
     span: 219..329,
 }
-ClassDeclaration {
-    name: Identifier("B", 354..355),
-    kind: Class,
-    annotations: Empty,
-    generic: None,
-    base_classes: None,
-    auto_traits: [],
+Class {
+    name: B,
     terms: [
         Field {
             name: item1,
@@ -127,13 +89,8 @@ ClassDeclaration {
     ],
     span: 329..392,
 }
-ClassDeclaration {
-    name: Identifier("A", 398..399),
-    kind: Class,
-    annotations: Empty,
-    generic: None,
-    base_classes: None,
-    auto_traits: [],
+Class {
+    name: A,
     terms: [
         MethodDeclaration {
             name: NamePathNode {
@@ -275,9 +232,7 @@ ClassDeclaration {
     ],
     span: 392..673,
 }
-ClassDeclaration {
-    name: Identifier("A", 738..739),
-    kind: Class,
+Class {
     annotations: Annotation {
         attributes: [
             AttributeTerm {
@@ -321,15 +276,10 @@ ClassDeclaration {
             },
         ],
     },
-    generic: None,
-    base_classes: None,
-    auto_traits: [],
-    terms: [],
+    name: A,
     span: 673..753,
 }
-ClassDeclaration {
-    name: Identifier("Empty3", 863..869),
-    kind: Class,
+Class {
     annotations: Annotation {
         attributes: [
             AttributeTerm {
@@ -380,39 +330,27 @@ ClassDeclaration {
             final,
         ],
     },
-    generic: None,
-    base_classes: None,
-    auto_traits: [],
-    terms: [],
+    name: Empty3,
     span: 753..883,
 }
-ClassDeclaration {
-    name: Identifier("Inherit1", 901..909),
-    kind: Class,
+Class {
     annotations: Annotation {
         modifiers: [
             open,
             impart,
         ],
     },
-    generic: None,
-    base_classes: None,
-    auto_traits: [],
-    terms: [],
+    name: Inherit1,
     span: 883..950,
 }
-ClassDeclaration {
-    name: Identifier("Inherit2", 968..976),
-    kind: Class,
+Class {
     annotations: Annotation {
         modifiers: [
             open,
             impart,
         ],
     },
-    generic: None,
-    base_classes: None,
-    auto_traits: [],
+    name: Inherit2,
     terms: [
         Field {
             annotations: Annotation {
@@ -462,9 +400,7 @@ ClassDeclaration {
     ],
     span: 950..1103,
 }
-ClassDeclaration {
-    name: Identifier("原神", 1149..1155),
-    kind: Class,
+Class {
     annotations: Annotation {
         attributes: [
             AttributeTerm {
@@ -482,9 +418,7 @@ ClassDeclaration {
             },
         ],
     },
-    generic: None,
-    base_classes: None,
-    auto_traits: [],
+    name: 原神,
     terms: [
         MethodDeclaration {
             name: NamePathNode {
@@ -556,13 +490,8 @@ ClassDeclaration {
     ],
     span: 1103..1384,
 }
-ClassDeclaration {
-    name: Identifier("ClassA", 1390..1396),
-    kind: Class,
-    annotations: Empty,
-    generic: None,
-    base_classes: None,
-    auto_traits: [],
+Class {
+    name: ClassA,
     terms: [
         Field {
             annotations: Annotation {
@@ -765,9 +694,7 @@ ClassDeclaration {
     ],
     span: 1384..1766,
 }
-ClassDeclaration {
-    name: Identifier("TestClass", 1812..1821),
-    kind: Class,
+Class {
     annotations: Annotation {
         attributes: [
             AttributeTerm {
@@ -785,15 +712,10 @@ ClassDeclaration {
             },
         ],
     },
-    generic: None,
-    base_classes: None,
-    auto_traits: [],
-    terms: [],
+    name: TestClass,
     span: 1766..1828,
 }
-ClassDeclaration {
-    name: Identifier("Class", 1865..1870),
-    kind: Class,
+Class {
     annotations: Annotation {
         attributes: [
             AttributeTerm {
@@ -811,9 +733,7 @@ ClassDeclaration {
             },
         ],
     },
-    generic: None,
-    base_classes: None,
-    auto_traits: [],
+    name: Class,
     terms: [
         Field {
             annotations: Annotation {

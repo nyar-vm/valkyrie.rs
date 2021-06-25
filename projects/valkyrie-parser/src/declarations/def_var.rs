@@ -1,5 +1,4 @@
 use super::*;
-use crate::utils::build_parameter_default;
 
 impl crate::DefineVariableNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<VariableDeclaration> {

@@ -2,13 +2,14 @@ use super::*;
 
 impl crate::DefineClassNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<ClassDeclaration> {
+        let _ = build_constraint(&self.define_constraint, ctx);
         Ok(ClassDeclaration {
             kind: self.kw_class.build(),
             annotations: self.annotation_head.annotations(ctx),
             name: self.identifier.build(ctx),
             generic: None,
-            base_classes: None,
-            auto_traits: vec![],
+            inherits: None,
+            implements: vec![],
             terms: self.class_block.build(ctx),
             span: self.span.clone(),
         })

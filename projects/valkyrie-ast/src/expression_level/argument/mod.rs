@@ -4,11 +4,17 @@ use crate::StatementBlock;
 mod display;
 
 /// `(a + b, c: d, ..e)`
-#[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
+#[derive(Clone, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ArgumentsList {
     /// The raw string of the number.
     pub terms: Vec<TupleTermNode>,
+}
+
+impl Debug for ArgumentsList {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        f.debug_list().entries(self.terms.iter()).finish()
+    }
 }
 
 /// `#annotation mut this: null`

@@ -478,9 +478,7 @@ FunctionDeclaration {
         },
     ],
 }
-ClassDeclaration {
-    name: Identifier("TClass", 1752..1758),
-    kind: Class,
+Class {
     annotations: Annotation {
         attributes: [
             AttributeTerm {
@@ -498,9 +496,7 @@ ClassDeclaration {
             },
         ],
     },
-    generic: None,
-    base_classes: None,
-    auto_traits: [],
+    name: TClass,
     terms: [
         Field {
             name: fields,
