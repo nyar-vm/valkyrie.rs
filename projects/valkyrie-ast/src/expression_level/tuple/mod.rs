@@ -13,7 +13,7 @@ pub enum TupleKind {
 }
 
 /// `(tuple, ), (named: tuple, expression)`
-#[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
+#[derive(Clone, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct TupleNode {
     ///  The kind of tuple.
@@ -22,6 +22,17 @@ pub struct TupleNode {
     pub terms: ArgumentsList,
     /// The range of the number.
     pub span: Range<u32>,
+}
+
+impl Debug for TupleNode {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        let w = &mut match self.kind {
+            TupleKind::Tuple => f.debug_struct("Tuple"),
+            TupleKind::Set => f.debug_struct("Set"),
+        };
+        w.field("terms", &self.terms);
+        w.finish()
+    }
 }
 
 /// `a: item`

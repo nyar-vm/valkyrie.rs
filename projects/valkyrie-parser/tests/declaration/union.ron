@@ -13,9 +13,7 @@ Union {
                     ],
                 },
                 variant: [],
-                arguments: ArgumentsList {
-                    terms: [],
-                },
+                arguments: [],
                 domain: None,
             },
         ],
@@ -35,9 +33,7 @@ Union {
                     ],
                 },
                 variant: [],
-                arguments: ArgumentsList {
-                    terms: [],
-                },
+                arguments: [],
                 domain: None,
             },
         ],
@@ -72,9 +68,7 @@ Union {
                     ],
                 },
                 variant: [],
-                arguments: ArgumentsList {
-                    terms: [],
-                },
+                arguments: [],
                 domain: None,
             },
         ],
@@ -119,74 +113,49 @@ Union {
                     },
                     name: field_a,
                 },
-                MethodDeclaration {
-                    name: NamePathNode {
-                        names: [
-                            Identifier("display", 493..500),
-                        ],
-                    },
+                Method {
                     annotations: Annotation {
                         modifiers: [
                             mut,
                             field_b,
                         ],
                     },
-                    generics: [],
+                    name: display,
                     parameters: [
                         Parameter {
                             key: "self",
                         },
                     ],
-                    returns: Auto,
-                    body: Some(
-                        [],
-                    ),
+                    body: [],
                     span: 473..519,
                 },
             ],
         },
-        MethodDeclaration {
-            name: NamePathNode {
-                names: [
-                    Identifier("display", 531..538),
-                ],
-            },
-            annotations: Empty,
-            generics: [],
+        Method {
+            name: display,
             parameters: [
                 Parameter {
                     key: "self",
                 },
             ],
-            returns: Auto,
-            body: None,
             span: 531..544,
         },
-        MethodDeclaration {
-            name: NamePathNode {
-                names: [
-                    Identifier("method", 550..556),
-                ],
-            },
-            annotations: Empty,
-            generics: [],
+        Method {
+            name: method,
             parameters: [
                 Parameter {
                     key: "self",
                 },
             ],
-            returns: Auto,
-            body: Some(
-                [
-                    MatchStatement {
-                        kind: Typing,
-                        bind: None,
-                        main: self,
-                        patterns: [],
-                        span: 572..595,
-                    },
-                ],
-            ),
+            body: [
+                MatchStatement {
+                    kind: Typing,
+                    bind: None,
+                    main: self,
+                    patterns: [],
+                    span: 572..595,
+                },
+            ],
             span: 550..601,
         },
     ],
@@ -276,231 +245,201 @@ Union {
                 },
             ],
         },
-        MethodDeclaration {
-            name: NamePathNode {
-                names: [
-                    Identifier("as_result", 1102..1111),
-                ],
-            },
-            annotations: Empty,
-            generics: [],
+        Method {
+            name: as_result,
             parameters: [
                 Parameter {
                     key: "self",
                 },
             ],
-            returns: ReturnType {
-                main: GenericCallNode {
-                    monadic: false,
-                    base: Result,
-                    term: ArgumentsList {
-                        terms: [
-                            TupleTermNode {
-                                key: None,
-                                value: T,
-                            },
-                            TupleTermNode {
-                                key: None,
-                                value: E,
-                            },
-                        ],
+            returns: GenericCallNode {
+                monadic: false,
+                base: Result,
+                term: [
+                    TupleTermNode {
+                        key: None,
+                        value: T,
                     },
-                    span: 1125..1135,
-                },
+                    TupleTermNode {
+                        key: None,
+                        value: E,
+                    },
+                ],
+                span: 1125..1135,
             },
-            body: Some(
-                [
-                    MatchStatement {
-                        kind: Typing,
-                        bind: None,
-                        main: self,
-                        patterns: [
-                            PatternBranch {
-                                condition: PatternCaseNode {
-                                    pattern: TuplePatternNode {
-                                        bind: None,
-                                        name: None,
-                                        terms: [
-                                            IdentifierPattern {
-                                                modifiers: [],
-                                                identifier: Identifier("value", 1183..1188),
-                                            },
-                                            IdentifierPattern {
-                                                modifiers: [],
-                                                identifier: Identifier("", 0..0),
-                                            },
-                                        ],
-                                        span: 0..0,
-                                    },
-                                    guard: None,
-                                    span: 1171..1240,
-                                },
-                                continuation: [
-                                    ApplyCallNode {
-                                        monadic: false,
-                                        caller: Success,
-                                        arguments: ArgumentsList {
-                                            terms: [
-                                                TupleTermNode {
-                                                    key: None,
-                                                    value: value,
-                                                },
-                                            ],
+            body: [
+                MatchStatement {
+                    kind: Typing,
+                    bind: None,
+                    main: self,
+                    patterns: [
+                        PatternBranch {
+                            condition: PatternCaseNode {
+                                pattern: TuplePatternNode {
+                                    bind: None,
+                                    name: None,
+                                    terms: [
+                                        IdentifierPattern {
+                                            modifiers: [],
+                                            identifier: Identifier("value", 1183..1188),
                                         },
-                                        body: None,
-                                        span: 1220..1227,
-                                    },
-                                ],
+                                        IdentifierPattern {
+                                            modifiers: [],
+                                            identifier: Identifier("", 0..0),
+                                        },
+                                    ],
+                                    span: 0..0,
+                                },
+                                guard: None,
                                 span: 1171..1240,
                             },
-                            PatternBranch {
-                                condition: PatternCaseNode {
-                                    pattern: TuplePatternNode {
-                                        bind: None,
-                                        name: None,
-                                        terms: [
-                                            IdentifierPattern {
-                                                modifiers: [],
-                                                identifier: Identifier("fatal", 1252..1257),
-                                            },
-                                            IdentifierPattern {
-                                                modifiers: [],
-                                                identifier: Identifier("", 0..0),
-                                            },
-                                        ],
-                                        span: 0..0,
-                                    },
-                                    guard: None,
-                                    span: 1240..1305,
-                                },
-                                continuation: [
-                                    ApplyCallNode {
-                                        monadic: false,
-                                        caller: Failure,
-                                        arguments: ArgumentsList {
-                                            terms: [
-                                                TupleTermNode {
-                                                    key: None,
-                                                    value: fatal,
-                                                },
-                                            ],
+                            continuation: [
+                                ApplyCallNode {
+                                    monadic: false,
+                                    caller: Success,
+                                    arguments: [
+                                        TupleTermNode {
+                                            key: None,
+                                            value: value,
                                         },
-                                        body: None,
-                                        span: 1289..1296,
-                                    },
-                                ],
+                                    ],
+                                    body: None,
+                                    span: 1220..1227,
+                                },
+                            ],
+                            span: 1171..1240,
+                        },
+                        PatternBranch {
+                            condition: PatternCaseNode {
+                                pattern: TuplePatternNode {
+                                    bind: None,
+                                    name: None,
+                                    terms: [
+                                        IdentifierPattern {
+                                            modifiers: [],
+                                            identifier: Identifier("fatal", 1252..1257),
+                                        },
+                                        IdentifierPattern {
+                                            modifiers: [],
+                                            identifier: Identifier("", 0..0),
+                                        },
+                                    ],
+                                    span: 0..0,
+                                },
+                                guard: None,
                                 span: 1240..1305,
                             },
-                        ],
-                        span: 1146..1306,
-                    },
-                ],
-            ),
+                            continuation: [
+                                ApplyCallNode {
+                                    monadic: false,
+                                    caller: Failure,
+                                    arguments: [
+                                        TupleTermNode {
+                                            key: None,
+                                            value: fatal,
+                                        },
+                                    ],
+                                    body: None,
+                                    span: 1289..1296,
+                                },
+                            ],
+                            span: 1240..1305,
+                        },
+                    ],
+                    span: 1146..1306,
+                },
+            ],
             span: 1102..1312,
         },
-        MethodDeclaration {
-            name: NamePathNode {
-                names: [
-                    Identifier("as_option", 1317..1326),
-                ],
-            },
-            annotations: Empty,
-            generics: [],
+        Method {
+            name: as_option,
             parameters: [
                 Parameter {
                     key: "self",
                 },
             ],
-            returns: ReturnType {
-                main: GenericCallNode {
-                    monadic: false,
-                    base: Option,
-                    term: ArgumentsList {
-                        terms: [
-                            TupleTermNode {
-                                key: None,
-                                value: T,
-                            },
-                        ],
-                    },
-                    span: 1340..1347,
-                },
-            },
-            body: Some(
-                [
-                    MatchStatement {
-                        kind: Typing,
-                        bind: None,
-                        main: self,
-                        patterns: [
-                            PatternBranch {
-                                condition: PatternCaseNode {
-                                    pattern: TuplePatternNode {
-                                        bind: None,
-                                        name: None,
-                                        terms: [
-                                            IdentifierPattern {
-                                                modifiers: [],
-                                                identifier: Identifier("value", 1395..1400),
-                                            },
-                                            IdentifierPattern {
-                                                modifiers: [],
-                                                identifier: Identifier("", 0..0),
-                                            },
-                                        ],
-                                        span: 0..0,
-                                    },
-                                    guard: None,
-                                    span: 1383..1449,
-                                },
-                                continuation: [
-                                    ApplyCallNode {
-                                        monadic: false,
-                                        caller: Some,
-                                        arguments: ArgumentsList {
-                                            terms: [
-                                                TupleTermNode {
-                                                    key: None,
-                                                    value: value,
-                                                },
-                                            ],
-                                        },
-                                        body: None,
-                                        span: 1429..1436,
-                                    },
-                                ],
-                                span: 1383..1449,
-                            },
-                            PatternBranch {
-                                condition: PatternCaseNode {
-                                    pattern: TuplePatternNode {
-                                        bind: None,
-                                        name: None,
-                                        terms: [
-                                            IdentifierPattern {
-                                                modifiers: [],
-                                                identifier: Identifier("fatal", 1461..1466),
-                                            },
-                                            IdentifierPattern {
-                                                modifiers: [],
-                                                identifier: Identifier("", 0..0),
-                                            },
-                                        ],
-                                        span: 0..0,
-                                    },
-                                    guard: None,
-                                    span: 1449..1504,
-                                },
-                                continuation: [
-                                    None,
-                                ],
-                                span: 1449..1504,
-                            },
-                        ],
-                        span: 1358..1505,
+            returns: GenericCallNode {
+                monadic: false,
+                base: Option,
+                term: [
+                    TupleTermNode {
+                        key: None,
+                        value: T,
                     },
                 ],
-            ),
+                span: 1340..1347,
+            },
+            body: [
+                MatchStatement {
+                    kind: Typing,
+                    bind: None,
+                    main: self,
+                    patterns: [
+                        PatternBranch {
+                            condition: PatternCaseNode {
+                                pattern: TuplePatternNode {
+                                    bind: None,
+                                    name: None,
+                                    terms: [
+                                        IdentifierPattern {
+                                            modifiers: [],
+                                            identifier: Identifier("value", 1395..1400),
+                                        },
+                                        IdentifierPattern {
+                                            modifiers: [],
+                                            identifier: Identifier("", 0..0),
+                                        },
+                                    ],
+                                    span: 0..0,
+                                },
+                                guard: None,
+                                span: 1383..1449,
+                            },
+                            continuation: [
+                                ApplyCallNode {
+                                    monadic: false,
+                                    caller: Some,
+                                    arguments: [
+                                        TupleTermNode {
+                                            key: None,
+                                            value: value,
+                                        },
+                                    ],
+                                    body: None,
+                                    span: 1429..1436,
+                                },
+                            ],
+                            span: 1383..1449,
+                        },
+                        PatternBranch {
+                            condition: PatternCaseNode {
+                                pattern: TuplePatternNode {
+                                    bind: None,
+                                    name: None,
+                                    terms: [
+                                        IdentifierPattern {
+                                            modifiers: [],
+                                            identifier: Identifier("fatal", 1461..1466),
+                                        },
+                                        IdentifierPattern {
+                                            modifiers: [],
+                                            identifier: Identifier("", 0..0),
+                                        },
+                                    ],
+                                    span: 0..0,
+                                },
+                                guard: None,
+                                span: 1449..1504,
+                            },
+                            continuation: [
+                                None,
+                            ],
+                            span: 1449..1504,
+                        },
+                    ],
+                    span: 1358..1505,
+                },
+            ],
             span: 1317..1511,
         },
     ],
@@ -509,74 +448,50 @@ Union {
 ExtendsStatement {
     implements: None,
     body: [
-        MethodDeclaration {
-            name: NamePathNode {
-                names: [
-                    Identifier("is_fine", 1563..1570),
-                ],
-            },
-            annotations: Empty,
-            generics: [],
+        Method {
+            name: is_fine,
             parameters: [
                 Parameter {
                     key: "self",
                 },
             ],
-            returns: ReturnType {
-                main: bool,
-            },
-            body: Some(
-                [
-                    ProceduralNode {
-                        kind: Normal,
-                        path: NamePathNode {
-                            names: [
-                                Identifier("matches", 1594..1601),
-                            ],
-                        },
-                        arguments: ArgumentsList {
-                            terms: [],
-                        },
-                        domain: None,
-                        span: 1593..1625,
+            returns: bool,
+            body: [
+                ProceduralNode {
+                    kind: Normal,
+                    path: NamePathNode {
+                        names: [
+                            Identifier("matches", 1594..1601),
+                        ],
                     },
-                ],
-            ),
+                    arguments: [],
+                    domain: None,
+                    span: 1593..1625,
+                },
+            ],
             span: 1563..1626,
         },
-        MethodDeclaration {
-            name: NamePathNode {
-                names: [
-                    Identifier("is_fail", 1631..1638),
-                ],
-            },
-            annotations: Empty,
-            generics: [],
+        Method {
+            name: is_fail,
             parameters: [
                 Parameter {
                     key: "self",
                 },
             ],
-            returns: ReturnType {
-                main: bool,
-            },
-            body: Some(
-                [
-                    ProceduralNode {
-                        kind: Normal,
-                        path: NamePathNode {
-                            names: [
-                                Identifier("matches", 1662..1669),
-                            ],
-                        },
-                        arguments: ArgumentsList {
-                            terms: [],
-                        },
-                        domain: None,
-                        span: 1661..1693,
+            returns: bool,
+            body: [
+                ProceduralNode {
+                    kind: Normal,
+                    path: NamePathNode {
+                        names: [
+                            Identifier("matches", 1662..1669),
+                        ],
                     },
-                ],
-            ),
+                    arguments: [],
+                    domain: None,
+                    span: 1661..1693,
+                },
+            ],
             span: 1631..1694,
         },
     ],

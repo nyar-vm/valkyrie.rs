@@ -6,13 +6,7 @@ ConstructNewNode {
         ],
     },
     generics: [],
-    arguments: TupleNode {
-        kind: Tuple,
-        terms: ArgumentsList {
-            terms: [],
-        },
-        span: 0..0,
-    },
+    arguments: [],
     body: [],
     span: 0..6,
 }
@@ -24,13 +18,7 @@ ConstructNewNode {
         ],
     },
     generics: [],
-    arguments: TupleNode {
-        kind: Tuple,
-        terms: ArgumentsList {
-            terms: [],
-        },
-        span: 13..15,
-    },
+    arguments: [],
     body: [],
     span: 8..16,
 }
@@ -42,13 +30,7 @@ ConstructNewNode {
         ],
     },
     generics: [],
-    arguments: TupleNode {
-        kind: Tuple,
-        terms: ArgumentsList {
-            terms: [],
-        },
-        span: 0..0,
-    },
+    arguments: [],
     body: [],
     span: 18..29,
 }
@@ -60,17 +42,9 @@ ConstructNewNode {
         ],
     },
     generics: [
-        ArgumentsList {
-            terms: [],
-        },
+        [],
     ],
-    arguments: TupleNode {
-        kind: Tuple,
-        terms: ArgumentsList {
-            terms: [],
-        },
-        span: 0..0,
-    },
+    arguments: [],
     body: [],
     span: 31..41,
 }
@@ -82,17 +56,9 @@ ConstructNewNode {
         ],
     },
     generics: [
-        ArgumentsList {
-            terms: [],
-        },
+        [],
     ],
-    arguments: TupleNode {
-        kind: Tuple,
-        terms: ArgumentsList {
-            terms: [],
-        },
-        span: 52..54,
-    },
+    arguments: [],
     body: [],
     span: 43..57,
 }
@@ -108,13 +74,7 @@ ConstructNewNode {
         ],
     },
     generics: [],
-    arguments: TupleNode {
-        kind: Tuple,
-        terms: ArgumentsList {
-            terms: [],
-        },
-        span: 0..0,
-    },
+    arguments: [],
     body: [],
     span: 59..90,
 }
@@ -126,22 +86,14 @@ ConstructNewNode {
         ],
     },
     generics: [
-        ArgumentsList {
-            terms: [
-                TupleTermNode {
-                    key: None,
-                    value: A,
-                },
-            ],
-        },
+        [
+            TupleTermNode {
+                key: None,
+                value: A,
+            },
+        ],
     ],
-    arguments: TupleNode {
-        kind: Tuple,
-        terms: ArgumentsList {
-            terms: [],
-        },
-        span: 106..108,
-    },
+    arguments: [],
     body: [],
     span: 90..115,
 }
@@ -157,22 +109,14 @@ ConstructNewNode {
         ],
     },
     generics: [
-        ArgumentsList {
-            terms: [
-                TupleTermNode {
-                    key: None,
-                    value: A,
-                },
-            ],
-        },
+        [
+            TupleTermNode {
+                key: None,
+                value: A,
+            },
+        ],
     ],
-    arguments: TupleNode {
-        kind: Tuple,
-        terms: ArgumentsList {
-            terms: [],
-        },
-        span: 135..137,
-    },
+    arguments: [],
     body: [],
     span: 115..144,
 }
@@ -188,18 +132,12 @@ ConstructNewNode {
         ],
     },
     generics: [],
-    arguments: TupleNode {
-        kind: Tuple,
-        terms: ArgumentsList {
-            terms: [
-                TupleTermNode {
-                    key: None,
-                    value: 10,
-                },
-            ],
+    arguments: [
+        TupleTermNode {
+            key: None,
+            value: 10,
         },
-        span: 158..162,
-    },
+    ],
     body: [],
     span: 144..201,
 }
@@ -215,31 +153,23 @@ ConstructNewNode {
         ],
     },
     generics: [
-        ArgumentsList {
-            terms: [
-                TupleTermNode {
-                    key: Some(
-                        Identifier("T", 218..219),
-                    ),
-                    value: Integer,
-                },
-            ],
+        [
+            TupleTermNode {
+                key: Some(
+                    Identifier("T", 218..219),
+                ),
+                value: Integer,
+            },
+        ],
+    ],
+    arguments: [
+        TupleTermNode {
+            key: Some(
+                Identifier("capacity", 230..238),
+            ),
+            value: 10,
         },
     ],
-    arguments: TupleNode {
-        kind: Tuple,
-        terms: ArgumentsList {
-            terms: [
-                TupleTermNode {
-                    key: Some(
-                        Identifier("capacity", 230..238),
-                    ),
-                    value: 10,
-                },
-            ],
-        },
-        span: 229..243,
-    },
     body: [],
     span: 201..282,
 }
@@ -255,13 +185,7 @@ ConstructNewNode {
         ],
     },
     generics: [],
-    arguments: TupleNode {
-        kind: Tuple,
-        terms: ArgumentsList {
-            terms: [],
-        },
-        span: 0..0,
-    },
+    arguments: [],
     body: [],
     span: 282..375,
 }
@@ -277,27 +201,19 @@ ConstructNewNode {
         ],
     },
     generics: [
-        ArgumentsList {
-            terms: [
-                TupleTermNode {
-                    key: None,
-                    value: T,
-                },
-            ],
+        [
+            TupleTermNode {
+                key: None,
+                value: T,
+            },
+        ],
+    ],
+    arguments: [
+        TupleTermNode {
+            key: None,
+            value: args,
         },
     ],
-    arguments: TupleNode {
-        kind: Tuple,
-        terms: ArgumentsList {
-            terms: [
-                TupleTermNode {
-                    key: None,
-                    value: args,
-                },
-            ],
-        },
-        span: 406..412,
-    },
     body: [],
     span: 375..849,
 }

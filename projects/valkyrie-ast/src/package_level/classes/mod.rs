@@ -111,7 +111,7 @@ pub struct FieldDeclaration {
 }
 
 /// `#attribute modifier Trait::method(): Return / Effect { ... }`
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Clone, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct MethodDeclaration {
     /// The method name which may associated with a trait.
@@ -128,6 +128,30 @@ pub struct MethodDeclaration {
     pub body: Option<StatementBlock>,
     /// The range of the declaration.
     pub span: Range<u32>,
+}
+
+impl Debug for MethodDeclaration {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        let w = &mut f.debug_struct("Method");
+        if !self.annotations.is_empty() {
+            w.field("annotations", &self.annotations);
+        }
+        w.field("name", &WrapDisplay::new(&self.name));
+        if !self.generics.terms.is_empty() {
+            w.field("generics", &self.generics);
+        }
+        if !self.parameters.terms.is_empty() {
+            w.field("parameters", &self.parameters);
+        }
+        if let Some(s) = &self.returns.typing {
+            w.field("returns", s);
+        }
+        if let Some(s) = &self.body {
+            w.field("body", s);
+        }
+        w.field("span", &self.span);
+        w.finish()
+    }
 }
 
 /// `domain { field; method(); domain {} }`

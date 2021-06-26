@@ -63,29 +63,21 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
-    type: TupleNode {
-        kind: Tuple,
-        terms: ArgumentsList {
-            terms: [
-                TupleTermNode {
-                    key: None,
-                    value: int,
-                },
-            ],
-        },
-        span: 93..100,
+    type: Tuple {
+        terms: [
+            TupleTermNode {
+                key: None,
+                value: int,
+            },
+        ],
     },
-    body: TupleNode {
-        kind: Tuple,
-        terms: ArgumentsList {
-            terms: [
-                TupleTermNode {
-                    key: None,
-                    value: 1,
-                },
-            ],
-        },
-        span: 103..108,
+    body: Tuple {
+        terms: [
+            TupleTermNode {
+                key: None,
+                value: 1,
+            },
+        ],
     },
     span: 78..109,
 }
@@ -96,37 +88,29 @@ VariableDeclaration {
         terms: [],
         span: 0..0,
     },
-    type: TupleNode {
-        kind: Tuple,
-        terms: ArgumentsList {
-            terms: [
-                TupleTermNode {
-                    key: None,
-                    value: int,
-                },
-                TupleTermNode {
-                    key: None,
-                    value: int,
-                },
-            ],
-        },
-        span: 130..140,
+    type: Tuple {
+        terms: [
+            TupleTermNode {
+                key: None,
+                value: int,
+            },
+            TupleTermNode {
+                key: None,
+                value: int,
+            },
+        ],
     },
-    body: TupleNode {
-        kind: Tuple,
-        terms: ArgumentsList {
-            terms: [
-                TupleTermNode {
-                    key: None,
-                    value: 1,
-                },
-                TupleTermNode {
-                    key: None,
-                    value: 1,
-                },
-            ],
-        },
-        span: 143..149,
+    body: Tuple {
+        terms: [
+            TupleTermNode {
+                key: None,
+                value: 1,
+            },
+            TupleTermNode {
+                key: None,
+                value: 1,
+            },
+        ],
     },
     span: 110..150,
 }
@@ -143,9 +127,7 @@ VariableDeclaration {
 ApplyCallNode {
     monadic: false,
     caller: b,
-    arguments: ArgumentsList {
-        terms: [],
-    },
+    arguments: [],
     body: None,
     span: 164..170,
 }

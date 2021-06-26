@@ -22,14 +22,12 @@ TryStatement {
         GenericCallNode {
             monadic: false,
             base: Option,
-            term: ArgumentsList {
-                terms: [
-                    TupleTermNode {
-                        key: None,
-                        value: T,
-                    },
-                ],
-            },
+            term: [
+                TupleTermNode {
+                    key: None,
+                    value: T,
+                },
+            ],
             span: 66..69,
         },
     ),
@@ -45,18 +43,16 @@ MatchCallNode {
                 GenericCallNode {
                     monadic: false,
                     base: Result,
-                    term: ArgumentsList {
-                        terms: [
-                            TupleTermNode {
-                                key: None,
-                                value: T,
-                            },
-                            TupleTermNode {
-                                key: None,
-                                value: Noop,
-                            },
-                        ],
-                    },
+                    term: [
+                        TupleTermNode {
+                            key: None,
+                            value: T,
+                        },
+                        TupleTermNode {
+                            key: None,
+                            value: Noop,
+                        },
+                    ],
                     span: 86..95,
                 },
             ),
@@ -64,14 +60,12 @@ MatchCallNode {
                 ApplyCallNode {
                     monadic: false,
                     caller: print,
-                    arguments: ArgumentsList {
-                        terms: [
-                            TupleTermNode {
-                                key: None,
-                                value: 'try',
-                            },
-                        ],
-                    },
+                    arguments: [
+                        TupleTermNode {
+                            key: None,
+                            value: 'try',
+                        },
+                    ],
                     body: None,
                     span: 107..114,
                 },
@@ -90,14 +84,12 @@ MatchCallNode {
                     ApplyCallNode {
                         monadic: false,
                         caller: print,
-                        arguments: ArgumentsList {
-                            terms: [
-                                TupleTermNode {
-                                    key: None,
-                                    value: 'RuntimeError',
-                                },
-                            ],
-                        },
+                        arguments: [
+                            TupleTermNode {
+                                key: None,
+                                value: 'RuntimeError',
+                            },
+                        ],
                         body: None,
                         span: 163..179,
                     },
@@ -129,14 +121,12 @@ MatchCallNode {
                 ApplyCallNode {
                     monadic: false,
                     caller: print,
-                    arguments: ArgumentsList {
-                        terms: [
-                            TupleTermNode {
-                                key: None,
-                                value: 'Some',
-                            },
-                        ],
-                    },
+                    arguments: [
+                        TupleTermNode {
+                            key: None,
+                            value: 'Some',
+                        },
+                    ],
                     body: None,
                     span: 223..231,
                 },

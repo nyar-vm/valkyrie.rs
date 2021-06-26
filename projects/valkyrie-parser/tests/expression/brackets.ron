@@ -5,14 +5,12 @@ ApplyCallNode {
         base: ApplyCallNode {
             monadic: false,
             caller: a,
-            arguments: ArgumentsList {
-                terms: [
-                    TupleTermNode {
-                        key: None,
-                        value: 1,
-                    },
-                ],
-            },
+            arguments: [
+                TupleTermNode {
+                    key: None,
+                    value: 1,
+                },
+            ],
             body: None,
             span: 1..4,
         },
@@ -24,9 +22,7 @@ ApplyCallNode {
         ],
         span: 4..7,
     },
-    arguments: ArgumentsList {
-        terms: [],
-    },
+    arguments: [],
     body: None,
     span: 7..10,
 }
@@ -35,14 +31,12 @@ SubscriptCallNode {
     base: ApplyCallNode {
         monadic: false,
         caller: a,
-        arguments: ArgumentsList {
-            terms: [
-                TupleTermNode {
-                    key: None,
-                    value: 1,
-                },
-            ],
-        },
+        arguments: [
+            TupleTermNode {
+                key: None,
+                value: 1,
+            },
+        ],
         body: None,
         span: 12..18,
     },
@@ -67,14 +61,12 @@ ApplyCallNode {
         ],
         span: 23..26,
     },
-    arguments: ArgumentsList {
-        terms: [
-            TupleTermNode {
-                key: None,
-                value: 2,
-            },
-        ],
-    },
+    arguments: [
+        TupleTermNode {
+            key: None,
+            value: 2,
+        },
+    ],
     body: None,
     span: 26..32,
 }
@@ -93,20 +85,16 @@ ApplyCallNode {
             ],
             span: 34..37,
         },
-        arguments: ArgumentsList {
-            terms: [],
-        },
+        arguments: [],
         body: None,
         span: 37..40,
     },
-    arguments: ArgumentsList {
-        terms: [
-            TupleTermNode {
-                key: None,
-                value: 3,
-            },
-        ],
-    },
+    arguments: [
+        TupleTermNode {
+            key: None,
+            value: 3,
+        },
+    ],
     body: None,
     span: 40..43,
 }
@@ -117,20 +105,16 @@ SubscriptCallNode {
         caller: ApplyCallNode {
             monadic: false,
             caller: a,
-            arguments: ArgumentsList {
-                terms: [],
-            },
+            arguments: [],
             body: None,
             span: 45..48,
         },
-        arguments: ArgumentsList {
-            terms: [
-                TupleTermNode {
-                    key: None,
-                    value: 2,
-                },
-            ],
-        },
+        arguments: [
+            TupleTermNode {
+                key: None,
+                value: 2,
+            },
+        ],
         body: None,
         span: 48..51,
     },
@@ -149,9 +133,7 @@ ApplyCallNode {
         base: ApplyCallNode {
             monadic: false,
             caller: a,
-            arguments: ArgumentsList {
-                terms: [],
-            },
+            arguments: [],
             body: None,
             span: 56..59,
         },
@@ -163,14 +145,12 @@ ApplyCallNode {
         ],
         span: 59..62,
     },
-    arguments: ArgumentsList {
-        terms: [
-            TupleTermNode {
-                key: None,
-                value: 3,
-            },
-        ],
-    },
+    arguments: [
+        TupleTermNode {
+            key: None,
+            value: 3,
+        },
+    ],
     body: None,
     span: 62..65,
 }

@@ -1,23 +1,19 @@
 ApplyCallNode {
     monadic: false,
     caller: a,
-    arguments: ArgumentsList {
-        terms: [],
-    },
+    arguments: [],
     body: None,
     span: 1..6,
 }
 ApplyCallNode {
     monadic: false,
     caller: s,
-    arguments: ArgumentsList {
-        terms: [
-            TupleTermNode {
-                key: None,
-                value: args,
-            },
-        ],
-    },
+    arguments: [
+        TupleTermNode {
+            key: None,
+            value: args,
+        },
+    ],
     body: None,
     span: 10..39,
 }
@@ -44,27 +40,21 @@ ApplyCallNode {
                         term: map,
                         span: 67..71,
                     },
-                    arguments: ArgumentsList {
-                        terms: [],
-                    },
+                    arguments: [],
                     body: None,
                     span: 71..102,
                 },
                 term: select,
                 span: 107..114,
             },
-            arguments: ArgumentsList {
-                terms: [],
-            },
+            arguments: [],
             body: None,
             span: 114..137,
         },
         term: reject,
         span: 142..149,
     },
-    arguments: ArgumentsList {
-        terms: [],
-    },
+    arguments: [],
     body: None,
     span: 149..172,
 }

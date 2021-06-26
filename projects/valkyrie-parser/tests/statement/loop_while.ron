@@ -11,14 +11,12 @@ WhileLoop {
         ApplyCallNode {
             monadic: false,
             caller: print,
-            arguments: ArgumentsList {
-                terms: [
-                    TupleTermNode {
-                        key: None,
-                        value: 'Loop!',
-                    },
-                ],
-            },
+            arguments: [
+                TupleTermNode {
+                    key: None,
+                    value: 'Loop!',
+                },
+            ],
             body: None,
             span: 32..41,
         },
@@ -29,14 +27,12 @@ WhileLoop {
                 ApplyCallNode {
                     monadic: false,
                     caller: print,
-                    arguments: ArgumentsList {
-                        terms: [
-                            TupleTermNode {
-                                key: None,
-                                value: 'Deep loop!',
-                            },
-                        ],
-                    },
+                    arguments: [
+                        TupleTermNode {
+                            key: None,
+                            value: 'Deep loop!',
+                        },
+                    ],
                     body: None,
                     span: 74..88,
                 },
@@ -47,14 +43,12 @@ WhileLoop {
                         ApplyCallNode {
                             monadic: false,
                             caller: print,
-                            arguments: ArgumentsList {
-                                terms: [
-                                    TupleTermNode {
-                                        key: None,
-                                        value: 'Deeper loop!',
-                                    },
-                                ],
-                            },
+                            arguments: [
+                                TupleTermNode {
+                                    key: None,
+                                    value: 'Deeper loop!',
+                                },
+                            ],
                             body: None,
                             span: 130..146,
                         },

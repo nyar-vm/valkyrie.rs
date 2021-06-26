@@ -5,9 +5,7 @@ ProceduralNode {
             Identifier("call", 1..5),
         ],
     },
-    arguments: ArgumentsList {
-        terms: [],
-    },
+    arguments: [],
     domain: None,
     span: 0..6,
 }
@@ -18,9 +16,7 @@ ProceduralNode {
             Identifier("call", 7..11),
         ],
     },
-    arguments: ArgumentsList {
-        terms: [],
-    },
+    arguments: [],
     domain: None,
     span: 6..14,
 }
@@ -31,9 +27,7 @@ ProceduralNode {
             Identifier("call", 15..19),
         ],
     },
-    arguments: ArgumentsList {
-        terms: [],
-    },
+    arguments: [],
     domain: None,
     span: 14..25,
 }
@@ -44,9 +38,7 @@ ProceduralNode {
             Identifier("call", 26..30),
         ],
     },
-    arguments: ArgumentsList {
-        terms: [],
-    },
+    arguments: [],
     domain: Some(
         DomainDeclaration {
             body: [
@@ -66,9 +58,7 @@ ProceduralNode {
             Identifier("call", 47..51),
         ],
     },
-    arguments: ArgumentsList {
-        terms: [],
-    },
+    arguments: [],
     domain: Some(
         DomainDeclaration {
             body: [
@@ -88,23 +78,12 @@ ProceduralNode {
             Identifier("call", 63..67),
         ],
     },
-    arguments: ArgumentsList {
-        terms: [],
-    },
+    arguments: [],
     domain: Some(
         DomainDeclaration {
             body: [
-                MethodDeclaration {
-                    name: NamePathNode {
-                        names: [
-                            Identifier("method", 70..76),
-                        ],
-                    },
-                    annotations: Empty,
-                    generics: [],
-                    parameters: [],
-                    returns: Auto,
-                    body: None,
+                Method {
+                    name: method,
                     span: 70..78,
                 },
             ],
@@ -120,25 +99,13 @@ ProceduralNode {
             Identifier("call", 81..85),
         ],
     },
-    arguments: ArgumentsList {
-        terms: [],
-    },
+    arguments: [],
     domain: Some(
         DomainDeclaration {
             body: [
-                MethodDeclaration {
-                    name: NamePathNode {
-                        names: [
-                            Identifier("method", 88..94),
-                        ],
-                    },
-                    annotations: Empty,
-                    generics: [],
-                    parameters: [],
-                    returns: Auto,
-                    body: Some(
-                        [],
-                    ),
+                Method {
+                    name: method,
+                    body: [],
                     span: 88..99,
                 },
             ],
@@ -154,9 +121,7 @@ ProceduralNode {
             Identifier("call", 103..107),
         ],
     },
-    arguments: ArgumentsList {
-        terms: [],
-    },
+    arguments: [],
     domain: Some(
         DomainDeclaration {
             body: [

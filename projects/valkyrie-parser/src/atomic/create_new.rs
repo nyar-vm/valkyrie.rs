@@ -8,8 +8,8 @@ impl crate::NewStatementNode {
             None => vec![],
         };
         let arguments = match &self.tuple_literal {
-            Some(s) => s.build(ctx)?,
-            None => TupleNode::default(),
+            Some(s) => s.build(ctx)?.terms,
+            None => ArgumentsList::default(),
         };
         // let returns = self.function_middle.returns(ctx).recover(&mut errors)?;
         Ok(ConstructNewNode {

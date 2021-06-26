@@ -32,7 +32,7 @@ pub struct ConstructNewNode {
     /// `new List<T>()`
     pub generics: Vec<GenericCallTerm>,
     /// `new Stack()`
-    pub arguments: TupleNode,
+    pub arguments: ArgumentsList,
     /// `new List<T> { ... }`
     pub body: CollectorNode,
     /// The range of the node

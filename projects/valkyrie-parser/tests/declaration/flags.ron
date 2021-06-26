@@ -303,9 +303,7 @@ Flags {
                     ],
                 },
                 variant: [],
-                arguments: ArgumentsList {
-                    terms: [],
-                },
+                arguments: [],
                 domain: None,
             },
         ],
@@ -318,23 +316,14 @@ Flags {
             value: None,
             span: 307..310,
         },
-        MethodDeclaration {
-            name: NamePathNode {
-                names: [
-                    Identifier("name", 320..324),
-                ],
-            },
+        Method {
             annotations: Annotation {
                 modifiers: [
                     get,
                 ],
             },
-            generics: [],
-            parameters: [],
-            returns: Auto,
-            body: Some(
-                [],
-            ),
+            name: name,
+            body: [],
             span: 316..335,
         },
     ],
@@ -345,23 +334,14 @@ Flags {
             value: None,
             span: 307..310,
         },
-        MethodDeclaration {
-            name: NamePathNode {
-                names: [
-                    Identifier("name", 320..324),
-                ],
-            },
+        Method {
             annotations: Annotation {
                 modifiers: [
                     get,
                 ],
             },
-            generics: [],
-            parameters: [],
-            returns: Auto,
-            body: Some(
-                [],
-            ),
+            name: name,
+            body: [],
             span: 316..335,
         },
     ],

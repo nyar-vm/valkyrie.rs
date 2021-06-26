@@ -2,120 +2,92 @@ NamespaceDeclaration {
     kind: Standalone,
     path: test∷literal,
 }
-TupleNode {
-    kind: Tuple,
-    terms: ArgumentsList {
-        terms: [],
-    },
-    span: 34..36,
+Tuple {
+    terms: [],
 }
 0
-TupleNode {
-    kind: Tuple,
-    terms: ArgumentsList {
-        terms: [
-            TupleTermNode {
-                key: None,
-                value: 1,
-            },
-        ],
-    },
-    span: 43..48,
+Tuple {
+    terms: [
+        TupleTermNode {
+            key: None,
+            value: 1,
+        },
+    ],
 }
-TupleNode {
-    kind: Tuple,
-    terms: ArgumentsList {
-        terms: [
-            TupleTermNode {
-                key: None,
-                value: 1,
-            },
-            TupleTermNode {
-                key: None,
-                value: 2,
-            },
-        ],
-    },
-    span: 50..56,
+Tuple {
+    terms: [
+        TupleTermNode {
+            key: None,
+            value: 1,
+        },
+        TupleTermNode {
+            key: None,
+            value: 2,
+        },
+    ],
 }
-TupleNode {
-    kind: Tuple,
-    terms: ArgumentsList {
-        terms: [
-            TupleTermNode {
-                key: None,
-                value: true,
-            },
-            TupleTermNode {
-                key: None,
-                value: TupleNode {
-                    kind: Tuple,
-                    terms: ArgumentsList {
-                        terms: [
-                            TupleTermNode {
-                                key: None,
-                                value: false,
-                            },
-                        ],
+Tuple {
+    terms: [
+        TupleTermNode {
+            key: None,
+            value: true,
+        },
+        TupleTermNode {
+            key: None,
+            value: Tuple {
+                terms: [
+                    TupleTermNode {
+                        key: None,
+                        value: false,
                     },
-                    span: 65..73,
-                },
+                ],
             },
-        ],
-    },
-    span: 58..74,
+        },
+    ],
 }
-TupleNode {
-    kind: Tuple,
-    terms: ArgumentsList {
-        terms: [
-            TupleTermNode {
-                key: Some(
-                    Identifier("a", 91..92),
-                ),
-                value: 1,
-            },
-            TupleTermNode {
-                key: Some(
-                    Identifier("z", 97..98),
-                ),
-                value: 26,
-            },
-        ],
-    },
-    span: 84..103,
+Tuple {
+    terms: [
+        TupleTermNode {
+            key: Some(
+                Identifier("a", 91..92),
+            ),
+            value: 1,
+        },
+        TupleTermNode {
+            key: Some(
+                Identifier("z", 97..98),
+            ),
+            value: 26,
+        },
+    ],
 }
-TupleNode {
-    kind: Tuple,
-    terms: ArgumentsList {
-        terms: [
-            TupleTermNode {
-                key: Some(
-                    Identifier("啊", 106..109),
-                ),
-                value: 1,
-            },
-            TupleTermNode {
-                key: Some(
-                    Identifier("吧", 114..117),
-                ),
-                value: 2,
-            },
-            TupleTermNode {
-                key: Some(
-                    Identifier("", 122..127),
-                ),
-                value: 3,
-            },
-            TupleTermNode {
-                key: Some(
-                    Identifier("", 132..137),
-                ),
-                value: 4,
-            },
-        ],
-    },
-    span: 105..141,
+Tuple {
+    terms: [
+        TupleTermNode {
+            key: Some(
+                Identifier("啊", 106..109),
+            ),
+            value: 1,
+        },
+        TupleTermNode {
+            key: Some(
+                Identifier("吧", 114..117),
+            ),
+            value: 2,
+        },
+        TupleTermNode {
+            key: Some(
+                Identifier("", 122..127),
+            ),
+            value: 3,
+        },
+        TupleTermNode {
+            key: Some(
+                Identifier("", 132..137),
+            ),
+            value: 4,
+        },
+    ],
 }
 RangeNode {
     kind: Offset,

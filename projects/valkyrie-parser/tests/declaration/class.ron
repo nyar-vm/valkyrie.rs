@@ -34,9 +34,7 @@ Class {
                     ],
                 },
                 variant: [],
-                arguments: ArgumentsList {
-                    terms: [],
-                },
+                arguments: [],
                 domain: None,
             },
         ],
@@ -92,141 +90,98 @@ Class {
 Class {
     name: A,
     terms: [
-        MethodDeclaration {
-            name: NamePathNode {
-                names: [
-                    Identifier("a", 440..441),
-                ],
-            },
+        Method {
             annotations: Annotation {
                 modifiers: [
                     pub,
                     static,
                 ],
             },
-            generics: [],
-            parameters: [],
-            returns: ReturnType {
-                main: GenericCallNode {
-                    monadic: false,
-                    base: InfixNode {
-                        infix: +,
-                        lhs: GenericCallNode {
-                            monadic: false,
-                            base: Ref,
-                            term: ArgumentsList {
-                                terms: [
-                                    TupleTermNode {
-                                        key: None,
-                                        value: B,
-                                    },
-                                ],
-                            },
-                            span: 448..455,
-                        },
-                        rhs: Gc,
-                    },
-                    term: ArgumentsList {
-                        terms: [
+            name: a,
+            returns: GenericCallNode {
+                monadic: false,
+                base: InfixNode {
+                    infix: +,
+                    lhs: GenericCallNode {
+                        monadic: false,
+                        base: Ref,
+                        term: [
                             TupleTermNode {
                                 key: None,
-                                value: D,
+                                value: B,
                             },
                         ],
+                        span: 448..455,
                     },
-                    span: 460..463,
+                    rhs: Gc,
                 },
-            },
-            body: Some(
-                [
-                    Control {
-                        kind: Return,
-                        expression: 1,
-                        span: 474..482,
+                term: [
+                    TupleTermNode {
+                        key: None,
+                        value: D,
                     },
                 ],
-            ),
+                span: 460..463,
+            },
+            body: [
+                Control {
+                    kind: Return,
+                    expression: 1,
+                    span: 474..482,
+                },
+            ],
             span: 429..488,
         },
         Field {
             name: _a,
         },
-        MethodDeclaration {
-            name: NamePathNode {
-                names: [
-                    Identifier("a", 505..506),
-                ],
-            },
+        Method {
             annotations: Annotation {
                 modifiers: [
                     get,
                 ],
             },
-            generics: [],
-            parameters: [],
-            returns: Auto,
-            body: Some(
-                [
-                    ApplyCallNode {
-                        monadic: false,
-                        caller: violate,
-                        arguments: ArgumentsList {
-                            terms: [],
-                        },
-                        body: None,
-                        span: 526..567,
-                    },
-                    Control {
-                        kind: Return,
-                        expression: _a,
-                        span: 576..585,
-                    },
-                ],
-            ),
+            name: a,
+            body: [
+                ApplyCallNode {
+                    monadic: false,
+                    caller: violate,
+                    arguments: [],
+                    body: None,
+                    span: 526..567,
+                },
+                Control {
+                    kind: Return,
+                    expression: _a,
+                    span: 576..585,
+                },
+            ],
             span: 501..591,
         },
-        MethodDeclaration {
-            name: NamePathNode {
-                names: [
-                    Identifier("a", 600..601),
-                ],
-            },
+        Method {
             annotations: Annotation {
                 modifiers: [
                     set,
                 ],
             },
-            generics: [],
-            parameters: [],
-            returns: Auto,
-            body: Some(
-                [
-                    InfixNode {
-                        infix: =,
-                        lhs: _a,
-                        rhs: value,
-                    },
-                ],
-            ),
+            name: a,
+            body: [
+                InfixNode {
+                    infix: =,
+                    lhs: _a,
+                    rhs: value,
+                },
+            ],
             span: 596..630,
         },
-        MethodDeclaration {
-            name: NamePathNode {
-                names: [
-                    Identifier("into", 635..639),
-                ],
-            },
-            annotations: Empty,
+        Method {
+            name: into,
             generics: [
                 Parameter {
                     key: "bool",
                 },
             ],
-            parameters: [],
-            returns: Auto,
-            body: Some(
-                [],
-            ),
+            body: [],
             span: 635..659,
         },
     ],
@@ -243,9 +198,7 @@ Class {
                     ],
                 },
                 variant: [],
-                arguments: ArgumentsList {
-                    terms: [],
-                },
+                arguments: [],
                 domain: None,
             },
             AttributeTerm {
@@ -256,9 +209,7 @@ Class {
                     ],
                 },
                 variant: [],
-                arguments: ArgumentsList {
-                    terms: [],
-                },
+                arguments: [],
                 domain: None,
             },
             AttributeTerm {
@@ -269,9 +220,7 @@ Class {
                     ],
                 },
                 variant: [],
-                arguments: ArgumentsList {
-                    terms: [],
-                },
+                arguments: [],
                 domain: None,
             },
         ],
@@ -290,9 +239,7 @@ Class {
                     ],
                 },
                 variant: [],
-                arguments: ArgumentsList {
-                    terms: [],
-                },
+                arguments: [],
                 domain: None,
             },
             AttributeTerm {
@@ -303,9 +250,7 @@ Class {
                     ],
                 },
                 variant: [],
-                arguments: ArgumentsList {
-                    terms: [],
-                },
+                arguments: [],
                 domain: None,
             },
             AttributeTerm {
@@ -316,9 +261,7 @@ Class {
                     ],
                 },
                 variant: [],
-                arguments: ArgumentsList {
-                    terms: [],
-                },
+                arguments: [],
                 domain: None,
             },
         ],
@@ -382,19 +325,9 @@ Class {
             },
             name: _y_base,
         },
-        MethodDeclaration {
-            name: NamePathNode {
-                names: [
-                    Identifier("constructor", 1077..1088),
-                ],
-            },
-            annotations: Empty,
-            generics: [],
-            parameters: [],
-            returns: Auto,
-            body: Some(
-                [],
-            ),
+        Method {
+            name: constructor,
+            body: [],
             span: 1077..1099,
         },
     ],
@@ -411,80 +344,49 @@ Class {
                     ],
                 },
                 variant: [],
-                arguments: ArgumentsList {
-                    terms: [],
-                },
+                arguments: [],
                 domain: None,
             },
         ],
     },
     name: 原神,
     terms: [
-        MethodDeclaration {
-            name: NamePathNode {
-                names: [
-                    Identifier("启动", 1200..1206),
-                ],
-            },
-            annotations: Empty,
-            generics: [],
+        Method {
+            name: 启动,
             parameters: [
                 Parameter {
                     key: "self",
                 },
             ],
-            returns: ReturnType {
-                main: Unit,
-            },
-            body: Some(
-                [
-                    shell'F:\\Games\\Genshin Impact\\UnityCrashHandler64.exe',
-                ],
-            ),
+            returns: Unit,
+            body: [
+                shell'F:\\Games\\Genshin Impact\\UnityCrashHandler64.exe',
+            ],
             span: 1200..1289,
         },
-        MethodDeclaration {
-            name: NamePathNode {
-                names: [
-                    Identifier("value", 1298..1303),
-                ],
-            },
+        Method {
             annotations: Annotation {
                 modifiers: [
                     get,
                 ],
             },
-            generics: [],
-            parameters: [],
-            returns: ReturnType {
-                main: Integer,
-            },
-            body: Some(
-                [
-                    _integer,
-                ],
-            ),
+            name: value,
+            returns: Integer,
+            body: [
+                _integer,
+            ],
             span: 1294..1339,
         },
-        MethodDeclaration {
-            name: NamePathNode {
-                names: [
-                    Identifier("value", 1348..1353),
-                ],
-            },
+        Method {
             annotations: Annotation {
                 modifiers: [
                     set,
                 ],
             },
-            generics: [],
-            parameters: [],
-            returns: Auto,
-            body: Some(
-                [
-                    _integer,
-                ],
-            ),
+            name: value,
+            body: [
+                _integer,
+            ],
             span: 1344..1380,
         },
     ],
@@ -511,63 +413,31 @@ Class {
         Field {
             name: infer_type,
         },
-        MethodDeclaration {
-            name: NamePathNode {
-                names: [
-                    Identifier("property", 1512..1520),
-                ],
-            },
+        Method {
             annotations: Annotation {
                 modifiers: [
                     get,
                 ],
             },
-            generics: [],
-            parameters: [],
-            returns: Auto,
-            body: Some(
-                [],
-            ),
+            name: property,
+            body: [],
             span: 1508..1525,
         },
-        MethodDeclaration {
-            name: NamePathNode {
-                names: [
-                    Identifier("property", 1535..1543),
-                ],
-            },
+        Method {
             annotations: Annotation {
                 modifiers: [
                     set,
                 ],
             },
-            generics: [],
-            parameters: [],
-            returns: Auto,
-            body: Some(
-                [],
-            ),
+            name: property,
+            body: [],
             span: 1531..1548,
         },
-        MethodDeclaration {
-            name: NamePathNode {
-                names: [
-                    Identifier("method", 1554..1560),
-                ],
-            },
-            annotations: Empty,
-            generics: [],
-            parameters: [],
-            returns: Auto,
-            body: None,
+        Method {
+            name: method,
             span: 1554..1562,
         },
-        MethodDeclaration {
-            name: NamePathNode {
-                names: [
-                    Identifier("/", 1591..1594),
-                ],
-            },
+        Method {
             annotations: Annotation {
                 attributes: [
                     AttributeTerm {
@@ -578,9 +448,7 @@ Class {
                             ],
                         },
                         variant: [],
-                        arguments: ArgumentsList {
-                            terms: [],
-                        },
+                        arguments: [],
                         domain: None,
                     },
                 ],
@@ -588,7 +456,7 @@ Class {
                     infix,
                 ],
             },
-            generics: [],
+            name: /,
             parameters: [
                 Parameter {
                     key: "self",
@@ -598,30 +466,21 @@ Class {
                     bound: Self,
                 },
             ],
-            returns: ReturnType {
-                main: Self,
-            },
-            body: Some(
-                [
-                    Control {
-                        kind: Return,
-                        expression: InfixNode {
-                            infix: /,
-                            lhs: self,
-                            rhs: rhs,
-                        },
-                        span: 1641..1658,
+            returns: Self,
+            body: [
+                Control {
+                    kind: Return,
+                    expression: InfixNode {
+                        infix: /,
+                        lhs: self,
+                        rhs: rhs,
                     },
-                ],
-            ),
+                    span: 1641..1658,
+                },
+            ],
             span: 1570..1664,
         },
-        MethodDeclaration {
-            name: NamePathNode {
-                names: [
-                    Identifier("join", 1681..1685),
-                ],
-            },
+        Method {
             annotations: Annotation {
                 attributes: [
                     AttributeTerm {
@@ -632,13 +491,12 @@ Class {
                             ],
                         },
                         variant: [],
-                        arguments: ArgumentsList {
-                            terms: [],
-                        },
+                        arguments: [],
                         domain: None,
                     },
                 ],
             },
+            name: join,
             generics: [
                 Parameter {
                     key: "T",
@@ -659,36 +517,30 @@ Class {
                     bound: T,
                 },
             ],
-            returns: ReturnType {
-                main: T,
-            },
-            body: Some(
-                [
-                    Control {
-                        kind: Return,
-                        expression: ApplyCallNode {
+            returns: T,
+            body: [
+                Control {
+                    kind: Return,
+                    expression: ApplyCallNode {
+                        monadic: false,
+                        caller: DotCallNode {
                             monadic: false,
-                            caller: DotCallNode {
-                                monadic: false,
-                                base: self,
-                                term: append,
-                                span: 1742..1749,
-                            },
-                            arguments: ArgumentsList {
-                                terms: [
-                                    TupleTermNode {
-                                        key: None,
-                                        value: other,
-                                    },
-                                ],
-                            },
-                            body: None,
-                            span: 1749..1756,
+                            base: self,
+                            term: append,
+                            span: 1742..1749,
                         },
-                        span: 1731..1756,
+                        arguments: [
+                            TupleTermNode {
+                                key: None,
+                                value: other,
+                            },
+                        ],
+                        body: None,
+                        span: 1749..1756,
                     },
-                ],
-            ),
+                    span: 1731..1756,
+                },
+            ],
             span: 1669..1762,
         },
     ],
@@ -705,9 +557,7 @@ Class {
                     ],
                 },
                 variant: [],
-                arguments: ArgumentsList {
-                    terms: [],
-                },
+                arguments: [],
                 domain: None,
             },
         ],
@@ -726,9 +576,7 @@ Class {
                     ],
                 },
                 variant: [],
-                arguments: ArgumentsList {
-                    terms: [],
-                },
+                arguments: [],
                 domain: None,
             },
         ],
@@ -746,9 +594,7 @@ Class {
                             ],
                         },
                         variant: [],
-                        arguments: ArgumentsList {
-                            terms: [],
-                        },
+                        arguments: [],
                         domain: None,
                     },
                 ],
@@ -784,12 +630,7 @@ Class {
             },
             name: fields,
         },
-        MethodDeclaration {
-            name: NamePathNode {
-                names: [
-                    Identifier("try_add", 2055..2062),
-                ],
-            },
+        Method {
             annotations: Annotation {
                 attributes: [
                     AttributeTerm {
@@ -800,9 +641,7 @@ Class {
                             ],
                         },
                         variant: [],
-                        arguments: ArgumentsList {
-                            terms: [],
-                        },
+                        arguments: [],
                         domain: None,
                     },
                     AttributeTerm {
@@ -813,14 +652,12 @@ Class {
                             ],
                         },
                         variant: [],
-                        arguments: ArgumentsList {
-                            terms: [],
-                        },
+                        arguments: [],
                         domain: None,
                     },
                 ],
             },
-            generics: [],
+            name: try_add,
             parameters: [
                 Parameter {
                     key: "self",
@@ -834,12 +671,9 @@ Class {
                     key: "args",
                 },
             ],
-            returns: Auto,
-            body: Some(
-                [
-                    block,
-                ],
-            ),
+            body: [
+                block,
+            ],
             span: 2033..2108,
         },
     ],

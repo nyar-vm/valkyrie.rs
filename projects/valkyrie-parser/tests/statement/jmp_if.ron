@@ -2,9 +2,7 @@ if
 ApplyCallNode {
     monadic: false,
     caller: a,
-    arguments: ArgumentsList {
-        terms: [],
-    },
+    arguments: [],
     body: None,
     span: 4..8,
 }
@@ -12,18 +10,14 @@ if
 ApplyCallNode {
     monadic: false,
     caller: a,
-    arguments: ArgumentsList {
-        terms: [],
-    },
+    arguments: [],
     body: None,
     span: 13..17,
 }
 ApplyCallNode {
     monadic: false,
     caller: else,
-    arguments: ArgumentsList {
-        terms: [],
-    },
+    arguments: [],
     body: None,
     span: 22..26,
 }
@@ -31,9 +25,7 @@ if
 ApplyCallNode {
     monadic: false,
     caller: a,
-    arguments: ArgumentsList {
-        terms: [],
-    },
+    arguments: [],
     body: None,
     span: 31..35,
 }
@@ -42,9 +34,7 @@ if
 ApplyCallNode {
     monadic: false,
     caller: b,
-    arguments: ArgumentsList {
-        terms: [],
-    },
+    arguments: [],
     body: None,
     span: 45..49,
 }
@@ -52,9 +42,7 @@ if
 ApplyCallNode {
     monadic: false,
     caller: a,
-    arguments: ArgumentsList {
-        terms: [],
-    },
+    arguments: [],
     body: None,
     span: 54..58,
 }
@@ -63,18 +51,14 @@ if
 ApplyCallNode {
     monadic: false,
     caller: b,
-    arguments: ArgumentsList {
-        terms: [],
-    },
+    arguments: [],
     body: None,
     span: 68..72,
 }
 ApplyCallNode {
     monadic: false,
     caller: else,
-    arguments: ArgumentsList {
-        terms: [],
-    },
+    arguments: [],
     body: None,
     span: 77..81,
 }
@@ -82,9 +66,7 @@ if
 ApplyCallNode {
     monadic: false,
     caller: a,
-    arguments: ArgumentsList {
-        terms: [],
-    },
+    arguments: [],
     body: None,
     span: 86..90,
 }
@@ -93,9 +75,7 @@ if
 ApplyCallNode {
     monadic: false,
     caller: b,
-    arguments: ArgumentsList {
-        terms: [],
-    },
+    arguments: [],
     body: None,
     span: 100..104,
 }
@@ -104,9 +84,7 @@ if
 ApplyCallNode {
     monadic: false,
     caller: c,
-    arguments: ArgumentsList {
-        terms: [],
-    },
+    arguments: [],
     body: None,
     span: 114..118,
 }
@@ -114,9 +92,7 @@ if
 ApplyCallNode {
     monadic: false,
     caller: a,
-    arguments: ArgumentsList {
-        terms: [],
-    },
+    arguments: [],
     body: None,
     span: 123..127,
 }
@@ -125,9 +101,7 @@ if
 ApplyCallNode {
     monadic: false,
     caller: b,
-    arguments: ArgumentsList {
-        terms: [],
-    },
+    arguments: [],
     body: None,
     span: 137..141,
 }
@@ -136,18 +110,14 @@ if
 ApplyCallNode {
     monadic: false,
     caller: c,
-    arguments: ArgumentsList {
-        terms: [],
-    },
+    arguments: [],
     body: None,
     span: 151..155,
 }
 ApplyCallNode {
     monadic: false,
     caller: else,
-    arguments: ArgumentsList {
-        terms: [],
-    },
+    arguments: [],
     body: None,
     span: 160..164,
 }
@@ -162,9 +132,7 @@ VariableDeclaration {
     body: ApplyCallNode {
         monadic: false,
         caller: point,
-        arguments: ArgumentsList {
-            terms: [],
-        },
+        arguments: [],
         body: None,
         span: 188..217,
     },
@@ -181,9 +149,7 @@ VariableDeclaration {
     body: ApplyCallNode {
         monadic: false,
         caller: x,
-        arguments: ArgumentsList {
-            terms: [],
-        },
+        arguments: [],
         body: None,
         span: 244..266,
     },

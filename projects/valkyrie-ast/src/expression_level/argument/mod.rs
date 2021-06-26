@@ -3,7 +3,7 @@ use crate::StatementBlock;
 
 mod display;
 
-/// `(a + b, c: d, ..e)`
+/// `a + b, c: d, ..e`
 #[derive(Clone, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ArgumentsList {

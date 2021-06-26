@@ -1,9 +1,7 @@
 ApplyCallNode {
     monadic: false,
     caller: extension,
-    arguments: ArgumentsList {
-        terms: [],
-    },
+    arguments: [],
     body: None,
     span: 10..15,
 }

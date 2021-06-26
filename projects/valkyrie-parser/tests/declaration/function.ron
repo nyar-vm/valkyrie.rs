@@ -56,14 +56,12 @@ FunctionDeclaration {
         ApplyCallNode {
             monadic: false,
             caller: print,
-            arguments: ArgumentsList {
-                terms: [
-                    TupleTermNode {
-                        key: None,
-                        value: 'Hello, world!',
-                    },
-                ],
-            },
+            arguments: [
+                TupleTermNode {
+                    key: None,
+                    value: 'Hello, world!',
+                },
+            ],
             body: None,
             span: 91..108,
         },
@@ -108,14 +106,12 @@ FunctionDeclaration {
         ApplyCallNode {
             monadic: false,
             caller: print,
-            arguments: ArgumentsList {
-                terms: [
-                    TupleTermNode {
-                        key: None,
-                        value: 'Hello, world!',
-                    },
-                ],
-            },
+            arguments: [
+                TupleTermNode {
+                    key: None,
+                    value: 'Hello, world!',
+                },
+            ],
             body: None,
             span: 173..190,
         },
@@ -171,14 +167,12 @@ FunctionDeclaration {
                         ApplyCallNode {
                             monadic: false,
                             caller: print,
-                            arguments: ArgumentsList {
-                                terms: [
-                                    TupleTermNode {
-                                        key: None,
-                                        value: '{lhs} {rhs}',
-                                    },
-                                ],
-                            },
+                            arguments: [
+                                TupleTermNode {
+                                    key: None,
+                                    value: '{lhs} {rhs}',
+                                },
+                            ],
                             body: None,
                             span: 346..361,
                         },
@@ -217,14 +211,12 @@ FunctionDeclaration {
             bound: GenericCallNode {
                 monadic: false,
                 base: List,
-                term: ArgumentsList {
-                    terms: [
-                        TupleTermNode {
-                            key: None,
-                            value: String,
-                        },
-                    ],
-                },
+                term: [
+                    TupleTermNode {
+                        key: None,
+                        value: String,
+                    },
+                ],
                 span: 440..448,
             },
         },
@@ -238,25 +230,21 @@ FunctionDeclaration {
             caller: ApplyCallNode {
                 monadic: false,
                 caller: outer,
-                arguments: ArgumentsList {
-                    terms: [
-                        TupleTermNode {
-                            key: None,
-                            value: 'Hello',
-                        },
-                    ],
-                },
+                arguments: [
+                    TupleTermNode {
+                        key: None,
+                        value: 'Hello',
+                    },
+                ],
                 body: None,
                 span: 468..477,
             },
-            arguments: ArgumentsList {
-                terms: [
-                    TupleTermNode {
-                        key: None,
-                        value: 'world',
-                    },
-                ],
-            },
+            arguments: [
+                TupleTermNode {
+                    key: None,
+                    value: 'world',
+                },
+            ],
             body: None,
             span: 477..486,
         },
@@ -414,22 +402,14 @@ FunctionDeclaration {
                 ],
             },
             generics: [
-                ArgumentsList {
-                    terms: [
-                        TupleTermNode {
-                            key: None,
-                            value: int,
-                        },
-                    ],
-                },
+                [
+                    TupleTermNode {
+                        key: None,
+                        value: int,
+                    },
+                ],
             ],
-            arguments: TupleNode {
-                kind: Tuple,
-                terms: ArgumentsList {
-                    terms: [],
-                },
-                span: 1552..1554,
-            },
+            arguments: [],
             body: [],
             span: 1514..1644,
         },
@@ -465,14 +445,12 @@ FunctionDeclaration {
         ApplyCallNode {
             monadic: false,
             caller: print,
-            arguments: ArgumentsList {
-                terms: [
-                    TupleTermNode {
-                        key: None,
-                        value: 'Hello, world!',
-                    },
-                ],
-            },
+            arguments: [
+                TupleTermNode {
+                    key: None,
+                    value: 'Hello, world!',
+                },
+            ],
             body: None,
             span: 1693..1710,
         },
@@ -489,9 +467,7 @@ Class {
                     ],
                 },
                 variant: [],
-                arguments: ArgumentsList {
-                    terms: [],
-                },
+                arguments: [],
                 domain: None,
             },
         ],
@@ -529,9 +505,7 @@ FunctionDeclaration {
                     ],
                 },
                 variant: [],
-                arguments: ArgumentsList {
-                    terms: [],
-                },
+                arguments: [],
                 domain: None,
             },
         ],
@@ -604,14 +578,12 @@ FunctionDeclaration {
                                 term: write,
                                 span: 1982..1988,
                             },
-                            arguments: ArgumentsList {
-                                terms: [
-                                    TupleTermNode {
-                                        key: None,
-                                        value: this,
-                                    },
-                                ],
-                            },
+                            arguments: [
+                                TupleTermNode {
+                                    key: None,
+                                    value: this,
+                                },
+                            ],
                             body: None,
                             span: 1988..1994,
                         },
@@ -621,9 +593,7 @@ FunctionDeclaration {
                 term: call,
                 span: 2005..2010,
             },
-            arguments: ArgumentsList {
-                terms: [],
-            },
+            arguments: [],
             body: None,
             span: 2010..2012,
         },
@@ -646,9 +616,7 @@ FunctionDeclaration {
                     ],
                 },
                 variant: [],
-                arguments: ArgumentsList {
-                    terms: [],
-                },
+                arguments: [],
                 domain: None,
             },
         ],
@@ -667,14 +635,12 @@ FunctionDeclaration {
             bound: GenericCallNode {
                 monadic: false,
                 base: List,
-                term: ArgumentsList {
-                    terms: [
-                        TupleTermNode {
-                            key: None,
-                            value: String,
-                        },
-                    ],
-                },
+                term: [
+                    TupleTermNode {
+                        key: None,
+                        value: String,
+                    },
+                ],
                 span: 2084..2096,
             },
         },

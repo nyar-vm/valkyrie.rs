@@ -2,9 +2,7 @@ macro
 ApplyCallNode {
     monadic: false,
     caller: a,
-    arguments: ArgumentsList {
-        terms: [],
-    },
+    arguments: [],
     body: None,
     span: 7..105,
 }
@@ -25,9 +23,7 @@ FunctionDeclaration {
                     ],
                 },
                 variant: [],
-                arguments: ArgumentsList {
-                    terms: [],
-                },
+                arguments: [],
                 domain: None,
             },
         ],
@@ -96,14 +92,12 @@ FunctionDeclaration {
         ApplyCallNode {
             monadic: false,
             caller: print,
-            arguments: ArgumentsList {
-                terms: [
-                    TupleTermNode {
-                        key: None,
-                        value: 'Hello, world!',
-                    },
-                ],
-            },
+            arguments: [
+                TupleTermNode {
+                    key: None,
+                    value: 'Hello, world!',
+                },
+            ],
             body: None,
             span: 294..311,
         },
@@ -174,14 +168,12 @@ FunctionDeclaration {
                 ApplyCallNode {
                     monadic: false,
                     caller: print,
-                    arguments: ArgumentsList {
-                        terms: [
-                            TupleTermNode {
-                                key: None,
-                                value: '{lhs} {rhs}',
-                            },
-                        ],
-                    },
+                    arguments: [
+                        TupleTermNode {
+                            key: None,
+                            value: '{lhs} {rhs}',
+                        },
+                    ],
                     body: None,
                     span: 473..488,
                 },
@@ -217,14 +209,12 @@ FunctionDeclaration {
             bound: GenericCallNode {
                 monadic: false,
                 base: List,
-                term: ArgumentsList {
-                    terms: [
-                        TupleTermNode {
-                            key: None,
-                            value: String,
-                        },
-                    ],
-                },
+                term: [
+                    TupleTermNode {
+                        key: None,
+                        value: String,
+                    },
+                ],
                 span: 557..569,
             },
         },
@@ -238,25 +228,21 @@ FunctionDeclaration {
             caller: ApplyCallNode {
                 monadic: false,
                 caller: outer,
-                arguments: ArgumentsList {
-                    terms: [
-                        TupleTermNode {
-                            key: None,
-                            value: 'Hello',
-                        },
-                    ],
-                },
+                arguments: [
+                    TupleTermNode {
+                        key: None,
+                        value: 'Hello',
+                    },
+                ],
                 body: None,
                 span: 589..598,
             },
-            arguments: ArgumentsList {
-                terms: [
-                    TupleTermNode {
-                        key: None,
-                        value: 'world',
-                    },
-                ],
-            },
+            arguments: [
+                TupleTermNode {
+                    key: None,
+                    value: 'world',
+                },
+            ],
             body: None,
             span: 598..607,
         },

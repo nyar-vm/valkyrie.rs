@@ -1,29 +1,58 @@
 GenericCallNode {
     monadic: false,
     base: Object,
-    term: ArgumentsList {
-        terms: [],
-    },
+    term: [],
     span: 20..24,
 }
 GenericCallNode {
     monadic: false,
     base: Object,
-    term: ArgumentsList {
-        terms: [
-            TupleTermNode {
-                key: None,
-                value: T,
-            },
-        ],
-    },
+    term: [
+        TupleTermNode {
+            key: None,
+            value: T,
+        },
+    ],
     span: 32..38,
 }
 GenericCallNode {
     monadic: false,
     base: Object,
-    term: ArgumentsList {
-        terms: [
+    term: [
+        TupleTermNode {
+            key: None,
+            value: T,
+        },
+        TupleTermNode {
+            key: None,
+            value: U,
+        },
+    ],
+    span: 46..53,
+}
+GenericCallNode {
+    monadic: false,
+    base: Object,
+    term: [],
+    span: 78..84,
+}
+GenericCallNode {
+    monadic: false,
+    base: Object,
+    term: [
+        TupleTermNode {
+            key: None,
+            value: T,
+        },
+    ],
+    span: 92..99,
+}
+ApplyCallNode {
+    monadic: false,
+    caller: GenericCallNode {
+        monadic: false,
+        base: Object,
+        term: [
             TupleTermNode {
                 key: None,
                 value: T,
@@ -33,61 +62,18 @@ GenericCallNode {
                 value: U,
             },
         ],
-    },
-    span: 46..53,
-}
-GenericCallNode {
-    monadic: false,
-    base: Object,
-    term: ArgumentsList {
-        terms: [],
-    },
-    span: 78..84,
-}
-GenericCallNode {
-    monadic: false,
-    base: Object,
-    term: ArgumentsList {
-        terms: [
-            TupleTermNode {
-                key: None,
-                value: T,
-            },
-        ],
-    },
-    span: 92..99,
-}
-ApplyCallNode {
-    monadic: false,
-    caller: GenericCallNode {
-        monadic: false,
-        base: Object,
-        term: ArgumentsList {
-            terms: [
-                TupleTermNode {
-                    key: None,
-                    value: T,
-                },
-                TupleTermNode {
-                    key: None,
-                    value: U,
-                },
-            ],
-        },
         span: 107..116,
     },
-    arguments: ArgumentsList {
-        terms: [
-            TupleTermNode {
-                key: None,
-                value: 1,
-            },
-            TupleTermNode {
-                key: None,
-                value: 2,
-            },
-        ],
-    },
+    arguments: [
+        TupleTermNode {
+            key: None,
+            value: 1,
+        },
+        TupleTermNode {
+            key: None,
+            value: 2,
+        },
+    ],
     body: None,
     span: 116..122,
 }
