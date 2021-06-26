@@ -28,22 +28,24 @@ impl crate::AnnotationHeadNode {
 }
 
 impl crate::AttributeItemNode {
-    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<AttributeTerm> {
-        let path = self.namepath.build(ctx);
-        // let domain = match &self.class_block {
-        //     Some(s) => {
-        //         Some(s.build(ctx)?)
-        //     }
-        //     None => {None}
-        // };
-        Ok(AttributeTerm { kind: Default::default(), path, variant: vec![], arguments: Default::default(), domain: None })
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> AttributeTerm {
+        AttributeTerm {
+            kind: Default::default(),
+            path: self.namepath.build(ctx),
+            variant: vec![],
+            arguments: Default::default(),
+            domain: self.domain(ctx),
+        }
+    }
+    pub(crate) fn domain(&self, ctx: &mut ProgramState) -> Option<DomainDeclaration> {
+        Some(self.class_block.as_ref()?.build_domain(ctx))
     }
 }
 impl crate::AnnotationTermNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<AttributeList> {
         let mut list = AttributeList::new(1);
         match self {
-            Self::AttributeCall(v) => list.terms.push(v.attribute_item.build(ctx)?),
+            Self::AttributeCall(v) => list.terms.push(v.attribute_item.build(ctx)),
             Self::AttributeList(v) => {
                 for term in &v.attribute_item {
                     match term.build(ctx) {
@@ -61,8 +63,14 @@ impl crate::AnnotationTermMixNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<AttributeList> {
         let mut list = AttributeList::new(1);
         match self {
-            Self::AttributeCall(v) => list.terms.push(v.attribute_item.build(ctx)?),
-            Self::ProceduralCall(v) => list.terms.push(v.attribute_item.build(ctx)?),
+            Self::AttributeCall(v) => match v.attribute_item.build(ctx) {
+                Ok(o) => list.terms.push(o),
+                Err(e) => ctx.add_error(e),
+            },
+            Self::ProceduralCall(v) => match v.attribute_item.build(ctx) {
+                Ok(o) => list.terms.push(o),
+                Err(e) => ctx.add_error(e),
+            },
             Self::AttributeList(v) => {
                 for x in &v.attribute_item {
                     match x.build(ctx) {

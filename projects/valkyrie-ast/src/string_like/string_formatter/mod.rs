@@ -3,7 +3,7 @@ use core::fmt::Debug;
 
 mod display;
 
-use crate::{ArgumentTerm, ExpressionNode, StringTextNode, TupleTermNode};
+use crate::{ArgumentTerm, ExpressionNode, StringTextNode};
 
 #[doc = include_str!("readme.md")]
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
@@ -44,7 +44,7 @@ pub enum FormatterTerm {
         /// The raw string of the number.
         argument: ExpressionKind,
         /// The format arguments
-        formatters: Vec<TupleTermNode>,
+        formatters: Vec<ArgumentTerm>,
     },
 }
 

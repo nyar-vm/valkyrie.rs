@@ -9,8 +9,9 @@ ApplyCallNode {
     monadic: false,
     caller: f,
     arguments: [
-        TupleTermNode {
-            key: None,
+        ArgumentTerm {
+            modifiers: [],
+            key: Nothing,
             value: 1,
         },
     ],
@@ -21,8 +22,9 @@ ApplyCallNode {
     monadic: false,
     caller: f,
     arguments: [
-        TupleTermNode {
-            key: Some(
+        ArgumentTerm {
+            modifiers: [],
+            key: Symbol(
                 Identifier("k", 33..34),
             ),
             value: 1,
@@ -35,25 +37,29 @@ ApplyCallNode {
     monadic: false,
     caller: f,
     arguments: [
-        TupleTermNode {
-            key: None,
+        ArgumentTerm {
+            modifiers: [],
+            key: Nothing,
             value: null,
         },
-        TupleTermNode {
-            key: Some(
+        ArgumentTerm {
+            modifiers: [],
+            key: Symbol(
                 Identifier("a", 48..49),
             ),
             value: 1,
         },
-        TupleTermNode {
-            key: None,
+        ArgumentTerm {
+            modifiers: [],
+            key: Nothing,
             value: UnaryNode {
                 prefix: ⁑,
                 base: args,
             },
         },
-        TupleTermNode {
-            key: None,
+        ArgumentTerm {
+            modifiers: [],
+            key: Nothing,
             value: UnaryNode {
                 prefix: ⁂,
                 base: kwargs,
@@ -77,8 +83,9 @@ ApplyCallNode {
                 span: 93..95,
             },
             arguments: [
-                TupleTermNode {
-                    key: None,
+                ArgumentTerm {
+                    modifiers: [],
+                    key: Nothing,
                     value: 1,
                 },
             ],
@@ -86,12 +93,14 @@ ApplyCallNode {
             span: 95..98,
         },
         arguments: [
-            TupleTermNode {
-                key: None,
+            ArgumentTerm {
+                modifiers: [],
+                key: Nothing,
                 value: 1,
             },
-            TupleTermNode {
-                key: None,
+            ArgumentTerm {
+                modifiers: [],
+                key: Nothing,
                 value: 2,
             },
         ],
@@ -99,16 +108,19 @@ ApplyCallNode {
         span: 98..104,
     },
     arguments: [
-        TupleTermNode {
-            key: None,
+        ArgumentTerm {
+            modifiers: [],
+            key: Nothing,
             value: 1,
         },
-        TupleTermNode {
-            key: None,
+        ArgumentTerm {
+            modifiers: [],
+            key: Nothing,
             value: 2,
         },
-        TupleTermNode {
-            key: None,
+        ArgumentTerm {
+            modifiers: [],
+            key: Nothing,
             value: 3,
         },
     ],
@@ -168,8 +180,9 @@ ApplyCallNode {
                                 monadic: false,
                                 caller: a,
                                 arguments: [
-                                    TupleTermNode {
-                                        key: None,
+                                    ArgumentTerm {
+                                        modifiers: [],
+                                        key: Nothing,
                                         value: 1,
                                     },
                                 ],
@@ -180,8 +193,9 @@ ApplyCallNode {
                             span: 153..155,
                         },
                         arguments: [
-                            TupleTermNode {
-                                key: None,
+                            ArgumentTerm {
+                                modifiers: [],
+                                key: Nothing,
                                 value: 1,
                             },
                         ],
@@ -189,8 +203,9 @@ ApplyCallNode {
                         span: 155..158,
                     },
                     arguments: [
-                        TupleTermNode {
-                            key: None,
+                        ArgumentTerm {
+                            modifiers: [],
+                            key: Nothing,
                             value: 2,
                         },
                     ],
@@ -201,8 +216,9 @@ ApplyCallNode {
                 span: 161..163,
             },
             arguments: [
-                TupleTermNode {
-                    key: None,
+                ArgumentTerm {
+                    modifiers: [],
+                    key: Nothing,
                     value: 1,
                 },
             ],
@@ -210,8 +226,9 @@ ApplyCallNode {
             span: 163..166,
         },
         arguments: [
-            TupleTermNode {
-                key: None,
+            ArgumentTerm {
+                modifiers: [],
+                key: Nothing,
                 value: 2,
             },
         ],
@@ -219,8 +236,9 @@ ApplyCallNode {
         span: 166..169,
     },
     arguments: [
-        TupleTermNode {
-            key: None,
+        ArgumentTerm {
+            modifiers: [],
+            key: Nothing,
             value: 3,
         },
     ],

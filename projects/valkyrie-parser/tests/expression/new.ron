@@ -75,7 +75,9 @@ ConstructNewNode {
     },
     generics: [],
     arguments: [],
-    body: [],
+    body: [
+        'term',
+    ],
     span: 59..90,
 }
 ConstructNewNode {
@@ -87,8 +89,9 @@ ConstructNewNode {
     },
     generics: [
         [
-            TupleTermNode {
-                key: None,
+            ArgumentTerm {
+                modifiers: [],
+                key: Nothing,
                 value: A,
             },
         ],
@@ -110,8 +113,9 @@ ConstructNewNode {
     },
     generics: [
         [
-            TupleTermNode {
-                key: None,
+            ArgumentTerm {
+                modifiers: [],
+                key: Nothing,
                 value: A,
             },
         ],
@@ -133,12 +137,24 @@ ConstructNewNode {
     },
     generics: [],
     arguments: [
-        TupleTermNode {
-            key: None,
+        ArgumentTerm {
+            modifiers: [],
+            key: Nothing,
             value: 10,
         },
     ],
-    body: [],
+    body: [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+    ],
     span: 144..201,
 }
 ConstructNewNode {
@@ -154,8 +170,9 @@ ConstructNewNode {
     },
     generics: [
         [
-            TupleTermNode {
-                key: Some(
+            ArgumentTerm {
+                modifiers: [],
+                key: Symbol(
                     Identifier("T", 218..219),
                 ),
                 value: Integer,
@@ -163,14 +180,26 @@ ConstructNewNode {
         ],
     ],
     arguments: [
-        TupleTermNode {
-            key: Some(
+        ArgumentTerm {
+            modifiers: [],
+            key: Symbol(
                 Identifier("capacity", 230..238),
             ),
             value: 10,
         },
     ],
-    body: [],
+    body: [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+    ],
     span: 201..282,
 }
 ConstructNewNode {
@@ -186,7 +215,34 @@ ConstructNewNode {
     },
     generics: [],
     arguments: [],
-    body: [],
+    body: [
+        item1,
+        item2,
+        Tuple {
+            terms: [
+                ArgumentTerm {
+                    modifiers: [],
+                    key: Nothing,
+                    value: tuple1,
+                },
+            ],
+        },
+        Tuple {
+            terms: [
+                ArgumentTerm {
+                    modifiers: [],
+                    key: Nothing,
+                    value: key,
+                },
+                ArgumentTerm {
+                    modifiers: [],
+                    key: Nothing,
+                    value: value,
+                },
+            ],
+        },
+        value,
+    ],
     span: 282..375,
 }
 ConstructNewNode {
@@ -202,18 +258,89 @@ ConstructNewNode {
     },
     generics: [
         [
-            TupleTermNode {
-                key: None,
+            ArgumentTerm {
+                modifiers: [],
+                key: Nothing,
                 value: T,
             },
         ],
     ],
     arguments: [
-        TupleTermNode {
-            key: None,
+        ArgumentTerm {
+            modifiers: [],
+            key: Nothing,
             value: args,
         },
     ],
-    body: [],
+    body: [
+        'object one',
+        Math∷PI,
+        'Mookie Betts',
+        'Mike Trout',
+        key,
+        Tuple {
+            terms: [
+                ArgumentTerm {
+                    modifiers: [],
+                    key: Nothing,
+                    value: key,
+                },
+            ],
+        },
+        Tuple {
+            terms: [
+                ArgumentTerm {
+                    modifiers: [],
+                    key: Nothing,
+                    value: key,
+                },
+                ArgumentTerm {
+                    modifiers: [],
+                    key: Nothing,
+                    value: value,
+                },
+            ],
+        },
+        Tuple {
+            terms: [
+                ArgumentTerm {
+                    modifiers: [],
+                    key: Nothing,
+                    value: key,
+                },
+                ArgumentTerm {
+                    modifiers: [],
+                    key: Nothing,
+                    value: value1,
+                },
+                ArgumentTerm {
+                    modifiers: [],
+                    key: Nothing,
+                    value: value2,
+                },
+            ],
+        },
+        ConstructNewNode {
+            annotations: Empty,
+            namepath: NamePathNode {
+                names: [
+                    Identifier("IndexersExample", 589..604),
+                ],
+            },
+            generics: [],
+            arguments: [],
+            body: [
+                '1',
+                '4',
+                '9',
+                'Middle C',
+                '440 Hz',
+                'F above middle C',
+                'C above A above C above middle C',
+            ],
+            span: 585..821,
+        },
+        'Jose Altuve',
+    ],
     span: 375..849,
 }

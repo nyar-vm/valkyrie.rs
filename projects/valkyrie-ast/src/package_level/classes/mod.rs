@@ -158,6 +158,8 @@ impl Debug for MethodDeclaration {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct DomainDeclaration {
+    /// The annotations of the domain
+    pub annotations: AnnotationNode,
     /// The range of the declaration.
     pub body: Vec<ClassTerm>,
     /// The range of the declaration.

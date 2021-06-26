@@ -1,4 +1,5 @@
 use super::*;
+use crate::DomainTermNode;
 
 impl crate::DefineClassNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<ClassDeclaration> {
@@ -27,8 +28,8 @@ impl crate::ClassBlockNode {
         }
         terms
     }
-    pub(crate) fn build_domain(&self, ctx: &mut ProgramState) -> Result<DomainDeclaration> {
-        Ok(DomainDeclaration { body: self.build(ctx), span: self.span.clone() })
+    pub(crate) fn build_domain(&self, ctx: &mut ProgramState) -> DomainDeclaration {
+        DomainDeclaration { annotations: Default::default(), body: self.build(ctx), span: self.span.clone() }
     }
 }
 
@@ -78,7 +79,6 @@ impl crate::DefineMethodNode {
 
 impl crate::DefineDomainNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<DomainDeclaration> {
-        // let name = self.class_block;
-        Ok(DomainDeclaration { body: self.class_block.build(ctx), span: self.span.clone() })
+        Ok(DomainDeclaration { annotations: Default::default(), body: self.class_block.build(ctx), span: self.span.clone() })
     }
 }

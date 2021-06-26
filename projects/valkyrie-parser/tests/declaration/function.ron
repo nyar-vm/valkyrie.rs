@@ -57,8 +57,9 @@ FunctionDeclaration {
             monadic: false,
             caller: print,
             arguments: [
-                TupleTermNode {
-                    key: None,
+                ArgumentTerm {
+                    modifiers: [],
+                    key: Nothing,
                     value: 'Hello, world!',
                 },
             ],
@@ -107,8 +108,9 @@ FunctionDeclaration {
             monadic: false,
             caller: print,
             arguments: [
-                TupleTermNode {
-                    key: None,
+                ArgumentTerm {
+                    modifiers: [],
+                    key: Nothing,
                     value: 'Hello, world!',
                 },
             ],
@@ -168,8 +170,9 @@ FunctionDeclaration {
                             monadic: false,
                             caller: print,
                             arguments: [
-                                TupleTermNode {
-                                    key: None,
+                                ArgumentTerm {
+                                    modifiers: [],
+                                    key: Nothing,
                                     value: '{lhs} {rhs}',
                                 },
                             ],
@@ -212,8 +215,9 @@ FunctionDeclaration {
                 monadic: false,
                 base: List,
                 term: [
-                    TupleTermNode {
-                        key: None,
+                    ArgumentTerm {
+                        modifiers: [],
+                        key: Nothing,
                         value: String,
                     },
                 ],
@@ -231,8 +235,9 @@ FunctionDeclaration {
                 monadic: false,
                 caller: outer,
                 arguments: [
-                    TupleTermNode {
-                        key: None,
+                    ArgumentTerm {
+                        modifiers: [],
+                        key: Nothing,
                         value: 'Hello',
                     },
                 ],
@@ -240,8 +245,9 @@ FunctionDeclaration {
                 span: 468..477,
             },
             arguments: [
-                TupleTermNode {
-                    key: None,
+                ArgumentTerm {
+                    modifiers: [],
+                    key: Nothing,
                     value: 'world',
                 },
             ],
@@ -403,14 +409,20 @@ FunctionDeclaration {
             },
             generics: [
                 [
-                    TupleTermNode {
-                        key: None,
+                    ArgumentTerm {
+                        modifiers: [],
+                        key: Nothing,
                         value: int,
                     },
                 ],
             ],
             arguments: [],
-            body: [],
+            body: [
+                min,
+                max,
+                step,
+                min,
+            ],
             span: 1514..1644,
         },
     ],
@@ -446,8 +458,9 @@ FunctionDeclaration {
             monadic: false,
             caller: print,
             arguments: [
-                TupleTermNode {
-                    key: None,
+                ArgumentTerm {
+                    modifiers: [],
+                    key: Nothing,
                     value: 'Hello, world!',
                 },
             ],
@@ -579,8 +592,9 @@ FunctionDeclaration {
                                 span: 1982..1988,
                             },
                             arguments: [
-                                TupleTermNode {
-                                    key: None,
+                                ArgumentTerm {
+                                    modifiers: [],
+                                    key: Nothing,
                                     value: this,
                                 },
                             ],
@@ -636,8 +650,9 @@ FunctionDeclaration {
                 monadic: false,
                 base: List,
                 term: [
-                    TupleTermNode {
-                        key: None,
+                    ArgumentTerm {
+                        modifiers: [],
+                        key: Nothing,
                         value: String,
                     },
                 ],

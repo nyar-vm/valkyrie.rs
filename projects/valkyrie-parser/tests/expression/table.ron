@@ -6,36 +6,41 @@ InfixNode {
 }
 Tuple {
     terms: [
-        TupleTermNode {
-            key: None,
+        ArgumentTerm {
+            modifiers: [],
+            key: Nothing,
             value: InfixNode {
                 infix: +,
                 lhs: 1,
                 rhs: 2,
             },
         },
-        TupleTermNode {
-            key: None,
+        ArgumentTerm {
+            modifiers: [],
+            key: Nothing,
             value: 3,
         },
     ],
 }
 Tuple {
     terms: [
-        TupleTermNode {
-            key: None,
+        ArgumentTerm {
+            modifiers: [],
+            key: Nothing,
             value: InfixNode {
                 infix: +,
                 lhs: 1,
                 rhs: 2,
             },
         },
-        TupleTermNode {
-            key: None,
+        ArgumentTerm {
+            modifiers: [],
+            key: Nothing,
             value: 3,
         },
-        TupleTermNode {
-            key: None,
+        ArgumentTerm {
+            modifiers: [],
+            key: Nothing,
             value: Tuple {
                 terms: [],
             },
@@ -44,28 +49,33 @@ Tuple {
 }
 Tuple {
     terms: [
-        TupleTermNode {
-            key: None,
+        ArgumentTerm {
+            modifiers: [],
+            key: Nothing,
             value: InfixNode {
                 infix: +,
                 lhs: 1,
                 rhs: 2,
             },
         },
-        TupleTermNode {
-            key: None,
+        ArgumentTerm {
+            modifiers: [],
+            key: Nothing,
             value: 3,
         },
-        TupleTermNode {
-            key: None,
+        ArgumentTerm {
+            modifiers: [],
+            key: Nothing,
             value: Tuple {
                 terms: [
-                    TupleTermNode {
-                        key: None,
+                    ArgumentTerm {
+                        modifiers: [],
+                        key: Nothing,
                         value: 4,
                     },
-                    TupleTermNode {
-                        key: None,
+                    ArgumentTerm {
+                        modifiers: [],
+                        key: Nothing,
                         value: 5,
                     },
                 ],
@@ -75,32 +85,38 @@ Tuple {
 }
 Tuple {
     terms: [
-        TupleTermNode {
-            key: None,
+        ArgumentTerm {
+            modifiers: [],
+            key: Nothing,
             value: InfixNode {
                 infix: +,
                 lhs: 1,
                 rhs: 2,
             },
         },
-        TupleTermNode {
-            key: None,
+        ArgumentTerm {
+            modifiers: [],
+            key: Nothing,
             value: 3,
         },
-        TupleTermNode {
-            key: None,
+        ArgumentTerm {
+            modifiers: [],
+            key: Nothing,
             value: Tuple {
                 terms: [
-                    TupleTermNode {
-                        key: None,
+                    ArgumentTerm {
+                        modifiers: [],
+                        key: Nothing,
                         value: 4,
                     },
-                    TupleTermNode {
-                        key: None,
+                    ArgumentTerm {
+                        modifiers: [],
+                        key: Nothing,
                         value: 5,
                     },
-                    TupleTermNode {
-                        key: None,
+                    ArgumentTerm {
+                        modifiers: [],
+                        key: Nothing,
                         value: Tuple {
                             terms: [],
                         },
@@ -112,30 +128,35 @@ Tuple {
 }
 Tuple {
     terms: [
-        TupleTermNode {
-            key: None,
+        ArgumentTerm {
+            modifiers: [],
+            key: Nothing,
             value: Tuple {
                 terms: [],
             },
         },
-        TupleTermNode {
-            key: None,
+        ArgumentTerm {
+            modifiers: [],
+            key: Nothing,
             value: Tuple {
                 terms: [],
             },
         },
-        TupleTermNode {
-            key: None,
+        ArgumentTerm {
+            modifiers: [],
+            key: Nothing,
             value: Tuple {
                 terms: [
-                    TupleTermNode {
-                        key: None,
+                    ArgumentTerm {
+                        modifiers: [],
+                        key: Nothing,
                         value: Tuple {
                             terms: [],
                         },
                     },
-                    TupleTermNode {
-                        key: None,
+                    ArgumentTerm {
+                        modifiers: [],
+                        key: Nothing,
                         value: Tuple {
                             terms: [],
                         },
@@ -293,34 +314,39 @@ SubscriptCallNode {
 }
 Tuple {
     terms: [
-        TupleTermNode {
-            key: None,
+        ArgumentTerm {
+            modifiers: [],
+            key: Nothing,
             value: v,
         },
-        TupleTermNode {
-            key: None,
+        ArgumentTerm {
+            modifiers: [],
+            key: Nothing,
             value: Tuple {
                 terms: [],
             },
         },
-        TupleTermNode {
-            key: None,
+        ArgumentTerm {
+            modifiers: [],
+            key: Nothing,
             value: InfixNode {
                 infix: +,
                 lhs: v,
                 rhs: 1,
             },
         },
-        TupleTermNode {
-            key: Some(
+        ArgumentTerm {
+            modifiers: [],
+            key: Symbol(
                 Identifier("a", 321..322),
             ),
             value: Tuple {
                 terms: [],
             },
         },
-        TupleTermNode {
-            key: Some(
+        ArgumentTerm {
+            modifiers: [],
+            key: Symbol(
                 Identifier("b", 332..333),
             ),
             value: InfixNode {
@@ -329,15 +355,17 @@ Tuple {
                 rhs: 2,
             },
         },
-        TupleTermNode {
-            key: None,
+        ArgumentTerm {
+            modifiers: [],
+            key: Nothing,
             value: UnaryNode {
                 prefix: ⁑,
                 base: args,
             },
         },
-        TupleTermNode {
-            key: None,
+        ArgumentTerm {
+            modifiers: [],
+            key: Nothing,
             value: UnaryNode {
                 prefix: ⁂,
                 base: kwargs,

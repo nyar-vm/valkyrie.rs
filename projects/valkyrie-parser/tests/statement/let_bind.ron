@@ -65,16 +65,18 @@ VariableDeclaration {
     },
     type: Tuple {
         terms: [
-            TupleTermNode {
-                key: None,
+            ArgumentTerm {
+                modifiers: [],
+                key: Nothing,
                 value: int,
             },
         ],
     },
     body: Tuple {
         terms: [
-            TupleTermNode {
-                key: None,
+            ArgumentTerm {
+                modifiers: [],
+                key: Nothing,
                 value: 1,
             },
         ],
@@ -90,24 +92,28 @@ VariableDeclaration {
     },
     type: Tuple {
         terms: [
-            TupleTermNode {
-                key: None,
+            ArgumentTerm {
+                modifiers: [],
+                key: Nothing,
                 value: int,
             },
-            TupleTermNode {
-                key: None,
+            ArgumentTerm {
+                modifiers: [],
+                key: Nothing,
                 value: int,
             },
         ],
     },
     body: Tuple {
         terms: [
-            TupleTermNode {
-                key: None,
+            ArgumentTerm {
+                modifiers: [],
+                key: Nothing,
                 value: 1,
             },
-            TupleTermNode {
-                key: None,
+            ArgumentTerm {
+                modifiers: [],
+                key: Nothing,
                 value: 1,
             },
         ],

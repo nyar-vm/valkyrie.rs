@@ -106,8 +106,9 @@ Class {
                         monadic: false,
                         base: Ref,
                         term: [
-                            TupleTermNode {
-                                key: None,
+                            ArgumentTerm {
+                                modifiers: [],
+                                key: Nothing,
                                 value: B,
                             },
                         ],
@@ -116,8 +117,9 @@ Class {
                     rhs: Gc,
                 },
                 term: [
-                    TupleTermNode {
-                        key: None,
+                    ArgumentTerm {
+                        modifiers: [],
+                        key: Nothing,
                         value: D,
                     },
                 ],
@@ -530,8 +532,9 @@ Class {
                             span: 1742..1749,
                         },
                         arguments: [
-                            TupleTermNode {
-                                key: None,
+                            ArgumentTerm {
+                                modifiers: [],
+                                key: Nothing,
                                 value: other,
                             },
                         ],

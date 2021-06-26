@@ -9,8 +9,9 @@ ApplyCallNode {
     monadic: false,
     caller: s,
     arguments: [
-        TupleTermNode {
-            key: None,
+        ArgumentTerm {
+            modifiers: [],
+            key: Nothing,
             value: args,
         },
     ],

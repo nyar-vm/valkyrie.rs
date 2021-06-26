@@ -34,33 +34,26 @@ pub struct ConstructNewNode {
     /// `new Stack()`
     pub arguments: ArgumentsList,
     /// `new List<T> { ... }`
-    pub body: CollectorNode,
+    pub body: Vec<CollectorTerm>,
     /// The range of the node
     pub span: Range<u32>,
 }
 
 /// `{ 1: x, p: y, [a, b]: c, **list, ***dict }`
-#[derive(Clone, Default, PartialEq, Eq, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct CollectorNode {
-    /// The collect terms
-    pub terms: Vec<CollectorTerm>,
-    /// The range of the node
-    pub span: Range<u32>,
-}
-
-impl Debug for CollectorNode {
-    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        f.debug_list().entries(self.terms.iter()).finish()
-    }
-}
-
 /// A valid term in a collector
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Clone, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum CollectorTerm {
     /// A simple item to append
     Item(ExpressionKind),
+}
+
+impl Debug for CollectorTerm {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        match self {
+            Self::Item(v) => Debug::fmt(v, f),
+        }
+    }
 }
 
 impl ValkyrieNode for ConstructNewNode {

@@ -7,17 +7,12 @@ impl crate::NewStatementNode {
             Some(s) => vec![s.build(ctx)?],
             None => vec![],
         };
-        let arguments = match &self.tuple_literal {
-            Some(s) => s.build(ctx)?.terms,
-            None => ArgumentsList::default(),
-        };
-        // let returns = self.function_middle.returns(ctx).recover(&mut errors)?;
         Ok(ConstructNewNode {
             annotations: self.annotations(ctx),
             namepath,
             generics,
-            arguments,
-            body: Default::default(),
+            arguments: self.tuple_literal.as_ref().map(|s| s.tuple_terms.build(ctx)).unwrap_or_default(),
+            body: self.new_block.as_ref().map(|s| s.build(ctx)).unwrap_or_default(),
             span: self.span.clone(),
         })
     }
@@ -27,5 +22,27 @@ impl crate::NewStatementNode {
             out.modifiers.terms.push(term.build(ctx))
         }
         out
+    }
+}
+
+impl crate::NewBlockNode {
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Vec<CollectorTerm> {
+        let mut olistt = Vec::with_capacity(self.new_pair.len());
+        for pair in &self.new_pair {
+            match pair.build(ctx) {
+                Ok(o) => olistt.push(o),
+                Err(e) => ctx.add_error(e),
+            }
+        }
+
+        olistt
+    }
+}
+
+impl crate::NewPairNode {
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<CollectorTerm> {
+        let item = self.main_expression.build(ctx)?;
+
+        Ok(CollectorTerm::Item(item))
     }
 }

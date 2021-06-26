@@ -23,8 +23,9 @@ TryStatement {
             monadic: false,
             base: Option,
             term: [
-                TupleTermNode {
-                    key: None,
+                ArgumentTerm {
+                    modifiers: [],
+                    key: Nothing,
                     value: T,
                 },
             ],
@@ -44,12 +45,14 @@ MatchCallNode {
                     monadic: false,
                     base: Result,
                     term: [
-                        TupleTermNode {
-                            key: None,
+                        ArgumentTerm {
+                            modifiers: [],
+                            key: Nothing,
                             value: T,
                         },
-                        TupleTermNode {
-                            key: None,
+                        ArgumentTerm {
+                            modifiers: [],
+                            key: Nothing,
                             value: Noop,
                         },
                     ],
@@ -61,8 +64,9 @@ MatchCallNode {
                     monadic: false,
                     caller: print,
                     arguments: [
-                        TupleTermNode {
-                            key: None,
+                        ArgumentTerm {
+                            modifiers: [],
+                            key: Nothing,
                             value: 'try',
                         },
                     ],
@@ -85,8 +89,9 @@ MatchCallNode {
                         monadic: false,
                         caller: print,
                         arguments: [
-                            TupleTermNode {
-                                key: None,
+                            ArgumentTerm {
+                                modifiers: [],
+                                key: Nothing,
                                 value: 'RuntimeError',
                             },
                         ],
@@ -122,8 +127,9 @@ MatchCallNode {
                     monadic: false,
                     caller: print,
                     arguments: [
-                        TupleTermNode {
-                            key: None,
+                        ArgumentTerm {
+                            modifiers: [],
+                            key: Nothing,
                             value: 'Some',
                         },
                     ],

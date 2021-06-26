@@ -12,8 +12,9 @@ WhileLoop {
             monadic: false,
             caller: print,
             arguments: [
-                TupleTermNode {
-                    key: None,
+                ArgumentTerm {
+                    modifiers: [],
+                    key: Nothing,
                     value: 'Loop!',
                 },
             ],
@@ -28,8 +29,9 @@ WhileLoop {
                     monadic: false,
                     caller: print,
                     arguments: [
-                        TupleTermNode {
-                            key: None,
+                        ArgumentTerm {
+                            modifiers: [],
+                            key: Nothing,
                             value: 'Deep loop!',
                         },
                     ],
@@ -44,8 +46,9 @@ WhileLoop {
                             monadic: false,
                             caller: print,
                             arguments: [
-                                TupleTermNode {
-                                    key: None,
+                                ArgumentTerm {
+                                    modifiers: [],
+                                    key: Nothing,
                                     value: 'Deeper loop!',
                                 },
                             ],

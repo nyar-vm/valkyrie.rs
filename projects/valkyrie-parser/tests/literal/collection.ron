@@ -8,36 +8,42 @@ Tuple {
 0
 Tuple {
     terms: [
-        TupleTermNode {
-            key: None,
+        ArgumentTerm {
+            modifiers: [],
+            key: Nothing,
             value: 1,
         },
     ],
 }
 Tuple {
     terms: [
-        TupleTermNode {
-            key: None,
+        ArgumentTerm {
+            modifiers: [],
+            key: Nothing,
             value: 1,
         },
-        TupleTermNode {
-            key: None,
+        ArgumentTerm {
+            modifiers: [],
+            key: Nothing,
             value: 2,
         },
     ],
 }
 Tuple {
     terms: [
-        TupleTermNode {
-            key: None,
+        ArgumentTerm {
+            modifiers: [],
+            key: Nothing,
             value: true,
         },
-        TupleTermNode {
-            key: None,
+        ArgumentTerm {
+            modifiers: [],
+            key: Nothing,
             value: Tuple {
                 terms: [
-                    TupleTermNode {
-                        key: None,
+                    ArgumentTerm {
+                        modifiers: [],
+                        key: Nothing,
                         value: false,
                     },
                 ],
@@ -47,14 +53,21 @@ Tuple {
 }
 Tuple {
     terms: [
-        TupleTermNode {
-            key: Some(
+        ArgumentTerm {
+            modifiers: [],
+            key: Nothing,
+            value: 0,
+        },
+        ArgumentTerm {
+            modifiers: [],
+            key: Symbol(
                 Identifier("a", 91..92),
             ),
             value: 1,
         },
-        TupleTermNode {
-            key: Some(
+        ArgumentTerm {
+            modifiers: [],
+            key: Symbol(
                 Identifier("z", 97..98),
             ),
             value: 26,
@@ -63,26 +76,30 @@ Tuple {
 }
 Tuple {
     terms: [
-        TupleTermNode {
-            key: Some(
+        ArgumentTerm {
+            modifiers: [],
+            key: Symbol(
                 Identifier("啊", 106..109),
             ),
             value: 1,
         },
-        TupleTermNode {
-            key: Some(
+        ArgumentTerm {
+            modifiers: [],
+            key: Symbol(
                 Identifier("吧", 114..117),
             ),
             value: 2,
         },
-        TupleTermNode {
-            key: Some(
+        ArgumentTerm {
+            modifiers: [],
+            key: Symbol(
                 Identifier("", 122..127),
             ),
             value: 3,
         },
-        TupleTermNode {
-            key: Some(
+        ArgumentTerm {
+            modifiers: [],
+            key: Symbol(
                 Identifier("", 132..137),
             ),
             value: 4,

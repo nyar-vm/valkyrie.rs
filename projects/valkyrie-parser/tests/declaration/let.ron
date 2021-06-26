@@ -31,12 +31,14 @@ VariableDeclaration {
     },
     body: Tuple {
         terms: [
-            TupleTermNode {
-                key: None,
+            ArgumentTerm {
+                modifiers: [],
+                key: Nothing,
                 value: i32,
             },
-            TupleTermNode {
-                key: None,
+            ArgumentTerm {
+                modifiers: [],
+                key: Nothing,
                 value: UnaryNode {
                     prefix: &,
                     base: i32,
@@ -55,12 +57,14 @@ VariableDeclaration {
     },
     type: Tuple {
         terms: [
-            TupleTermNode {
-                key: None,
+            ArgumentTerm {
+                modifiers: [],
+                key: Nothing,
                 value: i32,
             },
-            TupleTermNode {
-                key: None,
+            ArgumentTerm {
+                modifiers: [],
+                key: Nothing,
                 value: UnaryNode {
                     prefix: &,
                     base: i32,
@@ -113,12 +117,14 @@ VariableDeclaration {
     },
     type: Tuple {
         terms: [
-            TupleTermNode {
-                key: None,
+            ArgumentTerm {
+                modifiers: [],
+                key: Nothing,
                 value: u32,
             },
-            TupleTermNode {
-                key: None,
+            ArgumentTerm {
+                modifiers: [],
+                key: Nothing,
                 value: u32,
             },
         ],
@@ -146,16 +152,19 @@ VariableDeclaration {
     },
     body: Tuple {
         terms: [
-            TupleTermNode {
-                key: None,
+            ArgumentTerm {
+                modifiers: [],
+                key: Nothing,
                 value: 1,
             },
-            TupleTermNode {
-                key: None,
+            ArgumentTerm {
+                modifiers: [],
+                key: Nothing,
                 value: 2,
             },
-            TupleTermNode {
-                key: None,
+            ArgumentTerm {
+                modifiers: [],
+                key: Nothing,
                 value: 3,
             },
         ],
@@ -192,12 +201,14 @@ VariableDeclaration {
     },
     body: Tuple {
         terms: [
-            TupleTermNode {
-                key: None,
+            ArgumentTerm {
+                modifiers: [],
+                key: Nothing,
                 value: 1,
             },
-            TupleTermNode {
-                key: None,
+            ArgumentTerm {
+                modifiers: [],
+                key: Nothing,
                 value: 2,
             },
         ],
@@ -215,12 +226,14 @@ VariableDeclaration {
         monadic: false,
         caller: Fraction,
         arguments: [
-            TupleTermNode {
-                key: None,
+            ArgumentTerm {
+                modifiers: [],
+                key: Nothing,
                 value: 1,
             },
-            TupleTermNode {
-                key: None,
+            ArgumentTerm {
+                modifiers: [],
+                key: Nothing,
                 value: 2,
             },
         ],
@@ -455,8 +468,9 @@ VariableDeclaration {
                 monadic: false,
                 base: a,
                 term: [
-                    TupleTermNode {
-                        key: None,
+                    ArgumentTerm {
+                        modifiers: [],
+                        key: Nothing,
                         value: a,
                     },
                 ],
@@ -537,8 +551,9 @@ VariableDeclaration {
         monadic: false,
         caller: f'{:?}',
         arguments: [
-            TupleTermNode {
-                key: None,
+            ArgumentTerm {
+                modifiers: [],
+                key: Nothing,
                 value: t,
             },
         ],
@@ -558,8 +573,9 @@ VariableDeclaration {
         monadic: false,
         caller: cf'%d',
         arguments: [
-            TupleTermNode {
-                key: None,
+            ArgumentTerm {
+                modifiers: [],
+                key: Nothing,
                 value: t,
             },
         ],

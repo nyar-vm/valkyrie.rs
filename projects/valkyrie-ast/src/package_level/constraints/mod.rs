@@ -52,6 +52,7 @@ impl Default for ConstraintDeclaration {
 }
 
 impl ConstraintDeclaration {
+    /// Create a new [`ConstraintDeclaration`] with the given capacity.
     pub fn is_empty(&self) -> bool {
         self.generics.is_empty() && self.terms.is_empty() && self.annotations.is_empty()
     }

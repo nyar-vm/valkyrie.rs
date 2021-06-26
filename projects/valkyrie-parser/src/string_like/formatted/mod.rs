@@ -116,7 +116,7 @@ impl crate::EscapeUnicodeNode {
                     Ok(())
                 }
                 None => Err(SyntaxError::new("unicode codepoint out of range")
-                    .with_hint("The valid range is from `\\u{000000}` to `\\u{10FFFFF}`")
+                    .with_hint("The valid range is from `\\u{000000}` to `\\u{10FFFF}`")
                     .with_span(ctx.file.with_range(self.get_range())))?,
             },
             Err(_) => Err(SyntaxError::new("invalid character found in unicode codepoint")

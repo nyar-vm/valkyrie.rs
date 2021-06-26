@@ -256,12 +256,14 @@ Union {
                 monadic: false,
                 base: Result,
                 term: [
-                    TupleTermNode {
-                        key: None,
+                    ArgumentTerm {
+                        modifiers: [],
+                        key: Nothing,
                         value: T,
                     },
-                    TupleTermNode {
-                        key: None,
+                    ArgumentTerm {
+                        modifiers: [],
+                        key: Nothing,
                         value: E,
                     },
                 ],
@@ -298,8 +300,9 @@ Union {
                                     monadic: false,
                                     caller: Success,
                                     arguments: [
-                                        TupleTermNode {
-                                            key: None,
+                                        ArgumentTerm {
+                                            modifiers: [],
+                                            key: Nothing,
                                             value: value,
                                         },
                                     ],
@@ -334,8 +337,9 @@ Union {
                                     monadic: false,
                                     caller: Failure,
                                     arguments: [
-                                        TupleTermNode {
-                                            key: None,
+                                        ArgumentTerm {
+                                            modifiers: [],
+                                            key: Nothing,
                                             value: fatal,
                                         },
                                     ],
@@ -362,8 +366,9 @@ Union {
                 monadic: false,
                 base: Option,
                 term: [
-                    TupleTermNode {
-                        key: None,
+                    ArgumentTerm {
+                        modifiers: [],
+                        key: Nothing,
                         value: T,
                     },
                 ],
@@ -400,8 +405,9 @@ Union {
                                     monadic: false,
                                     caller: Some,
                                     arguments: [
-                                        TupleTermNode {
-                                            key: None,
+                                        ArgumentTerm {
+                                            modifiers: [],
+                                            key: Nothing,
                                             value: value,
                                         },
                                     ],

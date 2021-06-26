@@ -29,12 +29,13 @@ impl crate::GenericTermsNode {
     }
 }
 impl crate::GenericPairNode {
-    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<TupleTermNode> {
-        let key = self.get_key(ctx);
-        let value = self.type_expression.build(ctx)?;
-        Ok(TupleTermNode { key, value })
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<ArgumentTerm> {
+        Ok(ArgumentTerm { modifiers: Default::default(), key: self.get_key(ctx), value: self.type_expression.build(ctx)? })
     }
-    fn get_key(&self, ctx: &mut ProgramState) -> Option<IdentifierNode> {
-        Some(self.identifier.as_ref()?.build(ctx))
+    fn get_key(&self, ctx: &mut ProgramState) -> ArgumentKey {
+        match &self.identifier {
+            Some(v) => ArgumentKey::Symbol(v.build(ctx)),
+            None => ArgumentKey::Nothing,
+        }
     }
 }

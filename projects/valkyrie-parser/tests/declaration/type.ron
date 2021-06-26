@@ -7,8 +7,9 @@ GenericCallNode {
             monadic: false,
             base: Result,
             term: [
-                TupleTermNode {
-                    key: None,
+                ArgumentTerm {
+                    modifiers: [],
+                    key: Nothing,
                     value: T,
                 },
             ],
@@ -17,12 +18,14 @@ GenericCallNode {
         rhs: std∷result∷Result,
     },
     term: [
-        TupleTermNode {
-            key: None,
+        ArgumentTerm {
+            modifiers: [],
+            key: Nothing,
             value: T,
         },
-        TupleTermNode {
-            key: None,
+        ArgumentTerm {
+            modifiers: [],
+            key: Nothing,
             value: Error,
         },
     ],
@@ -35,15 +38,17 @@ ApplyCallNode {
         monadic: false,
         base: List,
         term: [
-            TupleTermNode {
-                key: None,
+            ArgumentTerm {
+                modifiers: [],
+                key: Nothing,
                 value: UnaryNode {
                     prefix: +,
                     base: T,
                 },
             },
-            TupleTermNode {
-                key: None,
+            ArgumentTerm {
+                modifiers: [],
+                key: Nothing,
                 value: UnaryNode {
                     prefix: -,
                     base: A,
@@ -137,16 +142,19 @@ FunctionDeclaration {
     returns: ReturnType {
         main: Tuple {
             terms: [
-                TupleTermNode {
-                    key: None,
+                ArgumentTerm {
+                    modifiers: [],
+                    key: Nothing,
                     value: i32,
                 },
-                TupleTermNode {
-                    key: None,
+                ArgumentTerm {
+                    modifiers: [],
+                    key: Nothing,
                     value: i32,
                 },
-                TupleTermNode {
-                    key: None,
+                ArgumentTerm {
+                    modifiers: [],
+                    key: Nothing,
                     value: char,
                 },
             ],
@@ -155,16 +163,19 @@ FunctionDeclaration {
     body: [
         Tuple {
             terms: [
-                TupleTermNode {
-                    key: None,
+                ArgumentTerm {
+                    modifiers: [],
+                    key: Nothing,
                     value: 10,
                 },
-                TupleTermNode {
-                    key: None,
+                ArgumentTerm {
+                    modifiers: [],
+                    key: Nothing,
                     value: 5,
                 },
-                TupleTermNode {
-                    key: None,
+                ArgumentTerm {
+                    modifiers: [],
+                    key: Nothing,
                     value: 'a',
                 },
             ],
@@ -201,8 +212,9 @@ FunctionDeclaration {
             monadic: false,
             caller: forall,
             arguments: [
-                TupleTermNode {
-                    key: None,
+                ArgumentTerm {
+                    modifiers: [],
+                    key: Nothing,
                     value: LambdaNode {
                         annotations: Empty,
                         generics: [],
@@ -252,8 +264,9 @@ FunctionDeclaration {
                                         span: 514..521,
                                     },
                                     arguments: [
-                                        TupleTermNode {
-                                            key: None,
+                                        ArgumentTerm {
+                                            modifiers: [],
+                                            key: Nothing,
                                             value: i,
                                         },
                                     ],

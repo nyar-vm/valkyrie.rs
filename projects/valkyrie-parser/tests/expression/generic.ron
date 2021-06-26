@@ -8,8 +8,9 @@ GenericCallNode {
     monadic: false,
     base: Object,
     term: [
-        TupleTermNode {
-            key: None,
+        ArgumentTerm {
+            modifiers: [],
+            key: Nothing,
             value: T,
         },
     ],
@@ -19,12 +20,14 @@ GenericCallNode {
     monadic: false,
     base: Object,
     term: [
-        TupleTermNode {
-            key: None,
+        ArgumentTerm {
+            modifiers: [],
+            key: Nothing,
             value: T,
         },
-        TupleTermNode {
-            key: None,
+        ArgumentTerm {
+            modifiers: [],
+            key: Nothing,
             value: U,
         },
     ],
@@ -40,8 +43,9 @@ GenericCallNode {
     monadic: false,
     base: Object,
     term: [
-        TupleTermNode {
-            key: None,
+        ArgumentTerm {
+            modifiers: [],
+            key: Nothing,
             value: T,
         },
     ],
@@ -53,24 +57,28 @@ ApplyCallNode {
         monadic: false,
         base: Object,
         term: [
-            TupleTermNode {
-                key: None,
+            ArgumentTerm {
+                modifiers: [],
+                key: Nothing,
                 value: T,
             },
-            TupleTermNode {
-                key: None,
+            ArgumentTerm {
+                modifiers: [],
+                key: Nothing,
                 value: U,
             },
         ],
         span: 107..116,
     },
     arguments: [
-        TupleTermNode {
-            key: None,
+        ArgumentTerm {
+            modifiers: [],
+            key: Nothing,
             value: 1,
         },
-        TupleTermNode {
-            key: None,
+        ArgumentTerm {
+            modifiers: [],
+            key: Nothing,
             value: 2,
         },
     ],

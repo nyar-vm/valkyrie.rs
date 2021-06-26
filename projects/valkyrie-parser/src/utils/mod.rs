@@ -1,16 +1,10 @@
 use crate::{
     helpers::ProgramState, AnnotationTermMixNode, AnnotationTermNode, DefineConstraintNode, IfGuardNode, ModifierAheadNode,
-    ParameterDefaultNode, TupleTermsNode, TypeHintNode,
+    ParameterDefaultNode, TypeHintNode,
 };
 use nyar_error::Result;
-use valkyrie_ast::{ArgumentsList, AttributeList, ConstraintDeclaration, ExpressionKind, ModifierList};
+use valkyrie_ast::{AttributeList, ConstraintDeclaration, ExpressionKind, ModifierList};
 
-pub(crate) fn build_arguments(this: &Option<TupleTermsNode>, ctx: &mut ProgramState) -> Result<ArgumentsList> {
-    match this {
-        Some(s) => s.build(ctx),
-        None => Ok(ArgumentsList { terms: vec![] }),
-    }
-}
 pub(crate) fn build_if_guard(this: &Option<IfGuardNode>, ctx: &mut ProgramState) -> Option<ExpressionKind> {
     match this.as_ref()?.build(ctx) {
         Ok(o) => Some(o),

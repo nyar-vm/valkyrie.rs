@@ -6,8 +6,9 @@ ApplyCallNode {
             monadic: false,
             caller: a,
             arguments: [
-                TupleTermNode {
-                    key: None,
+                ArgumentTerm {
+                    modifiers: [],
+                    key: Nothing,
                     value: 1,
                 },
             ],
@@ -32,8 +33,9 @@ SubscriptCallNode {
         monadic: false,
         caller: a,
         arguments: [
-            TupleTermNode {
-                key: None,
+            ArgumentTerm {
+                modifiers: [],
+                key: Nothing,
                 value: 1,
             },
         ],
@@ -62,8 +64,9 @@ ApplyCallNode {
         span: 23..26,
     },
     arguments: [
-        TupleTermNode {
-            key: None,
+        ArgumentTerm {
+            modifiers: [],
+            key: Nothing,
             value: 2,
         },
     ],
@@ -90,8 +93,9 @@ ApplyCallNode {
         span: 37..40,
     },
     arguments: [
-        TupleTermNode {
-            key: None,
+        ArgumentTerm {
+            modifiers: [],
+            key: Nothing,
             value: 3,
         },
     ],
@@ -110,8 +114,9 @@ SubscriptCallNode {
             span: 45..48,
         },
         arguments: [
-            TupleTermNode {
-                key: None,
+            ArgumentTerm {
+                modifiers: [],
+                key: Nothing,
                 value: 2,
             },
         ],
@@ -146,8 +151,9 @@ ApplyCallNode {
         span: 59..62,
     },
     arguments: [
-        TupleTermNode {
-            key: None,
+        ArgumentTerm {
+            modifiers: [],
+            key: Nothing,
             value: 3,
         },
     ],

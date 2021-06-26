@@ -68,9 +68,11 @@ impl RangeNode {
 
 impl RangeTermNode {
     /// Convert to tuple item if possible
-    pub fn as_tuple(&self) -> Option<TupleTermNode> {
+    pub fn as_tuple(&self) -> Option<ArgumentTerm> {
         match self {
-            RangeTermNode::Index { index } => Some(TupleTermNode { key: None, value: index.clone() }),
+            RangeTermNode::Index { index } => {
+                Some(ArgumentTerm { modifiers: Default::default(), key: ArgumentKey::Nothing, value: index.clone() })
+            }
             RangeTermNode::Range { .. } => None,
         }
     }

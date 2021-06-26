@@ -39,8 +39,9 @@ Trait {
         monadic: false,
         base: SemiGroup,
         term: [
-            TupleTermNode {
-                key: None,
+            ArgumentTerm {
+                modifiers: [],
+                key: Nothing,
                 value: T,
             },
         ],
@@ -88,8 +89,9 @@ Trait {
                         monadic: false,
                         base: F,
                         term: [
-                            TupleTermNode {
-                                key: None,
+                            ArgumentTerm {
+                                modifiers: [],
+                                key: Nothing,
                                 value: A,
                             },
                         ],
@@ -102,12 +104,14 @@ Trait {
                         monadic: false,
                         base: Function,
                         term: [
-                            TupleTermNode {
-                                key: None,
+                            ArgumentTerm {
+                                modifiers: [],
+                                key: Nothing,
                                 value: A,
                             },
-                            TupleTermNode {
-                                key: None,
+                            ArgumentTerm {
+                                modifiers: [],
+                                key: Nothing,
                                 value: B,
                             },
                         ],
@@ -119,8 +123,9 @@ Trait {
                 monadic: false,
                 base: F,
                 term: [
-                    TupleTermNode {
-                        key: None,
+                    ArgumentTerm {
+                        modifiers: [],
+                        key: Nothing,
                         value: B,
                     },
                 ],
@@ -151,8 +156,9 @@ ExtendsStatement {
             monadic: false,
             base: Monoid,
             term: [
-                TupleTermNode {
-                    key: None,
+                ArgumentTerm {
+                    modifiers: [],
+                    key: Nothing,
                     value: String,
                 },
             ],
@@ -181,8 +187,9 @@ ExtendsStatement {
                         span: 401..408,
                     },
                     arguments: [
-                        TupleTermNode {
-                            key: None,
+                        ArgumentTerm {
+                            modifiers: [],
+                            key: Nothing,
                             value: y,
                         },
                     ],
@@ -221,8 +228,9 @@ Trait {
                         monadic: false,
                         base: Functor,
                         term: [
-                            TupleTermNode {
-                                key: None,
+                            ArgumentTerm {
+                                modifiers: [],
+                                key: Nothing,
                                 value: A,
                             },
                         ],
@@ -242,8 +250,9 @@ Trait {
                 monadic: false,
                 base: Functor,
                 term: [
-                    TupleTermNode {
-                        key: None,
+                    ArgumentTerm {
+                        modifiers: [],
+                        key: Nothing,
                         value: B,
                     },
                 ],
@@ -273,8 +282,9 @@ Trait {
                             monadic: false,
                             base: Mutable,
                             term: [
-                                TupleTermNode {
-                                    key: None,
+                                ArgumentTerm {
+                                    modifiers: [],
+                                    key: Nothing,
                                     value: A,
                                 },
                             ],
@@ -291,8 +301,9 @@ Trait {
                         monadic: false,
                         base: Self,
                         term: [
-                            TupleTermNode {
-                                key: None,
+                            ArgumentTerm {
+                                modifiers: [],
+                                key: Nothing,
                                 value: A,
                             },
                         ],
@@ -308,8 +319,9 @@ Trait {
                 monadic: false,
                 base: Self,
                 term: [
-                    TupleTermNode {
-                        key: None,
+                    ArgumentTerm {
+                        modifiers: [],
+                        key: Nothing,
                         value: B,
                     },
                 ],
@@ -349,8 +361,9 @@ ExtendsStatement {
                         monadic: false,
                         base: Option,
                         term: [
-                            TupleTermNode {
-                                key: None,
+                            ArgumentTerm {
+                                modifiers: [],
+                                key: Nothing,
                                 value: A,
                             },
                         ],
@@ -366,8 +379,9 @@ ExtendsStatement {
                 monadic: false,
                 base: Option,
                 term: [
-                    TupleTermNode {
-                        key: None,
+                    ArgumentTerm {
+                        modifiers: [],
+                        key: Nothing,
                         value: B,
                     },
                 ],
@@ -400,14 +414,16 @@ ExtendsStatement {
                                     monadic: false,
                                     caller: Some,
                                     arguments: [
-                                        TupleTermNode {
-                                            key: None,
+                                        ArgumentTerm {
+                                            modifiers: [],
+                                            key: Nothing,
                                             value: ApplyCallNode {
                                                 monadic: false,
                                                 caller: f,
                                                 arguments: [
-                                                    TupleTermNode {
-                                                        key: None,
+                                                    ArgumentTerm {
+                                                        modifiers: [],
+                                                        key: Nothing,
                                                         value: a,
                                                     },
                                                 ],
@@ -471,8 +487,9 @@ ExtendsStatement {
                 monadic: false,
                 base: Array,
                 term: [
-                    TupleTermNode {
-                        key: None,
+                    ArgumentTerm {
+                        modifiers: [],
+                        key: Nothing,
                         value: B,
                     },
                 ],
@@ -485,12 +502,14 @@ ExtendsStatement {
                         monadic: false,
                         caller: map,
                         arguments: [
-                            TupleTermNode {
-                                key: None,
+                            ArgumentTerm {
+                                modifiers: [],
+                                key: Nothing,
                                 value: f,
                             },
-                            TupleTermNode {
-                                key: None,
+                            ArgumentTerm {
+                                modifiers: [],
+                                key: Nothing,
                                 value: self,
                             },
                         ],
@@ -510,8 +529,9 @@ ExtendsStatement {
             monadic: false,
             base: Functor,
             term: [
-                TupleTermNode {
-                    key: None,
+                ArgumentTerm {
+                    modifiers: [],
+                    key: Nothing,
                     value: A,
                 },
             ],
@@ -543,8 +563,9 @@ ExtendsStatement {
                 monadic: false,
                 base: Array,
                 term: [
-                    TupleTermNode {
-                        key: None,
+                    ArgumentTerm {
+                        modifiers: [],
+                        key: Nothing,
                         value: B,
                     },
                 ],
@@ -557,12 +578,14 @@ ExtendsStatement {
                         monadic: false,
                         caller: map,
                         arguments: [
-                            TupleTermNode {
-                                key: None,
+                            ArgumentTerm {
+                                modifiers: [],
+                                key: Nothing,
                                 value: f,
                             },
-                            TupleTermNode {
-                                key: None,
+                            ArgumentTerm {
+                                modifiers: [],
+                                key: Nothing,
                                 value: self,
                             },
                         ],
