@@ -5,7 +5,7 @@ mod display;
 /// The top level elements in script mode.
 #[derive(Clone, PartialEq, Eq, Hash, From)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum StatementNode {
+pub enum StatementKind {
     /// Placeholder for when the parser fails to parse a statement.
     Nothing,
     /// The documentation node, must have acceptor underneath.
@@ -29,7 +29,7 @@ pub enum StatementNode {
     /// The function declaration node.
     Function(Box<FunctionDeclaration>),
     /// The let bind statement node.
-    Variable(Box<VariableDeclaration>),
+    Variable(Box<LetBindNode>),
     /// The guard statement node.
     Guard(Box<GuardStatement>),
     /// The while loop statement node.
@@ -47,7 +47,7 @@ pub enum StatementNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct StatementContext {}
 
-impl StatementNode {
+impl StatementKind {
     /// Create a new expression node
     pub fn expression(body: ExpressionKind, span: Range<u32>) -> Self {
         Self::Expression(Box::new(ExpressionNode { omit: false, body, span: span.clone() }))

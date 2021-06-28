@@ -1,7 +1,7 @@
 use super::*;
 use core::fmt::Debug;
 
-impl Debug for StatementNode {
+impl Debug for StatementKind {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         match self {
             Self::Nothing => f.write_str("Statement::Nothing"),
@@ -26,7 +26,7 @@ impl Debug for StatementNode {
 }
 
 #[cfg(feature = "pretty-print")]
-impl PrettyPrint for StatementNode {
+impl PrettyPrint for StatementKind {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         match self {
             Self::Nothing => ";;".into(),
@@ -56,7 +56,7 @@ impl PrettyPrint for StatementNode {
 }
 
 #[cfg(feature = "lispify")]
-impl Lispify for StatementNode {
+impl Lispify for StatementKind {
     type Output = Lisp;
 
     fn lispify(&self) -> Self::Output {

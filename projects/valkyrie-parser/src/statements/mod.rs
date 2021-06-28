@@ -22,7 +22,7 @@ impl crate::ProgramNode {
 }
 
 impl crate::StatementNode {
-    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<Option<StatementNode>> {
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<Option<StatementKind>> {
         let value = match self {
             Self::DefineNamespace(v) => v.build(ctx).into(),
             Self::DefineClass(v) => v.build(ctx)?.into(),
@@ -39,7 +39,7 @@ impl crate::StatementNode {
 }
 
 impl crate::MainStatementNode {
-    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<Option<StatementNode>> {
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<Option<StatementKind>> {
         let value = match self {
             Self::ControlFlow(v) => v.build(ctx)?.into(),
             Self::DefineImport(v) => v.build(ctx)?.into(),

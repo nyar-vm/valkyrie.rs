@@ -1,8 +1,8 @@
 use super::*;
 
 impl crate::DefineVariableNode {
-    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<VariableDeclaration> {
-        Ok(VariableDeclaration {
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<LetBindNode> {
+        Ok(LetBindNode {
             pattern: PatternNode::Tuple(Box::new(TuplePatternNode {
                 bind: None,
                 name: None,

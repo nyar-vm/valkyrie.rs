@@ -39,7 +39,7 @@ pub struct FunctionDeclaration {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct StatementBlock {
     /// The statements of this block
-    pub terms: Vec<StatementNode>,
+    pub terms: Vec<StatementKind>,
     /// The range of the node
     pub span: Range<u32>,
 }
@@ -70,7 +70,7 @@ impl StatementBlock {
     /// Check if last statement has a semicolon
     pub fn last_semicolon(&self) -> bool {
         match self.terms.last() {
-            Some(StatementNode::Expression(s)) => s.omit,
+            Some(StatementKind::Expression(s)) => s.omit,
             _ => false,
         }
     }

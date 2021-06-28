@@ -8,5 +8,5 @@ mod parser;
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ProgramRoot {
     /// All the statements in the program.
-    pub statements: Vec<StatementNode>,
+    pub statements: Vec<StatementKind>,
 }

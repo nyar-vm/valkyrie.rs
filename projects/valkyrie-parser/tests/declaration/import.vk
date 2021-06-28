@@ -1,32 +1,30 @@
-namespace test.import;
+namespace? tests.import;
 
 using;
-using std;
+using package;
+using package/`module`.name::*;
 
-using torch
-using numpy as np
-using pandas.database as db
+using numpy as npy
+using `tensor-flow` as tfboys
 
-using lib1.*
-using lib2::*
-using lib3 as z
-using lib4 as _
-using github.{
-    valkyrie.nexus as nexus,
-    valkyrie.nexus::*
-    vampire {
-        knight,
-        hunter {
-            hunter1,
-            hunter2
-        }
-        mage.nexus.*
-    }
-}
+using { };
+using package {
+    project.first.{}
+    project::second::{}
+    project/third/{}
+};
 
-using `python`.numpy;
-using `python`::numpy as npy;
-using `python`::{
-    numpy as np,
-    torch as tf;
+using #Serialize;
+using @derialize;
+using serde.#Serialize;
+using serde::@derialize;
+
+using serde::{#Serialize, #`Deserialize`}
+using serde::{@serialize, @`deserialize`}
+
+using {
+    project.`class` as @`class`;
+    project.`union` as #`union`;
+    project.@`enumerate` as `enumerate`
+    project.#`interface` as `interface`
 }

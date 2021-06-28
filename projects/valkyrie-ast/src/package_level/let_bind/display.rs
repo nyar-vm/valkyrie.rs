@@ -1,6 +1,6 @@
 use super::*;
 
-impl Debug for VariableDeclaration {
+impl Debug for LetBindNode {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         let w = &mut f.debug_struct("VariableDeclaration");
         w.field("pattern", &self.pattern);
@@ -15,8 +15,21 @@ impl Debug for VariableDeclaration {
     }
 }
 
+impl Debug for VariableDeclaration {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        let w = &mut f.debug_struct("VariableDeclaration");
+        if let Some(type_hint) = &self.type_hint {
+            w.field("type", type_hint);
+        }
+        if let Some(body) = &self.body {
+            w.field("body", body);
+        }
+        w.finish()
+    }
+}
+
 #[cfg(feature = "pretty-print")]
-impl PrettyPrint for VariableDeclaration {
+impl PrettyPrint for LetBindNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(3);
         terms += theme.keyword("let");

@@ -1,4 +1,6 @@
 use super::*;
+use crate::LoopStatement;
+use alloc::vec;
 
 mod display;
 
@@ -12,6 +14,8 @@ pub struct ForLoop {
     pub iterator: ExpressionKind,
     /// `if condition`
     pub condition: Option<ExpressionKind>,
+    /// `#label`
+    pub label: Option<IdentifierNode>,
     /// `{ body }`
     pub body: StatementBlock,
     /// The range of the node
@@ -31,6 +35,12 @@ pub struct ForBarePattern {
     pub pattern: Vec<ArgumentKey>,
     /// The range of the node
     pub span: Range<u32>,
+}
+
+impl ForLoop {
+    pub fn standardization(self, iterator: IdentifierNode) -> LoopStatement {
+        LoopStatement { label: self.label, terms: vec![] }
+    }
 }
 
 impl ForBarePattern {

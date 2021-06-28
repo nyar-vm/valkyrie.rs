@@ -11,11 +11,11 @@ mod control_flow;
 mod operators;
 
 impl crate::ExpressionRootNode {
-    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<StatementNode> {
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<StatementKind> {
         let expr = self.main_expression.build(ctx)?;
         let eos = self.eos.is_some();
         let ex = ExpressionNode { omit: eos, body: expr, span: self.span.clone() };
-        Ok(StatementNode::Expression(Box::new(ex)))
+        Ok(StatementKind::Expression(Box::new(ex)))
     }
 }
 
