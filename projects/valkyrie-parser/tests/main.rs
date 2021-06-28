@@ -10,8 +10,7 @@ use std::{
 };
 use valkyrie_parser::{
     ClassBlockNode, ClassTermNode, DefineFieldNode, DefineImportNode, DefineMethodNode, DefineNamespaceNode,
-    MainExpressionNode, MainStatementNode, ProgramContext, ProgramNode, StatementNode, ValkyrieParser, ValkyrieRule,
-    ValkyrieRule::MainStatement,
+    MainExpressionNode, ProgramContext, ProgramNode, StatementNode, ValkyrieParser, ValkyrieRule,
 };
 use yggdrasil_rt::{OutputResult, YggdrasilError, YggdrasilParser};
 
@@ -87,7 +86,6 @@ fn find_all(dir: &str, debug: bool) -> anyhow::Result<()> {
             }
         }
         // parse text
-
         let text = cache.fetch(&file)?.to_string();
         match ValkyrieParser::parse_cst(&text, ValkyrieRule::Program) {
             Ok(o) if debug => println!("{}", o),

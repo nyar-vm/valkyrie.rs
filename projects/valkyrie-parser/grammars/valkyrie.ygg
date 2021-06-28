@@ -12,6 +12,7 @@ atomic class Program {
 }
 // === statements === -----------------------------------------------------------------
 union Statement {
+    // top level statements
     | DefineNamespace
     | DefineClass
     | DefineUnion
@@ -20,7 +21,13 @@ union Statement {
     | DefineExtends
     | DefineFunction
     | DefineVariable
-    | MainStatement
+    // continuation level statements
+    | DefineImport
+    | ControlFlow
+    | WhileStatement
+    | ForStatement
+    | ExpressionRoot
+    | EOS
 }
 /// Used to isolate expressions and control whether to output the expression
 union EOS ^ {
@@ -43,28 +50,66 @@ union OP_NAMESPACE {
     | '*' #Hide
 }
 // === import === -----------------------------------------------------------------
-atomic class DefineImport {
-    | ^KW_IMPORT ~ ImportTerm? ~ ^EOS?
-    | ^KW_IMPORT ~ '{' (HIDE (ImportTerm|^EOS_FREE))* ~ '}' ~ ^EOS?
+//import_term
+//    : import_all
+//    | import_macro
+//    | import_attribute
+//    | import_space
+//    | import_name
+//    | eos_free
+//    ;
+//// using package.module.@macro (as x)?
+//import_macro: (path = identifier import_join)* OP_AT item = identifier import_as?;
+//// using package.module.#Attribute (as x)?
+//import_attribute: (path = identifier import_join)* OP_HASH item = identifier import_as?;
+
+
+//// using package.module.name (as x)?
+//import_name: identifier (import_join identifier)* import_as?;
+//
+//import_block
+//    : PARENTHESES_L import_term* PARENTHESES_R
+//    | BRACKET_L import_term* BRACKET_R
+//    | BRACE_L import_term* BRACE_R
+//    ;
+//import_as:   KW_AS (OP_AT | OP_HASH)? identifier;
+//import_join: OP_PROPORTION | DOT | OP_DIV;
+class DefineImport {
+    AnnotationTerm* ^KW_IMPORT (
+        | EOS_FREE
+        | ImportBlock EOS_FREE?
+        | ImportTerm EOS_FREE?
+    )
+}
+class ImportBlock  {
+    '{' ImportTerm* '}'
 }
 union ImportTerm {
-    | ImportAs
     | ImportAll
+    | ImportSpace
     | ImportMacro
-    | ImportBlock
-    | NamepathFree
+    | ImportName
+    | EOS_FREE
 }
-/// `import package∷module∷item as alias`
-class ImportAs { NamepathFree ^KW_AS alias:Identifier }
 /// `import package∷module∷*`
-class ImportAll { NamepathFree ^NS_CONCAT OP_IMPORT_ALL }
-/// `import package∷module { ... }`
-atomic class ImportBlock  {
-    NamepathFree ~ ^NS_CONCAT? ~ '{' (HIDE (ImportTerm|^EOS_FREE))* ~ '}'
+class ImportAll ^ {
+    (path:Identifier NS_CONCAT)+ OP_IMPORT_ALL
 }
-/// `import package::module::@macro as @macro`
-class ImportMacro  {
-    NamepathFree ^NS_CONCAT ImportMacroItem ^KW_AS alias:ImportMacroItem
+// `import` package.module.name { space }
+class ImportSpace ^ {
+    path:Identifier (NS_CONCAT path:Identifier)+ NS_CONCAT body:ImportBlock
+}
+/// import package::module::@macro as @macro
+class ImportMacro ^ {
+    (path:Identifier NS_CONCAT)* item:ImportMacroItem alias:ImportAs
+}
+// import package::module::macro as @macro
+class ImportName ^ {
+    (path:Identifier NS_CONCAT)* item:Identifier alias:ImportAs
+}
+// import package∷module∷item as alias
+class ImportAs ^ {
+    (KW_AS alias:Identifier)?
 }
 atomic union ImportMacroItem {
     | '#' Identifier #Capture
@@ -255,7 +300,7 @@ text class ParameterHint {
     /[.]{2,3}|[~^]/
 }
 class Continuation {
-    '{' MainStatement* '}'
+    '{' Statement* '}'
 }
 @style(keyword)
 union KW_FUNCTION {
@@ -333,14 +378,6 @@ atomic class JumpLabel {
     '^' Identifier
 }
 // === expression === --------------------------------------------------------------------------------------------------
-union MainStatement {
-    | DefineImport
-    | ControlFlow
-    | WhileStatement
-    | ForStatement
-    | ExpressionRoot
-    | EOS
-}
 class ExpressionRoot {
     AnnotationTerm* MainExpression OP_AND_THEN? EOS?
 }
@@ -383,7 +420,7 @@ class MatchElse {
 }
 atomic class MatchStatement {
     !/type|case|when|else|[,，]/
-    MainStatement
+    Statement
 }
 @style(keyword)
 union KW_MATCH {

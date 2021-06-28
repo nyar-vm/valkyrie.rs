@@ -127,12 +127,15 @@ FunctionDeclaration {
         main: String,
     },
     body: [
-        let,
-        mut,
-        InfixNode {
-            infix: =,
-            lhs: count,
-            rhs: 0,
+        VariableDeclaration {
+            pattern: TuplePatternNode {
+                bind: None,
+                name: None,
+                terms: [],
+                span: 0..0,
+            },
+            body: 0,
+            span: 361..384,
         },
     ],
 }

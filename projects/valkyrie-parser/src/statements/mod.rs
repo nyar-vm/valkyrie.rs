@@ -32,15 +32,6 @@ impl crate::StatementNode {
             Self::DefineTrait(v) => v.build(ctx)?.into(),
             Self::DefineExtends(v) => v.build(ctx)?.into(),
             Self::DefineUnion(v) => v.build(ctx)?.into(),
-            Self::MainStatement(v) => return v.build(ctx),
-        };
-        Ok(Some(value))
-    }
-}
-
-impl crate::MainStatementNode {
-    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<Option<StatementKind>> {
-        let value = match self {
             Self::ControlFlow(v) => v.build(ctx)?.into(),
             Self::DefineImport(v) => v.build(ctx)?.into(),
             Self::ForStatement(v) => v.build(ctx)?.into(),

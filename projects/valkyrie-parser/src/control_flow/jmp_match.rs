@@ -118,7 +118,7 @@ impl crate::CasePatternNode {
 fn match_statements(statements: &[crate::MatchStatementNode], ctx: &mut ProgramState) -> StatementBlock {
     let mut list = StatementBlock::new(statements.len(), &Default::default());
     for term in statements {
-        match term.main_statement.build(ctx) {
+        match term.statement.build(ctx) {
             Ok(o) => list.terms.extend(o),
             Err(e) => ctx.add_error(e),
         }

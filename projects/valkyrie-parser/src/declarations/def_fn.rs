@@ -153,8 +153,8 @@ impl crate::ParameterPairNode {
 
 impl crate::ContinuationNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> StatementBlock {
-        let mut out = StatementBlock::new(self.main_statement.len(), &self.span);
-        for term in &self.main_statement {
+        let mut out = StatementBlock::new(self.statement.len(), &self.span);
+        for term in &self.statement {
             match term.build(ctx) {
                 Ok(s) => out.terms.extend(s),
                 Err(e) => ctx.add_error(e),
