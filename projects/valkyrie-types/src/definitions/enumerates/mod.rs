@@ -1,5 +1,5 @@
 use super::*;
-use crate::ValkyrieID;
+use crate::{ValkyrieID, ValkyrieString};
 
 #[derive(Clone, Debug)]
 pub struct ValkyrieEnumerate {
@@ -19,7 +19,7 @@ impl ValkyrieEnumerate {
     pub fn new(namepath: ValkyrieID) -> Self {
         Self { name: namepath, terms: Default::default() }
     }
-    pub fn name(&self) -> &str {
+    pub fn name(&self) -> ValkyrieString {
         self.name.name()
     }
     pub fn namespace(&self) -> &[String] {

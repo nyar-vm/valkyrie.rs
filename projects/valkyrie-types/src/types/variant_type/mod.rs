@@ -3,14 +3,14 @@ use std::str::FromStr;
 
 #[derive(Clone, Debug, Eq, PartialEq, Hash, Scan)]
 pub struct ValkyrieVariantType {
-    namepath: Namepath,
+    namepath: ValkyrieID,
     generics: Vec<Gc<ValkyrieMetaType>>,
     variants: Vec<Gc<ValkyrieClassType>>,
 }
 
 impl ValkyrieVariantType {
     pub fn new(namepath: &str) -> Self {
-        Self { namepath: Namepath::from_str(namepath).unwrap(), generics: vec![], variants: vec![] }
+        todo!()
     }
     pub fn mut_generics(&mut self) -> &mut Vec<Gc<ValkyrieMetaType>> {
         &mut self.generics

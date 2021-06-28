@@ -28,6 +28,7 @@ pub use self::{
     builtin::{
         images::ValkyrieImage,
         result::{ValkyrieFailure, ValkyrieSuccess},
+        texts::{StringID, ValkyrieString},
         TokenType,
     },
     collection::{

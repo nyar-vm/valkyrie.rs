@@ -4,9 +4,9 @@ use crate::{
     ValkyrieResult, ValkyrieValue,
 };
 use indexmap::IndexMap;
-use nyar_error::{FileCache, FileSpan, RuntimeError};
+use nyar_error::{FileSpan, RuntimeError};
 use shredder::Gc;
-use std::{collections::BTreeMap, fs::File, sync::Arc};
+use std::{collections::BTreeMap, sync::Arc};
 use valkyrie_ast::StatementBlock;
 
 pub mod operators;

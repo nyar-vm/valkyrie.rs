@@ -2,7 +2,6 @@ use super::*;
 use crate::{ValkyrieError, ValkyrieResult};
 use nyar_collection::NyarTuple;
 use nyar_number::ToPrimitive;
-use serde::{ser::SerializeSeq, Serialize, Serializer};
 
 pub type ValkyrieList = NyarTuple<ValkyrieValue>;
 

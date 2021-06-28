@@ -1,9 +1,6 @@
 use crate::{ValkyrieNumber, ValkyrieValue};
 
 use nyar_error::RuntimeError;
-use serde::Serializer;
-use shredder::Gc;
-use std::sync::Arc;
 
 /// implicit cast
 /// explicit cast
@@ -130,6 +127,3 @@ impl EncodeList {
         todo!()
     }
 }
-
-/// ref type
-pub struct ValkyrieString {}

@@ -1,5 +1,4 @@
 use shredder::Gc;
-use std::sync::Arc;
 
 use crate::{types::ValkyrieMetaType, ValkyrieType, ValkyrieValue, ValkyrieVariantType};
 

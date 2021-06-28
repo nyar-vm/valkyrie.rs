@@ -1,4 +1,5 @@
 use super::*;
+use crate::ValkyrieString;
 
 pub struct ValkyrieInterface {
     /// package∷module∷Interface
@@ -45,7 +46,7 @@ impl ValkyrieInterface {
     pub fn namespace(&self) -> &[String] {
         self.namepath.namespace()
     }
-    pub fn name(&self) -> &str {
+    pub fn name(&self) -> ValkyrieString {
         self.namepath.name()
     }
     pub fn full_name(&self) -> &[String] {

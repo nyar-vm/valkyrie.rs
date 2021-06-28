@@ -16,10 +16,10 @@ impl From<u8> for ValkyrieValue {
 
 impl ValkyrieValue {
     pub fn parse_integer(input: &str, radix: u32) -> Result<ValkyrieValue, ValkyrieError> {
-        Ok(Self::Number(ValkyrieNumber::parse_integer_radix(input, radix)?))
+        Ok(Self::Number(ValkyrieNumber::parse_integer_radix(input, radix).expect("")))
     }
     pub fn parse_decimal(input: &str, radix: u32) -> Result<ValkyrieValue, ValkyrieError> {
-        Ok(Self::Number(ValkyrieNumber::parse_decimal_radix(input, radix)?))
+        Ok(Self::Number(ValkyrieNumber::parse_decimal_radix(input, radix).expect("")))
     }
 }
 

@@ -1,8 +1,8 @@
 use super::*;
 
-use crate::ValkyrieID;
+use crate::{ValkyrieID, ValkyrieString};
 use indexmap::IndexMap;
-use nyar_error::FileSpan;
+
 use shredder::Scanner;
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -34,7 +34,7 @@ impl ValkyrieClassType {
     pub fn namespace(&self) -> &[String] {
         self.name.namespace()
     }
-    pub fn name(&self) -> &str {
+    pub fn name(&self) -> ValkyrieString {
         self.name.name()
     }
     pub fn clear(&mut self) {

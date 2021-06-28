@@ -1,6 +1,5 @@
-use crate::{encoding::IntoValkyrie, ValkyrieValue};
-use im::{HashMap, Vector};
-use itertools::iterate;
+use crate::ValkyrieValue;
+use im::HashMap;
 use serde::{ser::SerializeMap, Serialize, Serializer};
 use shredder::{
     marker::{GcDrop, GcSafe},

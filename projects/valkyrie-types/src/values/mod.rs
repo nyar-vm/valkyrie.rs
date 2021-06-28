@@ -1,8 +1,5 @@
 use shredder::{marker::GcSafe, Gc, Scan, Scanner};
-use std::{
-    fmt::{Debug, Formatter},
-    sync::Arc,
-};
+use std::fmt::{Debug, Formatter};
 use valkyrie_ast::helper::ValkyrieNode;
 
 mod der;

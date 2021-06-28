@@ -1,5 +1,5 @@
 use super::*;
-use image::{DynamicImage, RgbaImage};
+use image::RgbaImage;
 
 #[derive(Clone, Debug, Eq, PartialEq, Hash)]
 pub struct ValkyrieImage {

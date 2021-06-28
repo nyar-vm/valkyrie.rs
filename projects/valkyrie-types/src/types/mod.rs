@@ -1,15 +1,11 @@
 use crate::{
-    types::atomic_type::ValkyrieDocument,
-    utils::{primitive_type, Namepath},
-    ValkyrieClassType, ValkyrieDict, ValkyrieValue,
+    types::atomic_type::ValkyrieDocument, utils::primitive_type, ValkyrieClassType, ValkyrieDict, ValkyrieID, ValkyrieString,
+    ValkyrieValue,
 };
 use indexmap::IndexMap;
 use itertools::Itertools;
 use nyar_collection::NyarTuple;
-use shredder::{
-    marker::{GcDrop, GcSafe},
-    Gc, Scan, Scanner,
-};
+use shredder::{marker::GcSafe, Gc, Scan};
 use std::{
     any::type_name,
     fmt::{Debug, Display},
@@ -24,11 +20,17 @@ pub mod union_type;
 pub mod variant_type;
 
 // rtti of valkyrie type
-#[derive(Clone, Debug, Default, Eq, PartialEq, Scan)]
+#[derive(Clone, Debug, Eq, PartialEq, Scan)]
 pub struct ValkyrieMetaType {
-    namepath: Namepath,
+    namepath: ValkyrieID,
     document: ValkyrieDocument,
     generic_types: Vec<Gc<ValkyrieMetaType>>,
+}
+
+impl Default for ValkyrieMetaType {
+    fn default() -> Self {
+        panic!()
+    }
 }
 
 impl Default for ValkyrieValue {
@@ -73,12 +75,8 @@ impl ValkyrieMetaType {
         o
     }
 
-    pub fn set_namepath(&mut self, namepath: &str) {
-        for s in namepath.split('.') {
-            self.namepath.push(s);
-        }
-    }
-    pub fn mut_namepath(&mut self) -> &mut Namepath {
+    pub fn set_namepath(&mut self, namepath: &str) {}
+    pub fn mut_namepath(&mut self) -> &mut ValkyrieID {
         &mut self.namepath
     }
     pub fn mut_generic_types(&mut self) -> &mut Vec<Gc<ValkyrieMetaType>> {
@@ -100,17 +98,15 @@ where
 }
 
 impl ValkyrieMetaType {
-    pub fn name(&self) -> &str {
-        assert_ne!(self.namepath.length(), 0, "namepath `{:?}` is not valid", self.namepath);
+    pub fn name(&self) -> ValkyrieString {
         self.namepath.name()
     }
     pub fn namespace(&self, join: &str) -> String {
-        assert_ne!(self.namepath.length(), 0, "namepath `{:?}` is not valid", self.namepath);
         self.namepath.namespace().join(join)
     }
     pub fn display_type(&self, full_path: bool) -> String {
         let this = match full_path {
-            true => self.namepath.join("::"),
+            true => self.namepath.to_string(),
             false => self.name().to_string(),
         };
         if self.generic_types.is_empty() {
