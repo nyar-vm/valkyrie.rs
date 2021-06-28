@@ -1,5 +1,5 @@
 use super::*;
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for WhileLoop {
     /// ```vk
     /// # inline style
@@ -44,7 +44,7 @@ impl Lispify for WhileLoop {
         lisp
     }
 }
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for WhileConditionNode {
     /// ```vk
     /// # inline style
@@ -77,7 +77,7 @@ impl Lispify for WhileConditionNode {
         }
     }
 }
-
+#[cfg(feature = "pretty-print")]
 impl PrettyPrint for OtherwiseStatement {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(10);

@@ -9,7 +9,7 @@ mod ser;
 use crate::builtin::data_frame::ValkyrieDataFrame;
 use crate::{
     builtin::{images::ValkyrieImage, ndarray::ValkyrieNDArray},
-    ValkyrieClassType, ValkyrieDict, ValkyrieList, ValkyrieNumber, ValkyrieVariantType,
+    ValkyrieClassType, ValkyrieDict, ValkyrieError, ValkyrieList, ValkyrieNumber, ValkyrieVariantType,
 };
 
 #[derive(Clone, Eq, PartialEq, Hash)]
@@ -41,6 +41,15 @@ pub enum ValkyrieValue {
     Dict(ValkyrieDict),
     Class(Gc<ValkyrieClassType>),
     Variant(Gc<ValkyrieVariantType>),
+}
+
+impl ValkyrieValue {
+    pub fn is_truthy(&self) -> Result<bool, ValkyrieError> {
+        match self {
+            ValkyrieValue::Boolean(v) => Ok(*v),
+            _ => Err(ValkyrieError::runtime_error("Expected boolean value")),
+        }
+    }
 }
 
 unsafe impl GcSafe for ValkyrieValue {}

@@ -1,35 +1,9 @@
 use super::*;
 use crate::ForLoop;
 
-#[cfg(feature = "pretty-print")]
 mod display;
 
-/// `while cond {...} otherwise {...}`
-///
-///
-/// ```vk
-/// let loop_else = false;
-/// @loop.1.head
-/// loop {
-///     @loop.1.start
-///     @block.2.head
-///     if !cond {
-///         @block.2.start
-///         goto loop.1.end;
-///         @block.2.end;
-///         goto loop.2.tail;
-///     }
-///     @block.2.tail
-///     loop_else = true;
-///     "run main body"
-///     @loop.1.end
-///     goto loop.1.start
-/// }
-/// @label(loop.1.tail)
-/// if !loop_else {
-///    "run else body"
-/// }
-/// ```
+#[doc = include_str!("readme.md")]
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct WhileLoop {
