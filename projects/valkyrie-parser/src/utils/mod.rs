@@ -47,10 +47,7 @@ pub(crate) fn build_modifier_ahead(this: &[ModifierAheadNode], ctx: &mut Program
 pub(crate) fn build_annotation_terms(this: &[AnnotationTermNode], ctx: &mut ProgramState) -> AttributeList {
     let mut terms = Vec::with_capacity(this.len());
     for term in this {
-        match term.build(ctx) {
-            Ok(o) => terms.push(o),
-            Err(e) => ctx.add_error(e),
-        }
+        terms.push(term.build(ctx))
     }
     AttributeList { terms: terms.into_iter().map(|v| v.terms).flatten().collect() }
 }
@@ -58,10 +55,7 @@ pub(crate) fn build_annotation_terms(this: &[AnnotationTermNode], ctx: &mut Prog
 pub(crate) fn build_annotation_terms_mix(this: &[AnnotationTermMixNode], ctx: &mut ProgramState) -> Result<AttributeList> {
     let mut terms = vec![];
     for term in this {
-        match term.build(ctx) {
-            Ok(o) => terms.push(o),
-            Err(e) => ctx.add_error(e),
-        }
+        terms.push(term.build(ctx))
     }
     Ok(AttributeList { terms: terms.into_iter().map(|v| v.terms).flatten().collect() })
 }

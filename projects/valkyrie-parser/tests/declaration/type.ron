@@ -75,24 +75,8 @@ Class {
     name: Integer,
     terms: [
         DomainDeclaration {
-            body: [
-                Method {
-                    name: requires,
-                    body: [
-                        InfixNode {
-                            infix: >,
-                            lhs: Self,
-                            rhs: 0,
-                        },
-                    ],
-                    span: 165..209,
-                },
-                Method {
-                    name: ensures,
-                    body: [],
-                    span: 218..240,
-                },
-            ],
+            annotations: Empty,
+            body: [],
             span: 148..246,
         },
     ],

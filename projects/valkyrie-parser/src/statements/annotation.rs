@@ -37,52 +37,31 @@ impl crate::AttributeItemNode {
             domain: self.domain(ctx),
         }
     }
-    pub(crate) fn domain(&self, ctx: &mut ProgramState) -> Option<DomainDeclaration> {
+    fn domain(&self, ctx: &mut ProgramState) -> Option<DomainDeclaration> {
         Some(self.class_block.as_ref()?.build_domain(ctx))
     }
 }
 impl crate::AnnotationTermNode {
-    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<AttributeList> {
-        let mut list = AttributeList::new(1);
-        match self {
-            Self::AttributeCall(v) => list.terms.push(v.attribute_item.build(ctx)),
-            Self::AttributeList(v) => {
-                for term in &v.attribute_item {
-                    match term.build(ctx) {
-                        Ok(o) => list.terms.push(o),
-                        Err(e) => ctx.add_error(e),
-                    }
-                }
-            }
-        }
-        Ok(list)
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> AttributeList {
+        let terms = match self {
+            Self::AttributeCall(v) => vec![v.attribute_item.build(ctx)],
+            Self::AttributeList(v) => v.attribute_item.iter().map(|v| v.build(ctx)).collect(),
+        };
+        AttributeList { terms }
     }
 }
 
 impl crate::AnnotationTermMixNode {
-    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<AttributeList> {
-        let mut list = AttributeList::new(1);
-        match self {
-            Self::AttributeCall(v) => match v.attribute_item.build(ctx) {
-                Ok(o) => list.terms.push(o),
-                Err(e) => ctx.add_error(e),
-            },
-            Self::ProceduralCall(v) => match v.attribute_item.build(ctx) {
-                Ok(o) => list.terms.push(o),
-                Err(e) => ctx.add_error(e),
-            },
-            Self::AttributeList(v) => {
-                for x in &v.attribute_item {
-                    match x.build(ctx) {
-                        Ok(o) => list.terms.push(o),
-                        Err(e) => ctx.add_error(e),
-                    }
-                }
-            }
-        }
-        Ok(list)
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> AttributeList {
+        let terms = match self {
+            Self::AttributeCall(v) => vec![v.attribute_item.build(ctx)],
+            Self::ProceduralCall(v) => vec![v.attribute_item.build(ctx)],
+            Self::AttributeList(v) => v.attribute_item.iter().map(|v| v.build(ctx)).collect(),
+        };
+        AttributeList { terms }
     }
 }
+
 impl crate::ModifierAheadNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> IdentifierNode {
         self.identifier.build(ctx)

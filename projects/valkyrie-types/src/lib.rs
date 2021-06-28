@@ -4,6 +4,7 @@
 #![feature(unboxed_closures)]
 #![feature(iter_from_generator)]
 #![feature(generators)]
+#![feature(lazy_cell)]
 
 extern crate core;
 
@@ -34,11 +35,11 @@ pub use self::{
         list::{ValkyrieList, ValkyrieOrdinal},
     },
     definitions::{
-        classes::ValkyrieStructure, enumerates::ValkyrieEnumerate, ids::ValkyrieID, interfaces::ValkyrieInterface,
-        names::ValkyrieName,
+        classes::ValkyrieStructure, enumerates::ValkyrieEnumerate, interfaces::ValkyrieInterface, names::ValkyrieName,
     },
     functions::{ValkyrieFunction, ValkyrieFunctionType, ValkyrieMonomorphicFunction},
     modifiers::{FeatureType, InitializeType, MutableType},
+    singletons::ids::{ValkyrieID, ValkyrieUniverse},
     types::{
         atomic_type::ValkyrieAtomicType, class_type::ValkyrieClassType, literal_type::ValkyrieLiteralType,
         union_type::ValkyrieUnionType, variant_type::ValkyrieVariantType, ValkyrieType,

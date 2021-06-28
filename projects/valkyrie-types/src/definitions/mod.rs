@@ -1,7 +1,7 @@
 use crate::{
     modifiers::AccessType,
     types::{atomic_type::ValkyrieDocument, ValkyrieMetaType},
-    InitializeType, ValkyrieEnumerate, ValkyrieError, ValkyrieID,
+    InitializeType, ValkyrieEnumerate, ValkyrieError,
 };
 use nyar_error::{Success, Validation};
 use std::{
@@ -14,10 +14,11 @@ use valkyrie_ast::{ExpressionNode, FlagDeclaration, FlagKind, IdentifierNode, Na
 pub mod classes;
 pub mod enumerates;
 pub mod fields;
-pub mod ids;
 pub mod instances;
 pub mod interfaces;
 pub mod names;
+
+use crate::ValkyrieID;
 
 pub struct Valhalla {
     /// Current working namespace
@@ -35,8 +36,6 @@ impl Valhalla {
         todo!()
     }
     pub(crate) fn load_id(&self, o: IdentifierNode) -> ValkyrieID {
-        let mut path = self.scope.path.clone();
-        path.push(o.name);
-        ValkyrieID { path, location: o.span }
+        todo!()
     }
 }

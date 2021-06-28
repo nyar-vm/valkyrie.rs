@@ -724,8 +724,8 @@ pub struct DefineMethodNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct DefineDomainNode {
     pub annotation_mix: AnnotationMixNode,
-    pub class_block: ClassBlockNode,
     pub domain_term: DomainTermNode,
+    pub statement: Vec<StatementNode>,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]

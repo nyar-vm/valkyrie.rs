@@ -762,8 +762,8 @@ impl YggdrasilNode for DefineDomainNode {
         let _span = pair.get_span();
         Ok(Self {
             annotation_mix: pair.take_tagged_one::<AnnotationMixNode>(Cow::Borrowed("annotation_mix"))?,
-            class_block: pair.take_tagged_one::<ClassBlockNode>(Cow::Borrowed("class_block"))?,
             domain_term: pair.take_tagged_one::<DomainTermNode>(Cow::Borrowed("domain_term"))?,
+            statement: pair.take_tagged_items::<StatementNode>(Cow::Borrowed("statement")).collect::<Result<Vec<_>, _>>()?,
             span: Range { start: _span.start() as u32, end: _span.end() as u32 },
         })
     }

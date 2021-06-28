@@ -137,7 +137,7 @@ class DefineMethod {
 }
 class DefineDomain {
     AnnotationMix
-    DomainTerm ClassBlock
+    DomainTerm '{' Statement* '}'
 }
 union DomainTerm {
     | Identifier
@@ -756,7 +756,7 @@ atomic class ModifierAhead -> ModifierCall ^ {
 }
 @railway(false)
 class KEYWORDS_STOP {
-    / template | generic
+    / template | generic | constraint
     | class | structure
     | enumerate | flags | union
     | function | micro | macro

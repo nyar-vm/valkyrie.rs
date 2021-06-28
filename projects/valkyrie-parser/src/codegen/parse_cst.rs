@@ -757,7 +757,19 @@ fn parse_define_domain(state: Input) -> Output {
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_domain_term(s).and_then(|s| s.tag_node("domain_term")))
                 .and_then(|s| builtin_ignore(s))
-                .and_then(|s| parse_class_block(s).and_then(|s| s.tag_node("class_block")))
+                .and_then(|s| builtin_text(s, "{", false))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| {
+                    s.repeat(0..4294967295, |s| {
+                        s.sequence(|s| {
+                            Ok(s)
+                                .and_then(|s| builtin_ignore(s))
+                                .and_then(|s| parse_statement(s).and_then(|s| s.tag_node("statement")))
+                        })
+                    })
+                })
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| builtin_text(s, "}", false))
         })
     })
 }
@@ -3473,7 +3485,7 @@ fn parse_keywords_stop(state: Input) -> Output {
             static REGEX: OnceLock<Regex> = OnceLock::new();
             REGEX.get_or_init(|| {
                 Regex::new(
-                    "^(?x)(template | generic
+                    "^(?x)(template | generic | constraint
     | class | structure
     | enumerate | flags | union
     | function | micro | macro
@@ -3935,7 +3947,7 @@ fn parse_kw_constraint(state: Input) -> Output {
     state.rule(ValkyrieRule::KW_CONSTRAINT, |s| {
         s.match_regex({
             static REGEX: OnceLock<Regex> = OnceLock::new();
-            REGEX.get_or_init(|| Regex::new("^(?x)(template|generic|constraint)").unwrap())
+            REGEX.get_or_init(|| Regex::new("^(?x)(template|generic|constraint|∀)").unwrap())
         })
     })
 }

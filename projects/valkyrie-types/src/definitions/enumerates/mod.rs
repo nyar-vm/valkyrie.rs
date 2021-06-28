@@ -1,4 +1,5 @@
 use super::*;
+use crate::ValkyrieID;
 
 #[derive(Clone, Debug)]
 pub struct ValkyrieEnumerate {

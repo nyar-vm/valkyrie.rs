@@ -41,6 +41,7 @@ ProceduralNode {
     arguments: [],
     domain: Some(
         DomainDeclaration {
+            annotations: Empty,
             body: [
                 Field {
                     name: field,
@@ -61,6 +62,7 @@ ProceduralNode {
     arguments: [],
     domain: Some(
         DomainDeclaration {
+            annotations: Empty,
             body: [
                 Field {
                     name: field,
@@ -81,6 +83,7 @@ ProceduralNode {
     arguments: [],
     domain: Some(
         DomainDeclaration {
+            annotations: Empty,
             body: [
                 Method {
                     name: method,
@@ -102,6 +105,7 @@ ProceduralNode {
     arguments: [],
     domain: Some(
         DomainDeclaration {
+            annotations: Empty,
             body: [
                 Method {
                     name: method,
@@ -124,8 +128,10 @@ ProceduralNode {
     arguments: [],
     domain: Some(
         DomainDeclaration {
+            annotations: Empty,
             body: [
                 DomainDeclaration {
+                    annotations: Empty,
                     body: [],
                     span: 110..119,
                 },

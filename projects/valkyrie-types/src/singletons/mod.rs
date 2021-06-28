@@ -1,1 +1,1 @@
-pub struct StringPool {}
+pub mod ids;
