@@ -9,11 +9,13 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::DefineNamespace => parse_define_namespace(state),
         ValkyrieRule::OP_NAMESPACE => parse_op_namespace(state),
         ValkyrieRule::DefineImport => parse_define_import(state),
-        ValkyrieRule::ImportTerm => parse_import_term(state),
-        ValkyrieRule::ImportAs => parse_import_as(state),
-        ValkyrieRule::ImportAll => parse_import_all(state),
         ValkyrieRule::ImportBlock => parse_import_block(state),
+        ValkyrieRule::ImportTerm => parse_import_term(state),
+        ValkyrieRule::ImportAll => parse_import_all(state),
+        ValkyrieRule::ImportSpace => parse_import_space(state),
         ValkyrieRule::ImportMacro => parse_import_macro(state),
+        ValkyrieRule::ImportName => parse_import_name(state),
+        ValkyrieRule::ImportAs => parse_import_as(state),
         ValkyrieRule::ImportMacroItem => parse_import_macro_item(state),
         ValkyrieRule::DefineConstraint => parse_define_constraint(state),
         ValkyrieRule::ConstraintParameters => parse_constraint_parameters(state),
@@ -77,7 +79,6 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::ForTemplateEnd => parse_for_template_end(state),
         ValkyrieRule::ControlFlow => parse_control_flow(state),
         ValkyrieRule::JumpLabel => parse_jump_label(state),
-        ValkyrieRule::MainStatement => parse_main_statement(state),
         ValkyrieRule::ExpressionRoot => parse_expression_root(state),
         ValkyrieRule::MatchExpression => parse_match_expression(state),
         ValkyrieRule::SwitchStatement => parse_switch_statement(state),
@@ -276,7 +277,12 @@ fn parse_statement(state: Input) -> Output {
             .or_else(|s| parse_define_extends(s).and_then(|s| s.tag_node("define_extends")))
             .or_else(|s| parse_define_function(s).and_then(|s| s.tag_node("define_function")))
             .or_else(|s| parse_define_variable(s).and_then(|s| s.tag_node("define_variable")))
-            .or_else(|s| parse_main_statement(s).and_then(|s| s.tag_node("main_statement")))
+            .or_else(|s| parse_define_import(s).and_then(|s| s.tag_node("define_import")))
+            .or_else(|s| parse_control_flow(s).and_then(|s| s.tag_node("control_flow")))
+            .or_else(|s| parse_while_statement(s).and_then(|s| s.tag_node("while_statement")))
+            .or_else(|s| parse_for_statement(s).and_then(|s| s.tag_node("for_statement")))
+            .or_else(|s| parse_expression_root(s).and_then(|s| s.tag_node("expression_root")))
+            .or_else(|s| parse_eos(s).and_then(|s| s.tag_node("eos")))
     })
 }
 #[inline]
@@ -335,81 +341,40 @@ fn parse_op_namespace(state: Input) -> Output {
 #[inline]
 fn parse_define_import(state: Input) -> Output {
     state.rule(ValkyrieRule::DefineImport, |s| {
-        Err(s)
-            .or_else(|s| {
-                s.sequence(|s| {
-                    Ok(s)
-                        .and_then(|s| parse_kw_import(s))
-                        .and_then(|s| builtin_ignore(s))
-                        .and_then(|s| s.optional(|s| parse_import_term(s).and_then(|s| s.tag_node("import_term"))))
-                        .and_then(|s| builtin_ignore(s))
-                        .and_then(|s| s.optional(|s| parse_eos(s)))
-                })
-            })
-            .or_else(|s| {
-                s.sequence(|s| {
-                    Ok(s)
-                        .and_then(|s| parse_kw_import(s))
-                        .and_then(|s| builtin_ignore(s))
-                        .and_then(|s| builtin_text(s, "{", false))
-                        .and_then(|s| {
-                            s.repeat(0..4294967295, |s| {
-                                s.sequence(|s| {
-                                    Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| {
-                                        Err(s)
-                                            .or_else(|s| parse_import_term(s).and_then(|s| s.tag_node("import_term")))
-                                            .or_else(|s| parse_eos_free(s))
-                                    })
-                                })
-                            })
-                        })
-                        .and_then(|s| builtin_ignore(s))
-                        .and_then(|s| builtin_text(s, "}", false))
-                        .and_then(|s| builtin_ignore(s))
-                        .and_then(|s| s.optional(|s| parse_eos(s)))
-                })
-            })
-    })
-}
-#[inline]
-fn parse_import_term(state: Input) -> Output {
-    state.rule(ValkyrieRule::ImportTerm, |s| {
-        Err(s)
-            .or_else(|s| parse_import_as(s).and_then(|s| s.tag_node("import_as")))
-            .or_else(|s| parse_import_all(s).and_then(|s| s.tag_node("import_all")))
-            .or_else(|s| parse_import_macro(s).and_then(|s| s.tag_node("import_macro")))
-            .or_else(|s| parse_import_block(s).and_then(|s| s.tag_node("import_block")))
-            .or_else(|s| parse_namepath_free(s).and_then(|s| s.tag_node("namepath_free")))
-    })
-}
-#[inline]
-fn parse_import_as(state: Input) -> Output {
-    state.rule(ValkyrieRule::ImportAs, |s| {
         s.sequence(|s| {
             Ok(s)
                 .and_then(|s| {
-                    s.sequence(|s| {
-                        Ok(s)
-                            .and_then(|s| parse_namepath_free(s).and_then(|s| s.tag_node("namepath_free")))
-                            .and_then(|s| builtin_ignore(s))
-                            .and_then(|s| parse_kw_as(s))
-                            .and_then(|s| builtin_ignore(s))
+                    s.repeat(0..4294967295, |s| {
+                        s.sequence(|s| {
+                            Ok(s)
+                                .and_then(|s| builtin_ignore(s))
+                                .and_then(|s| parse_annotation_term(s).and_then(|s| s.tag_node("annotation_term")))
+                        })
                     })
                 })
-                .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("alias")))
-        })
-    })
-}
-#[inline]
-fn parse_import_all(state: Input) -> Output {
-    state.rule(ValkyrieRule::ImportAll, |s| {
-        s.sequence(|s| {
-            Ok(s)
-                .and_then(|s| parse_namepath_free(s).and_then(|s| s.tag_node("namepath_free")))
                 .and_then(|s| builtin_ignore(s))
-                .and_then(|s| parse_ns_concat(s))
+                .and_then(|s| parse_kw_import(s))
                 .and_then(|s| builtin_ignore(s))
-                .and_then(|s| parse_op_import_all(s).and_then(|s| s.tag_node("op_import_all")))
+                .and_then(|s| {
+                    Err(s)
+                        .or_else(|s| parse_eos_free(s).and_then(|s| s.tag_node("eos_free")))
+                        .or_else(|s| {
+                            s.sequence(|s| {
+                                Ok(s)
+                                    .and_then(|s| parse_import_block(s).and_then(|s| s.tag_node("import_block")))
+                                    .and_then(|s| builtin_ignore(s))
+                                    .and_then(|s| s.optional(|s| parse_eos_free(s).and_then(|s| s.tag_node("eos_free"))))
+                            })
+                        })
+                        .or_else(|s| {
+                            s.sequence(|s| {
+                                Ok(s)
+                                    .and_then(|s| parse_import_term(s).and_then(|s| s.tag_node("import_term")))
+                                    .and_then(|s| builtin_ignore(s))
+                                    .and_then(|s| s.optional(|s| parse_eos_free(s).and_then(|s| s.tag_node("eos_free"))))
+                            })
+                        })
+                })
         })
     })
 }
@@ -418,24 +383,92 @@ fn parse_import_block(state: Input) -> Output {
     state.rule(ValkyrieRule::ImportBlock, |s| {
         s.sequence(|s| {
             Ok(s)
-                .and_then(|s| parse_namepath_free(s).and_then(|s| s.tag_node("namepath_free")))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| s.optional(|s| parse_ns_concat(s)))
-                .and_then(|s| builtin_ignore(s))
                 .and_then(|s| builtin_text(s, "{", false))
+                .and_then(|s| builtin_ignore(s))
                 .and_then(|s| {
                     s.repeat(0..4294967295, |s| {
                         s.sequence(|s| {
-                            Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| {
-                                Err(s)
-                                    .or_else(|s| parse_import_term(s).and_then(|s| s.tag_node("import_term")))
-                                    .or_else(|s| parse_eos_free(s))
-                            })
+                            Ok(s)
+                                .and_then(|s| builtin_ignore(s))
+                                .and_then(|s| parse_import_term(s).and_then(|s| s.tag_node("import_term")))
                         })
                     })
                 })
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| builtin_text(s, "}", false))
+        })
+    })
+}
+#[inline]
+fn parse_import_term(state: Input) -> Output {
+    state.rule(ValkyrieRule::ImportTerm, |s| {
+        Err(s)
+            .or_else(|s| parse_import_all(s).and_then(|s| s.tag_node("import_all")))
+            .or_else(|s| parse_import_space(s).and_then(|s| s.tag_node("import_space")))
+            .or_else(|s| parse_import_macro(s).and_then(|s| s.tag_node("import_macro")))
+            .or_else(|s| parse_import_name(s).and_then(|s| s.tag_node("import_name")))
+            .or_else(|s| parse_eos_free(s).and_then(|s| s.tag_node("eos_free")))
+    })
+}
+#[inline]
+fn parse_import_all(state: Input) -> Output {
+    state.rule(ValkyrieRule::ImportAll, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| {
+                    s.repeat(1..4294967295, |s| {
+                        s.sequence(|s| {
+                            Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| {
+                                s.sequence(|s| {
+                                    Ok(s)
+                                        .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("path")))
+                                        .and_then(|s| builtin_ignore(s))
+                                        .and_then(|s| parse_ns_concat(s))
+                                })
+                            })
+                        })
+                    })
+                })
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_op_import_all(s))
+        })
+    })
+}
+#[inline]
+fn parse_import_space(state: Input) -> Output {
+    state.rule(ValkyrieRule::ImportSpace, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| {
+                    s.sequence(|s| {
+                        Ok(s)
+                            .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("path")))
+                            .and_then(|s| builtin_ignore(s))
+                            .and_then(|s| {
+                                s.repeat(1..4294967295, |s| {
+                                    s.sequence(|s| {
+                                        Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| {
+                                            s.sequence(|s| {
+                                                Ok(s)
+                                                    .and_then(|s| {
+                                                        s.sequence(|s| {
+                                                            Ok(s)
+                                                                .and_then(|s| parse_ns_concat(s))
+                                                                .and_then(|s| builtin_ignore(s))
+                                                        })
+                                                    })
+                                                    .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("path")))
+                                            })
+                                        })
+                                    })
+                                })
+                            })
+                            .and_then(|s| builtin_ignore(s))
+                            .and_then(|s| parse_ns_concat(s))
+                            .and_then(|s| builtin_ignore(s))
+                    })
+                })
+                .and_then(|s| parse_import_block(s).and_then(|s| s.tag_node("body")))
         })
     })
 }
@@ -447,17 +480,83 @@ fn parse_import_macro(state: Input) -> Output {
                 .and_then(|s| {
                     s.sequence(|s| {
                         Ok(s)
-                            .and_then(|s| parse_namepath_free(s).and_then(|s| s.tag_node("namepath_free")))
-                            .and_then(|s| builtin_ignore(s))
-                            .and_then(|s| parse_ns_concat(s))
-                            .and_then(|s| builtin_ignore(s))
-                            .and_then(|s| parse_import_macro_item(s).and_then(|s| s.tag_node("import_macro_item")))
-                            .and_then(|s| builtin_ignore(s))
-                            .and_then(|s| parse_kw_as(s))
+                            .and_then(|s| {
+                                s.sequence(|s| {
+                                    Ok(s)
+                                        .and_then(|s| {
+                                            s.repeat(0..4294967295, |s| {
+                                                s.sequence(|s| {
+                                                    Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| {
+                                                        s.sequence(|s| {
+                                                            Ok(s)
+                                                                .and_then(|s| {
+                                                                    parse_identifier(s).and_then(|s| s.tag_node("path"))
+                                                                })
+                                                                .and_then(|s| builtin_ignore(s))
+                                                                .and_then(|s| parse_ns_concat(s))
+                                                        })
+                                                    })
+                                                })
+                                            })
+                                        })
+                                        .and_then(|s| builtin_ignore(s))
+                                })
+                            })
+                            .and_then(|s| parse_import_macro_item(s).and_then(|s| s.tag_node("item")))
                             .and_then(|s| builtin_ignore(s))
                     })
                 })
-                .and_then(|s| parse_import_macro_item(s).and_then(|s| s.tag_node("alias")))
+                .and_then(|s| parse_import_as(s).and_then(|s| s.tag_node("alias")))
+        })
+    })
+}
+#[inline]
+fn parse_import_name(state: Input) -> Output {
+    state.rule(ValkyrieRule::ImportName, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| {
+                    s.sequence(|s| {
+                        Ok(s)
+                            .and_then(|s| {
+                                s.sequence(|s| {
+                                    Ok(s)
+                                        .and_then(|s| {
+                                            s.repeat(0..4294967295, |s| {
+                                                s.sequence(|s| {
+                                                    Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| {
+                                                        s.sequence(|s| {
+                                                            Ok(s)
+                                                                .and_then(|s| {
+                                                                    parse_identifier(s).and_then(|s| s.tag_node("path"))
+                                                                })
+                                                                .and_then(|s| builtin_ignore(s))
+                                                                .and_then(|s| parse_ns_concat(s))
+                                                        })
+                                                    })
+                                                })
+                                            })
+                                        })
+                                        .and_then(|s| builtin_ignore(s))
+                                })
+                            })
+                            .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("item")))
+                            .and_then(|s| builtin_ignore(s))
+                    })
+                })
+                .and_then(|s| parse_import_as(s).and_then(|s| s.tag_node("alias")))
+        })
+    })
+}
+#[inline]
+fn parse_import_as(state: Input) -> Output {
+    state.rule(ValkyrieRule::ImportAs, |s| {
+        s.optional(|s| {
+            s.sequence(|s| {
+                Ok(s)
+                    .and_then(|s| s.sequence(|s| Ok(s).and_then(|s| parse_kw_as(s)).and_then(|s| builtin_ignore(s))))
+                    .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("alias")))
+            })
         })
     })
 }
@@ -1242,7 +1341,7 @@ fn parse_continuation(state: Input) -> Output {
                         s.sequence(|s| {
                             Ok(s)
                                 .and_then(|s| builtin_ignore(s))
-                                .and_then(|s| parse_main_statement(s).and_then(|s| s.tag_node("main_statement")))
+                                .and_then(|s| parse_statement(s).and_then(|s| s.tag_node("statement")))
                         })
                     })
                 })
@@ -1660,18 +1759,6 @@ fn parse_jump_label(state: Input) -> Output {
     })
 }
 #[inline]
-fn parse_main_statement(state: Input) -> Output {
-    state.rule(ValkyrieRule::MainStatement, |s| {
-        Err(s)
-            .or_else(|s| parse_define_import(s).and_then(|s| s.tag_node("define_import")))
-            .or_else(|s| parse_control_flow(s).and_then(|s| s.tag_node("control_flow")))
-            .or_else(|s| parse_while_statement(s).and_then(|s| s.tag_node("while_statement")))
-            .or_else(|s| parse_for_statement(s).and_then(|s| s.tag_node("for_statement")))
-            .or_else(|s| parse_expression_root(s).and_then(|s| s.tag_node("expression_root")))
-            .or_else(|s| parse_eos(s).and_then(|s| s.tag_node("eos")))
-    })
-}
-#[inline]
 fn parse_expression_root(state: Input) -> Output {
     state.rule(ValkyrieRule::ExpressionRoot, |s| {
         s.sequence(|s| {
@@ -1901,7 +1988,7 @@ fn parse_match_statement(state: Input) -> Output {
                         })
                     })
                 })
-                .and_then(|s| parse_main_statement(s).and_then(|s| s.tag_node("main_statement")))
+                .and_then(|s| parse_statement(s).and_then(|s| s.tag_node("statement")))
         })
     })
 }

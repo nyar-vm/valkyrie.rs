@@ -37,11 +37,13 @@ pub enum ValkyrieRule {
     DefineNamespace,
     OP_NAMESPACE,
     DefineImport,
-    ImportTerm,
-    ImportAs,
-    ImportAll,
     ImportBlock,
+    ImportTerm,
+    ImportAll,
+    ImportSpace,
     ImportMacro,
+    ImportName,
+    ImportAs,
     ImportMacroItem,
     DefineConstraint,
     ConstraintParameters,
@@ -105,7 +107,6 @@ pub enum ValkyrieRule {
     ForTemplateEnd,
     ControlFlow,
     JumpLabel,
-    MainStatement,
     ExpressionRoot,
     MatchExpression,
     SwitchStatement,
@@ -285,11 +286,13 @@ impl YggdrasilRule for ValkyrieRule {
             Self::DefineNamespace => "",
             Self::OP_NAMESPACE => "",
             Self::DefineImport => "",
-            Self::ImportTerm => "",
-            Self::ImportAs => "",
-            Self::ImportAll => "",
             Self::ImportBlock => "",
+            Self::ImportTerm => "",
+            Self::ImportAll => "",
+            Self::ImportSpace => "",
             Self::ImportMacro => "",
+            Self::ImportName => "",
+            Self::ImportAs => "",
             Self::ImportMacroItem => "",
             Self::DefineConstraint => "",
             Self::ConstraintParameters => "",
@@ -353,7 +356,6 @@ impl YggdrasilRule for ValkyrieRule {
             Self::ForTemplateEnd => "",
             Self::ControlFlow => "",
             Self::JumpLabel => "",
-            Self::MainStatement => "",
             Self::ExpressionRoot => "",
             Self::MatchExpression => "",
             Self::SwitchStatement => "",
@@ -529,15 +531,20 @@ pub struct ProgramNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum StatementNode {
+    ControlFlow(ControlFlowNode),
     DefineClass(DefineClassNode),
     DefineEnumerate(DefineEnumerateNode),
     DefineExtends(DefineExtendsNode),
     DefineFunction(DefineFunctionNode),
+    DefineImport(DefineImportNode),
     DefineNamespace(DefineNamespaceNode),
     DefineTrait(DefineTraitNode),
     DefineUnion(DefineUnionNode),
     DefineVariable(DefineVariableNode),
-    MainStatement(MainStatementNode),
+    Eos(EosNode),
+    ExpressionRoot(ExpressionRootNode),
+    ForStatement(ForStatementNode),
+    WhileStatement(WhileStatementNode),
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -567,45 +574,60 @@ pub enum OpNamespaceNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct DefineImportNode {
-    pub import_term: Vec<ImportTermNode>,
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum ImportTermNode {
-    ImportAll(ImportAllNode),
-    ImportAs(ImportAsNode),
-    ImportBlock(ImportBlockNode),
-    ImportMacro(ImportMacroNode),
-    NamepathFree(NamepathFreeNode),
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ImportAsNode {
-    pub namepath_free: NamepathFreeNode,
-    pub alias: IdentifierNode,
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ImportAllNode {
-    pub namepath_free: NamepathFreeNode,
-    pub op_import_all: OpImportAllNode,
+    pub annotation_term: Vec<AnnotationTermNode>,
+    pub eos_free: Option<EosFreeNode>,
+    pub import_block: Option<ImportBlockNode>,
+    pub import_term: Option<ImportTermNode>,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ImportBlockNode {
     pub import_term: Vec<ImportTermNode>,
-    pub namepath_free: NamepathFreeNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum ImportTermNode {
+    EosFree(EosFreeNode),
+    ImportAll(ImportAllNode),
+    ImportMacro(ImportMacroNode),
+    ImportName(ImportNameNode),
+    ImportSpace(ImportSpaceNode),
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ImportAllNode {
+    pub path: Vec<IdentifierNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ImportSpaceNode {
+    pub body: ImportBlockNode,
+    pub path: Vec<IdentifierNode>,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ImportMacroNode {
-    pub import_macro_item: ImportMacroItemNode,
-    pub namepath_free: NamepathFreeNode,
-    pub alias: ImportMacroItemNode,
+    pub alias: ImportAsNode,
+    pub item: ImportMacroItemNode,
+    pub path: Vec<IdentifierNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ImportNameNode {
+    pub alias: ImportAsNode,
+    pub item: IdentifierNode,
+    pub path: Vec<IdentifierNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ImportAsNode {
+    pub alias: Option<IdentifierNode>,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -947,7 +969,7 @@ pub struct ParameterHintNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ContinuationNode {
-    pub main_statement: Vec<MainStatementNode>,
+    pub statement: Vec<StatementNode>,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -1100,16 +1122,6 @@ pub struct JumpLabelNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum MainStatementNode {
-    ControlFlow(ControlFlowNode),
-    DefineImport(DefineImportNode),
-    Eos(EosNode),
-    ExpressionRoot(ExpressionRootNode),
-    ForStatement(ForStatementNode),
-    WhileStatement(WhileStatementNode),
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ExpressionRootNode {
     pub annotation_term: Vec<AnnotationTermNode>,
     pub eos: Option<EosNode>,
@@ -1192,7 +1204,7 @@ pub struct MatchElseNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct MatchStatementNode {
-    pub main_statement: MainStatementNode,
+    pub statement: StatementNode,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]

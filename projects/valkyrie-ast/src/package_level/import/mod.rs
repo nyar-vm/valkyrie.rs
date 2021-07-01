@@ -25,12 +25,18 @@ pub enum ImportTermNode {
     Group(Box<ImportGroupNode>),
 }
 
+impl Default for ImportTermNode {
+    fn default() -> Self {
+        Self::Group(Box::new(ImportGroupNode { path: vec![], group: vec![] }))
+    }
+}
+
 /// `path { group }`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ImportGroupNode {
     /// The path of the import
-    pub path: NamePathNode,
+    pub path: Vec<IdentifierNode>,
     /// The group of the import
     pub group: Vec<ImportTermNode>,
 }

@@ -29,19 +29,27 @@ impl YggdrasilNode for StatementNode {
 
     fn get_range(&self) -> Range<usize> {
         match self {
+            Self::ControlFlow(s) => s.get_range(),
             Self::DefineClass(s) => s.get_range(),
             Self::DefineEnumerate(s) => s.get_range(),
             Self::DefineExtends(s) => s.get_range(),
             Self::DefineFunction(s) => s.get_range(),
+            Self::DefineImport(s) => s.get_range(),
             Self::DefineNamespace(s) => s.get_range(),
             Self::DefineTrait(s) => s.get_range(),
             Self::DefineUnion(s) => s.get_range(),
             Self::DefineVariable(s) => s.get_range(),
-            Self::MainStatement(s) => s.get_range(),
+            Self::Eos(s) => s.get_range(),
+            Self::ExpressionRoot(s) => s.get_range(),
+            Self::ForStatement(s) => s.get_range(),
+            Self::WhileStatement(s) => s.get_range(),
         }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
+        if let Ok(s) = pair.take_tagged_one::<ControlFlowNode>(Cow::Borrowed("control_flow")) {
+            return Ok(Self::ControlFlow(s));
+        }
         if let Ok(s) = pair.take_tagged_one::<DefineClassNode>(Cow::Borrowed("define_class")) {
             return Ok(Self::DefineClass(s));
         }
@@ -53,6 +61,9 @@ impl YggdrasilNode for StatementNode {
         }
         if let Ok(s) = pair.take_tagged_one::<DefineFunctionNode>(Cow::Borrowed("define_function")) {
             return Ok(Self::DefineFunction(s));
+        }
+        if let Ok(s) = pair.take_tagged_one::<DefineImportNode>(Cow::Borrowed("define_import")) {
+            return Ok(Self::DefineImport(s));
         }
         if let Ok(s) = pair.take_tagged_one::<DefineNamespaceNode>(Cow::Borrowed("define_namespace")) {
             return Ok(Self::DefineNamespace(s));
@@ -66,8 +77,17 @@ impl YggdrasilNode for StatementNode {
         if let Ok(s) = pair.take_tagged_one::<DefineVariableNode>(Cow::Borrowed("define_variable")) {
             return Ok(Self::DefineVariable(s));
         }
-        if let Ok(s) = pair.take_tagged_one::<MainStatementNode>(Cow::Borrowed("main_statement")) {
-            return Ok(Self::MainStatement(s));
+        if let Ok(s) = pair.take_tagged_one::<EosNode>(Cow::Borrowed("eos")) {
+            return Ok(Self::Eos(s));
+        }
+        if let Ok(s) = pair.take_tagged_one::<ExpressionRootNode>(Cow::Borrowed("expression_root")) {
+            return Ok(Self::ExpressionRoot(s));
+        }
+        if let Ok(s) = pair.take_tagged_one::<ForStatementNode>(Cow::Borrowed("for_statement")) {
+            return Ok(Self::ForStatement(s));
+        }
+        if let Ok(s) = pair.take_tagged_one::<WhileStatementNode>(Cow::Borrowed("while_statement")) {
+            return Ok(Self::WhileStatement(s));
         }
         Err(YggdrasilError::invalid_node(ValkyrieRule::Statement, _span))
     }
@@ -196,9 +216,12 @@ impl YggdrasilNode for DefineImportNode {
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
         Ok(Self {
-            import_term: pair
-                .take_tagged_items::<ImportTermNode>(Cow::Borrowed("import_term"))
+            annotation_term: pair
+                .take_tagged_items::<AnnotationTermNode>(Cow::Borrowed("annotation_term"))
                 .collect::<Result<Vec<_>, _>>()?,
+            eos_free: pair.take_tagged_option::<EosFreeNode>(Cow::Borrowed("eos_free")),
+            import_block: pair.take_tagged_option::<ImportBlockNode>(Cow::Borrowed("import_block")),
+            import_term: pair.take_tagged_option::<ImportTermNode>(Cow::Borrowed("import_term")),
             span: Range { start: _span.start() as u32, end: _span.end() as u32 },
         })
     }
@@ -209,95 +232,6 @@ impl FromStr for DefineImportNode {
 
     fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
         Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::DefineImport)?)
-    }
-}
-#[automatically_derived]
-impl YggdrasilNode for ImportTermNode {
-    type Rule = ValkyrieRule;
-
-    fn get_range(&self) -> Range<usize> {
-        match self {
-            Self::ImportAll(s) => s.get_range(),
-            Self::ImportAs(s) => s.get_range(),
-            Self::ImportBlock(s) => s.get_range(),
-            Self::ImportMacro(s) => s.get_range(),
-            Self::NamepathFree(s) => s.get_range(),
-        }
-    }
-    fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
-        let _span = pair.get_span();
-        if let Ok(s) = pair.take_tagged_one::<ImportAllNode>(Cow::Borrowed("import_all")) {
-            return Ok(Self::ImportAll(s));
-        }
-        if let Ok(s) = pair.take_tagged_one::<ImportAsNode>(Cow::Borrowed("import_as")) {
-            return Ok(Self::ImportAs(s));
-        }
-        if let Ok(s) = pair.take_tagged_one::<ImportBlockNode>(Cow::Borrowed("import_block")) {
-            return Ok(Self::ImportBlock(s));
-        }
-        if let Ok(s) = pair.take_tagged_one::<ImportMacroNode>(Cow::Borrowed("import_macro")) {
-            return Ok(Self::ImportMacro(s));
-        }
-        if let Ok(s) = pair.take_tagged_one::<NamepathFreeNode>(Cow::Borrowed("namepath_free")) {
-            return Ok(Self::NamepathFree(s));
-        }
-        Err(YggdrasilError::invalid_node(ValkyrieRule::ImportTerm, _span))
-    }
-}
-#[automatically_derived]
-impl FromStr for ImportTermNode {
-    type Err = YggdrasilError<ValkyrieRule>;
-
-    fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
-        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::ImportTerm)?)
-    }
-}
-#[automatically_derived]
-impl YggdrasilNode for ImportAsNode {
-    type Rule = ValkyrieRule;
-
-    fn get_range(&self) -> Range<usize> {
-        Range { start: self.span.start as usize, end: self.span.end as usize }
-    }
-    fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
-        let _span = pair.get_span();
-        Ok(Self {
-            namepath_free: pair.take_tagged_one::<NamepathFreeNode>(Cow::Borrowed("namepath_free"))?,
-            alias: pair.take_tagged_one::<IdentifierNode>(Cow::Borrowed("alias"))?,
-            span: Range { start: _span.start() as u32, end: _span.end() as u32 },
-        })
-    }
-}
-#[automatically_derived]
-impl FromStr for ImportAsNode {
-    type Err = YggdrasilError<ValkyrieRule>;
-
-    fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
-        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::ImportAs)?)
-    }
-}
-#[automatically_derived]
-impl YggdrasilNode for ImportAllNode {
-    type Rule = ValkyrieRule;
-
-    fn get_range(&self) -> Range<usize> {
-        Range { start: self.span.start as usize, end: self.span.end as usize }
-    }
-    fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
-        let _span = pair.get_span();
-        Ok(Self {
-            namepath_free: pair.take_tagged_one::<NamepathFreeNode>(Cow::Borrowed("namepath_free"))?,
-            op_import_all: pair.take_tagged_one::<OpImportAllNode>(Cow::Borrowed("op_import_all"))?,
-            span: Range { start: _span.start() as u32, end: _span.end() as u32 },
-        })
-    }
-}
-#[automatically_derived]
-impl FromStr for ImportAllNode {
-    type Err = YggdrasilError<ValkyrieRule>;
-
-    fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
-        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::ImportAll)?)
     }
 }
 #[automatically_derived]
@@ -313,7 +247,6 @@ impl YggdrasilNode for ImportBlockNode {
             import_term: pair
                 .take_tagged_items::<ImportTermNode>(Cow::Borrowed("import_term"))
                 .collect::<Result<Vec<_>, _>>()?,
-            namepath_free: pair.take_tagged_one::<NamepathFreeNode>(Cow::Borrowed("namepath_free"))?,
             span: Range { start: _span.start() as u32, end: _span.end() as u32 },
         })
     }
@@ -327,6 +260,94 @@ impl FromStr for ImportBlockNode {
     }
 }
 #[automatically_derived]
+impl YggdrasilNode for ImportTermNode {
+    type Rule = ValkyrieRule;
+
+    fn get_range(&self) -> Range<usize> {
+        match self {
+            Self::EosFree(s) => s.get_range(),
+            Self::ImportAll(s) => s.get_range(),
+            Self::ImportMacro(s) => s.get_range(),
+            Self::ImportName(s) => s.get_range(),
+            Self::ImportSpace(s) => s.get_range(),
+        }
+    }
+    fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
+        let _span = pair.get_span();
+        if let Ok(s) = pair.take_tagged_one::<EosFreeNode>(Cow::Borrowed("eos_free")) {
+            return Ok(Self::EosFree(s));
+        }
+        if let Ok(s) = pair.take_tagged_one::<ImportAllNode>(Cow::Borrowed("import_all")) {
+            return Ok(Self::ImportAll(s));
+        }
+        if let Ok(s) = pair.take_tagged_one::<ImportMacroNode>(Cow::Borrowed("import_macro")) {
+            return Ok(Self::ImportMacro(s));
+        }
+        if let Ok(s) = pair.take_tagged_one::<ImportNameNode>(Cow::Borrowed("import_name")) {
+            return Ok(Self::ImportName(s));
+        }
+        if let Ok(s) = pair.take_tagged_one::<ImportSpaceNode>(Cow::Borrowed("import_space")) {
+            return Ok(Self::ImportSpace(s));
+        }
+        Err(YggdrasilError::invalid_node(ValkyrieRule::ImportTerm, _span))
+    }
+}
+#[automatically_derived]
+impl FromStr for ImportTermNode {
+    type Err = YggdrasilError<ValkyrieRule>;
+
+    fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::ImportTerm)?)
+    }
+}
+#[automatically_derived]
+impl YggdrasilNode for ImportAllNode {
+    type Rule = ValkyrieRule;
+
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
+    }
+    fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
+        let _span = pair.get_span();
+        Ok(Self {
+            path: pair.take_tagged_items::<IdentifierNode>(Cow::Borrowed("path")).collect::<Result<Vec<_>, _>>()?,
+            span: Range { start: _span.start() as u32, end: _span.end() as u32 },
+        })
+    }
+}
+#[automatically_derived]
+impl FromStr for ImportAllNode {
+    type Err = YggdrasilError<ValkyrieRule>;
+
+    fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::ImportAll)?)
+    }
+}
+#[automatically_derived]
+impl YggdrasilNode for ImportSpaceNode {
+    type Rule = ValkyrieRule;
+
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
+    }
+    fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
+        let _span = pair.get_span();
+        Ok(Self {
+            body: pair.take_tagged_one::<ImportBlockNode>(Cow::Borrowed("body"))?,
+            path: pair.take_tagged_items::<IdentifierNode>(Cow::Borrowed("path")).collect::<Result<Vec<_>, _>>()?,
+            span: Range { start: _span.start() as u32, end: _span.end() as u32 },
+        })
+    }
+}
+#[automatically_derived]
+impl FromStr for ImportSpaceNode {
+    type Err = YggdrasilError<ValkyrieRule>;
+
+    fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::ImportSpace)?)
+    }
+}
+#[automatically_derived]
 impl YggdrasilNode for ImportMacroNode {
     type Rule = ValkyrieRule;
 
@@ -336,9 +357,9 @@ impl YggdrasilNode for ImportMacroNode {
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
         Ok(Self {
-            import_macro_item: pair.take_tagged_one::<ImportMacroItemNode>(Cow::Borrowed("import_macro_item"))?,
-            namepath_free: pair.take_tagged_one::<NamepathFreeNode>(Cow::Borrowed("namepath_free"))?,
-            alias: pair.take_tagged_one::<ImportMacroItemNode>(Cow::Borrowed("alias"))?,
+            alias: pair.take_tagged_one::<ImportAsNode>(Cow::Borrowed("alias"))?,
+            item: pair.take_tagged_one::<ImportMacroItemNode>(Cow::Borrowed("item"))?,
+            path: pair.take_tagged_items::<IdentifierNode>(Cow::Borrowed("path")).collect::<Result<Vec<_>, _>>()?,
             span: Range { start: _span.start() as u32, end: _span.end() as u32 },
         })
     }
@@ -349,6 +370,54 @@ impl FromStr for ImportMacroNode {
 
     fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
         Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::ImportMacro)?)
+    }
+}
+#[automatically_derived]
+impl YggdrasilNode for ImportNameNode {
+    type Rule = ValkyrieRule;
+
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
+    }
+    fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
+        let _span = pair.get_span();
+        Ok(Self {
+            alias: pair.take_tagged_one::<ImportAsNode>(Cow::Borrowed("alias"))?,
+            item: pair.take_tagged_one::<IdentifierNode>(Cow::Borrowed("item"))?,
+            path: pair.take_tagged_items::<IdentifierNode>(Cow::Borrowed("path")).collect::<Result<Vec<_>, _>>()?,
+            span: Range { start: _span.start() as u32, end: _span.end() as u32 },
+        })
+    }
+}
+#[automatically_derived]
+impl FromStr for ImportNameNode {
+    type Err = YggdrasilError<ValkyrieRule>;
+
+    fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::ImportName)?)
+    }
+}
+#[automatically_derived]
+impl YggdrasilNode for ImportAsNode {
+    type Rule = ValkyrieRule;
+
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
+    }
+    fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
+        let _span = pair.get_span();
+        Ok(Self {
+            alias: pair.take_tagged_option::<IdentifierNode>(Cow::Borrowed("alias")),
+            span: Range { start: _span.start() as u32, end: _span.end() as u32 },
+        })
+    }
+}
+#[automatically_derived]
+impl FromStr for ImportAsNode {
+    type Err = YggdrasilError<ValkyrieRule>;
+
+    fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::ImportAs)?)
     }
 }
 #[automatically_derived]
@@ -1532,9 +1601,7 @@ impl YggdrasilNode for ContinuationNode {
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
         Ok(Self {
-            main_statement: pair
-                .take_tagged_items::<MainStatementNode>(Cow::Borrowed("main_statement"))
-                .collect::<Result<Vec<_>, _>>()?,
+            statement: pair.take_tagged_items::<StatementNode>(Cow::Borrowed("statement")).collect::<Result<Vec<_>, _>>()?,
             span: Range { start: _span.start() as u32, end: _span.end() as u32 },
         })
     }
@@ -2059,51 +2126,6 @@ impl FromStr for JumpLabelNode {
     }
 }
 #[automatically_derived]
-impl YggdrasilNode for MainStatementNode {
-    type Rule = ValkyrieRule;
-
-    fn get_range(&self) -> Range<usize> {
-        match self {
-            Self::ControlFlow(s) => s.get_range(),
-            Self::DefineImport(s) => s.get_range(),
-            Self::Eos(s) => s.get_range(),
-            Self::ExpressionRoot(s) => s.get_range(),
-            Self::ForStatement(s) => s.get_range(),
-            Self::WhileStatement(s) => s.get_range(),
-        }
-    }
-    fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
-        let _span = pair.get_span();
-        if let Ok(s) = pair.take_tagged_one::<ControlFlowNode>(Cow::Borrowed("control_flow")) {
-            return Ok(Self::ControlFlow(s));
-        }
-        if let Ok(s) = pair.take_tagged_one::<DefineImportNode>(Cow::Borrowed("define_import")) {
-            return Ok(Self::DefineImport(s));
-        }
-        if let Ok(s) = pair.take_tagged_one::<EosNode>(Cow::Borrowed("eos")) {
-            return Ok(Self::Eos(s));
-        }
-        if let Ok(s) = pair.take_tagged_one::<ExpressionRootNode>(Cow::Borrowed("expression_root")) {
-            return Ok(Self::ExpressionRoot(s));
-        }
-        if let Ok(s) = pair.take_tagged_one::<ForStatementNode>(Cow::Borrowed("for_statement")) {
-            return Ok(Self::ForStatement(s));
-        }
-        if let Ok(s) = pair.take_tagged_one::<WhileStatementNode>(Cow::Borrowed("while_statement")) {
-            return Ok(Self::WhileStatement(s));
-        }
-        Err(YggdrasilError::invalid_node(ValkyrieRule::MainStatement, _span))
-    }
-}
-#[automatically_derived]
-impl FromStr for MainStatementNode {
-    type Err = YggdrasilError<ValkyrieRule>;
-
-    fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
-        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::MainStatement)?)
-    }
-}
-#[automatically_derived]
 impl YggdrasilNode for ExpressionRootNode {
     type Rule = ValkyrieRule;
 
@@ -2397,7 +2419,7 @@ impl YggdrasilNode for MatchStatementNode {
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
         Ok(Self {
-            main_statement: pair.take_tagged_one::<MainStatementNode>(Cow::Borrowed("main_statement"))?,
+            statement: pair.take_tagged_one::<StatementNode>(Cow::Borrowed("statement"))?,
             span: Range { start: _span.start() as u32, end: _span.end() as u32 },
         })
     }
