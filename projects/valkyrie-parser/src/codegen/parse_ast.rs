@@ -267,7 +267,6 @@ impl YggdrasilNode for ImportTermNode {
         match self {
             Self::EosFree(s) => s.get_range(),
             Self::ImportAll(s) => s.get_range(),
-            Self::ImportMacro(s) => s.get_range(),
             Self::ImportName(s) => s.get_range(),
             Self::ImportSpace(s) => s.get_range(),
         }
@@ -279,9 +278,6 @@ impl YggdrasilNode for ImportTermNode {
         }
         if let Ok(s) = pair.take_tagged_one::<ImportAllNode>(Cow::Borrowed("import_all")) {
             return Ok(Self::ImportAll(s));
-        }
-        if let Ok(s) = pair.take_tagged_one::<ImportMacroNode>(Cow::Borrowed("import_macro")) {
-            return Ok(Self::ImportMacro(s));
         }
         if let Ok(s) = pair.take_tagged_one::<ImportNameNode>(Cow::Borrowed("import_name")) {
             return Ok(Self::ImportName(s));
@@ -348,31 +344,6 @@ impl FromStr for ImportSpaceNode {
     }
 }
 #[automatically_derived]
-impl YggdrasilNode for ImportMacroNode {
-    type Rule = ValkyrieRule;
-
-    fn get_range(&self) -> Range<usize> {
-        Range { start: self.span.start as usize, end: self.span.end as usize }
-    }
-    fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
-        let _span = pair.get_span();
-        Ok(Self {
-            alias: pair.take_tagged_one::<ImportAsNode>(Cow::Borrowed("alias"))?,
-            item: pair.take_tagged_one::<ImportMacroItemNode>(Cow::Borrowed("item"))?,
-            path: pair.take_tagged_items::<IdentifierNode>(Cow::Borrowed("path")).collect::<Result<Vec<_>, _>>()?,
-            span: Range { start: _span.start() as u32, end: _span.end() as u32 },
-        })
-    }
-}
-#[automatically_derived]
-impl FromStr for ImportMacroNode {
-    type Err = YggdrasilError<ValkyrieRule>;
-
-    fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
-        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::ImportMacro)?)
-    }
-}
-#[automatically_derived]
 impl YggdrasilNode for ImportNameNode {
     type Rule = ValkyrieRule;
 
@@ -383,7 +354,7 @@ impl YggdrasilNode for ImportNameNode {
         let _span = pair.get_span();
         Ok(Self {
             alias: pair.take_tagged_one::<ImportAsNode>(Cow::Borrowed("alias"))?,
-            item: pair.take_tagged_one::<IdentifierNode>(Cow::Borrowed("item"))?,
+            item: pair.take_tagged_one::<ImportNameItemNode>(Cow::Borrowed("item"))?,
             path: pair.take_tagged_items::<IdentifierNode>(Cow::Borrowed("path")).collect::<Result<Vec<_>, _>>()?,
             span: Range { start: _span.start() as u32, end: _span.end() as u32 },
         })
@@ -407,7 +378,7 @@ impl YggdrasilNode for ImportAsNode {
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
         Ok(Self {
-            alias: pair.take_tagged_option::<IdentifierNode>(Cow::Borrowed("alias")),
+            alias: pair.take_tagged_option::<ImportNameItemNode>(Cow::Borrowed("alias")),
             span: Range { start: _span.start() as u32, end: _span.end() as u32 },
         })
     }
@@ -421,12 +392,13 @@ impl FromStr for ImportAsNode {
     }
 }
 #[automatically_derived]
-impl YggdrasilNode for ImportMacroItemNode {
+impl YggdrasilNode for ImportNameItemNode {
     type Rule = ValkyrieRule;
 
     fn get_range(&self) -> Range<usize> {
         match self {
             Self::Capture(s) => s.get_range(),
+            Self::Identifier(s) => s.get_range(),
             Self::Instant(s) => s.get_range(),
         }
     }
@@ -435,18 +407,21 @@ impl YggdrasilNode for ImportMacroItemNode {
         if let Ok(s) = pair.take_tagged_one::<IdentifierNode>(Cow::Borrowed("capture")) {
             return Ok(Self::Capture(s));
         }
+        if let Ok(s) = pair.take_tagged_one::<IdentifierNode>(Cow::Borrowed("identifier")) {
+            return Ok(Self::Identifier(s));
+        }
         if let Ok(s) = pair.take_tagged_one::<IdentifierNode>(Cow::Borrowed("instant")) {
             return Ok(Self::Instant(s));
         }
-        Err(YggdrasilError::invalid_node(ValkyrieRule::ImportMacroItem, _span))
+        Err(YggdrasilError::invalid_node(ValkyrieRule::ImportNameItem, _span))
     }
 }
 #[automatically_derived]
-impl FromStr for ImportMacroItemNode {
+impl FromStr for ImportNameItemNode {
     type Err = YggdrasilError<ValkyrieRule>;
 
     fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
-        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::ImportMacroItem)?)
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::ImportNameItem)?)
     }
 }
 #[automatically_derived]

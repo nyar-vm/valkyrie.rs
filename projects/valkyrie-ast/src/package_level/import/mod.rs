@@ -1,6 +1,7 @@
 use super::*;
 
 mod display;
+mod iters;
 
 /// `import package::module::path`
 /// `import "external"`
@@ -16,23 +17,25 @@ pub struct ImportStatement {
 }
 
 /// A valid import term of the import statement
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Clone, Debug, PartialEq, Eq, Hash, From)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum ImportTermNode {
-    /// `a::b::c as alias`
-    Alias(Box<ImportAliasNode>),
-    /// `a::b::c { d::e::f }`
-    Group(Box<ImportGroupNode>),
+    /// `a.b.c.{ ... }`
+    Group(ImportGroupNode),
+    /// `a.b.c.*`
+    All(ImportAllNode),
+    /// `a.b.c as alias`
+    Alias(ImportAliasNode),
 }
 
 impl Default for ImportTermNode {
     fn default() -> Self {
-        Self::Group(Box::new(ImportGroupNode { path: vec![], group: vec![] }))
+        Self::Group(Default::default())
     }
 }
 
 /// `path { group }`
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ImportGroupNode {
     /// The path of the import
@@ -41,28 +44,32 @@ pub struct ImportGroupNode {
     pub group: Vec<ImportTermNode>,
 }
 
+/// `import package∷module.*`
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ImportAllNode {
+    /// The path of the import
+    pub path: Vec<IdentifierNode>,
+}
+
 /// `path as alias`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ImportAliasNode {
     /// The path of the import
-    pub path: NamePathNode,
+    pub path: Vec<IdentifierNode>,
+    /// The item of the import
+    pub item: ImportAliasItem,
     /// The alias of the import
-    pub alias: IdentifierNode,
+    pub alias: Option<ImportAliasItem>,
 }
 
-impl ImportGroupNode {
-    /// Create a new import group node
-    pub fn new(path: NamePathNode, group: Vec<ImportTermNode>) -> Self {
-        Self { path, group }
-    }
-}
-
-impl ImportAliasNode {
-    /// Create a new import alias node
-    pub fn new(path: NamePathNode, alias: IdentifierNode) -> Self {
-        Self { alias, path }
-    }
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum ImportAliasItem {
+    Attribute(IdentifierNode),
+    Procedural(IdentifierNode),
+    Normal(IdentifierNode),
 }
 
 /// A resolved import item
@@ -176,14 +183,15 @@ impl ImportTermNode {
     fn resolve(&self, parent: &ImportResolvedItem, all: &mut Vec<ImportResolvedItem>) {
         match self {
             ImportTermNode::Alias(alias) => {
-                all.push(parent.join_path(&alias.path.names).join_alias(&alias.alias));
+                // all.push(parent.join_path(&alias.path.names).join_alias(&alias.alias));
             }
             ImportTermNode::Group(group) => {
-                let root = parent.join_path(&group.path.names);
-                for item in &group.group {
-                    item.resolve(&root, all);
-                }
+                // let root = parent.join_path(&group.path.names);
+                // for item in &group.group {
+                //     item.resolve(&root, all);
+                // }
             }
+            ImportTermNode::All(all) => {}
         }
     }
 }

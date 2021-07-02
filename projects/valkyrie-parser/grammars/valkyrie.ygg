@@ -87,7 +87,6 @@ class ImportBlock  {
 union ImportTerm {
     | ImportAll
     | ImportSpace
-    | ImportMacro
     | ImportName
     | EOS_FREE
 }
@@ -100,20 +99,18 @@ class ImportSpace ^ {
     path:Identifier (NS_CONCAT path:Identifier)+ NS_CONCAT body:ImportBlock
 }
 /// import package::module::@macro as @macro
-class ImportMacro ^ {
-    (path:Identifier NS_CONCAT)* item:ImportMacroItem alias:ImportAs
-}
 // import package::module::macro as @macro
 class ImportName ^ {
-    (path:Identifier NS_CONCAT)* item:Identifier alias:ImportAs
+    (path:Identifier NS_CONCAT)* item:ImportNameItem alias:ImportAs
 }
 // import package∷module∷item as alias
 class ImportAs ^ {
-    (KW_AS alias:Identifier)?
+    (KW_AS alias:ImportNameItem)?
 }
-atomic union ImportMacroItem {
+atomic union ImportNameItem {
     | '#' Identifier #Capture
     | '@' Identifier #Instant
+    | Identifier #Identifier
 }
 // === template === ----------------------------------------------------------------------------------------------------
 

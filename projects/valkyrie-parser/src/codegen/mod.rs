@@ -41,10 +41,9 @@ pub enum ValkyrieRule {
     ImportTerm,
     ImportAll,
     ImportSpace,
-    ImportMacro,
     ImportName,
     ImportAs,
-    ImportMacroItem,
+    ImportNameItem,
     DefineConstraint,
     ConstraintParameters,
     ConstraintBlock,
@@ -290,10 +289,9 @@ impl YggdrasilRule for ValkyrieRule {
             Self::ImportTerm => "",
             Self::ImportAll => "",
             Self::ImportSpace => "",
-            Self::ImportMacro => "",
             Self::ImportName => "",
             Self::ImportAs => "",
-            Self::ImportMacroItem => "",
+            Self::ImportNameItem => "",
             Self::DefineConstraint => "",
             Self::ConstraintParameters => "",
             Self::ConstraintBlock => "",
@@ -591,7 +589,6 @@ pub struct ImportBlockNode {
 pub enum ImportTermNode {
     EosFree(EosFreeNode),
     ImportAll(ImportAllNode),
-    ImportMacro(ImportMacroNode),
     ImportName(ImportNameNode),
     ImportSpace(ImportSpaceNode),
 }
@@ -610,30 +607,23 @@ pub struct ImportSpaceNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ImportMacroNode {
-    pub alias: ImportAsNode,
-    pub item: ImportMacroItemNode,
-    pub path: Vec<IdentifierNode>,
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ImportNameNode {
     pub alias: ImportAsNode,
-    pub item: IdentifierNode,
+    pub item: ImportNameItemNode,
     pub path: Vec<IdentifierNode>,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ImportAsNode {
-    pub alias: Option<IdentifierNode>,
+    pub alias: Option<ImportNameItemNode>,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum ImportMacroItemNode {
+pub enum ImportNameItemNode {
     Capture(IdentifierNode),
+    Identifier(IdentifierNode),
     Instant(IdentifierNode),
 }
 #[derive(Clone, Debug, Hash)]

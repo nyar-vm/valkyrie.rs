@@ -54,14 +54,3 @@ impl PrettyPrint for ImportAliasNode {
         items.into()
     }
 }
-impl From<ImportAliasNode> for ImportTermNode {
-    fn from(value: ImportAliasNode) -> Self {
-        Self::Alias(Box::new(value))
-    }
-}
-
-impl From<ImportGroupNode> for ImportTermNode {
-    fn from(value: ImportGroupNode) -> Self {
-        Self::Group(Box::new(value))
-    }
-}

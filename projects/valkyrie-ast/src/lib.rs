@@ -53,7 +53,10 @@ pub use crate::{
         flags::{EncodeDeclaration, FlagDeclaration, FlagKind, FlagTerm},
         function::{FunctionDeclaration, FunctionKind, FunctionReturnNode, StatementBlock},
         guarantee::{EffectTypeNode, GuaranteeNode},
-        import::{ImportAliasNode, ImportGroupNode, ImportResolvedItem, ImportState, ImportStatement, ImportTermNode},
+        import::{
+            ImportAliasItem, ImportAliasNode, ImportAllNode, ImportGroupNode, ImportResolvedItem, ImportState, ImportStatement,
+            ImportTermNode,
+        },
         labeled::{GotoStatement, LabelStatement},
         let_bind::LetBindNode,
         namespace::{NamespaceDeclaration, NamespaceKind},
