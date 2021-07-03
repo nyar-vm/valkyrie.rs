@@ -1,160 +1,84 @@
 NamespaceDeclaration {
-    kind: Standalone,
-    path: test∷import,
+    kind: Test,
+    path: tests∷import,
 }
 ImportStatement {
     annotation: [],
     term: Group(
         ImportGroupNode {
-            path: NamePathNode {
-                names: [],
-            },
+            path: [],
             group: [],
         },
     ),
-    span: 24..30,
+    span: 26..32,
+}
+ImportStatement {
+    annotation: [],
+    term: Alias(
+        ImportAliasNode {
+            path: [],
+            item: Normal(
+                Identifier("package", 39..46),
+            ),
+            alias: None,
+        },
+    ),
+    span: 33..47,
+}
+ImportStatement {
+    annotation: [],
+    term: All(
+        ImportAllNode {
+            path: [
+                Identifier("package", 54..61),
+                Identifier("module", 62..70),
+                Identifier("name", 71..75),
+            ],
+        },
+    ),
+    span: 48..79,
+}
+ImportStatement {
+    annotation: [],
+    term: Alias(
+        ImportAliasNode {
+            path: [],
+            item: Normal(
+                Identifier("numpy", 87..92),
+            ),
+            alias: Some(
+                Normal(
+                    Identifier("npy", 96..99),
+                ),
+            ),
+        },
+    ),
+    span: 81..100,
+}
+ImportStatement {
+    annotation: [],
+    term: Alias(
+        ImportAliasNode {
+            path: [],
+            item: Normal(
+                Identifier("tensor-flow", 106..119),
+            ),
+            alias: Some(
+                Normal(
+                    Identifier("tfboys", 123..129),
+                ),
+            ),
+        },
+    ),
+    span: 100..131,
 }
 ImportStatement {
     annotation: [],
     term: Group(
         ImportGroupNode {
-            path: NamePathNode {
-                names: [],
-            },
+            path: [],
             group: [],
         },
     ),
-    span: 31..41,
-}
-ImportStatement {
-    annotation: [],
-    term: Group(
-        ImportGroupNode {
-            path: NamePathNode {
-                names: [],
-            },
-            group: [],
-        },
-    ),
-    span: 43..55,
-}
-ImportStatement {
-    annotation: [],
-    term: Group(
-        ImportGroupNode {
-            path: NamePathNode {
-                names: [],
-            },
-            group: [],
-        },
-    ),
-    span: 55..73,
-}
-ImportStatement {
-    annotation: [],
-    term: Group(
-        ImportGroupNode {
-            path: NamePathNode {
-                names: [],
-            },
-            group: [],
-        },
-    ),
-    span: 73..102,
-}
-ImportStatement {
-    annotation: [],
-    term: Group(
-        ImportGroupNode {
-            path: NamePathNode {
-                names: [],
-            },
-            group: [],
-        },
-    ),
-    span: 102..115,
-}
-ImportStatement {
-    annotation: [],
-    term: Group(
-        ImportGroupNode {
-            path: NamePathNode {
-                names: [],
-            },
-            group: [],
-        },
-    ),
-    span: 115..129,
-}
-ImportStatement {
-    annotation: [],
-    term: Group(
-        ImportGroupNode {
-            path: NamePathNode {
-                names: [],
-            },
-            group: [],
-        },
-    ),
-    span: 129..145,
-}
-ImportStatement {
-    annotation: [],
-    term: Group(
-        ImportGroupNode {
-            path: NamePathNode {
-                names: [],
-            },
-            group: [],
-        },
-    ),
-    span: 145..161,
-}
-ImportStatement {
-    annotation: [],
-    term: Group(
-        ImportGroupNode {
-            path: NamePathNode {
-                names: [],
-            },
-            group: [],
-        },
-    ),
-    span: 161..355,
-}
-ImportStatement {
-    annotation: [],
-    term: Group(
-        ImportGroupNode {
-            path: NamePathNode {
-                names: [],
-            },
-            group: [],
-        },
-    ),
-    span: 355..376,
-}
-ImportStatement {
-    annotation: [],
-    term: Group(
-        ImportGroupNode {
-            path: NamePathNode {
-                names: [],
-            },
-            group: [],
-        },
-    ),
-    span: 377..406,
-}
-ImportStatement {
-    annotation: [],
-    term: Group(
-        ImportGroupNode {
-            path: NamePathNode {
-                names: [],
-            },
-            group: [],
-        },
-    ),
-    span: 407..461,
+    span: 131..141,
 }

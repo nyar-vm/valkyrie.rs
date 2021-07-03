@@ -35,7 +35,7 @@ impl crate::ClassBlockNode {
 impl crate::ClassTermNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<Option<ClassTerm>> {
         match self {
-            Self::ProceduralCall(v) => Ok(Some(ClassTerm::Macro(v.build(ctx)?))),
+            Self::ProceduralCall(v) => Ok(Some(ClassTerm::Macro(v.build(ctx)))),
             Self::DefineDomain(v) => Ok(Some(ClassTerm::Domain(v.build(ctx)?))),
             Self::DefineField(v) => Ok(Some(ClassTerm::Field(v.build(ctx)?))),
             Self::DefineMethod(v) => Ok(Some(ClassTerm::Method(v.build(ctx)?))),

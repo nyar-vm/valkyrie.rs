@@ -34,7 +34,7 @@ impl PrettyPrint for AttributeKind {
     }
 }
 #[cfg(feature = "pretty-print")]
-impl PrettyPrint for AttributeNode {
+impl PrettyPrint for AttributeTerm {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let mut terms = PrettySequence::new(2);
         terms += self.kind.pretty(theme);

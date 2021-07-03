@@ -23,7 +23,7 @@ impl crate::LeadingNode {
             Self::Number(v) => v.build(ctx)?.into(),
             Self::Slot(v) => v.build(ctx)?.into(),
             Self::Namepath(v) => v.build(ctx).into(),
-            Self::ProceduralCall(v) => v.build(ctx)?.into(),
+            Self::ProceduralCall(v) => v.build(ctx).into(),
             Self::RangeLiteral(v) => v.build(ctx)?.into(),
             Self::TupleLiteralStrict(v) => v.build(ctx)?.into(),
             Self::TextLiteral(v) => v.build(ctx).into(),

@@ -148,8 +148,10 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::AnnotationTermMix => parse_annotation_term_mix(state),
         ValkyrieRule::AttributeList => parse_attribute_list(state),
         ValkyrieRule::AttributeCall => parse_attribute_call(state),
-        ValkyrieRule::ProceduralCall => parse_procedural_call(state),
         ValkyrieRule::AttributeItem => parse_attribute_item(state),
+        ValkyrieRule::AttributeName => parse_attribute_name(state),
+        ValkyrieRule::ProceduralCall => parse_procedural_call(state),
+        ValkyrieRule::ProceduralName => parse_procedural_name(state),
         ValkyrieRule::TextLiteral => parse_text_literal(state),
         ValkyrieRule::TextRaw => parse_text_raw(state),
         ValkyrieRule::Text_L => parse_text_l(state),
@@ -462,7 +464,7 @@ fn parse_import_space(state: Input) -> Output {
                                 })
                             })
                             .and_then(|s| builtin_ignore(s))
-                            .and_then(|s| parse_ns_concat(s))
+                            .and_then(|s| s.optional(|s| parse_ns_concat(s)))
                             .and_then(|s| builtin_ignore(s))
                     })
                 })
@@ -524,22 +526,8 @@ fn parse_import_as(state: Input) -> Output {
 fn parse_import_name_item(state: Input) -> Output {
     state.rule(ValkyrieRule::ImportNameItem, |s| {
         Err(s)
-            .or_else(|s| {
-                s.sequence(|s| {
-                    Ok(s)
-                        .and_then(|s| builtin_text(s, "#", false))
-                        .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
-                })
-                .and_then(|s| s.tag_node("capture"))
-            })
-            .or_else(|s| {
-                s.sequence(|s| {
-                    Ok(s)
-                        .and_then(|s| builtin_text(s, "@", false))
-                        .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
-                })
-                .and_then(|s| s.tag_node("instant"))
-            })
+            .or_else(|s| parse_procedural_name(s).and_then(|s| s.tag_node("procedural_name")))
+            .or_else(|s| parse_attribute_name(s).and_then(|s| s.tag_node("attribute_name")))
             .or_else(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
     })
 }
@@ -3179,25 +3167,64 @@ fn parse_attribute_call(state: Input) -> Output {
     })
 }
 #[inline]
-fn parse_procedural_call(state: Input) -> Output {
-    state.rule(ValkyrieRule::ProceduralCall, |s| {
-        s.sequence(|s| {
-            Ok(s)
-                .and_then(|s| builtin_text(s, "@", false))
-                .and_then(|s| parse_attribute_item(s).and_then(|s| s.tag_node("attribute_item")))
-        })
-    })
-}
-#[inline]
 fn parse_attribute_item(state: Input) -> Output {
     state.rule(ValkyrieRule::AttributeItem, |s| {
         s.sequence(|s| {
             Ok(s)
                 .and_then(|s| parse_namepath(s).and_then(|s| s.tag_node("namepath")))
                 .and_then(|s| builtin_ignore(s))
+                .and_then(|s| {
+                    s.repeat(0..4294967295, |s| {
+                        s.sequence(|s| {
+                            Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| {
+                                s.sequence(|s| {
+                                    Ok(s)
+                                        .and_then(|s| parse_dot(s))
+                                        .and_then(|s| builtin_ignore(s))
+                                        .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
+                                })
+                            })
+                        })
+                    })
+                })
+                .and_then(|s| builtin_ignore(s))
                 .and_then(|s| s.optional(|s| parse_tuple_literal(s).and_then(|s| s.tag_node("tuple_literal"))))
                 .and_then(|s| builtin_ignore(s))
-                .and_then(|s| s.optional(|s| parse_class_block(s).and_then(|s| s.tag_node("class_block"))))
+                .and_then(|s| s.optional(|s| parse_continuation(s).and_then(|s| s.tag_node("continuation"))))
+        })
+    })
+}
+#[inline]
+fn parse_attribute_name(state: Input) -> Output {
+    state.rule(ValkyrieRule::AttributeName, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| builtin_text(s, "#", false))
+                .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
+        })
+    })
+}
+#[inline]
+fn parse_procedural_call(state: Input) -> Output {
+    state.rule(ValkyrieRule::ProceduralCall, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| builtin_text(s, "@", false))
+                .and_then(|s| parse_namepath(s).and_then(|s| s.tag_node("namepath")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| s.optional(|s| parse_tuple_literal(s).and_then(|s| s.tag_node("tuple_literal"))))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| s.optional(|s| parse_continuation(s).and_then(|s| s.tag_node("continuation"))))
+        })
+    })
+}
+#[inline]
+fn parse_procedural_name(state: Input) -> Output {
+    state.rule(ValkyrieRule::ProceduralName, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| builtin_text(s, "@", false))
+                .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
         })
     })
 }

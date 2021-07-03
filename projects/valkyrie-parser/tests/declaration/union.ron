@@ -15,6 +15,7 @@ Union {
                 variant: [],
                 arguments: [],
                 domain: None,
+                span: 101..105,
             },
         ],
     },
@@ -35,6 +36,7 @@ Union {
                 variant: [],
                 arguments: [],
                 domain: None,
+                span: 151..161,
             },
         ],
     },
@@ -70,6 +72,7 @@ Union {
                 variant: [],
                 arguments: [],
                 domain: None,
+                span: 276..287,
             },
         ],
     },
@@ -466,9 +469,7 @@ ExtendsStatement {
                 ProceduralNode {
                     kind: Normal,
                     path: NamePathNode {
-                        names: [
-                            Identifier("matches", 1594..1601),
-                        ],
+                        names: [],
                     },
                     arguments: [],
                     domain: None,
@@ -489,9 +490,7 @@ ExtendsStatement {
                 ProceduralNode {
                     kind: Normal,
                     path: NamePathNode {
-                        names: [
-                            Identifier("matches", 1662..1669),
-                        ],
+                        names: [],
                     },
                     arguments: [],
                     domain: None,

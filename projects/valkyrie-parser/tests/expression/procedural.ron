@@ -1,9 +1,7 @@
 ProceduralNode {
     kind: Normal,
     path: NamePathNode {
-        names: [
-            Identifier("call", 1..5),
-        ],
+        names: [],
     },
     arguments: [],
     domain: None,
@@ -12,9 +10,7 @@ ProceduralNode {
 ProceduralNode {
     kind: Normal,
     path: NamePathNode {
-        names: [
-            Identifier("call", 7..11),
-        ],
+        names: [],
     },
     arguments: [],
     domain: None,
@@ -23,9 +19,7 @@ ProceduralNode {
 ProceduralNode {
     kind: Normal,
     path: NamePathNode {
-        names: [
-            Identifier("call", 15..19),
-        ],
+        names: [],
     },
     arguments: [],
     domain: None,
@@ -34,110 +28,45 @@ ProceduralNode {
 ProceduralNode {
     kind: Normal,
     path: NamePathNode {
-        names: [
-            Identifier("call", 26..30),
-        ],
+        names: [],
     },
     arguments: [],
-    domain: Some(
-        DomainDeclaration {
-            annotations: Empty,
-            body: [
-                Field {
-                    name: field,
-                },
-            ],
-            span: 36..45,
-        },
-    ),
+    domain: None,
     span: 25..45,
 }
 ProceduralNode {
     kind: Normal,
     path: NamePathNode {
-        names: [
-            Identifier("call", 47..51),
-        ],
+        names: [],
     },
     arguments: [],
-    domain: Some(
-        DomainDeclaration {
-            annotations: Empty,
-            body: [
-                Field {
-                    name: field,
-                },
-            ],
-            span: 52..61,
-        },
-    ),
+    domain: None,
     span: 46..61,
 }
 ProceduralNode {
     kind: Normal,
     path: NamePathNode {
-        names: [
-            Identifier("call", 63..67),
-        ],
+        names: [],
     },
     arguments: [],
-    domain: Some(
-        DomainDeclaration {
-            annotations: Empty,
-            body: [
-                Method {
-                    name: method,
-                    span: 70..78,
-                },
-            ],
-            span: 68..79,
-        },
-    ),
+    domain: None,
     span: 62..79,
 }
 ProceduralNode {
     kind: Normal,
     path: NamePathNode {
-        names: [
-            Identifier("call", 81..85),
-        ],
+        names: [],
     },
     arguments: [],
-    domain: Some(
-        DomainDeclaration {
-            annotations: Empty,
-            body: [
-                Method {
-                    name: method,
-                    body: [],
-                    span: 88..99,
-                },
-            ],
-            span: 86..101,
-        },
-    ),
+    domain: None,
     span: 80..101,
 }
 ProceduralNode {
     kind: Normal,
     path: NamePathNode {
-        names: [
-            Identifier("call", 103..107),
-        ],
+        names: [],
     },
     arguments: [],
-    domain: Some(
-        DomainDeclaration {
-            annotations: Empty,
-            body: [
-                DomainDeclaration {
-                    annotations: Empty,
-                    body: [],
-                    span: 110..119,
-                },
-            ],
-            span: 108..121,
-        },
-    ),
+    domain: None,
     span: 102..121,
 }

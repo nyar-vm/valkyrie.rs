@@ -36,7 +36,7 @@ impl crate::KwUnionNode {
 impl crate::UnionTermNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<Option<UnionTerm>> {
         let value = match self {
-            Self::ProceduralCall(v) => v.build(ctx)?.into(),
+            Self::ProceduralCall(v) => v.build(ctx).into(),
             Self::DefineVariant(v) => v.build(ctx)?.into(),
             Self::DefineMethod(v) => v.build(ctx)?.into(),
             Self::EosFree(_) => return Ok(None),

@@ -35,10 +35,11 @@ impl crate::AttributeItemNode {
             variant: vec![],
             arguments: Default::default(),
             domain: self.domain(ctx),
+            span: self.span.clone(),
         }
     }
-    fn domain(&self, ctx: &mut ProgramState) -> Option<DomainDeclaration> {
-        Some(self.class_block.as_ref()?.build_domain(ctx))
+    fn domain(&self, ctx: &mut ProgramState) -> Option<StatementBlock> {
+        Some(self.continuation.as_ref()?.build(ctx))
     }
 }
 impl crate::AnnotationTermNode {
@@ -55,7 +56,7 @@ impl crate::AnnotationTermMixNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> AttributeList {
         let terms = match self {
             Self::AttributeCall(v) => vec![v.attribute_item.build(ctx)],
-            Self::ProceduralCall(v) => vec![v.attribute_item.build(ctx)],
+            Self::ProceduralCall(v) => vec![v.build(ctx).into()],
             Self::AttributeList(v) => v.attribute_item.iter().map(|v| v.build(ctx)).collect(),
         };
         AttributeList { terms }

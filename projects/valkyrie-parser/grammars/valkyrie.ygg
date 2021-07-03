@@ -50,30 +50,6 @@ union OP_NAMESPACE {
     | '*' #Hide
 }
 // === import === -----------------------------------------------------------------
-//import_term
-//    : import_all
-//    | import_macro
-//    | import_attribute
-//    | import_space
-//    | import_name
-//    | eos_free
-//    ;
-//// using package.module.@macro (as x)?
-//import_macro: (path = identifier import_join)* OP_AT item = identifier import_as?;
-//// using package.module.#Attribute (as x)?
-//import_attribute: (path = identifier import_join)* OP_HASH item = identifier import_as?;
-
-
-//// using package.module.name (as x)?
-//import_name: identifier (import_join identifier)* import_as?;
-//
-//import_block
-//    : PARENTHESES_L import_term* PARENTHESES_R
-//    | BRACKET_L import_term* BRACKET_R
-//    | BRACE_L import_term* BRACE_R
-//    ;
-//import_as:   KW_AS (OP_AT | OP_HASH)? identifier;
-//import_join: OP_PROPORTION | DOT | OP_DIV;
 class DefineImport {
     AnnotationTerm* ^KW_IMPORT (
         | EOS_FREE
@@ -96,7 +72,7 @@ class ImportAll ^ {
 }
 // `import` package.module.name { space }
 class ImportSpace ^ {
-    path:Identifier (NS_CONCAT path:Identifier)+ NS_CONCAT body:ImportBlock
+    path:Identifier (NS_CONCAT path:Identifier)+ NS_CONCAT? body:ImportBlock
 }
 /// import package::module::@macro as @macro
 // import package::module::macro as @macro
@@ -108,9 +84,9 @@ class ImportAs ^ {
     (KW_AS alias:ImportNameItem)?
 }
 atomic union ImportNameItem {
-    | '#' Identifier #Capture
-    | '@' Identifier #Instant
-    | Identifier #Identifier
+    | ProceduralName
+    | AttributeName
+    | Identifier
 }
 // === template === ----------------------------------------------------------------------------------------------------
 
@@ -704,16 +680,23 @@ union AnnotationTermMix {
 class AttributeList {
     '#' '[' (AttributeItem (HIDE ^EOS_FREE ~ AttributeItem)* (HIDE ^EOS_FREE)?)? ']'
 }
+// #call.variant(...) { domain }
 atomic class AttributeCall {
-    // #call(...) { domain } receiver
     '#' AttributeItem
 }
-atomic class ProceduralCall {
-    // @call(...) { domain }
-    '@' AttributeItem
-}
 class AttributeItem {
-    Namepath TupleLiteral? ClassBlock?
+    Namepath (^DOT Identifier)*
+    TupleLiteral? Continuation?
+}
+atomic class AttributeName {
+    '#' Identifier
+}
+// @call(...) { domain }
+atomic class ProceduralCall {
+    '@' Namepath ~ TupleLiteral? ~ Continuation?
+}
+atomic class ProceduralName {
+    '@' Identifier
 }
 // === text === ------------------------------------------------------------------------------------------------------
 atomic class TextLiteral {

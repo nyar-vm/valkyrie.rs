@@ -305,6 +305,7 @@ Flags {
                 variant: [],
                 arguments: [],
                 domain: None,
+                span: 262..273,
             },
         ],
     },

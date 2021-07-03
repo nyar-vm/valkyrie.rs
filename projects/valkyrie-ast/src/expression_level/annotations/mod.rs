@@ -28,9 +28,22 @@ pub struct ProceduralNode {
     /// The arguments of this attribute.
     pub arguments: ArgumentsList,
     /// The capture of this attribute.
-    pub domain: Option<DomainDeclaration>,
+    pub domain: Option<StatementBlock>,
     /// The range of the node
     pub span: Range<u32>,
+}
+
+impl From<ProceduralNode> for AttributeTerm {
+    fn from(node: ProceduralNode) -> Self {
+        AttributeTerm {
+            kind: node.kind,
+            path: node.path,
+            variant: vec![],
+            arguments: node.arguments,
+            domain: node.domain,
+            span: node.span,
+        }
+    }
 }
 
 impl ValkyrieNode for ProceduralNode {
@@ -71,8 +84,10 @@ pub struct AttributeTerm {
     pub variant: Vec<IdentifierNode>,
     /// The arguments of this attribute.
     pub arguments: ArgumentsList,
-    /// The capture of this attribute.
-    pub domain: Option<DomainDeclaration>,
+    /// The dsl part of the attribute
+    pub domain: Option<StatementBlock>,
+    /// The range of the node
+    pub span: Range<u32>,
 }
 
 /// `public static final synchronized class Main {}`

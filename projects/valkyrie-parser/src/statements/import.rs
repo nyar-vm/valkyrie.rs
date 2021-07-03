@@ -1,12 +1,12 @@
 use super::*;
-use crate::ImportBlockNode;
+use crate::{ImportBlockNode, ImportNameItemNode};
 
 impl crate::DefineImportNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<ImportStatement> {
         Ok(ImportStatement { annotation: Default::default(), term: self.term(ctx), span: self.span.clone() })
     }
     fn term(&self, ctx: &mut ProgramState) -> ImportTermNode {
-        if let Some(s) = self.import_term.and_then(|v| v.build(ctx)) {
+        if let Some(s) = self.import_term.as_ref().and_then(|v| v.build(ctx)) {
             return s;
         }
         if let Some(s) = &self.import_block {
@@ -53,11 +53,25 @@ impl crate::ImportSpaceNode {
 
 impl crate::ImportNameNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> ImportAliasNode {
-        ImportGroupNode { path: self.path.iter().map(|v| v.build(ctx)).collect(), group: self.body.build(ctx) }
+        ImportAliasNode {
+            path: self.path.iter().map(|v| v.build(ctx)).collect(),
+            item: self.item.build(ctx),
+            alias: self.alias.build(ctx),
+        }
     }
 }
 impl crate::ImportAsNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Option<ImportAliasItem> {
-        Some(self.alias?.build(ctx))
+        Some(self.alias.as_ref()?.build(ctx))
+    }
+}
+
+impl crate::ImportNameItemNode {
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> ImportAliasItem {
+        match self {
+            Self::ProceduralName(v) => ImportAliasItem::Procedural(v.identifier.build(ctx)),
+            Self::AttributeName(v) => ImportAliasItem::Attribute(v.identifier.build(ctx)),
+            Self::Identifier(v) => ImportAliasItem::Normal(v.build(ctx)),
+        }
     }
 }

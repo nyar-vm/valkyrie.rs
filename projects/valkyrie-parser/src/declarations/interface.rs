@@ -33,7 +33,7 @@ impl crate::TraitBlockNode {
 impl crate::TraitTermNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<Option<TraitTerm>> {
         let item = match self {
-            Self::ProceduralCall(v) => v.build(ctx)?.into(),
+            Self::ProceduralCall(v) => v.build(ctx).into(),
             Self::DefineField(v) => v.build(ctx)?.into(),
             Self::DefineMethod(v) => v.build(ctx)?.into(),
             Self::EosFree(_) => return Ok(None),

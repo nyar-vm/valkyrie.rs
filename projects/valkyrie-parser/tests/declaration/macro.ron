@@ -25,6 +25,7 @@ FunctionDeclaration {
                 variant: [],
                 arguments: [],
                 domain: None,
+                span: 124..172,
             },
         ],
         modifiers: [

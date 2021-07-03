@@ -176,8 +176,10 @@ pub enum ValkyrieRule {
     AnnotationTermMix,
     AttributeList,
     AttributeCall,
-    ProceduralCall,
     AttributeItem,
+    AttributeName,
+    ProceduralCall,
+    ProceduralName,
     TextLiteral,
     TextRaw,
     Text_L,
@@ -424,8 +426,10 @@ impl YggdrasilRule for ValkyrieRule {
             Self::AnnotationTermMix => "",
             Self::AttributeList => "",
             Self::AttributeCall => "",
-            Self::ProceduralCall => "",
             Self::AttributeItem => "",
+            Self::AttributeName => "",
+            Self::ProceduralCall => "",
+            Self::ProceduralName => "",
             Self::TextLiteral => "",
             Self::TextRaw => "",
             Self::Text_L => "",
@@ -622,9 +626,9 @@ pub struct ImportAsNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum ImportNameItemNode {
-    Capture(IdentifierNode),
+    AttributeName(AttributeNameNode),
     Identifier(IdentifierNode),
-    Instant(IdentifierNode),
+    ProceduralName(ProceduralNameNode),
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -1616,16 +1620,31 @@ pub struct AttributeCallNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ProceduralCallNode {
-    pub attribute_item: AttributeItemNode,
+pub struct AttributeItemNode {
+    pub continuation: Option<ContinuationNode>,
+    pub identifier: Vec<IdentifierNode>,
+    pub namepath: NamepathNode,
+    pub tuple_literal: Option<TupleLiteralNode>,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct AttributeItemNode {
-    pub class_block: Option<ClassBlockNode>,
+pub struct AttributeNameNode {
+    pub identifier: IdentifierNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ProceduralCallNode {
+    pub continuation: Option<ContinuationNode>,
     pub namepath: NamepathNode,
     pub tuple_literal: Option<TupleLiteralNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ProceduralNameNode {
+    pub identifier: IdentifierNode,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]

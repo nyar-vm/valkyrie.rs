@@ -32,7 +32,7 @@ impl crate::KwFlagsNode {
 impl crate::FlagTermNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<Option<FlagTerm>> {
         let value = match self {
-            Self::ProceduralCall(v) => v.build(ctx)?.into(),
+            Self::ProceduralCall(v) => v.build(ctx).into(),
             Self::DefineMethod(v) => v.build(ctx)?.into(),
             Self::FlagField(v) => v.build(ctx)?.into(),
             Self::EosFree(_) => return Ok(None),

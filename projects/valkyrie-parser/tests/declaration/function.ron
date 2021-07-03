@@ -482,6 +482,7 @@ Class {
                 variant: [],
                 arguments: [],
                 domain: None,
+                span: 1716..1746,
             },
         ],
     },
@@ -520,6 +521,7 @@ FunctionDeclaration {
                 variant: [],
                 arguments: [],
                 domain: None,
+                span: 1813..1819,
             },
         ],
     },
@@ -632,6 +634,7 @@ FunctionDeclaration {
                 variant: [],
                 arguments: [],
                 domain: None,
+                span: 2018..2032,
             },
         ],
         modifiers: [

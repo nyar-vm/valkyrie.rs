@@ -118,6 +118,7 @@ FunctionDeclaration {
                 variant: [],
                 arguments: [],
                 domain: None,
+                span: 285..337,
             },
         ],
     },
