@@ -100,10 +100,6 @@ pub enum ValkyrieRule {
     KW_WHILE,
     ForStatement,
     IfGuard,
-    ForTemplate,
-    ForTemplateBegin,
-    ForTemplateElse,
-    ForTemplateEnd,
     ControlFlow,
     JumpLabel,
     ExpressionRoot,
@@ -191,18 +187,6 @@ pub enum ValkyrieRule {
     TEXT_CONTENT4,
     TEXT_CONTENT5,
     TEXT_CONTENT6,
-    StringInterpolations,
-    StringInterpolationTerm,
-    EscapeCharacter,
-    EscapeUnicode,
-    EscapeUnicodeCode,
-    StringInterpolationSimple,
-    StringInterpolationText,
-    StringFormatter,
-    StringInterpolationComplex,
-    StringTemplates,
-    StringTemplateTerm,
-    ExpressionTemplate,
     ModifierCall,
     ModifierAhead,
     KEYWORDS_STOP,
@@ -231,11 +215,6 @@ pub enum ValkyrieRule {
     OP_SLOT,
     OFFSET_L,
     OFFSET_R,
-    TEMPLATE_S,
-    TEMPLATE_E,
-    TEMPLATE_L,
-    TEMPLATE_R,
-    TEMPLATE_M,
     PROPORTION2,
     OP_IMPORT_ALL,
     OP_AND_THEN,
@@ -269,6 +248,27 @@ pub enum ValkyrieRule {
     WhiteSpace,
     SkipSpace,
     Comment,
+    StringInterpolations,
+    StringInterpolationTerm,
+    EscapeCharacter,
+    EscapeUnicode,
+    EscapeUnicodeCode,
+    StringInterpolationSimple,
+    StringInterpolationText,
+    StringFormatter,
+    StringInterpolationComplex,
+    StringTemplates,
+    StringTemplateTerm,
+    ExpressionTemplate,
+    ForTemplate,
+    ForTemplateBegin,
+    ForTemplateElse,
+    ForTemplateEnd,
+    TEMPLATE_S,
+    TEMPLATE_E,
+    TEMPLATE_L,
+    TEMPLATE_R,
+    TEMPLATE_M,
     /// Label for unnamed text literal
     HiddenText,
 }
@@ -350,10 +350,6 @@ impl YggdrasilRule for ValkyrieRule {
             Self::KW_WHILE => "",
             Self::ForStatement => "",
             Self::IfGuard => "",
-            Self::ForTemplate => "",
-            Self::ForTemplateBegin => "",
-            Self::ForTemplateElse => "",
-            Self::ForTemplateEnd => "",
             Self::ControlFlow => "",
             Self::JumpLabel => "",
             Self::ExpressionRoot => "",
@@ -441,18 +437,6 @@ impl YggdrasilRule for ValkyrieRule {
             Self::TEXT_CONTENT4 => "",
             Self::TEXT_CONTENT5 => "",
             Self::TEXT_CONTENT6 => "",
-            Self::StringInterpolations => "",
-            Self::StringInterpolationTerm => "",
-            Self::EscapeCharacter => "",
-            Self::EscapeUnicode => "",
-            Self::EscapeUnicodeCode => "",
-            Self::StringInterpolationSimple => "",
-            Self::StringInterpolationText => "",
-            Self::StringFormatter => "",
-            Self::StringInterpolationComplex => "",
-            Self::StringTemplates => "",
-            Self::StringTemplateTerm => "",
-            Self::ExpressionTemplate => "",
             Self::ModifierCall => "",
             Self::ModifierAhead => "",
             Self::KEYWORDS_STOP => "",
@@ -481,11 +465,6 @@ impl YggdrasilRule for ValkyrieRule {
             Self::OP_SLOT => "",
             Self::OFFSET_L => "",
             Self::OFFSET_R => "",
-            Self::TEMPLATE_S => "",
-            Self::TEMPLATE_E => "",
-            Self::TEMPLATE_L => "",
-            Self::TEMPLATE_R => "",
-            Self::TEMPLATE_M => "",
             Self::PROPORTION2 => "",
             Self::OP_IMPORT_ALL => "",
             Self::OP_AND_THEN => "",
@@ -519,6 +498,27 @@ impl YggdrasilRule for ValkyrieRule {
             Self::WhiteSpace => "",
             Self::SkipSpace => "",
             Self::Comment => "",
+            Self::StringInterpolations => "",
+            Self::StringInterpolationTerm => "",
+            Self::EscapeCharacter => "",
+            Self::EscapeUnicode => "",
+            Self::EscapeUnicodeCode => "",
+            Self::StringInterpolationSimple => "",
+            Self::StringInterpolationText => "",
+            Self::StringFormatter => "",
+            Self::StringInterpolationComplex => "",
+            Self::StringTemplates => "",
+            Self::StringTemplateTerm => "",
+            Self::ExpressionTemplate => "",
+            Self::ForTemplate => "",
+            Self::ForTemplateBegin => "",
+            Self::ForTemplateElse => "",
+            Self::ForTemplateEnd => "",
+            Self::TEMPLATE_S => "",
+            Self::TEMPLATE_E => "",
+            Self::TEMPLATE_L => "",
+            Self::TEMPLATE_R => "",
+            Self::TEMPLATE_M => "",
             _ => "",
         }
     }
@@ -1060,43 +1060,6 @@ pub struct ForStatementNode {
 pub struct IfGuardNode {
     pub inline_expression: InlineExpressionNode,
     pub kw_if: KwIfNode,
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ForTemplateNode {
-    pub for_template_begin: ForTemplateBeginNode,
-    pub for_template_else: Option<ForTemplateElseNode>,
-    pub for_template_end: ForTemplateEndNode,
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ForTemplateBeginNode {
-    pub if_guard: Option<IfGuardNode>,
-    pub inline_expression: Option<InlineExpressionNode>,
-    pub kw_for: KwForNode,
-    pub kw_in: KwInNode,
-    pub let_pattern: LetPatternNode,
-    pub template_e: TemplateENode,
-    pub template_s: TemplateSNode,
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ForTemplateElseNode {
-    pub kw_else: KwElseNode,
-    pub template_e: TemplateENode,
-    pub template_s: TemplateSNode,
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ForTemplateEndNode {
-    pub kw_end: KwEndNode,
-    pub kw_for: Option<KwForNode>,
-    pub template_e: TemplateENode,
-    pub template_s: TemplateSNode,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -1718,85 +1681,6 @@ pub struct TextContent6Node {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct StringInterpolationsNode {
-    pub string_interpolation_term: Vec<StringInterpolationTermNode>,
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum StringInterpolationTermNode {
-    EscapeCharacter(EscapeCharacterNode),
-    EscapeUnicode(EscapeUnicodeNode),
-    StringInterpolationComplex(StringInterpolationComplexNode),
-    StringInterpolationSimple(StringInterpolationSimpleNode),
-    StringInterpolationText(StringInterpolationTextNode),
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct EscapeCharacterNode {
-    pub text: String,
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct EscapeUnicodeNode {
-    pub code: EscapeUnicodeCodeNode,
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct EscapeUnicodeCodeNode {
-    pub text: String,
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct StringInterpolationSimpleNode {
-    pub main_expression: MainExpressionNode,
-    pub string_formatter: Option<StringFormatterNode>,
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct StringInterpolationTextNode {
-    pub text: String,
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct StringFormatterNode {
-    pub text: String,
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct StringInterpolationComplexNode {
-    pub main_expression: MainExpressionNode,
-    pub tuple_pair: Vec<TuplePairNode>,
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct StringTemplatesNode {
-    pub string_template_term: Vec<StringTemplateTermNode>,
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum StringTemplateTermNode {
-    ExpressionTemplate(ExpressionTemplateNode),
-    ForTemplate(ForTemplateNode),
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct ExpressionTemplateNode {
-    pub main_expression: MainExpressionNode,
-    pub template_e: TemplateENode,
-    pub template_s: TemplateSNode,
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ModifierCallNode {
     pub identifier: IdentifierNode,
     pub span: Range<u32>,
@@ -1967,33 +1851,6 @@ pub struct OffsetRNode {
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct TemplateSNode {
-    pub template_l: TemplateLNode,
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct TemplateENode {
-    pub template_r: TemplateRNode,
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct TemplateLNode {
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct TemplateRNode {
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct TemplateMNode {
-    pub span: Range<u32>,
-}
-#[derive(Clone, Debug, Hash)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct Proportion2Node {
     pub span: Range<u32>,
 }
@@ -2156,5 +2013,148 @@ pub struct SkipSpaceNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct CommentNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct StringInterpolationsNode {
+    pub string_interpolation_term: Vec<StringInterpolationTermNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum StringInterpolationTermNode {
+    EscapeCharacter(EscapeCharacterNode),
+    EscapeUnicode(EscapeUnicodeNode),
+    StringInterpolationComplex(StringInterpolationComplexNode),
+    StringInterpolationSimple(StringInterpolationSimpleNode),
+    StringInterpolationText(StringInterpolationTextNode),
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct EscapeCharacterNode {
+    pub text: String,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct EscapeUnicodeNode {
+    pub code: EscapeUnicodeCodeNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct EscapeUnicodeCodeNode {
+    pub text: String,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct StringInterpolationSimpleNode {
+    pub main_expression: MainExpressionNode,
+    pub string_formatter: Option<StringFormatterNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct StringInterpolationTextNode {
+    pub text: String,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct StringFormatterNode {
+    pub text: String,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct StringInterpolationComplexNode {
+    pub main_expression: MainExpressionNode,
+    pub tuple_pair: Vec<TuplePairNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct StringTemplatesNode {
+    pub string_template_term: Vec<StringTemplateTermNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum StringTemplateTermNode {
+    ExpressionTemplate(ExpressionTemplateNode),
+    ForTemplate(ForTemplateNode),
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ExpressionTemplateNode {
+    pub main_expression: MainExpressionNode,
+    pub template_e: TemplateENode,
+    pub template_s: TemplateSNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ForTemplateNode {
+    pub for_template_begin: ForTemplateBeginNode,
+    pub for_template_else: Option<ForTemplateElseNode>,
+    pub for_template_end: ForTemplateEndNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ForTemplateBeginNode {
+    pub if_guard: Option<IfGuardNode>,
+    pub inline_expression: Option<InlineExpressionNode>,
+    pub kw_for: KwForNode,
+    pub kw_in: KwInNode,
+    pub let_pattern: LetPatternNode,
+    pub template_e: TemplateENode,
+    pub template_s: TemplateSNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ForTemplateElseNode {
+    pub kw_else: KwElseNode,
+    pub template_e: TemplateENode,
+    pub template_s: TemplateSNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ForTemplateEndNode {
+    pub kw_end: KwEndNode,
+    pub kw_for: Option<KwForNode>,
+    pub template_e: TemplateENode,
+    pub template_s: TemplateSNode,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct TemplateSNode {
+    pub template_m: Option<TemplateMNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct TemplateENode {
+    pub template_m: Option<TemplateMNode>,
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct TemplateLNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct TemplateRNode {
+    pub span: Range<u32>,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct TemplateMNode {
     pub span: Range<u32>,
 }

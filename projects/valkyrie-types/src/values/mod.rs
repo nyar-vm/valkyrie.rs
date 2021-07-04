@@ -50,6 +50,9 @@ impl ValkyrieValue {
             _ => Err(ValkyrieError::runtime_error("Expected boolean value")),
         }
     }
+    pub fn is_nothing(&self) -> bool {
+        matches!(self, ValkyrieValue::Nothing)
+    }
 }
 
 unsafe impl GcSafe for ValkyrieValue {}

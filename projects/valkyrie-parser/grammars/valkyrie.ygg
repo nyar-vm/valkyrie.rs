@@ -424,9 +424,9 @@ union Leading {
     | RangeLiteral
     | TextLiteral
     | Slot
-    | Namepath
     | Number
     | Special
+    | Namepath
 }
 @railway(false)
 atomic union MainSuffixTerm {

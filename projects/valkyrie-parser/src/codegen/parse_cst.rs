@@ -72,10 +72,6 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::KW_WHILE => parse_kw_while(state),
         ValkyrieRule::ForStatement => parse_for_statement(state),
         ValkyrieRule::IfGuard => parse_if_guard(state),
-        ValkyrieRule::ForTemplate => parse_for_template(state),
-        ValkyrieRule::ForTemplateBegin => parse_for_template_begin(state),
-        ValkyrieRule::ForTemplateElse => parse_for_template_else(state),
-        ValkyrieRule::ForTemplateEnd => parse_for_template_end(state),
         ValkyrieRule::ControlFlow => parse_control_flow(state),
         ValkyrieRule::JumpLabel => parse_jump_label(state),
         ValkyrieRule::ExpressionRoot => parse_expression_root(state),
@@ -163,18 +159,6 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::TEXT_CONTENT4 => parse_text_content_4(state),
         ValkyrieRule::TEXT_CONTENT5 => parse_text_content_5(state),
         ValkyrieRule::TEXT_CONTENT6 => parse_text_content_6(state),
-        ValkyrieRule::StringInterpolations => parse_string_interpolations(state),
-        ValkyrieRule::StringInterpolationTerm => parse_string_interpolation_term(state),
-        ValkyrieRule::EscapeCharacter => parse_escape_character(state),
-        ValkyrieRule::EscapeUnicode => parse_escape_unicode(state),
-        ValkyrieRule::EscapeUnicodeCode => parse_escape_unicode_code(state),
-        ValkyrieRule::StringInterpolationSimple => parse_string_interpolation_simple(state),
-        ValkyrieRule::StringInterpolationText => parse_string_interpolation_text(state),
-        ValkyrieRule::StringFormatter => parse_string_formatter(state),
-        ValkyrieRule::StringInterpolationComplex => parse_string_interpolation_complex(state),
-        ValkyrieRule::StringTemplates => parse_string_templates(state),
-        ValkyrieRule::StringTemplateTerm => parse_string_template_term(state),
-        ValkyrieRule::ExpressionTemplate => parse_expression_template(state),
         ValkyrieRule::ModifierCall => parse_modifier_call(state),
         ValkyrieRule::ModifierAhead => parse_modifier_ahead(state),
         ValkyrieRule::KEYWORDS_STOP => parse_keywords_stop(state),
@@ -203,11 +187,6 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::OP_SLOT => parse_op_slot(state),
         ValkyrieRule::OFFSET_L => parse_offset_l(state),
         ValkyrieRule::OFFSET_R => parse_offset_r(state),
-        ValkyrieRule::TEMPLATE_S => parse_template_s(state),
-        ValkyrieRule::TEMPLATE_E => parse_template_e(state),
-        ValkyrieRule::TEMPLATE_L => parse_template_l(state),
-        ValkyrieRule::TEMPLATE_R => parse_template_r(state),
-        ValkyrieRule::TEMPLATE_M => parse_template_m(state),
         ValkyrieRule::PROPORTION2 => parse_proportion_2(state),
         ValkyrieRule::OP_IMPORT_ALL => parse_op_import_all(state),
         ValkyrieRule::OP_AND_THEN => parse_op_and_then(state),
@@ -241,6 +220,27 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::WhiteSpace => parse_white_space(state),
         ValkyrieRule::SkipSpace => parse_skip_space(state),
         ValkyrieRule::Comment => parse_comment(state),
+        ValkyrieRule::StringInterpolations => parse_string_interpolations(state),
+        ValkyrieRule::StringInterpolationTerm => parse_string_interpolation_term(state),
+        ValkyrieRule::EscapeCharacter => parse_escape_character(state),
+        ValkyrieRule::EscapeUnicode => parse_escape_unicode(state),
+        ValkyrieRule::EscapeUnicodeCode => parse_escape_unicode_code(state),
+        ValkyrieRule::StringInterpolationSimple => parse_string_interpolation_simple(state),
+        ValkyrieRule::StringInterpolationText => parse_string_interpolation_text(state),
+        ValkyrieRule::StringFormatter => parse_string_formatter(state),
+        ValkyrieRule::StringInterpolationComplex => parse_string_interpolation_complex(state),
+        ValkyrieRule::StringTemplates => parse_string_templates(state),
+        ValkyrieRule::StringTemplateTerm => parse_string_template_term(state),
+        ValkyrieRule::ExpressionTemplate => parse_expression_template(state),
+        ValkyrieRule::ForTemplate => parse_for_template(state),
+        ValkyrieRule::ForTemplateBegin => parse_for_template_begin(state),
+        ValkyrieRule::ForTemplateElse => parse_for_template_else(state),
+        ValkyrieRule::ForTemplateEnd => parse_for_template_end(state),
+        ValkyrieRule::TEMPLATE_S => parse_template_s(state),
+        ValkyrieRule::TEMPLATE_E => parse_template_e(state),
+        ValkyrieRule::TEMPLATE_L => parse_template_l(state),
+        ValkyrieRule::TEMPLATE_R => parse_template_r(state),
+        ValkyrieRule::TEMPLATE_M => parse_template_m(state),
         ValkyrieRule::HiddenText => unreachable!(),
     })
 }
@@ -1615,66 +1615,6 @@ fn parse_if_guard(state: Input) -> Output {
     })
 }
 #[inline]
-fn parse_for_template(state: Input) -> Output {
-    state.rule(ValkyrieRule::ForTemplate, |s| {
-        s.sequence(|s| {
-            Ok(s)
-                .and_then(|s| parse_for_template_begin(s).and_then(|s| s.tag_node("for_template_begin")))
-                .and_then(|s| s.optional(|s| parse_for_template_else(s).and_then(|s| s.tag_node("for_template_else"))))
-                .and_then(|s| parse_for_template_end(s).and_then(|s| s.tag_node("for_template_end")))
-        })
-    })
-}
-#[inline]
-fn parse_for_template_begin(state: Input) -> Output {
-    state.rule(ValkyrieRule::ForTemplateBegin, |s| {
-        s.sequence(|s| {
-            Ok(s)
-                .and_then(|s| parse_template_s(s).and_then(|s| s.tag_node("template_s")))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| parse_kw_for(s).and_then(|s| s.tag_node("kw_for")))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| parse_let_pattern(s).and_then(|s| s.tag_node("let_pattern")))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| parse_kw_in(s).and_then(|s| s.tag_node("kw_in")))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| s.optional(|s| parse_inline_expression(s).and_then(|s| s.tag_node("inline_expression"))))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| s.optional(|s| parse_if_guard(s).and_then(|s| s.tag_node("if_guard"))))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| parse_template_e(s).and_then(|s| s.tag_node("template_e")))
-        })
-    })
-}
-#[inline]
-fn parse_for_template_else(state: Input) -> Output {
-    state.rule(ValkyrieRule::ForTemplateElse, |s| {
-        s.sequence(|s| {
-            Ok(s)
-                .and_then(|s| parse_template_s(s).and_then(|s| s.tag_node("template_s")))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| parse_kw_else(s).and_then(|s| s.tag_node("kw_else")))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| parse_template_e(s).and_then(|s| s.tag_node("template_e")))
-        })
-    })
-}
-#[inline]
-fn parse_for_template_end(state: Input) -> Output {
-    state.rule(ValkyrieRule::ForTemplateEnd, |s| {
-        s.sequence(|s| {
-            Ok(s)
-                .and_then(|s| parse_template_s(s).and_then(|s| s.tag_node("template_s")))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| parse_kw_end(s).and_then(|s| s.tag_node("kw_end")))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| s.optional(|s| parse_kw_for(s).and_then(|s| s.tag_node("kw_for"))))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| parse_template_e(s).and_then(|s| s.tag_node("template_e")))
-        })
-    })
-}
-#[inline]
 fn parse_control_flow(state: Input) -> Output {
     state.rule(ValkyrieRule::ControlFlow, |s| {
         s.sequence(|s| {
@@ -2068,9 +2008,9 @@ fn parse_leading(state: Input) -> Output {
             .or_else(|s| parse_range_literal(s).and_then(|s| s.tag_node("range_literal")))
             .or_else(|s| parse_text_literal(s).and_then(|s| s.tag_node("text_literal")))
             .or_else(|s| parse_slot(s).and_then(|s| s.tag_node("slot")))
-            .or_else(|s| parse_namepath(s).and_then(|s| s.tag_node("namepath")))
             .or_else(|s| parse_number(s).and_then(|s| s.tag_node("number")))
             .or_else(|s| parse_special(s).and_then(|s| s.tag_node("special")))
+            .or_else(|s| parse_namepath(s).and_then(|s| s.tag_node("namepath")))
     })
 }
 #[inline]
@@ -3367,173 +3307,6 @@ fn parse_text_content_6(state: Input) -> Output {
     })
 }
 #[inline]
-fn parse_string_interpolations(state: Input) -> Output {
-    state.rule(ValkyrieRule::StringInterpolations, |s| {
-        s.sequence(|s| {
-            Ok(s)
-                .and_then(|s| {
-                    s.repeat(0..4294967295, |s| {
-                        parse_string_interpolation_term(s).and_then(|s| s.tag_node("string_interpolation_term"))
-                    })
-                })
-                .and_then(|s| s.end_of_input())
-        })
-    })
-}
-#[inline]
-fn parse_string_interpolation_term(state: Input) -> Output {
-    state.rule(ValkyrieRule::StringInterpolationTerm, |s| {
-        Err(s)
-            .or_else(|s| parse_escape_unicode(s).and_then(|s| s.tag_node("escape_unicode")))
-            .or_else(|s| parse_escape_character(s).and_then(|s| s.tag_node("escape_character")))
-            .or_else(|s| parse_string_interpolation_simple(s).and_then(|s| s.tag_node("string_interpolation_simple")))
-            .or_else(|s| parse_string_interpolation_complex(s).and_then(|s| s.tag_node("string_interpolation_complex")))
-            .or_else(|s| parse_string_interpolation_text(s).and_then(|s| s.tag_node("string_interpolation_text")))
-    })
-}
-#[inline]
-fn parse_escape_character(state: Input) -> Output {
-    state.rule(ValkyrieRule::EscapeCharacter, |s| {
-        s.match_regex({
-            static REGEX: OnceLock<Regex> = OnceLock::new();
-            REGEX.get_or_init(|| Regex::new("^(?x)(\\\\.|\\{\\{|\\}\\})").unwrap())
-        })
-    })
-}
-#[inline]
-fn parse_escape_unicode(state: Input) -> Output {
-    state.rule(ValkyrieRule::EscapeUnicode, |s| {
-        s.sequence(|s| {
-            Ok(s)
-                .and_then(|s| {
-                    s.sequence(|s| {
-                        Ok(s)
-                            .and_then(|s| builtin_text(s, "\\u", false))
-                            .and_then(|s| builtin_text(s, "{", false))
-                            .and_then(|s| builtin_ignore(s))
-                    })
-                })
-                .and_then(|s| parse_escape_unicode_code(s).and_then(|s| s.tag_node("code")))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| builtin_text(s, "}", false))
-        })
-    })
-}
-#[inline]
-fn parse_escape_unicode_code(state: Input) -> Output {
-    state.rule(ValkyrieRule::EscapeUnicodeCode, |s| {
-        s.match_regex({
-            static REGEX: OnceLock<Regex> = OnceLock::new();
-            REGEX.get_or_init(|| Regex::new("^(?x)([0-9a-zA-Z]*)").unwrap())
-        })
-    })
-}
-#[inline]
-fn parse_string_interpolation_simple(state: Input) -> Output {
-    state.rule(ValkyrieRule::StringInterpolationSimple, |s| {
-        s.sequence(|s| {
-            Ok(s)
-                .and_then(|s| builtin_text(s, "{", false))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| parse_main_expression(s).and_then(|s| s.tag_node("main_expression")))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| {
-                    s.optional(|s| {
-                        s.sequence(|s| {
-                            Ok(s)
-                                .and_then(|s| parse_colon(s))
-                                .and_then(|s| builtin_ignore(s))
-                                .and_then(|s| parse_string_formatter(s).and_then(|s| s.tag_node("string_formatter")))
-                        })
-                    })
-                })
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| builtin_text(s, "}", false))
-        })
-    })
-}
-#[inline]
-fn parse_string_interpolation_text(state: Input) -> Output {
-    state.rule(ValkyrieRule::StringInterpolationText, |s| {
-        s.match_regex({
-            static REGEX: OnceLock<Regex> = OnceLock::new();
-            REGEX.get_or_init(|| Regex::new("^(?x)([^{}\\\\]+)").unwrap())
-        })
-    })
-}
-#[inline]
-fn parse_string_formatter(state: Input) -> Output {
-    state.rule(ValkyrieRule::StringFormatter, |s| {
-        s.match_regex({
-            static REGEX: OnceLock<Regex> = OnceLock::new();
-            REGEX.get_or_init(|| Regex::new("^(?x)([^}]+)").unwrap())
-        })
-    })
-}
-#[inline]
-fn parse_string_interpolation_complex(state: Input) -> Output {
-    state.rule(ValkyrieRule::StringInterpolationComplex, |s| {
-        s.sequence(|s| {
-            Ok(s)
-                .and_then(|s| builtin_text(s, "{", false))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| parse_main_expression(s).and_then(|s| s.tag_node("main_expression")))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| {
-                    s.repeat(0..4294967295, |s| {
-                        s.sequence(|s| {
-                            Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| {
-                                s.sequence(|s| {
-                                    Ok(s)
-                                        .and_then(|s| parse_comma(s))
-                                        .and_then(|s| builtin_ignore(s))
-                                        .and_then(|s| parse_tuple_pair(s).and_then(|s| s.tag_node("tuple_pair")))
-                                })
-                            })
-                        })
-                    })
-                })
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| s.optional(|s| parse_comma(s)))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| builtin_text(s, "}", false))
-        })
-    })
-}
-#[inline]
-fn parse_string_templates(state: Input) -> Output {
-    state.rule(ValkyrieRule::StringTemplates, |s| {
-        s.sequence(|s| {
-            Ok(s)
-                .and_then(|s| {
-                    s.repeat(0..4294967295, |s| parse_string_template_term(s).and_then(|s| s.tag_node("string_template_term")))
-                })
-                .and_then(|s| s.end_of_input())
-        })
-    })
-}
-#[inline]
-fn parse_string_template_term(state: Input) -> Output {
-    state.rule(ValkyrieRule::StringTemplateTerm, |s| {
-        Err(s)
-            .or_else(|s| parse_for_template(s).and_then(|s| s.tag_node("for_template")))
-            .or_else(|s| parse_expression_template(s).and_then(|s| s.tag_node("expression_template")))
-    })
-}
-#[inline]
-fn parse_expression_template(state: Input) -> Output {
-    state.rule(ValkyrieRule::ExpressionTemplate, |s| {
-        s.sequence(|s| {
-            Ok(s)
-                .and_then(|s| parse_template_s(s).and_then(|s| s.tag_node("template_s")))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| parse_main_expression(s).and_then(|s| s.tag_node("main_expression")))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| parse_template_e(s).and_then(|s| s.tag_node("template_e")))
-        })
-    })
-}
-#[inline]
 fn parse_modifier_call(state: Input) -> Output {
     state.rule(ValkyrieRule::ModifierCall, |s| {
         s.sequence(|s| {
@@ -3924,43 +3697,6 @@ fn parse_offset_r(state: Input) -> Output {
     state.rule(ValkyrieRule::OFFSET_R, |s| s.match_string("⁆", false))
 }
 #[inline]
-fn parse_template_s(state: Input) -> Output {
-    state.rule(ValkyrieRule::TEMPLATE_S, |s| {
-        s.sequence(|s| {
-            Ok(s)
-                .and_then(|s| parse_template_l(s).and_then(|s| s.tag_node("template_l")))
-                .and_then(|s| s.optional(|s| parse_template_m(s)))
-        })
-    })
-}
-#[inline]
-fn parse_template_e(state: Input) -> Output {
-    state.rule(ValkyrieRule::TEMPLATE_E, |s| {
-        s.sequence(|s| {
-            Ok(s)
-                .and_then(|s| s.optional(|s| parse_template_m(s)))
-                .and_then(|s| parse_template_r(s).and_then(|s| s.tag_node("template_r")))
-        })
-    })
-}
-#[inline]
-fn parse_template_l(state: Input) -> Output {
-    state.rule(ValkyrieRule::TEMPLATE_L, |s| s.match_string("<%", false))
-}
-#[inline]
-fn parse_template_r(state: Input) -> Output {
-    state.rule(ValkyrieRule::TEMPLATE_R, |s| s.match_string("%>", false))
-}
-#[inline]
-fn parse_template_m(state: Input) -> Output {
-    state.rule(ValkyrieRule::TEMPLATE_M, |s| {
-        s.match_regex({
-            static REGEX: OnceLock<Regex> = OnceLock::new();
-            REGEX.get_or_init(|| Regex::new("^(?x)([-_~.=])").unwrap())
-        })
-    })
-}
-#[inline]
 fn parse_proportion_2(state: Input) -> Output {
     state.rule(ValkyrieRule::PROPORTION2, |s| {
         s.match_regex({
@@ -4162,6 +3898,270 @@ fn parse_comment(state: Input) -> Output {
             .or_else(|s| {
                 s.sequence(|s| Ok(s).and_then(|s| builtin_text(s, "/*", false)).and_then(|s| builtin_text(s, "*/", false)))
             })
+    })
+}
+#[inline]
+fn parse_string_interpolations(state: Input) -> Output {
+    state.rule(ValkyrieRule::StringInterpolations, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| {
+                    s.repeat(0..4294967295, |s| {
+                        parse_string_interpolation_term(s).and_then(|s| s.tag_node("string_interpolation_term"))
+                    })
+                })
+                .and_then(|s| s.end_of_input())
+        })
+    })
+}
+#[inline]
+fn parse_string_interpolation_term(state: Input) -> Output {
+    state.rule(ValkyrieRule::StringInterpolationTerm, |s| {
+        Err(s)
+            .or_else(|s| parse_escape_unicode(s).and_then(|s| s.tag_node("escape_unicode")))
+            .or_else(|s| parse_escape_character(s).and_then(|s| s.tag_node("escape_character")))
+            .or_else(|s| parse_string_interpolation_simple(s).and_then(|s| s.tag_node("string_interpolation_simple")))
+            .or_else(|s| parse_string_interpolation_complex(s).and_then(|s| s.tag_node("string_interpolation_complex")))
+            .or_else(|s| parse_string_interpolation_text(s).and_then(|s| s.tag_node("string_interpolation_text")))
+    })
+}
+#[inline]
+fn parse_escape_character(state: Input) -> Output {
+    state.rule(ValkyrieRule::EscapeCharacter, |s| {
+        s.match_regex({
+            static REGEX: OnceLock<Regex> = OnceLock::new();
+            REGEX.get_or_init(|| Regex::new("^(?x)(\\\\.|\\{\\{|\\}\\})").unwrap())
+        })
+    })
+}
+#[inline]
+fn parse_escape_unicode(state: Input) -> Output {
+    state.rule(ValkyrieRule::EscapeUnicode, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| {
+                    s.sequence(|s| {
+                        Ok(s)
+                            .and_then(|s| builtin_text(s, "\\u", false))
+                            .and_then(|s| builtin_text(s, "{", false))
+                            .and_then(|s| builtin_ignore(s))
+                    })
+                })
+                .and_then(|s| parse_escape_unicode_code(s).and_then(|s| s.tag_node("code")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| builtin_text(s, "}", false))
+        })
+    })
+}
+#[inline]
+fn parse_escape_unicode_code(state: Input) -> Output {
+    state.rule(ValkyrieRule::EscapeUnicodeCode, |s| {
+        s.match_regex({
+            static REGEX: OnceLock<Regex> = OnceLock::new();
+            REGEX.get_or_init(|| Regex::new("^(?x)([0-9a-zA-Z]*)").unwrap())
+        })
+    })
+}
+#[inline]
+fn parse_string_interpolation_simple(state: Input) -> Output {
+    state.rule(ValkyrieRule::StringInterpolationSimple, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| builtin_text(s, "{", false))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_main_expression(s).and_then(|s| s.tag_node("main_expression")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| {
+                    s.optional(|s| {
+                        s.sequence(|s| {
+                            Ok(s)
+                                .and_then(|s| parse_colon(s))
+                                .and_then(|s| builtin_ignore(s))
+                                .and_then(|s| parse_string_formatter(s).and_then(|s| s.tag_node("string_formatter")))
+                        })
+                    })
+                })
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| builtin_text(s, "}", false))
+        })
+    })
+}
+#[inline]
+fn parse_string_interpolation_text(state: Input) -> Output {
+    state.rule(ValkyrieRule::StringInterpolationText, |s| {
+        s.match_regex({
+            static REGEX: OnceLock<Regex> = OnceLock::new();
+            REGEX.get_or_init(|| Regex::new("^(?x)([^{}\\\\]+)").unwrap())
+        })
+    })
+}
+#[inline]
+fn parse_string_formatter(state: Input) -> Output {
+    state.rule(ValkyrieRule::StringFormatter, |s| {
+        s.match_regex({
+            static REGEX: OnceLock<Regex> = OnceLock::new();
+            REGEX.get_or_init(|| Regex::new("^(?x)([^}]+)").unwrap())
+        })
+    })
+}
+#[inline]
+fn parse_string_interpolation_complex(state: Input) -> Output {
+    state.rule(ValkyrieRule::StringInterpolationComplex, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| builtin_text(s, "{", false))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_main_expression(s).and_then(|s| s.tag_node("main_expression")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| {
+                    s.repeat(0..4294967295, |s| {
+                        s.sequence(|s| {
+                            Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| {
+                                s.sequence(|s| {
+                                    Ok(s)
+                                        .and_then(|s| parse_comma(s))
+                                        .and_then(|s| builtin_ignore(s))
+                                        .and_then(|s| parse_tuple_pair(s).and_then(|s| s.tag_node("tuple_pair")))
+                                })
+                            })
+                        })
+                    })
+                })
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| s.optional(|s| parse_comma(s)))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| builtin_text(s, "}", false))
+        })
+    })
+}
+#[inline]
+fn parse_string_templates(state: Input) -> Output {
+    state.rule(ValkyrieRule::StringTemplates, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| {
+                    s.repeat(0..4294967295, |s| parse_string_template_term(s).and_then(|s| s.tag_node("string_template_term")))
+                })
+                .and_then(|s| s.end_of_input())
+        })
+    })
+}
+#[inline]
+fn parse_string_template_term(state: Input) -> Output {
+    state.rule(ValkyrieRule::StringTemplateTerm, |s| {
+        Err(s)
+            .or_else(|s| parse_for_template(s).and_then(|s| s.tag_node("for_template")))
+            .or_else(|s| parse_expression_template(s).and_then(|s| s.tag_node("expression_template")))
+    })
+}
+#[inline]
+fn parse_expression_template(state: Input) -> Output {
+    state.rule(ValkyrieRule::ExpressionTemplate, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| parse_template_s(s).and_then(|s| s.tag_node("template_s")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_main_expression(s).and_then(|s| s.tag_node("main_expression")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_template_e(s).and_then(|s| s.tag_node("template_e")))
+        })
+    })
+}
+#[inline]
+fn parse_for_template(state: Input) -> Output {
+    state.rule(ValkyrieRule::ForTemplate, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| parse_for_template_begin(s).and_then(|s| s.tag_node("for_template_begin")))
+                .and_then(|s| s.optional(|s| parse_for_template_else(s).and_then(|s| s.tag_node("for_template_else"))))
+                .and_then(|s| parse_for_template_end(s).and_then(|s| s.tag_node("for_template_end")))
+        })
+    })
+}
+#[inline]
+fn parse_for_template_begin(state: Input) -> Output {
+    state.rule(ValkyrieRule::ForTemplateBegin, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| parse_template_s(s).and_then(|s| s.tag_node("template_s")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_kw_for(s).and_then(|s| s.tag_node("kw_for")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_let_pattern(s).and_then(|s| s.tag_node("let_pattern")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_kw_in(s).and_then(|s| s.tag_node("kw_in")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| s.optional(|s| parse_inline_expression(s).and_then(|s| s.tag_node("inline_expression"))))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| s.optional(|s| parse_if_guard(s).and_then(|s| s.tag_node("if_guard"))))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_template_e(s).and_then(|s| s.tag_node("template_e")))
+        })
+    })
+}
+#[inline]
+fn parse_for_template_else(state: Input) -> Output {
+    state.rule(ValkyrieRule::ForTemplateElse, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| parse_template_s(s).and_then(|s| s.tag_node("template_s")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_kw_else(s).and_then(|s| s.tag_node("kw_else")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_template_e(s).and_then(|s| s.tag_node("template_e")))
+        })
+    })
+}
+#[inline]
+fn parse_for_template_end(state: Input) -> Output {
+    state.rule(ValkyrieRule::ForTemplateEnd, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| parse_template_s(s).and_then(|s| s.tag_node("template_s")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_kw_end(s).and_then(|s| s.tag_node("kw_end")))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| s.optional(|s| parse_kw_for(s).and_then(|s| s.tag_node("kw_for"))))
+                .and_then(|s| builtin_ignore(s))
+                .and_then(|s| parse_template_e(s).and_then(|s| s.tag_node("template_e")))
+        })
+    })
+}
+#[inline]
+fn parse_template_s(state: Input) -> Output {
+    state.rule(ValkyrieRule::TEMPLATE_S, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| parse_template_l(s))
+                .and_then(|s| s.optional(|s| parse_template_m(s).and_then(|s| s.tag_node("template_m"))))
+        })
+    })
+}
+#[inline]
+fn parse_template_e(state: Input) -> Output {
+    state.rule(ValkyrieRule::TEMPLATE_E, |s| {
+        s.sequence(|s| {
+            Ok(s)
+                .and_then(|s| s.optional(|s| parse_template_m(s).and_then(|s| s.tag_node("template_m"))))
+                .and_then(|s| parse_template_r(s))
+        })
+    })
+}
+#[inline]
+fn parse_template_l(state: Input) -> Output {
+    state.rule(ValkyrieRule::TEMPLATE_L, |s| s.match_string("<%", false))
+}
+#[inline]
+fn parse_template_r(state: Input) -> Output {
+    state.rule(ValkyrieRule::TEMPLATE_R, |s| s.match_string("%>", false))
+}
+#[inline]
+fn parse_template_m(state: Input) -> Output {
+    state.rule(ValkyrieRule::TEMPLATE_M, |s| {
+        s.match_regex({
+            static REGEX: OnceLock<Regex> = OnceLock::new();
+            REGEX.get_or_init(|| Regex::new("^(?x)([-_~.=])").unwrap())
+        })
     })
 }
 

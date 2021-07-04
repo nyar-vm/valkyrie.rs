@@ -47,8 +47,10 @@ pub use self::{
     },
     values::ValkyrieValue,
 };
-pub use nyar_error::{FileCache, FileID, NyarError as ValkyrieError, Result as ValkyrieResult, RuntimeError, SyntaxError};
+pub use nyar_error::{
+    Failure, FileCache, FileID, NyarError as ValkyrieError, Result as ValkyrieResult, RuntimeError, Success, SyntaxError,
+};
 pub use nyar_number::{Num, NyarReal as ValkyrieNumber, One, Zero};
 pub use shredder::Gc;
 pub use valkyrie_ast::ValkyrieOperator;
-pub use valkyrie_parser::ProgramContext;
+pub use valkyrie_parser::{ProgramContext, StringFormatterBuilder};
