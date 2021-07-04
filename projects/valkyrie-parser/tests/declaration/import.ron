@@ -48,12 +48,12 @@ ImportStatement {
             ),
             alias: Some(
                 Normal(
-                    Identifier("npy", 96..99),
+                    Identifier("女朋友", 96..105),
                 ),
             ),
         },
     ),
-    span: 81..100,
+    span: 81..106,
 }
 ImportStatement {
     annotation: [],
@@ -61,16 +61,16 @@ ImportStatement {
         ImportAliasNode {
             path: [],
             item: Normal(
-                Identifier("tensor-flow", 106..119),
+                Identifier("tensor-flow", 112..125),
             ),
             alias: Some(
                 Normal(
-                    Identifier("tfboys", 123..129),
+                    Identifier("tfboys", 129..135),
                 ),
             ),
         },
     ),
-    span: 100..131,
+    span: 106..137,
 }
 ImportStatement {
     annotation: [],
@@ -80,5 +80,12 @@ ImportStatement {
             group: [],
         },
     ),
-    span: 131..141,
+    span: 137..147,
+}
+using
+ClosureCallNode {
+    monadic: false,
+    base: package,
+    trailing: [],
+    span: 161..167,
 }

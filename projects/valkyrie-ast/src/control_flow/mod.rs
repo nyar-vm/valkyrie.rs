@@ -1,9 +1,14 @@
 use crate::{
-    helper::ValkyrieNode, patterns::PatternsList, ArgumentKey, ElseStatement, ExpressionKind, ExpressionNode, GuardPattern,
-    IdentifierNode, PatternBranch, PatternNode, StatementBlock, StatementKind, SwitchStatement, TuplePatternNode,
-    WhileConditionNode,
+    helper::ValkyrieNode, package_level::let_bind::VariableDeclaration, patterns::PatternsList, ArgumentKey, ElseStatement,
+    ExpressionKind, ExpressionNode, GuardPattern, IdentifierNode, LoopStatement, PatternBranch, PatternNode, StatementBlock,
+    StatementKind, SwitchStatement, TuplePatternNode, WhileConditionNode,
 };
-use alloc::{boxed::Box, string::String, vec::Vec};
+use alloc::{
+    boxed::Box,
+    string::{String, ToString},
+    vec,
+    vec::Vec,
+};
 use core::{
     fmt::{Debug, Display, Formatter},
     ops::Range,

@@ -1,6 +1,4 @@
 use super::*;
-use crate::LoopStatement;
-use alloc::vec;
 
 mod display;
 
@@ -38,8 +36,10 @@ pub struct ForBarePattern {
 }
 
 impl ForLoop {
-    pub fn standardization(self, iterator: IdentifierNode) -> LoopStatement {
-        LoopStatement { label: self.label, terms: vec![] }
+    pub fn standardization(self, iterator: IdentifierNode) -> (VariableDeclaration, LoopStatement) {
+        let var = VariableDeclaration { identifier: iterator, type_hint: None, body: None };
+        let lops = LoopStatement { label: self.label, terms: vec![] };
+        (var, lops)
     }
 }
 

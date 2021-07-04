@@ -4,7 +4,7 @@ using;
 using package;
 using package/`module`.name::*;
 
-using numpy as npy
+using numpy as 女朋友
 using `tensor-flow` as tfboys
 
 using { };
@@ -13,18 +13,3 @@ using package {
     project::second::{}
     project/third/{}
 };
-
-using #Serialize;
-using @derialize;
-using serde.#Serialize;
-using serde::@derialize;
-
-using serde::{#Serialize, #`Deserialize`}
-using serde::{@serialize, @`deserialize`}
-
-using {
-    project.`class` as @`class`;
-    project.`union` as #`union`;
-    project.@`enumerate` as `enumerate`
-    project.#`interface` as `interface`
-}

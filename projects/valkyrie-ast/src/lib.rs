@@ -58,7 +58,7 @@ pub use crate::{
             ImportTermNode,
         },
         labeled::{GotoStatement, LabelStatement},
-        let_bind::LetBindNode,
+        let_bind::{LetBindNode, VariableDeclaration},
         namespace::{NamespaceDeclaration, NamespaceKind},
         program::ProgramRoot,
         statements::{StatementContext, StatementKind},

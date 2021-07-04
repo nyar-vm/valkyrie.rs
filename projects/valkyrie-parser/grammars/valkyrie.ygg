@@ -330,18 +330,6 @@ class ForStatement {
 class IfGuard {
     KW_IF InlineExpression
 }
-atomic class ForTemplate {
-    ForTemplateBegin ForTemplateElse? ForTemplateEnd
-}
-class ForTemplateBegin {
-    TEMPLATE_S KW_FOR LetPattern KW_IN InlineExpression? IfGuard? TEMPLATE_E
-}
-class ForTemplateElse {
-    TEMPLATE_S KW_ELSE TEMPLATE_E
-}
-class ForTemplateEnd {
-    TEMPLATE_S KW_END KW_FOR? TEMPLATE_E
-}
 // === controls === ----------------------------------------------------------------------------------------------------
 class ControlFlow {
     AnnotationTerm*
@@ -753,17 +741,7 @@ text class StringFormatter {
 class StringInterpolationComplex {
     '{' MainExpression (^COMMA TuplePair)* ^COMMA? '}'
 }
-// === string template === ---------------------------------------------------------------------------------------------
-atomic class StringTemplates {
-    StringTemplateTerm* EOI
-}
-union StringTemplateTerm {
-    | ForTemplate
-    | ExpressionTemplate
-}
-class ExpressionTemplate {
-    TEMPLATE_S MainExpression TEMPLATE_E
-}
+
 // === modifier === --------------------------------------------------------------------------------------------------
 atomic class ModifierCall ^ {
     !KEYWORDS_STOP ^Identifier
@@ -856,11 +834,6 @@ atomic token {
     // brackets
     OFFSET_L: '⁅'
     OFFSET_R: '⁆'
-    TEMPLATE_S: (^TEMPLATE_L TEMPLATE_M?)
-    TEMPLATE_E: (TEMPLATE_M? ^TEMPLATE_R)
-    TEMPLATE_L: '<%'
-    TEMPLATE_R: '%>'
-    TEMPLATE_M: [-_~.=]
 }
 class PROPORTION2 -> PROPORTION {
     /[.．∷]|::/
