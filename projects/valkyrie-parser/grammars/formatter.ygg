@@ -1,12 +1,17 @@
 grammar ValkyrieTemplate {
     patterns: ("*.vt", ".asgard"),
+    parser: {
+        text_raw: {
+            rust: crate::helpers::parse_text_raw
+        }
+    },
+
     inline: {
         import: false
     }
 }
-// === import rules === ------------------------------------------------------------------------------------------------
-@replace_hide(false)
-import Valkyrie.{KW_FOR, KW_ELSE, LetPattern};
+// === import rules === ---------------------------------------------------------------------------------------------
+//import Valkyrie.parser.{MainExpression, Identifier};
 // === string template === ---------------------------------------------------------------------------------------------
 atomic class StringTemplates {
     StringTemplateTerm* EOI
@@ -31,6 +36,8 @@ class ForTemplateElse {
 class ForTemplateEnd {
     TEMPLATE_S KW_END KW_FOR? TEMPLATE_E
 }
+
+
 
 
 @railway(false)
