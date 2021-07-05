@@ -84,9 +84,14 @@ Class {
 }
 FunctionDeclaration {
     name: NamePathNode {
-        names: [
+        path: [
             Identifier("five", 260..264),
         ],
+        span: FileSpan {
+            start: 260,
+            end: 264,
+            file: FileID(0xEDD681CDAEEFAA2C),
+        },
     },
     kind: Micro,
     annotations: Empty,
@@ -101,9 +106,14 @@ FunctionDeclaration {
 }
 FunctionDeclaration {
     name: NamePathNode {
-        names: [
+        path: [
             Identifier("tuple", 348..353),
         ],
+        span: FileSpan {
+            start: 348,
+            end: 353,
+            file: FileID(0xEDD681CDAEEFAA2C),
+        },
     },
     kind: Micro,
     annotations: Annotation {
@@ -111,9 +121,14 @@ FunctionDeclaration {
             AttributeTerm {
                 kind: Normal,
                 path: NamePathNode {
-                    names: [
+                    path: [
                         Identifier("ensures", 285..292),
                     ],
+                    span: FileSpan {
+                        start: 285,
+                        end: 292,
+                        file: FileID(0xEDD681CDAEEFAA2C),
+                    },
                 },
                 variant: [],
                 arguments: [],
@@ -169,9 +184,14 @@ FunctionDeclaration {
 }
 FunctionDeclaration {
     name: NamePathNode {
-        names: [
+        path: [
             Identifier("all_zeroes", 416..426),
         ],
+        span: FileSpan {
+            start: 416,
+            end: 426,
+            file: FileID(0xEDD681CDAEEFAA2C),
+        },
     },
     kind: Micro,
     annotations: Annotation {

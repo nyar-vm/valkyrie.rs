@@ -1,7 +1,7 @@
 use crate::{helpers::ProgramState, StringInterpolationsNode};
 use nyar_error::{Failure, FileID, NyarError, Result, Success, SyntaxError, Validation};
 use std::{mem::take, ops::Range, str::FromStr};
-use valkyrie_ast::{FormatterNode, FormatterTerm, StringInterpreter, StringTextNode};
+use valkyrie_ast::{helper::StringInterpreter, FormatterNode, FormatterTerm, StringTextNode};
 use yggdrasil_rt::YggdrasilNode;
 
 /// Build a formatted string

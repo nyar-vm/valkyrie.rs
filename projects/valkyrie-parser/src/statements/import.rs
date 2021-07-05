@@ -1,5 +1,4 @@
 use super::*;
-use crate::{ImportBlockNode, ImportNameItemNode};
 
 impl crate::DefineImportNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<ImportStatement> {

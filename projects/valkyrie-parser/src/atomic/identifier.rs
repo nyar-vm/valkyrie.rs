@@ -2,13 +2,13 @@ use super::*;
 
 impl crate::NamepathNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> NamePathNode {
-        NamePathNode { names: self.identifier.iter().map(|v| v.build(ctx)).collect() }
+        NamePathNode::from_iter(self.identifier.iter().map(|v| v.build(ctx))).with_span(ctx.file.with_range(self.get_range()))
     }
 }
 
 impl crate::NamepathFreeNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> NamePathNode {
-        NamePathNode { names: self.identifier.iter().map(|v| v.build(ctx)).collect() }
+        NamePathNode::from_iter(self.identifier.iter().map(|v| v.build(ctx))).with_span(ctx.file.with_range(self.get_range()))
     }
 }
 impl crate::IdentifierNode {

@@ -17,7 +17,8 @@ pub struct IdentifierNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct NamePathNode {
     /// The names of the identifier.
-    pub names: Vec<IdentifierNode>,
+    pub path: Vec<IdentifierNode>,
+    pub span: FileSpan,
 }
 /// `package∷module∷name`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
@@ -96,7 +97,7 @@ impl ValkyrieNode for LambdaSlotNode {
 
 impl FromIterator<IdentifierNode> for NamePathNode {
     fn from_iter<T: IntoIterator<Item = IdentifierNode>>(iter: T) -> Self {
-        Self { names: iter.into_iter().collect() }
+        Self { path: iter.into_iter().collect(), span: Default::default() }
     }
 }
 
@@ -106,18 +107,19 @@ impl NamePathNode {
     where
         I: IntoIterator<Item = IdentifierNode>,
     {
-        Self { names: names.into_iter().collect() }
+        Self { path: names.into_iter().collect(), span: Default::default() }
     }
     /// Push a new identifier to the name path.
     pub fn join<I: IntoIterator<Item = IdentifierNode>>(mut self, other: I) -> Self {
-        self.names.extend(other);
+        self.path.extend(other);
         self
     }
     /// Calculate range by first and last elements
     pub fn get_range(&self) -> Range<usize> {
-        let head = self.names.first().map(|x| x.span.get_start()).unwrap_or_default();
-        let tail = self.names.last().map(|x| x.span.get_end()).unwrap_or_default();
-        head..tail
+        self.span.get_range()
+    }
+    pub fn with_span(self, span: FileSpan) -> Self {
+        Self { span, ..self }
     }
 }
 
@@ -142,7 +144,6 @@ impl IdentifierNode {
     }
 }
 
-//
 // impl ValkyrieIdentifier {
 //     pub fn new(name: impl Into<String>, file: FileID, range: &Range<usize>) -> Self {
 //         Self { name: name.into(), span: FileSpan { file, head: range.start, tail: range.end } }

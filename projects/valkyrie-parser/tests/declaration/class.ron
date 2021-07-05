@@ -29,9 +29,14 @@ Class {
             AttributeTerm {
                 kind: Normal,
                 path: NamePathNode {
-                    names: [
+                    path: [
                         Identifier("derive", 114..120),
                     ],
+                    span: FileSpan {
+                        start: 114,
+                        end: 120,
+                        file: FileID(0x65BE032B5F19EADD),
+                    },
                 },
                 variant: [],
                 arguments: [],
@@ -196,9 +201,14 @@ Class {
             AttributeTerm {
                 kind: Normal,
                 path: NamePathNode {
-                    names: [
+                    path: [
                         Identifier("Copy", 675..679),
                     ],
+                    span: FileSpan {
+                        start: 675,
+                        end: 679,
+                        file: FileID(0x65BE032B5F19EADD),
+                    },
                 },
                 variant: [],
                 arguments: [],
@@ -208,9 +218,14 @@ Class {
             AttributeTerm {
                 kind: Normal,
                 path: NamePathNode {
-                    names: [
+                    path: [
                         Identifier("Debug", 688..693),
                     ],
+                    span: FileSpan {
+                        start: 688,
+                        end: 693,
+                        file: FileID(0x65BE032B5F19EADD),
+                    },
                 },
                 variant: [],
                 arguments: [],
@@ -220,9 +235,14 @@ Class {
             AttributeTerm {
                 kind: Normal,
                 path: NamePathNode {
-                    names: [
+                    path: [
                         Identifier("derive", 704..710),
                     ],
+                    span: FileSpan {
+                        start: 704,
+                        end: 710,
+                        file: FileID(0x65BE032B5F19EADD),
+                    },
                 },
                 variant: [],
                 arguments: [],
@@ -240,9 +260,14 @@ Class {
             AttributeTerm {
                 kind: Normal,
                 path: NamePathNode {
-                    names: [
+                    path: [
                         Identifier("Encode", 754..760),
                     ],
+                    span: FileSpan {
+                        start: 754,
+                        end: 760,
+                        file: FileID(0x65BE032B5F19EADD),
+                    },
                 },
                 variant: [],
                 arguments: [],
@@ -252,9 +277,14 @@ Class {
             AttributeTerm {
                 kind: Normal,
                 path: NamePathNode {
-                    names: [
+                    path: [
                         Identifier("Decode", 762..768),
                     ],
+                    span: FileSpan {
+                        start: 762,
+                        end: 768,
+                        file: FileID(0x65BE032B5F19EADD),
+                    },
                 },
                 variant: [],
                 arguments: [],
@@ -264,9 +294,14 @@ Class {
             AttributeTerm {
                 kind: Normal,
                 path: NamePathNode {
-                    names: [
+                    path: [
                         Identifier("derive", 771..777),
                     ],
+                    span: FileSpan {
+                        start: 771,
+                        end: 777,
+                        file: FileID(0x65BE032B5F19EADD),
+                    },
                 },
                 variant: [],
                 arguments: [],
@@ -348,9 +383,14 @@ Class {
             AttributeTerm {
                 kind: Normal,
                 path: NamePathNode {
-                    names: [
+                    path: [
                         Identifier("derive", 1104..1110),
                     ],
+                    span: FileSpan {
+                        start: 1104,
+                        end: 1110,
+                        file: FileID(0x65BE032B5F19EADD),
+                    },
                 },
                 variant: [],
                 arguments: [],
@@ -453,9 +493,14 @@ Class {
                     AttributeTerm {
                         kind: Normal,
                         path: NamePathNode {
-                            names: [
+                            path: [
                                 Identifier("decorator", 1571..1580),
                             ],
+                            span: FileSpan {
+                                start: 1571,
+                                end: 1580,
+                                file: FileID(0x65BE032B5F19EADD),
+                            },
                         },
                         variant: [],
                         arguments: [],
@@ -497,9 +542,14 @@ Class {
                     AttributeTerm {
                         kind: Normal,
                         path: NamePathNode {
-                            names: [
+                            path: [
                                 Identifier("inline", 1670..1676),
                             ],
+                            span: FileSpan {
+                                start: 1670,
+                                end: 1676,
+                                file: FileID(0x65BE032B5F19EADD),
+                            },
                         },
                         variant: [],
                         arguments: [],
@@ -565,9 +615,14 @@ Class {
             AttributeTerm {
                 kind: Normal,
                 path: NamePathNode {
-                    names: [
+                    path: [
                         Identifier("derive", 1767..1773),
                     ],
+                    span: FileSpan {
+                        start: 1767,
+                        end: 1773,
+                        file: FileID(0x65BE032B5F19EADD),
+                    },
                 },
                 variant: [],
                 arguments: [],
@@ -585,9 +640,14 @@ Class {
             AttributeTerm {
                 kind: Normal,
                 path: NamePathNode {
-                    names: [
+                    path: [
                         Identifier("derive", 1829..1835),
                     ],
+                    span: FileSpan {
+                        start: 1829,
+                        end: 1835,
+                        file: FileID(0x65BE032B5F19EADD),
+                    },
                 },
                 variant: [],
                 arguments: [],
@@ -604,9 +664,14 @@ Class {
                     AttributeTerm {
                         kind: Normal,
                         path: NamePathNode {
-                            names: [
+                            path: [
                                 Identifier("call", 1885..1889),
                             ],
+                            span: FileSpan {
+                                start: 1885,
+                                end: 1889,
+                                file: FileID(0x65BE032B5F19EADD),
+                            },
                         },
                         variant: [],
                         arguments: [],
@@ -652,9 +717,14 @@ Class {
                     AttributeTerm {
                         kind: Normal,
                         path: NamePathNode {
-                            names: [
+                            path: [
                                 Identifier("call1", 2034..2039),
                             ],
+                            span: FileSpan {
+                                start: 2034,
+                                end: 2039,
+                                file: FileID(0x65BE032B5F19EADD),
+                            },
                         },
                         variant: [],
                         arguments: [],
@@ -664,9 +734,14 @@ Class {
                     AttributeTerm {
                         kind: Normal,
                         path: NamePathNode {
-                            names: [
+                            path: [
                                 Identifier("call2", 2045..2050),
                             ],
+                            span: FileSpan {
+                                start: 2045,
+                                end: 2050,
+                                file: FileID(0x65BE032B5F19EADD),
+                            },
                         },
                         variant: [],
                         arguments: [],

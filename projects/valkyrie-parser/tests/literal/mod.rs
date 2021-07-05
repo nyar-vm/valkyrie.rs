@@ -1,6 +1,6 @@
 use nyar_error::{third_party::Url, FileID};
 use std::path::PathBuf;
-use valkyrie_ast::{ProgramRoot, StringInterpreter, StringTextNode};
+use valkyrie_ast::{helper::StringInterpreter, ProgramRoot, StringTextNode};
 use valkyrie_parser::{ProgramContext, RangeLiteralNode, StringFormatterBuilder};
 
 use super::*;

@@ -48,7 +48,8 @@ pub use self::{
     values::ValkyrieValue,
 };
 pub use nyar_error::{
-    Failure, FileCache, FileID, NyarError as ValkyrieError, Result as ValkyrieResult, RuntimeError, Success, SyntaxError,
+    Failure, FileCache, FileID, MissingError, NyarError as ValkyrieError, Result as ValkyrieResult, RuntimeError, Success,
+    SyntaxError,
 };
 pub use nyar_number::{Num, NyarReal as ValkyrieNumber, One, Zero};
 pub use shredder::Gc;

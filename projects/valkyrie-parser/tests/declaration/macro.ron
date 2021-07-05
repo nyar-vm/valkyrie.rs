@@ -8,9 +8,14 @@ ApplyCallNode {
 }
 FunctionDeclaration {
     name: NamePathNode {
-        names: [
+        path: [
             Identifier("A", 186..187),
         ],
+        span: FileSpan {
+            start: 186,
+            end: 187,
+            file: FileID(0xEB4A6BD4F8D3AE72),
+        },
     },
     kind: Macro,
     annotations: Annotation {
@@ -18,9 +23,14 @@ FunctionDeclaration {
             AttributeTerm {
                 kind: Normal,
                 path: NamePathNode {
-                    names: [
+                    path: [
                         Identifier("derive", 124..130),
                     ],
+                    span: FileSpan {
+                        start: 124,
+                        end: 130,
+                        file: FileID(0xEB4A6BD4F8D3AE72),
+                    },
                 },
                 variant: [],
                 arguments: [],
@@ -39,9 +49,14 @@ FunctionDeclaration {
 }
 FunctionDeclaration {
     name: NamePathNode {
-        names: [
+        path: [
             Identifier("print", 215..220),
         ],
+        span: FileSpan {
+            start: 215,
+            end: 220,
+            file: FileID(0xEB4A6BD4F8D3AE72),
+        },
     },
     kind: Macro,
     annotations: Annotation {
@@ -56,9 +71,14 @@ FunctionDeclaration {
 }
 FunctionDeclaration {
     name: NamePathNode {
-        names: [
+        path: [
             Identifier("name", 234..238),
         ],
+        span: FileSpan {
+            start: 234,
+            end: 238,
+            file: FileID(0xEB4A6BD4F8D3AE72),
+        },
     },
     kind: Micro,
     annotations: Empty,
@@ -107,9 +127,14 @@ FunctionDeclaration {
 }
 FunctionDeclaration {
     name: NamePathNode {
-        names: [
+        path: [
             Identifier("outer", 322..327),
         ],
+        span: FileSpan {
+            start: 322,
+            end: 327,
+            file: FileID(0xEB4A6BD4F8D3AE72),
+        },
     },
     kind: Macro,
     annotations: Empty,
@@ -142,9 +167,14 @@ FunctionDeclaration {
 }
 FunctionDeclaration {
     name: NamePathNode {
-        names: [
+        path: [
             Identifier("inner", 393..398),
         ],
+        span: FileSpan {
+            start: 393,
+            end: 398,
+            file: FileID(0xEB4A6BD4F8D3AE72),
+        },
     },
     kind: Micro,
     annotations: Empty,
@@ -191,9 +221,14 @@ FunctionDeclaration {
 }
 FunctionDeclaration {
     name: NamePathNode {
-        names: [
+        path: [
             Identifier("main", 538..542),
         ],
+        span: FileSpan {
+            start: 538,
+            end: 542,
+            file: FileID(0xEB4A6BD4F8D3AE72),
+        },
     },
     kind: Micro,
     annotations: Annotation {

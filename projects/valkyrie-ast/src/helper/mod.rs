@@ -5,8 +5,10 @@ use core::{
     ops::Range,
 };
 
+use crate::{NumberLiteralNode, StringTextNode};
 #[cfg(feature = "lispify")]
 pub use lispify::{Lisp, Lispify};
+use nyar_error::{NyarError, Validation};
 #[cfg(feature = "pretty-print")]
 pub use pretty_print::{PrettyPrint, PrettyProvider, PrettyTree};
 
@@ -23,6 +25,22 @@ pub trait ValkyrieNode {
     fn get_end(&self) -> usize {
         self.get_range().end
     }
+}
+
+/// A string interpreter
+pub trait StringInterpreter {
+    /// The output type of the interpreter
+    type Output;
+    /// Interpret the string
+    fn interpret(&mut self, text: &StringTextNode) -> Validation<Self::Output>;
+}
+
+/// A string interpreter
+pub trait NumberInterpreter {
+    /// The output type of the interpreter
+    type Output;
+    /// Interpret the string
+    fn interpret(&mut self, n: &NumberLiteralNode) -> Result<Self::Output, NyarError>;
 }
 
 pub(crate) struct WrapDisplay<'a, T> {

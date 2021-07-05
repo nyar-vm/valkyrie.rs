@@ -20,12 +20,11 @@ impl Display for IdentifierNode {
 
 impl Display for NamePathNode {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
-        let mut iter = self.names.iter();
-        if let Some(first) = iter.next() {
-            write!(f, "{}", first)?;
-            for item in iter {
-                write!(f, "∷{}", item)?;
+        for (index, id) in self.path.iter().enumerate() {
+            if index != 0 {
+                f.write_str("∷")?;
             }
+            f.write_str(&id.name)?
         }
         Ok(())
     }
@@ -82,7 +81,7 @@ impl PrettyPrint for LambdaSlotNode {
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for NamePathNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
-        theme.join(self.names.clone(), "∷")
+        theme.join(self.path.clone(), "∷")
     }
 }
 #[cfg(feature = "lispify")]

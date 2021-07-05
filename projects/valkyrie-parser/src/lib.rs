@@ -22,4 +22,4 @@ mod utils;
 //
 // pub use crate::{statements::ReplRoot, traits::ThisParser};
 // pub use valkyrie_ast::ProgramRoot;
-pub use crate::string_like::formatted::StringFormatterBuilder;
+pub use crate::string_like::{big_number::NumberBuilder, formatted::StringFormatterBuilder};

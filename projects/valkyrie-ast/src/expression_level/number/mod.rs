@@ -19,19 +19,23 @@ pub struct NumberLiteralNode {
     /// unit of the input number
     pub unit: Option<IdentifierNode>,
     /// The range of the node
-    pub span: Range<u32>,
+    pub span: FileSpan,
 }
 
 impl ValkyrieNode for NumberLiteralNode {
     fn get_range(&self) -> Range<usize> {
-        Range { start: self.span.start as usize, end: self.span.end as usize }
+        self.span.get_range()
     }
 }
 impl NumberLiteralNode {
     /// Create a new number with given base
-    pub fn new(base: u32, span: Range<u32>) -> Self {
-        Self { base, integer: String::new(), decimal: String::new(), shift: 0, unit: None, span }
+    pub fn new(base: u32) -> Self {
+        Self { base, integer: String::new(), decimal: String::new(), shift: 0, unit: None, span: FileSpan::default() }
     }
+    pub fn set_span(&mut self, span: FileSpan) {
+        self.span = span
+    }
+
     /// Set the digits of the number
     pub fn set_integer(&mut self, text: &str, file: FileID, start: usize) -> Result<(), NyarError> {
         self.integer = self.make_number(text, file, start)?;

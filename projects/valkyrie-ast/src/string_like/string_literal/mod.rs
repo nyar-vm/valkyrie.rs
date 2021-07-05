@@ -23,14 +23,6 @@ pub struct StringLiteralNode {
     pub handler: Option<IdentifierNode>,
 }
 
-/// A string interpreter
-pub trait StringInterpreter {
-    /// The output type of the interpreter
-    type Output;
-    /// Interpret the string
-    fn interpret(&mut self, text: &StringTextNode) -> Validation<Self::Output>;
-}
-
 impl ValkyrieNode for StringTextNode {
     fn get_range(&self) -> Range<usize> {
         Range { start: self.span.start as usize, end: self.span.end as usize }

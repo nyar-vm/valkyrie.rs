@@ -11,7 +11,7 @@ impl PrettyPrint for NamespaceDeclaration {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         let head = theme.keyword(self.kind.as_str());
         let space = " ";
-        let path = theme.join(self.path.names.clone(), ".");
+        let path = theme.join(self.path.path.clone(), ".");
         let semi = ";";
         head.append(space).append(path).append(semi)
     }

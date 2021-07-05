@@ -88,11 +88,11 @@ impl Debug for ValkyrieID {
 
 impl From<NamePathNode> for ValkyrieIDEntry {
     fn from(value: NamePathNode) -> Self {
-        let span = match value.names.as_slice() {
+        let span = match value.path.as_slice() {
             [.., last] => last.span,
             _ => Default::default(),
         };
-        ValkyrieIDEntry::from_iter(value.names.into_iter().map(|s| s.name)).with_span(span)
+        ValkyrieIDEntry::from_iter(value.path.into_iter().map(|s| s.name)).with_span(span)
     }
 }
 impl From<IdentifierNode> for ValkyrieIDEntry {

@@ -71,7 +71,7 @@ pub use crate::{
     },
     string_like::{
         string_formatter::{FormatterNode, FormatterTerm},
-        string_literal::{StringInterpreter, StringLiteralNode, StringTextNode},
+        string_literal::{StringLiteralNode, StringTextNode},
         string_template::{
             TemplateCloseNode, TemplateCommentNode, TemplateInlineNode, TemplateLineType, TemplateNode, TemplateOpenNode,
         },
