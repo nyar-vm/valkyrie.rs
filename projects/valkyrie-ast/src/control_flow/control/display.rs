@@ -30,8 +30,11 @@ impl Debug for ControlNode {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         let w = &mut f.debug_struct("Control");
         w.field("kind", &self.kind);
-        if !self.label.is_empty() {
-            w.field("label", &self.label);
+        match &self.label {
+            LabelNode::Nearest => {}
+            LabelNode::Named(s) => {
+                w.field("label", &s.name);
+            }
         }
         if let Some(e) = &self.expression {
             w.field("expression", e);

@@ -17,7 +17,7 @@ mod string_like;
 
 pub use crate::{
     control_flow::{
-        control::{ControlKind, ControlNode},
+        control::{ControlKind, ControlNode, LabelNode},
         do_catch::{MatchCallNode, MatchKind, MatchStatement},
         do_try::TryStatement,
         jmp_guard::{GuardPattern, GuardStatement},
