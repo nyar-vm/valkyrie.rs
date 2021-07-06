@@ -2,7 +2,7 @@ namespace? tests.import;
 
 using;
 using package;
-using package/`module`.name::*;
+using package.`module`.name::*;
 
 using numpy as 女朋友
 using `tensor-flow` as tfboys

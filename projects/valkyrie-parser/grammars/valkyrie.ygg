@@ -70,12 +70,12 @@ union ImportTerm {
 class ImportAll ^ {
     (path:Identifier NS_CONCAT)+ OP_IMPORT_ALL
 }
-// `import` package.module.name { space }
+/// `import` package.module.name { space }
 class ImportSpace ^ {
-    path:Identifier (NS_CONCAT path:Identifier)+ NS_CONCAT? body:ImportBlock
+    path:Identifier (NS_CONCAT path:Identifier)* NS_CONCAT? body:ImportBlock
 }
 /// import package::module::@macro as @macro
-// import package::module::macro as @macro
+/// import package::module::macro as @macro
 class ImportName ^ {
     (path:Identifier NS_CONCAT)* item:ImportNameItem alias:ImportAs
 }
@@ -791,7 +791,7 @@ atomic class DecimalX ^ {
 @railway(false)
 atomic token {
     PROPORTION: /∷|::/
-    NS_CONCAT: /[.∷\/]|::/
+    NS_CONCAT: /[.∷]|::/
     COLON: [:：]
     ARROW1: /[:：⟶]|->/
     COMMA: [,，]

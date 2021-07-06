@@ -445,7 +445,7 @@ fn parse_import_space(state: Input) -> Output {
                             .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("path")))
                             .and_then(|s| builtin_ignore(s))
                             .and_then(|s| {
-                                s.repeat(1..4294967295, |s| {
+                                s.repeat(0..4294967295, |s| {
                                     s.sequence(|s| {
                                         Ok(s).and_then(|s| builtin_ignore(s)).and_then(|s| {
                                             s.sequence(|s| {
@@ -3641,7 +3641,7 @@ fn parse_ns_concat(state: Input) -> Output {
     state.rule(ValkyrieRule::NS_CONCAT, |s| {
         s.match_regex({
             static REGEX: OnceLock<Regex> = OnceLock::new();
-            REGEX.get_or_init(|| Regex::new("^(?x)([.∷/]|::)").unwrap())
+            REGEX.get_or_init(|| Regex::new("^(?x)([.∷]|::)").unwrap())
         })
     })
 }
