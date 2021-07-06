@@ -19,12 +19,23 @@ impl PrettyPrint for ImportStatement {
     }
 }
 
+impl Debug for ImportTermNode {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        match self {
+            Self::Group(node) => Debug::fmt(node, f),
+            Self::All(node) => Debug::fmt(node, f),
+            Self::Alias(node) => Debug::fmt(node, f),
+        }
+    }
+}
+
 #[cfg(feature = "pretty-print")]
 impl PrettyPrint for ImportTermNode {
     fn pretty(&self, theme: &PrettyProvider) -> PrettyTree {
         match self {
             Self::Alias(node) => node.pretty(theme),
             Self::Group(node) => node.pretty(theme),
+            Self::All(node) => node.pretty(theme),
         }
     }
 }

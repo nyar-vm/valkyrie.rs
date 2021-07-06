@@ -1957,7 +1957,7 @@ impl YggdrasilNode for ControlFlowNode {
             annotation_term: pair
                 .take_tagged_items::<AnnotationTermNode>(Cow::Borrowed("annotation_term"))
                 .collect::<Result<Vec<_>, _>>()?,
-            jump_label: pair.take_tagged_option::<JumpLabelNode>(Cow::Borrowed("jump_label")),
+            jump_label: pair.take_tagged_one::<JumpLabelNode>(Cow::Borrowed("jump_label"))?,
             kw_control: pair.take_tagged_one::<KwControlNode>(Cow::Borrowed("kw_control"))?,
             main_expression: pair.take_tagged_option::<MainExpressionNode>(Cow::Borrowed("main_expression")),
             span: Range { start: _span.start() as u32, end: _span.end() as u32 },
@@ -1982,7 +1982,7 @@ impl YggdrasilNode for JumpLabelNode {
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
         Ok(Self {
-            identifier: pair.take_tagged_one::<IdentifierNode>(Cow::Borrowed("identifier"))?,
+            identifier: pair.take_tagged_option::<IdentifierNode>(Cow::Borrowed("identifier")),
             span: Range { start: _span.start() as u32, end: _span.end() as u32 },
         })
     }

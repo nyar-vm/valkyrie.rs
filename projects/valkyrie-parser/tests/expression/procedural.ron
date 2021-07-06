@@ -1,127 +1,55 @@
 ProceduralNode {
     kind: Normal,
-    path: NamePathNode {
-        path: [
-            Identifier("call", 1..5),
-        ],
-        span: FileSpan {
-            start: 1,
-            end: 5,
-            file: FileID(0xE48A4B68E0DBAA2),
-        },
-    },
+    path: call,
     arguments: [],
     domain: None,
     span: 0..6,
 }
 ProceduralNode {
     kind: Normal,
-    path: NamePathNode {
-        path: [
-            Identifier("call", 7..11),
-        ],
-        span: FileSpan {
-            start: 7,
-            end: 11,
-            file: FileID(0xE48A4B68E0DBAA2),
-        },
-    },
+    path: call,
     arguments: [],
     domain: None,
     span: 6..14,
 }
 ProceduralNode {
     kind: Normal,
-    path: NamePathNode {
-        path: [
-            Identifier("call", 15..19),
-        ],
-        span: FileSpan {
-            start: 15,
-            end: 19,
-            file: FileID(0xE48A4B68E0DBAA2),
-        },
-    },
+    path: call,
     arguments: [],
     domain: None,
     span: 14..25,
 }
 ProceduralNode {
     kind: Normal,
-    path: NamePathNode {
-        path: [
-            Identifier("call", 26..30),
-        ],
-        span: FileSpan {
-            start: 26,
-            end: 30,
-            file: FileID(0xE48A4B68E0DBAA2),
-        },
-    },
+    path: call,
     arguments: [],
     domain: None,
     span: 25..45,
 }
 ProceduralNode {
     kind: Normal,
-    path: NamePathNode {
-        path: [
-            Identifier("call", 47..51),
-        ],
-        span: FileSpan {
-            start: 47,
-            end: 51,
-            file: FileID(0xE48A4B68E0DBAA2),
-        },
-    },
+    path: call,
     arguments: [],
     domain: None,
     span: 46..61,
 }
 ProceduralNode {
     kind: Normal,
-    path: NamePathNode {
-        path: [
-            Identifier("call", 63..67),
-        ],
-        span: FileSpan {
-            start: 63,
-            end: 67,
-            file: FileID(0xE48A4B68E0DBAA2),
-        },
-    },
+    path: call,
     arguments: [],
     domain: None,
     span: 62..79,
 }
 ProceduralNode {
     kind: Normal,
-    path: NamePathNode {
-        path: [
-            Identifier("call", 81..85),
-        ],
-        span: FileSpan {
-            start: 81,
-            end: 85,
-            file: FileID(0xE48A4B68E0DBAA2),
-        },
-    },
+    path: call,
     arguments: [],
     domain: None,
     span: 80..101,
 }
 ProceduralNode {
     kind: Normal,
-    path: NamePathNode {
-        path: [
-            Identifier("call", 103..107),
-        ],
-        span: FileSpan {
-            start: 103,
-            end: 107,
-            file: FileID(0xE48A4B68E0DBAA2),
-        },
-    },
+    path: call,
     arguments: [],
     domain: None,
     span: 102..121,

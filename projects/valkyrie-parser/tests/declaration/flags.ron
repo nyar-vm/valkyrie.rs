@@ -297,16 +297,7 @@ Flags {
         attributes: [
             AttributeTerm {
                 kind: Normal,
-                path: NamePathNode {
-                    path: [
-                        Identifier("layout", 262..268),
-                    ],
-                    span: FileSpan {
-                        start: 262,
-                        end: 268,
-                        file: FileID(0x19D63BD9570689AD),
-                    },
-                },
+                path: layout,
                 variant: [],
                 arguments: [],
                 domain: None,

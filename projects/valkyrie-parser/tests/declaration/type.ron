@@ -71,7 +71,7 @@ InfixNode {
     },
     rhs: Integer,
 }
-Class {
+DefineClass {
     name: Integer,
     terms: [
         DomainDeclaration {
@@ -83,16 +83,7 @@ Class {
     span: 115..251,
 }
 FunctionDeclaration {
-    name: NamePathNode {
-        path: [
-            Identifier("five", 260..264),
-        ],
-        span: FileSpan {
-            start: 260,
-            end: 264,
-            file: FileID(0xEDD681CDAEEFAA2C),
-        },
-    },
+    name: five,
     kind: Micro,
     annotations: Empty,
     generics: [],
@@ -105,31 +96,13 @@ FunctionDeclaration {
     ],
 }
 FunctionDeclaration {
-    name: NamePathNode {
-        path: [
-            Identifier("tuple", 348..353),
-        ],
-        span: FileSpan {
-            start: 348,
-            end: 353,
-            file: FileID(0xEDD681CDAEEFAA2C),
-        },
-    },
+    name: tuple,
     kind: Micro,
     annotations: Annotation {
         attributes: [
             AttributeTerm {
                 kind: Normal,
-                path: NamePathNode {
-                    path: [
-                        Identifier("ensures", 285..292),
-                    ],
-                    span: FileSpan {
-                        start: 285,
-                        end: 292,
-                        file: FileID(0xEDD681CDAEEFAA2C),
-                    },
-                },
+                path: ensures,
                 variant: [],
                 arguments: [],
                 domain: None,
@@ -183,16 +156,7 @@ FunctionDeclaration {
     ],
 }
 FunctionDeclaration {
-    name: NamePathNode {
-        path: [
-            Identifier("all_zeroes", 416..426),
-        ],
-        span: FileSpan {
-            start: 416,
-            end: 426,
-            file: FileID(0xEDD681CDAEEFAA2C),
-        },
-    },
+    name: all_zeroes,
     kind: Micro,
     annotations: Annotation {
         modifiers: [

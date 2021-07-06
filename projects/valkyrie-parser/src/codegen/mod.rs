@@ -1066,7 +1066,7 @@ pub struct IfGuardNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ControlFlowNode {
     pub annotation_term: Vec<AnnotationTermNode>,
-    pub jump_label: Option<JumpLabelNode>,
+    pub jump_label: JumpLabelNode,
     pub kw_control: KwControlNode,
     pub main_expression: Option<MainExpressionNode>,
     pub span: Range<u32>,
@@ -1074,7 +1074,7 @@ pub struct ControlFlowNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct JumpLabelNode {
-    pub identifier: IdentifierNode,
+    pub identifier: Option<IdentifierNode>,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]

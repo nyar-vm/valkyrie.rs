@@ -1631,7 +1631,7 @@ fn parse_control_flow(state: Input) -> Output {
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_kw_control(s).and_then(|s| s.tag_node("kw_control")))
                 .and_then(|s| builtin_ignore(s))
-                .and_then(|s| s.optional(|s| parse_jump_label(s).and_then(|s| s.tag_node("jump_label"))))
+                .and_then(|s| parse_jump_label(s).and_then(|s| s.tag_node("jump_label")))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| s.optional(|s| parse_main_expression(s).and_then(|s| s.tag_node("main_expression"))))
         })
@@ -1640,10 +1640,12 @@ fn parse_control_flow(state: Input) -> Output {
 #[inline]
 fn parse_jump_label(state: Input) -> Output {
     state.rule(ValkyrieRule::JumpLabel, |s| {
-        s.sequence(|s| {
-            Ok(s)
-                .and_then(|s| builtin_text(s, "^", false))
-                .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
+        s.optional(|s| {
+            s.sequence(|s| {
+                Ok(s)
+                    .and_then(|s| builtin_text(s, "^", false))
+                    .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
+            })
         })
     })
 }

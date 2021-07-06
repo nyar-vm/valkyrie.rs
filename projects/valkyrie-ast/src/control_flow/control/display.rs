@@ -16,6 +16,9 @@ impl ControlKind {
             Self::YieldBreak => "yield break",
             Self::YieldFrom => "yield from",
             Self::YieldSend => "yield wait",
+            Self::Await => "await",
+            Self::AwaitNever => "await?",
+            Self::AwaitBlockOn => "await!",
         }
     }
 }

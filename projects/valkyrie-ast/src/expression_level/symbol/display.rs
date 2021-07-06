@@ -17,8 +17,7 @@ impl Display for IdentifierNode {
         f.write_str(self.name.as_str())
     }
 }
-
-impl Display for NamePathNode {
+impl Debug for NamePathNode {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         for (index, id) in self.path.iter().enumerate() {
             if index != 0 {
@@ -27,6 +26,11 @@ impl Display for NamePathNode {
             f.write_str(&id.name)?
         }
         Ok(())
+    }
+}
+impl Display for NamePathNode {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        Debug::fmt(self, f)
     }
 }
 #[cfg(feature = "pretty-print")]

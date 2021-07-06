@@ -5,7 +5,7 @@ use nyar_error::FileSpan;
 mod display;
 mod iters;
 
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum ImportKind {
     /// `import!`, share import item in all files under same namespace
@@ -32,7 +32,7 @@ pub struct ImportStatement {
 }
 
 /// A valid import term of the import statement
-#[derive(Clone, Debug, PartialEq, Eq, Hash, From)]
+#[derive(Clone, PartialEq, Eq, Hash, From)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum ImportTermNode {
     /// `a.b.c.{ ... }`
@@ -49,7 +49,7 @@ impl Default for ImportTermNode {
     }
 }
 
-/// `path { group }`
+/// `group.path { item1, item2 }`
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ImportGroupNode {
@@ -65,6 +65,13 @@ pub struct ImportGroupNode {
 pub struct ImportAllNode {
     /// The path of the import
     pub path: Vec<IdentifierNode>,
+    pub span: Range<u32>,
+}
+
+impl ValkyrieNode for ImportAllNode {
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
+    }
 }
 
 /// `path as alias`
@@ -103,8 +110,6 @@ impl Default for ImportResolvedKind {
 /// A resolved import item
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 pub struct ImportResolvedItem {
-    /// The annotation of the import
-    pub annotation: Option<Rc<AttributeList>>,
     /// The path of the import
     pub path: Vec<Box<str>>,
     /// The alias of the import
@@ -177,23 +182,25 @@ pub enum ImportState {
 impl ImportResolvedItem {
     /// Add external identifiers
     pub fn join_external(&self, name: &IdentifierNode) -> Self {
-        Self { annotation: Some(Rc::new(name.clone())), ..self.clone() }
+        todo!()
     }
     /// Join import names
     pub fn join_name(&self, name: &IdentifierNode) -> Self {
-        let mut path = self.path.clone();
-        path.push(name.clone());
-        Self { path, ..self.clone() }
+        todo!()
     }
     /// Join a path to the import
     pub fn join_path(&self, namepath: &[IdentifierNode]) -> Self {
-        let mut path = self.path.clone();
-        path.extend_from_slice(namepath);
-        Self { path, ..self.clone() }
+        todo!()
     }
     /// Join an alias to the import
-    pub fn join_alias(&self, alias: &IdentifierNode) -> Self {
-        Self { kind: Some(alias.clone()), ..self.clone() }
+    fn join_alias(&self, alias: &ImportAliasNode) -> Self {
+        todo!()
+    }
+    fn join_all(mut self, alias: &ImportAllNode) -> Self {
+        self.span.set_range(alias.get_range());
+        self.path.extend(alias.path.iter().map(|s| Box::from(s.name.as_str())));
+        self.kind = ImportResolvedKind::All;
+        self
     }
 }
 
@@ -212,13 +219,13 @@ impl ImportTermNode {
     fn resolve(&self, parent: &ImportResolvedItem, all: &mut Vec<ImportResolvedItem>) {
         match self {
             ImportTermNode::Alias(alias) => {
-                all.push(parent.join_path(&alias.path.names).join_alias(&alias.alias));
+                all.push(parent.clone().join_alias(alias));
             }
             ImportTermNode::Group(group) => {
-                let root = parent.join_path(&group.path.names);
-                for item in &group.group {
-                    item.resolve(&root, all);
-                }
+                // let root = parent.join_path(&group.path.names);
+                // for item in &group.group {
+                //     item.resolve(&root, all);
+                // }
             }
             ImportTermNode::All(all) => {}
         }

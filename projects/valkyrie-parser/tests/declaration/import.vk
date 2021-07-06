@@ -11,5 +11,19 @@ using { };
 using package {
     project.first.{}
     project::second::{}
-    project/third/{}
 };
+
+using #Serialize;
+using @derialize;
+using serde.#Serialize;
+using serde::@derialize;
+
+using serde::{#Serialize, #`Deserialize`}
+using serde::{@serialize, @`deserialize`}
+
+using {
+    project.`class` as @`class`;
+    project.`union` as #`union`;
+    project.@`enumerate` as `enumerate`
+    project.#`interface` as `interface`
+}

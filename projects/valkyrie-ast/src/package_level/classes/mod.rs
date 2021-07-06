@@ -39,8 +39,8 @@ pub struct ClassDeclaration {
 impl Debug for ClassDeclaration {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         let w = &mut match self.kind {
-            ClassKind::Class => f.debug_struct("Class"),
-            ClassKind::Structure => f.debug_struct("Structure"),
+            ClassKind::Class => f.debug_struct("DefineClass"),
+            ClassKind::Structure => f.debug_struct("DefineStructure"),
         };
         // if !self.constraint.is_empty() {
         //     w.field("constraint", &self.constraint);

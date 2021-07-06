@@ -1,8 +1,14 @@
 use super::*;
+use yggdrasil_rt::YggdrasilNode;
 
 impl crate::DefineImportNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<ImportStatement> {
-        Ok(ImportStatement { annotation: Default::default(), term: self.term(ctx), span: self.span.clone() })
+        Ok(ImportStatement {
+            annotation: Default::default(),
+            kind: ImportKind::Shared,
+            term: self.term(ctx),
+            span: ctx.file.with_range(self.get_range()),
+        })
     }
     fn term(&self, ctx: &mut ProgramState) -> ImportTermNode {
         if let Some(s) = self.import_term.as_ref().and_then(|v| v.build(ctx)) {
@@ -40,7 +46,7 @@ impl crate::ImportTermNode {
 
 impl crate::ImportAllNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> ImportAllNode {
-        ImportAllNode { path: self.path.iter().map(|v| v.build(ctx)).collect() }
+        ImportAllNode { path: self.path.iter().map(|v| v.build(ctx)).collect(), span: self.span.clone() }
     }
 }
 

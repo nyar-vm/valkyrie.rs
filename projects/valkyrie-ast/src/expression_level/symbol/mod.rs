@@ -13,7 +13,7 @@ pub struct IdentifierNode {
 }
 
 /// `package∷module∷name`
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Clone, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct NamePathNode {
     /// The names of the identifier.

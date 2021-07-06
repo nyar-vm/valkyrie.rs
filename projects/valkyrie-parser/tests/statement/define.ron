@@ -1,14 +1,5 @@
 FunctionDeclaration {
-    name: NamePathNode {
-        path: [
-            Identifier("method", 9..15),
-        ],
-        span: FileSpan {
-            start: 9,
-            end: 15,
-            file: FileID(0xFD972BB9C41553A3),
-        },
-    },
+    name: method,
     kind: Micro,
     annotations: Empty,
     generics: [],
@@ -17,16 +8,7 @@ FunctionDeclaration {
     body: [],
 }
 FunctionDeclaration {
-    name: NamePathNode {
-        path: [
-            Identifier("method", 36..42),
-        ],
-        span: FileSpan {
-            start: 36,
-            end: 42,
-            file: FileID(0xFD972BB9C41553A3),
-        },
-    },
+    name: method,
     kind: Micro,
     annotations: Annotation {
         modifiers: [
@@ -39,16 +21,7 @@ FunctionDeclaration {
     body: [],
 }
 FunctionDeclaration {
-    name: NamePathNode {
-        path: [
-            Identifier("method", 57..63),
-        ],
-        span: FileSpan {
-            start: 57,
-            end: 63,
-            file: FileID(0xFD972BB9C41553A3),
-        },
-    },
+    name: method,
     kind: Micro,
     annotations: Empty,
     generics: [],
@@ -67,16 +40,7 @@ FunctionDeclaration {
     body: [],
 }
 FunctionDeclaration {
-    name: NamePathNode {
-        path: [
-            Identifier("method", 104..110),
-        ],
-        span: FileSpan {
-            start: 104,
-            end: 110,
-            file: FileID(0xFD972BB9C41553A3),
-        },
-    },
+    name: method,
     kind: Micro,
     annotations: Empty,
     generics: [],
@@ -91,16 +55,7 @@ FunctionDeclaration {
     body: [],
 }
 FunctionDeclaration {
-    name: NamePathNode {
-        path: [
-            Identifier("method", 149..155),
-        ],
-        span: FileSpan {
-            start: 149,
-            end: 155,
-            file: FileID(0xFD972BB9C41553A3),
-        },
-    },
+    name: method,
     kind: Micro,
     annotations: Empty,
     generics: [],
@@ -111,16 +66,7 @@ FunctionDeclaration {
     body: [],
 }
 FunctionDeclaration {
-    name: NamePathNode {
-        path: [
-            Identifier("method", 191..197),
-        ],
-        span: FileSpan {
-            start: 191,
-            end: 197,
-            file: FileID(0xFD972BB9C41553A3),
-        },
-    },
+    name: method,
     kind: Micro,
     annotations: Empty,
     generics: [],
@@ -129,16 +75,7 @@ FunctionDeclaration {
     body: [],
 }
 FunctionDeclaration {
-    name: NamePathNode {
-        path: [
-            Identifier("method", 236..242),
-        ],
-        span: FileSpan {
-            start: 236,
-            end: 242,
-            file: FileID(0xFD972BB9C41553A3),
-        },
-    },
+    name: method,
     kind: Micro,
     annotations: Annotation {
         modifiers: [

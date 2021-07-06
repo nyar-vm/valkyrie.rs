@@ -333,10 +333,10 @@ class IfGuard {
 // === controls === ----------------------------------------------------------------------------------------------------
 class ControlFlow {
     AnnotationTerm*
-    KW_CONTROL JumpLabel? MainExpression?
+    KW_CONTROL JumpLabel MainExpression?
 }
 atomic class JumpLabel {
-    '^' Identifier
+    ('^' Identifier)?
 }
 // === expression === --------------------------------------------------------------------------------------------------
 class ExpressionRoot {

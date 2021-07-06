@@ -16,7 +16,8 @@ pub struct ControlNode {
     pub span: Range<u32>,
 }
 
-#[derive(Clone, PartialEq, Eq, Hash)]
+/// `goto ^label`
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum LabelNode {
     /// Find the nearest loop
@@ -41,16 +42,22 @@ pub enum ControlKind {
     Fallthrough,
     /// `fallthrough! ^label`
     FallthroughUnchecked,
-    /// `return ^label`
+    /// `return ^LABEL`
     Return,
-    /// `resume ^label`
+    /// `resume ^LABEL`
     Resume,
-    /// `yield ^label`
+    /// `yield ^LABEL`
     YieldReturn,
-    /// `yield break ^label`
+    /// `yield break ^LABEL`, `yield! ^LABEL`
     YieldBreak,
-    /// `yield from ^label`
+    /// `yield from iterator`, `yield* iterator`
     YieldFrom,
-    /// `yield wait ^label`
+    /// `let v = yield wait`, `let v = yield?`
     YieldSend,
+    /// `let v = await AWAITABLE`
+    Await,
+    /// `await? AWAITABLE`
+    AwaitNever,
+    /// `violence { await! AWAITABLE }`
+    AwaitBlockOn,
 }

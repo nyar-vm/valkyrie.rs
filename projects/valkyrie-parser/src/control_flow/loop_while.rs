@@ -1,5 +1,4 @@
 use super::*;
-use crate::KwWhileNode;
 
 impl crate::WhileStatementNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<WhileLoop> {
@@ -12,7 +11,7 @@ impl crate::WhileStatementNode {
     }
 }
 
-impl KwWhileNode {
+impl crate::KwWhileNode {
     pub(crate) fn build(&self) -> WhileLoopKind {
         match self {
             Self::Until => WhileLoopKind::Until,

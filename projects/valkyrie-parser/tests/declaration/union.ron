@@ -7,16 +7,7 @@ Union {
         attributes: [
             AttributeTerm {
                 kind: Normal,
-                path: NamePathNode {
-                    path: [
-                        Identifier("tag", 101..104),
-                    ],
-                    span: FileSpan {
-                        start: 101,
-                        end: 104,
-                        file: FileID(0x2486D6883F25EFE6),
-                    },
-                },
+                path: tag,
                 variant: [],
                 arguments: [],
                 domain: None,
@@ -33,16 +24,7 @@ Union {
         attributes: [
             AttributeTerm {
                 kind: Normal,
-                path: NamePathNode {
-                    path: [
-                        Identifier("tag", 151..154),
-                    ],
-                    span: FileSpan {
-                        start: 151,
-                        end: 154,
-                        file: FileID(0x2486D6883F25EFE6),
-                    },
-                },
+                path: tag,
                 variant: [],
                 arguments: [],
                 domain: None,
@@ -74,16 +56,7 @@ Union {
         attributes: [
             AttributeTerm {
                 kind: Normal,
-                path: NamePathNode {
-                    path: [
-                        Identifier("tag", 276..279),
-                    ],
-                    span: FileSpan {
-                        start: 276,
-                        end: 279,
-                        file: FileID(0x2486D6883F25EFE6),
-                    },
-                },
+                path: tag,
                 variant: [],
                 arguments: [],
                 domain: None,
@@ -483,16 +456,7 @@ ExtendsStatement {
             body: [
                 ProceduralNode {
                     kind: Normal,
-                    path: NamePathNode {
-                        path: [
-                            Identifier("matches", 1594..1601),
-                        ],
-                        span: FileSpan {
-                            start: 1594,
-                            end: 1601,
-                            file: FileID(0x2486D6883F25EFE6),
-                        },
-                    },
+                    path: matches,
                     arguments: [],
                     domain: None,
                     span: 1593..1625,
@@ -511,16 +475,7 @@ ExtendsStatement {
             body: [
                 ProceduralNode {
                     kind: Normal,
-                    path: NamePathNode {
-                        path: [
-                            Identifier("matches", 1662..1669),
-                        ],
-                        span: FileSpan {
-                            start: 1662,
-                            end: 1669,
-                            file: FileID(0x2486D6883F25EFE6),
-                        },
-                    },
+                    path: matches,
                     arguments: [],
                     domain: None,
                     span: 1661..1693,

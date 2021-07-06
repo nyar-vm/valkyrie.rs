@@ -2,19 +2,19 @@ NamespaceDeclaration {
     kind: Standalone,
     path: declaration∷classes,
 }
-Class {
+DefineClass {
     name: Base1,
     span: 33..49,
 }
-Class {
+DefineClass {
     name: Base2,
     span: 49..67,
 }
-Structure {
+DefineStructure {
     name: Base3,
     span: 67..89,
 }
-Class {
+DefineClass {
     annotations: Annotation {
         modifiers: [
             value,
@@ -23,21 +23,12 @@ Class {
     name: B,
     span: 89..113,
 }
-Class {
+DefineClass {
     annotations: Annotation {
         attributes: [
             AttributeTerm {
                 kind: Normal,
-                path: NamePathNode {
-                    path: [
-                        Identifier("derive", 114..120),
-                    ],
-                    span: FileSpan {
-                        start: 114,
-                        end: 120,
-                        file: FileID(0x65BE032B5F19EADD),
-                    },
-                },
+                path: derive,
                 variant: [],
                 arguments: [],
                 domain: None,
@@ -48,7 +39,7 @@ Class {
     name: Inherit1,
     span: 113..219,
 }
-Class {
+DefineClass {
     name: Inherit2,
     terms: [
         Field {
@@ -81,7 +72,7 @@ Class {
     ],
     span: 219..329,
 }
-Class {
+DefineClass {
     name: B,
     terms: [
         Field {
@@ -93,7 +84,7 @@ Class {
     ],
     span: 329..392,
 }
-Class {
+DefineClass {
     name: A,
     terms: [
         Method {
@@ -195,21 +186,12 @@ Class {
     ],
     span: 392..673,
 }
-Class {
+DefineClass {
     annotations: Annotation {
         attributes: [
             AttributeTerm {
                 kind: Normal,
-                path: NamePathNode {
-                    path: [
-                        Identifier("Copy", 675..679),
-                    ],
-                    span: FileSpan {
-                        start: 675,
-                        end: 679,
-                        file: FileID(0x65BE032B5F19EADD),
-                    },
-                },
+                path: Copy,
                 variant: [],
                 arguments: [],
                 domain: None,
@@ -217,16 +199,7 @@ Class {
             },
             AttributeTerm {
                 kind: Normal,
-                path: NamePathNode {
-                    path: [
-                        Identifier("Debug", 688..693),
-                    ],
-                    span: FileSpan {
-                        start: 688,
-                        end: 693,
-                        file: FileID(0x65BE032B5F19EADD),
-                    },
-                },
+                path: Debug,
                 variant: [],
                 arguments: [],
                 domain: None,
@@ -234,16 +207,7 @@ Class {
             },
             AttributeTerm {
                 kind: Normal,
-                path: NamePathNode {
-                    path: [
-                        Identifier("derive", 704..710),
-                    ],
-                    span: FileSpan {
-                        start: 704,
-                        end: 710,
-                        file: FileID(0x65BE032B5F19EADD),
-                    },
-                },
+                path: derive,
                 variant: [],
                 arguments: [],
                 domain: None,
@@ -254,21 +218,12 @@ Class {
     name: A,
     span: 673..753,
 }
-Class {
+DefineClass {
     annotations: Annotation {
         attributes: [
             AttributeTerm {
                 kind: Normal,
-                path: NamePathNode {
-                    path: [
-                        Identifier("Encode", 754..760),
-                    ],
-                    span: FileSpan {
-                        start: 754,
-                        end: 760,
-                        file: FileID(0x65BE032B5F19EADD),
-                    },
-                },
+                path: Encode,
                 variant: [],
                 arguments: [],
                 domain: None,
@@ -276,16 +231,7 @@ Class {
             },
             AttributeTerm {
                 kind: Normal,
-                path: NamePathNode {
-                    path: [
-                        Identifier("Decode", 762..768),
-                    ],
-                    span: FileSpan {
-                        start: 762,
-                        end: 768,
-                        file: FileID(0x65BE032B5F19EADD),
-                    },
-                },
+                path: Decode,
                 variant: [],
                 arguments: [],
                 domain: None,
@@ -293,16 +239,7 @@ Class {
             },
             AttributeTerm {
                 kind: Normal,
-                path: NamePathNode {
-                    path: [
-                        Identifier("derive", 771..777),
-                    ],
-                    span: FileSpan {
-                        start: 771,
-                        end: 777,
-                        file: FileID(0x65BE032B5F19EADD),
-                    },
-                },
+                path: derive,
                 variant: [],
                 arguments: [],
                 domain: None,
@@ -320,7 +257,7 @@ Class {
     name: Empty3,
     span: 753..883,
 }
-Class {
+DefineClass {
     annotations: Annotation {
         modifiers: [
             open,
@@ -330,7 +267,7 @@ Class {
     name: Inherit1,
     span: 883..950,
 }
-Class {
+DefineClass {
     annotations: Annotation {
         modifiers: [
             open,
@@ -377,21 +314,12 @@ Class {
     ],
     span: 950..1103,
 }
-Class {
+DefineClass {
     annotations: Annotation {
         attributes: [
             AttributeTerm {
                 kind: Normal,
-                path: NamePathNode {
-                    path: [
-                        Identifier("derive", 1104..1110),
-                    ],
-                    span: FileSpan {
-                        start: 1104,
-                        end: 1110,
-                        file: FileID(0x65BE032B5F19EADD),
-                    },
-                },
+                path: derive,
                 variant: [],
                 arguments: [],
                 domain: None,
@@ -442,7 +370,7 @@ Class {
     ],
     span: 1103..1384,
 }
-Class {
+DefineClass {
     name: ClassA,
     terms: [
         Field {
@@ -492,16 +420,7 @@ Class {
                 attributes: [
                     AttributeTerm {
                         kind: Normal,
-                        path: NamePathNode {
-                            path: [
-                                Identifier("decorator", 1571..1580),
-                            ],
-                            span: FileSpan {
-                                start: 1571,
-                                end: 1580,
-                                file: FileID(0x65BE032B5F19EADD),
-                            },
-                        },
+                        path: decorator,
                         variant: [],
                         arguments: [],
                         domain: None,
@@ -541,16 +460,7 @@ Class {
                 attributes: [
                     AttributeTerm {
                         kind: Normal,
-                        path: NamePathNode {
-                            path: [
-                                Identifier("inline", 1670..1676),
-                            ],
-                            span: FileSpan {
-                                start: 1670,
-                                end: 1676,
-                                file: FileID(0x65BE032B5F19EADD),
-                            },
-                        },
+                        path: inline,
                         variant: [],
                         arguments: [],
                         domain: None,
@@ -609,21 +519,12 @@ Class {
     ],
     span: 1384..1766,
 }
-Class {
+DefineClass {
     annotations: Annotation {
         attributes: [
             AttributeTerm {
                 kind: Normal,
-                path: NamePathNode {
-                    path: [
-                        Identifier("derive", 1767..1773),
-                    ],
-                    span: FileSpan {
-                        start: 1767,
-                        end: 1773,
-                        file: FileID(0x65BE032B5F19EADD),
-                    },
-                },
+                path: derive,
                 variant: [],
                 arguments: [],
                 domain: None,
@@ -634,21 +535,12 @@ Class {
     name: TestClass,
     span: 1766..1828,
 }
-Class {
+DefineClass {
     annotations: Annotation {
         attributes: [
             AttributeTerm {
                 kind: Normal,
-                path: NamePathNode {
-                    path: [
-                        Identifier("derive", 1829..1835),
-                    ],
-                    span: FileSpan {
-                        start: 1829,
-                        end: 1835,
-                        file: FileID(0x65BE032B5F19EADD),
-                    },
-                },
+                path: derive,
                 variant: [],
                 arguments: [],
                 domain: None,
@@ -663,16 +555,7 @@ Class {
                 attributes: [
                     AttributeTerm {
                         kind: Normal,
-                        path: NamePathNode {
-                            path: [
-                                Identifier("call", 1885..1889),
-                            ],
-                            span: FileSpan {
-                                start: 1885,
-                                end: 1889,
-                                file: FileID(0x65BE032B5F19EADD),
-                            },
-                        },
+                        path: call,
                         variant: [],
                         arguments: [],
                         domain: None,
@@ -716,16 +599,7 @@ Class {
                 attributes: [
                     AttributeTerm {
                         kind: Normal,
-                        path: NamePathNode {
-                            path: [
-                                Identifier("call1", 2034..2039),
-                            ],
-                            span: FileSpan {
-                                start: 2034,
-                                end: 2039,
-                                file: FileID(0x65BE032B5F19EADD),
-                            },
-                        },
+                        path: call1,
                         variant: [],
                         arguments: [],
                         domain: None,
@@ -733,16 +607,7 @@ Class {
                     },
                     AttributeTerm {
                         kind: Normal,
-                        path: NamePathNode {
-                            path: [
-                                Identifier("call2", 2045..2050),
-                            ],
-                            span: FileSpan {
-                                start: 2045,
-                                end: 2050,
-                                file: FileID(0x65BE032B5F19EADD),
-                            },
-                        },
+                        path: call2,
                         variant: [],
                         arguments: [],
                         domain: None,

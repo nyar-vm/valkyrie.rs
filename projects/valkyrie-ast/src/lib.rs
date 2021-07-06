@@ -54,8 +54,8 @@ pub use crate::{
         function::{FunctionDeclaration, FunctionKind, FunctionReturnNode, StatementBlock},
         guarantee::{EffectTypeNode, GuaranteeNode},
         import::{
-            ImportAliasItem, ImportAliasNode, ImportAllNode, ImportGroupNode, ImportResolvedItem, ImportState, ImportStatement,
-            ImportTermNode,
+            ImportAliasItem, ImportAliasNode, ImportAllNode, ImportGroupNode, ImportKind, ImportResolvedItem, ImportState,
+            ImportStatement, ImportTermNode,
         },
         labeled::{GotoStatement, LabelStatement},
         let_bind::{LetBindNode, VariableDeclaration},
