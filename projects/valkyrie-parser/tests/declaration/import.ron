@@ -3,36 +3,18 @@ NamespaceDeclaration {
     path: tests∷import,
 }
 ImportStatement {
-    annotation: [],
     kind: Shared,
     term: ImportGroupNode {
-        path: [],
-        group: [],
-    },
-    span: FileSpan {
-        start: 26,
-        end: 32,
-        file: FileID(0x4DDAD2F01FD07954),
+        item: [],
     },
 }
 ImportStatement {
-    annotation: [],
     kind: Shared,
     term: ImportAliasNode {
-        path: [],
-        item: Normal(
-            Identifier("package", 39..46),
-        ),
-        alias: None,
-    },
-    span: FileSpan {
-        start: 33,
-        end: 47,
-        file: FileID(0x4DDAD2F01FD07954),
+        item: package,
     },
 }
 ImportStatement {
-    annotation: [],
     kind: Shared,
     term: ImportAllNode {
         path: [
@@ -42,286 +24,121 @@ ImportStatement {
         ],
         span: 54..78,
     },
-    span: FileSpan {
-        start: 48,
-        end: 79,
-        file: FileID(0x4DDAD2F01FD07954),
-    },
 }
 ImportStatement {
-    annotation: [],
     kind: Shared,
     term: ImportAliasNode {
-        path: [],
-        item: Normal(
-            Identifier("numpy", 87..92),
-        ),
-        alias: Some(
-            Normal(
-                Identifier("女朋友", 96..105),
-            ),
-        ),
-    },
-    span: FileSpan {
-        start: 81,
-        end: 106,
-        file: FileID(0x4DDAD2F01FD07954),
+        item: numpy,
+        alias: 女朋友,
     },
 }
 ImportStatement {
-    annotation: [],
     kind: Shared,
     term: ImportAliasNode {
-        path: [],
-        item: Normal(
-            Identifier("tensor-flow", 112..125),
-        ),
-        alias: Some(
-            Normal(
-                Identifier("tfboys", 129..135),
-            ),
-        ),
-    },
-    span: FileSpan {
-        start: 106,
-        end: 137,
-        file: FileID(0x4DDAD2F01FD07954),
+        item: tensor-flow,
+        alias: tfboys,
     },
 }
 ImportStatement {
-    annotation: [],
     kind: Shared,
     term: ImportGroupNode {
-        path: [],
-        group: [],
-    },
-    span: FileSpan {
-        start: 137,
-        end: 147,
-        file: FileID(0x4DDAD2F01FD07954),
+        item: [],
     },
 }
 ImportStatement {
-    annotation: [],
     kind: Shared,
     term: ImportGroupNode {
-        path: [
-            Identifier("package", 154..161),
-        ],
-        group: [
+        path: package,
+        item: [
             ImportGroupNode {
-                path: [
-                    Identifier("project", 168..175),
-                    Identifier("first", 176..181),
-                ],
-                group: [],
+                path: project∷first,
+                item: [],
             },
             ImportGroupNode {
-                path: [
-                    Identifier("project", 189..196),
-                    Identifier("second", 198..204),
-                ],
-                group: [],
+                path: project∷second,
+                item: [],
             },
         ],
     },
-    span: FileSpan {
-        start: 148,
-        end: 211,
-        file: FileID(0x4DDAD2F01FD07954),
-    },
 }
 ImportStatement {
-    annotation: [],
     kind: Shared,
     term: ImportAliasNode {
-        path: [],
-        item: Attribute(
-            Identifier("Serialize", 220..229),
-        ),
-        alias: None,
-    },
-    span: FileSpan {
-        start: 213,
-        end: 230,
-        file: FileID(0x4DDAD2F01FD07954),
+        item: #Encode,
     },
 }
 ImportStatement {
-    annotation: [],
     kind: Shared,
     term: ImportAliasNode {
-        path: [],
-        item: Procedural(
-            Identifier("derialize", 238..247),
-        ),
-        alias: None,
-    },
-    span: FileSpan {
-        start: 231,
-        end: 248,
-        file: FileID(0x4DDAD2F01FD07954),
+        item: @decode,
     },
 }
 ImportStatement {
-    annotation: [],
     kind: Shared,
     term: ImportAliasNode {
-        path: [
-            Identifier("serde", 255..260),
-        ],
-        item: Attribute(
-            Identifier("Serialize", 262..271),
-        ),
-        alias: None,
-    },
-    span: FileSpan {
-        start: 249,
-        end: 272,
-        file: FileID(0x4DDAD2F01FD07954),
+        path: serde,
+        item: #Encode,
     },
 }
 ImportStatement {
-    annotation: [],
     kind: Shared,
     term: ImportAliasNode {
-        path: [
-            Identifier("serde", 279..284),
-        ],
-        item: Procedural(
-            Identifier("derialize", 287..296),
-        ),
-        alias: None,
-    },
-    span: FileSpan {
-        start: 273,
-        end: 297,
-        file: FileID(0x4DDAD2F01FD07954),
+        path: serde,
+        item: @decode,
     },
 }
 ImportStatement {
-    annotation: [],
     kind: Shared,
     term: ImportGroupNode {
-        path: [
-            Identifier("serde", 305..310),
-        ],
-        group: [
+        path: serde,
+        item: [
             ImportAliasNode {
-                path: [],
-                item: Attribute(
-                    Identifier("Serialize", 314..323),
-                ),
-                alias: None,
+                item: #Serialize,
             },
             ImportAliasNode {
-                path: [],
-                item: Attribute(
-                    Identifier("Deserialize", 326..339),
-                ),
-                alias: None,
+                item: #Deserialize,
             },
         ],
-    },
-    span: FileSpan {
-        start: 299,
-        end: 341,
-        file: FileID(0x4DDAD2F01FD07954),
     },
 }
 ImportStatement {
-    annotation: [],
     kind: Shared,
     term: ImportGroupNode {
-        path: [
-            Identifier("serde", 347..352),
-        ],
-        group: [
+        path: serde,
+        item: [
             ImportAliasNode {
-                path: [],
-                item: Procedural(
-                    Identifier("serialize", 356..365),
-                ),
-                alias: None,
+                item: @serialize,
             },
             ImportAliasNode {
-                path: [],
-                item: Procedural(
-                    Identifier("deserialize", 368..381),
-                ),
-                alias: None,
+                item: @deserialize,
             },
         ],
-    },
-    span: FileSpan {
-        start: 341,
-        end: 384,
-        file: FileID(0x4DDAD2F01FD07954),
     },
 }
 ImportStatement {
-    annotation: [],
     kind: Shared,
     term: ImportGroupNode {
-        path: [],
-        group: [
+        item: [
             ImportAliasNode {
-                path: [
-                    Identifier("project", 396..403),
-                ],
-                item: Normal(
-                    Identifier("class", 404..411),
-                ),
-                alias: Some(
-                    Procedural(
-                        Identifier("class", 416..423),
-                    ),
-                ),
+                path: project,
+                item: class,
+                alias: @class,
             },
             ImportAliasNode {
-                path: [
-                    Identifier("project", 429..436),
-                ],
-                item: Normal(
-                    Identifier("union", 437..444),
-                ),
-                alias: Some(
-                    Attribute(
-                        Identifier("union", 449..456),
-                    ),
-                ),
+                path: project,
+                item: union,
+                alias: #union,
             },
             ImportAliasNode {
-                path: [
-                    Identifier("project", 462..469),
-                ],
-                item: Procedural(
-                    Identifier("enumerate", 471..482),
-                ),
-                alias: Some(
-                    Normal(
-                        Identifier("enumerate", 486..497),
-                    ),
-                ),
+                path: project,
+                item: @enumerate,
+                alias: enumerate,
             },
             ImportAliasNode {
-                path: [
-                    Identifier("project", 502..509),
-                ],
-                item: Attribute(
-                    Identifier("interface", 511..522),
-                ),
-                alias: Some(
-                    Normal(
-                        Identifier("interface", 526..537),
-                    ),
-                ),
+                path: project,
+                item: #interface,
+                alias: interface,
             },
         ],
-    },
-    span: FileSpan {
-        start: 384,
-        end: 540,
-        file: FileID(0x4DDAD2F01FD07954),
     },
 }

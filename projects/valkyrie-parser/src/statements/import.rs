@@ -52,7 +52,7 @@ impl crate::ImportAllNode {
 
 impl crate::ImportSpaceNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> ImportGroupNode {
-        ImportGroupNode { path: self.path.iter().map(|v| v.build(ctx)).collect(), group: self.body.build(ctx) }
+        ImportGroupNode { path: self.path.iter().map(|v| v.build(ctx)).collect(), terms: self.body.build(ctx) }
     }
 }
 

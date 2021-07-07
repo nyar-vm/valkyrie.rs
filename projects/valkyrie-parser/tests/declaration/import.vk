@@ -13,10 +13,10 @@ using package {
     project::second::{}
 };
 
-using #Serialize;
-using @derialize;
-using serde.#Serialize;
-using serde::@derialize;
+using #Encode;
+using @decode;
+using serde.#Encode;
+using serde::@decode;
 
 using serde::{#Serialize, #`Deserialize`}
 using serde::{@serialize, @`deserialize`}

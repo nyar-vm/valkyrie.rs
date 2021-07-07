@@ -5,7 +5,7 @@ use core::{
     ops::Range,
 };
 
-use crate::{NumberLiteralNode, StringTextNode};
+use crate::{IdentifierNode, NumberLiteralNode, StringTextNode};
 #[cfg(feature = "lispify")]
 pub use lispify::{Lisp, Lispify};
 use nyar_error::{NyarError, Validation};
@@ -55,5 +55,26 @@ impl<'a, T> WrapDisplay<'a, T> {
 impl<'a, T: Display> Debug for WrapDisplay<'a, T> {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         Display::fmt(self.inner, f)
+    }
+}
+
+pub(crate) struct IdentifiersDisplay<'i> {
+    inner: &'i [IdentifierNode],
+}
+
+impl<'i> IdentifiersDisplay<'i> {
+    pub fn new(identifiers: &'i [IdentifierNode]) -> Self {
+        Self { inner: identifiers }
+    }
+}
+impl<'i> Debug for IdentifiersDisplay<'i> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        for (index, id) in self.inner.iter().enumerate() {
+            if index != 0 {
+                f.write_str("∷")?;
+            }
+            f.write_str(&id.name)?
+        }
+        Ok(())
     }
 }

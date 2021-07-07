@@ -1,4 +1,5 @@
 use super::*;
+use crate::helper::IdentifiersDisplay;
 use alloc::rc::Rc;
 use nyar_error::FileSpan;
 
@@ -18,7 +19,7 @@ pub enum ImportKind {
 
 /// `import package::module::path`
 /// `import "external"`
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Clone, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ImportStatement {
     /// The annotation of the import
@@ -43,20 +44,14 @@ pub enum ImportTermNode {
     Alias(ImportAliasNode),
 }
 
-impl Default for ImportTermNode {
-    fn default() -> Self {
-        Self::Group(Default::default())
-    }
-}
-
 /// `group.path { item1, item2 }`
-#[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
+#[derive(Clone, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ImportGroupNode {
     /// The path of the import
     pub path: Vec<IdentifierNode>,
     /// The group of the import
-    pub group: Vec<ImportTermNode>,
+    pub terms: Vec<ImportTermNode>,
 }
 
 /// `import package∷module.*`
@@ -75,7 +70,7 @@ impl ValkyrieNode for ImportAllNode {
 }
 
 /// `path as alias`
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Clone, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ImportAliasNode {
     /// The path of the import
@@ -86,11 +81,15 @@ pub struct ImportAliasNode {
     pub alias: Option<ImportAliasItem>,
 }
 
+/// The name of import items
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum ImportAliasItem {
+    /// `#attribute`
     Attribute(IdentifierNode),
+    /// `@procedural`
     Procedural(IdentifierNode),
+    /// `name`
     Normal(IdentifierNode),
 }
 
