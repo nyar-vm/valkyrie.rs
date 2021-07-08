@@ -9,7 +9,7 @@ mod extends;
 
 use crate::{
     helpers::ProgramState,
-    utils::{build_annotation_terms, build_constraint, build_modifier_ahead, build_parameter_default, build_type_hint},
+    utils::{build_annotation_terms, build_constraint, build_modifier_ahead, build_type_hint},
 };
 use nyar_error::Result;
 use valkyrie_ast::*;

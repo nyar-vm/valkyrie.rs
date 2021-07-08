@@ -766,18 +766,20 @@ fn parse_define_field(state: Input) -> Output {
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| s.optional(|s| parse_type_hint(s).and_then(|s| s.tag_node("type_hint"))))
                 .and_then(|s| builtin_ignore(s))
-                .and_then(|s| s.optional(|s| parse_parameter_default(s).and_then(|s| s.tag_node("parameter_default"))))
+                .and_then(|s| parse_parameter_default(s).and_then(|s| s.tag_node("parameter_default")))
         })
     })
 }
 #[inline]
 fn parse_parameter_default(state: Input) -> Output {
     state.rule(ValkyrieRule::ParameterDefault, |s| {
-        s.sequence(|s| {
-            Ok(s)
-                .and_then(|s| builtin_text(s, "=", false))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| parse_main_expression(s).and_then(|s| s.tag_node("main_expression")))
+        s.optional(|s| {
+            s.sequence(|s| {
+                Ok(s)
+                    .and_then(|s| builtin_text(s, "=", false))
+                    .and_then(|s| builtin_ignore(s))
+                    .and_then(|s| parse_main_expression(s).and_then(|s| s.tag_node("main_expression")))
+            })
         })
     })
 }
@@ -940,16 +942,7 @@ fn parse_flag_field(state: Input) -> Output {
             Ok(s)
                 .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
                 .and_then(|s| builtin_ignore(s))
-                .and_then(|s| {
-                    s.optional(|s| {
-                        s.sequence(|s| {
-                            Ok(s)
-                                .and_then(|s| builtin_text(s, "=", false))
-                                .and_then(|s| builtin_ignore(s))
-                                .and_then(|s| parse_main_expression(s).and_then(|s| s.tag_node("main_expression")))
-                        })
-                    })
-                })
+                .and_then(|s| parse_parameter_default(s).and_then(|s| s.tag_node("parameter_default")))
         })
     })
 }
@@ -1265,7 +1258,7 @@ fn parse_parameter_pair(state: Input) -> Output {
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| s.optional(|s| parse_type_hint(s).and_then(|s| s.tag_node("type_hint"))))
                 .and_then(|s| builtin_ignore(s))
-                .and_then(|s| s.optional(|s| parse_parameter_default(s).and_then(|s| s.tag_node("parameter_default"))))
+                .and_then(|s| parse_parameter_default(s).and_then(|s| s.tag_node("parameter_default")))
         })
     })
 }
@@ -1340,7 +1333,7 @@ fn parse_define_variable(state: Input) -> Output {
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| s.optional(|s| parse_type_hint(s).and_then(|s| s.tag_node("type_hint"))))
                 .and_then(|s| builtin_ignore(s))
-                .and_then(|s| s.optional(|s| parse_parameter_default(s).and_then(|s| s.tag_node("parameter_default"))))
+                .and_then(|s| parse_parameter_default(s).and_then(|s| s.tag_node("parameter_default")))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| s.optional(|s| parse_eos(s)))
         })

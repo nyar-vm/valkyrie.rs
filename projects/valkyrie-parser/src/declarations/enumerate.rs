@@ -46,17 +46,8 @@ impl crate::FlagFieldNode {
         Ok(EncodeDeclaration {
             annotations: Default::default(),
             name: self.identifier.build(ctx),
-            value: self.value(ctx),
+            value: self.parameter_default.build(ctx),
             span: self.span.clone(),
         })
-    }
-    fn value(&self, ctx: &mut ProgramState) -> Option<ExpressionKind> {
-        match self.main_expression.as_ref()?.build(ctx) {
-            Ok(o) => Some(o),
-            Err(e) => {
-                ctx.add_error(e);
-                None
-            }
-        }
     }
 }

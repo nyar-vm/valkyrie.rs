@@ -21,15 +21,6 @@ pub(crate) fn build_type_hint(this: &Option<TypeHintNode>, ctx: &mut ProgramStat
         }
     }
 }
-pub(crate) fn build_parameter_default(this: &Option<ParameterDefaultNode>, ctx: &mut ProgramState) -> Option<ExpressionKind> {
-    match this.as_ref()?.build(ctx) {
-        Ok(o) => Some(o),
-        Err(e) => {
-            ctx.add_error(e);
-            None
-        }
-    }
-}
 
 pub(crate) fn build_modifier_ahead(this: &[ModifierAheadNode], ctx: &mut ProgramState) -> ModifierList {
     ModifierList { terms: this.iter().map(|s| s.build(ctx)).collect() }

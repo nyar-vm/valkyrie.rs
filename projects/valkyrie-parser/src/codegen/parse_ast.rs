@@ -732,7 +732,7 @@ impl YggdrasilNode for DefineFieldNode {
         Ok(Self {
             annotation_mix: pair.take_tagged_one::<AnnotationMixNode>(Cow::Borrowed("annotation_mix"))?,
             identifier: pair.take_tagged_one::<IdentifierNode>(Cow::Borrowed("identifier"))?,
-            parameter_default: pair.take_tagged_option::<ParameterDefaultNode>(Cow::Borrowed("parameter_default")),
+            parameter_default: pair.take_tagged_one::<ParameterDefaultNode>(Cow::Borrowed("parameter_default"))?,
             type_hint: pair.take_tagged_option::<TypeHintNode>(Cow::Borrowed("type_hint")),
             span: Range { start: _span.start() as u32, end: _span.end() as u32 },
         })
@@ -756,7 +756,7 @@ impl YggdrasilNode for ParameterDefaultNode {
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
         Ok(Self {
-            main_expression: pair.take_tagged_one::<MainExpressionNode>(Cow::Borrowed("main_expression"))?,
+            main_expression: pair.take_tagged_option::<MainExpressionNode>(Cow::Borrowed("main_expression")),
             span: Range { start: _span.start() as u32, end: _span.end() as u32 },
         })
     }
@@ -996,7 +996,7 @@ impl YggdrasilNode for FlagFieldNode {
         let _span = pair.get_span();
         Ok(Self {
             identifier: pair.take_tagged_one::<IdentifierNode>(Cow::Borrowed("identifier"))?,
-            main_expression: pair.take_tagged_option::<MainExpressionNode>(Cow::Borrowed("main_expression")),
+            parameter_default: pair.take_tagged_one::<ParameterDefaultNode>(Cow::Borrowed("parameter_default"))?,
             span: Range { start: _span.start() as u32, end: _span.end() as u32 },
         })
     }
@@ -1531,7 +1531,7 @@ impl YggdrasilNode for ParameterPairNode {
             modifier_ahead: pair
                 .take_tagged_items::<ModifierAheadNode>(Cow::Borrowed("modifier_ahead"))
                 .collect::<Result<Vec<_>, _>>()?,
-            parameter_default: pair.take_tagged_option::<ParameterDefaultNode>(Cow::Borrowed("parameter_default")),
+            parameter_default: pair.take_tagged_one::<ParameterDefaultNode>(Cow::Borrowed("parameter_default"))?,
             parameter_hint: pair.take_tagged_option::<ParameterHintNode>(Cow::Borrowed("parameter_hint")),
             type_hint: pair.take_tagged_option::<TypeHintNode>(Cow::Borrowed("type_hint")),
             span: Range { start: _span.start() as u32, end: _span.end() as u32 },
@@ -1633,7 +1633,7 @@ impl YggdrasilNode for DefineVariableNode {
                 .collect::<Result<Vec<_>, _>>()?,
             kw_let: pair.take_tagged_one::<KwLetNode>(Cow::Borrowed("kw_let"))?,
             let_pattern: pair.take_tagged_one::<LetPatternNode>(Cow::Borrowed("let_pattern"))?,
-            parameter_default: pair.take_tagged_option::<ParameterDefaultNode>(Cow::Borrowed("parameter_default")),
+            parameter_default: pair.take_tagged_one::<ParameterDefaultNode>(Cow::Borrowed("parameter_default"))?,
             type_hint: pair.take_tagged_option::<TypeHintNode>(Cow::Borrowed("type_hint")),
             span: Range { start: _span.start() as u32, end: _span.end() as u32 },
         })

@@ -717,14 +717,14 @@ pub enum KwClassNode {
 pub struct DefineFieldNode {
     pub annotation_mix: AnnotationMixNode,
     pub identifier: IdentifierNode,
-    pub parameter_default: Option<ParameterDefaultNode>,
+    pub parameter_default: ParameterDefaultNode,
     pub type_hint: Option<TypeHintNode>,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ParameterDefaultNode {
-    pub main_expression: MainExpressionNode,
+    pub main_expression: Option<MainExpressionNode>,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -794,7 +794,7 @@ pub enum FlagTermNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct FlagFieldNode {
     pub identifier: IdentifierNode,
-    pub main_expression: Option<MainExpressionNode>,
+    pub parameter_default: ParameterDefaultNode,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -949,7 +949,7 @@ pub enum ParameterItemNode {
 pub struct ParameterPairNode {
     pub identifier: IdentifierNode,
     pub modifier_ahead: Vec<ModifierAheadNode>,
-    pub parameter_default: Option<ParameterDefaultNode>,
+    pub parameter_default: ParameterDefaultNode,
     pub parameter_hint: Option<ParameterHintNode>,
     pub type_hint: Option<TypeHintNode>,
     pub span: Range<u32>,
@@ -978,7 +978,7 @@ pub struct DefineVariableNode {
     pub annotation_term: Vec<AnnotationTermNode>,
     pub kw_let: KwLetNode,
     pub let_pattern: LetPatternNode,
-    pub parameter_default: Option<ParameterDefaultNode>,
+    pub parameter_default: ParameterDefaultNode,
     pub type_hint: Option<TypeHintNode>,
     pub span: Range<u32>,
 }

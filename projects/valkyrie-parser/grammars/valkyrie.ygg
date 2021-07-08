@@ -145,10 +145,10 @@ union KW_CLASS {
 // === field/method/domain === -----------------------------------------------------------------------------------------
 class DefineField {
     AnnotationMix
-    Identifier TypeHint? ParameterDefault?
+    Identifier TypeHint? ParameterDefault
 }
 class ParameterDefault {
-    '=' MainExpression
+    ('=' MainExpression)?
 }
 class DefineMethod {
     AnnotationMix Namepath FunctionMiddle Continuation?
@@ -182,7 +182,7 @@ union FlagTerm {
     | EOS_FREE
 }
 class FlagField {
-    Identifier ('=' MainExpression)?
+    Identifier ParameterDefault
 }
 @style(keyword)
 @railway(false)
@@ -267,7 +267,7 @@ union ParameterItem {
 }
 class ParameterPair {
     ModifierAhead* ParameterHint?
-    Identifier TypeHint? ParameterDefault?
+    Identifier TypeHint? ParameterDefault
 }
 text class ParameterHint {
     /[.]{2,3}|[~^]/
@@ -283,7 +283,7 @@ union KW_FUNCTION {
 // === let variable === ------------------------------------------------------------------------------------------------
 class DefineVariable {
     AnnotationTerm*
-    KW_LET LetPattern TypeHint? ParameterDefault? ^EOS?
+    KW_LET LetPattern TypeHint? ParameterDefault ^EOS?
 }
 union LetPattern {
     | StandardPattern
