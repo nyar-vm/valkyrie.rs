@@ -7,7 +7,7 @@ namespace test.literal;
 (1, 2);
 (true, (false,));
 // dict
-(1: 0, a: 1, z: 26);
+(1: 0, 0: 1, a: 1, z: 26);
 (啊: 1, 吧: 2, "啊": 3, "吧": 4);
 // list
 [];

@@ -24,7 +24,6 @@ TryStatement {
             base: Option,
             term: [
                 ArgumentTerm {
-                    modifiers: [],
                     key: Nothing,
                     value: T,
                 },
@@ -46,12 +45,10 @@ MatchCallNode {
                     base: Result,
                     term: [
                         ArgumentTerm {
-                            modifiers: [],
                             key: Nothing,
                             value: T,
                         },
                         ArgumentTerm {
-                            modifiers: [],
                             key: Nothing,
                             value: Noop,
                         },
@@ -65,7 +62,6 @@ MatchCallNode {
                     caller: print,
                     arguments: [
                         ArgumentTerm {
-                            modifiers: [],
                             key: Nothing,
                             value: 'try',
                         },
@@ -90,7 +86,6 @@ MatchCallNode {
                         caller: print,
                         arguments: [
                             ArgumentTerm {
-                                modifiers: [],
                                 key: Nothing,
                                 value: 'RuntimeError',
                             },
@@ -128,7 +123,6 @@ MatchCallNode {
                     caller: print,
                     arguments: [
                         ArgumentTerm {
-                            modifiers: [],
                             key: Nothing,
                             value: 'Some',
                         },

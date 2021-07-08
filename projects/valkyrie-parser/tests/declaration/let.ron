@@ -32,12 +32,10 @@ VariableDeclaration {
     body: Tuple {
         terms: [
             ArgumentTerm {
-                modifiers: [],
                 key: Nothing,
                 value: i32,
             },
             ArgumentTerm {
-                modifiers: [],
                 key: Nothing,
                 value: UnaryNode {
                     prefix: &,
@@ -58,12 +56,10 @@ VariableDeclaration {
     type: Tuple {
         terms: [
             ArgumentTerm {
-                modifiers: [],
                 key: Nothing,
                 value: i32,
             },
             ArgumentTerm {
-                modifiers: [],
                 key: Nothing,
                 value: UnaryNode {
                     prefix: &,
@@ -118,12 +114,10 @@ VariableDeclaration {
     type: Tuple {
         terms: [
             ArgumentTerm {
-                modifiers: [],
                 key: Nothing,
                 value: u32,
             },
             ArgumentTerm {
-                modifiers: [],
                 key: Nothing,
                 value: u32,
             },
@@ -153,17 +147,14 @@ VariableDeclaration {
     body: Tuple {
         terms: [
             ArgumentTerm {
-                modifiers: [],
                 key: Nothing,
                 value: 1,
             },
             ArgumentTerm {
-                modifiers: [],
                 key: Nothing,
                 value: 2,
             },
             ArgumentTerm {
-                modifiers: [],
                 key: Nothing,
                 value: 3,
             },
@@ -202,12 +193,10 @@ VariableDeclaration {
     body: Tuple {
         terms: [
             ArgumentTerm {
-                modifiers: [],
                 key: Nothing,
                 value: 1,
             },
             ArgumentTerm {
-                modifiers: [],
                 key: Nothing,
                 value: 2,
             },
@@ -227,12 +216,10 @@ VariableDeclaration {
         caller: Fraction,
         arguments: [
             ArgumentTerm {
-                modifiers: [],
                 key: Nothing,
                 value: 1,
             },
             ArgumentTerm {
-                modifiers: [],
                 key: Nothing,
                 value: 2,
             },
@@ -469,7 +456,6 @@ VariableDeclaration {
                 base: a,
                 term: [
                     ArgumentTerm {
-                        modifiers: [],
                         key: Nothing,
                         value: a,
                     },
@@ -552,7 +538,6 @@ VariableDeclaration {
         caller: f'{:?}',
         arguments: [
             ArgumentTerm {
-                modifiers: [],
                 key: Nothing,
                 value: t,
             },
@@ -574,7 +559,6 @@ VariableDeclaration {
         caller: cf'%d',
         arguments: [
             ArgumentTerm {
-                modifiers: [],
                 key: Nothing,
                 value: t,
             },

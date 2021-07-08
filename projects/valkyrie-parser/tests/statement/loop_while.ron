@@ -13,7 +13,6 @@ WhileLoop {
             caller: print,
             arguments: [
                 ArgumentTerm {
-                    modifiers: [],
                     key: Nothing,
                     value: 'Loop!',
                 },
@@ -30,7 +29,6 @@ WhileLoop {
                     caller: print,
                     arguments: [
                         ArgumentTerm {
-                            modifiers: [],
                             key: Nothing,
                             value: 'Deep loop!',
                         },
@@ -47,7 +45,6 @@ WhileLoop {
                             caller: print,
                             arguments: [
                                 ArgumentTerm {
-                                    modifiers: [],
                                     key: Nothing,
                                     value: 'Deeper loop!',
                                 },

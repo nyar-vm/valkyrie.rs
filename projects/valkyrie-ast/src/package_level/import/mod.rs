@@ -60,13 +60,8 @@ pub struct ImportGroupNode {
 pub struct ImportAllNode {
     /// The path of the import
     pub path: Vec<IdentifierNode>,
+    /// The range of the node
     pub span: Range<u32>,
-}
-
-impl ValkyrieNode for ImportAllNode {
-    fn get_range(&self) -> Range<usize> {
-        Range { start: self.span.start as usize, end: self.span.end as usize }
-    }
 }
 
 /// `path as alias`
@@ -79,6 +74,8 @@ pub struct ImportAliasNode {
     pub item: ImportAliasItem,
     /// The alias of the import
     pub alias: Option<ImportAliasItem>,
+    /// The range of the node
+    pub span: Range<u32>,
 }
 
 /// The name of import items
@@ -95,19 +92,23 @@ pub enum ImportAliasItem {
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub enum ImportResolvedKind {
-    Normal,
+    /// `import { }`
+    Empty,
+    /// `import package.module.*`
     All,
-    Alias(IdentifierNode),
-}
-
-impl Default for ImportResolvedKind {
-    fn default() -> Self {
-        Self::Normal
-    }
+    /// `import package.module.self`
+    This,
+    /// `import package.module.path.item as alias`
+    Alias {
+        /// The import item
+        item: ImportAliasItem,
+        /// The import item alias
+        name: Option<ImportAliasItem>,
+    },
 }
 
 /// A resolved import item
-#[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub struct ImportResolvedItem {
     /// The path of the import
     pub path: Vec<Box<str>>,
@@ -179,34 +180,38 @@ pub enum ImportState {
 }
 
 impl ImportResolvedItem {
-    /// Add external identifiers
-    pub fn join_external(&self, name: &IdentifierNode) -> Self {
-        todo!()
+    pub fn extends(&self, path: &[IdentifierNode]) -> Self {
+        let mut new = self.clone();
+        new.path.extend(path.iter().map(|s| Box::from(s.name.as_str())));
+        new
     }
-    /// Join import names
-    pub fn join_name(&self, name: &IdentifierNode) -> Self {
-        todo!()
-    }
+
     /// Join a path to the import
-    pub fn join_path(&self, namepath: &[IdentifierNode]) -> Self {
-        todo!()
+    fn join_group(&self, group: &ImportGroupNode, items: &mut Vec<ImportResolvedItem>) {
+        let resolved = self.extends(&group.path);
+        for term in &group.terms {
+            term.resolve(&resolved, items);
+        }
     }
     /// Join an alias to the import
-    fn join_alias(&self, alias: &ImportAliasNode) -> Self {
-        todo!()
+    fn join_alias(&self, alias: &ImportAliasNode, items: &mut Vec<ImportResolvedItem>) {
+        let mut resolved = self.extends(&alias.path);
+        resolved.span.set_range(alias.get_range());
+        resolved.kind = ImportResolvedKind::Alias { item: alias.item.clone(), name: alias.alias.clone() };
+        items.push(resolved)
     }
-    fn join_all(mut self, alias: &ImportAllNode) -> Self {
-        self.span.set_range(alias.get_range());
-        self.path.extend(alias.path.iter().map(|s| Box::from(s.name.as_str())));
-        self.kind = ImportResolvedKind::All;
-        self
+    fn join_all(&self, all: &ImportAllNode, items: &mut Vec<ImportResolvedItem>) {
+        let mut resolved = self.extends(&all.path);
+        resolved.span.set_range(all.get_range());
+        resolved.kind = ImportResolvedKind::All;
+        items.push(resolved)
     }
 }
 
 impl ImportStatement {
     /// Create a new import statement
     pub fn flatten(&self) -> Vec<ImportResolvedItem> {
-        let root = ImportResolvedItem::default();
+        let root = ImportResolvedItem { path: vec![], kind: ImportResolvedKind::Empty, span: self.span };
         let mut all = Vec::new();
         self.term.resolve(&root, &mut all);
         all
@@ -217,16 +222,9 @@ impl ImportTermNode {
     /// Resolve the import term
     fn resolve(&self, parent: &ImportResolvedItem, all: &mut Vec<ImportResolvedItem>) {
         match self {
-            ImportTermNode::Alias(alias) => {
-                all.push(parent.clone().join_alias(alias));
-            }
-            ImportTermNode::Group(group) => {
-                // let root = parent.join_path(&group.path.names);
-                // for item in &group.group {
-                //     item.resolve(&root, all);
-                // }
-            }
-            ImportTermNode::All(all) => {}
+            Self::Alias(alias) => parent.join_alias(alias, all),
+            Self::Group(group) => parent.join_group(group, all),
+            Self::All(any) => parent.clone().join_all(any, all),
         }
     }
 }

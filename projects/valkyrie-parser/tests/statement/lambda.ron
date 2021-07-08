@@ -10,7 +10,6 @@ ApplyCallNode {
     caller: s,
     arguments: [
         ArgumentTerm {
-            modifiers: [],
             key: Nothing,
             value: args,
         },

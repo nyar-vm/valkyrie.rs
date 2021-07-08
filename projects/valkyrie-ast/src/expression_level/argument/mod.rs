@@ -18,7 +18,7 @@ impl Debug for ArgumentsList {
 }
 
 /// `#annotation mut this: null`
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Clone, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ArgumentTerm {
     /// The modifier conditions
@@ -30,7 +30,7 @@ pub struct ArgumentTerm {
 }
 
 /// The key of the argument
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Clone, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum ArgumentKey {
     /// `a + b`

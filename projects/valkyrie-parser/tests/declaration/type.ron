@@ -8,7 +8,6 @@ GenericCallNode {
             base: Result,
             term: [
                 ArgumentTerm {
-                    modifiers: [],
                     key: Nothing,
                     value: T,
                 },
@@ -19,12 +18,10 @@ GenericCallNode {
     },
     term: [
         ArgumentTerm {
-            modifiers: [],
             key: Nothing,
             value: T,
         },
         ArgumentTerm {
-            modifiers: [],
             key: Nothing,
             value: Error,
         },
@@ -39,7 +36,6 @@ ApplyCallNode {
         base: List,
         term: [
             ArgumentTerm {
-                modifiers: [],
                 key: Nothing,
                 value: UnaryNode {
                     prefix: +,
@@ -47,7 +43,6 @@ ApplyCallNode {
                 },
             },
             ArgumentTerm {
-                modifiers: [],
                 key: Nothing,
                 value: UnaryNode {
                     prefix: -,
@@ -116,17 +111,14 @@ FunctionDeclaration {
         main: Tuple {
             terms: [
                 ArgumentTerm {
-                    modifiers: [],
                     key: Nothing,
                     value: i32,
                 },
                 ArgumentTerm {
-                    modifiers: [],
                     key: Nothing,
                     value: i32,
                 },
                 ArgumentTerm {
-                    modifiers: [],
                     key: Nothing,
                     value: char,
                 },
@@ -137,17 +129,14 @@ FunctionDeclaration {
         Tuple {
             terms: [
                 ArgumentTerm {
-                    modifiers: [],
                     key: Nothing,
                     value: 10,
                 },
                 ArgumentTerm {
-                    modifiers: [],
                     key: Nothing,
                     value: 5,
                 },
                 ArgumentTerm {
-                    modifiers: [],
                     key: Nothing,
                     value: 'a',
                 },
@@ -182,7 +171,6 @@ FunctionDeclaration {
             caller: forall,
             arguments: [
                 ArgumentTerm {
-                    modifiers: [],
                     key: Nothing,
                     value: LambdaNode {
                         annotations: Empty,
@@ -234,7 +222,6 @@ FunctionDeclaration {
                                     },
                                     arguments: [
                                         ArgumentTerm {
-                                            modifiers: [],
                                             key: Nothing,
                                             value: i,
                                         },

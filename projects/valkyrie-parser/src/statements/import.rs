@@ -1,14 +1,28 @@
 use super::*;
+
 use yggdrasil_rt::YggdrasilNode;
 
 impl crate::DefineImportNode {
+    #[allow(unused_imports)]
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<ImportStatement> {
-        Ok(ImportStatement {
+        use nyar_error::{ReportKind, SyntaxError};
+        let imported = ImportStatement {
             annotation: Default::default(),
             kind: ImportKind::Shared,
             term: self.term(ctx),
             span: ctx.file.with_range(self.get_range()),
-        })
+        };
+
+        // for resolved in imported.flatten() {
+        //     ctx.add_error(
+        //         SyntaxError::new(resolved.to_string())
+        //             .with_hint("debug import item")
+        //             .with_span(resolved.span)
+        //             .as_error(ReportKind::Alert),
+        //     )
+        // }
+
+        Ok(imported)
     }
     fn term(&self, ctx: &mut ProgramState) -> ImportTermNode {
         if let Some(s) = self.import_term.as_ref().and_then(|v| v.build(ctx)) {
@@ -62,9 +76,11 @@ impl crate::ImportNameNode {
             path: self.path.iter().map(|v| v.build(ctx)).collect(),
             item: self.item.build(ctx),
             alias: self.alias.build(ctx),
+            span: self.span.clone(),
         }
     }
 }
+
 impl crate::ImportAsNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Option<ImportAliasItem> {
         Some(self.alias.as_ref()?.build(ctx))

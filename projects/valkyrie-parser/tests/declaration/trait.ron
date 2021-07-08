@@ -40,7 +40,6 @@ Trait {
         base: SemiGroup,
         term: [
             ArgumentTerm {
-                modifiers: [],
                 key: Nothing,
                 value: T,
             },
@@ -90,7 +89,6 @@ Trait {
                         base: F,
                         term: [
                             ArgumentTerm {
-                                modifiers: [],
                                 key: Nothing,
                                 value: A,
                             },
@@ -105,12 +103,10 @@ Trait {
                         base: Function,
                         term: [
                             ArgumentTerm {
-                                modifiers: [],
                                 key: Nothing,
                                 value: A,
                             },
                             ArgumentTerm {
-                                modifiers: [],
                                 key: Nothing,
                                 value: B,
                             },
@@ -124,7 +120,6 @@ Trait {
                 base: F,
                 term: [
                     ArgumentTerm {
-                        modifiers: [],
                         key: Nothing,
                         value: B,
                     },
@@ -157,7 +152,6 @@ ExtendsStatement {
             base: Monoid,
             term: [
                 ArgumentTerm {
-                    modifiers: [],
                     key: Nothing,
                     value: String,
                 },
@@ -188,7 +182,6 @@ ExtendsStatement {
                     },
                     arguments: [
                         ArgumentTerm {
-                            modifiers: [],
                             key: Nothing,
                             value: y,
                         },
@@ -229,7 +222,6 @@ Trait {
                         base: Functor,
                         term: [
                             ArgumentTerm {
-                                modifiers: [],
                                 key: Nothing,
                                 value: A,
                             },
@@ -251,7 +243,6 @@ Trait {
                 base: Functor,
                 term: [
                     ArgumentTerm {
-                        modifiers: [],
                         key: Nothing,
                         value: B,
                     },
@@ -283,7 +274,6 @@ Trait {
                             base: Mutable,
                             term: [
                                 ArgumentTerm {
-                                    modifiers: [],
                                     key: Nothing,
                                     value: A,
                                 },
@@ -302,7 +292,6 @@ Trait {
                         base: Self,
                         term: [
                             ArgumentTerm {
-                                modifiers: [],
                                 key: Nothing,
                                 value: A,
                             },
@@ -320,7 +309,6 @@ Trait {
                 base: Self,
                 term: [
                     ArgumentTerm {
-                        modifiers: [],
                         key: Nothing,
                         value: B,
                     },
@@ -362,7 +350,6 @@ ExtendsStatement {
                         base: Option,
                         term: [
                             ArgumentTerm {
-                                modifiers: [],
                                 key: Nothing,
                                 value: A,
                             },
@@ -380,7 +367,6 @@ ExtendsStatement {
                 base: Option,
                 term: [
                     ArgumentTerm {
-                        modifiers: [],
                         key: Nothing,
                         value: B,
                     },
@@ -415,14 +401,12 @@ ExtendsStatement {
                                     caller: Some,
                                     arguments: [
                                         ArgumentTerm {
-                                            modifiers: [],
                                             key: Nothing,
                                             value: ApplyCallNode {
                                                 monadic: false,
                                                 caller: f,
                                                 arguments: [
                                                     ArgumentTerm {
-                                                        modifiers: [],
                                                         key: Nothing,
                                                         value: a,
                                                     },
@@ -488,7 +472,6 @@ ExtendsStatement {
                 base: Array,
                 term: [
                     ArgumentTerm {
-                        modifiers: [],
                         key: Nothing,
                         value: B,
                     },
@@ -503,12 +486,10 @@ ExtendsStatement {
                         caller: map,
                         arguments: [
                             ArgumentTerm {
-                                modifiers: [],
                                 key: Nothing,
                                 value: f,
                             },
                             ArgumentTerm {
-                                modifiers: [],
                                 key: Nothing,
                                 value: self,
                             },
@@ -530,7 +511,6 @@ ExtendsStatement {
             base: Functor,
             term: [
                 ArgumentTerm {
-                    modifiers: [],
                     key: Nothing,
                     value: A,
                 },
@@ -564,7 +544,6 @@ ExtendsStatement {
                 base: Array,
                 term: [
                     ArgumentTerm {
-                        modifiers: [],
                         key: Nothing,
                         value: B,
                     },
@@ -579,12 +558,10 @@ ExtendsStatement {
                         caller: map,
                         arguments: [
                             ArgumentTerm {
-                                modifiers: [],
                                 key: Nothing,
                                 value: f,
                             },
                             ArgumentTerm {
-                                modifiers: [],
                                 key: Nothing,
                                 value: self,
                             },

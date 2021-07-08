@@ -109,3 +109,31 @@ impl PrettyPrint for ImportAliasNode {
         items.into()
     }
 }
+impl Display for ImportResolvedItem {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        for (index, name) in self.path.iter().enumerate() {
+            if index != 0 {
+                f.write_char('.')?
+            }
+            f.write_str(name.as_ref())?
+        }
+        Display::fmt(&self.kind, f)
+    }
+}
+
+impl Display for ImportResolvedKind {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        match self {
+            Self::Empty => {}
+            Self::All => f.write_str(".*")?,
+            Self::This => {}
+            Self::Alias { item, name } => {
+                write!(f, ".{}", item)?;
+                if let Some(name) = name {
+                    write!(f, " as {}", name)?;
+                }
+            }
+        }
+        Ok(())
+    }
+}

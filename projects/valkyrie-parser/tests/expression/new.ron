@@ -62,7 +62,6 @@ ConstructNewNode {
     generics: [
         [
             ArgumentTerm {
-                modifiers: [],
                 key: Nothing,
                 value: A,
             },
@@ -82,7 +81,6 @@ ConstructNewNode {
     generics: [
         [
             ArgumentTerm {
-                modifiers: [],
                 key: Nothing,
                 value: A,
             },
@@ -102,7 +100,6 @@ ConstructNewNode {
     generics: [],
     arguments: [
         ArgumentTerm {
-            modifiers: [],
             key: Nothing,
             value: 10,
         },
@@ -131,20 +128,14 @@ ConstructNewNode {
     generics: [
         [
             ArgumentTerm {
-                modifiers: [],
-                key: Symbol(
-                    Identifier("T", 218..219),
-                ),
+                key: Identifier("T", 218..219),
                 value: Integer,
             },
         ],
     ],
     arguments: [
         ArgumentTerm {
-            modifiers: [],
-            key: Symbol(
-                Identifier("capacity", 230..238),
-            ),
+            key: Identifier("capacity", 230..238),
             value: 10,
         },
     ],
@@ -177,7 +168,6 @@ ConstructNewNode {
         Tuple {
             terms: [
                 ArgumentTerm {
-                    modifiers: [],
                     key: Nothing,
                     value: tuple1,
                 },
@@ -186,12 +176,10 @@ ConstructNewNode {
         Tuple {
             terms: [
                 ArgumentTerm {
-                    modifiers: [],
                     key: Nothing,
                     value: key,
                 },
                 ArgumentTerm {
-                    modifiers: [],
                     key: Nothing,
                     value: value,
                 },
@@ -211,7 +199,6 @@ ConstructNewNode {
     generics: [
         [
             ArgumentTerm {
-                modifiers: [],
                 key: Nothing,
                 value: T,
             },
@@ -219,7 +206,6 @@ ConstructNewNode {
     ],
     arguments: [
         ArgumentTerm {
-            modifiers: [],
             key: Nothing,
             value: args,
         },
@@ -233,7 +219,6 @@ ConstructNewNode {
         Tuple {
             terms: [
                 ArgumentTerm {
-                    modifiers: [],
                     key: Nothing,
                     value: key,
                 },
@@ -242,12 +227,10 @@ ConstructNewNode {
         Tuple {
             terms: [
                 ArgumentTerm {
-                    modifiers: [],
                     key: Nothing,
                     value: key,
                 },
                 ArgumentTerm {
-                    modifiers: [],
                     key: Nothing,
                     value: value,
                 },
@@ -256,17 +239,14 @@ ConstructNewNode {
         Tuple {
             terms: [
                 ArgumentTerm {
-                    modifiers: [],
                     key: Nothing,
                     value: key,
                 },
                 ArgumentTerm {
-                    modifiers: [],
                     key: Nothing,
                     value: value1,
                 },
                 ArgumentTerm {
-                    modifiers: [],
                     key: Nothing,
                     value: value2,
                 },

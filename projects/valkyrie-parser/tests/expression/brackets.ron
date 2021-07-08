@@ -7,7 +7,6 @@ ApplyCallNode {
             caller: a,
             arguments: [
                 ArgumentTerm {
-                    modifiers: [],
                     key: Nothing,
                     value: 1,
                 },
@@ -34,7 +33,6 @@ SubscriptCallNode {
         caller: a,
         arguments: [
             ArgumentTerm {
-                modifiers: [],
                 key: Nothing,
                 value: 1,
             },
@@ -65,7 +63,6 @@ ApplyCallNode {
     },
     arguments: [
         ArgumentTerm {
-            modifiers: [],
             key: Nothing,
             value: 2,
         },
@@ -94,7 +91,6 @@ ApplyCallNode {
     },
     arguments: [
         ArgumentTerm {
-            modifiers: [],
             key: Nothing,
             value: 3,
         },
@@ -115,7 +111,6 @@ SubscriptCallNode {
         },
         arguments: [
             ArgumentTerm {
-                modifiers: [],
                 key: Nothing,
                 value: 2,
             },
@@ -152,7 +147,6 @@ ApplyCallNode {
     },
     arguments: [
         ArgumentTerm {
-            modifiers: [],
             key: Nothing,
             value: 3,
         },

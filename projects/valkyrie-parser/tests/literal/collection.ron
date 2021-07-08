@@ -9,7 +9,6 @@ Tuple {
 Tuple {
     terms: [
         ArgumentTerm {
-            modifiers: [],
             key: Nothing,
             value: 1,
         },
@@ -18,12 +17,10 @@ Tuple {
 Tuple {
     terms: [
         ArgumentTerm {
-            modifiers: [],
             key: Nothing,
             value: 1,
         },
         ArgumentTerm {
-            modifiers: [],
             key: Nothing,
             value: 2,
         },
@@ -32,17 +29,14 @@ Tuple {
 Tuple {
     terms: [
         ArgumentTerm {
-            modifiers: [],
             key: Nothing,
             value: true,
         },
         ArgumentTerm {
-            modifiers: [],
             key: Nothing,
             value: Tuple {
                 terms: [
                     ArgumentTerm {
-                        modifiers: [],
                         key: Nothing,
                         value: false,
                     },
@@ -54,22 +48,19 @@ Tuple {
 Tuple {
     terms: [
         ArgumentTerm {
-            modifiers: [],
             key: Nothing,
             value: 0,
         },
         ArgumentTerm {
-            modifiers: [],
-            key: Symbol(
-                Identifier("a", 91..92),
-            ),
+            key: Nothing,
             value: 1,
         },
         ArgumentTerm {
-            modifiers: [],
-            key: Symbol(
-                Identifier("z", 97..98),
-            ),
+            key: Identifier("a", 97..98),
+            value: 1,
+        },
+        ArgumentTerm {
+            key: Identifier("z", 103..104),
             value: 26,
         },
     ],
@@ -77,31 +68,19 @@ Tuple {
 Tuple {
     terms: [
         ArgumentTerm {
-            modifiers: [],
-            key: Symbol(
-                Identifier("啊", 106..109),
-            ),
+            key: Identifier("啊", 112..115),
             value: 1,
         },
         ArgumentTerm {
-            modifiers: [],
-            key: Symbol(
-                Identifier("吧", 114..117),
-            ),
+            key: Identifier("吧", 120..123),
             value: 2,
         },
         ArgumentTerm {
-            modifiers: [],
-            key: Symbol(
-                Identifier("", 122..127),
-            ),
+            key: Identifier("", 128..133),
             value: 3,
         },
         ArgumentTerm {
-            modifiers: [],
-            key: Symbol(
-                Identifier("", 132..137),
-            ),
+            key: Identifier("", 138..143),
             value: 4,
         },
     ],
@@ -109,7 +88,7 @@ Tuple {
 RangeNode {
     kind: Offset,
     terms: [],
-    span: 151..153,
+    span: 157..159,
 }
 RangeNode {
     kind: Offset,
@@ -118,7 +97,7 @@ RangeNode {
             index: 0,
         },
     ],
-    span: 155..158,
+    span: 161..164,
 }
 RangeNode {
     kind: Offset,
@@ -127,7 +106,7 @@ RangeNode {
             index: 1,
         },
     ],
-    span: 160..165,
+    span: 166..171,
 }
 RangeNode {
     kind: Offset,
@@ -139,7 +118,7 @@ RangeNode {
             index: 2,
         },
     ],
-    span: 167..173,
+    span: 173..179,
 }
 RangeNode {
     kind: Offset,
@@ -155,16 +134,16 @@ RangeNode {
                         index: false,
                     },
                 ],
-                span: 182..189,
+                span: 188..195,
             },
         },
     ],
-    span: 175..190,
+    span: 181..196,
 }
 RangeNode {
     kind: Offset,
     terms: [],
-    span: 201..203,
+    span: 207..209,
 }
 RangeNode {
     kind: Offset,
@@ -175,7 +154,7 @@ RangeNode {
             step: None,
         },
     ],
-    span: 205..208,
+    span: 211..214,
 }
 RangeNode {
     kind: Offset,
@@ -186,7 +165,7 @@ RangeNode {
             step: None,
         },
     ],
-    span: 210..214,
+    span: 216..220,
 }
 RangeNode {
     kind: Offset,
@@ -197,5 +176,5 @@ RangeNode {
             step: None,
         },
     ],
-    span: 216..221,
+    span: 222..227,
 }

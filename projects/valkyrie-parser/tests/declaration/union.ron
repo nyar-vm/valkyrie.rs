@@ -248,12 +248,10 @@ Union {
                 base: Result,
                 term: [
                     ArgumentTerm {
-                        modifiers: [],
                         key: Nothing,
                         value: T,
                     },
                     ArgumentTerm {
-                        modifiers: [],
                         key: Nothing,
                         value: E,
                     },
@@ -292,7 +290,6 @@ Union {
                                     caller: Success,
                                     arguments: [
                                         ArgumentTerm {
-                                            modifiers: [],
                                             key: Nothing,
                                             value: value,
                                         },
@@ -329,7 +326,6 @@ Union {
                                     caller: Failure,
                                     arguments: [
                                         ArgumentTerm {
-                                            modifiers: [],
                                             key: Nothing,
                                             value: fatal,
                                         },
@@ -358,7 +354,6 @@ Union {
                 base: Option,
                 term: [
                     ArgumentTerm {
-                        modifiers: [],
                         key: Nothing,
                         value: T,
                     },
@@ -397,7 +392,6 @@ Union {
                                     caller: Some,
                                     arguments: [
                                         ArgumentTerm {
-                                            modifiers: [],
                                             key: Nothing,
                                             value: value,
                                         },

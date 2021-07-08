@@ -104,7 +104,6 @@ DefineClass {
                         base: Ref,
                         term: [
                             ArgumentTerm {
-                                modifiers: [],
                                 key: Nothing,
                                 value: B,
                             },
@@ -115,7 +114,6 @@ DefineClass {
                 },
                 term: [
                     ArgumentTerm {
-                        modifiers: [],
                         key: Nothing,
                         value: D,
                     },
@@ -503,7 +501,6 @@ DefineClass {
                         },
                         arguments: [
                             ArgumentTerm {
-                                modifiers: [],
                                 key: Nothing,
                                 value: other,
                             },

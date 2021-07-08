@@ -46,7 +46,6 @@ FunctionDeclaration {
             caller: print,
             arguments: [
                 ArgumentTerm {
-                    modifiers: [],
                     key: Nothing,
                     value: 'Hello, world!',
                 },
@@ -93,7 +92,6 @@ FunctionDeclaration {
             caller: print,
             arguments: [
                 ArgumentTerm {
-                    modifiers: [],
                     key: Nothing,
                     value: 'Hello, world!',
                 },
@@ -151,7 +149,6 @@ FunctionDeclaration {
                             caller: print,
                             arguments: [
                                 ArgumentTerm {
-                                    modifiers: [],
                                     key: Nothing,
                                     value: '{lhs} {rhs}',
                                 },
@@ -192,7 +189,6 @@ FunctionDeclaration {
                 base: List,
                 term: [
                     ArgumentTerm {
-                        modifiers: [],
                         key: Nothing,
                         value: String,
                     },
@@ -212,7 +208,6 @@ FunctionDeclaration {
                 caller: outer,
                 arguments: [
                     ArgumentTerm {
-                        modifiers: [],
                         key: Nothing,
                         value: 'Hello',
                     },
@@ -222,7 +217,6 @@ FunctionDeclaration {
             },
             arguments: [
                 ArgumentTerm {
-                    modifiers: [],
                     key: Nothing,
                     value: 'world',
                 },
@@ -356,7 +350,6 @@ FunctionDeclaration {
             generics: [
                 [
                     ArgumentTerm {
-                        modifiers: [],
                         key: Nothing,
                         value: int,
                     },
@@ -401,7 +394,6 @@ FunctionDeclaration {
             caller: print,
             arguments: [
                 ArgumentTerm {
-                    modifiers: [],
                     key: Nothing,
                     value: 'Hello, world!',
                 },
@@ -521,7 +513,6 @@ FunctionDeclaration {
                             },
                             arguments: [
                                 ArgumentTerm {
-                                    modifiers: [],
                                     key: Nothing,
                                     value: this,
                                 },
@@ -572,7 +563,6 @@ FunctionDeclaration {
                 base: List,
                 term: [
                     ArgumentTerm {
-                        modifiers: [],
                         key: Nothing,
                         value: String,
                     },

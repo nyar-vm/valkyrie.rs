@@ -9,7 +9,6 @@ GenericCallNode {
     base: Object,
     term: [
         ArgumentTerm {
-            modifiers: [],
             key: Nothing,
             value: T,
         },
@@ -21,12 +20,10 @@ GenericCallNode {
     base: Object,
     term: [
         ArgumentTerm {
-            modifiers: [],
             key: Nothing,
             value: T,
         },
         ArgumentTerm {
-            modifiers: [],
             key: Nothing,
             value: U,
         },
@@ -44,7 +41,6 @@ GenericCallNode {
     base: Object,
     term: [
         ArgumentTerm {
-            modifiers: [],
             key: Nothing,
             value: T,
         },
@@ -58,12 +54,10 @@ ApplyCallNode {
         base: Object,
         term: [
             ArgumentTerm {
-                modifiers: [],
                 key: Nothing,
                 value: T,
             },
             ArgumentTerm {
-                modifiers: [],
                 key: Nothing,
                 value: U,
             },
@@ -72,12 +66,10 @@ ApplyCallNode {
     },
     arguments: [
         ArgumentTerm {
-            modifiers: [],
             key: Nothing,
             value: 1,
         },
         ArgumentTerm {
-            modifiers: [],
             key: Nothing,
             value: 2,
         },
