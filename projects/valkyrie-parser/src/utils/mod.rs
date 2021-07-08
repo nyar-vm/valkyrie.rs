@@ -1,24 +1,11 @@
-use crate::{
-    helpers::ProgramState, AnnotationTermMixNode, AnnotationTermNode, DefineConstraintNode, IfGuardNode, ModifierAheadNode,
-    ParameterDefaultNode, TypeHintNode,
-};
+use crate::{helpers::ProgramState, AnnotationTermMixNode, AnnotationTermNode, DefineConstraintNode, ModifierAheadNode};
 use nyar_error::Result;
-use valkyrie_ast::{AttributeList, ConstraintDeclaration, ExpressionKind, ModifierList};
+use valkyrie_ast::{AttributeList, ConstraintDeclaration, ModifierList};
 
 pub(crate) fn build_constraint(this: &Option<DefineConstraintNode>, ctx: &mut ProgramState) -> ConstraintDeclaration {
     match this {
         Some(s) => s.build(ctx),
         None => ConstraintDeclaration::default(),
-    }
-}
-
-pub(crate) fn build_type_hint(this: &Option<TypeHintNode>, ctx: &mut ProgramState) -> Option<ExpressionKind> {
-    match this.as_ref()?.build(ctx) {
-        Ok(o) => Some(o),
-        Err(e) => {
-            ctx.add_error(e);
-            None
-        }
     }
 }
 

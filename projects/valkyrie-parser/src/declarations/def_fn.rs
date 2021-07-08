@@ -140,7 +140,7 @@ impl crate::ParameterPairNode {
         Ok(ParameterTerm::Single {
             annotations: self.annotations(ctx),
             key,
-            bound: build_type_hint(&self.type_hint, ctx),
+            bound: self.type_hint.build(ctx),
             default: self.parameter_default.build(ctx),
         })
     }
@@ -176,7 +176,14 @@ impl crate::ContinuationNode {
     }
 }
 impl crate::TypeHintNode {
-    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<ExpressionKind> {
-        self.type_expression.build(ctx)
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Option<ExpressionKind> {
+        let hint = self.hint.as_ref()?;
+        match hint.build(ctx) {
+            Ok(o) => Some(o),
+            Err(e) => {
+                ctx.add_error(e);
+                None
+            }
+        }
     }
 }

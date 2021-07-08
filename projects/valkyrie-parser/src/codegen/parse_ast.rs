@@ -614,7 +614,7 @@ impl YggdrasilNode for DefineClassNode {
             define_inherit: pair.take_tagged_option::<DefineInheritNode>(Cow::Borrowed("define_inherit")),
             identifier: pair.take_tagged_one::<IdentifierNode>(Cow::Borrowed("identifier"))?,
             kw_class: pair.take_tagged_one::<KwClassNode>(Cow::Borrowed("kw_class"))?,
-            type_hint: pair.take_tagged_option::<TypeHintNode>(Cow::Borrowed("type_hint")),
+            type_hint: pair.take_tagged_one::<TypeHintNode>(Cow::Borrowed("type_hint"))?,
             span: Range { start: _span.start() as u32, end: _span.end() as u32 },
         })
     }
@@ -733,7 +733,7 @@ impl YggdrasilNode for DefineFieldNode {
             annotation_mix: pair.take_tagged_one::<AnnotationMixNode>(Cow::Borrowed("annotation_mix"))?,
             identifier: pair.take_tagged_one::<IdentifierNode>(Cow::Borrowed("identifier"))?,
             parameter_default: pair.take_tagged_one::<ParameterDefaultNode>(Cow::Borrowed("parameter_default"))?,
-            type_hint: pair.take_tagged_option::<TypeHintNode>(Cow::Borrowed("type_hint")),
+            type_hint: pair.take_tagged_one::<TypeHintNode>(Cow::Borrowed("type_hint"))?,
             span: Range { start: _span.start() as u32, end: _span.end() as u32 },
         })
     }
@@ -907,7 +907,7 @@ impl YggdrasilNode for ObjectStatementNode {
             class_block: pair.take_tagged_one::<ClassBlockNode>(Cow::Borrowed("class_block"))?,
             define_inherit: pair.take_tagged_option::<DefineInheritNode>(Cow::Borrowed("define_inherit")),
             // Missing rule KW_Object
-            type_hint: pair.take_tagged_option::<TypeHintNode>(Cow::Borrowed("type_hint")),
+            type_hint: pair.take_tagged_one::<TypeHintNode>(Cow::Borrowed("type_hint"))?,
             span: Range { start: _span.start() as u32, end: _span.end() as u32 },
         })
     }
@@ -935,7 +935,7 @@ impl YggdrasilNode for DefineEnumerateNode {
             flag_term: pair.take_tagged_items::<FlagTermNode>(Cow::Borrowed("flag_term")).collect::<Result<Vec<_>, _>>()?,
             identifier: pair.take_tagged_one::<IdentifierNode>(Cow::Borrowed("identifier"))?,
             kw_flags: pair.take_tagged_one::<KwFlagsNode>(Cow::Borrowed("kw_flags"))?,
-            type_hint: pair.take_tagged_option::<TypeHintNode>(Cow::Borrowed("type_hint")),
+            type_hint: pair.take_tagged_one::<TypeHintNode>(Cow::Borrowed("type_hint"))?,
             span: Range { start: _span.start() as u32, end: _span.end() as u32 },
         })
     }
@@ -1054,7 +1054,7 @@ impl YggdrasilNode for DefineUnionNode {
             define_inherit: pair.take_tagged_option::<DefineInheritNode>(Cow::Borrowed("define_inherit")),
             identifier: pair.take_tagged_one::<IdentifierNode>(Cow::Borrowed("identifier"))?,
             kw_union: pair.take_tagged_one::<KwUnionNode>(Cow::Borrowed("kw_union"))?,
-            type_hint: pair.take_tagged_option::<TypeHintNode>(Cow::Borrowed("type_hint")),
+            type_hint: pair.take_tagged_one::<TypeHintNode>(Cow::Borrowed("type_hint"))?,
             union_term: pair.take_tagged_items::<UnionTermNode>(Cow::Borrowed("union_term")).collect::<Result<Vec<_>, _>>()?,
             span: Range { start: _span.start() as u32, end: _span.end() as u32 },
         })
@@ -1169,7 +1169,7 @@ impl YggdrasilNode for DefineTraitNode {
             identifier: pair.take_tagged_one::<IdentifierNode>(Cow::Borrowed("identifier"))?,
             kw_trait: pair.take_tagged_one::<KwTraitNode>(Cow::Borrowed("kw_trait"))?,
             trait_block: pair.take_tagged_one::<TraitBlockNode>(Cow::Borrowed("trait_block"))?,
-            type_hint: pair.take_tagged_option::<TypeHintNode>(Cow::Borrowed("type_hint")),
+            type_hint: pair.take_tagged_one::<TypeHintNode>(Cow::Borrowed("type_hint"))?,
             span: Range { start: _span.start() as u32, end: _span.end() as u32 },
         })
     }
@@ -1197,7 +1197,7 @@ impl YggdrasilNode for DefineExtendsNode {
             kw_extends: pair.take_tagged_one::<KwExtendsNode>(Cow::Borrowed("kw_extends"))?,
             trait_block: pair.take_tagged_one::<TraitBlockNode>(Cow::Borrowed("trait_block"))?,
             type_expression: pair.take_tagged_one::<TypeExpressionNode>(Cow::Borrowed("type_expression"))?,
-            type_hint: pair.take_tagged_option::<TypeHintNode>(Cow::Borrowed("type_hint")),
+            type_hint: pair.take_tagged_one::<TypeHintNode>(Cow::Borrowed("type_hint"))?,
             span: Range { start: _span.start() as u32, end: _span.end() as u32 },
         })
     }
@@ -1390,8 +1390,7 @@ impl YggdrasilNode for TypeHintNode {
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
         Ok(Self {
-            colon: pair.take_tagged_one::<ColonNode>(Cow::Borrowed("colon"))?,
-            type_expression: pair.take_tagged_one::<TypeExpressionNode>(Cow::Borrowed("type_expression"))?,
+            hint: pair.take_tagged_option::<TypeExpressionNode>(Cow::Borrowed("hint")),
             span: Range { start: _span.start() as u32, end: _span.end() as u32 },
         })
     }
@@ -1533,7 +1532,7 @@ impl YggdrasilNode for ParameterPairNode {
                 .collect::<Result<Vec<_>, _>>()?,
             parameter_default: pair.take_tagged_one::<ParameterDefaultNode>(Cow::Borrowed("parameter_default"))?,
             parameter_hint: pair.take_tagged_option::<ParameterHintNode>(Cow::Borrowed("parameter_hint")),
-            type_hint: pair.take_tagged_option::<TypeHintNode>(Cow::Borrowed("type_hint")),
+            type_hint: pair.take_tagged_one::<TypeHintNode>(Cow::Borrowed("type_hint"))?,
             span: Range { start: _span.start() as u32, end: _span.end() as u32 },
         })
     }
@@ -1634,7 +1633,7 @@ impl YggdrasilNode for DefineVariableNode {
             kw_let: pair.take_tagged_one::<KwLetNode>(Cow::Borrowed("kw_let"))?,
             let_pattern: pair.take_tagged_one::<LetPatternNode>(Cow::Borrowed("let_pattern"))?,
             parameter_default: pair.take_tagged_one::<ParameterDefaultNode>(Cow::Borrowed("parameter_default"))?,
-            type_hint: pair.take_tagged_option::<TypeHintNode>(Cow::Borrowed("type_hint")),
+            type_hint: pair.take_tagged_one::<TypeHintNode>(Cow::Borrowed("type_hint"))?,
             span: Range { start: _span.start() as u32, end: _span.end() as u32 },
         })
     }

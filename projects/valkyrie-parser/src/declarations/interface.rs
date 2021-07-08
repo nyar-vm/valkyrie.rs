@@ -6,7 +6,7 @@ impl crate::DefineTraitNode {
             kind: self.kw_trait.build(),
             name: self.identifier.build(ctx),
             generics: self.define_generic.as_ref().map(|s| s.build(ctx)),
-            implements: build_type_hint(&self.type_hint, ctx),
+            implements: self.type_hint.build(ctx),
             body: self.trait_block.build(ctx),
         })
     }

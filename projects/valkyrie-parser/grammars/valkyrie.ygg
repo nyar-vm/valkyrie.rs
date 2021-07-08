@@ -125,7 +125,7 @@ class WhereBound {
 class DefineClass {
     DefineConstraint?
     AnnotationHead
-    KW_CLASS Identifier DefineGeneric? DefineInherit? TypeHint? ClassBlock ^EOS?
+    KW_CLASS Identifier DefineGeneric? DefineInherit? TypeHint ClassBlock ^EOS?
 }
 class ClassBlock {
     '{' ClassTerm* '}'
@@ -145,7 +145,7 @@ union KW_CLASS {
 // === field/method/domain === -----------------------------------------------------------------------------------------
 class DefineField {
     AnnotationMix
-    Identifier TypeHint? ParameterDefault
+    Identifier TypeHint ParameterDefault
 }
 class ParameterDefault {
     ('=' MainExpression)?
@@ -168,12 +168,12 @@ class InheritTerm {
 }
 // === object statement === --------------------------------------------------------------------------------------------
 class ObjectStatement {
-    KW_Object DefineInherit? TypeHint? ClassBlock ^EOS?
+    KW_Object DefineInherit? TypeHint ClassBlock ^EOS?
 }
 // === identifier === --------------------------------------------------------------------------------------------------
 class DefineEnumerate {
     AnnotationHead
-    KW_FLAGS Identifier DefineInherit? TypeHint? '{' FlagTerm* '}'
+    KW_FLAGS Identifier DefineInherit? TypeHint '{' FlagTerm* '}'
 }
 union FlagTerm {
     | ProceduralCall
@@ -194,7 +194,7 @@ union KW_FLAGS {
 class DefineUnion {
     DefineConstraint?
     AnnotationHead
-    KW_UNION Identifier DefineGeneric? DefineInherit? TypeHint? '{' UnionTerm* '}'
+    KW_UNION Identifier DefineGeneric? DefineInherit? TypeHint '{' UnionTerm* '}'
 }
 union UnionTerm {
     | ProceduralCall
@@ -214,12 +214,12 @@ class KW_UNION {
 class DefineTrait {
     DefineConstraint?
     AnnotationHead
-    KW_TRAIT Identifier DefineGeneric? DefineInherit? TypeHint? TraitBlock ^EOS?
+    KW_TRAIT Identifier DefineGeneric? DefineInherit? TypeHint TraitBlock ^EOS?
 }
 class DefineExtends {
     DefineConstraint?
     AnnotationHead
-    KW_EXTENDS TypeExpression TypeHint? TraitBlock ^EOS?
+    KW_EXTENDS TypeExpression TypeHint TraitBlock ^EOS?
 }
 class TraitBlock {
     '{' TraitTerm* '}'
@@ -246,8 +246,8 @@ class DefineLambda {
 class FunctionMiddle {
     DefineGeneric? '(' FunctionParameters ')' TypeReturn? TypeEffect?
 }
-class TypeHint {
-    COLON TypeExpression
+class TypeHint ^ {
+    (COLON hint:TypeExpression)?
 }
 class TypeReturn {
     ARROW1 TypeExpression
@@ -267,7 +267,7 @@ union ParameterItem {
 }
 class ParameterPair {
     ModifierAhead* ParameterHint?
-    Identifier TypeHint? ParameterDefault
+    Identifier TypeHint ParameterDefault
 }
 text class ParameterHint {
     /[.]{2,3}|[~^]/
@@ -283,7 +283,7 @@ union KW_FUNCTION {
 // === let variable === ------------------------------------------------------------------------------------------------
 class DefineVariable {
     AnnotationTerm*
-    KW_LET LetPattern TypeHint? ParameterDefault ^EOS?
+    KW_LET LetPattern TypeHint ParameterDefault ^EOS?
 }
 union LetPattern {
     | StandardPattern

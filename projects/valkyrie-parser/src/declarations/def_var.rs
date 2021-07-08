@@ -9,7 +9,7 @@ impl crate::DefineVariableNode {
                 terms: vec![],
                 span: Default::default(),
             })),
-            type_hint: build_type_hint(&self.type_hint, ctx),
+            type_hint: self.type_hint.build(ctx),
             body: self.parameter_default.build(ctx),
             span: self.span.clone(),
         })

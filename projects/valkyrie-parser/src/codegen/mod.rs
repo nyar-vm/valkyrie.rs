@@ -688,7 +688,7 @@ pub struct DefineClassNode {
     pub define_inherit: Option<DefineInheritNode>,
     pub identifier: IdentifierNode,
     pub kw_class: KwClassNode,
-    pub type_hint: Option<TypeHintNode>,
+    pub type_hint: TypeHintNode,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -718,7 +718,7 @@ pub struct DefineFieldNode {
     pub annotation_mix: AnnotationMixNode,
     pub identifier: IdentifierNode,
     pub parameter_default: ParameterDefaultNode,
-    pub type_hint: Option<TypeHintNode>,
+    pub type_hint: TypeHintNode,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -768,7 +768,7 @@ pub struct ObjectStatementNode {
     pub class_block: ClassBlockNode,
     pub define_inherit: Option<DefineInheritNode>,
     // Missing rule KW_Object
-    pub type_hint: Option<TypeHintNode>,
+    pub type_hint: TypeHintNode,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -779,7 +779,7 @@ pub struct DefineEnumerateNode {
     pub flag_term: Vec<FlagTermNode>,
     pub identifier: IdentifierNode,
     pub kw_flags: KwFlagsNode,
-    pub type_hint: Option<TypeHintNode>,
+    pub type_hint: TypeHintNode,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -812,7 +812,7 @@ pub struct DefineUnionNode {
     pub define_inherit: Option<DefineInheritNode>,
     pub identifier: IdentifierNode,
     pub kw_union: KwUnionNode,
-    pub type_hint: Option<TypeHintNode>,
+    pub type_hint: TypeHintNode,
     pub union_term: Vec<UnionTermNode>,
     pub span: Range<u32>,
 }
@@ -847,7 +847,7 @@ pub struct DefineTraitNode {
     pub identifier: IdentifierNode,
     pub kw_trait: KwTraitNode,
     pub trait_block: TraitBlockNode,
-    pub type_hint: Option<TypeHintNode>,
+    pub type_hint: TypeHintNode,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -858,7 +858,7 @@ pub struct DefineExtendsNode {
     pub kw_extends: KwExtendsNode,
     pub trait_block: TraitBlockNode,
     pub type_expression: TypeExpressionNode,
-    pub type_hint: Option<TypeHintNode>,
+    pub type_hint: TypeHintNode,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -912,8 +912,7 @@ pub struct FunctionMiddleNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct TypeHintNode {
-    pub colon: ColonNode,
-    pub type_expression: TypeExpressionNode,
+    pub hint: Option<TypeExpressionNode>,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -951,7 +950,7 @@ pub struct ParameterPairNode {
     pub modifier_ahead: Vec<ModifierAheadNode>,
     pub parameter_default: ParameterDefaultNode,
     pub parameter_hint: Option<ParameterHintNode>,
-    pub type_hint: Option<TypeHintNode>,
+    pub type_hint: TypeHintNode,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -979,7 +978,7 @@ pub struct DefineVariableNode {
     pub kw_let: KwLetNode,
     pub let_pattern: LetPatternNode,
     pub parameter_default: ParameterDefaultNode,
-    pub type_hint: Option<TypeHintNode>,
+    pub type_hint: TypeHintNode,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
