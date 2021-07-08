@@ -1903,7 +1903,7 @@ impl YggdrasilNode for ForStatementNode {
         let _span = pair.get_span();
         Ok(Self {
             continuation: pair.take_tagged_one::<ContinuationNode>(Cow::Borrowed("continuation"))?,
-            if_guard: pair.take_tagged_option::<IfGuardNode>(Cow::Borrowed("if_guard")),
+            if_guard: pair.take_tagged_one::<IfGuardNode>(Cow::Borrowed("if_guard"))?,
             inline_expression: pair.take_tagged_option::<InlineExpressionNode>(Cow::Borrowed("inline_expression")),
             kw_for: pair.take_tagged_one::<KwForNode>(Cow::Borrowed("kw_for"))?,
             kw_in: pair.take_tagged_one::<KwInNode>(Cow::Borrowed("kw_in"))?,
@@ -1930,8 +1930,7 @@ impl YggdrasilNode for IfGuardNode {
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
         Ok(Self {
-            inline_expression: pair.take_tagged_one::<InlineExpressionNode>(Cow::Borrowed("inline_expression"))?,
-            kw_if: pair.take_tagged_one::<KwIfNode>(Cow::Borrowed("kw_if"))?,
+            condition: pair.take_tagged_option::<InlineExpressionNode>(Cow::Borrowed("condition")),
             span: Range { start: _span.start() as u32, end: _span.end() as u32 },
         })
     }
@@ -2151,7 +2150,7 @@ impl YggdrasilNode for MatchTypeNode {
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
         Ok(Self {
-            if_guard: pair.take_tagged_option::<IfGuardNode>(Cow::Borrowed("if_guard")),
+            if_guard: pair.take_tagged_one::<IfGuardNode>(Cow::Borrowed("if_guard"))?,
             kw_type: pair.take_tagged_one::<KwTypeNode>(Cow::Borrowed("kw_type"))?,
             match_statement: pair
                 .take_tagged_items::<MatchStatementNode>(Cow::Borrowed("match_statement"))
@@ -2180,7 +2179,7 @@ impl YggdrasilNode for MatchCaseNode {
         let _span = pair.get_span();
         Ok(Self {
             case_pattern: pair.take_tagged_one::<CasePatternNode>(Cow::Borrowed("case_pattern"))?,
-            if_guard: pair.take_tagged_option::<IfGuardNode>(Cow::Borrowed("if_guard")),
+            if_guard: pair.take_tagged_one::<IfGuardNode>(Cow::Borrowed("if_guard"))?,
             kw_case: pair.take_tagged_one::<KwCaseNode>(Cow::Borrowed("kw_case"))?,
             match_statement: pair
                 .take_tagged_items::<MatchStatementNode>(Cow::Borrowed("match_statement"))
@@ -5833,7 +5832,7 @@ impl YggdrasilNode for ForTemplateBeginNode {
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
         Ok(Self {
-            if_guard: pair.take_tagged_option::<IfGuardNode>(Cow::Borrowed("if_guard")),
+            if_guard: pair.take_tagged_one::<IfGuardNode>(Cow::Borrowed("if_guard"))?,
             inline_expression: pair.take_tagged_option::<InlineExpressionNode>(Cow::Borrowed("inline_expression")),
             kw_for: pair.take_tagged_one::<KwForNode>(Cow::Borrowed("kw_for"))?,
             kw_in: pair.take_tagged_one::<KwInNode>(Cow::Borrowed("kw_in"))?,

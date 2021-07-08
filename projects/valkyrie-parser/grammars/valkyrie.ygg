@@ -325,10 +325,10 @@ union KW_WHILE {
 }
 // === for loop === ----------------------------------------------------------------------------------------------------
 class ForStatement {
-    KW_FOR LetPattern KW_IN InlineExpression? IfGuard? Continuation ^EOS?
+    KW_FOR LetPattern KW_IN InlineExpression? IfGuard Continuation ^EOS?
 }
-class IfGuard {
-    KW_IF InlineExpression
+class IfGuard ^ {
+    (KW_IF condition:InlineExpression)?
 }
 // === controls === ----------------------------------------------------------------------------------------------------
 class ControlFlow {
@@ -364,10 +364,10 @@ union MatchTerms {
     | COMMA
 }
 class MatchType {
-    KW_TYPE TypeExpression IfGuard? ^COLON MatchStatement*
+    KW_TYPE TypeExpression IfGuard ^COLON MatchStatement*
 }
 class MatchCase {
-    KW_CASE CasePattern IfGuard? ^COLON MatchStatement*
+    KW_CASE CasePattern IfGuard ^COLON MatchStatement*
 }
 union CasePattern {
     | StandardPattern
@@ -930,7 +930,7 @@ atomic class ForTemplate {
     ForTemplateBegin ForTemplateElse? ForTemplateEnd
 }
 class ForTemplateBegin {
-    TEMPLATE_S KW_FOR LetPattern KW_IN InlineExpression? IfGuard? TEMPLATE_E
+    TEMPLATE_S KW_FOR LetPattern KW_IN InlineExpression? IfGuard TEMPLATE_E
 }
 class ForTemplateElse {
     TEMPLATE_S KW_ELSE TEMPLATE_E

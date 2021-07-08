@@ -1,8 +1,16 @@
 use super::*;
-use valkyrie_ast::ExpressionKind;
 
 impl crate::IfGuardNode {
-    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<ExpressionKind> {
-        self.inline_expression.build(ctx)
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> Option<ExpressionKind> {
+        match &self.condition {
+            Some(s) => match s.build(ctx) {
+                Ok(o) => Some(o),
+                Err(e) => {
+                    ctx.add_error(e);
+                    None
+                }
+            },
+            None => None,
+        }
     }
 }

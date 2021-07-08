@@ -1,6 +1,6 @@
-use crate::{helpers::ProgramState, utils::build_if_guard};
+use crate::helpers::ProgramState;
 use nyar_error::Result;
-use valkyrie_ast::*;
+use valkyrie_ast::{ExpressionKind, *};
 
 mod controller;
 mod jmp_if;

@@ -5,7 +5,7 @@ impl crate::ForStatementNode {
         Ok(ForLoop {
             pattern: self.let_pattern.build(ctx)?,
             iterator: Default::default(),
-            condition: build_if_guard(&self.if_guard, ctx),
+            condition: self.if_guard.build(ctx),
             label: None,
             body: self.continuation.build(ctx),
             span: self.span.clone(),

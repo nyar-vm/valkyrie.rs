@@ -59,11 +59,7 @@ impl crate::MatchCaseNode {
         })
     }
     fn build_node(&self, ctx: &mut ProgramState) -> Result<PatternCaseNode> {
-        Ok(PatternCaseNode {
-            pattern: self.case_pattern.build(ctx)?,
-            guard: build_if_guard(&self.if_guard, ctx),
-            span: self.span.clone(),
-        })
+        Ok(PatternCaseNode { pattern: self.case_pattern.build(ctx)?, guard: self.if_guard.build(ctx), span: self.span.clone() })
     }
 }
 
@@ -76,7 +72,7 @@ impl crate::MatchTypeNode {
     fn build_node(&self, ctx: &mut ProgramState) -> Result<PatternTypeNode> {
         Ok(PatternTypeNode {
             typing: self.type_expression.build(ctx)?,
-            guard: build_if_guard(&self.if_guard, ctx),
+            guard: self.if_guard.build(ctx),
             span: self.span.clone(),
         })
     }

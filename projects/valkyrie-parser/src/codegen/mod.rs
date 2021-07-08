@@ -1048,7 +1048,7 @@ pub enum KwWhileNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ForStatementNode {
     pub continuation: ContinuationNode,
-    pub if_guard: Option<IfGuardNode>,
+    pub if_guard: IfGuardNode,
     pub inline_expression: Option<InlineExpressionNode>,
     pub kw_for: KwForNode,
     pub kw_in: KwInNode,
@@ -1058,8 +1058,7 @@ pub struct ForStatementNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct IfGuardNode {
-    pub inline_expression: InlineExpressionNode,
-    pub kw_if: KwIfNode,
+    pub condition: Option<InlineExpressionNode>,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -1122,7 +1121,7 @@ pub enum MatchTermsNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct MatchTypeNode {
-    pub if_guard: Option<IfGuardNode>,
+    pub if_guard: IfGuardNode,
     pub kw_type: KwTypeNode,
     pub match_statement: Vec<MatchStatementNode>,
     pub type_expression: TypeExpressionNode,
@@ -1132,7 +1131,7 @@ pub struct MatchTypeNode {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct MatchCaseNode {
     pub case_pattern: CasePatternNode,
-    pub if_guard: Option<IfGuardNode>,
+    pub if_guard: IfGuardNode,
     pub kw_case: KwCaseNode,
     pub match_statement: Vec<MatchStatementNode>,
     pub span: Range<u32>,
@@ -2105,7 +2104,7 @@ pub struct ForTemplateNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ForTemplateBeginNode {
-    pub if_guard: Option<IfGuardNode>,
+    pub if_guard: IfGuardNode,
     pub inline_expression: Option<InlineExpressionNode>,
     pub kw_for: KwForNode,
     pub kw_in: KwInNode,

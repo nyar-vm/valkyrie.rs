@@ -1595,7 +1595,7 @@ fn parse_for_statement(state: Input) -> Output {
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| s.optional(|s| parse_inline_expression(s).and_then(|s| s.tag_node("inline_expression"))))
                 .and_then(|s| builtin_ignore(s))
-                .and_then(|s| s.optional(|s| parse_if_guard(s).and_then(|s| s.tag_node("if_guard"))))
+                .and_then(|s| parse_if_guard(s).and_then(|s| s.tag_node("if_guard")))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_continuation(s).and_then(|s| s.tag_node("continuation")))
                 .and_then(|s| builtin_ignore(s))
@@ -1606,11 +1606,12 @@ fn parse_for_statement(state: Input) -> Output {
 #[inline]
 fn parse_if_guard(state: Input) -> Output {
     state.rule(ValkyrieRule::IfGuard, |s| {
-        s.sequence(|s| {
-            Ok(s)
-                .and_then(|s| parse_kw_if(s).and_then(|s| s.tag_node("kw_if")))
-                .and_then(|s| builtin_ignore(s))
-                .and_then(|s| parse_inline_expression(s).and_then(|s| s.tag_node("inline_expression")))
+        s.optional(|s| {
+            s.sequence(|s| {
+                Ok(s)
+                    .and_then(|s| s.sequence(|s| Ok(s).and_then(|s| parse_kw_if(s)).and_then(|s| builtin_ignore(s))))
+                    .and_then(|s| parse_inline_expression(s).and_then(|s| s.tag_node("condition")))
+            })
         })
     })
 }
@@ -1773,7 +1774,7 @@ fn parse_match_type(state: Input) -> Output {
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_type_expression(s).and_then(|s| s.tag_node("type_expression")))
                 .and_then(|s| builtin_ignore(s))
-                .and_then(|s| s.optional(|s| parse_if_guard(s).and_then(|s| s.tag_node("if_guard"))))
+                .and_then(|s| parse_if_guard(s).and_then(|s| s.tag_node("if_guard")))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_colon(s))
                 .and_then(|s| builtin_ignore(s))
@@ -1798,7 +1799,7 @@ fn parse_match_case(state: Input) -> Output {
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_case_pattern(s).and_then(|s| s.tag_node("case_pattern")))
                 .and_then(|s| builtin_ignore(s))
-                .and_then(|s| s.optional(|s| parse_if_guard(s).and_then(|s| s.tag_node("if_guard"))))
+                .and_then(|s| parse_if_guard(s).and_then(|s| s.tag_node("if_guard")))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_colon(s))
                 .and_then(|s| builtin_ignore(s))
@@ -4095,7 +4096,7 @@ fn parse_for_template_begin(state: Input) -> Output {
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| s.optional(|s| parse_inline_expression(s).and_then(|s| s.tag_node("inline_expression"))))
                 .and_then(|s| builtin_ignore(s))
-                .and_then(|s| s.optional(|s| parse_if_guard(s).and_then(|s| s.tag_node("if_guard"))))
+                .and_then(|s| parse_if_guard(s).and_then(|s| s.tag_node("if_guard")))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_template_e(s).and_then(|s| s.tag_node("template_e")))
         })
