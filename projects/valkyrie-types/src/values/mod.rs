@@ -3,6 +3,7 @@ use std::fmt::{Debug, Formatter};
 use valkyrie_ast::helper::ValkyrieNode;
 
 mod der;
+mod jupyter;
 mod ser;
 
 #[cfg(feature = "polars")]
@@ -16,10 +17,6 @@ use crate::{
 pub enum ValkyrieValue {
     /// ADT = -1
     Nothing,
-    /// An uninitialized value, null for pointer types, and default for value types
-    ///
-    /// Trying to read from an uninitialized value is a fatal error.
-    Uninitialized,
     /// ADT = 0
     Null,
     /// ADT = 1
@@ -61,7 +58,6 @@ unsafe impl Scan for ValkyrieValue {
     fn scan(&self, scanner: &mut Scanner<'_>) {
         match self {
             ValkyrieValue::Nothing => {}
-            ValkyrieValue::Uninitialized => {}
             ValkyrieValue::Null => {}
             ValkyrieValue::Unit => {}
             ValkyrieValue::Boolean(_) => {}
@@ -86,7 +82,6 @@ impl Debug for ValkyrieValue {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match self {
             ValkyrieValue::Nothing => f.write_str("nothing"),
-            ValkyrieValue::Uninitialized => f.write_str("uninitialized"),
             ValkyrieValue::Null => f.write_str("null"),
             ValkyrieValue::Unit => f.write_str("()"),
             ValkyrieValue::Boolean(v) => Debug::fmt(v, f),

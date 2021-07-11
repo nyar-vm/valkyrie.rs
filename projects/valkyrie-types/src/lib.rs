@@ -31,6 +31,7 @@ pub use self::{
         texts::{StringID, ValkyrieString},
         TokenType,
     },
+    codegen::ValkyrieWasmCodegen,
     collection::{
         dict::ValkyrieDict,
         list::{ValkyrieList, ValkyrieOrdinal},

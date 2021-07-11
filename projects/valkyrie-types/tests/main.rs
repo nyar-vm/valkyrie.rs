@@ -1,5 +1,8 @@
-use std::str::FromStr;
-use valkyrie_types::{testing::assert_type, ValkyrieID, ValkyrieInterface, ValkyrieList, ValkyrieNumber, ValkyrieValue};
+use nyar_error::third_party::Url;
+use std::{io::Write, path::Path, str::FromStr};
+use valkyrie_types::{
+    testing::assert_type, ValkyrieID, ValkyrieInterface, ValkyrieList, ValkyrieNumber, ValkyrieValue, ValkyrieWasmCodegen,
+};
 
 #[test]
 fn ready() {
@@ -16,15 +19,12 @@ fn test_primitive() {
 
 #[test]
 fn test_parse() {
-    let value = ValkyrieValue::parse_integer("0", 10);
-    println!("{:?}", value.unwrap());
-    let value = ValkyrieValue::parse_integer("+1", 10);
-    println!("{:?}", value.unwrap());
-    let value = ValkyrieValue::parse_integer("-1", 10);
-    println!("{:?}", value.unwrap());
-    let value = ValkyrieNumber::parse_integer("-1");
-    println!("{:?}", value.unwrap());
+    let mut codegen = ValkyrieWasmCodegen::default();
+    let file = Path::new(env!("CARGO_MANIFEST_DIR")).join("tests").join("test.vk");
+    codegen.load_module(Url::from_file_path(file).unwrap());
+    codegen.build_wasm(Path::new(env!("CARGO_MANIFEST_DIR")).join("target/debug/valkyrie/test.wasm")).unwrap();
 }
+
 #[test]
 fn test_list_index() {
     let out = ValkyrieList::from_iter(vec!['1', '2', '3', '4', '5', '6', '7', '8', '9']);

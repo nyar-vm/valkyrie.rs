@@ -14,7 +14,6 @@ salsa = "0.17.0-pre.2"
 serde = "1.0.188"
 im = "15.1.0"
 xxhash-rust = { version = "0.8.7", features = ["xxh3", "const_xxh3"] }
-
 shredder = "0.2.0"
 smallvec = "2.0.0-alpha.1"
 id-arena = { version = "2", features = ["rayon"] }
@@ -24,6 +23,11 @@ itertools = "0.12.0"
 image = { version = "0.24.7", features = [] }
 ndarray = { version = "0.15.6", features = [] }
 polars = { version = "0.35.4", features = ["lazy"], optional = true }
+jupyter-types = "0.0.*"
+
+[dependencies.nyar-wasm]
+version = "0.0.*"
+path = 'C:\Users\Dell\CLionProjects\nyar-vm\projects\nyar-wasm'
 
 [dependencies.nyar-collection]
 version = "0.0.1"

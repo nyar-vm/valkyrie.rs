@@ -1,38 +1,14 @@
-use std::{
-    collections::BTreeSet,
-    fmt::{Arguments, Write},
-    mem::take,
-    path::PathBuf,
-};
+use crate::{Failure, FileCache, Success};
+use nyar_error::{third_party::Url, NyarError, Result};
+use nyar_wasm::ModuleBuilder;
+use valkyrie_ast::{ProgramRoot, StatementKind};
+use valkyrie_parser::ProgramContext;
 
-use crate::types::ValkyrieMetaType;
+pub mod backend_wasm;
 
 #[derive(Default)]
-pub struct ValkyrieCodegen {
-    buffer: String,
-    root: PathBuf,
-    indent: usize,
-    prelude: BTreeSet<String>,
-}
-
-impl ValkyrieCodegen {
-    pub fn generate(&mut self, meta: &ValkyrieMetaType) -> Result<String, std::fmt::Error> {
-        writeln!(self, "namespace {};", meta.namespace("."))?;
-        Ok(take(&mut self.buffer))
-    }
-    pub fn target_path(&self) -> PathBuf {
-        self.root.join("src").join("lib.rs")
-    }
-}
-
-impl Write for ValkyrieCodegen {
-    fn write_str(&mut self, s: &str) -> core::fmt::Result {
-        self.buffer.write_str(s)
-    }
-    fn write_char(&mut self, c: char) -> core::fmt::Result {
-        self.buffer.write_char(c)
-    }
-    fn write_fmt(self: &mut Self, args: Arguments<'_>) -> core::fmt::Result {
-        self.buffer.write_fmt(args)
-    }
+pub struct ValkyrieWasmCodegen {
+    module: ModuleBuilder,
+    files: FileCache,
+    errors: Vec<NyarError>,
 }

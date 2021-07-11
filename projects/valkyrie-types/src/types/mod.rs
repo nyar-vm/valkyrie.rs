@@ -46,7 +46,6 @@ impl ValkyrieType for ValkyrieValue {
 
     fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
         match self {
-            Self::Uninitialized => primitive_type("std.primitive.Uninitialized"),
             Self::Nothing => primitive_type("std.primitive.Never"),
             Self::Null => primitive_type("std.primitive.Null"),
             Self::Unit => primitive_type("std.primitive.Unit"),

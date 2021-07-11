@@ -1,0 +1,13 @@
+
+
+
+class UTF8Text {
+    bytes: Array<u8>
+}
+
+class Test {
+    a1: u32,
+    a2: u64,
+    b1: f32,
+    b2: f64,
+}

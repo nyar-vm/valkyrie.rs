@@ -103,9 +103,9 @@ pub struct FieldDeclaration {
     /// The modifiers of the declaration.
     pub annotations: AnnotationNode,
     /// The type hint of this field
-    pub typing: Option<ExpressionNode>,
+    pub typing: Option<ExpressionKind>,
     /// The default value of this field
-    pub default: Option<ExpressionNode>,
+    pub default: Option<ExpressionKind>,
     /// The range of the declaration.
     pub span: Range<u32>,
 }
