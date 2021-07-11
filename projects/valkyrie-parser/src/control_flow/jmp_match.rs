@@ -11,7 +11,7 @@ impl crate::MatchExpressionNode {
         })
     }
     fn get_bind(&self, ctx: &mut ProgramState) -> Option<IdentifierNode> {
-        Some(self.identifier.as_ref()?.build(ctx))
+        Some(self.identifier.as_ref()?.build(ctx.file))
     }
 }
 

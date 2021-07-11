@@ -34,7 +34,7 @@ impl crate::BarePatternNode {
 
 impl crate::BarePatternItemNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<PatternNode> {
-        let identifier = self.identifier.build(ctx);
+        let identifier = self.identifier.build(ctx.file);
         let id = IdentifierPattern { modifiers: Default::default(), identifier };
         Ok(PatternNode::Atom(Box::new(id)))
     }
@@ -72,7 +72,7 @@ impl crate::PatternItemNode {
 
 impl crate::TuplePatternItemNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<PatternNode> {
-        let identifier = self.identifier.build(ctx);
+        let identifier = self.identifier.build(ctx.file);
         let id = IdentifierPattern { modifiers: Default::default(), identifier };
         Ok(PatternNode::Atom(Box::new(id)))
     }

@@ -2,7 +2,7 @@ use super::*;
 
 impl crate::TextLiteralNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> StringLiteralNode {
-        let handler = self.identifier.as_ref().map(|v| v.build(ctx));
+        let handler = self.identifier.as_ref().map(|v| v.build(ctx.file));
         let literal = self.text_raw.build();
         StringLiteralNode { literal, handler }
     }

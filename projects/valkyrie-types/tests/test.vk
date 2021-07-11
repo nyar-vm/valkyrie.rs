@@ -8,6 +8,9 @@ class UTF8Text {
 class Test {
     a1: u32,
     a2: u64,
+    a1: i32,
+    a2: i64,
     b1: f32,
     b2: f64,
+    wow: Any
 }

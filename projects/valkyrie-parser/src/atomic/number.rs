@@ -31,7 +31,7 @@ impl crate::DecimalNode {
             n.set_decimal(&s.text, ctx.file, s.span.start as usize)?
         }
         if let Some(s) = &self.unit {
-            n.unit = Some(s.build(ctx))
+            n.unit = Some(s.build(ctx.file))
         }
         if let Some(s) = &self.shift {
             match &self.sign {
@@ -53,7 +53,7 @@ impl crate::DecimalXNode {
             n.set_decimal(&s.text, ctx.file, s.span.start as usize)?
         }
         if let Some(s) = &self.unit {
-            n.unit = Some(s.build(ctx))
+            n.unit = Some(s.build(ctx.file))
         }
         if let Some(s) = &self.shift {
             match &self.sign {

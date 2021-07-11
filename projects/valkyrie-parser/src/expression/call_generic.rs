@@ -34,7 +34,7 @@ impl crate::GenericPairNode {
     }
     fn get_key(&self, ctx: &mut ProgramState) -> ArgumentKey {
         match &self.identifier {
-            Some(v) => ArgumentKey::Symbol(v.build(ctx)),
+            Some(v) => ArgumentKey::Symbol(v.build(ctx.file)),
             None => ArgumentKey::Nothing,
         }
     }

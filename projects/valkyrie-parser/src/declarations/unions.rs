@@ -4,7 +4,7 @@ impl crate::DefineUnionNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<UnionDeclaration> {
         Ok(UnionDeclaration {
             annotations: self.annotation_head.annotations(ctx),
-            name: self.identifier.build(ctx),
+            name: self.identifier.build(ctx.file),
             inherits: vec![],
             implements: self.type_hint.build(ctx),
             body: self.terms(ctx),
@@ -47,7 +47,7 @@ impl crate::UnionTermNode {
 impl crate::DefineVariantNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<VariantDeclaration> {
         Ok(VariantDeclaration {
-            name: self.identifier.build(ctx),
+            name: self.identifier.build(ctx.file),
             annotations: build_annotation_terms(&self.annotation_term, ctx).into(),
             body: self.domain(ctx),
             span: self.span.clone(),

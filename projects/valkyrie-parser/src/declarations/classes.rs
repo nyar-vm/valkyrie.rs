@@ -6,7 +6,7 @@ impl crate::DefineClassNode {
         Ok(ClassDeclaration {
             kind: self.kw_class.build(),
             annotations: self.annotation_head.annotations(ctx),
-            name: self.identifier.build(ctx),
+            name: self.identifier.build(ctx.file),
             generic: None,
             inherits: None,
             implements: vec![],
@@ -54,7 +54,7 @@ impl crate::KwClassNode {
 }
 impl crate::DefineFieldNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<FieldDeclaration> {
-        let name = self.identifier.build(ctx);
+        let name = self.identifier.build(ctx.file);
         let annotations = self.annotation_mix.annotations(ctx)?;
         Ok(FieldDeclaration { annotations, name, typing: None, default: None, span: self.span.clone() })
     }

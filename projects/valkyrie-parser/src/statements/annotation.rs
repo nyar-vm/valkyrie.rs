@@ -11,14 +11,14 @@ use super::*;
 impl crate::AnnotationMixNode {
     pub(crate) fn annotations(&self, ctx: &mut ProgramState) -> Result<AnnotationNode> {
         let attributes = build_annotation_terms_mix(&self.annotation_term_mix, ctx)?;
-        let modifiers = ModifierList { terms: self.modifier_ahead.iter().map(|s| s.identifier.build(ctx)).collect() };
+        let modifiers = ModifierList { terms: self.modifier_ahead.iter().map(|s| s.identifier.build(ctx.file)).collect() };
         Ok(AnnotationNode { documents: DocumentationList { terms: vec![] }, attributes, modifiers })
     }
 }
 
 impl crate::AnnotationHeadNode {
     pub(crate) fn annotations(&self, ctx: &mut ProgramState) -> AnnotationNode {
-        let modifiers = ModifierList { terms: self.modifier_call.iter().map(|s| s.identifier.build(ctx)).collect() };
+        let modifiers = ModifierList { terms: self.modifier_call.iter().map(|s| s.identifier.build(ctx.file)).collect() };
         AnnotationNode {
             documents: DocumentationList { terms: vec![] },
             attributes: build_annotation_terms(&self.annotation_term, ctx),
@@ -65,6 +65,6 @@ impl crate::AnnotationTermMixNode {
 
 impl crate::ModifierAheadNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> IdentifierNode {
-        self.identifier.build(ctx)
+        self.identifier.build(ctx.file)
     }
 }

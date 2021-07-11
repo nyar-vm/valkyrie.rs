@@ -11,7 +11,7 @@ impl crate::DefineEnumerateNode {
         }
         Ok(FlagDeclaration {
             annotations: self.annotation_head.annotations(ctx),
-            name: self.identifier.build(ctx),
+            name: self.identifier.build(ctx.file),
             kind: self.kw_flags.build(),
             layout: None,
             implements: None,
@@ -45,7 +45,7 @@ impl crate::FlagFieldNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<EncodeDeclaration> {
         Ok(EncodeDeclaration {
             annotations: Default::default(),
-            name: self.identifier.build(ctx),
+            name: self.identifier.build(ctx.file),
             value: self.parameter_default.build(ctx),
             span: self.span.clone(),
         })

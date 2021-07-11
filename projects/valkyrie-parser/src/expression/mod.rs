@@ -1,5 +1,5 @@
 use crate::helpers::ProgramState;
-use nyar_error::{NyarError, Result};
+use nyar_error::{FileID, NyarError, Result};
 use pratt::{Affix, PrattParser, Precedence};
 use std::str::FromStr;
 use valkyrie_ast::*;
@@ -48,6 +48,10 @@ impl crate::InlineExpressionNode {
     }
 }
 impl crate::TypeExpressionNode {
+    pub fn build_external(&self, file: FileID) -> Result<ExpressionKind> {
+        let mut stream = ProgramState::new(file);
+        self.build(&mut stream)
+    }
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<ExpressionKind> {
         let mut stream = vec![];
         let (head, rest) = self.type_term.split_first().expect("at least one term");

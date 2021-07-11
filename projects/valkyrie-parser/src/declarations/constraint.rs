@@ -10,7 +10,7 @@ impl crate::DefineConstraintNode {
     }
     fn generics(&self, ctx: &mut ProgramState) -> Vec<IdentifierNode> {
         match &self.constraint_parameters {
-            Some(s) => s.identifier.iter().map(|x| x.build(ctx)).collect(),
+            Some(s) => s.identifier.iter().map(|x| x.build(ctx.file)).collect(),
             None => vec![],
         }
     }

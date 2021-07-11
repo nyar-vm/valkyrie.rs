@@ -60,20 +60,20 @@ impl crate::ImportTermNode {
 
 impl crate::ImportAllNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> ImportAllNode {
-        ImportAllNode { path: self.path.iter().map(|v| v.build(ctx)).collect(), span: self.span.clone() }
+        ImportAllNode { path: self.path.iter().map(|v| v.build(ctx.file)).collect(), span: self.span.clone() }
     }
 }
 
 impl crate::ImportSpaceNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> ImportGroupNode {
-        ImportGroupNode { path: self.path.iter().map(|v| v.build(ctx)).collect(), terms: self.body.build(ctx) }
+        ImportGroupNode { path: self.path.iter().map(|v| v.build(ctx.file)).collect(), terms: self.body.build(ctx) }
     }
 }
 
 impl crate::ImportNameNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> ImportAliasNode {
         ImportAliasNode {
-            path: self.path.iter().map(|v| v.build(ctx)).collect(),
+            path: self.path.iter().map(|v| v.build(ctx.file)).collect(),
             item: self.item.build(ctx),
             alias: self.alias.build(ctx),
             span: self.span.clone(),
@@ -90,9 +90,9 @@ impl crate::ImportAsNode {
 impl crate::ImportNameItemNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> ImportAliasItem {
         match self {
-            Self::ProceduralName(v) => ImportAliasItem::Procedural(v.identifier.build(ctx)),
-            Self::AttributeName(v) => ImportAliasItem::Attribute(v.identifier.build(ctx)),
-            Self::Identifier(v) => ImportAliasItem::Normal(v.build(ctx)),
+            Self::ProceduralName(v) => ImportAliasItem::Procedural(v.identifier.build(ctx.file)),
+            Self::AttributeName(v) => ImportAliasItem::Attribute(v.identifier.build(ctx.file)),
+            Self::Identifier(v) => ImportAliasItem::Normal(v.build(ctx.file)),
         }
     }
 }

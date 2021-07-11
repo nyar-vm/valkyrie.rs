@@ -94,7 +94,7 @@ impl crate::DefineGenericNode {
 
 impl crate::GenericParameterPairNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<ParameterTerm> {
-        let key = self.identifier.build(ctx);
+        let key = self.identifier.build(ctx.file);
         Ok(ParameterTerm::Single {
             annotations: Default::default(),
             key,
@@ -136,7 +136,7 @@ impl crate::ParameterItemNode {
 
 impl crate::ParameterPairNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<ParameterTerm> {
-        let key = self.identifier.build(ctx);
+        let key = self.identifier.build(ctx.file);
         Ok(ParameterTerm::Single {
             annotations: self.annotations(ctx),
             key,

@@ -45,7 +45,7 @@ impl crate::TuplePairNode {
 impl crate::TupleKeyNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> ArgumentKey {
         match self {
-            Self::Identifier(v) => ArgumentKey::Symbol(v.build(ctx)),
+            Self::Identifier(v) => ArgumentKey::Symbol(v.build(ctx.file)),
             Self::TextRaw(v) => ArgumentKey::Symbol(v.build_id(ctx)),
             Self::Integer(v) => {
                 ctx.add_error(

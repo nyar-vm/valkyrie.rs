@@ -1,8 +1,6 @@
-use crate::{Failure, FileCache, Success};
+use crate::{Failure, FileCache, FileID, Success};
 use nyar_error::{third_party::Url, NyarError, Result};
 use nyar_wasm::ModuleBuilder;
-use valkyrie_ast::{ProgramRoot, StatementKind};
-use valkyrie_parser::ProgramContext;
 
 pub mod backend_wasm;
 
@@ -10,5 +8,15 @@ pub mod backend_wasm;
 pub struct ValkyrieWasmCodegen {
     module: ModuleBuilder,
     files: FileCache,
+    current_file: FileID,
     errors: Vec<NyarError>,
+}
+
+impl ValkyrieWasmCodegen {
+    pub fn print_error(&self, error: NyarError) {
+        match error.as_report().eprint(&self.files) {
+            Ok(_) => {}
+            Err(_) => {}
+        }
+    }
 }

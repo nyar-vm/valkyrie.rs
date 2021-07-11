@@ -1,8 +1,6 @@
 use nyar_error::third_party::Url;
 use std::{io::Write, path::Path, str::FromStr};
-use valkyrie_types::{
-    testing::assert_type, ValkyrieID, ValkyrieInterface, ValkyrieList, ValkyrieNumber, ValkyrieValue, ValkyrieWasmCodegen,
-};
+use valkyrie_types::{testing::assert_type, ValkyrieID, ValkyrieInterface, ValkyrieList, ValkyrieWasmCodegen};
 
 #[test]
 fn ready() {
@@ -20,8 +18,10 @@ fn test_primitive() {
 #[test]
 fn test_parse() {
     let mut codegen = ValkyrieWasmCodegen::default();
-    let file = Path::new(env!("CARGO_MANIFEST_DIR")).join("tests").join("test.vk");
-    codegen.load_module(Url::from_file_path(file).unwrap());
+    let file = Path::new(env!("CARGO_MANIFEST_DIR")).join("tests/test.vk").canonicalize().unwrap();
+    for e in codegen.load_local(file) {
+        codegen.print_error(e)
+    }
     codegen.build_wasm(Path::new(env!("CARGO_MANIFEST_DIR")).join("target/debug/valkyrie/test.wasm")).unwrap();
 }
 
