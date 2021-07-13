@@ -10,7 +10,7 @@ mod ser;
 use crate::builtin::data_frame::ValkyrieDataFrame;
 use crate::{
     builtin::{images::ValkyrieImage, ndarray::ValkyrieNDArray},
-    ValkyrieClassType, ValkyrieDict, ValkyrieError, ValkyrieList, ValkyrieNumber, ValkyrieVariantType,
+    ClassDefinition, ValkyrieDict, ValkyrieError, ValkyrieList, ValkyrieNumber, ValkyrieVariantType,
 };
 
 #[derive(Clone, Eq, PartialEq, Hash)]
@@ -36,7 +36,7 @@ pub enum ValkyrieValue {
     DataFrame(ValkyrieDataFrame),
     List(ValkyrieList),
     Dict(ValkyrieDict),
-    Class(ValkyrieClassType),
+    Class(ClassDefinition),
     Variant(Gc<ValkyrieVariantType>),
 }
 

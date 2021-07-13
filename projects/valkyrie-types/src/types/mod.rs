@@ -1,19 +1,22 @@
 use crate::{
-    types::atomic_type::ValkyrieDocument, utils::primitive_type, ValkyrieClassType, ValkyrieDict, ValkyrieID, ValkyrieString,
+    types::atomic_type::ValkyrieDocument, utils::primitive_type, ClassDefinition, ValkyrieDict, ValkyrieID, ValkyrieString,
     ValkyrieValue,
 };
 use indexmap::IndexMap;
 use itertools::Itertools;
 use nyar_collection::NyarTuple;
+use nyar_error::FileSpan;
 use shredder::{marker::GcSafe, Gc, Scan};
 use std::{
     any::type_name,
     fmt::{Debug, Display},
     hash::{Hash, Hasher},
+    sync::Arc,
 };
-
+use valkyrie_ast::{IdentifierNode, NamePathNode};
 pub mod atomic_type;
 pub mod class_type;
+pub mod field_type;
 pub mod literal_type;
 pub mod tuple_type;
 pub mod union_type;

@@ -1,18 +1,15 @@
 use super::*;
-use crate::ValkyrieString;
-use indexmap::IndexMap;
-use nyar_error::FileSpan;
-use std::sync::Arc;
-use valkyrie_ast::{IdentifierNode, NamePathNode};
+use crate::{helpers::FromFrontend, ValkyrieCodegen};
+use valkyrie_ast::{ClassDeclaration, ClassTerm};
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct ValkyrieClassType {
+pub struct ClassDefinition {
     symbol: Vec<Arc<str>>,
     items: IndexMap<String, ValkyrieValue>,
     span: FileSpan,
 }
 
-impl Hash for ValkyrieClassType {
+impl Hash for ClassDefinition {
     fn hash<H: Hasher>(&self, state: &mut H) {
         self.symbol.hash(state);
         for (k, v) in self.items.iter() {
@@ -22,7 +19,7 @@ impl Hash for ValkyrieClassType {
     }
 }
 
-impl ValkyrieClassType {
+impl ClassDefinition {
     pub fn new(space: &NamePathNode, name: &IdentifierNode) -> Self {
         let mut symbol = Vec::with_capacity(space.path.len() + 1);
         symbol.extend(space.path.iter().map(|s| Arc::from(s.name.as_str())));
@@ -48,21 +45,23 @@ impl ValkyrieClassType {
     }
 }
 
-impl Default for ValkyrieClassType {
+impl Default for ClassDefinition {
     fn default() -> Self {
         todo!()
     }
 }
 
-impl ValkyrieType for ValkyrieClassType {
-    fn boxed(self) -> ValkyrieValue {
-        todo!()
-    }
-
-    fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
-        let mut this = ValkyrieMetaType::default();
-        this.set_namepath("std.primitive.List");
-
-        Gc::new(this)
+impl FromFrontend<ClassDefinition> for ClassDeclaration {
+    fn build(&self, state: &mut ValkyrieCodegen) -> nyar_error::Result<ClassDefinition> {
+        let output = ClassDefinition::new(&state.current_namespace, &self.name);
+        for x in self.terms {
+            match x {
+                ClassTerm::Macro(_) => {}
+                ClassTerm::Field(v) => {}
+                ClassTerm::Method(_) => {}
+                ClassTerm::Domain(_) => {}
+            }
+        }
+        Ok(output)
     }
 }

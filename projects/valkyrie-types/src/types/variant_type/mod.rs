@@ -6,7 +6,7 @@ use std::str::FromStr;
 pub struct ValkyrieVariantType {
     namepath: ValkyrieID,
     generics: Vec<Gc<ValkyrieMetaType>>,
-    variants: Vec<ValkyrieClassType>,
+    variants: Vec<ClassDefinition>,
 }
 
 unsafe impl GcSafe for ValkyrieVariantType {}

@@ -9,6 +9,8 @@
 
 extern crate core;
 
+pub mod helpers;
+
 mod builtin;
 mod codegen;
 mod collection;
@@ -44,7 +46,7 @@ pub use self::{
     modifiers::{FeatureType, InitializeType, MutableType},
     singletons::ids::{ValkyrieID, ValkyrieUniverse},
     types::{
-        atomic_type::ValkyrieAtomicType, class_type::ValkyrieClassType, literal_type::ValkyrieLiteralType,
+        atomic_type::ValkyrieAtomicType, class_type::ClassDefinition, literal_type::ValkyrieLiteralType,
         union_type::ValkyrieUnionType, variant_type::ValkyrieVariantType, ValkyrieType,
     },
     values::ValkyrieValue,

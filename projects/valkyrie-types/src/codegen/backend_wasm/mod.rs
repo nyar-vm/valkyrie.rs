@@ -1,5 +1,5 @@
 use super::*;
-use crate::ValkyrieClassType;
+use crate::{helpers::FromFrontend, types::field_type::FieldDefinition, ClassDefinition};
 use nyar_wasm::{FieldType, NyarType, StructureType, Symbol};
 use std::{
     io::Write,
@@ -69,28 +69,30 @@ impl ValkyrieCodegen {
     }
 }
 
-impl Codegen<ValkyrieClassType> for ClassDeclaration {
-    fn build(&self, state: &mut ValkyrieCodegen) -> Result<ValkyrieClassType> {
-        let output = ValkyrieClassType::new(&state.current_namespace, &self.name);
-
-        Ok(output)
-    }
-}
-
-impl Codegen<StructureType> for ValkyrieClassType {
+impl FromFrontend<StructureType> for ClassDefinition {
     fn build(&self, state: &mut ValkyrieCodegen) -> Result<StructureType> {
-        let symbol = Symbol::from(self.name());
-        let mut output = StructureType::new(symbol);
+        let mut output = StructureType::new(Symbol::from(self.name()));
 
         Ok(output)
     }
 }
 
-impl Codegen<FieldType> for FieldDeclaration {
+impl FromFrontend<FieldDefinition> for FieldDeclaration {
+    fn build(&self, state: &mut ValkyrieCodegen) -> Result<FieldDefinition> {
+        let mut output = FieldDefinition::new(&self.name);
+        match &self.typing {
+            Some(s) => output.set_type(s.clone()),
+            None => {}
+        }
+        Ok(output)
+    }
+}
+
+impl FromFrontend<FieldType> for FieldDefinition {
     fn build(&self, state: &mut ValkyrieCodegen) -> Result<FieldType> {
         let symbol = Symbol::new("wait");
         let mut output = FieldType::new(symbol);
-        match &self.typing {
+        match self.get_type() {
             Some(ExpressionKind::Symbol(v)) => match v.to_string().as_str() {
                 "u32" => output.r#type = NyarType::U32,
                 "u64" => output.r#type = NyarType::I64,
@@ -99,6 +101,7 @@ impl Codegen<FieldType> for FieldDeclaration {
                 "f32" => output.r#type = NyarType::F32,
                 "f64" => output.r#type = NyarType::F64,
                 "Any" => output.r#type = NyarType::Any,
+                "core::primitive::u32" => output.r#type = NyarType::U32,
                 s => output.r#type = NyarType::Named { symbol: Symbol::new(s) },
             },
             Some(ExpressionKind::GenericCall(v)) => match &v.base {
@@ -130,8 +133,4 @@ impl Codegen<FieldType> for FieldDeclaration {
         println!("{:#?}", output);
         Ok(output)
     }
-}
-
-trait Codegen<Item> {
-    fn build(&self, state: &mut ValkyrieCodegen) -> Result<Item>;
 }

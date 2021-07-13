@@ -10,7 +10,7 @@ pub struct ValkyrieCodegen {
     module: ModuleBuilder,
     cache: FileCache,
     current_file: FileID,
-    current_namespace: NamePathNode,
+    pub(crate) current_namespace: NamePathNode,
     errors: Vec<NyarError>,
 }
 
