@@ -33,10 +33,10 @@ pub enum ValkyrieValue {
     NDArray(Gc<ValkyrieNDArray>),
     Image(Gc<ValkyrieImage>),
     #[cfg(feature = "polars")]
-    DataFrame(Gc<ValkyrieDataFrame>),
+    DataFrame(ValkyrieDataFrame),
     List(ValkyrieList),
     Dict(ValkyrieDict),
-    Class(Gc<ValkyrieClassType>),
+    Class(ValkyrieClassType),
     Variant(Gc<ValkyrieVariantType>),
 }
 

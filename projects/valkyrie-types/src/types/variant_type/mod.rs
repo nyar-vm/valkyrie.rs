@@ -1,11 +1,20 @@
 use super::*;
+use shredder::Scanner;
 use std::str::FromStr;
 
-#[derive(Clone, Debug, Eq, PartialEq, Hash, Scan)]
+#[derive(Clone, Debug, Eq, PartialEq, Hash)]
 pub struct ValkyrieVariantType {
     namepath: ValkyrieID,
     generics: Vec<Gc<ValkyrieMetaType>>,
-    variants: Vec<Gc<ValkyrieClassType>>,
+    variants: Vec<ValkyrieClassType>,
+}
+
+unsafe impl GcSafe for ValkyrieVariantType {}
+
+unsafe impl Scan for ValkyrieVariantType {
+    fn scan(&self, scanner: &mut Scanner<'_>) {
+        todo!()
+    }
 }
 
 impl ValkyrieVariantType {
@@ -20,18 +29,5 @@ impl ValkyrieVariantType {
 impl Default for ValkyrieVariantType {
     fn default() -> Self {
         todo!()
-    }
-}
-
-impl ValkyrieType for ValkyrieVariantType {
-    fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::Variant(Gc::new(self))
-    }
-
-    fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
-        let mut this = ValkyrieMetaType::default();
-        *this.mut_namepath() = self.namepath.clone();
-        this.mut_generic_types().extend(self.generics.iter().cloned());
-        Gc::new(this)
     }
 }

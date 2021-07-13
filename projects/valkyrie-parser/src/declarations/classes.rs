@@ -56,7 +56,13 @@ impl crate::DefineFieldNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<FieldDeclaration> {
         let name = self.identifier.build(ctx.file);
         let annotations = self.annotation_mix.annotations(ctx)?;
-        Ok(FieldDeclaration { annotations, name, typing: None, default: None, span: self.span.clone() })
+        Ok(FieldDeclaration {
+            annotations,
+            name,
+            typing: self.type_hint.build(ctx),
+            default: self.parameter_default.build(ctx),
+            span: self.span.clone(),
+        })
     }
 }
 

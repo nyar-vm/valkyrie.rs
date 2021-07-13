@@ -5,6 +5,7 @@
 #![feature(iter_from_generator)]
 #![feature(generators)]
 #![feature(lazy_cell)]
+#![feature(extend_one)]
 
 extern crate core;
 
@@ -31,7 +32,7 @@ pub use self::{
         texts::{StringID, ValkyrieString},
         TokenType,
     },
-    codegen::ValkyrieWasmCodegen,
+    codegen::ValkyrieCodegen,
     collection::{
         dict::ValkyrieDict,
         list::{ValkyrieList, ValkyrieOrdinal},

@@ -75,7 +75,7 @@ impl Debug for ValkyrieID {
             Some(s) => {
                 for (i, text) in s.value().name.iter().enumerate() {
                     if i != 0 {
-                        f.write_str("::")?
+                        f.write_str("∷")?
                     }
                     Debug::fmt(text, f)?
                 }

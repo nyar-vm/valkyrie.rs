@@ -13,13 +13,14 @@ pub struct IdentifierNode {
 }
 
 /// `package∷module∷name`
-#[derive(Clone, PartialEq, Eq, Hash)]
+#[derive(Clone, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct NamePathNode {
     /// The names of the identifier.
     pub path: Vec<IdentifierNode>,
     pub span: FileSpan,
 }
+
 /// `package∷module∷name`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]

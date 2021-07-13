@@ -1,19 +1,20 @@
 use super::*;
-
-use crate::{ValkyrieID, ValkyrieString};
+use crate::ValkyrieString;
 use indexmap::IndexMap;
-
-use shredder::Scanner;
+use nyar_error::FileSpan;
+use std::sync::Arc;
+use valkyrie_ast::{IdentifierNode, NamePathNode};
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct ValkyrieClassType {
-    name: ValkyrieID,
+    symbol: Vec<Arc<str>>,
     items: IndexMap<String, ValkyrieValue>,
+    span: FileSpan,
 }
 
 impl Hash for ValkyrieClassType {
     fn hash<H: Hasher>(&self, state: &mut H) {
-        self.name.hash(state);
+        self.symbol.hash(state);
         for (k, v) in self.items.iter() {
             k.hash(state);
             v.hash(state)
@@ -21,21 +22,15 @@ impl Hash for ValkyrieClassType {
     }
 }
 
-unsafe impl GcSafe for ValkyrieClassType {}
-
-unsafe impl Scan for ValkyrieClassType {
-    fn scan(&self, _: &mut Scanner<'_>) {}
-}
-
 impl ValkyrieClassType {
-    pub fn new(name: ValkyrieID) -> Self {
-        Self { name, items: IndexMap::new() }
+    pub fn new(space: &NamePathNode, name: &IdentifierNode) -> Self {
+        let mut symbol = Vec::with_capacity(space.path.len() + 1);
+        symbol.extend(space.path.iter().map(|s| Arc::from(s.name.as_str())));
+        symbol.extend_one(Arc::from(name.name.as_str()));
+        Self { symbol, items: Default::default(), span: Default::default() }
     }
-    pub fn namespace(&self) -> &[String] {
-        self.name.namespace()
-    }
-    pub fn name(&self) -> ValkyrieString {
-        self.name.name()
+    pub fn name(&self) -> String {
+        self.symbol.join("∷")
     }
     pub fn clear(&mut self) {
         self.items.clear();

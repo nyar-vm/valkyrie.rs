@@ -1,16 +1,25 @@
-
-
+namespace core.text;
 
 class UTF8Text {
     bytes: Array<u8>
 }
 
-class Test {
+class UTF16Text {
+    bytes: Array<u8>
+}
+
+class UTF32Text {
+    bytes: Array<u8>
+}
+
+structure Test {
     a1: u32,
     a2: u64,
-    a1: i32,
-    a2: i64,
+    a3: i32,
+    a4: i64,
     b1: f32,
     b2: f64,
+    t1: UTF8Text,
     wow: Any
 }
+
