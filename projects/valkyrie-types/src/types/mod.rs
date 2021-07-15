@@ -1,6 +1,8 @@
 use crate::{
-    types::atomic_type::ValkyrieDocument, utils::primitive_type, ClassDefinition, ValkyrieDict, ValkyrieID, ValkyrieString,
-    ValkyrieValue,
+    helpers::FromFrontend,
+    types::{atomic_type::ValkyrieDocument, field_type::FieldDefinition},
+    utils::primitive_type,
+    ClassDefinition, ValkyrieCodegen, ValkyrieDict, ValkyrieID, ValkyrieString, ValkyrieValue,
 };
 use indexmap::IndexMap;
 use itertools::Itertools;
@@ -13,11 +15,14 @@ use std::{
     hash::{Hash, Hasher},
     sync::Arc,
 };
-use valkyrie_ast::{IdentifierNode, NamePathNode};
+use valkyrie_ast::{
+    ClassDeclaration, ClassTerm, ExpressionKind, FieldDeclaration, IdentifierNode, MethodDeclaration, NamePathNode,
+};
 pub mod atomic_type;
 pub mod class_type;
 pub mod field_type;
 pub mod literal_type;
+pub mod method_type;
 pub mod tuple_type;
 pub mod union_type;
 pub mod variant_type;

@@ -1,15 +1,5 @@
 use super::*;
-use crate::{helpers::FromFrontend, types::field_type::FieldDefinition, ClassDefinition};
-use nyar_wasm::{FieldType, NyarType, StructureType, Symbol};
-use std::{
-    io::Write,
-    mem::take,
-    path::{Path, PathBuf},
-};
-use valkyrie_ast::{
-    ClassDeclaration, ClassTerm, ExpressionKind, FieldDeclaration, GenericCallTerm, ProgramRoot, StatementKind,
-};
-use valkyrie_parser::ProgramContext;
+use crate::helpers::IntoBackend;
 
 impl ValkyrieCodegen {
     pub fn build(&mut self) -> Result<Vec<u8>> {
@@ -69,26 +59,20 @@ impl ValkyrieCodegen {
     }
 }
 
-impl FromFrontend<StructureType> for ClassDefinition {
+impl IntoBackend<StructureType> for ClassDefinition {
     fn build(&self, state: &mut ValkyrieCodegen) -> Result<StructureType> {
         let mut output = StructureType::new(Symbol::from(self.name()));
 
-        Ok(output)
-    }
-}
-
-impl FromFrontend<FieldDefinition> for FieldDeclaration {
-    fn build(&self, state: &mut ValkyrieCodegen) -> Result<FieldDefinition> {
-        let mut output = FieldDefinition::new(&self.name);
-        match &self.typing {
-            Some(s) => output.set_type(s.clone()),
-            None => {}
+        for field in self.get_fields() {
+            let field = field.build(state)?;
+            output.add_field(field);
         }
+
         Ok(output)
     }
 }
 
-impl FromFrontend<FieldType> for FieldDefinition {
+impl IntoBackend<FieldType> for FieldDefinition {
     fn build(&self, state: &mut ValkyrieCodegen) -> Result<FieldType> {
         let symbol = Symbol::new("wait");
         let mut output = FieldType::new(symbol);

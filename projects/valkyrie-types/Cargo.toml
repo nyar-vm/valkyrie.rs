@@ -21,8 +21,6 @@ dashmap = "5.5.3"
 indexmap = "2.1.0"
 itertools = "0.12.0"
 image = { version = "0.24.7", features = [] }
-ndarray = { version = "0.15.6", features = [] }
-polars = { version = "0.35.4", features = ["lazy"], optional = true }
 jupyter-types = "0.0.*"
 
 [dependencies.nyar-wasm]

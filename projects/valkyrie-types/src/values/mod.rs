@@ -9,8 +9,8 @@ mod ser;
 #[cfg(feature = "polars")]
 use crate::builtin::data_frame::ValkyrieDataFrame;
 use crate::{
-    builtin::{images::ValkyrieImage, ndarray::ValkyrieNDArray},
-    ClassDefinition, ValkyrieDict, ValkyrieError, ValkyrieList, ValkyrieNumber, ValkyrieVariantType,
+    builtin::images::ValkyrieImage, ClassDefinition, ValkyrieDict, ValkyrieError, ValkyrieList, ValkyrieNumber,
+    ValkyrieVariantType,
 };
 
 #[derive(Clone, Eq, PartialEq, Hash)]
@@ -30,7 +30,6 @@ pub enum ValkyrieValue {
     UTF8String(Gc<String>),
     Bytes(Gc<Vec<u8>>),
     Html(Gc<String>),
-    NDArray(Gc<ValkyrieNDArray>),
     Image(Gc<ValkyrieImage>),
     #[cfg(feature = "polars")]
     DataFrame(ValkyrieDataFrame),
@@ -66,10 +65,7 @@ unsafe impl Scan for ValkyrieValue {
             ValkyrieValue::UTF8String(v) => scanner.scan(v),
             ValkyrieValue::Bytes(v) => scanner.scan(v),
             ValkyrieValue::Html(_) => {}
-            ValkyrieValue::NDArray(_) => {}
             ValkyrieValue::Image(_) => {}
-            #[cfg(feature = "polars")]
-            ValkyrieValue::DataFrame(_) => {}
             ValkyrieValue::List(v) => scanner.scan(v),
             ValkyrieValue::Dict(v) => scanner.scan(v),
             ValkyrieValue::Class(_) => {}
@@ -90,10 +86,7 @@ impl Debug for ValkyrieValue {
             ValkyrieValue::UTF8String(v) => Debug::fmt(v, f),
             ValkyrieValue::Bytes(v) => Debug::fmt(v, f),
             ValkyrieValue::Html(v) => Debug::fmt(v, f),
-            ValkyrieValue::NDArray(v) => Debug::fmt(v, f),
             ValkyrieValue::Image(v) => Debug::fmt(v, f),
-            #[cfg(feature = "polars")]
-            ValkyrieValue::DataFrame(v) => Debug::fmt(v, f),
             ValkyrieValue::List(v) => Debug::fmt(v, f),
             ValkyrieValue::Dict(v) => Debug::fmt(v, f),
             ValkyrieValue::Class(v) => Debug::fmt(v, f),

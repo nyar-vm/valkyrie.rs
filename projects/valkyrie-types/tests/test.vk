@@ -19,7 +19,7 @@ structure Test {
     a4: i64,
     b1: f32,
     b2: f64,
-    t1: UTF8Text,
+//  t1: UTF8Text,
     wow: Any
 }
 

@@ -25,14 +25,7 @@ impl Serialize for ValkyrieValue {
             Self::Variant(_) => {
                 todo!()
             }
-            Self::NDArray(_) => {
-                todo!()
-            }
             Self::Image(_) => {
-                todo!()
-            }
-            #[cfg(feature = "polars")]
-            Self::DataFrame(_) => {
                 todo!()
             }
             Self::List(v) => v.serialize(serializer),
