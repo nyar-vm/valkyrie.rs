@@ -12,6 +12,12 @@ class UTF32Text {
     bytes: Array<u8>
 }
 
+class AnyText {
+    t1: UTF8Text,
+    t2: UTF16Text,
+    t3: UTF32Text,
+}
+
 structure Test {
     a1: u32,
     a2: u64,
@@ -19,7 +25,24 @@ structure Test {
     a4: i64,
     b1: f32,
     b2: f64,
-//  t1: UTF8Text,
     wow: Any
 }
 
+
+class Recursion {
+    recursive: Recursion
+}
+
+
+class MutualA {
+//  recursive: MutualB
+}
+
+class MutualB {
+//  recursive: MutualA
+}
+
+
+function f(i: i32, j: i32): i32 {
+
+}

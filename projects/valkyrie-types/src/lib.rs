@@ -7,8 +7,6 @@
 #![feature(lazy_cell)]
 #![feature(extend_one)]
 
-extern crate core;
-
 pub mod helpers;
 
 mod builtin;

@@ -22,7 +22,8 @@ fn test_parse() {
         codegen.print_error(e)
     }
     codegen.build_wasm(Path::new(env!("CARGO_MANIFEST_DIR")).join("target/debug/valkyrie/test.wasm")).unwrap();
-    let _ = Command::new("vcc").arg("build").output().expect("Failed to execute command");
+    let log = Command::new("vcc").arg("build").output().expect("Failed to execute command");
+    println!("{log:?}")
 }
 
 #[test]

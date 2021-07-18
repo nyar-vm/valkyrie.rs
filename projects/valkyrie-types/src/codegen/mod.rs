@@ -2,9 +2,12 @@ use crate::{helpers::FromFrontend, types::field_type::FieldDefinition, ClassDefi
 use nyar_error::{NyarError, Result};
 use nyar_wasm::{FieldType, ModuleBuilder, NyarType, StructureType, Symbol};
 use std::{
+    collections::{BTreeMap, HashMap},
+    hash::Hash,
     io::Write,
     mem::take,
     path::{Path, PathBuf},
+    sync::Arc,
 };
 use valkyrie_ast::{ExpressionKind, FieldDeclaration, GenericCallTerm, NamePathNode, ProgramRoot, StatementKind};
 use valkyrie_parser::ProgramContext;
@@ -17,6 +20,7 @@ pub struct ValkyrieCodegen {
     current_file: FileID,
     pub(crate) interactive: bool,
     pub(crate) current_namespace: NamePathNode,
+    imports: HashMap<Vec<Arc<str>>, Vec<Arc<str>>>,
     errors: Vec<NyarError>,
 }
 

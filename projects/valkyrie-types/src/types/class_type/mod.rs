@@ -1,7 +1,7 @@
 use super::*;
 use crate::types::method_type::MethodDefinition;
 use indexmap::map::Values;
-use nyar_error::{DuplicateError, DuplicateKind, NyarError};
+use nyar_error::NyarError;
 use std::ops::AddAssign;
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -65,7 +65,7 @@ impl ClassDefinition {
     pub fn get_field(&self, name: &str) -> Option<&FieldDefinition> {
         self.fields.get(name)
     }
-    pub fn add_field(&mut self, field: FieldDefinition) -> Result<(), NyarError> {
+    pub fn add_field(&mut self, field: FieldDefinition) -> Result<()> {
         let name = field.name();
         let span = field.get_span();
         match self.fields.insert(field.name(), field) {
@@ -76,7 +76,7 @@ impl ClassDefinition {
     pub fn get_fields(&self) -> Values<String, FieldDefinition> {
         self.fields.values()
     }
-    pub fn add_method(&mut self, method: MethodDefinition) -> Result<(), NyarError> {
+    pub fn add_method(&mut self, method: MethodDefinition) -> Result<()> {
         let name = method.name();
         let span = method.get_span();
         match self.methods.insert(method.name(), method) {

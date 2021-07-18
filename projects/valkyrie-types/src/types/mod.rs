@@ -1,5 +1,5 @@
 use crate::{
-    helpers::FromFrontend,
+    helpers::{FromFrontend, IntoBackend},
     types::{atomic_type::ValkyrieDocument, field_type::FieldDefinition},
     utils::primitive_type,
     ClassDefinition, ValkyrieCodegen, ValkyrieDict, ValkyrieID, ValkyrieString, ValkyrieValue,
@@ -7,7 +7,8 @@ use crate::{
 use indexmap::IndexMap;
 use itertools::Itertools;
 use nyar_collection::NyarTuple;
-use nyar_error::FileSpan;
+use nyar_error::{FileSpan, Result};
+use nyar_wasm::{FieldType, NyarType, Symbol};
 use shredder::{marker::GcSafe, Gc, Scan};
 use std::{
     any::type_name,
@@ -16,11 +17,13 @@ use std::{
     sync::Arc,
 };
 use valkyrie_ast::{
-    ClassDeclaration, ClassTerm, ExpressionKind, FieldDeclaration, IdentifierNode, MethodDeclaration, NamePathNode,
+    ClassDeclaration, ClassTerm, ExpressionKind, FieldDeclaration, FunctionDeclaration, GenericCallTerm, IdentifierNode,
+    MethodDeclaration, NamePathNode,
 };
 pub mod atomic_type;
 pub mod class_type;
 pub mod field_type;
+pub mod function_type;
 pub mod literal_type;
 pub mod method_type;
 pub mod tuple_type;

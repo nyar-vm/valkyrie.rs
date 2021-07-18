@@ -46,7 +46,10 @@ impl ValkyrieCodegen {
                 StatementKind::Enumerate(_) => {}
                 StatementKind::Trait(_) => {}
                 StatementKind::Extends(_) => {}
-                StatementKind::Function(_) => {}
+                StatementKind::Function(v) => {
+                    let class = v.build(self)?.build(self)?;
+                    self.module.insert_function(class);
+                }
                 StatementKind::Variable(_) => {}
                 StatementKind::Guard(_) => {}
                 StatementKind::While(_) => {}
@@ -62,59 +65,10 @@ impl ValkyrieCodegen {
 impl IntoBackend<StructureType> for ClassDefinition {
     fn build(&self, state: &mut ValkyrieCodegen) -> Result<StructureType> {
         let mut output = StructureType::new(Symbol::from(self.name()));
-
         for field in self.get_fields() {
-            let field = field.build(state)?;
-            output.add_field(field);
+            output.add_field(field.build(state)?);
         }
-
-        Ok(output)
-    }
-}
-
-impl IntoBackend<FieldType> for FieldDefinition {
-    fn build(&self, state: &mut ValkyrieCodegen) -> Result<FieldType> {
-        let symbol = Symbol::new("wait");
-        let mut output = FieldType::new(symbol);
-        match self.get_type() {
-            Some(ExpressionKind::Symbol(v)) => match v.to_string().as_str() {
-                "u32" => output.r#type = NyarType::U32,
-                "u64" => output.r#type = NyarType::I64,
-                "i32" => output.r#type = NyarType::I32,
-                "i64" => output.r#type = NyarType::I64,
-                "f32" => output.r#type = NyarType::F32,
-                "f64" => output.r#type = NyarType::F64,
-                "Any" => output.r#type = NyarType::Any,
-                "core::primitive::u32" => output.r#type = NyarType::U32,
-                s => output.r#type = NyarType::Named { symbol: Symbol::new(s) },
-            },
-            Some(ExpressionKind::GenericCall(v)) => match &v.base {
-                ExpressionKind::Symbol(s) => match s.to_string().as_str() {
-                    "Array" => match &v.term {
-                        GenericCallTerm::Associated(_) => {}
-                        GenericCallTerm::Generic(g) => match g.terms.first() {
-                            None => {}
-                            Some(v) => match &v.value {
-                                ExpressionKind::Symbol(v) => match v.to_string().as_str() {
-                                    "u8" => output.r#type = NyarType::Array { inner: Box::new(NyarType::I8) },
-                                    _ => {}
-                                },
-                                _ => {}
-                            },
-                        },
-                    },
-                    _ => {}
-                },
-                s => {
-                    println!("UNKNOWN_FIELD_GENERIC: {s:?}")
-                }
-            },
-            Some(s) => {
-                println!("UNKNOWN_FIELD_TYPE: {s:?}")
-            }
-            None => {}
-        }
-        println!("{:#?}", output);
+        // println!("{:#?}", output);
         Ok(output)
     }
 }
