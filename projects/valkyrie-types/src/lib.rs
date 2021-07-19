@@ -7,19 +7,15 @@
 #![feature(lazy_cell)]
 #![feature(extend_one)]
 
-extern crate salsa_2022 as salsa;
-
 pub mod helpers;
 pub mod projects;
 
 mod builtin;
-mod codegen;
 mod collection;
 mod functions;
 mod modifiers;
 // #[cfg(test)]
 mod definitions;
-mod files;
 mod packages;
 pub mod testing;
 pub mod third_party;
@@ -58,5 +54,3 @@ pub use nyar_number::{Num, NyarReal as ValkyrieNumber, One, Zero};
 pub use shredder::Gc;
 pub use valkyrie_ast::ValkyrieOperator;
 pub use valkyrie_parser::{ProgramContext, StringFormatterBuilder};
-
-mod jars;

@@ -43,4 +43,14 @@ impl ProgramContext {
             Err(e) => Failure { fatal: NyarError::from(e).with_file(self.file), diagnostics: state.errors },
         }
     }
+    pub fn parse_custom(&self, text: &str) -> Validation<ProgramRoot> {
+        let mut state = ProgramState::new(self.file);
+        match ProgramNode::from_str(&text) {
+            Ok(o) => match o.build(&mut state) {
+                Ok(value) => Success { value, diagnostics: state.errors },
+                Err(e) => Failure { fatal: e.with_file(self.file), diagnostics: state.errors },
+            },
+            Err(e) => Failure { fatal: NyarError::from(e).with_file(self.file), diagnostics: state.errors },
+        }
+    }
 }

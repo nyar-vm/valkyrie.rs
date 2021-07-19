@@ -1,4 +1,4 @@
-namespace core.text;
+// namespace core.text;
 
 class UTF8Text {
     bytes: Array<u8>
@@ -43,6 +43,6 @@ class MutualB {
 }
 
 
-function f(i: i32, j: i32): i32 {
-
+function add(i: i32, j: i32): i32 {
+    i + j
 }

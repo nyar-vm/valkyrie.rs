@@ -7,8 +7,6 @@ use crate::{
 use indexmap::IndexMap;
 use itertools::Itertools;
 use nyar_collection::NyarTuple;
-use nyar_error::{FileSpan, Result};
-use nyar_wasm::{FieldType, NyarType, Symbol};
 use shredder::{marker::GcSafe, Gc, Scan};
 use std::{
     any::type_name,
