@@ -1,4 +1,4 @@
-use crate::{helpers::FromFrontend, types::field_type::FieldDefinition, ClassDefinition, FileCache, FileID};
+use crate::{helpers::FromFrontend, types::field_type::FieldDefinition, FileCache, FileID, ValkyrieStructure};
 use nyar_error::{NyarError, Result};
 use nyar_wasm::{FieldType, ModuleBuilder, NyarType, StructureType, Symbol};
 use std::{

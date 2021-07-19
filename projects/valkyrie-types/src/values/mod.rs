@@ -9,7 +9,7 @@ mod ser;
 #[cfg(feature = "polars")]
 use crate::builtin::data_frame::ValkyrieDataFrame;
 use crate::{
-    builtin::images::ValkyrieImage, ClassDefinition, ValkyrieDict, ValkyrieError, ValkyrieList, ValkyrieNumber,
+    builtin::images::ValkyrieImage, ValkyrieDict, ValkyrieError, ValkyrieList, ValkyrieNumber, ValkyrieStructure,
     ValkyrieVariantType,
 };
 
@@ -35,7 +35,7 @@ pub enum ValkyrieValue {
     DataFrame(ValkyrieDataFrame),
     List(ValkyrieList),
     Dict(ValkyrieDict),
-    Class(ClassDefinition),
+    Class(ValkyrieStructure),
     Variant(Gc<ValkyrieVariantType>),
 }
 

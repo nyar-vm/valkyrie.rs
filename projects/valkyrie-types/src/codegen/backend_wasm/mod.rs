@@ -62,7 +62,7 @@ impl ValkyrieCodegen {
     }
 }
 
-impl IntoBackend<StructureType> for ClassDefinition {
+impl IntoBackend<StructureType> for ValkyrieStructure {
     fn build(&self, state: &mut ValkyrieCodegen) -> Result<StructureType> {
         let mut output = StructureType::new(Symbol::from(self.name()));
         for field in self.get_fields() {

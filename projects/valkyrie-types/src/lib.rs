@@ -7,7 +7,10 @@
 #![feature(lazy_cell)]
 #![feature(extend_one)]
 
+extern crate salsa_2022 as salsa;
+
 pub mod helpers;
+pub mod projects;
 
 mod builtin;
 mod codegen;
@@ -16,13 +19,13 @@ mod functions;
 mod modifiers;
 // #[cfg(test)]
 mod definitions;
-mod encoding;
-mod singletons;
+mod files;
+mod packages;
 pub mod testing;
 pub mod third_party;
 mod types;
 mod utils;
-mod validation;
+
 mod values;
 
 pub use self::{
@@ -37,14 +40,12 @@ pub use self::{
         dict::ValkyrieDict,
         list::{ValkyrieList, ValkyrieOrdinal},
     },
-    definitions::{
-        classes::ValkyrieStructure, enumerates::ValkyrieEnumerate, interfaces::ValkyrieInterface, names::ValkyrieName,
-    },
+    definitions::{enumerates::ValkyrieEnumerate, interfaces::ValkyrieInterface, names::ValkyrieName},
     functions::{ValkyrieFunction, ValkyrieFunctionType, ValkyrieMonomorphicFunction},
     modifiers::{FeatureType, InitializeType, MutableType},
-    singletons::ids::{ValkyrieID, ValkyrieUniverse},
+    packages::ids::{ValkyrieID, ValkyrieUniverse},
     types::{
-        atomic_type::ValkyrieAtomicType, class_type::ClassDefinition, literal_type::ValkyrieLiteralType,
+        atomic_type::ValkyrieAtomicType, class_type::ValkyrieStructure, literal_type::ValkyrieLiteralType,
         union_type::ValkyrieUnionType, variant_type::ValkyrieVariantType, ValkyrieType,
     },
     values::ValkyrieValue,
@@ -57,3 +58,5 @@ pub use nyar_number::{Num, NyarReal as ValkyrieNumber, One, Zero};
 pub use shredder::Gc;
 pub use valkyrie_ast::ValkyrieOperator;
 pub use valkyrie_parser::{ProgramContext, StringFormatterBuilder};
+
+mod jars;

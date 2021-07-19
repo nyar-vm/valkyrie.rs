@@ -2,7 +2,7 @@ use crate::{
     helpers::{FromFrontend, IntoBackend},
     types::{atomic_type::ValkyrieDocument, field_type::FieldDefinition},
     utils::primitive_type,
-    ClassDefinition, ValkyrieCodegen, ValkyrieDict, ValkyrieID, ValkyrieString, ValkyrieValue,
+    ValkyrieCodegen, ValkyrieDict, ValkyrieID, ValkyrieString, ValkyrieStructure, ValkyrieValue,
 };
 use indexmap::IndexMap;
 use itertools::Itertools;

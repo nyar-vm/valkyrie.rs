@@ -1,4 +1,4 @@
-use crate::{singletons::ids::VALKYRIE_UNIVERSE, utils::xx_id};
+use crate::{packages::ids::VALKYRIE_UNIVERSE, utils::xx_id};
 use dashmap::mapref::one::Ref;
 use std::fmt::{Debug, Display, Formatter};
 

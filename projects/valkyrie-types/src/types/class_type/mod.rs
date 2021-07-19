@@ -4,15 +4,17 @@ use indexmap::map::Values;
 use nyar_error::NyarError;
 use std::ops::AddAssign;
 
+mod codegen;
+
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct ClassDefinition {
+pub struct ValkyrieStructure {
     symbol: Vec<Arc<str>>,
     fields: IndexMap<String, FieldDefinition>,
     methods: IndexMap<String, MethodDefinition>,
     span: FileSpan,
 }
 
-impl Hash for ClassDefinition {
+impl Hash for ValkyrieStructure {
     fn hash<H: Hasher>(&self, state: &mut H) {
         self.symbol.hash(state);
         for (k, v) in self.fields.iter() {
@@ -21,38 +23,18 @@ impl Hash for ClassDefinition {
     }
 }
 
-impl AddAssign<FieldDefinition> for ClassDefinition {
+impl AddAssign<FieldDefinition> for ValkyrieStructure {
     fn add_assign(&mut self, rhs: FieldDefinition) {
         self.fields.insert(rhs.name(), rhs);
     }
 }
-impl AddAssign<MethodDefinition> for ClassDefinition {
+impl AddAssign<MethodDefinition> for ValkyrieStructure {
     fn add_assign(&mut self, rhs: MethodDefinition) {
         self.methods.insert(rhs.name(), rhs);
     }
 }
 
-impl FromFrontend<ClassDefinition> for ClassDeclaration {
-    fn build(&self, state: &mut ValkyrieCodegen) -> nyar_error::Result<ClassDefinition> {
-        let mut output = ClassDefinition::new(&state.current_namespace, &self.name);
-        for x in &self.terms {
-            match x {
-                ClassTerm::Macro(_) => {}
-                ClassTerm::Field(v) => match output.add_field(v.build(state)?) {
-                    Err(e) if !state.interactive => state.add_error(e),
-                    _ => {}
-                },
-                ClassTerm::Method(v) => match output.add_method(v.build(state)?) {
-                    Err(e) if !state.interactive => state.add_error(e),
-                    _ => {}
-                },
-                ClassTerm::Domain(_) => {}
-            }
-        }
-        Ok(output)
-    }
-}
-impl ClassDefinition {
+impl ValkyrieStructure {
     pub fn new(space: &NamePathNode, name: &IdentifierNode) -> Self {
         let mut symbol = Vec::with_capacity(space.path.len() + 1);
         symbol.extend(space.path.iter().map(|s| Arc::from(s.name.as_str())));

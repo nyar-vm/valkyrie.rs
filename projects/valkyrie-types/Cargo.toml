@@ -10,7 +10,6 @@ license = "MPL-2.0"
 edition = "2021"
 
 [dependencies]
-salsa = "0.17.0-pre.2"
 serde = "1.0.188"
 im = "15.1.0"
 xxhash-rust = { version = "0.8.7", features = ["xxh3", "const_xxh3"] }
@@ -22,6 +21,12 @@ indexmap = "2.1.0"
 itertools = "0.12.0"
 image = { version = "0.24.7", features = [] }
 jupyter-types = "0.0.*"
+generational-arena = "0.2.9"
+
+[dependencies.salsa-2022]
+version = "0.1.0"
+features = []
+git = "https://github.com/salsa-rs/salsa"
 
 [dependencies.nyar-wasm]
 version = "0.0.*"
