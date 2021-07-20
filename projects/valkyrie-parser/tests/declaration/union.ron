@@ -180,6 +180,7 @@ Union {
             body: [
                 Field {
                     name: value,
+                    type: T,
                 },
             ],
         },
@@ -197,6 +198,7 @@ Union {
             body: [
                 Field {
                     name: value,
+                    type: V,
                 },
             ],
         },
@@ -205,6 +207,7 @@ Union {
             body: [
                 Field {
                     name: error,
+                    type: E,
                 },
             ],
         },
@@ -219,9 +222,21 @@ Union {
             body: [
                 Field {
                     name: value,
+                    type: T,
                 },
                 Field {
                     name: errors,
+                    type: GenericCallNode {
+                        monadic: false,
+                        base: List,
+                        term: [
+                            ArgumentTerm {
+                                key: Nothing,
+                                value: E,
+                            },
+                        ],
+                        span: 1019..1026,
+                    },
                 },
             ],
         },
@@ -230,9 +245,21 @@ Union {
             body: [
                 Field {
                     name: fatal,
+                    type: E,
                 },
                 Field {
                     name: errors,
+                    type: GenericCallNode {
+                        monadic: false,
+                        base: List,
+                        term: [
+                            ArgumentTerm {
+                                key: Nothing,
+                                value: E,
+                            },
+                        ],
+                        span: 1083..1090,
+                    },
                 },
             ],
         },

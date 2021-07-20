@@ -1,17 +1,18 @@
 use crate::{
-    helpers::{FromFrontend, IntoBackend},
-    types::{atomic_type::ValkyrieDocument, field_type::FieldDefinition},
+    types::{atomic_type::ValkyrieDocument, field_type::FieldDefinition, method_type::MethodDefinition},
     utils::primitive_type,
-    ValkyrieCodegen, ValkyrieDict, ValkyrieID, ValkyrieString, ValkyrieStructure, ValkyrieValue,
+    ValkyrieDict, ValkyrieID, ValkyrieString, ValkyrieStructure, ValkyrieValue,
 };
-use indexmap::IndexMap;
+use indexmap::{map::Values, IndexMap};
 use itertools::Itertools;
 use nyar_collection::NyarTuple;
+use nyar_error::{FileSpan, NyarError, Result};
 use shredder::{marker::GcSafe, Gc, Scan};
 use std::{
     any::type_name,
     fmt::{Debug, Display},
     hash::{Hash, Hasher},
+    ops::AddAssign,
     sync::Arc,
 };
 use valkyrie_ast::{

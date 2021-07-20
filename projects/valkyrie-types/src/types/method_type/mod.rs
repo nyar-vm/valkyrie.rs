@@ -7,12 +7,6 @@ pub struct MethodDefinition {
     span: FileSpan,
 }
 
-impl FromFrontend<MethodDefinition> for MethodDeclaration {
-    fn build(&self, state: &mut ValkyrieCodegen) -> nyar_error::Result<MethodDefinition> {
-        todo!()
-    }
-}
-
 impl MethodDefinition {
     pub fn new(name: &IdentifierNode) -> Self {
         todo!()

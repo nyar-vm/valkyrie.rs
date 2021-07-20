@@ -1,10 +1,14 @@
+use nyar_error::FileSpan;
 use shredder::{marker::GcSafe, Gc, Scan, Scanner};
-use std::fmt::{Debug, Formatter};
-use valkyrie_ast::helper::ValkyrieNode;
-
+use std::{
+    fmt::{Debug, Formatter},
+    sync::Arc,
+};
+use valkyrie_ast::NamePathNode;
 mod der;
 mod jupyter;
 mod ser;
+pub mod symbols;
 
 #[cfg(feature = "polars")]
 use crate::builtin::data_frame::ValkyrieDataFrame;

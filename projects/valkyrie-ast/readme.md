@@ -19,7 +19,7 @@ class B(A) { }
 
 这个语言中这样定义代数效应
 
-```
+```vk
 class Logging {
     level: Integer
     message: String
@@ -40,7 +40,7 @@ class Logging {
 
 使用 raise 激发代数效应, 使用 try catch 语句处理代数效应.
 
-```
+```vk
 try {
     raise Logging::debug("hello")
 }

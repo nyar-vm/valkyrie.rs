@@ -49,6 +49,7 @@ Trait {
     body: [
         Field {
             name: unit,
+            type: T,
         },
     ],
 }

@@ -40,7 +40,7 @@ outer: loop {
 
 
 
-```
+```vk
 // promotion local variable here!!
 let outer_continue = || {
     if c1 {
@@ -82,7 +82,7 @@ let outer_break = || {
 
 
 
-```
+```vk
 // promotion local variable here!!
 let outer_continue = || {
     if c1 {

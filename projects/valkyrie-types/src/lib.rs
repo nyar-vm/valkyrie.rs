@@ -6,6 +6,7 @@
 #![feature(generators)]
 #![feature(lazy_cell)]
 #![feature(extend_one)]
+#![feature(associated_type_defaults)]
 
 pub mod helpers;
 pub mod projects;
@@ -14,6 +15,7 @@ mod builtin;
 mod collection;
 mod functions;
 mod modifiers;
+mod modules;
 // #[cfg(test)]
 mod definitions;
 mod packages;
@@ -21,7 +23,6 @@ pub mod testing;
 pub mod third_party;
 mod types;
 mod utils;
-
 mod values;
 
 pub use self::{
@@ -43,7 +44,7 @@ pub use self::{
         atomic_type::ValkyrieAtomicType, class_type::ValkyrieStructure, literal_type::ValkyrieLiteralType,
         union_type::ValkyrieUnionType, variant_type::ValkyrieVariantType, ValkyrieType,
     },
-    values::ValkyrieValue,
+    values::{symbols::ValkyrieSymbol, ValkyrieValue},
 };
 pub use nyar_error::{
     Failure, FileCache, FileID, MissingError, NyarError as ValkyrieError, Result as ValkyrieResult, RuntimeError, Success,

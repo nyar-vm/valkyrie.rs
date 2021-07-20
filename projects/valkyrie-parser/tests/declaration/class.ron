@@ -52,6 +52,7 @@ DefineClass {
                 ],
             },
             name: base1,
+            type: Base1,
         },
         Field {
             annotations: Annotation {
@@ -60,6 +61,7 @@ DefineClass {
                 ],
             },
             name: base2,
+            type: Base2,
         },
         Field {
             annotations: Annotation {
@@ -68,6 +70,7 @@ DefineClass {
                 ],
             },
             name: base3,
+            type: Base3,
         },
     ],
     span: 219..329,
@@ -77,9 +80,17 @@ DefineClass {
     terms: [
         Field {
             name: item1,
+            type: UnaryNode {
+                prefix: !,
+                base: T,
+            },
         },
         Field {
             name: item2,
+            type: UnaryNode {
+                prefix: !,
+                base: U,
+            },
         },
     ],
     span: 329..392,
@@ -289,6 +300,7 @@ DefineClass {
                 ],
             },
             name: x_base,
+            type: XBase,
         },
         Field {
             name: private,
@@ -303,6 +315,7 @@ DefineClass {
                 ],
             },
             name: _y_base,
+            type: YBase,
         },
         Method {
             name: constructor,
@@ -379,15 +392,19 @@ DefineClass {
                 ],
             },
             name: type,
+            type: String,
+            default: 'item',
         },
         Field {
             name: unknown_all,
         },
         Field {
             name: default_value,
+            type: A,
         },
         Field {
             name: infer_type,
+            default: null,
         },
         Method {
             annotations: Annotation {
@@ -564,6 +581,7 @@ DefineClass {
                 ],
             },
             name: field1,
+            type: u32,
         },
         Field {
             annotations: Annotation {
@@ -572,6 +590,7 @@ DefineClass {
                 ],
             },
             name: field 2,
+            type: f64,
         },
         Field {
             annotations: Annotation {
@@ -590,6 +609,7 @@ DefineClass {
                 ],
             },
             name: fields,
+            type: T,
         },
         Method {
             annotations: Annotation {
