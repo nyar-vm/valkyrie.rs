@@ -12,10 +12,7 @@ pub mod symbols;
 
 #[cfg(feature = "polars")]
 use crate::builtin::data_frame::ValkyrieDataFrame;
-use crate::{
-    builtin::images::ValkyrieImage, ValkyrieDict, ValkyrieError, ValkyrieList, ValkyrieNumber, ValkyrieStructure,
-    ValkyrieVariantType,
-};
+use crate::{builtin::images::ValkyrieImage, ValkyrieDict, ValkyrieError, ValkyrieStructure, ValkyrieVariantType};
 
 #[derive(Clone, Eq, PartialEq, Hash)]
 pub enum ValkyrieValue {
@@ -29,7 +26,7 @@ pub enum ValkyrieValue {
     ///
     /// Native boolean type, 8bit
     Boolean(bool),
-    Number(ValkyrieNumber),
+    Number(i32),
     Unicode(char),
     UTF8String(Gc<String>),
     Bytes(Gc<Vec<u8>>),
@@ -37,7 +34,7 @@ pub enum ValkyrieValue {
     Image(Gc<ValkyrieImage>),
     #[cfg(feature = "polars")]
     DataFrame(ValkyrieDataFrame),
-    List(ValkyrieList),
+    List(Vec<ValkyrieValue>),
     Dict(ValkyrieDict),
     Class(ValkyrieStructure),
     Variant(Gc<ValkyrieVariantType>),

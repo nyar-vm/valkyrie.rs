@@ -5,7 +5,6 @@ use crate::{
 };
 use indexmap::{map::Values, IndexMap};
 use itertools::Itertools;
-use nyar_collection::NyarTuple;
 use nyar_error::{FileSpan, NyarError, Result};
 use shredder::{marker::GcSafe, Gc, Scan};
 use std::{

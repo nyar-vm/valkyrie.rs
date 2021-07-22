@@ -11,7 +11,7 @@ pub mod result;
 
 pub mod texts;
 
-use crate::{collection::list::ValkyrieList, types::ValkyrieMetaType, ValkyrieType, ValkyrieValue};
+use crate::{types::ValkyrieMetaType, ValkyrieType, ValkyrieValue};
 use indexmap::IndexMap;
 use shredder::{marker::GcSafe, Gc, Scan, Scanner};
 use std::{

@@ -1,4 +1,7 @@
-use valkyrie_types::{testing::assert_type, ValkyrieID, ValkyrieInterface, ValkyrieList};
+use nyar_error::FileCache;
+use std::path::Path;
+use valkyrie_parser::ProgramContext;
+use valkyrie_types::{testing::assert_type, ModuleResolver, ValkyrieID, ValkyrieInterface, ValkyrieList};
 
 #[test]
 fn ready() {
@@ -13,95 +16,14 @@ fn test_list_index() {
     println!("2: {:?}", out.get_range(1, -1, 1).collect::<Vec<_>>());
 }
 
-pub fn check_raw(list: &[u32]) -> bool {
-    for i in list {
-        if i % 4 == 0 {
-            continue;
-        }
-        else if i & 2 == 0 {
-            break;
-        }
-        else {
-            return true;
-        }
-    }
-    println!("Even!");
-    false
-}
-
-pub struct JumpTable {
-    save_state: u32,
-    this_state: u32,
-    table: Vec<fn() -> u32>,
-}
-
-// pub fn check_raw(list: &[u8]) {
-//     let mut iter = list.iter();
-//     let mut next = iter.next();
-//     @1
-//     while next.is_some() {
-//         @2
-//         let i = next.unwrap();
-//         if i % 4 == 0 {
-//             next = iter.next();
-//             goto @2
-//         }
-//         else if i & 2 == 0 {
-//             goto @3
-//         }
-//         else {
-//             ret = true
-//             goto @4
-//         }
-//     }
-//     @3
-//     println!("Even!")
-//     ret = false
-//     @4
-//     ret
-// }
-pub fn check_fsm(list: &[u32]) -> bool {
-    let mut _state: u32 = 1;
-    let mut _iter = list.iter();
-    let mut _next = _iter.next();
-    let mut _ret = false;
-    while _state > 0 {
-        match _state {
-            1 => {
-                if _next.is_some() {
-                    _state = 2
-                }
-                else {
-                    _state = 3
-                }
-            }
-            2 => {
-                let i = unsafe { _next.unwrap_unchecked() };
-                if i % 4 == 0 {
-                    _next = _iter.next();
-                    _state = 2
-                }
-                else if i & 2 == 0 {
-                    _state = 3
-                }
-                else {
-                    _ret = true;
-                    break;
-                }
-            }
-            3 => {
-                println!("Even!");
-                break;
-            }
-            _ => break,
-        }
-    }
-    _ret
-}
-
 #[test]
 fn test() {
-    let list = vec![6, 7, 8];
-    println!("RAW: {}", check_raw(&list));
-    println!("FSM: {}", check_fsm(&list));
+    let file = Path::new(env!("CARGO_MANIFEST_DIR")).join("tests/test.vk").canonicalize().unwrap();
+    let mut cache = FileCache::default();
+    let file = cache.load_local(file).unwrap();
+    let mut reolver = ModuleResolver::default();
+    for error in reolver.parse(file, &mut cache) {
+        error.as_report().eprint(&cache).unwrap()
+    }
+    println!("{:#?}", reolver)
 }

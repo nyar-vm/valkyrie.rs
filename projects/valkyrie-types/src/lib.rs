@@ -24,6 +24,7 @@ pub mod third_party;
 mod types;
 mod utils;
 mod values;
+pub use self::modules::{ModuleItem, ModuleResolver, ValkyrieModule};
 
 pub use self::{
     builtin::{
@@ -32,10 +33,7 @@ pub use self::{
         texts::{StringID, ValkyrieString},
         TokenType,
     },
-    collection::{
-        dict::ValkyrieDict,
-        list::{ValkyrieList, ValkyrieOrdinal},
-    },
+    collection::dict::ValkyrieDict,
     definitions::{enumerates::ValkyrieEnumerate, interfaces::ValkyrieInterface, names::ValkyrieName},
     functions::{ValkyrieFunction, ValkyrieFunctionType, ValkyrieMonomorphicFunction},
     modifiers::{FeatureType, InitializeType, MutableType},
@@ -50,7 +48,6 @@ pub use nyar_error::{
     Failure, FileCache, FileID, MissingError, NyarError as ValkyrieError, Result as ValkyrieResult, RuntimeError, Success,
     SyntaxError,
 };
-pub use nyar_number::{Num, NyarReal as ValkyrieNumber, One, Zero};
 pub use shredder::Gc;
 pub use valkyrie_ast::ValkyrieOperator;
 pub use valkyrie_parser::{ProgramContext, StringFormatterBuilder};

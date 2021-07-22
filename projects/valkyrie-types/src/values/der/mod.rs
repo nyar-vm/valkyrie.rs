@@ -4,7 +4,7 @@ use serde::{
 };
 use shredder::Gc;
 
-use crate::{ValkyrieDict, ValkyrieList, ValkyrieNumber, ValkyrieValue};
+use crate::{ValkyrieDict, ValkyrieValue};
 
 pub struct ValueVisitor;
 

@@ -1,8 +1,8 @@
 use super::*;
 
 pub struct ValkyrieSymbol {
-    path: Vec<Arc<str>>,
-    span: FileSpan,
+    pub(crate) path: Vec<Arc<str>>,
+    pub(crate) span: FileSpan,
 }
 
 impl Debug for ValkyrieSymbol {
