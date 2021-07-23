@@ -31,7 +31,7 @@ pub enum ValkyrieValue {
     UTF8String(Gc<String>),
     Bytes(Gc<Vec<u8>>),
     Html(Gc<String>),
-    Image(Gc<ValkyrieImage>),
+    Image(Box<ValkyrieImage>),
     #[cfg(feature = "polars")]
     DataFrame(ValkyrieDataFrame),
     List(Vec<ValkyrieValue>),

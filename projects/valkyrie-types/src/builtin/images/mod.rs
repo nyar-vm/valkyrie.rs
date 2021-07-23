@@ -6,24 +6,6 @@ pub struct ValkyrieImage {
     rgba: RgbaImage,
 }
 
-unsafe impl GcSafe for ValkyrieImage {}
-
-unsafe impl Scan for ValkyrieImage {
-    fn scan(&self, _: &mut Scanner<'_>) {}
-}
-
-impl ValkyrieImage {
-    pub fn width(&self) -> ValkyrieValue {
-        ValkyrieValue::from(self.rgba.width())
-    }
-    pub fn height(&self) -> ValkyrieValue {
-        ValkyrieValue::from(self.rgba.height())
-    }
-    pub fn get_pixel(&self) {
-        todo!()
-    }
-}
-
 impl ValkyrieType for ValkyrieImage {
     fn boxed(self) -> ValkyrieValue {
         todo!()

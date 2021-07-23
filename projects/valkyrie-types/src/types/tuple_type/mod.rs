@@ -31,7 +31,7 @@ where
     T1: ValkyrieType,
 {
     fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::List(NyarTuple::from_iter(vec![self.0.boxed()]))
+        todo!()
     }
 
     fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
@@ -48,7 +48,7 @@ where
     T2: ValkyrieType,
 {
     fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::List(NyarTuple::from_iter(vec![self.0.boxed(), self.1.boxed()]))
+        todo!()
     }
 
     fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
@@ -67,7 +67,7 @@ where
     T3: ValkyrieType,
 {
     fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::List(NyarTuple::from_iter(vec![self.0.boxed(), self.1.boxed(), self.2.boxed()]))
+        todo!()
     }
 
     fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
@@ -88,7 +88,7 @@ where
     T4: ValkyrieType,
 {
     fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::List(NyarTuple::from_iter(vec![self.0.boxed(), self.1.boxed(), self.2.boxed(), self.3.boxed()]))
+        todo!()
     }
 
     fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
@@ -111,13 +111,7 @@ where
     T5: ValkyrieType,
 {
     fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::List(NyarTuple::from_iter(vec![
-            self.0.boxed(),
-            self.1.boxed(),
-            self.2.boxed(),
-            self.3.boxed(),
-            self.4.boxed(),
-        ]))
+        todo!()
     }
 
     fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {

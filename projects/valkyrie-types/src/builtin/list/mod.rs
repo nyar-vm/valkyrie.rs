@@ -5,7 +5,7 @@ where
     T: ValkyrieType,
 {
     fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::List(ValkyrieList::from_iter(self.into_iter().map(|v| v.boxed())))
+        todo!()
     }
 
     fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
@@ -21,7 +21,7 @@ where
     T: ValkyrieType,
 {
     fn boxed(self) -> ValkyrieValue {
-        ValkyrieValue::List(ValkyrieList::from_iter(self.into_iter().map(|v| v.boxed())))
+        todo!()
     }
 
     fn dynamic_type(&self) -> Gc<ValkyrieMetaType> {
