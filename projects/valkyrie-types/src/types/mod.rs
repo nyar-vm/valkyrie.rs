@@ -3,7 +3,7 @@ use crate::{
     utils::primitive_type,
     ValkyrieDict, ValkyrieID, ValkyrieString, ValkyrieStructure, ValkyrieValue,
 };
-use indexmap::{map::Values, IndexMap};
+use indexmap::IndexMap;
 use itertools::Itertools;
 use nyar_error::{FileSpan, NyarError, Result};
 use shredder::{marker::GcSafe, Gc, Scan};
@@ -14,12 +14,8 @@ use std::{
     ops::AddAssign,
     sync::Arc,
 };
-use valkyrie_ast::{
-    ClassDeclaration, ClassTerm, ExpressionKind, FieldDeclaration, FunctionDeclaration, GenericCallTerm, IdentifierNode,
-    MethodDeclaration, NamePathNode,
-};
+use valkyrie_ast::{ExpressionKind, IdentifierNode, NamePathNode};
 pub mod atomic_type;
-pub mod class_type;
 pub mod field_type;
 pub mod function_type;
 pub mod literal_type;

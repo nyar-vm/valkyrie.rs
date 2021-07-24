@@ -2,7 +2,7 @@ use super::*;
 use shredder::Scanner;
 use std::str::FromStr;
 
-#[derive(Clone, Debug, Eq, PartialEq, Hash)]
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub struct ValkyrieVariantType {
     namepath: ValkyrieID,
     generics: Vec<Gc<ValkyrieMetaType>>,

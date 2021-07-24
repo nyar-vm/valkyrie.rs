@@ -1,22 +1,19 @@
-use super::*;
+use crate::{
+    types::{field_type::FieldDefinition, method_type::MethodDefinition, *},
+    ValkyrieSymbol,
+};
+use indexmap::{map::Values, IndexMap};
+use nyar_error::{NyarError, Result};
+use std::ops::AddAssign;
+use valkyrie_ast::{IdentifierNode, NamePathNode};
 
 mod codegen;
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct ValkyrieStructure {
-    symbol: Vec<Arc<str>>,
-    fields: IndexMap<String, FieldDefinition>,
-    methods: IndexMap<String, MethodDefinition>,
-    span: FileSpan,
-}
-
-impl Hash for ValkyrieStructure {
-    fn hash<H: Hasher>(&self, state: &mut H) {
-        self.symbol.hash(state);
-        for (k, v) in self.fields.iter() {
-            k.hash(state);
-        }
-    }
+    pub(crate) symbol: ValkyrieSymbol,
+    pub(crate) fields: IndexMap<String, FieldDefinition>,
+    pub(crate) methods: IndexMap<String, MethodDefinition>,
 }
 
 impl AddAssign<FieldDefinition> for ValkyrieStructure {
@@ -32,13 +29,10 @@ impl AddAssign<MethodDefinition> for ValkyrieStructure {
 
 impl ValkyrieStructure {
     pub fn new(space: &NamePathNode, name: &IdentifierNode) -> Self {
-        let mut symbol = Vec::with_capacity(space.path.len() + 1);
-        symbol.extend(space.path.iter().map(|s| Arc::from(s.name.as_str())));
-        symbol.extend_one(Arc::from(name.name.as_str()));
-        Self { symbol, fields: Default::default(), methods: Default::default(), span: Default::default() }
+        todo!()
     }
     pub fn name(&self) -> String {
-        self.symbol.join("∷")
+        self.symbol.to_string()
     }
     pub fn get_field(&self, name: &str) -> Option<&FieldDefinition> {
         self.fields.get(name)

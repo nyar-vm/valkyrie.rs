@@ -1,4 +1,4 @@
-// namespace core.text;
+namespace core.text;
 
 class UTF8Text {
     bytes: Array<u8>

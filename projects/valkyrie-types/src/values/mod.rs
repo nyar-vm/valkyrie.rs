@@ -2,6 +2,7 @@ use nyar_error::FileSpan;
 use shredder::{marker::GcSafe, Gc, Scan, Scanner};
 use std::{
     fmt::{Debug, Formatter},
+    hash::{Hash, Hasher},
     sync::Arc,
 };
 use valkyrie_ast::NamePathNode;
@@ -10,11 +11,9 @@ mod jupyter;
 mod ser;
 pub mod symbols;
 
-#[cfg(feature = "polars")]
-use crate::builtin::data_frame::ValkyrieDataFrame;
 use crate::{builtin::images::ValkyrieImage, ValkyrieDict, ValkyrieError, ValkyrieStructure, ValkyrieVariantType};
 
-#[derive(Clone, Eq, PartialEq, Hash)]
+#[derive(Clone, Eq, PartialEq)]
 pub enum ValkyrieValue {
     /// ADT = -1
     Nothing,
@@ -38,6 +37,12 @@ pub enum ValkyrieValue {
     Dict(ValkyrieDict),
     Class(ValkyrieStructure),
     Variant(Gc<ValkyrieVariantType>),
+}
+
+impl Hash for ValkyrieValue {
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        todo!()
+    }
 }
 
 impl ValkyrieValue {

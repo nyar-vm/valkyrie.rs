@@ -19,11 +19,13 @@ mod modules;
 // #[cfg(test)]
 mod definitions;
 mod packages;
+pub mod structures;
 pub mod testing;
 pub mod third_party;
 mod types;
 mod utils;
 mod values;
+
 pub use self::modules::{ModuleItem, ModuleResolver, ValkyrieModule};
 
 pub use self::{
@@ -39,15 +41,17 @@ pub use self::{
     modifiers::{FeatureType, InitializeType, MutableType},
     packages::ids::{ValkyrieID, ValkyrieUniverse},
     types::{
-        atomic_type::ValkyrieAtomicType, class_type::ValkyrieStructure, literal_type::ValkyrieLiteralType,
-        union_type::ValkyrieUnionType, variant_type::ValkyrieVariantType, ValkyrieType,
+        atomic_type::ValkyrieAtomicType, literal_type::ValkyrieLiteralType, union_type::ValkyrieUnionType,
+        variant_type::ValkyrieVariantType, ValkyrieType,
     },
     values::{symbols::ValkyrieSymbol, ValkyrieValue},
 };
+pub(crate) use self::{modules::AsModuleItem, values::symbols::AsSymbol};
 pub use nyar_error::{
     Failure, FileCache, FileID, MissingError, NyarError as ValkyrieError, Result as ValkyrieResult, RuntimeError, Success,
     SyntaxError,
 };
 pub use shredder::Gc;
+pub use structures::ValkyrieStructure;
 pub use valkyrie_ast::ValkyrieOperator;
 pub use valkyrie_parser::{ProgramContext, StringFormatterBuilder};

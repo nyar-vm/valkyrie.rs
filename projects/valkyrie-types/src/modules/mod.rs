@@ -1,9 +1,9 @@
-use crate::{FileCache, FileID, ValkyrieStructure, ValkyrieSymbol};
-use indexmap::IndexMap;
+use crate::{values::symbols::AsSymbol, FileCache, FileID, ValkyrieStructure, ValkyrieSymbol};
+use indexmap::{map::Entry, IndexMap};
 use nyar_error::{Failure, NyarError, Result, Success, Validation};
 use nyar_wasm::Operation;
 use std::mem::take;
-use valkyrie_ast::{NamespaceDeclaration, ProgramRoot, StatementKind};
+use valkyrie_ast::{ClassDeclaration, NamespaceDeclaration, ProgramRoot, StatementKind};
 use valkyrie_parser::{ProgramContext, StatementNode};
 
 pub struct ValkyrieModule {}
@@ -23,10 +23,11 @@ pub struct ModuleResolver {
 
 #[derive(Debug)]
 pub enum ModuleItem {
+    Imported(ValkyrieSymbol),
     Structure(ValkyrieStructure),
 }
 
-trait AsModuleItem {
+pub(crate) trait AsModuleItem {
     type Output = ();
     fn send_module(self, ctx: &mut ModuleResolver) -> Result<Self::Output>;
 }
@@ -48,7 +49,7 @@ impl AsModuleItem for StatementKind {
             Self::Annotation(_) => {}
             Self::Namespace(v) => v.send_module(ctx)?,
             Self::Import(_) => {}
-            Self::Class(_) => {}
+            Self::Class(v) => v.send_module(ctx)?,
             Self::Union(_) => {}
             Self::Enumerate(_) => {}
             Self::Trait(_) => {}
@@ -67,7 +68,23 @@ impl AsModuleItem for StatementKind {
 
 impl AsModuleItem for NamespaceDeclaration {
     fn send_module(self, ctx: &mut ModuleResolver) -> Result<Self::Output> {
-        todo!()
+        ctx.namespace = Some(self.path.as_symbol());
+        Ok(())
+    }
+}
+impl AsModuleItem for ClassDeclaration {
+    fn send_module(self, ctx: &mut ModuleResolver) -> Result<Self::Output> {
+        let symbol = self.name.as_namespace_symbol(&ctx.namespace);
+        let item = ValkyrieStructure { symbol, fields: Default::default(), methods: Default::default() };
+        match ctx.items.entry(item.name()) {
+            Entry::Occupied(e) => {
+                todo!()
+            }
+            Entry::Vacant(e) => {
+                e.insert(ModuleItem::Structure(item));
+            }
+        }
+        Ok(())
     }
 }
 
