@@ -1,19 +1,29 @@
-use crate::{
-    types::{field_type::FieldDefinition, method_type::MethodDefinition, *},
-    ValkyrieSymbol,
-};
+use crate::{types::method_type::MethodDefinition, FieldDefinition, ValkyrieSymbol};
 use indexmap::{map::Values, IndexMap};
 use nyar_error::{NyarError, Result};
-use std::ops::AddAssign;
-use valkyrie_ast::{IdentifierNode, NamePathNode};
+use std::{
+    fmt::{Debug, Formatter},
+    ops::AddAssign,
+};
+use valkyrie_ast::{helper::WrapDisplay, IdentifierNode, NamePathNode};
 
 mod codegen;
 
-#[derive(Clone, Debug, Eq, PartialEq)]
+#[derive(Clone, Eq, PartialEq)]
 pub struct ValkyrieStructure {
     pub(crate) symbol: ValkyrieSymbol,
     pub(crate) fields: IndexMap<String, FieldDefinition>,
     pub(crate) methods: IndexMap<String, MethodDefinition>,
+}
+
+impl Debug for ValkyrieStructure {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("Structure")
+            .field("symbol", &WrapDisplay::new(&self.symbol))
+            .field("fields", &self.fields)
+            .field("methods", &self.methods)
+            .finish()
+    }
 }
 
 impl AddAssign<FieldDefinition> for ValkyrieStructure {
@@ -21,6 +31,7 @@ impl AddAssign<FieldDefinition> for ValkyrieStructure {
         self.fields.insert(rhs.name(), rhs);
     }
 }
+
 impl AddAssign<MethodDefinition> for ValkyrieStructure {
     fn add_assign(&mut self, rhs: MethodDefinition) {
         self.methods.insert(rhs.name(), rhs);

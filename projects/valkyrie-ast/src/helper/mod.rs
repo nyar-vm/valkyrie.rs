@@ -43,7 +43,7 @@ pub trait NumberInterpreter {
     fn interpret(&mut self, n: &NumberLiteralNode) -> Result<Self::Output, NyarError>;
 }
 
-pub(crate) struct WrapDisplay<'a, T> {
+pub struct WrapDisplay<'a, T> {
     inner: &'a T,
 }
 impl<'a, T> WrapDisplay<'a, T> {

@@ -2,8 +2,6 @@
 #![feature(allocator_api)]
 #![feature(never_type)]
 #![feature(unboxed_closures)]
-#![feature(iter_from_generator)]
-#![feature(generators)]
 #![feature(lazy_cell)]
 #![feature(extend_one)]
 #![feature(associated_type_defaults)]
@@ -17,7 +15,9 @@ mod functions;
 mod modifiers;
 mod modules;
 // #[cfg(test)]
+mod backends;
 mod definitions;
+mod fields;
 mod packages;
 pub mod structures;
 pub mod testing;
@@ -25,8 +25,6 @@ pub mod third_party;
 mod types;
 mod utils;
 mod values;
-
-pub use self::modules::{ModuleItem, ModuleResolver, ValkyrieModule};
 
 pub use self::{
     builtin::{
@@ -37,8 +35,10 @@ pub use self::{
     },
     collection::dict::ValkyrieDict,
     definitions::{enumerates::ValkyrieEnumerate, interfaces::ValkyrieInterface, names::ValkyrieName},
+    fields::FieldDefinition,
     functions::{ValkyrieFunction, ValkyrieFunctionType, ValkyrieMonomorphicFunction},
     modifiers::{FeatureType, InitializeType, MutableType},
+    modules::{ModuleItem, ModuleResolver, ValkyrieModule},
     packages::ids::{ValkyrieID, ValkyrieUniverse},
     types::{
         atomic_type::ValkyrieAtomicType, literal_type::ValkyrieLiteralType, union_type::ValkyrieUnionType,

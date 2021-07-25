@@ -2,7 +2,10 @@ use crate::{values::symbols::AsSymbol, FileCache, FileID, ValkyrieStructure, Val
 use indexmap::{map::Entry, IndexMap};
 use nyar_error::{Failure, NyarError, Result, Success, Validation};
 use nyar_wasm::Operation;
-use std::mem::take;
+use std::{
+    fmt::{Debug, Formatter},
+    mem::take,
+};
 use valkyrie_ast::{ClassDeclaration, NamespaceDeclaration, ProgramRoot, StatementKind};
 use valkyrie_parser::{ProgramContext, StatementNode};
 
@@ -12,19 +15,29 @@ pub struct ValkyrieModule {}
 #[derive(Debug, Default)]
 pub struct ModuleResolver {
     /// The declared namespace
-    namespace: Option<ValkyrieSymbol>,
+    pub(crate) namespace: Option<ValkyrieSymbol>,
     /// main function of the file
-    main: Vec<StatementNode>,
+    pub(crate) main: Vec<StatementNode>,
     /// The declared items in file
-    items: IndexMap<String, ModuleItem>,
+    pub(crate) items: IndexMap<String, ModuleItem>,
     /// Collect errors
-    errors: Vec<NyarError>,
+    pub(crate) errors: Vec<NyarError>,
 }
 
-#[derive(Debug)]
 pub enum ModuleItem {
+    External(ValkyrieSymbol),
     Imported(ValkyrieSymbol),
     Structure(ValkyrieStructure),
+}
+
+impl Debug for ModuleItem {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::External(v) => Debug::fmt(v, f),
+            Self::Imported(v) => Debug::fmt(v, f),
+            Self::Structure(v) => Debug::fmt(v, f),
+        }
+    }
 }
 
 pub(crate) trait AsModuleItem {

@@ -1,16 +1,10 @@
 use super::*;
 use std::fmt::Display;
 
-#[derive(Clone, Eq, PartialEq)]
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub struct ValkyrieSymbol {
     pub(crate) path: Vec<Arc<str>>,
     pub(crate) span: FileSpan,
-}
-
-impl Debug for ValkyrieSymbol {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        f.write_str(&self.path.join("∷"))
-    }
 }
 
 impl Display for ValkyrieSymbol {
