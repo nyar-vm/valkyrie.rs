@@ -1,5 +1,5 @@
 use crate::{
-    types::function_type::FunctionDefinition, values::symbols::AsSymbol, FieldDefinition, FileCache, FileID, ValkyrieFunction,
+    types::function_type::FunctionDefinition, values::symbols::AsSymbol, FileCache, FileID, ValkyrieField, ValkyrieFunction,
     ValkyrieStructure, ValkyrieSymbol,
 };
 use indexmap::{map::Entry, IndexMap};

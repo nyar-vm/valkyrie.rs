@@ -17,7 +17,7 @@ mod modules;
 // #[cfg(test)]
 mod backends;
 mod definitions;
-mod fields;
+
 mod packages;
 pub mod structures;
 pub mod testing;
@@ -34,8 +34,7 @@ pub use self::{
         TokenType,
     },
     collection::dict::ValkyrieDict,
-    definitions::{enumerates::ValkyrieEnumerate, interfaces::ValkyrieInterface, names::ValkyrieName},
-    fields::FieldDefinition,
+    definitions::{enumerates::ValkyrieEnumerate, fields::ValkyrieField, interfaces::ValkyrieInterface, names::ValkyrieName},
     functions::{ValkyrieFunction, ValkyrieFunctionType, ValkyrieMonomorphicFunction},
     modifiers::{FeatureType, InitializeType, MutableType},
     modules::{ModuleItem, ModuleResolver, ValkyrieModule},

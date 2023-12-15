@@ -20,5 +20,28 @@ extends Point {
 
 
 function add(i: f32, j: f32): f32 {
+    print_f32(i)
+    print_f32(j)
     i + j
+}
+
+#ffi("js", "print_f64")
+private function print_i32(n: i32) {
+    // external function
+}
+
+#ffi("js", "print_f64")
+private function print_i64(n: i64) {
+    // external function
+}
+
+
+#ffi("js", "print_f64")
+private function print_f32(n: f32) {
+    // external function
+}
+
+#ffi("js", "print_f32")
+private function print_f64(n: f64) {
+    // external function
 }

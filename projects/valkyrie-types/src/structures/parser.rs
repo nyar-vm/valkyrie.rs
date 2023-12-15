@@ -9,7 +9,7 @@ impl HIR for ClassDeclaration {
             match x {
                 ClassTerm::Macro(_) => {}
                 ClassTerm::Field(f) => {
-                    let mut field = FieldDefinition::new(&f.name);
+                    let mut field = ValkyrieField::new(&f.name);
                     field.typing = f.typing;
 
                     class.add_field(field).ok();

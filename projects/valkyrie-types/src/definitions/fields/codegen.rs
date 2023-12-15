@@ -1,6 +1,6 @@
 use super::*;
 
-impl ConvertTo<FieldType> for FieldDefinition {
+impl ConvertTo<FieldType> for ValkyrieField {
     fn convert(&self) -> FieldType {
         let mut field = FieldType::new(self.symbol.to_string());
         field.readonly = self.get_readonly();
