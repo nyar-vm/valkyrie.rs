@@ -1,48 +1,24 @@
 namespace core.text;
 
-class UTF8Text {
-    bytes: Array<u8>
+
+
+
+structure Point {
+    x: f32,
+    y: f32,
+    construct(x: f32, y: f32) {
+        self.x = x;
+        self.y = y;
+    }
 }
 
-class UTF16Text {
-    bytes: Array<u8>
-}
-
-class UTF32Text {
-    bytes: Array<u8>
-}
-
-class AnyText {
-    t1: UTF8Text,
-    t2: UTF16Text,
-    t3: UTF32Text,
-}
-
-structure Test {
-    a1: u32,
-    a2: u64,
-    a3: i32,
-    a4: i64,
-    b1: f32,
-    b2: f64,
-    wow: Any
+extends Point {
+    sum(self): f32 {
+        add(self.x, self.y)
+    }
 }
 
 
-class Recursion {
-    recursive: Recursion
-}
-
-
-class MutualA {
-//  recursive: MutualB
-}
-
-class MutualB {
-//  recursive: MutualA
-}
-
-
-function add(i: i32, j: i32): i32 {
+function add(i: f32, j: f32): f32 {
     i + j
 }

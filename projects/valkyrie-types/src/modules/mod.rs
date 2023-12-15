@@ -1,4 +1,4 @@
-use crate::{values::symbols::AsSymbol, FileCache, FileID, ValkyrieStructure, ValkyrieSymbol};
+use crate::{values::symbols::AsSymbol, FieldDefinition, FileCache, FileID, ValkyrieStructure, ValkyrieSymbol};
 use indexmap::{map::Entry, IndexMap};
 use nyar_error::{Failure, NyarError, Result, Success, Validation};
 use nyar_wasm::Operation;
@@ -6,7 +6,7 @@ use std::{
     fmt::{Debug, Formatter},
     mem::take,
 };
-use valkyrie_ast::{ClassDeclaration, NamespaceDeclaration, ProgramRoot, StatementKind};
+use valkyrie_ast::{ClassDeclaration, ClassTerm, ExpressionKind, NamespaceDeclaration, ProgramRoot, StatementKind};
 use valkyrie_parser::{ProgramContext, StatementNode};
 
 pub struct ValkyrieModule {}
@@ -88,13 +88,28 @@ impl AsModuleItem for NamespaceDeclaration {
 impl AsModuleItem for ClassDeclaration {
     fn send_module(self, ctx: &mut ModuleResolver) -> Result<Self::Output> {
         let symbol = self.name.as_namespace_symbol(&ctx.namespace);
-        let item = ValkyrieStructure { symbol, fields: Default::default(), methods: Default::default() };
-        match ctx.items.entry(item.name()) {
+        let mut class = ValkyrieStructure { symbol, fields: Default::default(), methods: Default::default() };
+
+        for x in self.terms {
+            match x {
+                ClassTerm::Macro(_) => {}
+                ClassTerm::Field(f) => {
+                    let mut field = FieldDefinition::new(&f.name);
+                    field.typing = f.typing;
+
+                    class.add_field(field).ok();
+                }
+                ClassTerm::Method(_) => {}
+                ClassTerm::Domain(_) => {}
+            }
+        }
+
+        match ctx.items.entry(class.name()) {
             Entry::Occupied(e) => {
                 todo!()
             }
             Entry::Vacant(e) => {
-                e.insert(ModuleItem::Structure(item));
+                e.insert(ModuleItem::Structure(class));
             }
         }
         Ok(())
