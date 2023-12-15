@@ -4,16 +4,16 @@ namespace core.text;
 
 
 structure Point {
-    x: f32,
-    y: f32,
-    construct(x: f32, y: f32) {
+    x: f64,
+    y: f64,
+    construct(x: f64, y: f64) {
         self.x = x;
         self.y = y;
     }
 }
 
 extends Point {
-    sum(self): f32 {
+    sum(self): f64 {
         add(self.x, self.y)
     }
 }

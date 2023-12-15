@@ -1,6 +1,8 @@
-use crate::{FieldDefinition, ModuleItem, ModuleResolver, ValkyrieStructure};
-use nyar_wasm::{FieldType, StructureType, WasmBuilder, WasmItem, WasmSymbol, WasmType};
+use crate::{backends::ConvertTo, ModuleItem, ModuleResolver};
+use nyar_wasm::{WasmBuilder, WasmSymbol, WasmType};
 use valkyrie_ast::ExpressionKind;
+
+mod structures;
 
 impl ModuleResolver {
     pub fn build_wasm(&self) -> WasmBuilder {
@@ -9,47 +11,35 @@ impl ModuleResolver {
         for item in self.items.values() {
             match item {
                 ModuleItem::Imported(_) => {}
-                ModuleItem::Structure(v) => builder.register(v.as_wasm()),
+                ModuleItem::Structure(v) => builder.register(v.convert()),
                 ModuleItem::External(_) => {}
+                ModuleItem::Function(v) => builder.register(v.convert()),
             }
         }
         builder
     }
 }
 
-pub(crate) trait IntoWasm<Item> {
-    fn as_wasm(&self) -> Item;
-}
-
-impl IntoWasm<StructureType> for ValkyrieStructure {
-    fn as_wasm(&self) -> StructureType {
-        let mut item = StructureType::new(self.name());
-        for field in self.fields.values() {
-            item.register_field(field.as_wasm())
-        }
-        item
-    }
-}
-impl IntoWasm<FieldType> for FieldDefinition {
-    fn as_wasm(&self) -> FieldType {
-        match &self.typing {
-            Some(s) => {
-                let name = self.symbol.to_string();
-                println!("name: {name}");
-
-                FieldType::new(name).with_type(s.as_wasm())
-            }
-            None => {
-                panic!("Run type infer first")
-            }
-        }
-    }
-}
-
-impl IntoWasm<WasmType> for ExpressionKind {
-    fn as_wasm(&self) -> WasmType {
+impl ConvertTo<WasmType> for ExpressionKind {
+    fn convert(&self) -> WasmType {
         match self {
-            ExpressionKind::Symbol(s) => WasmType::Reference { name: WasmSymbol::from(s.to_string()), nullable: false },
+            ExpressionKind::Symbol(s) => {
+                let name = s.to_string();
+                match name.as_str() {
+                    "bool" => WasmType::Bool,
+                    "u8" => WasmType::U8,
+                    "u16" => WasmType::U16,
+                    "u32" => WasmType::U32,
+                    "u64" => WasmType::U64,
+                    "i8" => WasmType::I8,
+                    "i16" => WasmType::I16,
+                    "i32" => WasmType::I32,
+                    "i64" => WasmType::I64,
+                    "f32" => WasmType::F32,
+                    "f64" => WasmType::F64,
+                    _ => WasmType::Reference { name: WasmSymbol::from(name), nullable: false },
+                }
+            }
             _ => unimplemented!("Unknown type item {self:?}"),
         }
     }

@@ -1,13 +1,21 @@
-use crate::{types::method_type::MethodDefinition, FieldDefinition, ValkyrieSymbol};
-use indexmap::{map::Values, IndexMap};
+use crate::{
+    backends::ConvertTo, modules::HIR, types::method_type::MethodDefinition, values::symbols::AsSymbol, FieldDefinition,
+    ModuleItem, ModuleResolver, ValkyrieSymbol,
+};
+use indexmap::{
+    map::{Entry, Values},
+    IndexMap,
+};
 use nyar_error::{NyarError, Result};
+use nyar_wasm::StructureType;
 use std::{
     fmt::{Debug, Formatter},
     ops::AddAssign,
 };
-use valkyrie_ast::{helper::WrapDisplay, IdentifierNode, NamePathNode};
+use valkyrie_ast::{helper::WrapDisplay, ClassDeclaration, ClassTerm, IdentifierNode, NamePathNode};
 
 mod codegen;
+mod parser;
 
 #[derive(Clone, Eq, PartialEq)]
 pub struct ValkyrieStructure {

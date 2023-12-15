@@ -46,7 +46,7 @@ pub use self::{
     },
     values::{symbols::ValkyrieSymbol, ValkyrieValue},
 };
-pub(crate) use self::{modules::AsModuleItem, values::symbols::AsSymbol};
+pub(crate) use self::{modules::HIR, values::symbols::AsSymbol};
 pub use nyar_error::{
     Failure, FileCache, FileID, MissingError, NyarError as ValkyrieError, Result as ValkyrieResult, RuntimeError, Success,
     SyntaxError,
