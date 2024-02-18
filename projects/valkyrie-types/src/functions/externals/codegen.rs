@@ -19,6 +19,7 @@ impl ConvertTo<ExternalType> for ValkyrieExternalFunction {
                     }
                     item += p
                 }
+
                 // `..args: Type`
                 ParameterTerm::UnpackList { key, bound, .. } => {
                     let mut p = WasmParameter::new(key.name.as_str());
