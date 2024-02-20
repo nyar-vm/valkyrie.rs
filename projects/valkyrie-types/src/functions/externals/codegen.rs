@@ -1,10 +1,11 @@
 use super::*;
-use nyar_wasm::{ArrayType, WasmSymbol, WasmType};
+use nyar_wasm::{ArrayType, ImportFunction, WasmSymbol, WasmType};
 
-impl ConvertTo<ExternalType> for ValkyrieExternalFunction {
-    fn convert(&self) -> ExternalType {
-        let mut item = ExternalType::new(self.bind_module.clone(), self.bind_name.clone());
-        item += WasmSymbol::from(self.name.to_string());
+impl ConvertTo<ImportFunction> for ValkyrieExternalFunction {
+    fn convert(&self) -> ImportFunction {
+        let external = WasmExternalName::create(self.bind_module.clone());
+        let mut item = ImportFunction::new(external, self.bind_name.clone());
+        item.local_name = WasmSymbol::from(self.name.to_string());
         for param in self.inputs.iter() {
             match param {
                 ParameterTerm::LMark => {}
