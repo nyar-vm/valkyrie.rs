@@ -1,10 +1,11 @@
 use super::*;
-use nyar_wasm::{ArrayType, ImportFunction, WasmSymbol, WasmType};
+use nyar_wasm::{ArrayType, ExternalFunctionType, WasmSymbol, WasmType};
+use std::str::FromStr;
 
-impl ConvertTo<ImportFunction> for ValkyrieExternalFunction {
-    fn convert(&self) -> ImportFunction {
-        let external = WasmExternalName::create(self.bind_module.clone());
-        let mut item = ImportFunction::new(external, self.bind_name.clone());
+impl ConvertTo<ExternalFunctionType> for ValkyrieExternalFunction {
+    fn convert(&self) -> ExternalFunctionType {
+        let external = WasmExternalName::from_str(&self.bind_module).unwrap();
+        let mut item = ExternalFunctionType::new(external, self.bind_name.clone());
         item.local_name = WasmSymbol::from(self.name.to_string());
         for param in self.inputs.iter() {
             match param {
