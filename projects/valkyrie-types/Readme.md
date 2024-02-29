@@ -1,5 +1,5 @@
 ```mermaid
-flowchart TB
+graph  TB
     classDef structure fill:#E5C07B,stroke:#9f6700,text-decoration:underline;
 
     classDef classes   fill:#E5C07B,stroke:#9f6700
