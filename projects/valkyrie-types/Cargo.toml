@@ -13,7 +13,6 @@ edition = "2021"
 serde = "1.0.196"
 im = "15.1.0"
 xxhash-rust = { version = "0.8.10", features = ["xxh3", "const_xxh3"] }
-shredder = "0.2.0"
 smallvec = "2.0.0-alpha.3"
 id-arena = { version = "2", features = ["rayon"] }
 dashmap = "5.5.3"

@@ -9,7 +9,7 @@ use crate::{
 };
 use indexmap::IndexMap;
 use nyar_error::{Result, RuntimeError};
-use nyar_wasm::{FunctionType, WasmExternalName};
+use nyar_wasm::FunctionType;
 use shredder::Gc;
 use std::{collections::BTreeMap, sync::Arc};
 use valkyrie_ast::{FunctionDeclaration, StatementBlock};

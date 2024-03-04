@@ -1,6 +1,6 @@
 [package]
 name = "valkyrie-parser"
-version = "0.2.4"
+version = "0.2.5"
 authors = ["192608617@qq.com"]
 description = "The hand write parser of valkyrie language"
 repository = "https://github.com/nyar-lang/NyarNative"

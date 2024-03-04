@@ -4,7 +4,7 @@ use std::str::FromStr;
 
 impl ConvertTo<ExternalFunctionType> for ValkyrieExternalFunction {
     fn convert(&self) -> ExternalFunctionType {
-        let external = WasmExternalName::from_str(&self.bind_module).unwrap();
+        let external = ExternalFunctionType::new(&self.bind_module).unwrap();
         let mut item = ExternalFunctionType::new(external, self.bind_name.clone());
         item.local_name = WasmSymbol::from(self.name.to_string());
         for param in self.inputs.iter() {
