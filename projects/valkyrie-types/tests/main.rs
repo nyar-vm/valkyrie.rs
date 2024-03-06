@@ -1,24 +1,26 @@
 use nyar_error::FileCache;
 use std::{path::Path, process::Command};
-use valkyrie_types::ModuleResolver;
+use std::io::Write;
+use nyar_wasm::CanonicalWasi;
+use valkyrie_types::define_io_types;
 
 #[test]
 fn ready() {
     println!("it works!")
 }
 
+
 #[test]
-fn test() {
-    let file = Path::new(env!("CARGO_MANIFEST_DIR")).join("tests/random.vk").canonicalize().unwrap();
-    let output = Path::new(env!("CARGO_MANIFEST_DIR")).join("target/debug/valkyrie/test.wasm");
-    let mut cache = FileCache::default();
-    let file = cache.load_local(file).unwrap();
-    let mut reolver = ModuleResolver::default();
-    for error in reolver.parse(file, &mut cache) {
-        error.as_report().eprint(&cache).unwrap()
-    }
-    let wasm = reolver.build_wasm();
-    let _ = wasm.build_module(output).unwrap();
-    let o = Command::new("valor").arg("build").output().unwrap();
-    println!("{}", String::from_utf8_lossy(&o.stdout))
+fn test_hello_world() {
+    let mut context= Resolv
+    
+    let source = include_str!("component.vk");
+    
+    let component = Path::new(env!("CARGO_MANIFEST_DIR")).join("tests/component.wat");
+    let mut wat = std::fs::File::create(component).unwrap();
+
+    let source = CanonicalWasi::new(define_io_types()).unwrap();
+
+    let wast = source.encode();
+    wat.write_all(wast.as_bytes()).unwrap();
 }

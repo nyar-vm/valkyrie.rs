@@ -1,56 +1,107 @@
-#![feature(trivial_bounds)]
-#![feature(allocator_api)]
-#![feature(never_type)]
-#![feature(unboxed_closures)]
-#![feature(lazy_cell)]
-#![feature(extend_one)]
 #![feature(associated_type_defaults)]
+#![feature(extend_one)]
 
-pub mod helpers;
-pub mod projects;
-
-mod builtin;
-mod collection;
-mod functions;
-mod modifiers;
 mod modules;
-// #[cfg(test)]
-mod backends;
-mod definitions;
+mod structures;
 
-mod packages;
-pub mod structures;
-pub mod testing;
-pub mod third_party;
-mod types;
-mod utils;
-mod values;
+use std::{io::Write, path::Path, str::FromStr, sync::Arc};
 
-pub use self::{
-    builtin::{
-        images::ValkyrieImage,
-        result::{ValkyrieFailure, ValkyrieSuccess},
-        texts::{StringID, ValkyrieString},
-        TokenType,
-    },
-    collection::dict::ValkyrieDict,
-    definitions::{enumerates::ValkyrieEnumerate, fields::ValkyrieField, interfaces::ValkyrieInterface, names::ValkyrieName},
-    functions::{externals::ValkyrieExternalFunction, ValkyrieFunction, ValkyrieFunctionType, ValkyrieMonomorphicFunction},
-    modifiers::{FeatureType, InitializeType, MutableType},
-    modules::{ModuleItem, ModuleResolver, ValkyrieModule},
-    packages::ids::{ValkyrieID, ValkyrieUniverse},
-    types::{
-        atomic_type::ValkyrieAtomicType, literal_type::ValkyrieLiteralType, union_type::ValkyrieUnionType,
-        variant_type::ValkyrieVariantType, ValkyrieType,
-    },
-    values::{symbols::ValkyrieSymbol, ValkyrieValue},
+use nyar_wasm::{
+    CanonicalWasi, DependentGraph, Identifier, WasiFunction, WasiModule, WasiParameter, WasiRecordField, WasiRecordType,
+    WasiResource, WasiType, WasiTypeReference, WasiVariantItem, WasiVariantType,
 };
-pub(crate) use self::{modules::Hir2Mir, values::symbols::AsSymbol};
-pub use nyar_error::{
-    Failure, FileCache, FileID, MissingError, NyarError as ValkyrieError, Result as ValkyrieResult, RuntimeError, Success,
-    SyntaxError,
+
+pub use crate::{
+    modules::{ResolveContext, ValkyrieModule},
+    structures::{ValkyrieField, ValkyrieMethod, ValkyrieStructure},
 };
-pub use shredder::Gc;
-pub use structures::ValkyrieStructure;
-pub use valkyrie_ast::ValkyrieOperator;
-pub use valkyrie_parser::{ProgramContext, StringFormatterBuilder};
+
+pub fn define_io_types() -> DependentGraph {
+    let mut global = DependentGraph::default();
+    let m_debugger = WasiModule::from_str("unstable:debugger/print").unwrap();
+    let m_io_error = WasiModule::from_str("wasi:io/error@0.2.0").unwrap();
+    let m_io_streams = WasiModule::from_str("wasi:io/streams@0.2.0").unwrap();
+    {
+        global += WasiResource::new(m_io_error.clone(), "error", "std::io::IoError");
+        global += WasiResource::new(m_io_streams.clone(), "output-stream", "std::io::OutputStream");
+        global += WasiResource::new(m_io_streams.clone(), "input-stream", "std::io::InputStream");
+        let mut stream_error = WasiVariantType::new("std::io::StreamError");
+        stream_error += WasiVariantItem::new("LastOperationFailed")
+            .with_fields(WasiTypeReference::new(Identifier::from_str("std::io::IoError").unwrap()));
+        stream_error += WasiVariantItem::new("Closed");
+        global += stream_error;
+    }
+    {
+        let mut point = WasiRecordType::new(Identifier::from_str("Point").unwrap());
+        point += WasiRecordField::new(Arc::from("x"), WasiType::Float32);
+        point += WasiRecordField::new(Arc::from("y"), WasiType::Float32);
+        global += point;
+        let mut printer = WasiFunction::external(m_debugger.clone(), "print-point", "test::print_point");
+        printer.inputs.push(WasiParameter::new("value", WasiTypeReference::new(Identifier::from_str("Point").unwrap())));
+        global += printer;
+    }
+    {
+        let wasi_cli_get = WasiModule::from_str("wasi:cli/stdin@0.2.0").unwrap();
+        let mut function = WasiFunction::external(wasi_cli_get.clone(), "get-stdin", "std::io::standard_input");
+        function.output = Some(WasiTypeReference::owned(Identifier::from_str("std::io::InputStream").unwrap()).into());
+        global += function;
+    }
+    {
+        let wasi_cli_get = WasiModule::from_str("wasi:cli/stdout@0.2.0").unwrap();
+        let mut function = WasiFunction::external(wasi_cli_get.clone(), "get-stdout", "std::io::standard_output");
+        function.output = Some(WasiTypeReference::owned(Identifier::from_str("std::io::OutputStream").unwrap()).into());
+        global += function;
+    }
+    {
+        let wasi_cli_get = WasiModule::from_str("wasi:cli/stderr@0.2.0").unwrap();
+        let mut function = WasiFunction::external(wasi_cli_get.clone(), "get-stderr", "std::io::standard_error");
+        function.output = Some(WasiTypeReference::owned(Identifier::from_str("std::io::OutputStream").unwrap()).into());
+        global += function;
+    }
+    {
+        // let mut f1 = WasiExternalFunction::new(
+        //     wasi_io_streams.clone(),
+        //     "[method]output-stream.blocking-write-zeroes-and-flush",
+        //     "std::io::OutputStream::write_zeros",
+        // );
+        // f1 += WasiParameter::new(
+        //     "self",
+        //     WasiType::TypeHandler { name: Identifier::from_str("std::io::OutputStream").unwrap(), own: false },
+        // );
+        // f1 += WasiParameter::new("len", WasiType::Integer64 { signed: false });
+        // f1 += WasiType::Result {
+        //     success: None,
+        //     failure: Some(Box::new(WasiType::TypeAlias { name: Identifier::from_str("std::io::StreamError").unwrap() })),
+        // };
+        // global += f1;
+    }
+    {
+        // let mut f1 = WasiExternalFunction::new(
+        //     wasi_io_streams.clone(),
+        //     "[method]output-stream.blocking-write-and-flush",
+        //     "std::io::OutputStream::write",
+        // );
+        // f1 += WasiParameter::new(
+        //     "self",
+        //     WasiType::TypeHandler { name: Identifier::from_str("std::io::OutputStream").unwrap(), own: false },
+        // );
+        // f1 += WasiParameter::new("contents", WasiArrayType::new(WasiType::Integer8 { signed: false }));
+        // f1 += WasiType::Result {
+        //     success: None,
+        //     failure: Some(Box::new(WasiType::TypeAlias { name: Identifier::from_str("std::io::StreamError").unwrap() })),
+        // };
+        // global += f1;
+    }
+    {
+        let mut function = WasiFunction::external(m_debugger.clone(), "print-i32", "print_i32");
+        function.inputs.push(WasiParameter::new("value", WasiType::Integer32 { signed: true }));
+        global += function;
+    }
+    {
+        let wasi_cli_get = WasiModule::from_str("unstable:debugger/print").unwrap();
+        let mut function = WasiFunction::external(wasi_cli_get.clone(), "print-u32", "print_u32");
+        function.inputs.push(WasiParameter::new("value", WasiType::Integer32 { signed: true }));
+        global += function;
+    }
+    global
+}

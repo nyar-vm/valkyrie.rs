@@ -1,6 +1,6 @@
 [package]
 name = "valkyrie-types"
-version = "0.0.7"
+version = "0.0.8"
 authors = ["Aster <192607617@qq.com>"]
 description = "Shard types for valkyrie language"
 repository = "https://github.com/nyar-vm/valkyrie.rs"
@@ -14,18 +14,15 @@ serde = "1.0.196"
 im = "15.1.0"
 xxhash-rust = { version = "0.8.10", features = ["xxh3", "const_xxh3"] }
 smallvec = "2.0.0-alpha.3"
-id-arena = { version = "2", features = ["rayon"] }
 dashmap = "5.5.3"
 indexmap = "2.2.3"
 itertools = "0.12.1"
 image = { version = "0.24.8", features = [] }
 jupyter-types = "0.0.*"
-generational-arena = "0.2.9"
-
 
 [dependencies.nyar-wasm]
-version = "0.0.4"
-path = 'C:\Users\Dell\CLionProjects\nyar-vm\projects\nyar-wasm'
+version = "0.0.5"
+#path = 'C:\Users\Dell\CLionProjects\nyar-vm\projects\nyar-wasm'
 
 [dependencies.nyar-error]
 version = "0.1.12"
