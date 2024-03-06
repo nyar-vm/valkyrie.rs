@@ -22,7 +22,7 @@ jupyter-types = "0.0.*"
 
 [dependencies.nyar-wasm]
 version = "0.0.5"
-#path = 'C:\Users\Dell\CLionProjects\nyar-vm\projects\nyar-wasm'
+path = 'C:\Users\Dell\CLionProjects\nyar-vm\projects\nyar-wasm'
 
 [dependencies.nyar-error]
 version = "0.1.12"

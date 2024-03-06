@@ -91,6 +91,23 @@ pub struct AttributeTerm {
     pub span: Range<u32>,
 }
 
+impl PartialEq<str> for AttributeTerm {
+    fn eq(&self, other: &str) -> bool {
+        if cfg!(debug_assertions) {
+            if other.contains(":") {
+                panic!("don't use id")
+            }
+        }
+        if !self.variant.is_empty() {
+            return false;
+        }
+        match self.path.path.as_slice() {
+            [single] => single.name.eq(other),
+            _ => false,
+        }
+    }
+}
+
 /// `public static final synchronized class Main {}`
 ///
 /// - Auxiliary parsing function, not instantiable.
@@ -152,6 +169,13 @@ impl AttributeList {
     /// Check if the modifier is present.
     pub fn is_empty(&self) -> bool {
         self.terms.is_empty()
+    }
+    pub fn get<T>(&self, attribute: &T) -> Option<&AttributeTerm>
+    where
+        T: ?Sized,
+        AttributeTerm: PartialEq<T>,
+    {
+        self.terms.iter().filter(|&x| x.eq(attribute)).next()
     }
 }
 

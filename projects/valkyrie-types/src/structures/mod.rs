@@ -1,9 +1,13 @@
+use crate::{
+    helpers::Hir2Mir,
+    modules::{ModuleItem, ResolveContext},
+};
 use indexmap::{
     map::{Entry, Values},
     IndexMap,
 };
 use nyar_error::{NyarError, Result};
-use nyar_wasm::Identifier;
+use nyar_wasm::{Identifier, WasiModule, WasiRecordType, WasiResource};
 use std::{
     fmt::{Debug, Formatter},
     ops::AddAssign,
@@ -18,6 +22,8 @@ pub struct ValkyrieStructure {
     pub(crate) symbol: Identifier,
     pub(crate) fields: IndexMap<String, ValkyrieField>,
     pub(crate) methods: IndexMap<String, ValkyrieMethod>,
+    /// Whether the class is an external resource type
+    pub(crate) external_resource: Option<WasiResource>,
 }
 
 #[derive(Debug, Clone, Eq, PartialEq)]
@@ -28,11 +34,12 @@ pub struct ValkyrieMethod {}
 
 impl Debug for ValkyrieStructure {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        f.debug_struct("Structure")
-            .field("symbol", &WrapDisplay::new(&self.symbol))
-            .field("fields", &self.fields.values())
-            // .field("methods", &self.methods.values())
-            .finish()
+        let debug = &mut f.debug_struct("Structure");
+        debug.field("symbol", &WrapDisplay::new(&self.symbol)).field("fields", &self.fields.values());
+        if let Some(s) = &self.external_resource {
+            debug.field("resource", s);
+        }
+        debug.finish()
     }
 }
 
@@ -49,10 +56,10 @@ impl AddAssign<ValkyrieField> for ValkyrieStructure {
 // }
 
 impl ValkyrieStructure {
-    pub fn new(space: &NamePathNode, name: &IdentifierNode) -> Self {
-        todo!()
+    pub fn new(symbol: Identifier) -> Self {
+        Self { symbol, fields: Default::default(), methods: Default::default(), external_resource: None }
     }
-    pub fn name(&self) -> String {
+    pub fn get_name(&self) -> String {
         self.symbol.to_string()
     }
     // pub fn get_field(&self, name: &str) -> Option<&ValkyrieField> {

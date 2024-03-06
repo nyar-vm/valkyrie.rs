@@ -1,8 +1,10 @@
-use crate::structures::ValkyrieStructure;
+use crate::{helpers::Hir2Mir, structures::ValkyrieStructure};
+use im::HashMap;
 use indexmap::IndexMap;
 use nyar_error::{Failure, FileCache, FileID, NyarError, Result, Success};
 use nyar_wasm::Identifier;
 use std::{
+    borrow::Cow,
     fmt::{Debug, Formatter},
     mem::take,
     sync::Arc,
@@ -13,18 +15,37 @@ use valkyrie_parser::{ProgramContext, StatementNode};
 pub struct ValkyrieModule {}
 
 /// Convert file to module
-#[derive(Debug, Default)]
+#[derive(Default)]
 pub struct ResolveContext {
     /// The current namespace
     pub(crate) namespace: Option<NamePathNode>,
     /// The document buffer
     pub(crate) document: String,
     /// main function of the file
-    pub(crate) unsolved: Vec<StatementNode>,
+    pub(crate) unsolved: HashMap<Identifier, StatementNode>,
     /// The declared items in file
     pub(crate) items: IndexMap<Identifier, ModuleItem>,
     /// Collect errors
     pub(crate) errors: Vec<NyarError>,
+    /// Collect spread statements
+    pub(crate) main_function: Vec<StatementNode>,
+}
+
+impl Debug for ResolveContext {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        let namespace = match &self.namespace {
+            None => Cow::Borrowed("None"),
+            Some(s) => Cow::Owned(s.to_string()),
+        };
+        f.debug_struct("ResolveContext")
+            .field("namespace", &namespace)
+            .field("document", &self.document)
+            .field("unsolved", &self.unsolved)
+            .field("items", &self.items)
+            .field("errors", &self.errors)
+            .field("main_function", &self.main_function)
+            .finish()
+    }
 }
 
 pub enum ModuleItem {
@@ -45,16 +66,6 @@ impl Debug for ModuleItem {
     }
 }
 
-pub(crate) trait Hir2Mir {
-    type Output = ();
-    fn to_mir(self, ctx: &mut ResolveContext) -> Result<Self::Output>;
-}
-
-pub(crate) trait Mir2Lir {
-    type Output = ();
-    fn to_lir(self, ctx: &mut ResolveContext) -> Result<Self::Output>;
-}
-
 impl Hir2Mir for ProgramRoot {
     fn to_mir(self, ctx: &mut ResolveContext) -> Result<Self::Output> {
         for statement in self.statements {
@@ -67,23 +78,53 @@ impl Hir2Mir for ProgramRoot {
 impl Hir2Mir for StatementKind {
     fn to_mir(self, ctx: &mut ResolveContext) -> Result<Self::Output> {
         match self {
-            Self::Nothing => {}
-            Self::Document(_) => {}
-            Self::Annotation(_) => {}
+            Self::Nothing => {
+                todo!()
+            }
+            Self::Document(_) => {
+                todo!()
+            }
+            Self::Annotation(_) => {
+                todo!()
+            }
             Self::Namespace(v) => v.to_mir(ctx)?,
-            Self::Import(_) => {}
-            Self::Class(v) => {}
-            Self::Union(_) => {}
-            Self::Enumerate(_) => {}
-            Self::Trait(_) => {}
-            Self::Extends(_) => {}
-            Self::Function(f) => {}
-            Self::Variable(_) => {}
-            Self::Guard(_) => {}
-            Self::While(_) => {}
-            Self::For(_) => {}
-            Self::Control(_) => {}
-            Self::Expression(_) => {}
+            Self::Import(_) => {
+                todo!()
+            }
+            Self::Class(v) => v.to_mir(ctx)?,
+            Self::Union(_) => {
+                todo!()
+            }
+            Self::Enumerate(_) => {
+                todo!()
+            }
+            Self::Trait(_) => {
+                todo!()
+            }
+            Self::Extends(_) => {
+                todo!()
+            }
+            Self::Function(f) => {
+                todo!()
+            }
+            Self::Variable(_) => {
+                todo!()
+            }
+            Self::Guard(_) => {
+                todo!()
+            }
+            Self::While(_) => {
+                todo!()
+            }
+            Self::For(_) => {
+                todo!()
+            }
+            Self::Control(_) => {
+                todo!()
+            }
+            Self::Expression(_) => {
+                todo!()
+            }
         }
         Ok(())
     }
@@ -91,10 +132,11 @@ impl Hir2Mir for StatementKind {
 
 impl Hir2Mir for NamespaceDeclaration {
     fn to_mir(self, ctx: &mut ResolveContext) -> Result<Self::Output> {
-        // ctx.namespace = Some(self.path.as_symbol());
+        ctx.namespace = Some(self.path);
         Ok(())
     }
 }
+
 impl ResolveContext {
     pub fn parse(&mut self, file: FileID, cache: &mut FileCache) -> Vec<NyarError> {
         let root = ProgramContext { file }.parse(cache);

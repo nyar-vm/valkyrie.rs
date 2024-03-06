@@ -182,3 +182,16 @@ impl ExpressionKind {
         Self::Unary(Box::new(UnaryNode { operator: o, base: lhs }))
     }
 }
+
+impl ExpressionKind {
+    pub fn as_text(&self) -> Option<&str> {
+        match self {
+            ExpressionKind::Text(v) => Some(v.text.as_str()),
+            ExpressionKind::String(v) => match v.handler {
+                None => Some(v.literal.text.as_str()),
+                Some(_) => None,
+            },
+            _ => None,
+        }
+    }
+}

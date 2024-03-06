@@ -4,3 +4,14 @@ namespace std.io;
 resource class IoError {
 
 }
+
+#ffi("wasi:io/streams", "input-stream")
+resource class InputStream {
+
+}
+
+#ffi("wasi:io/streams", "output-stream")
+resource class OutputStream {
+
+}
+

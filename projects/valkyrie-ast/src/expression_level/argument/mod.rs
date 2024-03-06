@@ -2,6 +2,7 @@ use super::*;
 use crate::StatementBlock;
 use core::ops::AddAssign;
 
+mod arithmetic;
 mod display;
 
 /// `a + b, c: d, ..e`
@@ -12,11 +13,6 @@ pub struct ArgumentsList {
     pub terms: Vec<ArgumentTerm>,
 }
 
-impl AddAssign<ArgumentTerm> for ArgumentsList {
-    fn add_assign(&mut self, rhs: ArgumentTerm) {
-        self.terms.push(rhs)
-    }
-}
 impl Debug for ArgumentsList {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         f.debug_list().entries(self.terms.iter()).finish()
@@ -49,5 +45,12 @@ impl ArgumentsList {
     /// Create a new `ArgumentsList` with the given capacity.
     pub fn new(capacity: usize) -> Self {
         Self { terms: Vec::with_capacity(capacity) }
+    }
+
+    pub fn get<T: ?Sized>(&self, argument: &T) -> Option<&ArgumentTerm>
+    where
+        ArgumentTerm: PartialEq<T>,
+    {
+        self.terms.iter().filter(|&x| x.eq(argument)).next()
     }
 }

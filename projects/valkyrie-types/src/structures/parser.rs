@@ -1,21 +1,51 @@
 use super::*;
-use crate::modules::{Hir2Mir, ModuleItem, ResolveContext};
+use nyar_wasm::WasiModule;
+use std::str::FromStr;
+use valkyrie_ast::{ArgumentTerm, AttributeTerm};
 
 impl Hir2Mir for ClassDeclaration {
     fn to_mir(self, ctx: &mut ResolveContext) -> Result<Self::Output> {
         let symbol = ctx.get_name_path(&self.name);
-        let mut class = ValkyrieStructure { symbol, fields: Default::default(), methods: Default::default() };
+        let mut class = ValkyrieStructure::new(symbol);
+
+        match self.annotations.attributes.get("ffi") {
+            Some(s) => {
+                if !self.annotations.modifiers.contains("resource") {
+                    panic!("must resource class")
+                }
+                match s.arguments.terms.as_slice() {
+                    [module, name] => {
+                        let module = module.value.as_text().unwrap();
+                        let name = name.value.as_text().unwrap();
+                        class.external_resource = Some(WasiResource {
+                            symbol: class.symbol.clone(),
+                            wasi_module: WasiModule::from_str(module).unwrap(),
+                            wasi_name: name.to_string(),
+                        })
+                    }
+                    _ => panic!("invalid ffi attribute"),
+                }
+            }
+            None => {}
+        }
+
         for x in self.terms {
             match x {
-                ClassTerm::Macro(_) => {}
+                ClassTerm::Macro(_) => {
+                    todo!()
+                }
                 ClassTerm::Field(f) => {
                     // let mut field = ValkyrieField::new(&f.name);
                     // field.typing = f.typing;
                     //
                     // class.add_field(field).ok();
                 }
-                ClassTerm::Method(_) => {}
-                ClassTerm::Domain(_) => {}
+                ClassTerm::Method(_) => {
+                    todo!()
+                }
+                ClassTerm::Domain(_) => {
+                    todo!()
+                }
             }
         }
 
