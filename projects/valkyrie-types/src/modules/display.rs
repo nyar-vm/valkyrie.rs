@@ -1,13 +1,10 @@
 use super::*;
+use itertools::Itertools;
 
 impl Debug for ResolveContext {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        let namespace = match &self.namespace {
-            None => Cow::Borrowed("None"),
-            Some(s) => Cow::Owned(s.to_string()),
-        };
         f.debug_struct("ResolveContext")
-            .field("namespace", &namespace)
+            .field("namespace", &self.namespace.join("::"))
             .field("document", &self.document)
             .field("unsolved", &self.unsolved)
             .field("items", &self.items)

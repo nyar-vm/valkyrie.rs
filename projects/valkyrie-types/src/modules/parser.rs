@@ -58,7 +58,7 @@ impl Hir2Mir for StatementKind {
             }
             Self::Union(v) => {
                 let variant = v.to_mir(ctx)?;
-                ctx.items.insert(variant.symbol.clone(), ModuleItem::Variant(variant));
+                ctx.items.insert(variant.union_name.clone(), ModuleItem::Variant(variant));
             }
             Self::Enumerate(_) => {
                 todo!()
@@ -104,7 +104,16 @@ impl Hir2Mir for FunctionDeclaration {
 
 impl Hir2Mir for NamespaceDeclaration {
     fn to_mir(self, ctx: &mut ResolveContext) -> Result<Self::Output> {
-        ctx.namespace = Some(self.path);
+        ctx.namespace.clear();
+        if let [head, rest @ ..] = self.path.path.as_slice() {
+            match head.name.eq("package") {
+                true => ctx.namespace.push(ctx.package.clone()),
+                false => ctx.namespace.push(Arc::from(head.name.as_str())),
+            }
+            for x in rest {
+                ctx.namespace.push(Arc::from(x.name.as_str()))
+            }
+        }
         Ok(())
     }
 }

@@ -57,7 +57,7 @@ impl Hir2Mir for ClassDeclaration {
 impl Hir2Mir for FieldDeclaration {
     type Output = ValkyrieField;
     fn to_mir(self, ctx: &mut ResolveContext) -> nyar_error::Result<Self::Output> {
-        Ok(ValkyrieField { name: Arc::from("?"), wasi_name: Arc::from("?") })
+        Ok(ValkyrieField { field_name: Arc::from("?"), wasi_alias: Arc::from("?") })
     }
 }
 impl Hir2Mir for MethodDeclaration {

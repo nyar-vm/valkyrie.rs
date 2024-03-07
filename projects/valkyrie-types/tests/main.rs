@@ -1,5 +1,4 @@
 use nyar_error::FileCache;
-use nyar_wasm::CanonicalWasi;
 use std::{io::Write, path::Path};
 use valkyrie_types::ResolveContext;
 

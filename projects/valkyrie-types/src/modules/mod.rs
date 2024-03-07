@@ -65,20 +65,8 @@ impl ResolveContext {
 }
 
 impl ResolveContext {
+    /// Get the full name path based on package name and namespace
     pub fn get_name_path(&self, symbol: &IdentifierNode) -> Identifier {
-        let mut namespace = Vec::with_capacity(8);
-        let name = Arc::from(symbol.name.as_str());
-        if let Some(s) = &self.namespace {
-            if let [head, rest @ ..] = s.path.as_slice() {
-                match head.name.eq("package") {
-                    true => namespace.push(self.package.clone()),
-                    false => namespace.push(Arc::from(head.name.as_str())),
-                }
-                for x in rest {
-                    namespace.push(Arc::from(x.name.as_str()))
-                }
-            }
-        }
-        Identifier { namespace, name }
+        Identifier { namespace: self.namespace.clone(), name: Arc::from(symbol.name.as_str()) }
     }
 }

@@ -37,9 +37,9 @@ pub struct ValkyrieResource {
 #[derive(Debug, Clone, Eq, PartialEq)]
 pub struct ValkyrieField {
     /// The name of the field
-    pub name: Arc<str>,
+    pub field_name: Arc<str>,
     /// The WASI name of the field
-    pub wasi_name: Arc<str>,
+    pub wasi_alias: Arc<str>,
 }
 
 #[derive(Debug, Clone, Eq, PartialEq)]
@@ -58,7 +58,7 @@ impl Debug for ValkyrieStructure {
 
 impl AddAssign<ValkyrieField> for ValkyrieStructure {
     fn add_assign(&mut self, rhs: ValkyrieField) {
-        self.fields.insert(rhs.name.clone(), rhs);
+        self.fields.insert(rhs.field_name.clone(), rhs);
     }
 }
 //
