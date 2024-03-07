@@ -5,7 +5,7 @@ impl crate::DefineFunctionNode {
         Ok(FunctionDeclaration {
             kind: self.kw_function.build(),
             annotations: self.annotation_head.annotations(ctx),
-            name: self.namepath.build(ctx),
+            name: self.identifier.build(ctx.file),
             generics: self.function_middle.generics(ctx),
             parameters: self.function_middle.parameters(ctx),
             returns: self.function_middle.returns(ctx)?,

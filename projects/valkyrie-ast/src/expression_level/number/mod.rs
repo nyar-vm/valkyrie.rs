@@ -23,7 +23,7 @@ pub struct NumberLiteralNode {
 }
 
 impl ValkyrieNode for NumberLiteralNode {
-    fn get_range(&self) -> Range<usize> {
+    fn get_range(&self) -> Range<u32> {
         self.span.get_range()
     }
 }
@@ -79,7 +79,11 @@ impl NumberLiteralNode {
                         let error = SyntaxError {
                             info: "Invalid number literal".to_string(),
                             hint: format!("invalid text `{}` in base {}", s, self.base),
-                            span: file.with_range(start + delta..start + delta + c.len_utf8()),
+                            span: {
+                                let start = start + delta;
+                                let end = start + delta + c.len_utf8();
+                                file.with_range(start as u32..end as u32)
+                            },
                         };
                         Err(error.as_error(ReportKind::Error))?
                     }

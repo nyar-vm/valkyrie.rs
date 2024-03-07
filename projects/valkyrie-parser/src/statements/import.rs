@@ -10,7 +10,7 @@ impl crate::DefineImportNode {
             annotation: Default::default(),
             kind: ImportKind::Shared,
             term: self.term(ctx),
-            span: ctx.file.with_range(self.get_range()),
+            span: ctx.file.with_range(self.span.clone()),
         };
 
         // for resolved in imported.flatten() {

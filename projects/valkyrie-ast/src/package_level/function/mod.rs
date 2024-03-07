@@ -12,12 +12,12 @@ pub enum FunctionKind {
     Micro,
 }
 
-/// `class Name(Super): Trait {}`
+/// `micro name::<T>(self: Type, value: T) { }`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct FunctionDeclaration {
     /// The belonging and name of this function
-    pub name: NamePathNode,
+    pub name: IdentifierNode,
     /// The range of the number.
     pub kind: FunctionKind,
     /// The annotations of this function

@@ -29,10 +29,12 @@ impl StringFormatterBuilder {
         Self { file, buffer: Default::default(), terms: vec![], errors: vec![] }
     }
     fn extend_buffer(&mut self, range: &Range<u32>) {
+        let mut new = self.buffer.span.get_range();
         if self.buffer.text.is_empty() {
-            self.buffer.span.start = range.start;
+            new.start = range.start;
         }
-        self.buffer.span.end = range.end;
+        new.end = range.end;
+        self.buffer.span.set_range(new)
     }
     fn push_buffer(&mut self) {
         if !self.buffer.text.is_empty() {
@@ -101,7 +103,7 @@ impl crate::EscapeCharacterNode {
                 }
                 Ok(())
             }
-            None => Err(SyntaxError::new("Invalid escape sequence").with_span(ctx.file.with_range(self.get_range())))?,
+            None => Err(SyntaxError::new("Invalid escape sequence").with_span(ctx.file.with_range(self.span.clone())))?,
         }
     }
 }
@@ -117,11 +119,11 @@ impl crate::EscapeUnicodeNode {
                 }
                 None => Err(SyntaxError::new("unicode codepoint out of range")
                     .with_hint("The valid range is from `\\u{000000}` to `\\u{10FFFF}`")
-                    .with_span(ctx.file.with_range(self.get_range())))?,
+                    .with_span(ctx.file.with_range(self.span.clone())))?,
             },
             Err(_) => Err(SyntaxError::new("invalid character found in unicode codepoint")
                 .with_hint("Expect hex digits in [0-9a-fA-F]")
-                .with_span(ctx.file.with_range(self.get_range())))?,
+                .with_span(ctx.file.with_range(self.span.clone())))?,
         }
     }
 }
@@ -136,8 +138,9 @@ impl crate::StringInterpolationSimpleNode {
     }
 }
 impl crate::StringFormatterNode {
-    fn build(&self, _: &mut StringFormatterBuilder) -> StringTextNode {
-        StringTextNode { text: self.text.trim().to_string(), span: self.span.clone() }
+    fn build(&self, sb: &mut StringFormatterBuilder) -> StringTextNode {
+        let span = sb.file.with_range(self.span.clone());
+        StringTextNode { text: self.text.trim().to_string(), span }
     }
 }
 impl crate::StringInterpolationComplexNode {

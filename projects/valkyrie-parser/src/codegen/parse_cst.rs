@@ -790,7 +790,7 @@ fn parse_define_method(state: Input) -> Output {
             Ok(s)
                 .and_then(|s| parse_annotation_mix(s).and_then(|s| s.tag_node("annotation_mix")))
                 .and_then(|s| builtin_ignore(s))
-                .and_then(|s| parse_namepath(s).and_then(|s| s.tag_node("namepath")))
+                .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_function_middle(s).and_then(|s| s.tag_node("function_middle")))
                 .and_then(|s| builtin_ignore(s))
@@ -1118,7 +1118,7 @@ fn parse_define_function(state: Input) -> Output {
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_kw_function(s).and_then(|s| s.tag_node("kw_function")))
                 .and_then(|s| builtin_ignore(s))
-                .and_then(|s| parse_namepath(s).and_then(|s| s.tag_node("namepath")))
+                .and_then(|s| parse_identifier(s).and_then(|s| s.tag_node("identifier")))
                 .and_then(|s| builtin_ignore(s))
                 .and_then(|s| parse_function_middle(s).and_then(|s| s.tag_node("function_middle")))
                 .and_then(|s| builtin_ignore(s))
@@ -1268,7 +1268,7 @@ fn parse_parameter_hint(state: Input) -> Output {
     state.rule(ValkyrieRule::ParameterHint, |s| {
         s.match_regex({
             static REGEX: OnceLock<Regex> = OnceLock::new();
-            REGEX.get_or_init(|| Regex::new("^(?x)([.]{2,3}|[~^])").unwrap())
+            REGEX.get_or_init(|| Regex::new("^(?x)([.]{2,3}|[%^])").unwrap())
         })
     })
 }
@@ -2061,7 +2061,7 @@ fn parse_type_prefix(state: Input) -> Output {
             REGEX.get_or_init(|| {
                 Regex::new(
                     "^(?x)([-+¬]
-    | [~&])",
+    | [&^])",
                 )
                 .unwrap()
             })
@@ -3891,7 +3891,18 @@ fn parse_skip_space(state: Input) -> Output {
 fn parse_comment(state: Input) -> Output {
     state.rule(ValkyrieRule::Comment, |s| {
         Err(s)
-            .or_else(|s| s.sequence(|s| Ok(s).and_then(|s| builtin_text(s, "//", false)).and_then(|s| s.rest_of_line())))
+            .or_else(|s| {
+                s.sequence(|s| {
+                    Ok(s)
+                        .and_then(|s| {
+                            builtin_regex(s, {
+                                static REGEX: OnceLock<Regex> = OnceLock::new();
+                                REGEX.get_or_init(|| Regex::new("^(?x)([~⍝🗨])").unwrap())
+                            })
+                        })
+                        .and_then(|s| s.rest_of_line())
+                })
+            })
             .or_else(|s| {
                 s.sequence(|s| Ok(s).and_then(|s| builtin_text(s, "/*", false)).and_then(|s| builtin_text(s, "*/", false)))
             })

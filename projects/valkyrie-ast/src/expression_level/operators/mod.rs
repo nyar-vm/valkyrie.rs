@@ -393,12 +393,12 @@ pub struct OperatorNode {
     pub span: Range<u32>,
 }
 impl ValkyrieNode for UnaryNode {
-    fn get_range(&self) -> Range<usize> {
-        Range { start: self.operator.span.start as usize, end: self.base.get_end() }
+    fn get_range(&self) -> Range<u32> {
+        Range { start: self.operator.span.start, end: self.base.get_end() }
     }
 }
 impl ValkyrieNode for BinaryNode {
-    fn get_range(&self) -> Range<usize> {
+    fn get_range(&self) -> Range<u32> {
         let head = self.lhs.get_range().start;
         let tail = self.rhs.get_range().end;
         head..tail

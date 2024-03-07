@@ -782,7 +782,7 @@ impl YggdrasilNode for DefineMethodNode {
             annotation_mix: pair.take_tagged_one::<AnnotationMixNode>(Cow::Borrowed("annotation_mix"))?,
             continuation: pair.take_tagged_option::<ContinuationNode>(Cow::Borrowed("continuation")),
             function_middle: pair.take_tagged_one::<FunctionMiddleNode>(Cow::Borrowed("function_middle"))?,
-            namepath: pair.take_tagged_one::<NamepathNode>(Cow::Borrowed("namepath"))?,
+            identifier: pair.take_tagged_one::<IdentifierNode>(Cow::Borrowed("identifier"))?,
             span: Range { start: _span.start() as u32, end: _span.end() as u32 },
         })
     }
@@ -906,7 +906,7 @@ impl YggdrasilNode for ObjectStatementNode {
         Ok(Self {
             class_block: pair.take_tagged_one::<ClassBlockNode>(Cow::Borrowed("class_block"))?,
             define_inherit: pair.take_tagged_option::<DefineInheritNode>(Cow::Borrowed("define_inherit")),
-            // Missing rule KW_Object
+            kw_object: pair.take_tagged_one::<KwObjectNode>(Cow::Borrowed("kw_object"))?,
             type_hint: pair.take_tagged_one::<TypeHintNode>(Cow::Borrowed("type_hint"))?,
             span: Range { start: _span.start() as u32, end: _span.end() as u32 },
         })
@@ -1312,8 +1312,8 @@ impl YggdrasilNode for DefineFunctionNode {
             annotation_head: pair.take_tagged_one::<AnnotationHeadNode>(Cow::Borrowed("annotation_head"))?,
             continuation: pair.take_tagged_one::<ContinuationNode>(Cow::Borrowed("continuation"))?,
             function_middle: pair.take_tagged_one::<FunctionMiddleNode>(Cow::Borrowed("function_middle"))?,
+            identifier: pair.take_tagged_one::<IdentifierNode>(Cow::Borrowed("identifier"))?,
             kw_function: pair.take_tagged_one::<KwFunctionNode>(Cow::Borrowed("kw_function"))?,
-            namepath: pair.take_tagged_one::<NamepathNode>(Cow::Borrowed("namepath"))?,
             span: Range { start: _span.start() as u32, end: _span.end() as u32 },
         })
     }

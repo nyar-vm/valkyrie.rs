@@ -151,7 +151,7 @@ class ParameterDefault {
     ('=' MainExpression)?
 }
 class DefineMethod {
-    AnnotationMix Namepath FunctionMiddle Continuation?
+    AnnotationMix Identifier FunctionMiddle Continuation?
 }
 class DefineDomain {
     AnnotationMix
@@ -237,7 +237,7 @@ union KW_TRAIT {
 }
 // === def function === ------------------------------------------------------------------------------------------------
 class DefineFunction {
-    AnnotationHead KW_FUNCTION Namepath FunctionMiddle Continuation
+    AnnotationHead KW_FUNCTION Identifier FunctionMiddle Continuation
 }
 class DefineLambda {
     AnnotationTerm*

@@ -733,7 +733,7 @@ pub struct DefineMethodNode {
     pub annotation_mix: AnnotationMixNode,
     pub continuation: Option<ContinuationNode>,
     pub function_middle: FunctionMiddleNode,
-    pub namepath: NamepathNode,
+    pub identifier: IdentifierNode,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
@@ -767,7 +767,7 @@ pub struct InheritTermNode {
 pub struct ObjectStatementNode {
     pub class_block: ClassBlockNode,
     pub define_inherit: Option<DefineInheritNode>,
-    // Missing rule KW_Object
+    pub kw_object: KwObjectNode,
     pub type_hint: TypeHintNode,
     pub span: Range<u32>,
 }
@@ -887,8 +887,8 @@ pub struct DefineFunctionNode {
     pub annotation_head: AnnotationHeadNode,
     pub continuation: ContinuationNode,
     pub function_middle: FunctionMiddleNode,
+    pub identifier: IdentifierNode,
     pub kw_function: KwFunctionNode,
-    pub namepath: NamepathNode,
     pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]

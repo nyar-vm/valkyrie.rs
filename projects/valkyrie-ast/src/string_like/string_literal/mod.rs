@@ -10,7 +10,7 @@ pub struct StringTextNode {
     /// The unescaped text of the string.
     pub text: String,
     /// The range of the node
-    pub span: Range<u32>,
+    pub span: FileSpan,
 }
 
 /// `handler"text"`, a string literal with a handler.
@@ -24,14 +24,14 @@ pub struct StringLiteralNode {
 }
 
 impl ValkyrieNode for StringTextNode {
-    fn get_range(&self) -> Range<usize> {
-        Range { start: self.span.start as usize, end: self.span.end as usize }
+    fn get_range(&self) -> Range<u32> {
+        self.span.get_range()
     }
 }
 impl ValkyrieNode for StringLiteralNode {
-    fn get_range(&self) -> Range<usize> {
+    fn get_range(&self) -> Range<u32> {
         match &self.handler {
-            Some(s) => Range { start: s.span.get_start(), end: self.literal.span.end as usize },
+            Some(s) => s.span.get_range(),
             None => self.literal.get_range(),
         }
     }
@@ -39,7 +39,7 @@ impl ValkyrieNode for StringLiteralNode {
 
 impl StringTextNode {
     /// Create a new raw text node
-    pub fn new<S: ToString>(value: S, span: Range<u32>) -> Self {
+    pub fn new<S: ToString>(value: S, span: FileSpan) -> Self {
         Self { text: value.to_string(), span }
     }
     /// Convert to an identifier

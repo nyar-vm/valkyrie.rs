@@ -115,7 +115,7 @@ pub struct FieldDeclaration {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct MethodDeclaration {
     /// The method name which may associated with a trait.
-    pub name: NamePathNode,
+    pub name: IdentifierNode,
     /// The modifiers of the node.
     pub annotations: AnnotationNode,
     /// Thy type parameters of this function
@@ -167,8 +167,8 @@ pub struct DomainDeclaration {
 }
 
 impl ValkyrieNode for ConstructObjectNode {
-    fn get_range(&self) -> Range<usize> {
-        Range { start: self.span.start as usize, end: self.span.end as usize }
+    fn get_range(&self) -> Range<u32> {
+        self.span.clone()
     }
 }
 

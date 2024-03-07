@@ -1,4 +1,5 @@
 use super::*;
+use crate::structures::ValkyrieClassCategory;
 
 impl ResolveContext {
     pub fn resolve(&self) -> Result<CanonicalWasi> {
@@ -6,11 +7,7 @@ impl ResolveContext {
         {
             for item in self.items.values() {
                 match item {
-                    ModuleItem::Resource(v) => v.to_lir(self, &mut output)?,
-                    ModuleItem::Structure(s) => match &s.external_resource {
-                        Some(s) => output += s.clone(),
-                        None => {}
-                    },
+                    ModuleItem::Structure(s) => s.to_lir(self, &mut output)?,
                     ModuleItem::Variant(_) => {}
                     ModuleItem::External(_) => {}
                 }

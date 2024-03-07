@@ -19,6 +19,7 @@ indexmap = "2.2.3"
 itertools = "0.12.1"
 image = { version = "0.24.8", features = [] }
 jupyter-types = "0.0.*"
+convert_case = "0.6.0"
 
 [dependencies.nyar-wasm]
 version = "0.0.5"

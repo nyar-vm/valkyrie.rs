@@ -16,25 +16,34 @@ use std::{
 use valkyrie_ast::{helper::WrapDisplay, ClassDeclaration, ClassTerm, FieldDeclaration, IdentifierNode, NamePathNode};
 
 mod codegen;
+mod display;
 mod parser;
 
 #[derive(Clone, Eq, PartialEq)]
-pub struct ValkyrieStructure {
+pub struct ValkyrieClass {
     pub(crate) symbol: Identifier,
     pub(crate) fields: IndexMap<Arc<str>, ValkyrieField>,
-    pub(crate) methods: IndexMap<String, ValkyrieMethod>,
+    pub(crate) methods: IndexMap<Arc<str>, ValkyrieMethod>,
     /// Whether the class is an external resource type
-    pub(crate) external_resource: Option<WasiResource>,
+    pub(crate) category: ValkyrieClassCategory,
 }
 
-#[derive(Debug, Clone, Eq, PartialEq)]
-pub struct ValkyrieResource {
-    pub(crate) symbol: Identifier,
-    pub(crate) wasi_module: WasiModule,
-    pub(crate) wasi_name: String,
+/// Extra traits for special classes
+#[derive(Default, Clone, Eq, PartialEq)]
+pub enum ValkyrieClassCategory {
+    /// This is a normal structure
+    #[default]
+    Structure,
+    /// This is a wasi external resource class
+    Resource {
+        /// The wasi module name
+        wasi_module: WasiModule,
+        /// The wasi resource name
+        wasi_name: Arc<str>,
+    },
 }
 
-#[derive(Debug, Clone, Eq, PartialEq)]
+#[derive(Clone, Eq, PartialEq)]
 pub struct ValkyrieField {
     /// The name of the field
     pub field_name: Arc<str>,
@@ -43,34 +52,28 @@ pub struct ValkyrieField {
 }
 
 #[derive(Debug, Clone, Eq, PartialEq)]
-pub struct ValkyrieMethod {}
-
-impl Debug for ValkyrieStructure {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        let debug = &mut f.debug_struct("Structure");
-        debug.field("symbol", &WrapDisplay::new(&self.symbol)).field("fields", &self.fields.values());
-        if let Some(s) = &self.external_resource {
-            debug.field("resource", s);
-        }
-        debug.finish()
-    }
+pub struct ValkyrieMethod {
+    /// The name of the field
+    pub method_name: Arc<str>,
+    /// The WASI name of the field
+    pub wasi_alias: Arc<str>,
 }
 
-impl AddAssign<ValkyrieField> for ValkyrieStructure {
+impl AddAssign<ValkyrieField> for ValkyrieClass {
     fn add_assign(&mut self, rhs: ValkyrieField) {
         self.fields.insert(rhs.field_name.clone(), rhs);
     }
 }
-//
-// impl AddAssign<MethodDefinition> for ValkyrieStructure {
-//     fn add_assign(&mut self, rhs: MethodDefinition) {
-//         self.methods.insert(rhs.name(), rhs);
-//     }
-// }
 
-impl ValkyrieStructure {
+impl AddAssign<ValkyrieMethod> for ValkyrieClass {
+    fn add_assign(&mut self, rhs: ValkyrieMethod) {
+        self.methods.insert(rhs.method_name.clone(), rhs);
+    }
+}
+
+impl ValkyrieClass {
     pub fn new(symbol: Identifier) -> Self {
-        Self { symbol, fields: Default::default(), methods: Default::default(), external_resource: None }
+        Self { symbol, fields: Default::default(), methods: Default::default(), category: Default::default() }
     }
     pub fn get_name(&self) -> String {
         self.symbol.to_string()

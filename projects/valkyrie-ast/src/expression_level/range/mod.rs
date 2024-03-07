@@ -25,8 +25,8 @@ pub struct RangeNode {
     pub span: Range<u32>,
 }
 impl ValkyrieNode for RangeNode {
-    fn get_range(&self) -> Range<usize> {
-        Range { start: self.span.start as usize, end: self.span.end as usize }
+    fn get_range(&self) -> Range<u32> {
+        self.span.clone()
     }
 }
 /// `[index], ⁅start : end : step⁆`

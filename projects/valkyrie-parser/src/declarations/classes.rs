@@ -72,7 +72,7 @@ impl crate::DefineMethodNode {
         let annotations = self.annotation_mix.annotations(ctx)?;
         Ok(MethodDeclaration {
             annotations,
-            name: self.namepath.build(ctx),
+            name: self.identifier.build(ctx.file),
             generics: self.function_middle.generics(ctx),
             parameters: self.function_middle.parameters(ctx),
             returns,

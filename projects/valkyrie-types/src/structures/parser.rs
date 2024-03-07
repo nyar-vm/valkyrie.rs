@@ -4,28 +4,14 @@ use std::str::FromStr;
 use valkyrie_ast::{ArgumentTerm, AttributeTerm, MethodDeclaration};
 
 impl Hir2Mir for ClassDeclaration {
-    type Output = ModuleItem;
+    type Output = ();
     fn to_mir(self, ctx: &mut ResolveContext) -> Result<Self::Output> {
         let symbol = ctx.get_name_path(&self.name);
-        let mut class = ValkyrieStructure::new(symbol);
+        let mut class = ValkyrieClass::new(symbol);
 
-        match self.annotations.attributes.get("ffi") {
-            Some(s) => {
-                if !self.annotations.modifiers.contains("resource") {
-                    panic!("must resource class")
-                }
-                match s.arguments.terms.as_slice() {
-                    [module, name] => {
-                        let module = module.value.as_text().unwrap();
-                        let name = name.value.as_text().unwrap();
-                        class.external_resource = Some(WasiResource {
-                            symbol: class.symbol.clone(),
-                            wasi_module: WasiModule::from_str(module).unwrap(),
-                            wasi_name: name.to_string(),
-                        })
-                    }
-                    _ => panic!("invalid ffi attribute"),
-                }
+        match ctx.get_foreign_module(&self.annotations, "class", "resource") {
+            Some((module, name)) => {
+                class.category = ValkyrieClassCategory::Resource { wasi_module: module, wasi_name: name };
             }
             None => {}
         }
@@ -37,32 +23,51 @@ impl Hir2Mir for ClassDeclaration {
                 }
                 ClassTerm::Field(v) => {
                     let field = v.to_mir(ctx)?;
-
-                    // let mut field = ValkyrieField::new(&f.name);
-                    // field.typing = f.typing;
-                    //
-                    // class.add_field(field).ok();
+                    match class.fields.insert(field.field_name.clone(), field) {
+                        Some(s) => {
+                            unimplemented!()
+                        }
+                        None => {}
+                    }
                 }
                 ClassTerm::Method(v) => {
-                    let field = v.to_mir(ctx)?;
+                    let method = v.to_mir(ctx)?;
+                    match class.methods.insert(method.method_name.clone(), method) {
+                        Some(s) => {
+                            unimplemented!()
+                        }
+                        None => {}
+                    }
                 }
                 ClassTerm::Domain(_) => {
                     todo!()
                 }
             }
         }
-        Ok(crate::modules::ModuleItem::Structure(class))
+        *ctx += class;
+
+        Ok(())
     }
 }
+
+impl AddAssign<ValkyrieClass> for ResolveContext {
+    fn add_assign(&mut self, rhs: ValkyrieClass) {
+        self.items.insert(rhs.symbol.clone(), ModuleItem::Structure(rhs));
+    }
+}
+
 impl Hir2Mir for FieldDeclaration {
     type Output = ValkyrieField;
-    fn to_mir(self, ctx: &mut ResolveContext) -> nyar_error::Result<Self::Output> {
-        Ok(ValkyrieField { field_name: Arc::from("?"), wasi_alias: Arc::from("?") })
+    fn to_mir(self, ctx: &mut ResolveContext) -> Result<Self::Output> {
+        let (field_name, wasi_alias) = ctx.get_field_alias(&self.name, &self.annotations)?;
+
+        Ok(ValkyrieField { field_name, wasi_alias })
     }
 }
 impl Hir2Mir for MethodDeclaration {
     type Output = ValkyrieMethod;
     fn to_mir(self, ctx: &mut ResolveContext) -> Result<Self::Output> {
-        Ok(ValkyrieMethod {})
+        let (method_name, wasi_alias) = ctx.get_field_alias(&self.name, &self.annotations)?;
+        Ok(ValkyrieMethod { method_name, wasi_alias })
     }
 }

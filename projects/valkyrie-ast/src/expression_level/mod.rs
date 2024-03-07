@@ -184,11 +184,11 @@ impl ExpressionKind {
 }
 
 impl ExpressionKind {
-    pub fn as_text(&self) -> Option<&str> {
+    pub fn as_text(&self) -> Option<&StringTextNode> {
         match self {
-            ExpressionKind::Text(v) => Some(v.text.as_str()),
+            ExpressionKind::Text(v) => Some(v),
             ExpressionKind::String(v) => match v.handler {
-                None => Some(v.literal.text.as_str()),
+                None => Some(&v.literal),
                 Some(_) => None,
             },
             _ => None,

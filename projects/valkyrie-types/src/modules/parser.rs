@@ -29,6 +29,8 @@ impl ResolveContext {
 }
 
 impl Hir2Mir for ProgramRoot {
+    type Output = ();
+
     fn to_mir(self, ctx: &mut ResolveContext) -> Result<Self::Output> {
         for statement in self.statements {
             statement.to_mir(ctx)?
@@ -38,6 +40,8 @@ impl Hir2Mir for ProgramRoot {
 }
 
 impl Hir2Mir for StatementKind {
+    type Output = ();
+
     fn to_mir(self, ctx: &mut ResolveContext) -> Result<Self::Output> {
         match self {
             Self::Nothing => {
@@ -53,13 +57,8 @@ impl Hir2Mir for StatementKind {
             Self::Import(_) => {
                 todo!()
             }
-            Self::Class(v) => {
-                let item = v.to_mir(ctx)?;
-            }
-            Self::Union(v) => {
-                let variant = v.to_mir(ctx)?;
-                ctx.items.insert(variant.union_name.clone(), ModuleItem::Variant(variant));
-            }
+            Self::Class(v) => v.to_mir(ctx)?,
+            Self::Union(v) => v.to_mir(ctx)?,
             Self::Enumerate(_) => {
                 todo!()
             }
@@ -95,14 +94,9 @@ impl Hir2Mir for StatementKind {
     }
 }
 
-impl Hir2Mir for FunctionDeclaration {
-    type Output = ModuleItem;
-    fn to_mir(self, ctx: &mut ResolveContext) -> Result<Self::Output> {
-        Ok(ModuleItem::External(ValkyrieExternalFunction {}))
-    }
-}
-
 impl Hir2Mir for NamespaceDeclaration {
+    type Output = ();
+
     fn to_mir(self, ctx: &mut ResolveContext) -> Result<Self::Output> {
         ctx.namespace.clear();
         if let [head, rest @ ..] = self.path.path.as_slice() {

@@ -31,8 +31,8 @@ pub struct BooleanNode {
     pub span: Range<u32>,
 }
 impl ValkyrieNode for BooleanNode {
-    fn get_range(&self) -> Range<usize> {
-        Range { start: self.span.start as usize, end: self.span.end as usize }
+    fn get_range(&self) -> Range<u32> {
+        self.span.clone()
     }
 }
 /// `null, nil`, type of null value
@@ -45,8 +45,8 @@ pub struct NullNode {
     pub span: Range<u32>,
 }
 impl ValkyrieNode for NullNode {
-    fn get_range(&self) -> Range<usize> {
-        Range { start: self.span.start as usize, end: self.span.end as usize }
+    fn get_range(&self) -> Range<u32> {
+        self.span.clone()
     }
 }
 /// `%1, %%1`, the number of the reference
@@ -60,8 +60,8 @@ pub struct OutputNode {
     pub span: Range<u32>,
 }
 impl ValkyrieNode for OutputNode {
-    fn get_range(&self) -> Range<usize> {
-        Range { start: self.span.start as usize, end: self.span.end as usize }
+    fn get_range(&self) -> Range<u32> {
+        self.span.clone()
     }
 }
 /// `$, $1, $x`
@@ -91,8 +91,8 @@ pub enum LambdaSlotItem {
 }
 
 impl ValkyrieNode for LambdaSlotNode {
-    fn get_range(&self) -> Range<usize> {
-        Range { start: self.span.start as usize, end: self.span.end as usize }
+    fn get_range(&self) -> Range<u32> {
+        self.span.clone()
     }
 }
 
@@ -116,7 +116,7 @@ impl NamePathNode {
         self
     }
     /// Calculate range by first and last elements
-    pub fn get_range(&self) -> Range<usize> {
+    pub fn get_range(&self) -> Range<u32> {
         self.span.get_range()
     }
     pub fn with_span(self, span: FileSpan) -> Self {
@@ -135,7 +135,7 @@ impl IdentifierNode {
         self
     }
     /// Set the
-    pub fn with_span<I>(mut self, range: Range<usize>) -> Self {
+    pub fn with_span<I>(mut self, range: Range<u32>) -> Self {
         self.span.set_range(range);
         self
     }

@@ -4,22 +4,22 @@ use nyar_error::FileID;
 impl crate::NamepathNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> NamePathNode {
         NamePathNode::from_iter(self.identifier.iter().map(|v| v.build(ctx.file)))
-            .with_span(ctx.file.with_range(self.get_range()))
+            .with_span(ctx.file.with_range(self.span.clone()))
     }
 }
 
 impl crate::NamepathFreeNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> NamePathNode {
         NamePathNode::from_iter(self.identifier.iter().map(|v| v.build(ctx.file)))
-            .with_span(ctx.file.with_range(self.get_range()))
+            .with_span(ctx.file.with_range(self.span.clone()))
     }
 }
 impl crate::IdentifierNode {
     pub fn build(&self, file: FileID) -> IdentifierNode {
         match self {
-            Self::IdentifierBare(v) => IdentifierNode { name: v.text.to_string(), span: file.with_range(v.get_range()) },
+            Self::IdentifierBare(v) => IdentifierNode { name: v.text.to_string(), span: file.with_range(v.span.clone()) },
             Self::IdentifierRaw(v) => {
-                IdentifierNode { name: v.identifier_raw_text.text.to_string(), span: file.with_range(v.get_range()) }
+                IdentifierNode { name: v.identifier_raw_text.text.to_string(), span: file.with_range(v.span.clone()) }
             }
         }
     }
