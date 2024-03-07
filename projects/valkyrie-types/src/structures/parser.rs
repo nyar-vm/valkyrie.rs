@@ -1,7 +1,7 @@
 use super::*;
 use nyar_wasm::WasiModule;
 use std::str::FromStr;
-use valkyrie_ast::{ArgumentTerm, AttributeTerm};
+use valkyrie_ast::{ArgumentTerm, AttributeTerm, MethodDeclaration};
 
 impl Hir2Mir for ClassDeclaration {
     fn to_mir(self, ctx: &mut ResolveContext) -> Result<Self::Output> {
@@ -34,14 +34,16 @@ impl Hir2Mir for ClassDeclaration {
                 ClassTerm::Macro(_) => {
                     todo!()
                 }
-                ClassTerm::Field(f) => {
+                ClassTerm::Field(v) => {
+                    let field = v.to_mir(ctx)?;
+
                     // let mut field = ValkyrieField::new(&f.name);
                     // field.typing = f.typing;
                     //
                     // class.add_field(field).ok();
                 }
-                ClassTerm::Method(_) => {
-                    todo!()
+                ClassTerm::Method(v) => {
+                    let field = v.to_mir(ctx)?;
                 }
                 ClassTerm::Domain(_) => {
                     todo!()
@@ -58,5 +60,17 @@ impl Hir2Mir for ClassDeclaration {
             }
         }
         Ok(())
+    }
+}
+impl Hir2Mir for FieldDeclaration {
+    type Output = ValkyrieField;
+    fn to_mir(self, ctx: &mut ResolveContext) -> nyar_error::Result<Self::Output> {
+        Ok(ValkyrieField { name: Arc::from("?"), wasi_name: Arc::from("?") })
+    }
+}
+impl Hir2Mir for MethodDeclaration {
+    type Output = ValkyrieMethod;
+    fn to_mir(self, ctx: &mut ResolveContext) -> Result<Self::Output> {
+        Ok(ValkyrieMethod {})
     }
 }

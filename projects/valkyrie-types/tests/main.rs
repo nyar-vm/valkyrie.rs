@@ -1,7 +1,7 @@
 use nyar_error::FileCache;
 use nyar_wasm::CanonicalWasi;
 use std::{io::Write, path::Path};
-use valkyrie_types::{define_io_types, ResolveContext};
+use valkyrie_types::ResolveContext;
 
 #[test]
 fn ready() {
@@ -23,7 +23,7 @@ fn test_hello_world() {
     println!("{:#?}", context);
 
     let mut wat = std::fs::File::create(here.join("tests/component.wat")).unwrap();
-    let source = CanonicalWasi::new(define_io_types()).unwrap();
+    let source = context.resolve().unwrap();
     let wast = source.encode();
     wat.write_all(wast.as_bytes()).unwrap();
 }

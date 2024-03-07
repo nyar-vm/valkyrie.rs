@@ -1,15 +1,17 @@
-use crate::{helpers::Hir2Mir, structures::ValkyrieStructure};
+use crate::{helpers::Hir2Mir, structures::ValkyrieStructure, ValkyrieExternalFunction, ValkyrieUnion, ValkyrieUnionItem};
 use im::HashMap;
 use indexmap::IndexMap;
 use nyar_error::{Failure, FileCache, FileID, NyarError, Result, Success};
-use nyar_wasm::Identifier;
+use nyar_wasm::{CanonicalWasi, DependentGraph, Identifier, WasiResource};
 use std::{
     borrow::Cow,
     fmt::{Debug, Formatter},
     mem::take,
     sync::Arc,
 };
-use valkyrie_ast::{IdentifierNode, NamePathNode, NamespaceDeclaration, ProgramRoot, StatementKind};
+use valkyrie_ast::{
+    FunctionDeclaration, IdentifierNode, NamePathNode, NamespaceDeclaration, ProgramRoot, StatementKind, UnionDeclaration,
+};
 use valkyrie_parser::{ProgramContext, StatementNode};
 
 pub struct ValkyrieModule {}
@@ -49,18 +51,20 @@ impl Debug for ResolveContext {
 }
 
 pub enum ModuleItem {
-    // External(ValkyrieExternalFunction),
+    External(ValkyrieExternalFunction),
     // Imported(ValkyrieSymbol),
     // Function(ValkyrieFunction),
     Structure(ValkyrieStructure),
+    Variant(ValkyrieUnion),
 }
 
 impl Debug for ModuleItem {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match self {
-            // Self::External(v) => Debug::fmt(v, f),
+            Self::External(v) => Debug::fmt(v, f),
             // Self::Imported(v) => Debug::fmt(v, f),
             Self::Structure(v) => Debug::fmt(v, f),
+            Self::Variant(v) => Debug::fmt(v, f),
             // Self::Function(v) => Debug::fmt(v, f),
         }
     }
@@ -92,8 +96,9 @@ impl Hir2Mir for StatementKind {
                 todo!()
             }
             Self::Class(v) => v.to_mir(ctx)?,
-            Self::Union(_) => {
-                todo!()
+            Self::Union(v) => {
+                let variant = v.to_mir(ctx)?;
+                ctx.items.insert(variant.symbol.clone(), ModuleItem::Variant(variant));
             }
             Self::Enumerate(_) => {
                 todo!()
@@ -104,8 +109,8 @@ impl Hir2Mir for StatementKind {
             Self::Extends(_) => {
                 todo!()
             }
-            Self::Function(f) => {
-                todo!()
+            Self::Function(v) => {
+                let fun = v.to_mir(ctx)?;
             }
             Self::Variable(_) => {
                 todo!()
@@ -127,6 +132,13 @@ impl Hir2Mir for StatementKind {
             }
         }
         Ok(())
+    }
+}
+
+impl Hir2Mir for FunctionDeclaration {
+    type Output = ModuleItem;
+    fn to_mir(self, ctx: &mut ResolveContext) -> Result<Self::Output> {
+        Ok(ModuleItem::External(ValkyrieExternalFunction {}))
     }
 }
 
@@ -172,5 +184,22 @@ impl ResolveContext {
             Some(s) => Identifier { namespace: s.path.iter().map(|x| Arc::from(x.name.as_str())).collect(), name },
             None => Identifier { namespace: vec![], name },
         }
+    }
+
+    pub fn resolve(&self) -> Result<CanonicalWasi> {
+        let mut output = DependentGraph::default();
+        {
+            for item in self.items.values() {
+                match item {
+                    ModuleItem::Structure(s) => match &s.external_resource {
+                        Some(s) => output += s.clone(),
+                        None => {}
+                    },
+                    ModuleItem::Variant(_) => {}
+                    ModuleItem::External(_) => {}
+                }
+            }
+        }
+        Ok(CanonicalWasi::new(output)?)
     }
 }

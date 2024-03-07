@@ -7,12 +7,13 @@ use indexmap::{
     IndexMap,
 };
 use nyar_error::{NyarError, Result};
-use nyar_wasm::{Identifier, WasiModule, WasiRecordType, WasiResource};
+use nyar_wasm::{Identifier, WasiModule, WasiRecordField, WasiRecordType, WasiResource};
 use std::{
     fmt::{Debug, Formatter},
     ops::AddAssign,
+    sync::Arc,
 };
-use valkyrie_ast::{helper::WrapDisplay, ClassDeclaration, ClassTerm, IdentifierNode, NamePathNode};
+use valkyrie_ast::{helper::WrapDisplay, ClassDeclaration, ClassTerm, FieldDeclaration, IdentifierNode, NamePathNode};
 
 // mod codegen;
 mod parser;
@@ -20,14 +21,26 @@ mod parser;
 #[derive(Clone, Eq, PartialEq)]
 pub struct ValkyrieStructure {
     pub(crate) symbol: Identifier,
-    pub(crate) fields: IndexMap<String, ValkyrieField>,
+    pub(crate) fields: IndexMap<Arc<str>, ValkyrieField>,
     pub(crate) methods: IndexMap<String, ValkyrieMethod>,
     /// Whether the class is an external resource type
     pub(crate) external_resource: Option<WasiResource>,
 }
 
+#[derive(Clone, Eq, PartialEq)]
+pub struct ValkyrieResource {
+    pub(crate) symbol: Identifier,
+    pub(crate) wasi_module: WasiModule,
+    pub(crate) wasi_name: String,
+}
+
 #[derive(Debug, Clone, Eq, PartialEq)]
-pub struct ValkyrieField {}
+pub struct ValkyrieField {
+    /// The name of the field
+    pub name: Arc<str>,
+    /// The WASI name of the field
+    pub wasi_name: Arc<str>,
+}
 
 #[derive(Debug, Clone, Eq, PartialEq)]
 pub struct ValkyrieMethod {}
@@ -45,7 +58,7 @@ impl Debug for ValkyrieStructure {
 
 impl AddAssign<ValkyrieField> for ValkyrieStructure {
     fn add_assign(&mut self, rhs: ValkyrieField) {
-        // self.fields.insert(rhs.name(), rhs);
+        self.fields.insert(rhs.name.clone(), rhs);
     }
 }
 //
