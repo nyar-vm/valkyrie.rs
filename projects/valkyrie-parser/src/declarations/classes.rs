@@ -46,9 +46,10 @@ impl crate::ClassTermNode {
 
 impl crate::KwClassNode {
     pub(crate) fn build(&self) -> ClassKind {
-        match self {
-            Self::Class => ClassKind::Class,
-            Self::Structure => ClassKind::Structure,
+        match self.text.as_str() {
+            "class" => ClassKind::Class,
+            "structure" => ClassKind::Structure,
+            _ => unreachable!(),
         }
     }
 }

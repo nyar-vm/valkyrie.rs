@@ -138,9 +138,9 @@ union ClassTerm {
     | EOS_FREE
 }
 @style(keyword)
-union KW_CLASS {
-    | 'class'     #Class
-    | 'structure' #Structure
+@railway(false)
+text class KW_CLASS {
+    'class' | 'structure'
 }
 // === field/method/domain === -----------------------------------------------------------------------------------------
 class DefineField {
@@ -186,9 +186,8 @@ class FlagField {
 }
 @style(keyword)
 @railway(false)
-union KW_FLAGS {
-    | 'enumerate' #Enum
-    | 'flags'     #Flags
+text class KW_FLAGS {
+    'enumerate' | 'flags'
 }
 // === identifier === --------------------------------------------------------------------------------------------------
 class DefineUnion {
@@ -276,9 +275,9 @@ class Continuation {
     '{' Statement* '}'
 }
 @style(keyword)
-union KW_FUNCTION {
-    | /micro|function/ #Micro
-    | /macro/          #Macro
+@railway(false)
+text class KW_FUNCTION {
+    /micro|macro|function|func|fun|fn/
 }
 // === let variable === ------------------------------------------------------------------------------------------------
 class DefineVariable {

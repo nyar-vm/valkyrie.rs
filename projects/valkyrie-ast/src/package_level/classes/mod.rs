@@ -1,4 +1,5 @@
 use super::*;
+use nyar_error::FileSpan;
 
 mod display;
 
@@ -8,9 +9,9 @@ mod iters;
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum ClassKind {
-    /// A function that lazy evaluate the arguments
+    /// A class with reference types, type erasure
     Class,
-    /// A function that eager evaluate the arguments
+    /// A class with value type, specialized type
     Structure,
 }
 

@@ -1,15 +1,11 @@
 use super::*;
-use nyar_wasm::WasiModule;
-use std::str::FromStr;
-use valkyrie_ast::{ArgumentTerm, AttributeTerm, MethodDeclaration};
 
 impl Hir2Mir for ClassDeclaration {
     type Output = ();
     fn to_mir(self, ctx: &mut ResolveContext) -> Result<Self::Output> {
-        let symbol = ctx.get_name_path(&self.name);
+        let symbol = ctx.register_item(&self.name);
         let mut class = ValkyrieClass::new(symbol);
-
-        match ctx.get_foreign_module(&self.annotations, "class", "resource") {
+        match ctx.get_foreign_module(&self.annotations, "class", "resource", self.name.span) {
             Some((module, name)) => {
                 class.category = ValkyrieClassCategory::Resource { wasi_module: module, wasi_name: name };
             }

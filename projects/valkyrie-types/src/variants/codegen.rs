@@ -3,7 +3,7 @@ use super::*;
 impl Hir2Mir for UnionDeclaration {
     type Output = ();
     fn to_mir(self, ctx: &mut ResolveContext) -> nyar_error::Result<Self::Output> {
-        let name = ctx.get_name_path(&self.name);
+        let name = ctx.register_item(&self.name);
         let mut output = ValkyrieUnion { union_name: name, variants: Default::default() };
         for item in self.body {
             match item {

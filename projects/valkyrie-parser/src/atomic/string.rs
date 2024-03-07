@@ -1,6 +1,5 @@
 use super::*;
 use nyar_error::FileID;
-use std::ops::Range;
 
 impl crate::TextLiteralNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> StringLiteralNode {

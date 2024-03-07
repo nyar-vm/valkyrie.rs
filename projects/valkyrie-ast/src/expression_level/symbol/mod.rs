@@ -119,6 +119,7 @@ impl NamePathNode {
     pub fn get_range(&self) -> Range<u32> {
         self.span.get_range()
     }
+    /// Set the file span for namepath
     pub fn with_span(self, span: FileSpan) -> Self {
         Self { span, ..self }
     }

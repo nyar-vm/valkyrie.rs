@@ -1,24 +1,20 @@
 use crate::{
     helpers::{Hir2Mir, Mir2Lir},
     structures::ValkyrieClass,
-    ValkyrieExternalFunction, ValkyrieUnion, ValkyrieUnionItem,
+    ValkyrieFunction, ValkyrieUnion,
 };
 use convert_case::{Case, Casing};
 use im::HashMap;
 use indexmap::IndexMap;
-use nyar_error::{Failure, FileCache, FileID, FileSpan, ForeignInterfaceError, NyarError, Result, Success, SyntaxError};
-use nyar_wasm::{CanonicalWasi, DependentGraph, Identifier, WasiModule, WasiResource};
+use nyar_error::{Failure, FileCache, FileID, FileSpan, ForeignInterfaceError, NyarError, Result, Success};
+use nyar_wasm::{CanonicalWasi, DependentGraph, Identifier, WasiModule};
 use std::{
-    borrow::Cow,
     fmt::{Debug, Formatter},
     mem::take,
     str::FromStr,
     sync::Arc,
 };
-use valkyrie_ast::{
-    AnnotationNode, ArgumentTerm, AttributeTerm, FunctionDeclaration, IdentifierNode, NamePathNode, NamespaceDeclaration,
-    ProgramRoot, StatementKind, StringTextNode, UnionDeclaration,
-};
+use valkyrie_ast::{AnnotationNode, IdentifierNode, NamespaceDeclaration, ProgramRoot, StatementKind};
 use valkyrie_parser::{ProgramContext, StatementNode};
 
 mod codegen;
@@ -35,7 +31,7 @@ pub struct ResolveContext {
     /// The document buffer
     pub(crate) document: String,
     /// main function of the file
-    pub(crate) unsolved: HashMap<Identifier, StatementNode>,
+    pub(crate) using: HashMap<Identifier, Identifier>,
     /// The declared items in file
     pub(crate) items: IndexMap<Identifier, ModuleItem>,
     /// Collect errors
@@ -45,7 +41,7 @@ pub struct ResolveContext {
 }
 
 pub enum ModuleItem {
-    External(ValkyrieExternalFunction),
+    Function(ValkyrieFunction),
     // Imported(ValkyrieSymbol),
     // Function(ValkyrieFunction),
     Structure(ValkyrieClass),
@@ -58,7 +54,7 @@ impl ResolveContext {
             package: package.into(),
             namespace: vec![],
             document: "".to_string(),
-            unsolved: Default::default(),
+            using: Default::default(),
             items: Default::default(),
             errors: vec![],
             main_function: vec![],
@@ -71,21 +67,29 @@ impl ResolveContext {
         self.errors.push(e.into())
     }
 
-    /// Get the full name path based on package name and namespace
-    pub fn get_name_path(&self, symbol: &IdentifierNode) -> Identifier {
-        Identifier { namespace: self.namespace.clone(), name: Arc::from(symbol.name.as_str()) }
+    /// Get the full name path based on package name and namespace, then register the name to local namespace.
+    pub fn register_item(&mut self, symbol: &IdentifierNode) -> Identifier {
+        let key = Identifier { namespace: vec![], name: Arc::from(symbol.name.as_str()) };
+        let value = Identifier { namespace: self.namespace.clone(), name: Arc::from(symbol.name.as_str()) };
+        match self.using.insert(key, value.clone()) {
+            Some(_) => {
+                unimplemented!("dup")
+            }
+            None => {}
+        }
+        value
     }
     pub fn get_foreign_module(
         &mut self,
         info: &AnnotationNode,
         kind: &'static str,
         hint: &'static str,
+        keyword: FileSpan,
     ) -> Option<(WasiModule, Arc<str>)> {
         let ffi = info.attributes.get("ffi")?;
-
         if !hint.is_empty() {
             if !info.modifiers.contains(hint) {
-                self.push_error(ForeignInterfaceError::MissingForeignFlag { kind, hint, span: ffi.span.clone() });
+                self.push_error(ForeignInterfaceError::MissingForeignFlag { kind, hint, span: keyword });
             }
         }
         match ffi.get_ffi_modules() {

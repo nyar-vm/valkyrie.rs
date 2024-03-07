@@ -8,7 +8,7 @@ mod structures;
 mod variants;
 
 pub use crate::{
-    functions::ValkyrieExternalFunction,
+    functions::ValkyrieFunction,
     modules::{ModuleItem, ResolveContext, ValkyrieModule},
     structures::{ValkyrieClass, ValkyrieField, ValkyrieMethod},
     variants::{ValkyrieUnion, ValkyrieUnionItem},

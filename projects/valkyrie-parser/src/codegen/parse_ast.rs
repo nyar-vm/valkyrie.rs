@@ -696,20 +696,11 @@ impl YggdrasilNode for KwClassNode {
     type Rule = ValkyrieRule;
 
     fn get_range(&self) -> Range<usize> {
-        match self {
-            Self::Class => Range::default(),
-            Self::Structure => Range::default(),
-        }
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
-        if let Some(_) = pair.find_first_tag("class") {
-            return Ok(Self::Class);
-        }
-        if let Some(_) = pair.find_first_tag("structure") {
-            return Ok(Self::Structure);
-        }
-        Err(YggdrasilError::invalid_node(ValkyrieRule::KW_CLASS, _span))
+        Ok(Self { text: pair.get_string(), span: Range { start: _span.start() as u32, end: _span.end() as u32 } })
     }
 }
 #[automatically_derived]
@@ -1014,20 +1005,11 @@ impl YggdrasilNode for KwFlagsNode {
     type Rule = ValkyrieRule;
 
     fn get_range(&self) -> Range<usize> {
-        match self {
-            Self::Enum => Range::default(),
-            Self::Flags => Range::default(),
-        }
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
-        if let Some(_) = pair.find_first_tag("enum") {
-            return Ok(Self::Enum);
-        }
-        if let Some(_) = pair.find_first_tag("flags") {
-            return Ok(Self::Flags);
-        }
-        Err(YggdrasilError::invalid_node(ValkyrieRule::KW_FLAGS, _span))
+        Ok(Self { text: pair.get_string(), span: Range { start: _span.start() as u32, end: _span.end() as u32 } })
     }
 }
 #[automatically_derived]
@@ -1593,20 +1575,11 @@ impl YggdrasilNode for KwFunctionNode {
     type Rule = ValkyrieRule;
 
     fn get_range(&self) -> Range<usize> {
-        match self {
-            Self::Macro => Range::default(),
-            Self::Micro => Range::default(),
-        }
+        Range { start: self.span.start as usize, end: self.span.end as usize }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
-        if let Some(_) = pair.find_first_tag("macro") {
-            return Ok(Self::Macro);
-        }
-        if let Some(_) = pair.find_first_tag("micro") {
-            return Ok(Self::Micro);
-        }
-        Err(YggdrasilError::invalid_node(ValkyrieRule::KW_FUNCTION, _span))
+        Ok(Self { text: pair.get_string(), span: Range { start: _span.start() as u32, end: _span.end() as u32 } })
     }
 }
 #[automatically_derived]

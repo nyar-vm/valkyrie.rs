@@ -1,7 +1,5 @@
 use super::*;
 
-use yggdrasil_rt::YggdrasilNode;
-
 impl crate::DefineImportNode {
     #[allow(unused_imports)]
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<ImportStatement> {

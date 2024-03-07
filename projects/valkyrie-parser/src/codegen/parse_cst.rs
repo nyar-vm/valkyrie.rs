@@ -750,9 +750,7 @@ fn parse_class_term(state: Input) -> Output {
 #[inline]
 fn parse_kw_class(state: Input) -> Output {
     state.rule(ValkyrieRule::KW_CLASS, |s| {
-        Err(s)
-            .or_else(|s| builtin_text(s, "class", false).and_then(|s| s.tag_node("class")))
-            .or_else(|s| builtin_text(s, "structure", false).and_then(|s| s.tag_node("structure")))
+        Err(s).or_else(|s| builtin_text(s, "class", false)).or_else(|s| builtin_text(s, "structure", false))
     })
 }
 #[inline]
@@ -949,9 +947,7 @@ fn parse_flag_field(state: Input) -> Output {
 #[inline]
 fn parse_kw_flags(state: Input) -> Output {
     state.rule(ValkyrieRule::KW_FLAGS, |s| {
-        Err(s)
-            .or_else(|s| builtin_text(s, "enumerate", false).and_then(|s| s.tag_node("enum")))
-            .or_else(|s| builtin_text(s, "flags", false).and_then(|s| s.tag_node("flags")))
+        Err(s).or_else(|s| builtin_text(s, "enumerate", false)).or_else(|s| builtin_text(s, "flags", false))
     })
 }
 #[inline]
@@ -1296,21 +1292,10 @@ fn parse_continuation(state: Input) -> Output {
 #[inline]
 fn parse_kw_function(state: Input) -> Output {
     state.rule(ValkyrieRule::KW_FUNCTION, |s| {
-        Err(s)
-            .or_else(|s| {
-                builtin_regex(s, {
-                    static REGEX: OnceLock<Regex> = OnceLock::new();
-                    REGEX.get_or_init(|| Regex::new("^(?x)(micro|function)").unwrap())
-                })
-                .and_then(|s| s.tag_node("micro"))
-            })
-            .or_else(|s| {
-                builtin_regex(s, {
-                    static REGEX: OnceLock<Regex> = OnceLock::new();
-                    REGEX.get_or_init(|| Regex::new("^(?x)(macro)").unwrap())
-                })
-                .and_then(|s| s.tag_node("macro"))
-            })
+        s.match_regex({
+            static REGEX: OnceLock<Regex> = OnceLock::new();
+            REGEX.get_or_init(|| Regex::new("^(?x)(micro|macro|function|func|fun|fn)").unwrap())
+        })
     })
 }
 #[inline]

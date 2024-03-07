@@ -2,18 +2,15 @@ use crate::{
     helpers::Hir2Mir,
     modules::{ModuleItem, ResolveContext},
 };
-use indexmap::{
-    map::{Entry, Values},
-    IndexMap,
-};
-use nyar_error::{NyarError, Result};
-use nyar_wasm::{Identifier, WasiModule, WasiRecordField, WasiRecordType, WasiResource};
+use indexmap::IndexMap;
+use nyar_error::Result;
+use nyar_wasm::{Identifier, WasiModule, WasiResource};
 use std::{
     fmt::{Debug, Formatter},
     ops::AddAssign,
     sync::Arc,
 };
-use valkyrie_ast::{helper::WrapDisplay, ClassDeclaration, ClassTerm, FieldDeclaration, IdentifierNode, NamePathNode};
+use valkyrie_ast::{helper::WrapDisplay, ClassDeclaration, ClassTerm, FieldDeclaration, MethodDeclaration};
 
 mod codegen;
 mod display;

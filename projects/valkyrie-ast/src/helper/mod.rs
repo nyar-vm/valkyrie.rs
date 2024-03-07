@@ -43,6 +43,7 @@ pub trait NumberInterpreter {
     fn interpret(&mut self, n: &NumberLiteralNode) -> Result<Self::Output, NyarError>;
 }
 
+/// Show display form in debug
 pub struct WrapDisplay<'a, T> {
     inner: &'a T,
 }
