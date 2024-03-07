@@ -15,7 +15,7 @@ fn test_hello_world() {
     let mut file_cache = FileCache::default();
     let file = file_cache.load_local(here.join("tests/component.vk")).unwrap();
 
-    let mut context = ResolveContext::default();
+    let mut context = ResolveContext::new("std");
     let errors = context.parse(file, &mut file_cache);
     for error in errors {
         error.as_report().print(&file_cache).ok();

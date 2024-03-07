@@ -9,8 +9,8 @@ mod variants;
 
 pub use crate::{
     functions::ValkyrieExternalFunction,
-    modules::{ResolveContext, ValkyrieModule},
-    structures::{ValkyrieField, ValkyrieMethod, ValkyrieStructure},
+    modules::{ModuleItem, ResolveContext, ValkyrieModule},
+    structures::{ValkyrieField, ValkyrieMethod, ValkyrieResource, ValkyrieStructure},
     variants::{ValkyrieUnion, ValkyrieUnionItem},
 };
 use std::{io::Write, str::FromStr};

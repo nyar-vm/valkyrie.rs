@@ -15,7 +15,7 @@ use std::{
 };
 use valkyrie_ast::{helper::WrapDisplay, ClassDeclaration, ClassTerm, FieldDeclaration, IdentifierNode, NamePathNode};
 
-// mod codegen;
+mod codegen;
 mod parser;
 
 #[derive(Clone, Eq, PartialEq)]
@@ -27,7 +27,7 @@ pub struct ValkyrieStructure {
     pub(crate) external_resource: Option<WasiResource>,
 }
 
-#[derive(Clone, Eq, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 pub struct ValkyrieResource {
     pub(crate) symbol: Identifier,
     pub(crate) wasi_module: WasiModule,

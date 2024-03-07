@@ -1,11 +1,14 @@
 use super::*;
+use crate::helpers::Mir2Lir;
+use nyar_wasm::DependentGraph;
 
-impl ConvertTo<StructureType> for ValkyrieStructure {
-    fn convert(&self) -> StructureType {
-        let mut item = StructureType::new(self.name());
-        for field in self.fields.values() {
-            item.add_field(field.convert());
-        }
-        item
+impl Mir2Lir for ValkyrieResource {
+    fn to_lir(&self, ctx: &ResolveContext, graph: &mut DependentGraph) -> Result<Self::Output> {
+        *graph += WasiResource {
+            symbol: self.symbol.clone(),
+            wasi_module: self.wasi_module.clone(),
+            wasi_name: self.wasi_name.clone(),
+        };
+        Ok(())
     }
 }

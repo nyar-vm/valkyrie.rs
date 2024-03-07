@@ -4,6 +4,7 @@ use std::str::FromStr;
 use valkyrie_ast::{ArgumentTerm, AttributeTerm, MethodDeclaration};
 
 impl Hir2Mir for ClassDeclaration {
+    type Output = ModuleItem;
     fn to_mir(self, ctx: &mut ResolveContext) -> Result<Self::Output> {
         let symbol = ctx.get_name_path(&self.name);
         let mut class = ValkyrieStructure::new(symbol);
@@ -50,16 +51,7 @@ impl Hir2Mir for ClassDeclaration {
                 }
             }
         }
-
-        match ctx.items.entry(class.symbol.clone()) {
-            Entry::Occupied(e) => {
-                todo!()
-            }
-            Entry::Vacant(e) => {
-                e.insert(ModuleItem::Structure(class));
-            }
-        }
-        Ok(())
+        Ok(crate::modules::ModuleItem::Structure(class))
     }
 }
 impl Hir2Mir for FieldDeclaration {
