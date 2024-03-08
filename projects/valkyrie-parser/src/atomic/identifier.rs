@@ -1,5 +1,5 @@
 use super::*;
-use nyar_error::FileID;
+use nyar_error::SourceID;
 
 impl crate::NamepathNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> NamePathNode {
@@ -15,7 +15,7 @@ impl crate::NamepathFreeNode {
     }
 }
 impl crate::IdentifierNode {
-    pub fn build(&self, file: FileID) -> IdentifierNode {
+    pub fn build(&self, file: SourceID) -> IdentifierNode {
         match self {
             Self::IdentifierBare(v) => IdentifierNode { name: v.text.to_string(), span: file.with_range(v.span.clone()) },
             Self::IdentifierRaw(v) => {

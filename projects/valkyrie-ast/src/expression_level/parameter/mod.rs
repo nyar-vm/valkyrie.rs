@@ -65,10 +65,38 @@ pub enum ParameterTerm {
     },
 }
 
+/// The self parameter in the method or extension function
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub struct ParameterSelf<'i> {
+    /// The modifiers apply on the parameter
+    pub annotations: &'i AnnotationNode,
+    /// The type boundary of the parameter
+    pub bound: &'i Option<ExpressionKind>,
+    /// The default value of the parameter
+    pub default: &'i Option<ExpressionKind>,
+}
+
 impl ParametersList {
     /// Create a new parameter list
     pub fn new(capacity: usize, kind: ParameterKind) -> Self {
         Self { kind, terms: Vec::with_capacity(capacity) }
+    }
+    pub fn split_self(&self) -> (Option<ParameterSelf>, &[ParameterTerm]) {
+        match self.terms.as_slice() {
+            [head, rest @ ..] => match head {
+                ParameterTerm::LMark => {}
+                ParameterTerm::RMark => {}
+                ParameterTerm::Single { annotations, key, bound, default } => {
+                    if key.name.eq("self") {
+                        return (Some(ParameterSelf { annotations, bound, default }), rest);
+                    }
+                }
+                ParameterTerm::UnpackList { .. } => {}
+                ParameterTerm::UnpackDict { .. } => {}
+            },
+            [] => {}
+        }
+        (None, self.terms.as_slice())
     }
 }
 

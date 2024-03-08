@@ -1,5 +1,5 @@
 use super::*;
-use nyar_error::FileSpan;
+use nyar_error::SourceSpan;
 
 mod display;
 
@@ -192,7 +192,7 @@ impl ValkyrieNode for ConstructObjectNode {
 //     pub fn mut_statement(&mut self) -> &mut Vec<ValkyrieASTNode> {
 //         &mut self.statements
 //     }
-//     pub fn to_node(self, file: FileID, range: &Range<usize>) -> ValkyrieASTNode {
+//     pub fn to_node(self, file: SourceID, range: &Range<usize>) -> ValkyrieASTNode {
 //         ValkyrieASTKind::Class(box self).to_node(file, range)
 //     }
 // }

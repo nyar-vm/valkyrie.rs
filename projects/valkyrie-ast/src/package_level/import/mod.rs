@@ -1,7 +1,7 @@
 use super::*;
 use crate::helper::IdentifiersDisplay;
 use alloc::rc::Rc;
-use nyar_error::FileSpan;
+use nyar_error::SourceSpan;
 
 mod display;
 mod iters;
@@ -29,7 +29,7 @@ pub struct ImportStatement {
     /// The term of the import
     pub term: ImportTermNode,
     /// The range of the node
-    pub span: FileSpan,
+    pub span: SourceSpan,
 }
 
 /// A valid import term of the import statement
@@ -115,7 +115,7 @@ pub struct ImportResolvedItem {
     /// The alias of the import
     pub kind: ImportResolvedKind,
     /// The position fo the resolved item
-    pub span: FileSpan,
+    pub span: SourceSpan,
 }
 
 /// The resolve result of import

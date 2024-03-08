@@ -1,5 +1,5 @@
 use super::*;
-use nyar_error::FileSpan;
+use nyar_error::SourceSpan;
 
 mod display;
 
@@ -54,7 +54,7 @@ impl StatementKind {
         Self::Expression(Box::new(ExpressionNode { omit: false, body, span: span.clone() }))
     }
     /// Create a new raw text node
-    pub fn text<S: ToString>(s: S, span: FileSpan) -> Self {
+    pub fn text<S: ToString>(s: S, span: SourceSpan) -> Self {
         let literal = StringTextNode { text: s.to_string(), span: span.clone() };
         Self::expression(
             ExpressionKind::Text(Box::new(literal)),

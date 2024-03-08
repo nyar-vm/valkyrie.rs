@@ -1,5 +1,5 @@
 use super::*;
-use nyar_error::FileID;
+use nyar_error::SourceID;
 
 impl crate::TextLiteralNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> StringLiteralNode {
@@ -10,7 +10,7 @@ impl crate::TextLiteralNode {
 }
 
 impl crate::TextRawNode {
-    pub(crate) fn build(&self, file: FileID) -> StringTextNode {
+    pub(crate) fn build(&self, file: SourceID) -> StringTextNode {
         let mut buffer = String::new();
         if let Some(s) = &self.text_content_1 {
             buffer.push_str(&s.text)

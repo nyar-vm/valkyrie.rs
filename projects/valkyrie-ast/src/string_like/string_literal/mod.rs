@@ -1,5 +1,5 @@
 use super::*;
-use nyar_error::{FileSpan, Validation};
+use nyar_error::{SourceSpan, Validation};
 
 mod display;
 
@@ -10,7 +10,7 @@ pub struct StringTextNode {
     /// The unescaped text of the string.
     pub text: String,
     /// The range of the node
-    pub span: FileSpan,
+    pub span: SourceSpan,
 }
 
 /// `handler"text"`, a string literal with a handler.
@@ -39,12 +39,12 @@ impl ValkyrieNode for StringLiteralNode {
 
 impl StringTextNode {
     /// Create a new raw text node
-    pub fn new<S: ToString>(value: S, span: FileSpan) -> Self {
+    pub fn new<S: ToString>(value: S, span: SourceSpan) -> Self {
         Self { text: value.to_string(), span }
     }
     /// Convert to an identifier
     pub fn as_identifier(&self) -> IdentifierNode {
-        IdentifierNode { name: self.text.clone(), span: FileSpan::default().with_range(self.get_range()) }
+        IdentifierNode { name: self.text.clone(), span: SourceSpan::default().with_range(self.get_range()) }
     }
 }
 

@@ -33,7 +33,7 @@ pub struct ProceduralNode {
     /// The capture of this attribute.
     pub domain: Option<StatementBlock>,
     /// The range of the node
-    pub span: FileSpan,
+    pub span: SourceSpan,
 }
 
 impl From<ProceduralNode> for AttributeTerm {
@@ -90,7 +90,7 @@ pub struct AttributeTerm {
     /// The dsl part of the attribute
     pub domain: Option<StatementBlock>,
     /// The range of the node
-    pub span: FileSpan,
+    pub span: SourceSpan,
 }
 
 impl PartialEq<str> for AttributeTerm {
@@ -162,6 +162,12 @@ impl AttributeKind {
 }
 
 impl AttributeTerm {
+    /// Get the ffi module and name form attribute
+    ///
+    /// ```vk
+    /// #ffi("module", "name")
+    /// resource class A {}
+    /// ```
     pub fn get_ffi_modules(&self) -> Result<(&StringTextNode, Arc<str>), ForeignInterfaceError> {
         match self.arguments.terms.as_slice() {
             [module, name] => {
@@ -178,6 +184,26 @@ impl AttributeTerm {
             _ => Err(ForeignInterfaceError::InvalidForeignModule { span: self.span.clone() })?,
         }
     }
+    /// Get the ffi rename
+    ///
+    /// ```vk
+    /// class A {
+    ///     #ffi("rename")
+    ///     field: u32
+    /// }
+    /// ```
+    pub fn get_ffi_rename(&self) -> Result<&StringTextNode, ForeignInterfaceError> {
+        match self.arguments.terms.as_slice() {
+            [rename] => {
+                let name = match rename.value.as_text() {
+                    Some(s) => s,
+                    None => Err(ForeignInterfaceError::InvalidForeignName { span: self.span.clone() })?,
+                };
+                Ok(name)
+            }
+            _ => Err(ForeignInterfaceError::InvalidForeignModule { span: self.span.clone() })?,
+        }
+    }
 }
 
 impl AttributeList {
@@ -190,6 +216,7 @@ impl AttributeList {
     pub fn is_empty(&self) -> bool {
         self.terms.is_empty()
     }
+    /// Get the attribute by name.
     pub fn get<T>(&self, attribute: &T) -> Option<&AttributeTerm>
     where
         T: ?Sized,

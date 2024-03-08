@@ -6,7 +6,7 @@ use crate::{
 use convert_case::{Case, Casing};
 use im::HashMap;
 use indexmap::IndexMap;
-use nyar_error::{Failure, FileCache, FileID, FileSpan, ForeignInterfaceError, NyarError, Result, Success};
+use nyar_error::{Failure, ForeignInterfaceError, NyarError, Result, SourceCache, SourceID, SourceSpan, Success};
 use nyar_wasm::{CanonicalWasi, DependentGraph, Identifier, WasiModule};
 use std::{
     fmt::{Debug, Formatter},
@@ -84,7 +84,7 @@ impl ResolveContext {
         info: &AnnotationNode,
         kind: &'static str,
         hint: &'static str,
-        keyword: FileSpan,
+        keyword: SourceSpan,
     ) -> Option<(WasiModule, Arc<str>)> {
         let ffi = info.attributes.get("ffi")?;
         if !hint.is_empty() {

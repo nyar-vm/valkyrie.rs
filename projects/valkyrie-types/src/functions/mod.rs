@@ -6,6 +6,7 @@ use valkyrie_ast::FunctionDeclaration;
 mod codegen;
 mod parser;
 
+/// The [function](), [`external` function](), [`extension` function](), [`overload` function] in valkyrie language
 #[derive(Debug)]
 pub struct ValkyrieFunction {
     pub function_name: Identifier,

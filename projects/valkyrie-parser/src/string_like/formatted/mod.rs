@@ -1,5 +1,5 @@
 use crate::{helpers::ProgramState, StringInterpolationsNode};
-use nyar_error::{Failure, FileID, NyarError, Result, Success, SyntaxError, Validation};
+use nyar_error::{Failure, NyarError, Result, SourceID, Success, SyntaxError, Validation};
 use std::{mem::take, ops::Range, str::FromStr};
 use valkyrie_ast::{helper::StringInterpreter, FormatterNode, FormatterTerm, StringTextNode};
 
@@ -16,7 +16,7 @@ use valkyrie_ast::{helper::StringInterpreter, FormatterNode, FormatterTerm, Stri
 /// """
 /// ```
 pub struct StringFormatterBuilder {
-    file: FileID,
+    file: SourceID,
     buffer: StringTextNode,
     terms: Vec<FormatterTerm>,
     errors: Vec<NyarError>,
@@ -24,7 +24,7 @@ pub struct StringFormatterBuilder {
 
 impl StringFormatterBuilder {
     /// Create a new string formatter builder
-    pub fn new(file: FileID) -> Self {
+    pub fn new(file: SourceID) -> Self {
         Self { file, buffer: Default::default(), terms: vec![], errors: vec![] }
     }
     fn extend_buffer(&mut self, range: &Range<u32>) {

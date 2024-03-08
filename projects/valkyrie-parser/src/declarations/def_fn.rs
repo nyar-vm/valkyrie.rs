@@ -1,9 +1,11 @@
 use super::*;
+use nyar_error::{NyarError, ReportKind, SourceSpan, SyntaxError};
 
 impl crate::DefineFunctionNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> Result<FunctionDeclaration> {
         Ok(FunctionDeclaration {
-            kind: self.kw_function.build(),
+            keyword: self.kw_function.get_span(ctx),
+            kind: self.kw_function.build(ctx),
             annotations: self.annotation_head.annotations(ctx),
             name: self.identifier.build(ctx.file),
             generics: self.function_middle.generics(ctx),
@@ -15,11 +17,24 @@ impl crate::DefineFunctionNode {
 }
 
 impl crate::KwFunctionNode {
-    pub(crate) fn build(&self) -> FunctionKind {
-        match self {
-            Self::Micro => FunctionKind::Micro,
-            Self::Macro => FunctionKind::Macro,
+    pub(crate) fn build(&self, ctx: &mut ProgramState) -> FunctionKind {
+        match self.text.as_str() {
+            "macro" => FunctionKind::Macro,
+            "micro" => FunctionKind::Micro,
+            deprecated @ ("function" | "func" | "fun" | "fn") => {
+                ctx.add_error(
+                    SyntaxError::new(format!("Using `{deprecated}` to declare micro functions has been deprecated"))
+                        .with_hint("use `micro` instead")
+                        .with_span(ctx.file.with_range(self.span.clone()))
+                        .as_error(ReportKind::Alert),
+                );
+                FunctionKind::Micro
+            }
+            _ => unreachable!(),
         }
+    }
+    pub(crate) fn get_span(&self, ctx: &mut ProgramState) -> SourceSpan {
+        ctx.file.with_range(self.span.clone())
     }
 }
 

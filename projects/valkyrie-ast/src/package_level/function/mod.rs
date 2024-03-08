@@ -1,14 +1,15 @@
 use super::*;
+use nyar_error::SourceSpan;
 
 mod display;
 
-/// `micro function(args), macro procedure(args)`
+/// `micro function(args)`, `macro procedure(args)`
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum FunctionKind {
     /// A function that lazy evaluate the arguments
     Macro,
-    /// A function that eager evaluate the arguments
+    /// A function that eager evaluates the arguments
     Micro,
 }
 
@@ -16,6 +17,8 @@ pub enum FunctionKind {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct FunctionDeclaration {
+    /// Keyword position of the declaration
+    pub keyword: SourceSpan,
     /// The belonging and name of this function
     pub name: IdentifierNode,
     /// The range of the number.
@@ -119,7 +122,7 @@ impl FunctionDeclaration {
 //     pub fn mut_statement(&mut self) -> &mut Vec<ValkyrieASTNode> {
 //         &mut self.statements
 //     }
-//     pub fn to_node(self, file: FileID, range: &Range<usize>) -> ValkyrieASTNode {
+//     pub fn to_node(self, file: SourceID, range: &Range<usize>) -> ValkyrieASTNode {
 //         ValkyrieASTKind::Class(box self).to_node(file, range)
 //     }
 // }

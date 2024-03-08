@@ -46,7 +46,7 @@ impl ArgumentsList {
     pub fn new(capacity: usize) -> Self {
         Self { terms: Vec::with_capacity(capacity) }
     }
-
+    /// Create a new `ArgumentsList` with the given capacity.
     pub fn get<T: ?Sized>(&self, argument: &T) -> Option<&ArgumentTerm>
     where
         ArgumentTerm: PartialEq<T>,

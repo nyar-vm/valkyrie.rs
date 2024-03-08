@@ -1,5 +1,6 @@
 use super::*;
 
+mod convert;
 mod display;
 
 /// A node representing a identifier.
@@ -9,16 +10,17 @@ pub struct IdentifierNode {
     /// The name of the identifier.
     pub name: String,
     /// The location of this identifier.
-    pub span: FileSpan,
+    pub span: SourceSpan,
 }
 
 /// `package∷module∷name`
 #[derive(Clone, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct NamePathNode {
-    /// The names of the identifier.
+    /// The names of the namepath.
     pub path: Vec<IdentifierNode>,
-    pub span: FileSpan,
+    /// The location of this namepath.
+    pub span: SourceSpan,
 }
 
 /// `package∷module∷name`
@@ -30,11 +32,7 @@ pub struct BooleanNode {
     /// The range of the node
     pub span: Range<u32>,
 }
-impl ValkyrieNode for BooleanNode {
-    fn get_range(&self) -> Range<u32> {
-        self.span.clone()
-    }
-}
+
 /// `null, nil`, type of null value
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -44,11 +42,7 @@ pub struct NullNode {
     /// The range of the node
     pub span: Range<u32>,
 }
-impl ValkyrieNode for NullNode {
-    fn get_range(&self) -> Range<u32> {
-        self.span.clone()
-    }
-}
+
 /// `%1, %%1`, the number of the reference
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -59,11 +53,7 @@ pub struct OutputNode {
     /// The range of the node
     pub span: Range<u32>,
 }
-impl ValkyrieNode for OutputNode {
-    fn get_range(&self) -> Range<u32> {
-        self.span.clone()
-    }
-}
+
 /// `$, $1, $x`
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -90,18 +80,6 @@ pub enum LambdaSlotItem {
     Named(IdentifierNode),
 }
 
-impl ValkyrieNode for LambdaSlotNode {
-    fn get_range(&self) -> Range<u32> {
-        self.span.clone()
-    }
-}
-
-impl FromIterator<IdentifierNode> for NamePathNode {
-    fn from_iter<T: IntoIterator<Item = IdentifierNode>>(iter: T) -> Self {
-        Self { path: iter.into_iter().collect(), span: Default::default() }
-    }
-}
-
 impl NamePathNode {
     /// Create a new name path node with given identifiers.
     pub fn new<I>(names: I) -> Self
@@ -120,7 +98,7 @@ impl NamePathNode {
         self.span.get_range()
     }
     /// Set the file span for namepath
-    pub fn with_span(self, span: FileSpan) -> Self {
+    pub fn with_span(self, span: SourceSpan) -> Self {
         Self { span, ..self }
     }
 }
@@ -131,7 +109,7 @@ impl IdentifierNode {
         Self { name: s.to_string(), span: Default::default() }
     }
     /// Set the file for namepath
-    pub fn with_file(mut self, file: FileID) -> Self {
+    pub fn with_file(mut self, file: SourceID) -> Self {
         self.span.set_file(file);
         self
     }
@@ -147,19 +125,19 @@ impl IdentifierNode {
 }
 
 // impl ValkyrieIdentifier {
-//     pub fn new(name: impl Into<String>, file: FileID, range: &Range<usize>) -> Self {
-//         Self { name: name.into(), span: FileSpan { file, head: range.start, tail: range.end } }
+//     pub fn new(name: impl Into<String>, file: SourceID, range: &Range<usize>) -> Self {
+//         Self { name: name.into(), span: SourceSpan { file, head: range.start, tail: range.end } }
 //     }
-//     pub fn to_node(self, file: FileID, range: &Range<usize>) -> ValkyrieASTNode {
+//     pub fn to_node(self, file: SourceID, range: &Range<usize>) -> ValkyrieASTNode {
 //         ValkyrieASTKind::Namepath(vec![self]).to_node(file, range)
 //     }
 // }
 //
 // impl ValkyrieASTNode {
-//     pub fn identifier(name: impl Into<String>, file: FileID, range: &Range<usize>) -> Self {
+//     pub fn identifier(name: impl Into<String>, file: SourceID, range: &Range<usize>) -> Self {
 //         ValkyrieIdentifier::new(name, file, range).to_node(file, range)
 //     }
-//     pub fn namepath(items: Vec<ValkyrieIdentifier>, file: FileID, range: &Range<usize>) -> Self {
-//         Self { kind: ValkyrieASTKind::Namepath(items), span: FileSpan::new(file, range) }
+//     pub fn namepath(items: Vec<ValkyrieIdentifier>, file: SourceID, range: &Range<usize>) -> Self {
+//         Self { kind: ValkyrieASTKind::Namepath(items), span: SourceSpan::new(file, range) }
 //     }
 // }

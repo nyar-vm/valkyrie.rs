@@ -1,4 +1,4 @@
-use nyar_error::FileCache;
+use nyar_error::SourceCache;
 use std::{io::Write, path::Path};
 use valkyrie_types::ResolveContext;
 
@@ -11,9 +11,8 @@ fn ready() {
 fn test_hello_world() {
     let here = Path::new(env!("CARGO_MANIFEST_DIR"));
 
-    let mut file_cache = FileCache::default();
+    let mut file_cache = SourceCache::default();
     let file = file_cache.load_local(here.join("tests/component.vk")).unwrap();
-
     let mut context = ResolveContext::new("std");
     let errors = context.parse(file, &mut file_cache);
     for error in errors {

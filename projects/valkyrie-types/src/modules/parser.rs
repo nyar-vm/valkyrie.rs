@@ -1,7 +1,8 @@
 use super::*;
 
 impl ResolveContext {
-    pub fn parse(&mut self, file: FileID, cache: &mut FileCache) -> Vec<NyarError> {
+    /// Parse a fetch text from the source cache
+    pub fn parse(&mut self, file: SourceID, cache: &mut SourceCache) -> Vec<NyarError> {
         let root = ProgramContext { file }.parse(cache);
         let mut errors = vec![];
         match root {
@@ -17,7 +18,7 @@ impl ResolveContext {
         errors
     }
 
-    pub fn visit(&mut self, root: ProgramRoot) -> Vec<NyarError> {
+    fn visit(&mut self, root: ProgramRoot) -> Vec<NyarError> {
         let progress = root.to_mir(self);
         let mut errors = take(&mut self.errors);
         match progress {
@@ -68,9 +69,7 @@ impl Hir2Mir for StatementKind {
             Self::Extends(_) => {
                 todo!()
             }
-            Self::Function(v) => {
-                let fun = v.to_mir(ctx)?;
-            }
+            Self::Function(v) => v.to_mir(ctx)?,
             Self::Variable(_) => {
                 todo!()
             }

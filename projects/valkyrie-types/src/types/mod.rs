@@ -4,7 +4,7 @@ use crate::{
 };
 use indexmap::IndexMap;
 use itertools::Itertools;
-use nyar_error::{FileSpan, Result};
+use nyar_error::{Result, SourceSpan};
 use shredder::{marker::GcSafe, Gc, Scan};
 use std::{
     any::type_name,
