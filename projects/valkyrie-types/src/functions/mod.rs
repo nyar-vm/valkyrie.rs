@@ -1,16 +1,22 @@
-use crate::{helpers::Hir2Mir, ModuleItem, ResolveContext};
-use nyar_wasm::{Identifier, WasiModule};
+use crate::{
+    helpers::{Hir2Mir, Mir2Lir},
+    ModuleItem, ResolveContext,
+};
+use nyar_wasm::{DependentGraph, Identifier, WasiExport, WasiFunction, WasiImport, WasiModule};
 use std::{ops::AddAssign, sync::Arc};
 use valkyrie_ast::FunctionDeclaration;
 mod arithmetic;
-mod codegen;
-mod parser;
+mod stage1_mir;
+mod stage2_lir;
 
 /// The [function](), [`external` function](), [`extension` function](), [`overload` function] in valkyrie language
 #[derive(Debug)]
 pub struct ValkyrieFunction {
     pub function_name: Identifier,
-    pub category: ValkyrieFunctionCategory,
+    /// The WASI import symbol if exists
+    pub wasi_import: Option<WasiImport>,
+    /// The WASI export symbol if exists
+    pub wasi_export: Option<WasiExport>,
 }
 
 #[derive(Clone, Default, Debug)]

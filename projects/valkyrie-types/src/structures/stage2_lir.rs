@@ -16,7 +16,6 @@ impl Mir2Lir for ValkyrieClass {
                 };
             }
         }
-
         Ok(())
     }
 }

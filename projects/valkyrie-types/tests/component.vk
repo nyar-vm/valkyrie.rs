@@ -1,19 +1,19 @@
 namespace package.io;
 
-#ffi("wasi:io/streams", "input-stream")
-resource class InputStream {
+#import("wasi:io/streams", "input-stream")
+class InputStream {
     #ffi("wasi:io/streams", "[method]output-stream.blocking-write-and-flush")
     write(self, contents: List<u8>) -> Result<(), StreamError>;
 }
 
-#ffi("wasi:io/streams", "output-stream")
-resource class OutputStream {
+#import("wasi:io/streams", "output-stream")
+class OutputStream {
     #ffi("wasi:io/streams", "[method]output-stream.blocking-write-and-flush")
     write(self, contents: List<u8>) -> Result<(), StreamError>;
 }
 
-#ffi("wasi:io/error", "error")
-resource class IoError { }
+#import("wasi:io/error", "error")
+class IoError { }
 
 union StreamError {
     LastOperationFailed {
@@ -22,16 +22,88 @@ union StreamError {
     Closed
 }
 
-#ffi("wasi:cli/stdin", "get-stdin")
-function standard_input() -> InputStream { }
+#import("wasi:cli/stdin", "get-stdin")
+micro standard_input() -> InputStream { }
 
-#ffi("wasi:cli/stdout", "get-stdout")
-function standard_output() -> OutputStream { }
+#import("wasi:cli/stdout", "get-stdout")
+micro standard_output() -> OutputStream { }
 
-#ffi("wasi:cli/stderr", "get-stderr")
-function standard_error() -> OutputStream { }
+#import("wasi:cli/stderr", "get-stderr")
+micro standard_error() -> OutputStream { }
 
 
 
+namespace package.random;
+
+#import("wasi:random/random", "get-random-u64")
+micro safe_random_seed() -> u64 {
+
+}
+
+#import("wasi:random/insecure", "get-insecure-random-bytes")
+micro fast_random_seed() -> u64 {
+
+}
+
+
+namespace package.random;
+
+#import("wasi:clock/monotonic-clock", "now")
+micro now() -> u64 {
+
+}
+
+namespace _;
+
+#import("unstable:debugger/print", "print-u8")
+micro print_u8(value: u8) {
+
+}
+
+#import("unstable:debugger/print", "print-u16")
+micro print_u16(value: u16) {
+
+}
+
+#import("unstable:debugger/print", "print-u32")
+micro print_u32(value: u32) {
+
+}
+
+#import("unstable:debugger/print", "print-i64")
+micro print_u64(value: u64) {
+
+}
+
+#import("unstable:debugger/print", "print-i64")
+micro print_i8(value: i8) {
+
+}
+
+#import("unstable:debugger/print", "print-i64")
+micro print_i16(value: i16) {
+
+}
+
+#import("unstable:debugger/print", "print-i64")
+micro print_i32(value: i32) {
+
+}
+
+#import("unstable:debugger/print", "print-i64")
+micro print_i64(value: i64) {
+
+}
+
+#import("unstable:debugger/print", "print-bool")
+micro print_bool(value: bool) {
+
+}
+
+
+#import("unstable:debugger/print", "print-char")
+micro print_char(value: char) {
+
+}
 
 

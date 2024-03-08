@@ -12,9 +12,9 @@ use std::{
 };
 use valkyrie_ast::{helper::WrapDisplay, ClassDeclaration, ClassTerm, FieldDeclaration, MethodDeclaration};
 
-mod codegen;
 mod display;
-mod parser;
+mod stage1_mir;
+mod stage2_lir;
 
 #[derive(Clone, Eq, PartialEq)]
 pub struct ValkyrieClass {
