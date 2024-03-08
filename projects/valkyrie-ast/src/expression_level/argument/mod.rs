@@ -29,6 +29,8 @@ pub struct ArgumentTerm {
     pub key: ArgumentKey,
     /// The value of the argument
     pub value: ExpressionKind,
+    /// The range of the node
+    pub span: SourceSpan,
 }
 
 /// The key of the argument

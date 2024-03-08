@@ -10,7 +10,7 @@ impl PartialEq<str> for ArgumentKey {
     fn eq(&self, other: &str) -> bool {
         match self {
             Self::Nothing => false,
-            Self::Symbol(s) => s.name.eq(other),
+            Self::Symbol(s) => other.eq(s.name.as_ref()),
         }
     }
 }

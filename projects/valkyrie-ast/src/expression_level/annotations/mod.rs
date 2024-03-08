@@ -104,7 +104,7 @@ impl PartialEq<str> for AttributeTerm {
             return false;
         }
         match self.path.path.as_slice() {
-            [single] => single.name.eq(other),
+            [single] => other.eq(single.name.as_ref()),
             _ => false,
         }
     }
@@ -234,6 +234,6 @@ impl ModifierList {
 
     /// Check if the modifier is present.
     pub fn contains(&self, modifier: &str) -> bool {
-        self.terms.iter().any(|x| x.name.eq(modifier))
+        self.terms.iter().any(|x| modifier.eq(x.name.as_ref()))
     }
 }

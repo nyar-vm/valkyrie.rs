@@ -1,5 +1,6 @@
 use super::*;
 use nyar_error::SourceID;
+use std::sync::Arc;
 
 impl crate::NamepathNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> NamePathNode {
@@ -17,9 +18,11 @@ impl crate::NamepathFreeNode {
 impl crate::IdentifierNode {
     pub fn build(&self, file: SourceID) -> IdentifierNode {
         match self {
-            Self::IdentifierBare(v) => IdentifierNode { name: v.text.to_string(), span: file.with_range(v.span.clone()) },
+            Self::IdentifierBare(v) => {
+                IdentifierNode { name: Arc::from(v.text.as_str()), span: file.with_range(v.span.clone()) }
+            }
             Self::IdentifierRaw(v) => {
-                IdentifierNode { name: v.identifier_raw_text.text.to_string(), span: file.with_range(v.span.clone()) }
+                IdentifierNode { name: Arc::from(v.identifier_raw_text.text.as_str()), span: file.with_range(v.span.clone()) }
             }
         }
     }

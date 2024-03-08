@@ -111,7 +111,7 @@ pub enum ImportResolvedKind {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub struct ImportResolvedItem {
     /// The path of the import
-    pub path: Vec<Box<str>>,
+    pub path: Vec<Arc<str>>,
     /// The alias of the import
     pub kind: ImportResolvedKind,
     /// The position fo the resolved item
@@ -182,7 +182,7 @@ pub enum ImportState {
 impl ImportResolvedItem {
     pub fn extends(&self, path: &[IdentifierNode]) -> Self {
         let mut new = self.clone();
-        new.path.extend(path.iter().map(|s| Box::from(s.name.as_str())));
+        new.path.extend(path.iter().map(|s| s.name.clone()));
         new
     }
 

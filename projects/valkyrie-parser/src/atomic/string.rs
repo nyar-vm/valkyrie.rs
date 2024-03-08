@@ -1,5 +1,6 @@
 use super::*;
 use nyar_error::SourceID;
+use std::sync::Arc;
 
 impl crate::TextLiteralNode {
     pub(crate) fn build(&self, ctx: &mut ProgramState) -> StringLiteralNode {
@@ -33,6 +34,6 @@ impl crate::TextRawNode {
         StringTextNode { text: buffer, span: file.with_range(self.span.clone()) }
     }
     pub(crate) fn build_id(&self, ctx: &mut ProgramState) -> IdentifierNode {
-        IdentifierNode { name: "".to_string(), span: ctx.file.with_range(self.span.clone()) }
+        IdentifierNode { name: Arc::from(""), span: ctx.file.with_range(self.span.clone()) }
     }
 }

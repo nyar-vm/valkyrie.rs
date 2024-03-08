@@ -1,7 +1,7 @@
 use super::*;
 use crate::SignNode;
 use nyar_error::NyarError;
-use std::str::FromStr;
+use std::{str::FromStr, sync::Arc};
 use valkyrie_ast::NullNode;
 
 // A number literal.
@@ -71,8 +71,8 @@ impl crate::IntegerNode {
     //     NumberLiteralNode::new(10, self.span.clone())
     // }
     pub(crate) fn as_identifier(&self, ctx: &mut ProgramState) -> IdentifierNode {
-        let text = self.text.chars().filter(|c| c.is_digit(10)).collect();
-        IdentifierNode { name: text, span: ctx.file.with_range(self.span.clone()) }
+        let text: String = self.text.chars().filter(|c| c.is_digit(10)).collect();
+        IdentifierNode { name: Arc::from(text), span: ctx.file.with_range(self.span.clone()) }
     }
     pub(crate) fn as_base(&self, ctx: &mut ProgramState) -> Result<u32> {
         let span = ctx.file.with_range(self.span.clone());

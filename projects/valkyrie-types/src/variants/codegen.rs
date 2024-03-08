@@ -32,7 +32,7 @@ impl Hir2Mir for UnionDeclaration {
 impl Hir2Mir for VariantDeclaration {
     type Output = ValkyrieUnionItem;
     fn to_mir(self, ctx: &mut ResolveContext) -> nyar_error::Result<Self::Output> {
-        let (variant_name, wasi_alias) = ctx.get_field_alias(&self.name, &self.annotations)?;
+        let (variant_name, wasi_alias) = ctx.import_field(&self.name, &self.annotations)?;
         let mut output =
             ValkyrieUnionItem { variant_name, wasi_alias, type_alias: Default::default(), fields: Default::default() };
         for item in self.body {

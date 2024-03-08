@@ -148,8 +148,8 @@ impl crate::ParameterItemNode {
         let value = match self {
             Self::ParameterPair(v) => v.build(ctx)?,
             Self::ParameterItemControl(v) => match v.text.as_str() {
-                "<" => ParameterMixed::RMark(ctx.file.with_range(v.span.clone())),
-                ">" => ParameterMixed::RMark(ctx.file.with_range(v.span.clone())),
+                "「" | "<" => ParameterMixed::LMark(ctx.file.with_range(v.span.clone())),
+                "」" | ">" => ParameterMixed::RMark(ctx.file.with_range(v.span.clone())),
                 ".." => {
                     todo!()
                 }

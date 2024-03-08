@@ -4,6 +4,8 @@ use nyar_wasm::DependentGraph;
 
 impl Mir2Lir for ValkyrieClass {
     fn to_lir(&self, ctx: &ResolveContext, graph: &mut DependentGraph) -> Result<Self::Output> {
+        for method in self.methods.values() {}
+
         match &self.category {
             ValkyrieClassCategory::Structure => {}
             ValkyrieClassCategory::Resource { wasi_module, wasi_name } => {

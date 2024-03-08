@@ -1,4 +1,5 @@
 use super::*;
+use alloc::sync::Arc;
 use nyar_error::{SourceSpan, Validation};
 
 mod display;
@@ -38,13 +39,9 @@ impl ValkyrieNode for StringLiteralNode {
 }
 
 impl StringTextNode {
-    /// Create a new raw text node
-    pub fn new<S: ToString>(value: S, span: SourceSpan) -> Self {
-        Self { text: value.to_string(), span }
-    }
     /// Convert to an identifier
     pub fn as_identifier(&self) -> IdentifierNode {
-        IdentifierNode { name: self.text.clone(), span: SourceSpan::default().with_range(self.get_range()) }
+        IdentifierNode { name: Arc::from(self.text.as_str()), span: SourceSpan::default().with_range(self.get_range()) }
     }
 }
 

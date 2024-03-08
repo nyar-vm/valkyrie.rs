@@ -36,9 +36,9 @@ pub struct ParametersList {
 /// `<, a: Type = default, >`
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ParameterMixed {
-    /// `<`
+    /// `positional, 「, mixed`
     LMark(SourceSpan),
-    /// `>`
+    /// `mixed, 」, named`
     RMark(SourceSpan),
     /// `a: Type = default`
     Term(ParameterTerm),
@@ -110,13 +110,13 @@ impl ParametersList {
             match item {
                 ParameterMixed::LMark(s) => {
                     if pass_left {
-                        errors.push(NyarError::syntax_error("dup `<`", s))
+                        errors.push(NyarError::syntax_error("dup `「 `", s))
                     }
                     pass_left = true;
                 }
                 ParameterMixed::RMark(s) => {
                     if pass_right {
-                        errors.push(NyarError::syntax_error("dup `>`", s))
+                        errors.push(NyarError::syntax_error("dup `」`", s))
                     }
                     pass_right = true;
                 }
@@ -148,6 +148,6 @@ impl ParametersList {
 impl ParameterTerm {
     /// Check if the parameter is a self parameter
     pub fn is_self(&self) -> bool {
-        self.key.name.eq("self")
+        self.key.name.as_ref().eq("self")
     }
 }

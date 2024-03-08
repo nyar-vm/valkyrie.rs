@@ -7,14 +7,16 @@ use convert_case::{Case, Casing};
 use im::HashMap;
 use indexmap::IndexMap;
 use nyar_error::{Failure, ForeignInterfaceError, NyarError, Result, SourceCache, SourceID, SourceSpan, Success};
-use nyar_wasm::{CanonicalWasi, DependentGraph, Identifier, WasiModule};
+use nyar_wasm::{CanonicalWasi, DependentGraph, Identifier, WasiImport, WasiModule};
 use std::{
     fmt::{Debug, Formatter},
     mem::take,
     str::FromStr,
     sync::Arc,
 };
-use valkyrie_ast::{AnnotationNode, IdentifierNode, NamespaceDeclaration, ProgramRoot, StatementKind};
+use valkyrie_ast::{
+    AnnotationNode, ArgumentTerm, IdentifierNode, NamespaceDeclaration, ProgramRoot, StatementKind, StringTextNode,
+};
 use valkyrie_parser::{ProgramContext, StatementNode};
 
 mod codegen;
@@ -69,8 +71,8 @@ impl ResolveContext {
 
     /// Get the full name path based on package name and namespace, then register the name to local namespace.
     pub fn register_item(&mut self, symbol: &IdentifierNode) -> Identifier {
-        let key = Identifier { namespace: vec![], name: Arc::from(symbol.name.as_str()) };
-        let value = Identifier { namespace: self.namespace.clone(), name: Arc::from(symbol.name.as_str()) };
+        let key = Identifier { namespace: vec![], name: symbol.name.clone() };
+        let value = Identifier { namespace: self.namespace.clone(), name: symbol.name.clone() };
         match self.using.insert(key, value.clone()) {
             Some(_) => {
                 unimplemented!("dup")
@@ -101,17 +103,48 @@ impl ResolveContext {
         }
         return None;
     }
-
     /// Get the full name path based on package name and namespace
-    pub fn get_field_alias(&self, symbol: &IdentifierNode, alias: &AnnotationNode) -> Result<(Arc<str>, Arc<str>)> {
-        let name: Arc<str> = Arc::from(symbol.name.as_str());
+    pub fn import_field(&self, symbol: &IdentifierNode, alias: &AnnotationNode) -> Result<(Arc<str>, Arc<str>)> {
         let wasi_alias = match alias.attributes.get("ffi").and_then(|x| x.arguments.terms.first()) {
             Some(s) => match s.value.as_text() {
                 Some(s) => Arc::from(s.text.as_str()),
                 None => Err(NyarError::custom("missing wasi alias"))?,
             },
-            None => Arc::from(name.as_ref().to_case(Case::Kebab)),
+            None => Arc::from(symbol.name.as_ref().to_case(Case::Kebab)),
         };
-        Ok((name, wasi_alias))
+        Ok((symbol.name.clone(), wasi_alias))
+    }
+
+    /// Get the full name path based on package name and namespace
+    pub fn import_function(&mut self, alias: &AnnotationNode, symbol: &IdentifierNode) -> Option<WasiImport> {
+        let import = alias.attributes.get("import")?;
+        let module = self.get_wasi_module(import.arguments.terms.get(0), import.span)?;
+        let name: Arc<str> = match import.arguments.terms.get(1) {
+            Some(term) => match term.value.as_text() {
+                Some(node) => Arc::from(node.text.as_str()),
+                None => {
+                    self.push_error(ForeignInterfaceError::InvalidForeignName { span: term.span });
+                    return None;
+                }
+            },
+            None => Arc::from(symbol.name.as_ref().to_case(Case::Kebab)),
+        };
+        Some(WasiImport { module, name })
+    }
+
+    fn get_wasi_module(&mut self, term: Option<&ArgumentTerm>, span: SourceSpan) -> Option<WasiModule> {
+        match term.and_then(|x| x.value.as_text()) {
+            Some(text) => match WasiModule::from_str(&text.text) {
+                Ok(o) => Some(o),
+                Err(e) => {
+                    self.push_error(e.with_span(text.span.clone()));
+                    None
+                }
+            },
+            None => {
+                self.push_error(ForeignInterfaceError::InvalidForeignModule { span });
+                None
+            }
+        }
     }
 }

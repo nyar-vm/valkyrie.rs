@@ -262,7 +262,7 @@ union ParameterItem {
     | ParameterPair
 }
 text class ParameterItemControl {
-    /[<>]|\.{2,3}/
+    /[<「」>]|\.{2,3}/
 }
 class ParameterPair {
     ModifierAhead* ParameterHint?

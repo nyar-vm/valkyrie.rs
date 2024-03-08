@@ -4,7 +4,7 @@ use crate::{
 };
 use indexmap::IndexMap;
 use nyar_error::Result;
-use nyar_wasm::{Identifier, WasiModule, WasiResource};
+use nyar_wasm::{Identifier, WasiExport, WasiImport, WasiModule, WasiResource};
 use std::{
     fmt::{Debug, Formatter},
     ops::AddAssign,
@@ -48,12 +48,15 @@ pub struct ValkyrieField {
     pub wasi_alias: Arc<str>,
 }
 
+/// A method belongs to a class or a trait
 #[derive(Debug, Clone, Eq, PartialEq)]
 pub struct ValkyrieMethod {
-    /// The name of the field
+    /// The name of the method
     pub method_name: Arc<str>,
-    /// The WASI name of the field
-    pub wasi_alias: Arc<str>,
+    /// The WASI import symbol if exists
+    pub wasi_import: Option<WasiImport>,
+    /// The WASI export symbol if exists
+    pub wasi_export: Option<WasiExport>,
 }
 
 impl AddAssign<ValkyrieField> for ValkyrieClass {

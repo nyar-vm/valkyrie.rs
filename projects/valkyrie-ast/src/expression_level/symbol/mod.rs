@@ -1,4 +1,5 @@
 use super::*;
+use alloc::sync::Arc;
 
 mod convert;
 mod display;
@@ -8,7 +9,7 @@ mod display;
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct IdentifierNode {
     /// The name of the identifier.
-    pub name: String,
+    pub name: Arc<str>,
     /// The location of this identifier.
     pub span: SourceSpan,
 }
@@ -104,10 +105,6 @@ impl NamePathNode {
 }
 
 impl IdentifierNode {
-    /// Create a new identifier node with given name.
-    pub fn new<S: ToString>(s: S) -> Self {
-        Self { name: s.to_string(), span: Default::default() }
-    }
     /// Set the file for namepath
     pub fn with_file(mut self, file: SourceID) -> Self {
         self.span.set_file(file);

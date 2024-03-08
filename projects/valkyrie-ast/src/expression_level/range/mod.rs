@@ -37,6 +37,8 @@ pub enum RangeTermNode {
     Index {
         /// The index of range
         index: ExpressionKind,
+        /// The range of the number.
+        span: SourceSpan,
     },
     /// The range
     Range {
@@ -70,9 +72,12 @@ impl RangeTermNode {
     /// Convert to tuple item if possible
     pub fn as_tuple(&self) -> Option<ArgumentTerm> {
         match self {
-            RangeTermNode::Index { index } => {
-                Some(ArgumentTerm { modifiers: Default::default(), key: ArgumentKey::Nothing, value: index.clone() })
-            }
+            RangeTermNode::Index { index, span } => Some(ArgumentTerm {
+                modifiers: Default::default(),
+                key: ArgumentKey::Nothing,
+                value: index.clone(),
+                span: *span,
+            }),
             RangeTermNode::Range { .. } => None,
         }
     }

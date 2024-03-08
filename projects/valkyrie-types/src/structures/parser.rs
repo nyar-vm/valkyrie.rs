@@ -55,7 +55,7 @@ impl AddAssign<ValkyrieClass> for ResolveContext {
 impl Hir2Mir for FieldDeclaration {
     type Output = ValkyrieField;
     fn to_mir(self, ctx: &mut ResolveContext) -> Result<Self::Output> {
-        let (field_name, wasi_alias) = ctx.get_field_alias(&self.name, &self.annotations)?;
+        let (field_name, wasi_alias) = ctx.import_field(&self.name, &self.annotations)?;
 
         Ok(ValkyrieField { field_name, wasi_alias })
     }
@@ -63,7 +63,14 @@ impl Hir2Mir for FieldDeclaration {
 impl Hir2Mir for MethodDeclaration {
     type Output = ValkyrieMethod;
     fn to_mir(self, ctx: &mut ResolveContext) -> Result<Self::Output> {
-        let (method_name, wasi_alias) = ctx.get_field_alias(&self.name, &self.annotations)?;
-        Ok(ValkyrieMethod { method_name, wasi_alias })
+        let (method_name, wasi_alias) = ctx.import_field(&self.name, &self.annotations)?;
+        Ok(ValkyrieMethod {
+            method_name,
+            wasi_import: Some(WasiImport {
+                module: WasiModule { package: None, name: Arc::new(()), version: None },
+                name: Arc::new(()),
+            }),
+            wasi_export: None,
+        })
     }
 }

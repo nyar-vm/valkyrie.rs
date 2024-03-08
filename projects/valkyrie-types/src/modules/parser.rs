@@ -99,12 +99,12 @@ impl Hir2Mir for NamespaceDeclaration {
     fn to_mir(self, ctx: &mut ResolveContext) -> Result<Self::Output> {
         ctx.namespace.clear();
         if let [head, rest @ ..] = self.path.path.as_slice() {
-            match head.name.eq("package") {
+            match head.name.as_ref().eq("package") {
                 true => ctx.namespace.push(ctx.package.clone()),
-                false => ctx.namespace.push(Arc::from(head.name.as_str())),
+                false => ctx.namespace.push(head.name.clone()),
             }
             for x in rest {
-                ctx.namespace.push(Arc::from(x.name.as_str()))
+                ctx.namespace.push(x.name.clone())
             }
         }
         Ok(())
