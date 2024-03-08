@@ -84,6 +84,7 @@ pub enum ValkyrieRule {
     TypeEffect,
     FunctionParameters,
     ParameterItem,
+    ParameterItemControl,
     ParameterPair,
     ParameterHint,
     Continuation,
@@ -334,6 +335,7 @@ impl YggdrasilRule for ValkyrieRule {
             Self::TypeEffect => "",
             Self::FunctionParameters => "",
             Self::ParameterItem => "",
+            Self::ParameterItemControl => "",
             Self::ParameterPair => "",
             Self::ParameterHint => "",
             Self::Continuation => "",
@@ -937,11 +939,14 @@ pub struct FunctionParametersNode {
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum ParameterItemNode {
-    LMark,
-    OmitDict,
-    OmitList,
+    ParameterItemControl(ParameterItemControlNode),
     ParameterPair(ParameterPairNode),
-    RMark,
+}
+#[derive(Clone, Debug, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ParameterItemControlNode {
+    pub text: String,
+    pub span: Range<u32>,
 }
 #[derive(Clone, Debug, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]

@@ -138,10 +138,10 @@ impl Debug for MethodDeclaration {
             w.field("annotations", &self.annotations);
         }
         w.field("name", &WrapDisplay::new(&self.name));
-        if !self.generics.terms.is_empty() {
+        if self.generics.terms().count() != 0 {
             w.field("generics", &self.generics);
         }
-        if !self.parameters.terms.is_empty() {
+        if self.parameters.terms().count() != 0 {
             w.field("parameters", &self.parameters);
         }
         if let Some(s) = &self.returns.typing {

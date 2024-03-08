@@ -1,8 +1,8 @@
 use crate::{helpers::Hir2Mir, ModuleItem, ResolveContext};
 use nyar_wasm::{Identifier, WasiModule};
-use std::sync::Arc;
+use std::{ops::AddAssign, sync::Arc};
 use valkyrie_ast::FunctionDeclaration;
-
+mod arithmetic;
 mod codegen;
 mod parser;
 

@@ -1463,29 +1463,17 @@ impl YggdrasilNode for ParameterItemNode {
 
     fn get_range(&self) -> Range<usize> {
         match self {
-            Self::LMark => Range::default(),
-            Self::OmitDict => Range::default(),
-            Self::OmitList => Range::default(),
+            Self::ParameterItemControl(s) => s.get_range(),
             Self::ParameterPair(s) => s.get_range(),
-            Self::RMark => Range::default(),
         }
     }
     fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
         let _span = pair.get_span();
-        if let Some(_) = pair.find_first_tag("l_mark") {
-            return Ok(Self::LMark);
-        }
-        if let Some(_) = pair.find_first_tag("omit_dict") {
-            return Ok(Self::OmitDict);
-        }
-        if let Some(_) = pair.find_first_tag("omit_list") {
-            return Ok(Self::OmitList);
+        if let Ok(s) = pair.take_tagged_one::<ParameterItemControlNode>(Cow::Borrowed("parameter_item_control")) {
+            return Ok(Self::ParameterItemControl(s));
         }
         if let Ok(s) = pair.take_tagged_one::<ParameterPairNode>(Cow::Borrowed("parameter_pair")) {
             return Ok(Self::ParameterPair(s));
-        }
-        if let Some(_) = pair.find_first_tag("r_mark") {
-            return Ok(Self::RMark);
         }
         Err(YggdrasilError::invalid_node(ValkyrieRule::ParameterItem, _span))
     }
@@ -1496,6 +1484,26 @@ impl FromStr for ParameterItemNode {
 
     fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
         Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::ParameterItem)?)
+    }
+}
+#[automatically_derived]
+impl YggdrasilNode for ParameterItemControlNode {
+    type Rule = ValkyrieRule;
+
+    fn get_range(&self) -> Range<usize> {
+        Range { start: self.span.start as usize, end: self.span.end as usize }
+    }
+    fn from_pair(pair: TokenPair<Self::Rule>) -> Result<Self, YggdrasilError<Self::Rule>> {
+        let _span = pair.get_span();
+        Ok(Self { text: pair.get_string(), span: Range { start: _span.start() as u32, end: _span.end() as u32 } })
+    }
+}
+#[automatically_derived]
+impl FromStr for ParameterItemControlNode {
+    type Err = YggdrasilError<ValkyrieRule>;
+
+    fn from_str(input: &str) -> Result<Self, YggdrasilError<ValkyrieRule>> {
+        Self::from_cst(ValkyrieParser::parse_cst(input, ValkyrieRule::ParameterItemControl)?)
     }
 }
 #[automatically_derived]

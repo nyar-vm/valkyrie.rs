@@ -258,11 +258,11 @@ atomic class FunctionParameters {
     (ParameterItem (HIDE ^COMMA ~ ParameterItem)* (HIDE ^COMMA)?)?
 }
 union ParameterItem {
-    | '<' #LMark
-    | '>' #RMark
+    | ParameterItemControl
     | ParameterPair
-    | '...' #OmitDict
-    | '..'  #OmitList
+}
+text class ParameterItemControl {
+    /[<>]|\.{2,3}/
 }
 class ParameterPair {
     ModifierAhead* ParameterHint?

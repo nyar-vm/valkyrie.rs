@@ -56,6 +56,7 @@ pub(super) fn parse_cst(input: &str, rule: ValkyrieRule) -> OutputResult<Valkyri
         ValkyrieRule::TypeEffect => parse_type_effect(state),
         ValkyrieRule::FunctionParameters => parse_function_parameters(state),
         ValkyrieRule::ParameterItem => parse_parameter_item(state),
+        ValkyrieRule::ParameterItemControl => parse_parameter_item_control(state),
         ValkyrieRule::ParameterPair => parse_parameter_pair(state),
         ValkyrieRule::ParameterHint => parse_parameter_hint(state),
         ValkyrieRule::Continuation => parse_continuation(state),
@@ -1227,11 +1228,17 @@ fn parse_function_parameters(state: Input) -> Output {
 fn parse_parameter_item(state: Input) -> Output {
     state.rule(ValkyrieRule::ParameterItem, |s| {
         Err(s)
-            .or_else(|s| builtin_text(s, "<", false).and_then(|s| s.tag_node("l_mark")))
-            .or_else(|s| builtin_text(s, ">", false).and_then(|s| s.tag_node("r_mark")))
+            .or_else(|s| parse_parameter_item_control(s).and_then(|s| s.tag_node("parameter_item_control")))
             .or_else(|s| parse_parameter_pair(s).and_then(|s| s.tag_node("parameter_pair")))
-            .or_else(|s| builtin_text(s, "...", false).and_then(|s| s.tag_node("omit_dict")))
-            .or_else(|s| builtin_text(s, "..", false).and_then(|s| s.tag_node("omit_list")))
+    })
+}
+#[inline]
+fn parse_parameter_item_control(state: Input) -> Output {
+    state.rule(ValkyrieRule::ParameterItemControl, |s| {
+        s.match_regex({
+            static REGEX: OnceLock<Regex> = OnceLock::new();
+            REGEX.get_or_init(|| Regex::new("^(?x)([<>]|\\.{2,3})").unwrap())
+        })
     })
 }
 #[inline]
