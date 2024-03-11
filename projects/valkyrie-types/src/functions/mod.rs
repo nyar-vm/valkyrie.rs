@@ -1,9 +1,12 @@
 use crate::{
     helpers::{Hir2Mir, Mir2Lir},
-    ModuleItem, ResolveContext,
+    ModuleItem, ResolveContext, ValkyrieType,
 };
 use nyar_wasm::{DependentGraph, Identifier, WasiExport, WasiFunction, WasiImport, WasiModule};
-use std::{ops::AddAssign, sync::Arc};
+use std::{
+    ops::AddAssign,
+    sync::{Arc, Mutex},
+};
 use valkyrie_ast::FunctionDeclaration;
 mod arithmetic;
 mod stage1_mir;
@@ -17,17 +20,12 @@ pub struct ValkyrieFunction {
     pub wasi_import: Option<WasiImport>,
     /// The WASI export symbol if exists
     pub wasi_export: Option<WasiExport>,
+    /// The input output signature of the function
+    pub signature: FunctionSignature,
 }
 
 #[derive(Clone, Default, Debug)]
-pub enum ValkyrieFunctionCategory {
-    #[default]
-    Normal,
-    /// Represent an external wasi function
-    External {
-        /// The wasi module name
-        wasi_module: WasiModule,
-        /// The external function name
-        wasi_name: Arc<str>,
-    },
+pub struct FunctionSignature {
+    pub inputs: Vec<ValkyrieType>,
+    pub output: Vec<ValkyrieType>,
 }

@@ -1,5 +1,5 @@
 use nyar_error::SourceCache;
-use std::{io::Write, path::Path};
+use std::{fs::File, io::Write, path::Path};
 use valkyrie_types::ResolveContext;
 
 #[test]
@@ -8,20 +8,18 @@ fn ready() {
 }
 
 #[test]
-fn test_hello_world() {
+fn test_hello_world() -> nyar_error::Result<()> {
     let here = Path::new(env!("CARGO_MANIFEST_DIR"));
 
-    let mut file_cache = SourceCache::default();
-    let file = file_cache.load_local(here.join("tests/component.vk")).unwrap();
     let mut context = ResolveContext::new("std");
-    let errors = context.parse(file, &mut file_cache);
-    for error in errors {
-        error.as_report().print(&file_cache).ok();
-    }
-    println!("{:#?}", context);
+    context.resolve_file(here.join("tests/source/unstable.vk"))?;
+    context.resolve_file(here.join("tests/source/random/_.vk"))?;
 
-    let mut wat = std::fs::File::create(here.join("tests/component.wat")).unwrap();
-    let source = context.resolve().unwrap();
+    context.show_errors();
+
+    let mut wat = File::create(here.join("tests/component.vk"))?;
+    let source = context.resolve()?;
     let wast = source.encode();
-    wat.write_all(wast.as_bytes()).unwrap();
+    wat.write_all(wast.as_bytes())?;
+    Ok(())
 }

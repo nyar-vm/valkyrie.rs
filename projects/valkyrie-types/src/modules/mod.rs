@@ -13,6 +13,7 @@ use nyar_wasm::{CanonicalWasi, DependentGraph, Identifier, WasiImport, WasiModul
 use std::{
     fmt::{Debug, Formatter},
     mem::take,
+    path::Path,
     str::FromStr,
     sync::Arc,
 };
@@ -42,6 +43,7 @@ pub struct ResolveContext {
     errors: Vec<NyarError>,
     /// Collect spread statements
     pub(crate) main_function: Vec<StatementNode>,
+    sources: SourceCache,
 }
 
 pub enum ModuleItem {
@@ -62,15 +64,14 @@ impl ResolveContext {
             items: Default::default(),
             errors: vec![],
             main_function: vec![],
+            sources: Default::default(),
         }
     }
 }
 
-impl ResolveContext {
-    pub fn push_error<E: Into<NyarError>>(&mut self, e: E) {
-        self.errors.push(e.into())
-    }
+impl ResolveContext {}
 
+impl ResolveContext {
     /// Get the full name path based on package name and namespace, then register the name to local namespace.
     pub fn register_item(&mut self, symbol: &IdentifierNode) -> Identifier {
         let key = Identifier { namespace: vec![], name: symbol.name.clone() };

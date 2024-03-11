@@ -58,6 +58,7 @@ function print_char(n: char) {
     // external function
 }
 
+
 #ffi("js", "print_str")
 function print_str(offset: usize, length: usize) {
     // external function

@@ -1,31 +1,45 @@
 use super::*;
 
 impl ResolveContext {
-    /// Parse a fetch text from the source cache
-    pub fn parse(&mut self, file: SourceID, cache: &mut SourceCache) -> Vec<NyarError> {
-        let root = ProgramContext { file }.parse(cache);
-        let mut errors = vec![];
+    pub fn resolve_package<P>(&mut self, directory: P) -> Result<()>
+    where
+        P: AsRef<Path>,
+    {
+        todo!()
+    }
+    pub fn resolve_file<P>(&mut self, file: P) -> Result<()>
+    where
+        P: AsRef<Path>,
+    {
+        let file = file.as_ref();
+        let source = self.sources.load_local(file)?;
+        let root = ProgramContext { file: source }.parse(&mut self.sources);
         match root {
             Success { value, diagnostics } => {
-                errors.extend(diagnostics);
-                errors.extend(self.visit(value))
+                self.errors.extend(diagnostics);
+                self.resolve_ast(value)
             }
             Failure { fatal, diagnostics } => {
-                errors.extend(diagnostics);
-                errors.extend_one(fatal);
+                self.errors.extend(diagnostics);
+                Err(fatal)
             }
         }
-        errors
     }
-
-    fn visit(&mut self, root: ProgramRoot) -> Vec<NyarError> {
-        let progress = root.to_mir(self);
-        let mut errors = take(&mut self.errors);
-        match progress {
-            Ok(_) => {}
-            Err(e) => errors.push(e),
+    /// Parse a fetch text from the source cache
+    pub fn resolve_ast(&mut self, root: ProgramRoot) -> Result<()> {
+        root.to_mir(self)
+    }
+    pub fn push_error<E: Into<NyarError>>(&mut self, e: E) {
+        self.errors.push(e.into())
+    }
+    pub fn show_errors(&mut self) {
+        let errors = take(&mut self.errors);
+        for error in errors {
+            match error.as_report().print(&self.sources) {
+                Ok(_) => {}
+                Err(_) => {}
+            }
         }
-        errors
     }
 }
 
