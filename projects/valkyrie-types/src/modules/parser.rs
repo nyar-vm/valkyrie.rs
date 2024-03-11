@@ -1,17 +1,29 @@
 use super::*;
+use nyar_error::third_party::WalkDir;
 
 impl ResolveContext {
     pub fn resolve_package<P>(&mut self, directory: P) -> Result<()>
     where
         P: AsRef<Path>,
     {
-        todo!()
+        let path = directory.as_ref();
+        for entry in WalkDir::new(path) {
+            match entry {
+                Ok(path) => {
+                    if let Err(e) = self.resolve_file(path.path()) {
+                        println!("error1: {:?}", path);
+                        self.push_error(e)
+                    }
+                }
+                Err(e) => self.push_error(e),
+            }
+        }
+        Ok(())
     }
     pub fn resolve_file<P>(&mut self, file: P) -> Result<()>
     where
         P: AsRef<Path>,
     {
-        let file = file.as_ref();
         let source = self.sources.load_local(file)?;
         let root = ProgramContext { file: source }.parse(&mut self.sources);
         match root {

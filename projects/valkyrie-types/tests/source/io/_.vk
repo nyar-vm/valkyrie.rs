@@ -1,17 +1,3 @@
-namespace package.io;
-
-#import("wasi:io/streams", "input-stream")
-class InputStream {
-    #ffi("wasi:io/streams", "[method]output-stream.blocking-write-and-flush")
-    write(self, contents: List<u8>) -> Result<(), StreamError>;
-}
-
-#import("wasi:io/streams", "output-stream")
-class OutputStream {
-    #ffi("wasi:io/streams", "[method]output-stream.blocking-write-and-flush")
-    write(self, contents: List<u8>) -> Result<(), StreamError>;
-}
-
 #import("wasi:io/error", "error")
 class IoError { }
 
@@ -19,18 +5,8 @@ union StreamError {
     LastOperationFailed {
         error: IoError
     },
-    Closed
+    Closed,
 }
-
-#import("wasi:cli/stdin", "get-stdin")
-micro standard_input() -> InputStream { }
-
-#import("wasi:cli/stdout", "get-stdout")
-micro standard_output() -> OutputStream { }
-
-#import("wasi:cli/stderr", "get-stderr")
-micro standard_error() -> OutputStream { }
-
 
 
 
