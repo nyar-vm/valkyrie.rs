@@ -4,7 +4,7 @@ use crate::{
 };
 use indexmap::IndexMap;
 use nyar_error::Result;
-use nyar_wasm::{Identifier, WasiExport, WasiImport, WasiModule, WasiResource};
+use nyar_wasm::{Identifier, WasiExport, WasiImport, WasiResource};
 use std::{
     fmt::{Debug, Formatter},
     hash::{Hash, Hasher},

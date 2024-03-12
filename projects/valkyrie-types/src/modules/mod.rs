@@ -6,9 +6,7 @@ use crate::{
 use convert_case::{Case, Casing};
 use im::{hashmap::Entry, HashMap};
 use indexmap::IndexMap;
-use nyar_error::{
-    DuplicateError, Failure, ForeignInterfaceError, NyarError, Result, SourceCache, SourceID, SourceSpan, Success,
-};
+use nyar_error::{DuplicateError, Failure, ForeignInterfaceError, NyarError, Result, SourceCache, SourceSpan, Success};
 use nyar_wasm::{CanonicalWasi, DependentGraph, Identifier, WasiImport, WasiModule};
 use std::{
     fmt::{Debug, Formatter},
@@ -18,9 +16,7 @@ use std::{
     str::FromStr,
     sync::Arc,
 };
-use valkyrie_ast::{
-    AnnotationNode, ArgumentTerm, IdentifierNode, NamespaceDeclaration, ProgramRoot, StatementKind, StringTextNode,
-};
+use valkyrie_ast::{AnnotationNode, ArgumentTerm, IdentifierNode, NamespaceDeclaration, ProgramRoot, StatementKind};
 use valkyrie_parser::{ProgramContext, StatementNode};
 
 mod codegen;

@@ -1,5 +1,4 @@
 use super::*;
-use crate::ValkyrieMethod;
 
 impl Hir2Mir for FunctionDeclaration {
     type Output = ();

@@ -3493,14 +3493,14 @@ ParameterPair</text>
 <text class="comment" id="ParameterItemControl" x="113" y="4069">
 ParameterItemControl</text>
 <g class="string">
-<rect height="22" rx="10" ry="10" width="116" x="202" y="4053"/>
-<text x="260" y="4069">
-[&lt;&gt;]|\.{2,3}</text>
+<rect height="22" rx="10" ry="10" width="148" x="202" y="4053"/>
+<text x="276" y="4069">
+[&lt;「」&gt;]|\.{2,3}</text>
 </g>
-<path d=" M 328 4064 h 5 a 5 5 0 0 1 5 -5 a 5 5 0 0 1 5 5 a 5 5 0 0 1 -5 5 a 5 5 0 0 1 -5 -5"/>
+<path d=" M 360 4064 h 5 a 5 5 0 0 1 5 -5 a 5 5 0 0 1 5 5 a 5 5 0 0 1 -5 5 a 5 5 0 0 1 -5 -5"/>
 <path d=" M 25 4064 h 10"/>
 <path d=" M 192 4064 h 10"/>
-<path d=" M 318 4064 h 10"/>
+<path d=" M 350 4064 h 10"/>
 </g>
 <g class="sequence">
 <path d=" M 10 4111 a 5 5 0 0 1 5 -5 a 5 5 0 0 1 5 5 a 5 5 0 0 1 -5 5 a 5 5 0 0 1 -5 -5 m 10 0 h 5"/>

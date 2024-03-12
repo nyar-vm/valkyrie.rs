@@ -474,6 +474,7 @@ text class MainInfix ^ {
     | [∈∊∉∋∍∌]
     | (not\s+)?in
     | is(\s+not)?
+    | as[*!?]?
     # map, apply
     | \/@ | [⇴⨵⊕⟴] | @{2,3}
     /

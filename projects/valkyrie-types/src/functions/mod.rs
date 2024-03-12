@@ -2,11 +2,8 @@ use crate::{
     helpers::{Hir2Mir, Mir2Lir},
     ModuleItem, ResolveContext, ValkyrieType,
 };
-use nyar_wasm::{DependentGraph, Identifier, WasiExport, WasiFunction, WasiImport, WasiModule};
-use std::{
-    ops::AddAssign,
-    sync::{Arc, Mutex},
-};
+use nyar_wasm::{DependentGraph, Identifier, WasiExport, WasiFunction, WasiImport};
+use std::ops::AddAssign;
 use valkyrie_ast::FunctionDeclaration;
 mod arithmetic;
 mod stage1_mir;

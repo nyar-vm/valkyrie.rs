@@ -1237,7 +1237,7 @@ fn parse_parameter_item_control(state: Input) -> Output {
     state.rule(ValkyrieRule::ParameterItemControl, |s| {
         s.match_regex({
             static REGEX: OnceLock<Regex> = OnceLock::new();
-            REGEX.get_or_init(|| Regex::new("^(?x)([<>]|\\.{2,3})").unwrap())
+            REGEX.get_or_init(|| Regex::new("^(?x)([<「」>]|\\.{2,3})").unwrap())
         })
     })
 }
@@ -2085,6 +2085,7 @@ fn parse_main_infix(state: Input) -> Output {
     | [∈∊∉∋∍∌]
     | (not\\s+)?in
     | is(\\s+not)?
+    | as[*!?]?
     # map, apply
     | /@ | [⇴⨵⊕⟴] | @{2,3})",
                 )
