@@ -5,13 +5,7 @@ impl Hir2Mir for ClassDeclaration {
     fn to_mir(self, ctx: &mut ResolveContext) -> Result<Self::Output> {
         let symbol = ctx.register_item(&self.name);
         let mut class = ValkyrieClass::new(symbol);
-        match ctx.get_foreign_module(&self.annotations, "class", "resource", self.name.span) {
-            Some((module, name)) => {
-                class.category = ValkyrieClassCategory::Resource { wasi_module: module, wasi_name: name };
-            }
-            None => {}
-        }
-
+        class.wasi_import = ctx.wasi_import_module_name(&self.annotations, &self.name);
         for x in self.terms {
             match x {
                 ClassTerm::Macro(_) => {
@@ -63,7 +57,7 @@ impl Hir2Mir for FieldDeclaration {
 impl Hir2Mir for MethodDeclaration {
     type Output = ValkyrieMethod;
     fn to_mir(self, ctx: &mut ResolveContext) -> Result<Self::Output> {
-        let wasi_import = ctx.import_function(&self.annotations, &self.name);
+        let wasi_import = ctx.wasi_import_module_name(&self.annotations, &self.name);
         Ok(ValkyrieMethod { method_name: self.name.name.clone(), wasi_import, wasi_export: None })
     }
 }

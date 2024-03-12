@@ -7,6 +7,7 @@ use nyar_error::Result;
 use nyar_wasm::{Identifier, WasiExport, WasiImport, WasiModule, WasiResource};
 use std::{
     fmt::{Debug, Formatter},
+    hash::{Hash, Hasher},
     ops::AddAssign,
     sync::Arc,
 };
@@ -19,25 +20,20 @@ mod stage2_lir;
 #[derive(Clone, Eq, PartialEq)]
 pub struct ValkyrieClass {
     pub(crate) symbol: Identifier,
+    /// The wasi import/export name
+    pub wasi_import: Option<WasiImport>,
     pub(crate) fields: IndexMap<Arc<str>, ValkyrieField>,
     pub(crate) methods: IndexMap<Arc<str>, ValkyrieMethod>,
-    /// Whether the class is an external resource type
-    pub(crate) category: ValkyrieClassCategory,
 }
 
-/// Extra traits for special classes
-#[derive(Default, Clone, Eq, PartialEq)]
-pub enum ValkyrieClassCategory {
-    /// This is a normal structure
-    #[default]
-    Structure,
-    /// This is a wasi external resource class
-    Resource {
-        /// The wasi module name
-        wasi_module: WasiModule,
-        /// The wasi resource name
-        wasi_name: Arc<str>,
-    },
+impl Hash for ValkyrieClass {
+    /// ```wat
+    /// $type-id = package::module::name
+    ///          + Generic Types
+    /// ```
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        self.symbol.hash(state);
+    }
 }
 
 #[derive(Clone, Eq, PartialEq)]
@@ -73,7 +69,7 @@ impl AddAssign<ValkyrieMethod> for ValkyrieClass {
 
 impl ValkyrieClass {
     pub fn new(symbol: Identifier) -> Self {
-        Self { symbol, fields: Default::default(), methods: Default::default(), category: Default::default() }
+        Self { symbol, wasi_import: None, fields: Default::default(), methods: Default::default() }
     }
     pub fn get_name(&self) -> String {
         self.symbol.to_string()

@@ -6,7 +6,7 @@ use std::{
     ops::AddAssign,
     sync::Arc,
 };
-use valkyrie_ast::{ClassTerm, FieldDeclaration, UnionDeclaration, UnionTerm, VariantDeclaration};
+use valkyrie_ast::{ClassTerm, UnionDeclaration, UnionTerm, VariantDeclaration};
 
 mod codegen;
 mod parser;

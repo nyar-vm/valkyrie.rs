@@ -2,15 +2,15 @@ use super::*;
 
 impl Debug for ValkyrieClass {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        match &self.category {
-            ValkyrieClassCategory::Structure => {
-                let debug = &mut f.debug_struct("Class");
-                debug.field("symbol", &WrapDisplay::new(&self.symbol)).field("fields", &self.fields.values());
+        match &self.wasi_import {
+            Some(name) => {
+                let debug = &mut f.debug_struct("Resource");
+                debug.field("symbol", &self.symbol).field("name", &name);
                 debug.finish()
             }
-            ValkyrieClassCategory::Resource { wasi_module, wasi_name } => {
-                let debug = &mut f.debug_struct("Resource");
-                debug.field("symbol", &self.symbol).field("module", &wasi_module).field("name", &wasi_name);
+            None => {
+                let debug = &mut f.debug_struct("Class");
+                debug.field("symbol", &WrapDisplay::new(&self.symbol)).field("fields", &self.fields.values());
                 debug.finish()
             }
         }
