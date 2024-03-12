@@ -1,3 +1,5 @@
+namespace package.io
+
 #import("wasi:io/error", "error")
 class IoError { }
 
@@ -7,7 +9,5 @@ union StreamError {
     },
     Closed,
 }
-
-
 
 

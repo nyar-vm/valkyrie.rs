@@ -1,5 +1,4 @@
 use super::*;
-use crate::structures::ValkyrieClassCategory;
 
 impl ResolveContext {
     pub fn resolve(&self) -> Result<CanonicalWasi> {

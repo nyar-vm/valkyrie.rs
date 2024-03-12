@@ -4,7 +4,7 @@ use crate::{
     ValkyrieFunction, ValkyrieUnion,
 };
 use convert_case::{Case, Casing};
-use im::HashMap;
+use im::{hashmap::Entry, HashMap};
 use indexmap::IndexMap;
 use nyar_error::{
     DuplicateError, Failure, ForeignInterfaceError, NyarError, Result, SourceCache, SourceID, SourceSpan, Success,
@@ -12,6 +12,7 @@ use nyar_error::{
 use nyar_wasm::{CanonicalWasi, DependentGraph, Identifier, WasiImport, WasiModule};
 use std::{
     fmt::{Debug, Formatter},
+    hash::RandomState,
     mem::take,
     path::Path,
     str::FromStr,
@@ -35,8 +36,8 @@ pub struct ResolveContext {
     pub(crate) namespace: Vec<Arc<str>>,
     /// The document buffer
     pub(crate) document: String,
-    /// main function of the file
-    pub(crate) using: HashMap<Identifier, Identifier>,
+    /// Mapping local name to global name
+    pub(crate) name_mapping: HashMap<Vec<Arc<str>>, ModuleImportsMap>,
     /// The declared items in file
     pub(crate) items: IndexMap<Identifier, ModuleItem>,
     /// Collect errors
@@ -44,6 +45,12 @@ pub struct ResolveContext {
     /// Collect spread statements
     pub(crate) main_function: Vec<StatementNode>,
     sources: SourceCache,
+}
+
+#[derive(Clone, Default)]
+pub struct ModuleImportsMap {
+    using: HashMap<Identifier, Identifier>,
+    local: HashMap<Identifier, Identifier>,
 }
 
 pub enum ModuleItem {
@@ -60,7 +67,7 @@ impl ResolveContext {
             package: package.into(),
             namespace: vec![],
             document: "".to_string(),
-            using: Default::default(),
+            name_mapping: Default::default(),
             items: Default::default(),
             errors: vec![],
             main_function: vec![],
@@ -69,18 +76,26 @@ impl ResolveContext {
     }
 }
 
-impl ResolveContext {}
+impl ResolveContext {
+    pub fn reset_namespace(&mut self) {
+        self.namespace = vec![];
+    }
+}
 
 impl ResolveContext {
     /// Get the full name path based on package name and namespace, then register the name to local namespace.
     pub fn register_item(&mut self, symbol: &IdentifierNode) -> Identifier {
         let key = Identifier { namespace: vec![], name: symbol.name.clone() };
         let value = Identifier { namespace: self.namespace.clone(), name: symbol.name.clone() };
-        match self.using.insert(key, value.clone()) {
-            Some(s) => {
-                self.push_error(NyarError::duplicate_type(s.name.to_string(), symbol.span, symbol.span));
+        match self.name_mapping.entry(self.namespace.clone()) {
+            Entry::Occupied(v) => {
+                v.into_mut().local.insert(key, value.clone());
             }
-            None => {}
+            Entry::Vacant(v) => {
+                let mut map = ModuleImportsMap::default();
+                map.using.insert(key, value.clone());
+                v.insert(map);
+            }
         }
         value
     }
@@ -119,7 +134,7 @@ impl ResolveContext {
     }
 
     /// Get the full name path based on package name and namespace
-    pub fn import_function(&mut self, alias: &AnnotationNode, symbol: &IdentifierNode) -> Option<WasiImport> {
+    pub fn wasi_import_module_name(&mut self, alias: &AnnotationNode, symbol: &IdentifierNode) -> Option<WasiImport> {
         let import = alias.attributes.get("import")?;
         let module = self.find_wasi_module(import.arguments.terms.get(0), import.span)?;
         let name: Arc<str> = match import.arguments.terms.get(1) {

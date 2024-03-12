@@ -1,5 +1,6 @@
 use super::*;
 use nyar_error::third_party::WalkDir;
+use std::fs::FileType;
 
 impl ResolveContext {
     pub fn resolve_package<P>(&mut self, directory: P) -> Result<()>
@@ -7,14 +8,15 @@ impl ResolveContext {
         P: AsRef<Path>,
     {
         let path = directory.as_ref();
-        for entry in WalkDir::new(path) {
+        for entry in WalkDir::new(path).contents_first(true) {
             match entry {
-                Ok(path) => {
+                Ok(path) if path.file_type().is_file() => {
                     if let Err(e) = self.resolve_file(path.path()) {
-                        println!("error1: {:?}", path);
+                        println!("error: {:?}\n       {}", path, e);
                         self.push_error(e)
                     }
                 }
+                Ok(_) => {}
                 Err(e) => self.push_error(e),
             }
         }
@@ -86,12 +88,8 @@ impl Hir2Mir for StatementKind {
             }
             Self::Class(v) => v.to_mir(ctx)?,
             Self::Union(v) => v.to_mir(ctx)?,
-            Self::Enumerate(_) => {
-                todo!()
-            }
-            Self::Trait(_) => {
-                todo!()
-            }
+            Self::Enumerate(v) => v.to_mir(ctx)?,
+            Self::Trait(v) => v.to_mir(ctx)?,
             Self::Extends(_) => {
                 todo!()
             }

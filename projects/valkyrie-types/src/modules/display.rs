@@ -1,14 +1,11 @@
 use super::*;
-use itertools::Itertools;
 use std::collections::BTreeMap;
 
 impl Debug for ResolveContext {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        let imports: BTreeMap<_, _> = self.using.iter().map(|(k, v)| (k.to_string(), v.to_string())).collect();
         f.debug_struct("ResolveContext")
             .field("namespace", &self.namespace.join("∷"))
             .field("document", &self.document)
-            .field("imports", &imports)
             .field("items", &self.items.values())
             .field("errors", &self.errors)
             .field("main_function", &self.main_function)
